@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Components\CustomTextBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\DashboardCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\SportCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\TrainerCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\HeaderBar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\InfoCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\NavBar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\ExpensesReport.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\IncomeReportView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\SalariesReportView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\GymView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\HomeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\MakePlayers.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\OffersViews\EditOfferDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\OffersViews\OfferDetailsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\OffersViews\OffersListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PaymentViews\EditPaymentDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PaymentViews\PaymentDetalView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerListingView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayersView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\EditPlayerDetailsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\PlayerDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\PlayerProfile.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\PlayersListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SportsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SportViews\EditSportDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SportViews\SportDetailsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SportViews\SportListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TrainersView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TrainerViews\EditTrainerDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TrainerViews\TrainerDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TrainerViews\TrainerListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TrainingViews\TrainingDetailsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Components\CustomTextBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\DashboardCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\SportCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TrainerCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\HeaderBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\InfoCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\NavBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\ExpensesReport.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\IncomeReportView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\SalariesReportView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\GymView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MakePlayers.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\OffersViews\EditOfferDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\OffersViews\OfferDetailsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\OffersViews\OffersListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PaymentViews\EditPaymentDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PaymentViews\PaymentDetalView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerListingView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayersView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerViews\EditPlayerDetailsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerViews\PlayerDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerViews\PlayerProfile.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerViews\PlayersListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SportsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SportViews\EditSportDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SportViews\SportDetailsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SportViews\SportListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TrainersView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TrainerViews\EditTrainerDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TrainerViews\TrainerDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TrainerViews\TrainerListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TrainingViews\TrainingDetailsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

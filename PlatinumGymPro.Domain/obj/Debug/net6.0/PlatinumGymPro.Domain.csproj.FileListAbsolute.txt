@@ -1,0 +1,12 @@
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\bin\Debug\net6.0\PlatinumGymPro.Domain.deps.json
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\bin\Debug\net6.0\PlatinumGymPro.Domain.dll
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\bin\Debug\net6.0\ref\PlatinumGymPro.Domain.dll
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\bin\Debug\net6.0\PlatinumGymPro.Domain.pdb
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\obj\Debug\net6.0\PlatinumGymPro.Domain.csproj.AssemblyReference.cache
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\obj\Debug\net6.0\PlatinumGymPro.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\obj\Debug\net6.0\PlatinumGymPro.Domain.AssemblyInfoInputs.cache
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\obj\Debug\net6.0\PlatinumGymPro.Domain.AssemblyInfo.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\obj\Debug\net6.0\PlatinumGymPro.Domain.csproj.CoreCompileInputs.cache
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\obj\Debug\net6.0\PlatinumGymPro.Domain.dll
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\obj\Debug\net6.0\ref\PlatinumGymPro.Domain.dll
+D:\Repo\PlatinumGymPro\PlatinumGymPro.Domain\obj\Debug\net6.0\PlatinumGymPro.Domain.pdb

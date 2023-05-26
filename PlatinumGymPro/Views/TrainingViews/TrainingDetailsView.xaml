@@ -1,0 +1,395 @@
+﻿<UserControl x:Class="PlatinumGymPro.Views.TrainingViews.TrainingDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
+             xmlns:con="clr-namespace:PlatinumGymPro.Converters"
+             mc:Ignorable="d"
+             Background="Transparent"
+              FlowDirection="RightToLeft"
+             d:DesignHeight="550" d:DesignWidth="800">
+    <UserControl.Resources>
+
+        <Style TargetType="{x:Type RadioButton}" x:Key="myCheckboxStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="border" Height="60" Background="#f6f6f6" MinWidth="200" BorderThickness="0" BorderBrush="#C14E00" Padding="20 10" CornerRadius="5" >
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding SportName }" FontSize="16" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Price }" FontSize="12" />
+                                </StackPanel>
+
+                            </Border>
+                            <ContentPresenter/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="border" Property="BorderThickness" Value="1"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#C14E00"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+        <con:ErrorsConverter x:Key="conv"/>
+
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+    </UserControl.Resources>
+    <Border CornerRadius="10" Background="Transparent"  >
+        <Grid >
+            <!--Main Layer-->
+                <Border Background="#fff" CornerRadius="20" >
+
+                    <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Margin="20 10">
+                            <Border Width="60" Height="60" CornerRadius="10" Background="Red"/>
+                            <StackPanel Orientation="Vertical" Margin="10">
+                                <TextBlock Text="اسم اللاعب" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="18"/>
+                                <TextBlock Text="رقم الهاتف" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="16"/>
+                            </StackPanel>
+                        </StackPanel>
+
+
+
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
+                            <TextBlock Text="تسجيل جديد"
+                                   Foreground="#993300"
+                                   FontSize="18" Margin="15 0 0 0" 
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Separator Grid.Row="1" Grid.ColumnSpan="3" Height="1" Margin="0 10" Background="#e1e6eb"/>
+
+
+                    </StackPanel>
+                        
+                        
+                        
+                        <StackPanel  Grid.Column="0" Grid.Row="1">
+                            <TextBlock Text="الرياضة" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                            <ComboBox SelectedItem="{Binding SelectedSportListingItemViewModel}"  ItemsSource="{Binding  SportList}">
+                            <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+
+                                        <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding SportName}"
+                                                           Foreground="#993300"
+                                                           Margin="0 0 0 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"/>
+                                    </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                        </ComboBox>
+                            
+                        <Grid Margin="10 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                          
+                                <TextBlock Grid.Column="0" Text="اسم الرياضة"
+                                                           Foreground="#000"
+                                                           Margin="5 0 0 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+                            <TextBlock Grid.Column="1" Text="بناء اجسام رجالي"
+                                                           Foreground="#993300"
+                                                           Margin="0 0 0 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+
+                            <TextBlock Grid.Column="0"  Grid.Row="1" Text="طبيعة الاشتراك"
+                                                           Foreground="#000"
+                                                           Margin="0 0 10 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+                            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                <RadioButton IsChecked="True" Content="يومي"/>
+                                <RadioButton Content="شهري"/>
+                            </StackPanel>
+
+
+                            <TextBlock Grid.Column="0"  Grid.Row="2" Text="السعر اليومي"
+                                                           Foreground="#000"
+                                                           Margin="0 0 10 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+                            <TextBlock Text="3,000"  Grid.Column="1"  Grid.Row="2"
+                                                           Foreground="#993300"
+                                                           Margin="0 0 0 8"
+                                                           FontSize="13"/>
+                            <TextBlock Grid.Column="0"  Grid.Row="3" Text="السعر الشهري"
+                                                           Foreground="#000"
+                                                           Margin="0 0 10 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+                            <TextBlock Text="30,000 " Grid.Column="1"  Grid.Row="3"
+                                                           Foreground="#993300"
+                                                           Margin="0 0 0 8"
+                                                           FontSize="13"/>
+
+                            <TextBlock Grid.Column="0"  Grid.Row="4" Text="ايام التدريب الاسبوعي"
+                                                           Foreground="#000"
+                                                           Margin="0 0 10 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+                            <TextBlock Text="6" Grid.Row="4" Grid.Column="1"
+                                                           Foreground="#993300"
+                                                           Margin="0 0 0 8"
+                                                           FontSize="13"/>
+                            <TextBlock Grid.Column="0"  Grid.Row="5" Text="عدد الايام الشهري "
+                                                           Foreground="#000"
+                                                           Margin="0 0 10 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+                            <TextBlock Text="30"  Grid.Column="1"  Grid.Row="5"
+                                                           Foreground="#993300"
+                                                           Margin="0 0 0 8"
+                                                           FontSize="13"/>
+                         
+                        </Grid>
+
+
+                    </StackPanel>
+
+                        <Grid Grid.Column="1" Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions >
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Form title-->
+
+
+                           
+                            <!--inputs-->
+                            <!--<uc:CustomTextBox Text="{Binding FullName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Caption="Player Name" Hint="Enter Full Name"/>-->
+
+                            <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Margin="20 10">
+                                <TextBlock Text="المدرب" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                <ListView Padding="10"   ItemsSource="{Binding  SelectedSportListingItemViewModel.TrainerList}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                        <Border CornerRadius="10" BorderThickness="2" BorderBrush="#993300">
+                                            <Grid Margin="10 5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Column="0" Text="اسم المدرب"
+                                                           Foreground="#000"
+                                                           Margin="0 0 10 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+                                                <TextBlock Grid.Column="1" Text="سامر كحل العبدلله"
+                                                           Foreground="#993300"
+                                                           Margin="0 0 0 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+
+                                                <TextBlock Grid.Column="0"  Grid.Row="1" Text="النسبة"
+                                                           Foreground="#000"
+                                                           Margin="0 0 10 8"
+                                                           FontSize="15"
+                                                       MaxWidth="200"
+                                                       />
+                                                <TextBlock Text="25"  Grid.Column="1"  Grid.Row="1"
+                                                           Foreground="#993300"
+                                                           Margin="0 0 0 8"
+                                                           FontSize="13"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ListView.ItemsPanel>
+                                </ListView>
+
+                                <StackPanel Visibility="Collapsed" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1">
+                                    <RadioButton Content="Private" HorizontalAlignment="Center"/>
+                                    <RadioButton Content="Non Private" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                                <Grid Visibility="Collapsed" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="20 10">
+                                        <TextBlock Text="الاشتراك قبل الحسم" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="20 10">
+                                        <TextBlock Text="تاريخ الاشتراك" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+
+
+                         
+                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="20 10">
+                                <TextBlock Text="تاريخ الاشتراك" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                            </StackPanel>
+
+
+                            <StackPanel Grid.Row="3" Grid.Column="1" Margin="20 10">
+                                <TextBlock Text="الحسم" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="2" Margin="20 10">
+                                <TextBlock Text="قيمة الحسم" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                            </StackPanel>
+
+
+                            <Border CornerRadius="10" BorderThickness="1" Background="#fff" BorderBrush="Gray" Margin="5" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" >
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="ادخال دفعة"
+                                   Foreground="#993300"
+                                   FontSize="16" Margin="15 0 0 0" 
+                                   FontWeight="SemiBold"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="20 10">
+                                        <TextBlock Text="البيان" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="20 10">
+                                        <TextBlock Text="الدفعة" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+
+
+                            <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="6" Content="حفظ" Margin="20 40 20 10" HorizontalAlignment="Left">
+                                <Button.Effect>
+                                    <DropShadowEffect BlurRadius="10" ShadowDepth="5" Color="#C14E00" Opacity="0.3" Direction="-120"/>
+                                </Button.Effect>
+                            </Button>
+
+                            <!--secoundry color-->
+                            <Button Command="{Binding CancelCommand}" Style="{StaticResource ScFormButton}" Grid.Column="1" Grid.Row="6" Content="الغاء" Width="150" Margin="10 40 20 10" HorizontalAlignment="Right">
+
+                            </Button>
+
+                        </Grid>
+                    </Grid>
+
+
+                </Border>
+          
+        </Grid>
+    </Border>
+</UserControl>

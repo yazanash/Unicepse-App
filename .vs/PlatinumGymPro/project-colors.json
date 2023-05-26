@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "71e824b8-c813-4bd6-a4fa-e4dcba3c2471": {
+      "ProjectGuid": "71e824b8-c813-4bd6-a4fa-e4dcba3c2471",
+      "DisplayName": "PlatinumGymPro",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    },
+    "e9ac7ac3-4e20-4817-8c46-b3e218339086": {
+      "ProjectGuid": "e9ac7ac3-4e20-4817-8c46-b3e218339086",
+      "DisplayName": "PlatinumGymPro.Domain",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
