@@ -24,5 +24,6 @@ namespace PlatinumGymPro.Controls
         {
             InitializeComponent();
         }
+      
     }
 }

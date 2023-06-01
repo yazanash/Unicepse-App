@@ -16,6 +16,7 @@
         Title="PlatinumGym - Release" Height="720" Width="1080">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+       
     </Window.Resources>
     <Border Background="#fff"
             MouseDown="Border_MouseDown"
@@ -25,26 +26,29 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <!--Top Menu-->
          
             <!--left Menu-->
-            <controls:NavBar Grid.Column="1" DataContext="{Binding Navigator}" />
-            
+            <controls:NavBar Style="{DynamicResource NavBarStyle1}" Grid.Column="1" Grid.Row="1" DataContext="{Binding Navigator}" />
+            <controls:HeaderBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"  DataContext="{Binding Navigator}" />
             
             <!--<controls:NavBar Grid.Row="1" DataContext="{Binding Navigator}" Grid.Column="1"/>-->
             <!--MenuSection-->
 
             <Grid Grid.Column="0" Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <!--Search textbox-->
 
-                <controls:HeaderBar Grid.Column="0"  DataContext="{Binding Navigator}" />
+              
 
 
                 <!--top button-->
@@ -54,7 +58,7 @@
                    Background="#dae2ea" Margin="10 10"
                    Grid.Row="1"/>-->
                 <!--<View:HomeView Grid.Row="1" DataContext="{Binding CurrentViewModel}"/>-->
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="0">
                     <ContentControl Content="{Binding Navigator.CurrentViewModel}" Grid.ColumnSpan="2"/>
                 </Grid>
             </Grid>

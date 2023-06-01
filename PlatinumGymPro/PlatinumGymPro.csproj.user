@@ -10,6 +10,9 @@
     <Compile Update="Components\CustomTextBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\CustomToggleBtn.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\DashboardCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -115,6 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Components\CustomTextBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\CustomToggleBtn.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\DashboardCard.xaml">

@@ -6,21 +6,17 @@
              xmlns:local="clr-namespace:PlatinumGymPro.Components"
              mc:Ignorable="d" 
             d:DesignWidth="300">
-    <Border Background="#f6f6f6" CornerRadius="10">
+    <Border Background="Transparent" CornerRadius="10" Width="300" Padding="1">
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10">
-                <TextBlock Text="{Binding SportName}" FontWeight="Bold" FontSize="22"/>
-                <TextBlock Text="{Binding Price}"  FontSize="14"/>
-            </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Column="2" Margin="10">
-                <TextBlock Text="{Binding DaysCount}" FontSize="16"/>
-                <TextBlock Text="{Binding DaysInWeek}" FontSize="14" FontWeight="SemiBold"/>
-            </StackPanel>
+            <TextBlock Text="{Binding SportName}" Grid.Row="0" FontSize="15" MaxHeight="30" LineStackingStrategy="BlockLineHeight" TextWrapping="WrapWithOverflow" TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="#C14E00"/>
+            <TextBlock Text="{Binding Price}" Grid.Row="1" FontSize="12" FontWeight="SemiBold" Foreground="#C14E00"/>
         </Grid>
-
     </Border>
 </UserControl>

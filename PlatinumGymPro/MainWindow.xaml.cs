@@ -37,6 +37,7 @@ namespace PlatinumGymPro
             if (e.ChangedButton == MouseButton.Left)
             {
                 this.DragMove();
+
             }
         }
         bool isMaximized = false;

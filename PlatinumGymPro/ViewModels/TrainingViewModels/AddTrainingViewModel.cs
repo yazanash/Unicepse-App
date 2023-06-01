@@ -87,6 +87,47 @@ namespace PlatinumGymPro.ViewModels.TrainingViewModels
             }
         }
 
+        private bool _hasOffer;
+        public bool HasOffer
+        {
+            get
+            {
+                return _hasOffer;
+            }
+            set
+            {
+                _hasOffer = value;
+                OnPropertyChanged(nameof(HasOffer));
+            }
+        }
+        private bool _isPrivate;
+        public bool IsPrivate
+        {
+            get
+            {
+                return _isPrivate;
+            }
+            set
+            {
+                _isPrivate = value;
+                OnPropertyChanged(nameof(IsPrivate));
+            }
+        }
+        private bool _hasPayment;
+        public bool HasPayment
+        {
+            get
+            {
+                return _hasPayment;
+            }
+            set
+            {
+                _hasPayment = value;
+                OnPropertyChanged(nameof(HasPayment));
+            }
+        }
+
+
         private string? _errorMessage;
         public string? ErrorMessage
         {

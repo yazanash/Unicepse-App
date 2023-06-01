@@ -5,391 +5,509 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
              xmlns:con="clr-namespace:PlatinumGymPro.Converters"
+             xmlns:cs="clr-namespace:PlatinumGymPro.Components"
+             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              Background="Transparent"
               FlowDirection="RightToLeft"
              d:DesignHeight="550" d:DesignWidth="800">
     <UserControl.Resources>
 
-        <Style TargetType="{x:Type RadioButton}" x:Key="myCheckboxStyle">
+        <con:ErrorsConverter x:Key="conv"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+
+        <!--#region Listbox Style-->
+        <SolidColorBrush x:Key="ListBox.Static.Background" Color="Transparent"/>
+        <SolidColorBrush x:Key="ListBox.Static.Border" Color="#fff"/>
+        <SolidColorBrush x:Key="ListBox.Disabled.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ListBox.Disabled.Border" Color="#FFD9D9D9"/>
+        <Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="{StaticResource ListBox.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ListBox.Static.Border}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalOnly"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type RadioButton}">
-                        <StackPanel Orientation="Horizontal">
-                            <Border x:Name="border" Height="60" Background="#f6f6f6" MinWidth="200" BorderThickness="0" BorderBrush="#C14E00" Padding="20 10" CornerRadius="5" >
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding SportName }" FontSize="16" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Price }" FontSize="12" />
-                                </StackPanel>
-
-                            </Border>
-                            <ContentPresenter/>
-                        </StackPanel>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="1" SnapsToDevicePixels="true">
+                            <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="border" Property="BorderThickness" Value="1"/>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#C14E00"/>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Border}"/>
                             </Trigger>
-
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsGrouping" Value="true"/>
+                                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </MultiTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+        <!--<DataTemplate x:Key="ListBoxItemTemplate1">
 
+            <cs:SportCard/>
 
+        </DataTemplate>-->
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#EEE"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#EEE"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="#EEE"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#444"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="#3DDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#FFDADADA"/>
+        <Style x:Key="ListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border CornerRadius="10" x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.MouseOver.Border}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Border}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ItemsPanelTemplate x:Key="ListBoxItemsPanel1">
+            <StackPanel Orientation="Vertical" SnapsToDevicePixels="True"/>
+        </ItemsPanelTemplate>
+        <Style x:Key="FocusVisual1">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="OptionMarkFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="14,0,0,0" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="RadioButton.Static.Background" Color="#fff"/>
+        <SolidColorBrush x:Key="RadioButton.Static.Border" Color="#ccc"/>
+        <SolidColorBrush x:Key="RadioButton.Static.Glyph" Color="Green"/>
+        <SolidColorBrush x:Key="RadioButton.MouseOver.Background" Color="#FFF3F9FF"/>
+        <SolidColorBrush x:Key="RadioButton.MouseOver.Border" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="RadioButton.MouseOver.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="RadioButton.Pressed.Background" Color="#FFD9ECFF"/>
+        <SolidColorBrush x:Key="RadioButton.Pressed.Border" Color="#FF3C77DD"/>
+        <SolidColorBrush x:Key="RadioButton.Pressed.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="#FFE6E6E6"/>
+        <SolidColorBrush x:Key="RadioButton.Disabled.Border" Color="#FFBCBCBC"/>
+        <SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF707070"/>
+        <Style x:Key="RadioButtonStyle1" TargetType="{x:Type RadioButton}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual1}"/>
+            <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource RadioButton.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="radioButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Padding="5" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1,1,2,1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
 
-        <con:ErrorsConverter x:Key="conv"/>
+                                <ContentPresenter x:Name="contentPresenter" Grid.Row="1" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
 
-        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.MouseOver.Border}"/>
+                                <!--<Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.MouseOver.Glyph}"/>-->
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Disabled.Border}"/>
+                                <!--<Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.Disabled.Glyph}"/>-->
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Pressed.Border}"/>
+                                <!--<Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.Pressed.Glyph}"/>-->
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="#fece15"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="Red"/>
+
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource RadioButton.Static.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="Transparent"  >
+    <Border CornerRadius="10" Background="#EEE" Padding="10"  >
+        
+        
         <Grid >
-            <!--Main Layer-->
-                <Border Background="#fff" CornerRadius="20" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
+                    <DockPanel>
+                        <TextBlock Foreground="#C14E00" Text="الرياضات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
+                        <ListBox SelectedItem="{Binding SelectedSportListingItemViewModel}" ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SportList}" >
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Binding SportName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                        </ListBox>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Row="1" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
+                    <DockPanel>
+                        <TextBlock Foreground="#C14E00" Text="المدربين" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
+                        <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SelectedSportListingItemViewModel.TrainerList}" >
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </Border>
+            </Grid>
+            <ScrollViewer  Grid.Column="1" Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
 
                     <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="300"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Margin="20 10">
-                            <Border Width="60" Height="60" CornerRadius="10" Background="Red"/>
-                            <StackPanel Orientation="Vertical" Margin="10">
-                                <TextBlock Text="اسم اللاعب" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="18"/>
-                                <TextBlock Text="رقم الهاتف" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="16"/>
-                            </StackPanel>
-                        </StackPanel>
-
-
-
-
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
-                            <TextBlock Text="تسجيل جديد"
-                                   Foreground="#993300"
-                                   FontSize="18" Margin="15 0 0 0" 
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                        </StackPanel>
-
-                        <Separator Grid.Row="1" Grid.ColumnSpan="3" Height="1" Margin="0 10" Background="#e1e6eb"/>
-
-
-                    </StackPanel>
-                        
-                        
-                        
-                        <StackPanel  Grid.Column="0" Grid.Row="1">
-                            <TextBlock Text="الرياضة" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                            <ComboBox SelectedItem="{Binding SelectedSportListingItemViewModel}"  ItemsSource="{Binding  SportList}">
-                            <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-
-                                        <StackPanel Orientation="Vertical">
-                                        <TextBlock Text="{Binding SportName}"
-                                                           Foreground="#993300"
-                                                           Margin="0 0 0 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"/>
-                                    </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                        </ComboBox>
-                            
-                        <Grid Margin="10 5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                          
-                                <TextBlock Grid.Column="0" Text="اسم الرياضة"
-                                                           Foreground="#000"
-                                                           Margin="5 0 0 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-                            <TextBlock Grid.Column="1" Text="بناء اجسام رجالي"
-                                                           Foreground="#993300"
-                                                           Margin="0 0 0 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-
-                            <TextBlock Grid.Column="0"  Grid.Row="1" Text="طبيعة الاشتراك"
-                                                           Foreground="#000"
-                                                           Margin="0 0 10 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-                            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                                <RadioButton IsChecked="True" Content="يومي"/>
-                                <RadioButton Content="شهري"/>
-                            </StackPanel>
-
-
-                            <TextBlock Grid.Column="0"  Grid.Row="2" Text="السعر اليومي"
-                                                           Foreground="#000"
-                                                           Margin="0 0 10 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-                            <TextBlock Text="3,000"  Grid.Column="1"  Grid.Row="2"
-                                                           Foreground="#993300"
-                                                           Margin="0 0 0 8"
-                                                           FontSize="13"/>
-                            <TextBlock Grid.Column="0"  Grid.Row="3" Text="السعر الشهري"
-                                                           Foreground="#000"
-                                                           Margin="0 0 10 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-                            <TextBlock Text="30,000 " Grid.Column="1"  Grid.Row="3"
-                                                           Foreground="#993300"
-                                                           Margin="0 0 0 8"
-                                                           FontSize="13"/>
-
-                            <TextBlock Grid.Column="0"  Grid.Row="4" Text="ايام التدريب الاسبوعي"
-                                                           Foreground="#000"
-                                                           Margin="0 0 10 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-                            <TextBlock Text="6" Grid.Row="4" Grid.Column="1"
-                                                           Foreground="#993300"
-                                                           Margin="0 0 0 8"
-                                                           FontSize="13"/>
-                            <TextBlock Grid.Column="0"  Grid.Row="5" Text="عدد الايام الشهري "
-                                                           Foreground="#000"
-                                                           Margin="0 0 10 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-                            <TextBlock Text="30"  Grid.Column="1"  Grid.Row="5"
-                                                           Foreground="#993300"
-                                                           Margin="0 0 0 8"
-                                                           FontSize="13"/>
-                         
-                        </Grid>
-
-
-                    </StackPanel>
-
-                        <Grid Grid.Column="1" Grid.Row="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions >
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Form title-->
-
-
-                           
-                            <!--inputs-->
-                            <!--<uc:CustomTextBox Text="{Binding FullName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Caption="Player Name" Hint="Enter Full Name"/>-->
-
-                            <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Margin="20 10">
-                                <TextBlock Text="المدرب" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                                <ListView Padding="10"   ItemsSource="{Binding  SelectedSportListingItemViewModel.TrainerList}">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                        <Border CornerRadius="10" BorderThickness="2" BorderBrush="#993300">
-                                            <Grid Margin="10 5">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="auto"/>
-                                                    <RowDefinition Height="auto"/>
-                                                    <RowDefinition Height="auto"/>
-                                                    <RowDefinition Height="auto"/>
-                                                    <RowDefinition Height="auto"/>
-                                                    <RowDefinition Height="auto"/>
-                                                </Grid.RowDefinitions>
-
-                                                <TextBlock Grid.Column="0" Text="اسم المدرب"
-                                                           Foreground="#000"
-                                                           Margin="0 0 10 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-                                                <TextBlock Grid.Column="1" Text="سامر كحل العبدلله"
-                                                           Foreground="#993300"
-                                                           Margin="0 0 0 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-
-                                                <TextBlock Grid.Column="0"  Grid.Row="1" Text="النسبة"
-                                                           Foreground="#000"
-                                                           Margin="0 0 10 8"
-                                                           FontSize="15"
-                                                       MaxWidth="200"
-                                                       />
-                                                <TextBlock Text="25"  Grid.Column="1"  Grid.Row="1"
-                                                           Foreground="#993300"
-                                                           Margin="0 0 0 8"
-                                                           FontSize="13"/>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                    <ListView.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ListView.ItemsPanel>
-                                </ListView>
-
-                                <StackPanel Visibility="Collapsed" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1">
-                                    <RadioButton Content="Private" HorizontalAlignment="Center"/>
-                                    <RadioButton Content="Non Private" HorizontalAlignment="Center"/>
-                                </StackPanel>
-                                <Grid Visibility="Collapsed" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="#fff" Grid.Column="0"  CornerRadius="10" Padding="5"  Margin="5">
+                            <DockPanel >
+                                <TextBlock Text="معلومات اللاعب" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Top"/>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
+
                                     </Grid.RowDefinitions>
-                                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="20 10">
-                                        <TextBlock Text="الاشتراك قبل الحسم" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                                        <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="20 10">
-                                        <TextBlock Text="تاريخ الاشتراك" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                                        <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-
-                                    </StackPanel>
+                                    <TextBlock HorizontalAlignment="left" Margin="5" Text="الاسم : " FontSize="16" DockPanel.Dock="Top" Grid.Row="0"/>
+                                    <TextBlock HorizontalAlignment="left" Margin="5" Text="مصطفى احمد العوضي" FontSize="16" DockPanel.Dock="Top" Grid.Row="0" Grid.Column="1"/>
+                                    <TextBlock HorizontalAlignment="left" Margin="5" Text="رقم الهاتف :" FontSize="16" DockPanel.Dock="Top" Grid.Row="1"/>
+                                    <TextBlock HorizontalAlignment="left" Margin="5" FlowDirection="LeftToRight" Text="0994 916 917" FontSize="16" DockPanel.Dock="Top" Grid.Row="1" Grid.Column="1"/>
                                 </Grid>
-                            </StackPanel>
 
+                            </DockPanel>
+                        </Border>
 
-                         
-                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="20 10">
-                                <TextBlock Text="تاريخ الاشتراك" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                                <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-
-                            </StackPanel>
-
-
-                            <StackPanel Grid.Row="3" Grid.Column="1" Margin="20 10">
-                                <TextBlock Text="الحسم" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                                <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-
-                            </StackPanel>
-                            <StackPanel Grid.Row="4" Grid.Column="2" Margin="20 10">
-                                <TextBlock Text="قيمة الحسم" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                                <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-
-                            </StackPanel>
-
-
-                            <Border CornerRadius="10" BorderThickness="1" Background="#fff" BorderBrush="Gray" Margin="5" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" >
+                        <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="2"  Padding="5"  Margin="5">
+                            <DockPanel >
+                                <DockPanel DockPanel.Dock="Top" >
+                                    <TextBlock Text="معلومات الاشتراك" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Left"/>
+                                    <!--<CheckBox DockPanel.Dock="Right"
+                                      HorizontalAlignment="Right"
+                      Style="{DynamicResource toggleBtnStyle}"/>-->
+                                </DockPanel>
                                 <Grid >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+
+                                        <TextBlock Text="قيمة الاشتراك" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 5"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="عدد ايام الاشتراك" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 5"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
+
+                                        <TextBlock Text="تاريخ الاشتراك" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 5"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="5 5">
+                                        <TextBlock Text="الاجمالي" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 5"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                    </StackPanel>
+
+                                   
+                                </Grid>
+
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+
+
+                    <!--<ScrollViewer>-->
+                    <Grid  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+
+                        <Border Background="#fff" Grid.Row="2" CornerRadius="10" Grid.Column="0" Padding="5"  Margin="5">
+                            <DockPanel >
+                                <DockPanel DockPanel.Dock="Top" >
+                                    <TextBlock Text="ادخال دفعة" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Left"/>
+                                    <CheckBox DockPanel.Dock="Right"
+                                              IsChecked="{Binding HasPayment,UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Right"
+                      Style="{DynamicResource toggleBtnStyle}"/>
+                                </DockPanel>
+                                <Grid Visibility="{Binding HasPayment , Converter={StaticResource BoolToVis}}">
+                                    <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
-
-                                    <TextBlock Text="ادخال دفعة"
-                                   Foreground="#993300"
-                                   FontSize="16" Margin="15 0 0 0" 
-                                   FontWeight="SemiBold"/>
-                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="20 10">
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                                         <TextBlock Text="البيان" 
                                    Foreground="#993300"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 5"
                                    FontSize="13"/>
                                         <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
                                     </StackPanel>
-                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="20 10">
-                                        <TextBlock Text="الدفعة" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                                        <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
 
+                                        <TextBlock Text="قيمة الدفعة" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 5"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                </Grid>
+
+                            </DockPanel>
+                        </Border>
+
+                        <Border Background="#fff" Grid.Column="1" CornerRadius="10" Grid.Row="1" Padding="5"  Margin="5">
+                            <DockPanel >
+                                <DockPanel DockPanel.Dock="Top" >
+                                    <TextBlock Text="الحسم" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Left"/>
+                                    <CheckBox DockPanel.Dock="Right"
+                                      HorizontalAlignment="Right"
+                                              IsChecked="{Binding HasOffer,UpdateSourceTrigger=PropertyChanged}"
+                      Style="{DynamicResource toggleBtnStyle}"/>
+                                </DockPanel>
+                                <Grid Visibility="{Binding HasOffer , Converter={StaticResource BoolToVis}}" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0"  Margin="5">
+                                        <TextBlock Text="البيان" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 5"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1"  Margin="5">
+                                        <TextBlock Text="قيمة الحسم" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 5"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
                                     </StackPanel>
                                 </Grid>
-                            </Border>
 
+                            </DockPanel>
+                        </Border>
 
+                        <Border Background="#fff" Grid.Column="2" CornerRadius="10" Grid.Row="0"  Padding="5"  Margin="5">
+                            <DockPanel >
+                                <DockPanel DockPanel.Dock="Top" >
+                                    <TextBlock Text="تدريب خاص" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Left"/>
+                                    <CheckBox DockPanel.Dock="Right"
+                                      HorizontalAlignment="Right"
+                                              
+                                              IsChecked="{Binding IsPrivate,UpdateSourceTrigger=PropertyChanged}"
+                      Style="{DynamicResource toggleBtnStyle}"/>
+                                </DockPanel>
+                                <Grid Visibility="{Binding IsPrivate , Converter={StaticResource BoolToVis}}" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="قيمة الاشتراك المتفق عليه" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 5"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
-                            <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="6" Content="حفظ" Margin="20 40 20 10" HorizontalAlignment="Left">
-                                <Button.Effect>
-                                    <DropShadowEffect BlurRadius="10" ShadowDepth="5" Color="#C14E00" Opacity="0.3" Direction="-120"/>
-                                </Button.Effect>
-                            </Button>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="الدفع من قبل" 
+                                   Foreground="#993300"
+                                                   VerticalAlignment="Center"
+                                   Margin="0 0 10 0"
+                                   FontSize="13"/>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <RadioButton Style="{DynamicResource RadioButtonStyle1}" Content="اللاعب"/>
+                                            <RadioButton Style="{DynamicResource RadioButtonStyle1}" Content="النادي"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
 
-                            <!--secoundry color-->
-                            <Button Command="{Binding CancelCommand}" Style="{StaticResource ScFormButton}" Grid.Column="1" Grid.Row="6" Content="الغاء" Width="150" Margin="10 40 20 10" HorizontalAlignment="Right">
+                            </DockPanel>
+                        </Border>
 
-                            </Button>
-
-                        </Grid>
                     </Grid>
 
 
-                </Border>
-          
+
+
+
+
+                </Grid>
+            </ScrollViewer>
         </Grid>
+        
     </Border>
 </UserControl>

@@ -543,7 +543,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="عمليات" Width="100" IsReadOnly="True">
+                                <DataGridTemplateColumn Header="عمليات" Width="auto" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
 

@@ -34,7 +34,13 @@ namespace PlatinumGymPro.State.Navigator
             set { _CurrentViewModel = value; OnPropertChanged(nameof(CurrentViewModel)); }
             
         }
-
+         private bool _isOpen;
+        public bool IsOpen
+        {
+            get { return _isOpen; }
+            set { _isOpen = value; OnPropertChanged(nameof(IsOpen)); }
+            
+        }
         public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playerStore, _sportStore, _trainerStore);
 
       

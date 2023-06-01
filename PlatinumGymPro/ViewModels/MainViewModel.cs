@@ -26,7 +26,7 @@ namespace PlatinumGymPro.ViewModels
             Navigator.CurrentViewModel =new HomeViewModel();
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
-
+       
         //private void NavigationStore_CurrentViewModelChanged()
         //{
         //    OnPropertyChanged(nameof(CurrentViewModel));
