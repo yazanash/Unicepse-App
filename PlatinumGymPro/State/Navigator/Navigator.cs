@@ -28,9 +28,9 @@ namespace PlatinumGymPro.State.Navigator
         private ViewModelBase? _CurrentViewModel;
      
 
-        public ViewModelBase? CurrentViewModel 
+        public ViewModelBase CurrentViewModel 
         {
-            get { return _CurrentViewModel; }
+            get { return _CurrentViewModel!; }
             set { _CurrentViewModel = value; OnPropertChanged(nameof(CurrentViewModel)); }
             
         }

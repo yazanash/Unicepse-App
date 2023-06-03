@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:PlatinumGymPro.Views.SportViews"
                xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
+             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  xmlns:uc="clr-namespace:PlatinumGymPro.Components"
                    xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
              Background="Transparent"
@@ -37,20 +38,34 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="Transparent"  >
-        <Grid >
-            <!--Main Layer-->
-            <Border Background="#ffffff" CornerRadius="7">
-                
+    <Border CornerRadius="10" Background="#EEE" Padding="10"  >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <Border Background="#fff" CornerRadius="10" Grid.Column="1"  Grid.Row="1"  Padding="5"  Margin="5">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -59,23 +74,12 @@
                     <Grid.ColumnDefinitions >
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
-                      
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <!--Form title-->
-                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                        <TextBlock Text="أضافة رياضة"
-                                   Foreground="#993300"
-                                   FontSize="18" Margin="15 0 0 0" 
-                                   FontWeight="Bold"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <Separator Grid.Row="1" Grid.ColumnSpan="2" Height="1" Margin="0 20" Background="#e1e6eb"/>
 
 
-                    <!--inputs-->
-                   
-                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="20 10">
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                         <TextBlock Text="اسم الرياضة" 
                                    Foreground="#993300"
                                    Margin="0 0 0 8"
@@ -83,8 +87,8 @@
                         <TextBox Text="{Binding SportName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
                     </StackPanel>
-                   
-                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="20 10">
+
+                    <StackPanel  Grid.Row="0" Grid.Column="1" Margin="5">
                         <TextBlock Text="الاشتراك الشهري" 
                                    Foreground="#993300"
                                    Margin="0 0 0 8"
@@ -92,8 +96,8 @@
                         <TextBox Text="{Binding MonthlyPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
                     </StackPanel>
-                   
-                    <StackPanel Grid.Row="3" Grid.Column="0" Margin="20 10">
+
+                    <StackPanel  Grid.Row="0" Grid.Column="2" Margin="5">
                         <TextBlock Text="الاشتراك اليومي" 
                                    Foreground="#993300"
                                    Margin="0 0 0 8"
@@ -101,8 +105,8 @@
                         <TextBox Text="{Binding DailyPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
                     </StackPanel>
-                   
-                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="20 10">
+
+                    <StackPanel  Grid.Row="0" Grid.Column="3" Margin="5">
                         <TextBlock Text=" عدد ايام التدريب في الاسبوع" 
                                    Foreground="#993300"
                                    Margin="0 0 0 8"
@@ -110,7 +114,7 @@
                         <TextBox Text="{Binding WeeklyTrainingDays, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
                     </StackPanel>
-                    <StackPanel Grid.Row="4" Grid.Column="0" Margin="20 10">
+                    <StackPanel  Grid.Row="1" Grid.Column="0" Margin="5">
                         <TextBlock Text="مدة الاشتراك" 
                                    Foreground="#993300"
                                    Margin="0 0 0 8"
@@ -118,57 +122,28 @@
                         <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
                     </StackPanel>
-
-
-                    <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="6" Content="حفظ" Margin="20 40 20 10" HorizontalAlignment="Left">
-                        <Button.Effect>
-                            <DropShadowEffect BlurRadius="10" ShadowDepth="5" Color="#C14E00" Opacity="0.3" Direction="-120"/>
-                        </Button.Effect>
-                    </Button>
-
-                    <!--secoundry color-->
-                    <Button Command="{Binding CancelCommand}" Style="{StaticResource ScFormButton}" Grid.Column="1" Grid.Row="6" Content="الغاء" Width="150" Margin="10 40 20 10" HorizontalAlignment="Right">
-
-                    </Button>
-
                     <!--<Border CornerRadius="10" Background="#f6f6f6">-->
-                    <Grid Grid.Column="0"  Grid.Row="5" Grid.ColumnSpan="2">
-                        <custom:LoadingSpinner
-                IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="#C14E00" />
-                        <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="13*"/>
-                                <ColumnDefinition Width="20*"/>
-                                <ColumnDefinition Width="7*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
-
-                            <ListView Grid.ColumnSpan="3" Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  Margin="20 10" Background="Transparent" BorderThickness="0" Padding="10" SelectionMode="Multiple"  ItemsSource="{Binding TrainerList}">
-                            <ListView.ItemsPanel>
-                                <ItemsPanelTemplate>
-
-                                    <WrapPanel Orientation="Horizontal" ></WrapPanel>
-
-                                </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox IsChecked="{Binding IsSelected}" Style="{StaticResource myCheckboxStyle}">
-
-                                    </CheckBox>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
-                    </Grid>
+                
                     <!--</Border>-->
                 </Grid>
+            </Border>
+            <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="1"  Padding="5"  Margin="5">
+                    <DockPanel>
+                        <TextBlock Foreground="#C14E00" Text="المدربين" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
+                        <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SelectedSportListingItemViewModel.TrainerList}" >
 
-
-
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
             </Border>
         </Grid>
+
+
     </Border>
 </UserControl>

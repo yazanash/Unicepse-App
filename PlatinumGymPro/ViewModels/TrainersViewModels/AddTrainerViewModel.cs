@@ -26,7 +26,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             _trinersListViewModel = trinersListViewModel;
             CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
             SubmitCommand = new SubmitTrainerCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), trinerStore, this);
-
+            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
         }
 
         private string? _fullName;
@@ -134,18 +134,18 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
 
         private void AddError(string? ErrorMsg, string? propertyName)
         {
-            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName))
+            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
             {
-                PropertyNameToErrorsDictionary.Add(propertyName, new List<string>());
+                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
 
             }
-            PropertyNameToErrorsDictionary[propertyName].Add(ErrorMsg);
+            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
             OnErrorChanged(propertyName);
         }
 
         private void ClearError(string? propertyName)
         {
-            PropertyNameToErrorsDictionary.Remove(propertyName);
+            PropertyNameToErrorsDictionary.Remove(propertyName!);
             OnErrorChanged(propertyName);
         }
 
@@ -166,7 +166,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
 
         public IEnumerable? GetErrors(string? propertyName)
         {
-            return PropertyNameToErrorsDictionary.GetValueOrDefault(propertyName, new List<string>());
+            return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
     }
 }

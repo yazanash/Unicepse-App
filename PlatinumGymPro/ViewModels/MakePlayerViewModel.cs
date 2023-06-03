@@ -51,18 +51,18 @@ namespace PlatinumGymPro.ViewModels
 
         private void AddError(string? ErrorMsg ,string? propertyName)
         {
-            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName))
+            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
             {
-                PropertyNameToErrorsDictionary.Add(propertyName, new List<string>());
+                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
 
             }
-            PropertyNameToErrorsDictionary[propertyName].Add(ErrorMsg);
+            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
             OnErrorChanged(propertyName);
         }
 
         private void ClearError(string? propertyName)
         {
-            PropertyNameToErrorsDictionary.Remove(propertyName);
+            PropertyNameToErrorsDictionary.Remove(propertyName!);
             OnErrorChanged(propertyName);
         }
 
@@ -136,9 +136,9 @@ namespace PlatinumGymPro.ViewModels
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();
 
-        public IEnumerable? GetErrors(string? propertyName)
+        public IEnumerable GetErrors(string? propertyName)
         {
-            return PropertyNameToErrorsDictionary.GetValueOrDefault(propertyName, new List<string>());
+            return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
     }
 }

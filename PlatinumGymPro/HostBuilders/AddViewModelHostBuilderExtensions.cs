@@ -17,7 +17,7 @@ namespace PlatinumGymPro.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
-                services.AddTransient((s) => CreatePlayerListingViewModel(s));
+                services.AddTransient((s) => CreatePlayerListingViewModel(s)!);
                 services.AddSingleton<Func<PlayerListingViewModel>>((s) => () => s.GetRequiredService<PlayerListingViewModel>());
                 services.AddSingleton<NavigationService<PlayerListingViewModel>>();
               
@@ -30,7 +30,7 @@ namespace PlatinumGymPro.HostBuilders
             });
             return _hostBuilder;
         }
-        private static PlayerListingViewModel CreatePlayerListingViewModel(IServiceProvider s)
+        private static PlayerListingViewModel? CreatePlayerListingViewModel(IServiceProvider s)
         {
             return PlayerListingViewModel.LoadViewModel(
                 s.GetRequiredService<NavigationService<MakePlayerViewModel>>(), s.GetRequiredService<GymStore>());

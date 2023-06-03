@@ -55,21 +55,60 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             }
         }
+        private bool _hasOffer;
+        public bool HasOffer
+        {
+            get
+            {
+                return _hasOffer;
+            }
+            set
+            {
+                _hasOffer = value;
+                OnPropertyChanged(nameof(HasOffer));
+            }
+        }
+        private bool _isPrivate;
+        public bool IsPrivate
+        {
+            get
+            {
+                return _isPrivate;
+            }
+            set
+            {
+                _isPrivate = value;
+                OnPropertyChanged(nameof(IsPrivate));
+            }
+        }
+        private bool _hasPayment;
+        public bool HasPayment
+        {
+            get
+            {
+                return _hasPayment;
+            }
+            set
+            {
+                _hasPayment = value;
+                OnPropertyChanged(nameof(HasPayment));
+            }
+        }
 
         private void AddError(string? ErrorMsg, string? propertyName)
         {
-            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName))
+            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
             {
-                PropertyNameToErrorsDictionary.Add(propertyName, new List<string>());
+                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
 
             }
-            PropertyNameToErrorsDictionary[propertyName].Add(ErrorMsg);
+            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
             OnErrorChanged(propertyName);
         }
 
         private void ClearError(string? propertyName)
         {
-            PropertyNameToErrorsDictionary.Remove(propertyName);
+            PropertyNameToErrorsDictionary.Remove(propertyName!);
             OnErrorChanged(propertyName);
         }
 
@@ -141,7 +180,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
         public IEnumerable? GetErrors(string? propertyName)
         {
-            return PropertyNameToErrorsDictionary.GetValueOrDefault(propertyName, new List<string>());
+            return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
     }
 }

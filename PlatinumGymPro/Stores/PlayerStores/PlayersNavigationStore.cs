@@ -11,9 +11,9 @@ namespace PlatinumGymPro.Stores.PlayerStores
     {
         private ViewModelBase? _currentViewModel;
 
-        public ViewModelBase? CurrentViewModel
+        public ViewModelBase CurrentViewModel
         {
-            get => _currentViewModel;
+            get => _currentViewModel!;
             set
             {
                 _currentViewModel = value;

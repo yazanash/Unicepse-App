@@ -20,30 +20,30 @@ namespace PlatinumGymPro.Services.PlayerCreations
 
         public async Task Create(Player player)
         {
-            using (PlatinumGymDbContext context = _platinumGymDbContext.CreateDbContext())
-            {
+            using PlatinumGymDbContext context = _platinumGymDbContext.CreateDbContext();
+            
                 Player playerDTO = player;
-                context.Players.Add(playerDTO);
+                context.Players!.Add(playerDTO);
                 await context.SaveChangesAsync();
-            }
+            
         }
 
-        private PlayerDTO ToPlayerDTO(Player player)
-        {
-            return new PlayerDTO()
-            {
-                Balance = player.Balance,
-                BirthDate = player.BirthDate,
-                FullName = player.FullName,
-                GenderMale = player.GenderMale,
-                Hieght = player.Hieght,
-                IsSubscribed = player.IsSubscribed,
-                IsTakenContainer = player.IsTakenContainer,
-                Phone = player.Phone,
-                SubscribeDate = player.SubscribeDate,
-                SubscribeEndDate = player.SubscribeEndDate,
-                Weight = player.Weight,
-            };
-        }
+        //private PlayerDTO ToPlayerDTO(Player player)
+        //{
+        //    return new PlayerDTO()
+        //    {
+        //        Balance = player.Balance,
+        //        BirthDate = player.BirthDate,
+        //        FullName = player.FullName,
+        //        GenderMale = player.GenderMale,
+        //        Hieght = player.Hieght,
+        //        IsSubscribed = player.IsSubscribed,
+        //        IsTakenContainer = player.IsTakenContainer,
+        //        Phone = player.Phone,
+        //        SubscribeDate = player.SubscribeDate,
+        //        SubscribeEndDate = player.SubscribeEndDate,
+        //        Weight = player.Weight,
+        //    };
+        //}
     }
 }

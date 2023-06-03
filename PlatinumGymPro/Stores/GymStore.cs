@@ -11,7 +11,7 @@ namespace PlatinumGymPro.Stores
     {
         private readonly List<Player> _players;
         private readonly Lazy<Task> _initializLazy;
-        public event Action<Player> PlayerMade;
+        public event Action<Player>? PlayerMade;
         public IEnumerable<Player> Players => _players;
 
         private readonly Gym _gym;

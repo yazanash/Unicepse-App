@@ -558,7 +558,6 @@ D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Debug\net6.0-windows\win-x64\zh-Hant\U
 D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Debug\net6.0-windows\win-x64\zh-Hant\UIAutomationTypes.resources.dll
 D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Debug\net6.0-windows\win-x64\zh-Hant\WindowsBase.resources.dll
 D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Debug\net6.0-windows\win-x64\zh-Hant\WindowsFormsIntegration.resources.dll
-D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\PlatinumGymPro.csproj.AssemblyReference.cache
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\MainWindow.g.cs
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\HomeView.g.cs
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\MakePlayers.g.cs
@@ -649,3 +648,6 @@ D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Component
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Components\DashboardCard.baml
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Components\CustomToggleBtn.g.cs
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Components\CustomToggleBtn.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\PlatinumGymPro.Properties.Resources.resources
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\PlatinumGymPro.csproj.GenerateResource.cache
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\PlatinumGymPro.csproj.AssemblyReference.cache

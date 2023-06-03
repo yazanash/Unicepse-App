@@ -16,100 +16,154 @@
 
 
     </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="صفحة المدربين" Grid.Row="0"
-                           FontWeight="SemiBold"
-                           Margin="0 20 0 0"
-                           HorizontalAlignment="Right"
-                           Foreground="#121518"
-                           FontSize="22"/>
-        <!--Add buttons-->
-        <Button Command="{Binding AddTrainerCommand}" Style="{StaticResource AddBtn}">
-            <StackPanel Orientation="Horizontal">
 
-                <TextBlock Text="أضافة مدرب" />
-                <Icon:PackIconMaterial Kind="Plus"
+    <Border CornerRadius="10" Background="#EEE" Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox VerticalAlignment="Center" Margin="5 0 5 0" Tag="الترتيب حسب" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"  Grid.Row="0" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                        <ComboBoxItem  Content="ذكور"/>
+                        <ComboBoxItem  Content="اناث"/>
+                        <ComboBoxItem  Content="بدون مدرب"/>
+                        <ComboBoxItem  Content="غير فعال"/>
+                        <ComboBoxItem  Content="الكل"/>
+                        <ComboBoxItem  Content="فعال"/>
+                        <ComboBoxItem  Content="منتهي الاشتراك"/>
+                        <ComboBoxItem  Content="غير فعال"/>
+                        <ComboBoxItem  Content="ديون"/>
+                    </ComboBox>
+                    <ComboBox VerticalAlignment="Center" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" Tag="التصنيف حسب" Grid.Row="0" Grid.Column="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                        <ComboBoxItem  Content="ذكور"/>
+                        <ComboBoxItem  Content="اناث" />
+                        <ComboBoxItem  Content="بدون مدرب" />
+                        <ComboBoxItem  Content="غير فعال" />
+                        <ComboBoxItem  Content="الكل" />
+                        <ComboBoxItem  Content="فعال"/>
+                        <ComboBoxItem  Content="منتهي الاشتراك" />
+                        <ComboBoxItem  Content="غير فعال" />
+                        <ComboBoxItem  Content="ديون" />
+                    </ComboBox>
+                    <Grid Grid.Column="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button  Grid.Column="0" Margin="5 0" FlowDirection="LeftToRight"  Command="{Binding AddTrainerCommand}" Style="{StaticResource AddBtn}">
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="أضافة مدرب" />
+                                <Icon:PackIconMaterial Kind="Plus"
                                        Width="11"
                                        Height="11"
                                        Margin="8 0 0 1"
                                        VerticalAlignment="Center"/>
-            </StackPanel>
-        </Button>
-        <!--tab buttons-->
-        <Separator Height="1"
-                   Background="#dae2ea" Margin=" 0 10 0 10"
-                   Grid.Row="2"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Column="1" Grid.Row="1" Command="{Binding AddPlayerCommand}" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
 
-        <Grid  Grid.Row="3">
-            <custom:LoadingSpinner
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="FileExcel"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Column="2" Grid.Row="1" Command="{Binding AddPlayerCommand}"  FlowDirection="LeftToRight" Margin="5 0" Width="50"  Style="{StaticResource AddBtn}">
+
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="Printer"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+
+
+                </Grid>
+
+            </Border>
+
+
+
+
+            <Border  Background="#FFF" CornerRadius="20" Grid.Row="4" Margin="5 10" Padding="5">
+                <Grid  Grid.Row="3">
+                    <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
                 Diameter="100" Thickness="3" Color="#C14E00" />
-            <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="13*"/>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="7*"/>
-                </Grid.ColumnDefinitions>
+                    <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="13*"/>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="7*"/>
+                        </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
+                        <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding TrainerList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True"
+                        <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding TrainerList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
                                     Binding="{Binding Id}"
                                     CanUserResize="False"/>
 
-                        <DataGridTemplateColumn Header="اسم المدرب" Width="*" IsReadOnly="True">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding FullName}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="رقم الهاتف" IsReadOnly="True"
+                                <DataGridTemplateColumn Header="اسم المدرب" Width="*" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding FullName}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="رقم الهاتف" IsReadOnly="True"
                                      Binding="{Binding Phone}"
                                     Width="*"
                                     />
-                        <DataGridTextColumn Header="سنة الميلاد" IsReadOnly="True"
+                                <DataGridTextColumn Header="سنة الميلاد" IsReadOnly="True"
                                      Binding="{Binding BirthDate}"
                                     Width="*"
                                     />
-                        <DataGridTextColumn Header="الراتب" IsReadOnly="True"
+                                <DataGridTextColumn Header="الراتب" IsReadOnly="True"
                                      Binding="{Binding SalaryValue}"
                                     Width="*"
                                     />
-                        <DataGridTextColumn Header="النسبة" IsReadOnly="True"
+                                <DataGridTextColumn Header="النسبة" IsReadOnly="True"
                                      Binding="{Binding ParcentValue}"
                                     Width="*"
                                     />
 
-                        <DataGridTemplateColumn Header="عمليات" Width="auto" IsReadOnly="True">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
+                                <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
 
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
-                                            <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                        </Button>
-                                        <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
-                                            <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                    <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
+                                                </Button>
+                                                <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
+                                                    <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </Border>
         </Grid>
-    </Grid>
+    </Border>
 </UserControl>

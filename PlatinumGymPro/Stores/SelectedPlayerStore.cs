@@ -9,17 +9,17 @@ namespace PlatinumGymPro.Stores
 {
     public class SelectedPlayerStore
     {
-        private Player _selectedPlayer;
+        private Player? _selectedPlayer;
 
         public Player SelectedPlayer
         {
-            get { return _selectedPlayer; }
+            get { return _selectedPlayer!; }
             set { 
                 _selectedPlayer = value;
                 SelectedPlayerChanged?.Invoke();
             }
         }
 
-        public event Action SelectedPlayerChanged;
+        public event Action? SelectedPlayerChanged;
     }
 }

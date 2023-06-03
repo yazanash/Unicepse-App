@@ -21,30 +21,30 @@ namespace PlatinumGymPro.Services.PlayersProviders
 
         public async Task<IEnumerable<Player>> GetAllPlayers()
         {
-            using (PlatinumGymDbContext context = _platinumGymDbContext.CreateDbContext())
-            {
-                IEnumerable<Player> playerDTOs = await context.Players.ToListAsync();
+            using PlatinumGymDbContext context = _platinumGymDbContext.CreateDbContext();
+            
+                IEnumerable<Player> playerDTOs = await context.Players!.ToListAsync();
                 await Task.Delay(2000);
               return  playerDTOs.Select(x => x);
-            }
+            
         }
-        static Player ToPlayer(PlayerDTO playerDTO)
-        {
-            return new Player()
-            {
-                Id = playerDTO.Id,
-                Balance = playerDTO.Balance,
-                BirthDate = playerDTO.BirthDate,
-                FullName = playerDTO.FullName,
-                GenderMale = playerDTO.GenderMale,
-                Hieght = playerDTO.Hieght,
-                IsSubscribed = playerDTO.IsSubscribed,
-                IsTakenContainer = playerDTO.IsTakenContainer,
-                Phone = playerDTO.Phone,
-                SubscribeDate = playerDTO.SubscribeDate,
-                SubscribeEndDate = playerDTO.SubscribeEndDate,
-                Weight = playerDTO.Weight,
-            };
-        }
+        //static Player ToPlayer(PlayerDTO playerDTO)
+        //{
+        //    return new Player()
+        //    {
+        //        Id = playerDTO.Id,
+        //        Balance = playerDTO.Balance,
+        //        BirthDate = playerDTO.BirthDate,
+        //        FullName = playerDTO.FullName,
+        //        GenderMale = playerDTO.GenderMale,
+        //        Hieght = playerDTO.Hieght,
+        //        IsSubscribed = playerDTO.IsSubscribed,
+        //        IsTakenContainer = playerDTO.IsTakenContainer,
+        //        Phone = playerDTO.Phone,
+        //        SubscribeDate = playerDTO.SubscribeDate,
+        //        SubscribeEndDate = playerDTO.SubscribeEndDate,
+        //        Weight = playerDTO.Weight,
+        //    };
+        //}
     }
 }

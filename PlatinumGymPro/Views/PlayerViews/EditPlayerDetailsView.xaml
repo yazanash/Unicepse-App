@@ -6,66 +6,126 @@
              xmlns:local="clr-namespace:PlatinumGymPro.Views.PlayerViews"
                xmlns:uc="clr-namespace:PlatinumGymPro.Components"
              mc:Ignorable="d" 
+               xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             FlowDirection="RightToLeft"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border CornerRadius="50" Background="Transparent"  >
-        <Grid VerticalAlignment="Center">
-            <!--Main Layer-->
-            <Border Background="#ffffff" CornerRadius="7">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="5" Opacity="0.1" Direction="-130"/>
-                </Border.Effect>
-                <Grid Margin="20 0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions >
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <!--Form title-->
-                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                        <TextBlock Text="Edit Player"
-                                   Foreground="#993300"
-                                   FontSize="18" Margin="15 0 0 0" 
-                                   FontWeight="Bold"
-                                   VerticalAlignment="Center"/>
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+    <Border CornerRadius="10" Background="#EEE" Padding="10" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+             
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
                     </StackPanel>
-
-                    <Separator Grid.Row="1" Grid.ColumnSpan="2" Height="1" Margin="-20 20" Background="#e1e6eb"/>
-
-
-                    <!--inputs-->
-                    <uc:CustomTextBox Grid.Row="2" Grid.Column="0" Caption="Player Name" Hint="Enter Full Name"/>
-                    <uc:CustomTextBox Grid.Row="3" Grid.Column="0" Caption="Player Phone" Hint="Ex : (963) 999 999 999"/>
-                    <uc:CustomTextBox Grid.Row="4" Grid.Column="0" Caption="Player Birth Date" Hint="Enter Birthdate year ex : 1999"/>
-                    <uc:CustomTextBox Grid.Row="5" Grid.Column="0" Caption="Player Wieght" Hint="EX : 85.0"/>
-                    <uc:CustomTextBox Grid.Row="2" Grid.Column="1" Caption="Player Hieght" Hint="EX : 180.0"/>
-                    <uc:CustomTextBox Grid.Row="3" Grid.Column="1" Caption="Player Subscribe Date" Hint="EX : 2023-12-22"/>
-                    <uc:CustomTextBox Grid.Row="4" Grid.Column="1" Caption="Player Subscribe End Date" Hint="EX : 2023-12-22"/>
-                    <uc:CustomTextBox Grid.Row="5" Grid.Column="1" Caption="Player Balance" Hint="0.00"/>
-
-
-                    <Button Style="{StaticResource FormButton}" Grid.Column="1" Grid.Row="6" Content="Submit" Margin="0 40 20 10" HorizontalAlignment="Right">
-                        <Button.Effect>
-                            <DropShadowEffect BlurRadius="10" ShadowDepth="5" Color="#C14E00" Opacity="0.3" Direction="-120"/>
-                        </Button.Effect>
-                    </Button>
-
-                    <!--secoundry color-->
-                    <Button Style="{StaticResource ScFormButton}" Grid.Column="0" Grid.Row="6" Content="Cancel" Width="150" Margin="20 40 0 10" HorizontalAlignment="Left">
-
-                    </Button>
-                </Grid>
-
-
-
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
             </Border>
-        </Grid>
+ 
+            <Border Background="#fff"  CornerRadius="10" Grid.Column="0" Grid.ColumnSpan="2"  Grid.Row="1"  Padding="5"  Margin="5">
+                            <DockPanel >
+                                <DockPanel DockPanel.Dock="Top" >
+                                    <TextBlock Text="معلومات اللاعب" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Left"/>
+                                    <!--<CheckBox DockPanel.Dock="Right"
+                                      HorizontalAlignment="Right"
+                      Style="{DynamicResource toggleBtnStyle}"/>-->
+                                </DockPanel>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="اسم اللاعب" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="رقم الهاتف" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="2" Margin="5"  VerticalAlignment="Bottom">
+                                        <ComboBox Style="{DynamicResource ComboBoxStyle1}" Tag="سنة الميلاد" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                                            <ComboBoxItem Content="1999"/>
+                                            <ComboBoxItem Content="2000"/>
+                                            <ComboBoxItem Content="2001"/>
+                                            <ComboBoxItem Content="2002"/>
+                                            <ComboBoxItem Content="2003"/>
+                                            <ComboBoxItem Content="2004"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="3" Margin="5">
+                                        <TextBlock Text="الوزن" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Weight, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="الطول" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="تاريخ الاشتراك" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="2" Margin="5">
+                                        <TextBlock Text="رصيد الحساب" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Balance, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                </Grid>
+
+                            </DockPanel>
+                        </Border>
+
+                
+                </Grid>
     </Border>
 </UserControl>

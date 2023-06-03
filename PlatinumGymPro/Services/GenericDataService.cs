@@ -21,51 +21,45 @@ namespace PlatinumGymPro.Services
 
         public async Task<T> Create(T entity)
         {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                EntityEntry<T> CreatedResult = await context.Set<T>().AddAsync(entity);
-                await context.SaveChangesAsync();
-                return CreatedResult.Entity;
-            }
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            EntityEntry<T> CreatedResult = await context.Set<T>().AddAsync(entity);
+            await context.SaveChangesAsync();
+            return CreatedResult.Entity;
         }
 
         public async Task<bool> Delete(int id)
         {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                T? entity = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
-                context.Set<T>().Remove(entity);
-                await context.SaveChangesAsync();
-                return true;
-            }
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            T? entity = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
+            context.Set<T>().Remove(entity!);
+            await context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<T> Get(int id)
         {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
                 T? entity = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
-                return entity;
-            }
+                return entity!;
         }
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            
                 IEnumerable<T>? entities = await context.Set<T>().ToListAsync();
                 return entities;
-            }
+            
         }
 
         public async Task<T> Update(T entity)
         {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            
                 context.Set<T>().Update(entity);
                 await context.SaveChangesAsync();
                 return entity;
-            }
+            
         }
     }
 }

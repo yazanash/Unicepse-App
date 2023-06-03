@@ -116,18 +116,18 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
 
         private void AddError(string? ErrorMsg, string? propertyName)
         {
-            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName))
+            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
             {
-                PropertyNameToErrorsDictionary.Add(propertyName, new List<string>());
+                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
 
             }
-            PropertyNameToErrorsDictionary[propertyName].Add(ErrorMsg);
+            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
             OnErrorChanged(propertyName);
         }
 
         private void ClearError(string? propertyName)
         {
-            PropertyNameToErrorsDictionary.Remove(propertyName);
+            PropertyNameToErrorsDictionary.Remove(propertyName!);
             OnErrorChanged(propertyName);
         }
 
