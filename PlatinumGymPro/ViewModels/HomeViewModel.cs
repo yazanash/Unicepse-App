@@ -2,7 +2,9 @@
 using PlatinumGymPro.Models;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
+using PlatinumGymPro.Stores.PlayerStores;
 using PlatinumGymPro.ViewModels.HomePageViewModels;
+using PlatinumGymPro.ViewModels.PlayersViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +17,10 @@ namespace PlatinumGymPro.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
-        public ObservableCollection<PlayerViewModel> Players { get; } 
+        private readonly ObservableCollection<PlayerListItemViewModel> playerListItemViewModels;
+        private PlayerStore _playerStore;
+        private TrainerStore _trainerStore;
+        public ObservableCollection<PlayerListItemViewModel> Players { get; }
         public ICommand? AddPlayerCommand { get; }
         public ICommand? LoadPlayersCommand { get; }
 
@@ -41,83 +46,17 @@ namespace PlatinumGymPro.ViewModels
                 OnPropertyChanged(nameof(IsLoaded));
             }
         }
-        public HomeViewModel()
+        public HomeViewModel(PlayerStore playerStore, TrainerStore trainerStore)
         {
+            _playerStore = playerStore;
+            _trainerStore = trainerStore;
+            //LoadPlayersCommand = new LoadPlayersCommand(_playerStore, this);
             Players = new();
-            
-          
-            Players.Add(new PlayerViewModel(new Player()
-            {
-                FullName = "banda",
-                Balance = 0,
-                BirthDate = 2019,
-                GenderMale = true,
-                Hieght = 150,
-                IsSubscribed = false,
-                IsTakenContainer = false,
-                Phone = "09999999990",
-                SubscribeDate = DateTime.Now,
-                SubscribeEndDate = DateTime.Now,
-                Weight = 30,
-                Id = 50
-            }
-           )
-               );
-            Players.Add(new PlayerViewModel(new Player()
-            {
-                FullName = "fish",
-                Balance = 0,
-                BirthDate = 2019,
-                GenderMale = true,
-                Hieght = 150,
-                IsSubscribed = false,
-                IsTakenContainer = false,
-                Phone = "09999999990",
-                SubscribeDate = DateTime.Now,
-                SubscribeEndDate = DateTime.Now,
-                Weight = 30,
-                Id = 50
-            }
-           )
-               );
-            Players.Add(new PlayerViewModel(new Player()
-            {
-                FullName = "sdfdsf",
-                Balance = 0,
-                BirthDate = 2019,
-                GenderMale = true,
-                Hieght = 150,
-                IsSubscribed = false,
-                IsTakenContainer = false,
-                Phone = "09999999990",
-                SubscribeDate = DateTime.Now,
-                SubscribeEndDate = DateTime.Now,
-                Weight = 30,
-                Id = 50
-            }
-           )
-               );
-            Players.Add(new PlayerViewModel(new Player()
-            {
-                FullName = "sdfsdf",
-                Balance = 0,
-                BirthDate = 2019,
-                GenderMale = true,
-                Hieght = 150,
-                IsSubscribed = false,
-                IsTakenContainer = false,
-                Phone = "09999999990",
-                SubscribeDate = DateTime.Now,
-                SubscribeEndDate = DateTime.Now,
-                Weight = 30,
-                Id = 50
-            }
-           )
-               );
+
         }
 
-     
 
-     
+
+
     }
 }

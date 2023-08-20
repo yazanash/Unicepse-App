@@ -82,7 +82,7 @@
                                 CommandParameter="{x:Static nav:ViewType.Trainer}" 
                                 Style="{StaticResource MenuButton}" >
                         <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell" />
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountGroup" />
                             <TextBlock Text="المدربين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                           
                         </StackPanel>
@@ -92,7 +92,7 @@
                                 CommandParameter="{x:Static nav:ViewType.Accounting}" 
                                 Style="{StaticResource MenuButton}" >
                         <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Cached"/>
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCash"/>
                             <TextBlock Text="المحاسبة"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                            
                         </StackPanel>
@@ -102,13 +102,25 @@
                                 CommandParameter="{x:Static nav:ViewType.Gym}" 
                                Style="{StaticResource MenuButton}" >
                         <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>
-                            <TextBlock Text="النادي"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="RoomService"/>
+                            <TextBlock Text="خدمات"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
                     </Button>
 
-                </StackPanel>
+                <Button
+                                Command="{Binding UpdateCurrentViewModelCommand}"
+                                CommandParameter="{x:Static nav:ViewType.Sport}" 
+                                Style="{StaticResource MenuButton}" >
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountSwitch" />
+                        <TextBlock Text="المستخدمين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
                 <Button DockPanel.Dock="Bottom"
+                         Command="{Binding LogoutCommand}"
                                 VerticalAlignment="Bottom" 
                                 Style="{StaticResource MenuButton}" >
                     <StackPanel Orientation="Horizontal">

@@ -16,6 +16,7 @@ namespace PlatinumGymPro.Stores.PlayerStores
     }
     public class PlayerStore
     {
+
         private readonly PlayerDataService<Player> PlayerService;
         private readonly List<Player> _players;
         public IEnumerable<Player> Players => _players;

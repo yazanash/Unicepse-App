@@ -7,6 +7,7 @@
                xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.PlayersViewModels"
              xmlns:views="clr-namespace:PlatinumGymPro.Views"
                xmlns:vi="clr-namespace:PlatinumGymPro.Views.PlayerViews"
+              xmlns:login="clr-namespace:PlatinumGymPro.Views.AuthView"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Application.Resources>
 
@@ -904,11 +905,17 @@
             </Style.Triggers>
         </Style>
         <!--#region Data template-->
+        <DataTemplate DataType="{x:Type viewmodels:MainViewModel}">
+            <views:MainView />
+
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:HomeViewModel }">
             <views:HomeView />
+           
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:GymViewModel }">
-            <views:GymView/>
+        <DataTemplate DataType="{x:Type viewmodels:AuthViewModel }">
+            <!--<views:HomeView />-->
+            <login:LoginView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:SportsViewModel }">
             <views:SportsView/>
@@ -957,6 +964,40 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="passwordStyle" TargetType="PasswordBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#384756"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#999"/>
+            <Setter Property="Padding" Value="10 8"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                SnapsToDevicePixels="True"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#993300" TargetName="border"/>
+
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#C14E00" TargetName="border"/>
+
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="FormButton" TargetType="Button">
             <Setter Property="Background" Value="#C14E00"/>
             <Setter Property="Foreground" Value="#ffffff"/>
@@ -1155,6 +1196,9 @@
         </Style>
         <ItemsPanelTemplate x:Key="ListBoxItemsPanel1">
             <StackPanel Orientation="Vertical" SnapsToDevicePixels="True"/>
+        </ItemsPanelTemplate>
+        <ItemsPanelTemplate x:Key="ListBoxItemsPanel2">
+            <WrapPanel  Orientation="Horizontal" />
         </ItemsPanelTemplate>
         <Style x:Key="FocusVisual1">
             <Setter Property="Control.Template">

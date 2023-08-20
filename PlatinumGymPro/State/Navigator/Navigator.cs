@@ -1,5 +1,6 @@
 ﻿using PlatinumGymPro.Commands;
 using PlatinumGymPro.Models;
+using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
 using PlatinumGymPro.ViewModels;
@@ -18,11 +19,15 @@ namespace PlatinumGymPro.State.Navigator
         private readonly PlayerStore _playerStore;
         private readonly SportStore _sportStore;
         private readonly TrainerStore _trainerStore;
-        public Navigator(PlayerStore playerStore, SportStore sportStore, TrainerStore trainerStore)
+        private readonly NavigationStore _navigatorStore;
+        public Navigator(PlayerStore playerStore, SportStore sportStore, TrainerStore trainerStore, NavigationStore navigatorStore)
         {
             _playerStore = playerStore;
             _sportStore = sportStore;
             _trainerStore = trainerStore;
+            _navigatorStore = navigatorStore;
+            LogoutCommand =  new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore,playerStore, sportStore, trainerStore)));
+
         }
 
         private ViewModelBase? _CurrentViewModel;
@@ -42,7 +47,7 @@ namespace PlatinumGymPro.State.Navigator
             
         }
         public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playerStore, _sportStore, _trainerStore);
+        public ICommand LogoutCommand { get; }
 
-      
     }
 }

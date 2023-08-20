@@ -1,0 +1,300 @@
+﻿<UserControl x:Class="PlatinumGymPro.Views.Metrics.AddMetricDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PlatinumGymPro.Views.Metrics"
+             mc:Ignorable="d" 
+             
+               xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             FlowDirection="RightToLeft"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border CornerRadius="10" Background="#EEE" Padding="10" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <TextBlock Text="اللاعبين / اضافة قياسات" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <ScrollViewer Grid.Row="2">
+                <Grid Grid.Row="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="250"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="#fff" Grid.Column="0" Grid.Row="0"  CornerRadius="10" Padding="5"  Margin="5">
+                            <DockPanel >
+                                <TextBlock Text="معلومات اللاعب" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Top"/>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+
+                                    </Grid.RowDefinitions>
+                                    <TextBlock HorizontalAlignment="left" Margin="5" Text="الاسم : " FontSize="16" DockPanel.Dock="Top" Grid.Row="0"/>
+                                    <TextBlock HorizontalAlignment="left" Margin="5" Text="مصطفى احمد العوضي" FontSize="16" DockPanel.Dock="Top" Grid.Row="0" Grid.Column="1"/>
+                                    <TextBlock HorizontalAlignment="left" Margin="5" Text="رقم الهاتف :" FontSize="16" DockPanel.Dock="Top" Grid.Row="1"/>
+                                    <TextBlock HorizontalAlignment="left" Margin="5" FlowDirection="LeftToRight" Text="0994 916 917" FontSize="16" DockPanel.Dock="Top" Grid.Row="1" Grid.Column="1"/>
+                                </Grid>
+
+                            </DockPanel>
+                        </Border>
+                        <Border Background="#fff"  CornerRadius="10" Grid.Column="0"   Grid.Row="1"  Padding="5"  Margin="5">
+                            <DockPanel >
+                                <DockPanel DockPanel.Dock="Top" >
+                                    <TextBlock Text="قياسات الاطراف" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Left"/>
+                                    <!--<CheckBox DockPanel.Dock="Right"
+                                      HorizontalAlignment="Right"
+                      Style="{DynamicResource toggleBtnStyle}"/>-->
+                                </DockPanel>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="الذراع الايمن" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="الذراع الايسر" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+
+                                    </StackPanel>
+
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="الساعد الايمن" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="الساعد الايسر" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="الفخذ الايمن" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="الفخذ الايسر" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="الساق الايمن" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+
+                                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="الساق الايسر" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                </Grid>
+
+                            </DockPanel>
+                        </Border>
+
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Background="#fff"  CornerRadius="10" Grid.Column="1"   Grid.Row="0"  Padding="5"  Margin="5">
+                            <DockPanel >
+                                <DockPanel DockPanel.Dock="Top" >
+                                    <TextBlock Text="معلومات" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Left"/>
+
+                                </DockPanel>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="الوزن" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="الطول" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+
+                                    </StackPanel>
+
+
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="التاريخ" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                </Grid>
+
+                            </DockPanel>
+                        </Border>
+
+
+                        <Border Background="#fff"  CornerRadius="10" Grid.Column="1"   Grid.Row="1"  Padding="5"  Margin="5">
+                            <DockPanel >
+                                <DockPanel DockPanel.Dock="Top" >
+                                    <TextBlock Text="قياسات الجسد" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Left"/>
+                                    <!--<CheckBox DockPanel.Dock="Right"
+                                      HorizontalAlignment="Right"
+                      Style="{DynamicResource toggleBtnStyle}"/>-->
+                                </DockPanel>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="الرقبة" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="الاكتاف" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+
+                                    </StackPanel>
+
+
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="الصدر" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+
+                                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="الخصر" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="4" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="الورك" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                                        <TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                                    </StackPanel>
+
+                                </Grid>
+
+                            </DockPanel>
+                        </Border>
+
+                    </Grid>
+                </Grid>
+
+            </ScrollViewer>
+
+        </Grid>
+    </Border>
+
+</UserControl>

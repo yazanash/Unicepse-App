@@ -33,6 +33,22 @@ namespace PlatinumGymPro.Components
 
         public static readonly DependencyProperty BackColorProperty = DependencyProperty.Register
             ("BackColor", typeof(Brush), typeof(DashboardCard));
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register
+            ("Title", typeof(string), typeof(DashboardCard));
+        public decimal Money
+        {
+            get { return (decimal)GetValue(MoneyProperty); }
+            set { SetValue(MoneyProperty, value); }
+        }
+
+        public static readonly DependencyProperty MoneyProperty = DependencyProperty.Register
+            ("Money", typeof(decimal), typeof(DashboardCard));
 
     }
 }

@@ -7,9 +7,7 @@ using PlatinumGymPro.HostBuilders;
 using PlatinumGymPro.Models;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Services.PlayerConflictValidators;
-using PlatinumGymPro.Services.PlayerCreations;
 using PlatinumGymPro.Services.PlayerQueries;
-using PlatinumGymPro.Services.PlayersProviders;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels;
 using System;
@@ -28,12 +26,12 @@ namespace PlatinumGymPro
     public partial class App : Application
     {
         private readonly IHost _host;
-        private SelectedPlayerStore _selectedPlayerStore;
-        private ModalNavigationStore _modalNavigationStore;
+        //private SelectedPlayerStore _selectedPlayerStore;
+        //private ModalNavigationStore _modalNavigationStore;
         public App()
         {
-            _selectedPlayerStore = new();
-            _modalNavigationStore = new();
+            //_selectedPlayerStore = new();
+            //_modalNavigationStore = new();
             _host = Host.CreateDefaultBuilder()
                 .AddViewModels()
                 .ConfigureServices((hostContext, services) =>
@@ -41,11 +39,11 @@ namespace PlatinumGymPro
 
                    string? CONNECTION_STRING = hostContext.Configuration.GetConnectionString("default"); ;
                    services.AddSingleton(new PlatinumGymDbContextFactory(CONNECTION_STRING));
-                   services.AddSingleton<IPlayerProvider, DatabasePlayerProvider>();
-                   services.AddSingleton<IPlayerCreator, DatabasePlayerCreator>();
+                   //services.AddSingleton<IPlayerProvider, DatabasePlayerProvider>();
+                   //services.AddSingleton<IPlayerCreator, DatabasePlayerCreator>();
                    
                    services.AddSingleton<IPlayerConflictValidator, DatabasePlayerConflictValidator>();
-                   services.AddTransient<PlayersBook>();
+                   //services.AddTransient<PlayersBook>();
                    services.AddSingleton<PlayerDataService<Player>>();
                    services.AddSingleton<Stores.PlayerStores.PlayerStore>();
                    services.AddSingleton<SportServices>();
@@ -53,8 +51,9 @@ namespace PlatinumGymPro
 
                    services.AddSingleton<GenericDataService<Employee>>();
                    services.AddSingleton<Stores.TrainerStore>();
-                   services.AddSingleton((s) => new Gym(s.GetRequiredService<PlayersBook>()));
-                   services.AddSingleton<GymStore>();
+                   services.AddSingleton<Stores.NavigationStore>();
+                   //services.AddSingleton((s) => new Gym(s.GetRequiredService<PlayersBook>()));
+                   //services.AddSingleton<GymStore>();
                    //services.AddSingleton<ModalNavigationStore>();
 
 
@@ -62,7 +61,7 @@ namespace PlatinumGymPro
 
                    services.AddSingleton(s => new MainWindow()
                    {
-                       DataContext = s.GetRequiredService<MainViewModel>(),
+                       DataContext = s.GetRequiredService<MainWindowViewModel>(),
                    });
                }).Build();
 

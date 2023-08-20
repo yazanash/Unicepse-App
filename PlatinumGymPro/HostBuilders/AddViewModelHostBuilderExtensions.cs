@@ -17,24 +17,25 @@ namespace PlatinumGymPro.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
-                services.AddTransient((s) => CreatePlayerListingViewModel(s)!);
-                services.AddSingleton<Func<PlayerListingViewModel>>((s) => () => s.GetRequiredService<PlayerListingViewModel>());
-                services.AddSingleton<NavigationService<PlayerListingViewModel>>();
-              
-                services.AddTransient<MakePlayerViewModel>();
-                services.AddSingleton<Func<MakePlayerViewModel>>((s) => () => s.GetRequiredService<MakePlayerViewModel>());
-                services.AddSingleton<NavigationService<MakePlayerViewModel>>();
+                //services.AddTransient((s) => CreatePlayerListingViewModel(s)!);
+                //services.AddSingleton<Func<PlayerListingViewModel>>((s) => () => s.GetRequiredService<PlayerListingViewModel>());
+                //services.AddSingleton<NavigationService<PlayerListingViewModel>>();
+
+                //services.AddTransient<MakePlayerViewModel>();
+                //services.AddSingleton<Func<MakePlayerViewModel>>((s) => () => s.GetRequiredService<MakePlayerViewModel>());
+                //services.AddSingleton<NavigationService<MakePlayerViewModel>>();
 
                 services.AddSingleton<MainViewModel>();
+                services.AddSingleton<MainWindowViewModel>();
 
             });
             return _hostBuilder;
         }
-        private static PlayerListingViewModel? CreatePlayerListingViewModel(IServiceProvider s)
-        {
-            return PlayerListingViewModel.LoadViewModel(
-                s.GetRequiredService<NavigationService<MakePlayerViewModel>>(), s.GetRequiredService<GymStore>());
-        }
+        //private static PlayerListingViewModel? CreatePlayerListingViewModel(IServiceProvider s)
+        //{
+        //    return PlayerListingViewModel.LoadViewModel(
+        //        s.GetRequiredService<NavigationService<MakePlayerViewModel>>(), s.GetRequiredService<GymStore>());
+        //}
 
     }
 }

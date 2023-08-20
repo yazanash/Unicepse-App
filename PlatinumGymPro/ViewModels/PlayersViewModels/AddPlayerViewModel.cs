@@ -26,7 +26,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
         }
 
-      
+
+        #region Properties
         public int Id { get; }
 
         private string? _fullName;
@@ -172,7 +173,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             set { _balance = value; OnPropertyChanged(nameof(Balance)); }
         }
         public ICommand? SubmitCommand { get; }
-        public ICommand? CancelCommand { get; }
+        public ICommand? CancelCommand { get; } 
+        #endregion
 
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;

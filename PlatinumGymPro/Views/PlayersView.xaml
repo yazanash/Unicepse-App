@@ -19,8 +19,8 @@
         <DataTemplate DataType="{x:Type vms:PlayerListViewModel }">
             <views:PlayersListView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type trvms:AddTrainingViewModel }">
-            <training:TrainingDetailsView/>
+        <DataTemplate DataType="{x:Type vms:EditPlayerViewModel }">
+            <views:EditPlayerDetailsView/>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>

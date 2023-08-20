@@ -16,6 +16,9 @@
     <Compile Update="Components\DashboardCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\MetricCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\SportCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -43,31 +46,52 @@
     <Compile Update="Views\AccountingViews\SalariesReportView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\GymView.xaml.cs">
+    <Compile Update="Views\AuthView\AddUserView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\EditUserView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\LoginView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\UsersListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Categories\CategoriesDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Categories\EditCategoriesDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Expenses\EditExpansesDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Expenses\ExpansesDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Expenses\ExpansesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\MakePlayers.xaml.cs">
+    <Compile Update="Views\MainView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\OffersViews\EditOfferDetailView.xaml.cs">
+    <Compile Update="Views\Metrics\AddMetricDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\OffersViews\OfferDetailsView.xaml.cs">
+    <Compile Update="Views\Metrics\EditMetricDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\OffersViews\OffersListView.xaml.cs">
+    <Compile Update="Views\Metrics\MetricListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PaymentViews\EditPaymentDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PaymentViews\PaymentDetalView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PlayerListingView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayersView.xaml.cs">
@@ -86,6 +110,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayerViews\PlayersListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Programs\AddProgramDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Programs\EditProgramDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SportsView.xaml.cs">
@@ -109,7 +139,13 @@
     <Compile Update="Views\TrainerViews\TrainerDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\TrainerViews\TrainerDues.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\TrainerViews\TrainerListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TrainingViews\EditTrainingDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\TrainingViews\TrainingDetailsView.xaml.cs">
@@ -124,6 +160,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\DashboardCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\MetricCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\SportCard.xaml">
@@ -156,31 +195,52 @@
     <Page Update="Views\AccountingViews\SalariesReportView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\GymView.xaml">
+    <Page Update="Views\AuthView\AddUserView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AuthView\EditUserView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AuthView\LoginView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AuthView\UsersListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Categories\CategoriesDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Categories\EditCategoriesDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Expenses\EditExpansesDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Expenses\ExpansesDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Expenses\ExpansesListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\HomeView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\MakePlayers.xaml">
+    <Page Update="Views\MainView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\OffersViews\EditOfferDetailView.xaml">
+    <Page Update="Views\Metrics\AddMetricDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\OffersViews\OfferDetailsView.xaml">
+    <Page Update="Views\Metrics\EditMetricDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\OffersViews\OffersListView.xaml">
+    <Page Update="Views\Metrics\MetricListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PaymentViews\EditPaymentDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PaymentViews\PaymentDetalView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PlayerListingView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayersView.xaml">
@@ -199,6 +259,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayerViews\PlayersListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Programs\AddProgramDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Programs\EditProgramDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SportsView.xaml">
@@ -222,7 +288,13 @@
     <Page Update="Views\TrainerViews\TrainerDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\TrainerViews\TrainerDues.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\TrainerViews\TrainerListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TrainingViews\EditTrainingDetailsView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\TrainingViews\TrainingDetailsView.xaml">

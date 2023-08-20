@@ -17,22 +17,23 @@ namespace PlatinumGymPro.ViewModels
        
         public INavigator Navigator { get; set; }
         //private readonly NavigationStore _navigationStore;
-    
+        public NavigationStore _navigatorStore;
 
-        public MainViewModel(PlayerStore playerStore , SportStore sportStore,TrainerStore trainerStore)
+        public MainViewModel(PlayerStore playerStore, SportStore sportStore, TrainerStore trainerStore, NavigationStore navigatorStore)
         {
-            //_navigationStore = navigationStore;
-            Navigator = new Navigator(playerStore, sportStore, trainerStore);
-            Navigator.CurrentViewModel =new HomeViewModel();
+            _navigatorStore = navigatorStore;
+
+            Navigator = new Navigator(playerStore, sportStore, trainerStore, _navigatorStore);
+            Navigator.CurrentViewModel = new HomeViewModel();
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
-       
+
         //private void NavigationStore_CurrentViewModelChanged()
         //{
         //    OnPropertyChanged(nameof(CurrentViewModel));
         //}
 
         //public ViewModelBase? CurrentViewModel =>_navigationStore.CurrentViewModel;
-      
+
     }
 }

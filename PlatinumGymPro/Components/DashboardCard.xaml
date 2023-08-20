@@ -14,9 +14,9 @@
             <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
         </Border.Effect>
         <StackPanel>
-            <TextBlock Text="الدفعات" Foreground="#C14E00" FontSize="24" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding ElementName=DashCard, Path=Title}" Foreground="#C14E00" FontSize="24" HorizontalAlignment="Right"/>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="150,000" FontSize="48" Foreground="#333" />
+                <TextBlock Text="{Binding ElementName=DashCard, Path=Money}" FontSize="48" Foreground="#333" />
                 <Icon:PackIconMaterial Kind="ArrowUpDropCircleOutline" Foreground="#444"/>
             </StackPanel>
             <Button  Style="{StaticResource DashboardCardbtn}" >

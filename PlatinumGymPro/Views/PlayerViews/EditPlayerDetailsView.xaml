@@ -16,7 +16,6 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-             
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -74,7 +73,7 @@
 
                                     </StackPanel>
                                     <StackPanel Grid.Row="0" Grid.Column="2" Margin="5"  VerticalAlignment="Bottom">
-                                        <ComboBox Style="{DynamicResource ComboBoxStyle1}" Tag="سنة الميلاد" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                                        <ComboBox SelectedItem="{Binding BirthDate}" Style="{DynamicResource ComboBoxStyle1}" Tag="سنة الميلاد" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                                             <ComboBoxItem Content="1999"/>
                                             <ComboBoxItem Content="2000"/>
                                             <ComboBoxItem Content="2001"/>
@@ -111,14 +110,7 @@
 
                                     </StackPanel>
 
-                                    <StackPanel Grid.Row="1" Grid.Column="2" Margin="5">
-                                        <TextBlock Text="رصيد الحساب" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                                        <TextBox Text="{Binding Balance, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-
-                                    </StackPanel>
+                                    
 
                                 </Grid>
 

@@ -9,11 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\backimage.png" />
     <None Remove="Assets\p1.jpg" />
     <None Remove="Assets\p3.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Resource Include="Assets\backimage.png" />
     <Resource Include="Resources/Logo_light.ico" />
   </ItemGroup>
   <ItemGroup>

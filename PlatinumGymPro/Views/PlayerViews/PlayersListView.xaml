@@ -8,24 +8,19 @@
              Background="Transparent"
              xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
-             xmlns:views="clr-namespace:PlatinumGymPro.Views.PlayerViews"
-             xmlns:viewmodel="clr-namespace:PlatinumGymPro.ViewModels.PlayersViewModels"
-             
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
 
-        <DataTemplate DataType="{x:Type viewmodel:AddPlayerViewModel}">
-            <views:PlayerDetailView/>
-        </DataTemplate>
+      
 
     </UserControl.Resources>
 
 
 
-    <Border CornerRadius="10" Background="#EEE" Padding="10">
+    <Border CornerRadius="10" Background="#EEE" Padding="10" x:Name="parent">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -33,6 +28,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+           
             <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
 
 
@@ -131,7 +127,6 @@
                 </Grid>
 
             </Border>
-
 
            
 

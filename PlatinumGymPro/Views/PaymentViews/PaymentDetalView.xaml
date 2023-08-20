@@ -5,8 +5,105 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PlatinumGymPro.Views.PaymentViews"
              mc:Ignorable="d" 
+             FlowDirection="RightToLeft"
+             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <Border CornerRadius="10" Background="#EEE" Padding="10"  >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.ColumnSpan="4" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <Border Background="#fff" Grid.Row="1" Grid.ColumnSpan="2"  CornerRadius="10" Padding="5"  Margin="5">
+                <DockPanel >
+                    <TextBlock Text="معلومات اللاعب" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Top"/>
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+
+                        </Grid.RowDefinitions>
+                        <TextBlock HorizontalAlignment="left" Margin="5" Text="الاسم : " FontSize="16" DockPanel.Dock="Top" Grid.Row="0"/>
+                        <TextBlock HorizontalAlignment="left" Margin="5" Text="مصطفى احمد العوضي" FontSize="16" DockPanel.Dock="Top" Grid.Row="0" Grid.Column="1"/>
+                        <TextBlock HorizontalAlignment="left" Margin="5" Text="رقم الهاتف :" FontSize="16" DockPanel.Dock="Top" Grid.Row="1"/>
+                        <TextBlock HorizontalAlignment="left" Margin="5" FlowDirection="LeftToRight" Text="0994 916 917" FontSize="16" DockPanel.Dock="Top" Grid.Row="1" Grid.Column="1"/>
+                    </Grid>
+
+                </DockPanel>
+            </Border>
+
+            <Border Background="#fff" CornerRadius="10" Grid.Column="1"  Grid.Row="2"  Padding="5"  Margin="5">
+                <Grid>
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                        <TextBlock Text="قيمة الدفعة" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                        <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                    </StackPanel>
+                    <StackPanel  Grid.Row="2" Grid.Column="0" Margin="5">
+                        <TextBlock Text="البيان" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                        <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="2"  Padding="5"  Margin="5">
+                <DockPanel>
+                    <TextBlock Foreground="#C14E00" Text="الاشتراكات الغير مدفوعة" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
+                    <ListBox SelectedItem="{Binding SelectedSportListingItemViewModel}" ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SportList}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="35"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="{Binding SportName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    
+                    </ListBox>
+                </DockPanel>
+            </Border>
+        </Grid>
+
+
+
+    </Border>
+
 </UserControl>

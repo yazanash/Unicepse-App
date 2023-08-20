@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlatinumGymPro.DbContexts;
-using PlatinumGymPro.DTOs;
 using PlatinumGymPro.Models;
 using System;
 using System.Collections.Generic;
