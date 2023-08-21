@@ -36,7 +36,7 @@ namespace PlatinumGymPro.Commands
                 switch (viewType)
                 {
                     case ViewType.Home:
-                        _navigator.CurrentViewModel =new HomeViewModel(_playerStore, _trainerStore);
+                        _navigator.CurrentViewModel =new HomeViewModel();
                         break;
                     case ViewType.Players:
                        

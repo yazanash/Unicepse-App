@@ -18,8 +18,8 @@ namespace PlatinumGymPro.ViewModels
     public class HomeViewModel : ViewModelBase
     {
         private readonly ObservableCollection<PlayerListItemViewModel> playerListItemViewModels;
-        private PlayerStore _playerStore;
-        private TrainerStore _trainerStore;
+        //private PlayerStore _playerStore;
+        //private TrainerStore _trainerStore;
         public ObservableCollection<PlayerListItemViewModel> Players { get; }
         public ICommand? AddPlayerCommand { get; }
         public ICommand? LoadPlayersCommand { get; }
@@ -46,10 +46,9 @@ namespace PlatinumGymPro.ViewModels
                 OnPropertyChanged(nameof(IsLoaded));
             }
         }
-        public HomeViewModel(PlayerStore playerStore, TrainerStore trainerStore)
+        public HomeViewModel()
         {
-            _playerStore = playerStore;
-            _trainerStore = trainerStore;
+           
             //LoadPlayersCommand = new LoadPlayersCommand(_playerStore, this);
             Players = new();
 

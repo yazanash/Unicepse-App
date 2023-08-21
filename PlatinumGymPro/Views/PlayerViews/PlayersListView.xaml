@@ -9,12 +9,13 @@
              xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
 
-      
+        
 
     </UserControl.Resources>
 
@@ -50,18 +51,13 @@
                         <ComboBoxItem  Content="غير فعال"/>
                         <ComboBoxItem  Content="ديون"/>
                     </ComboBox>
-                    <ComboBox VerticalAlignment="Center" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" Tag="التصنيف حسب" Grid.Row="0" Grid.Column="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
-                        <ComboBoxItem  Content="ذكور"/>
-                        <ComboBoxItem  Content="اناث" />
-                        <ComboBoxItem  Content="بدون مدرب" />
-                        <ComboBoxItem  Content="غير فعال" />
-                        <ComboBoxItem  Content="الكل" />
-                        <ComboBoxItem  Content="فعال"/>
-                        <ComboBoxItem  Content="منتهي الاشتراك" />
-                        <ComboBoxItem  Content="غير فعال" />
-                        <ComboBoxItem  Content="ديون" />
+                    <ComboBox  SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" ItemsSource="{Binding FiltersList}" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" Tag="التصنيف حسب" Grid.Row="0" Grid.Column="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ComboBoxItem Content="{Binding Content}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
-
                     <StackPanel  Margin="0 5" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="2" >
                         <!--<Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -71,19 +67,19 @@
                         <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5 0" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
                                 <Icon:PackIconMaterial Foreground="#C14E00" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanMale" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="52"/>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersMaleCount}"/>
                             </StackPanel>
                         </Border>
                         <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
                                 <Icon:PackIconMaterial Foreground="#C14E00" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanFemale" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="52"/>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersFemaleCount}"/>
                             </StackPanel>
                         </Border>
                         <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0"  Grid.Column="0">
                                 <Icon:PackIconMaterial Foreground="#C14E00" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="AccountGroup" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="52"/>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersCount}"/>
                             </StackPanel>
                         </Border>
 
@@ -180,7 +176,7 @@
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="الايام المتبقية" IsReadOnly="True"
-                                     Binding="{Binding IsActive}"
+                                     Binding="{Binding SubscribeEndDate}"
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="رصيد الحساب" IsReadOnly="True"

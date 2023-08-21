@@ -1,6 +1,7 @@
 ﻿using PlatinumGymPro.Models;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Services.PlayerQueries;
+using PlatinumGymPro.ViewModels.PlayersViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +11,34 @@ using System.Threading.Tasks;
 namespace PlatinumGymPro.Stores.PlayerStores
 {
 
-   public enum PlayerFilter
-    {
-        Active,NotActive,Trainer
-    }
     public class PlayerStore
     {
 
-        private readonly PlayerDataService<Player> PlayerService;
+        private readonly PlayerDataService PlayerService;
         private readonly List<Player> _players;
         public IEnumerable<Player> Players => _players;
 
+        private Filter? _selectedFilters;
+        public Filter? SelectedFilters
+        {
+            get
+            {
+                return _selectedFilters;
+            }
+            set
+            {
+                _selectedFilters = value;
+                SelectedFilterChanged?.Invoke();
+               
+            }
+        }
 
         public event Action? PlayersLoaded;
         public event Action<Player>? PlayerAdded;
         public event Action<Player>? PlayerUpdated;
         public event Action<int>? PlayerDeleted;
-        public PlayerStore(PlayerDataService<Player> playerService)
+        public event Action? SelectedFilterChanged;
+        public PlayerStore(PlayerDataService playerService)
         {
             PlayerService = playerService;
             _players = new List<Player>();
@@ -49,7 +61,33 @@ namespace PlatinumGymPro.Stores.PlayerStores
 
             PlayersLoaded?.Invoke();
         }
+        public async Task LoadByGender(bool GenderMale)
+        {
+            IEnumerable<Player> players = await PlayerService.GetByGender(GenderMale);
 
+            _players.Clear();
+            _players.AddRange(players);
+
+            PlayersLoaded?.Invoke();
+        }
+        public async Task LoadBySubscribeEnd()
+        {
+            IEnumerable<Player> players = await PlayerService.GetBySubscribeEnd();
+
+            _players.Clear();
+            _players.AddRange(players);
+
+            PlayersLoaded?.Invoke();
+        }
+        public async Task LoadByDebt()
+        {
+            IEnumerable<Player> players = await PlayerService.GetByDebt();
+
+            _players.Clear();
+            _players.AddRange(players);
+
+            PlayersLoaded?.Invoke();
+        }
         public async Task Add(Player player)
         {
             await PlayerService.Create(player);

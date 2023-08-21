@@ -15,17 +15,73 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
-    public class PlayerListViewModel :ViewModelBase
+
+    public class PlayerListViewModel : ViewModelBase
     {
         private readonly ObservableCollection<PlayerListItemViewModel> playerListItemViewModels;
+        private readonly ObservableCollection<FiltersItemViewModel> filtersItemViewModel;
         private NavigationStore _navigatorStore;
         private PlayerStore _playerStore;
-        private  TrainerStore _trainerStore;
-        private  SportStore _sportStore;
+        private TrainerStore _trainerStore;
+        private SportStore _sportStore;
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
+        public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public ICommand AddPlayerCommand { get; }
-        public ICommand ActivePlayersCommand { get; }
-        public ICommand DeactivePlayersCommand { get; }
+       
+        public FiltersItemViewModel? SelectedFilter
+        {
+            get
+            {
+                return filtersItemViewModel
+                    .FirstOrDefault(y => y?.Id == _playerStore.SelectedFilters?.Id);
+            }
+            set
+            {
+                _playerStore.SelectedFilters = value?.Filter;
+
+            }
+        }
+
+
+        private int _playersCount;
+        public int PlayersCount
+        {
+            get
+            {
+                return _playersCount;
+            }
+            set
+            {
+                _playersCount = value;
+                OnPropertyChanged(nameof(PlayersCount));
+            }
+        }
+        private int _playersFemaleCount;
+        public int PlayersFemaleCount
+        {
+            get
+            {
+                return _playersFemaleCount;
+            }
+            set
+            {
+                _playersFemaleCount = value;
+                OnPropertyChanged(nameof(PlayersFemaleCount));
+            }
+        }
+        private int _playersMaleCount;
+        public int PlayersMaleCount
+        {
+            get
+            {
+                return _playersMaleCount;
+            }
+            set
+            {
+                _playersMaleCount = value;
+                OnPropertyChanged(nameof(PlayersMaleCount));
+            }
+        }
 
         private bool _isLoading;
         public bool IsLoading
@@ -66,8 +122,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _trainerStore = trainerStore;
             _sportStore = sportStore;
             LoadPlayersCommand = new LoadPlayersCommand(_playerStore, this);
-            ActivePlayersCommand = new PlayerByStatusCommand(_playerStore, this, true);
-            DeactivePlayersCommand = new PlayerByStatusCommand(_playerStore, this, false);
+           
             AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, _playerStore, this)));
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
 
@@ -76,8 +131,26 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _playerStore.PlayerAdded += _playerStore_PlayerAdded;
             _playerStore.PlayerUpdated += _playerStore_PlayerUpdated;
             _playerStore.PlayerDeleted += _playerStore_PlayerDeleted;
-           
+            _playerStore.SelectedFilterChanged += _playerStore_SelectedFilterChanged;
+
+            filtersItemViewModel = new();
+
+            filtersItemViewModel.Add(new FiltersItemViewModel(new Filter { Id = 1, Content = "ذكور" }));
+            filtersItemViewModel.Add(new FiltersItemViewModel(new Filter { Id = 2, Content = "اناث" }));
+            filtersItemViewModel.Add(new FiltersItemViewModel(new Filter { Id = 3, Content = "بدون مدرب" }));
+            filtersItemViewModel.Add(new FiltersItemViewModel(new Filter { Id = 4, Content = "غير فعال" }));
+            filtersItemViewModel.Add(new FiltersItemViewModel(new Filter { Id = 5, Content = "الكل" }));
+            filtersItemViewModel.Add(new FiltersItemViewModel(new Filter { Id = 6, Content = "فعال" }));
+            filtersItemViewModel.Add(new FiltersItemViewModel(new Filter { Id = 7, Content = "منتهي الاشتراك" }));
+            filtersItemViewModel.Add(new FiltersItemViewModel(new Filter { Id = 8, Content = "ديون" }));
+            SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Filter.Id == 4);
         }
+
+        private void _playerStore_SelectedFilterChanged()
+        {
+            LoadPlayersCommand.Execute(null);
+        }
+
         protected override void Dispose()
         {
             _playerStore.PlayersLoaded -= _playerStore_PlayersLoaded;
@@ -110,6 +183,11 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void _playerStore_PlayerAdded(Player player)
         {
             AddPlayer(player);
+            PlayersCount++;
+            if (!player.GenderMale)
+                PlayersFemaleCount++;
+            else
+                PlayersMaleCount++;
         }
 
         private void _playerStore_PlayersLoaded()
@@ -120,11 +198,16 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             {
                 AddPlayer(player);
             }
+            PlayersCount = playerListItemViewModels.Count();
+            PlayersFemaleCount = playerListItemViewModels.Where(x => !x.GenderMale).Count();
+            PlayersMaleCount = playerListItemViewModels.Where(x => x.GenderMale).Count();
+
+
         }
-        private void AddPlayer (Player player)
+        private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new PlayerListItemViewModel(player, _playerStore, _navigatorStore, _trainerStore,_sportStore,this);
+                new PlayerListItemViewModel(player, _playerStore, _navigatorStore, _trainerStore, _sportStore, this);
             playerListItemViewModels.Add(itemViewModel);
         }
         public static PlayerListViewModel LoadViewModel(PlayerStore playerStore, NavigationStore navigatorStore, TrainerStore trainerStore, SportStore sportStore)

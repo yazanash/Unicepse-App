@@ -44,7 +44,7 @@ namespace PlatinumGymPro
                    
                    services.AddSingleton<IPlayerConflictValidator, DatabasePlayerConflictValidator>();
                    //services.AddTransient<PlayersBook>();
-                   services.AddSingleton<PlayerDataService<Player>>();
+                   services.AddSingleton<PlayerDataService>();
                    services.AddSingleton<Stores.PlayerStores.PlayerStore>();
                    services.AddSingleton<SportServices>();
                    services.AddSingleton<Stores.SportStore>();

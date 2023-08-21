@@ -32,12 +32,40 @@ namespace PlatinumGymPro.Commands
 
             try
             {
-              
-                await _playerStore.Load();
+                switch (_playerStore.SelectedFilters?.Id)
+                {
+                    case 1:
+                        await _playerStore.LoadByGender(true);
+                        break;
+                    case 2:
+                        await _playerStore.LoadByGender(false);
+                        break;
+                    case 3:
+                        await _playerStore.Load();
+                        break;
+                    case 4:
+                        await _playerStore.Load(false);
+                        break;
+                    case 5:
+                        await _playerStore.Load();
+                        break;
+                    case 6:
+                        await _playerStore.Load(true);
+                        break;
+                    case 7:
+                        await _playerStore.LoadBySubscribeEnd();
+                        break;
+                    case 8:
+                        await _playerStore.LoadByDebt();
+                        break;
+                    default:
+                        await _playerStore.Load(true);
+                        break;
+                }
             }
             catch (Exception)
             {
-                _playerListing.ErrorMessage = "Failed to load YouTube viewers. Please restart the application.";
+                _playerListing.ErrorMessage = "Failed to load Players. Please restart the application.";
             }
             finally
             {
