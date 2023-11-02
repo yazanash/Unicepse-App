@@ -9,22 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\backimage.png" />
-    <None Remove="Assets\p1.jpg" />
-    <None Remove="Assets\p3.jpg" />
+    <None Remove="Resources\Assets\backimage.png" />
+    <None Remove="Resources\Assets\p1.jpg" />
+    <None Remove="Resources\Assets\p3.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
-    <Resource Include="Assets\backimage.png" />
+    <Folder Include="src\Authentication\Views\" />
+    <Resource Include="Resources\Assets\backimage.png" />
     <Resource Include="Resources/Logo_light.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="7.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -33,10 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\p1.jpg">
+    <Resource Include="Resources\Assets\p1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\p3.jpg">
+    <Resource Include="Resources\Assets\p3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
@@ -69,10 +71,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>

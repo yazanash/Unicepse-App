@@ -7,297 +7,297 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Components\CustomTextBox.xaml.cs">
+    <Compile Update="utlis\Components\CustomTextBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\CustomToggleBtn.xaml.cs">
+    <Compile Update="utlis\Components\CustomToggleBtn.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\DashboardCard.xaml.cs">
+    <Compile Update="utlis\Components\DashboardCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\MetricCard.xaml.cs">
+    <Compile Update="utlis\Components\MetricCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\SportCard.xaml.cs">
+    <Compile Update="utlis\Components\SportCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\TrainerCard.xaml.cs">
+    <Compile Update="utlis\Components\TrainerCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\HeaderBar.xaml.cs">
+    <Compile Update="utlis\Controls\HeaderBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\InfoCard.xaml.cs">
+    <Compile Update="utlis\Controls\InfoCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\NavBar.xaml.cs">
+    <Compile Update="utlis\Controls\NavBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AccountingView.xaml.cs">
+    <Compile Update="src\Accountant\AccountingView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AccountingViews\ExpensesReport.xaml.cs">
+    <Compile Update="src\Accountant\AccountingViews\ExpensesReport.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AccountingViews\IncomeReportView.xaml.cs">
+    <Compile Update="src\Accountant\AccountingViews\IncomeReportView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AccountingViews\SalariesReportView.xaml.cs">
+    <Compile Update="src\Accountant\AccountingViews\SalariesReportView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AuthView\AddUserView.xaml.cs">
+    <Compile Update="src\Authentication\AuthView\AddUserView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AuthView\EditUserView.xaml.cs">
+    <Compile Update="src\Authentication\AuthView\EditUserView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AuthView\LoginView.xaml.cs">
+    <Compile Update="src\Authentication\AuthView\LoginView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AuthView\UsersListView.xaml.cs">
+    <Compile Update="src\Authentication\AuthView\UsersListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Categories\CategoriesDetailView.xaml.cs">
+    <Compile Update="src\TrainingProgram\Categories\CategoriesDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Categories\EditCategoriesDetailView.xaml.cs">
+    <Compile Update="src\TrainingProgram\Categories\EditCategoriesDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Expenses\EditExpansesDetailView.xaml.cs">
+    <Compile Update="src\Expenses\Expenses\EditExpansesDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Expenses\ExpansesDetailView.xaml.cs">
+    <Compile Update="src\Expenses\Expenses\ExpansesDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Expenses\ExpansesListView.xaml.cs">
+    <Compile Update="src\Expenses\Expenses\ExpansesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HomeView.xaml.cs">
+    <Compile Update="src\Player\common\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\MainView.xaml.cs">
+    <Compile Update="src\Player\common\MainView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Metrics\AddMetricDetailView.xaml.cs">
+    <Compile Update="src\Metric\Metrics\AddMetricDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Metrics\EditMetricDetailView.xaml.cs">
+    <Compile Update="src\Metric\Metrics\EditMetricDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Metrics\MetricListView.xaml.cs">
+    <Compile Update="src\Metric\Metrics\MetricListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PaymentViews\EditPaymentDetailView.xaml.cs">
+    <Compile Update="src\Payment\PaymentViews\EditPaymentDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PaymentViews\PaymentDetalView.xaml.cs">
+    <Compile Update="src\Payment\PaymentViews\PaymentDetalView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PlayersView.xaml.cs">
+    <Compile Update="src\Player\PlayersView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PlayerView.xaml.cs">
+    <Compile Update="src\Player\PlayerView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PlayerViews\EditPlayerDetailsView.xaml.cs">
+    <Compile Update="src\Player\PlayerViews\EditPlayerDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PlayerViews\PlayerDetailView.xaml.cs">
+    <Compile Update="src\Player\PlayerViews\PlayerDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PlayerViews\PlayerProfile.xaml.cs">
+    <Compile Update="src\Player\PlayerViews\PlayerProfile.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PlayerViews\PlayersListView.xaml.cs">
+    <Compile Update="src\Player\PlayerViews\PlayersListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Programs\AddProgramDetailView.xaml.cs">
+    <Compile Update="src\TrainingProgram\Programs\AddProgramDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Programs\EditProgramDetailView.xaml.cs">
+    <Compile Update="src\TrainingProgram\Programs\EditProgramDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\SportsView.xaml.cs">
+    <Compile Update="src\Sport\SportsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\SportViews\EditSportDetailView.xaml.cs">
+    <Compile Update="src\Sport\SportViews\EditSportDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\SportViews\SportDetailsView.xaml.cs">
+    <Compile Update="src\Sport\SportViews\SportDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\SportViews\SportListView.xaml.cs">
+    <Compile Update="src\Sport\SportViews\SportListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainersView.xaml.cs">
+    <Compile Update="src\Employee\TrainersView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainerViews\EditTrainerDetailView.xaml.cs">
+    <Compile Update="src\Employee\TrainerViews\EditTrainerDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainerViews\TrainerDetailView.xaml.cs">
+    <Compile Update="src\Employee\TrainerViews\TrainerDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainerViews\TrainerDues.xaml.cs">
+    <Compile Update="src\Employee\TrainerViews\TrainerDues.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainerViews\TrainerListView.xaml.cs">
+    <Compile Update="src\Employee\TrainerViews\TrainerListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainingViews\EditTrainingDetailsView.xaml.cs">
+    <Compile Update="src\TrainingProgram\TrainingViews\EditTrainingDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainingViews\TrainingDetailsView.xaml.cs">
+    <Compile Update="src\TrainingProgram\TrainingViews\TrainingDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Components\CustomTextBox.xaml">
+    <Page Update="utlis\Components\CustomTextBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\CustomToggleBtn.xaml">
+    <Page Update="utlis\Components\CustomToggleBtn.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\DashboardCard.xaml">
+    <Page Update="utlis\Components\DashboardCard.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\MetricCard.xaml">
+    <Page Update="utlis\Components\MetricCard.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\SportCard.xaml">
+    <Page Update="utlis\Components\SportCard.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\TrainerCard.xaml">
+    <Page Update="utlis\Components\TrainerCard.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Controls\HeaderBar.xaml">
+    <Page Update="utlis\Controls\HeaderBar.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Controls\InfoCard.xaml">
+    <Page Update="utlis\Controls\InfoCard.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Controls\NavBar.xaml">
+    <Page Update="utlis\Controls\NavBar.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AccountingView.xaml">
+    <Page Update="src\Accountant\AccountingView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AccountingViews\ExpensesReport.xaml">
+    <Page Update="src\Accountant\AccountingViews\ExpensesReport.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AccountingViews\IncomeReportView.xaml">
+    <Page Update="src\Accountant\AccountingViews\IncomeReportView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AccountingViews\SalariesReportView.xaml">
+    <Page Update="src\Accountant\AccountingViews\SalariesReportView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AuthView\AddUserView.xaml">
+    <Page Update="src\Authentication\AuthView\AddUserView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AuthView\EditUserView.xaml">
+    <Page Update="src\Authentication\AuthView\EditUserView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AuthView\LoginView.xaml">
+    <Page Update="src\Authentication\AuthView\LoginView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AuthView\UsersListView.xaml">
+    <Page Update="src\Authentication\AuthView\UsersListView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Categories\CategoriesDetailView.xaml">
+    <Page Update="src\TrainingProgram\Categories\CategoriesDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Categories\EditCategoriesDetailView.xaml">
+    <Page Update="src\TrainingProgram\Categories\EditCategoriesDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Expenses\EditExpansesDetailView.xaml">
+    <Page Update="src\Expenses\Expenses\EditExpansesDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Expenses\ExpansesDetailView.xaml">
+    <Page Update="src\Expenses\Expenses\ExpansesDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Expenses\ExpansesListView.xaml">
+    <Page Update="src\Expenses\Expenses\ExpansesListView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HomeView.xaml">
+    <Page Update="src\Player\common\HomeView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\MainView.xaml">
+    <Page Update="src\Player\common\MainView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Metrics\AddMetricDetailView.xaml">
+    <Page Update="src\Metric\Metrics\AddMetricDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Metrics\EditMetricDetailView.xaml">
+    <Page Update="src\Metric\Metrics\EditMetricDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Metrics\MetricListView.xaml">
+    <Page Update="src\Metric\Metrics\MetricListView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PaymentViews\EditPaymentDetailView.xaml">
+    <Page Update="src\Payment\PaymentViews\EditPaymentDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PaymentViews\PaymentDetalView.xaml">
+    <Page Update="src\Payment\PaymentViews\PaymentDetalView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PlayersView.xaml">
+    <Page Update="src\Player\PlayersView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PlayerView.xaml">
+    <Page Update="src\Player\PlayerView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PlayerViews\EditPlayerDetailsView.xaml">
+    <Page Update="src\Player\PlayerViews\EditPlayerDetailsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PlayerViews\PlayerDetailView.xaml">
+    <Page Update="src\Player\PlayerViews\PlayerDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PlayerViews\PlayerProfile.xaml">
+    <Page Update="src\Player\PlayerViews\PlayerProfile.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PlayerViews\PlayersListView.xaml">
+    <Page Update="src\Player\PlayerViews\PlayersListView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Programs\AddProgramDetailView.xaml">
+    <Page Update="src\TrainingProgram\Programs\AddProgramDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Programs\EditProgramDetailView.xaml">
+    <Page Update="src\TrainingProgram\Programs\EditProgramDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\SportsView.xaml">
+    <Page Update="src\Sport\SportsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\SportViews\EditSportDetailView.xaml">
+    <Page Update="src\Sport\SportViews\EditSportDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\SportViews\SportDetailsView.xaml">
+    <Page Update="src\Sport\SportViews\SportDetailsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\SportViews\SportListView.xaml">
+    <Page Update="src\Sport\SportViews\SportListView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TrainersView.xaml">
+    <Page Update="src\Employee\TrainersView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TrainerViews\EditTrainerDetailView.xaml">
+    <Page Update="src\Employee\TrainerViews\EditTrainerDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TrainerViews\TrainerDetailView.xaml">
+    <Page Update="src\Employee\TrainerViews\TrainerDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TrainerViews\TrainerDues.xaml">
+    <Page Update="src\Employee\TrainerViews\TrainerDues.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TrainerViews\TrainerListView.xaml">
+    <Page Update="src\Employee\TrainerViews\TrainerListView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TrainingViews\EditTrainingDetailsView.xaml">
+    <Page Update="src\TrainingProgram\TrainingViews\EditTrainingDetailsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TrainingViews\TrainingDetailsView.xaml">
+    <Page Update="src\TrainingProgram\TrainingViews\TrainingDetailsView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

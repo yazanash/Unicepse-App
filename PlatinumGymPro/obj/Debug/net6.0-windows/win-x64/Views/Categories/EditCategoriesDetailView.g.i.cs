@@ -53,7 +53,8 @@ namespace PlatinumGymPro.Views.Categories {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/views/categories/editcategoriesdetailview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;V1.0.0.0;component/views/categories/editcategoriesdetailview.xaml" +
+                    "", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Views\Categories\EditCategoriesDetailView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

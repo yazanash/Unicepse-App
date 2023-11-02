@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "N1jRnNQEM4Jlo2l+7adEmTDKGo65CN9blEEvwsaQLYEnELmMJ6Uq56gN0DOtH0s1FXnyJKvHPHpwotNNZgNxFw==",
+  "success": false,
+  "projectFilePath": "D:\\Repo\\PlatinumGymPro\\PlatinumGymPro.Core\\PlatinumGymPro.Core.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project PlatinumGymPro is not compatible with net6.0 (.NETCoreApp,Version=v6.0). Project PlatinumGymPro supports: net6.0-windows7.0 (.NETCoreApp,Version=v6.0)",
+      "libraryId": "PlatinumGymPro",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
+}

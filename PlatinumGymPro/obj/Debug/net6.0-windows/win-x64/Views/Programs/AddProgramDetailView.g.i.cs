@@ -57,7 +57,7 @@ namespace PlatinumGymPro.Views.Programs {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/views/programs/addprogramdetailview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;V1.0.0.0;component/views/programs/addprogramdetailview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Views\Programs\AddProgramDetailView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
