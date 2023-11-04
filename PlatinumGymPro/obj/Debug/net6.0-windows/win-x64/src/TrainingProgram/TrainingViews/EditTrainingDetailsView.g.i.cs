@@ -57,8 +57,8 @@ namespace PlatinumGymPro.Views.TrainingViews {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/src/trainingprogram/trainingviews/edittrainingdetailsvi" +
-                    "ew.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;V1.0.0.0;component/src/trainingprogram/trainingviews/edittraining" +
+                    "detailsview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\src\TrainingProgram\TrainingViews\EditTrainingDetailsView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

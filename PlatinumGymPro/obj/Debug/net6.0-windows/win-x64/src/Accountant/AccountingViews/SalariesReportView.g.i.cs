@@ -65,7 +65,8 @@ namespace PlatinumGymPro.Views.AccountingViews {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/src/accountant/accountingviews/salariesreportview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;V1.0.0.0;component/src/accountant/accountingviews/salariesreportv" +
+                    "iew.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\src\Accountant\AccountingViews\SalariesReportView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

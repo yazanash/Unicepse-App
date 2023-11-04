@@ -30,7 +30,42 @@
       "ProjectGuid": "205cb1a2-bae4-48b8-96b2-1fdac21bf3b8",
       "DisplayName": "PlatinumGymPro.EntityFramework",
       "ColorIndex": 4
+    },
+    "5cfc7b4b-10e6-43ac-adee-629f18dd48fd": {
+      "ProjectGuid": "5cfc7b4b-10e6-43ac-adee-629f18dd48fd",
+      "DisplayName": "Platinum.Test",
+      "ColorIndex": 5
+    },
+    "08a6a627-aafa-41fd-8f82-4749804d7337": {
+      "ProjectGuid": "08a6a627-aafa-41fd-8f82-4749804d7337",
+      "DisplayName": "TestProject1",
+      "ColorIndex": 6
+    },
+    "43d56daa-f86e-4888-b271-0f146b33278a": {
+      "ProjectGuid": "43d56daa-f86e-4888-b271-0f146b33278a",
+      "DisplayName": "Platinum.Test",
+      "ColorIndex": 7
+    },
+    "6ba341f0-9349-480a-8314-be1c7bd804fe": {
+      "ProjectGuid": "6ba341f0-9349-480a-8314-be1c7bd804fe",
+      "DisplayName": "PlatinumGym.Business",
+      "ColorIndex": 8
+    },
+    "b2d1ce7b-1a62-4696-8ee0-343f2e622507": {
+      "ProjectGuid": "b2d1ce7b-1a62-4696-8ee0-343f2e622507",
+      "DisplayName": "PlatinumGym.Core",
+      "ColorIndex": 9
+    },
+    "8545bf95-afd9-44df-bd2c-75d4394a8376": {
+      "ProjectGuid": "8545bf95-afd9-44df-bd2c-75d4394a8376",
+      "DisplayName": "PlatinumGym.Entityframework",
+      "ColorIndex": 10
+    },
+    "d614aaed-5db6-4ff6-960b-13103b91012f": {
+      "ProjectGuid": "d614aaed-5db6-4ff6-960b-13103b91012f",
+      "DisplayName": "PlatinumGym.API",
+      "ColorIndex": 11
     }
   },
-  "NextColorIndex": 5
+  "NextColorIndex": 12
 }

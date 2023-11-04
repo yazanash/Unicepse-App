@@ -10,7 +10,6 @@
               xmlns:login="clr-namespace:PlatinumGymPro.Views.AuthView"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Application.Resources>
-
         <!--#region Toggle btn style-->
 
       
