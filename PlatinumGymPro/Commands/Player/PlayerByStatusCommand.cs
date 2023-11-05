@@ -10,12 +10,12 @@ namespace PlatinumGymPro.Commands.PlayersCommands
 {
     public class PlayerByStatusCommand : AsyncCommandBase
     {
-        private readonly PlayerStore _playerStore;
+        //private readonly PlayerStore _playerStore;
         private readonly PlayerListViewModel _playerListing;
         private bool _status;
-        public PlayerByStatusCommand(PlayerStore playerStore, PlayerListViewModel playerListing, bool status)
+        public PlayerByStatusCommand(PlayerListViewModel playerListing, bool status)
         {
-            _playerStore = playerStore;
+            //_playerStore = playerStore;
             _playerListing = playerListing;
             _status = status;
         }
@@ -27,7 +27,7 @@ namespace PlatinumGymPro.Commands.PlayersCommands
             try
             {
                 await Task.Delay(5000);
-                await _playerStore.Load(_status);
+                //await _playerStore.Load(_status);
             }
             catch (Exception)
             {

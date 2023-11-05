@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models.Employee;
+//using PlatinumGymPro.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

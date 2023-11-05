@@ -1,0 +1,12 @@
+D:\Repo\PlatinumGymPro\PlatinumGym.API\bin\Debug\net6.0\PlatinumGym.API.deps.json
+D:\Repo\PlatinumGymPro\PlatinumGym.API\bin\Debug\net6.0\PlatinumGym.API.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.API\bin\Debug\net6.0\ref\PlatinumGym.API.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.API\bin\Debug\net6.0\PlatinumGym.API.pdb
+D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.AssemblyInfoInputs.cache
+D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.AssemblyInfo.cs
+D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.csproj.CoreCompileInputs.cache
+D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\ref\PlatinumGym.API.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.pdb
+D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.csproj.AssemblyReference.cache

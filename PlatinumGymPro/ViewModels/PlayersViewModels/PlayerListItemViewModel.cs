@@ -1,5 +1,5 @@
-﻿using PlatinumGymPro.Commands;
-using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models.Player;
+using PlatinumGymPro.Commands;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
@@ -17,10 +17,10 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
     public class PlayerListItemViewModel : ViewModelBase
     {
         public Player Player;
-        private readonly PlayerStore _playerStore;
+        //private readonly PlayerStore _playerStore;
         private readonly NavigationStore _navigationStore;
-        private readonly TrainerStore _trainerStore;
-        private readonly SportStore _sportStore;
+        //private readonly TrainerStore _trainerStore;
+        //private readonly SportStore _sportStore;
         private readonly PlayerListViewModel playerListingViewModel;
         public int Id => Player.Id;
         public string? FullName => Player.FullName;
@@ -39,16 +39,16 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public PlayerListItemViewModel(Player player, PlayerStore playerStore, NavigationStore navigationStore, TrainerStore trainerStore, SportStore sportStore, PlayerListViewModel playerListingViewModel)
+        public PlayerListItemViewModel(Player player, NavigationStore navigationStore, PlayerListViewModel playerListingViewModel)
         {
             Player = player;
 
-            _playerStore = playerStore;
+            //_playerStore = playerStore;
             _navigationStore = navigationStore;
-            _trainerStore = trainerStore;
+            //_trainerStore = trainerStore;
             this.playerListingViewModel = playerListingViewModel;
-            _sportStore = sportStore;
-            EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(_navigationStore, () => new EditPlayerViewModel(_navigationStore,_playerStore,player)));
+            //_sportStore = sportStore;
+            EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(_navigationStore, () => new EditPlayerViewModel(_navigationStore,player)));
            
         }
 

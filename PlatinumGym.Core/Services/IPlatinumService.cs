@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGymPro.Services
+namespace PlatinumGym.Core.Services
 {
     public interface IPlatinumService
     {

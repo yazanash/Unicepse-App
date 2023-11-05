@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models.Employee;
+using PlatinumGym.Core.Models.Sport;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.SportsViewModels;
@@ -14,13 +15,13 @@ namespace PlatinumGymPro.Commands.SportsCommands
     public class SubmitSportCommand : AsyncCommandBase
     {
         private readonly NavigationService<SportListViewModel> navigationService;
-        private readonly SportStore _sportStore;
+        //private readonly SportStore _sportStore;
         private AddSportViewModel _addSportViewModel;
-        public SubmitSportCommand(NavigationService<SportListViewModel> navigationService, SportStore sportStore, AddSportViewModel addSportViewModel)
+        public SubmitSportCommand(NavigationService<SportListViewModel> navigationService, AddSportViewModel addSportViewModel)
         {
 
             this.navigationService = navigationService;
-            _sportStore = sportStore;
+            //_sportStore = sportStore;
             _addSportViewModel = addSportViewModel;
         }
         public override bool CanExecute(object? parameter)
@@ -49,7 +50,7 @@ namespace PlatinumGymPro.Commands.SportsCommands
                 trainers.Add(TrainerListItem.trainer);
             }
            
-            await _sportStore.Add(sport,trainers);
+            //await _sportStore.Add(sport,trainers);
           
           
 

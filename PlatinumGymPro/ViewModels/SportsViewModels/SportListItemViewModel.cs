@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models.Sport;
+//using PlatinumGymPro.Models;
 using PlatinumGymPro.Stores;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
     public class SportListItemViewModel : ViewModelBase
     {
         public Sport Sport;
-        private readonly SportStore _sportStore;
+        //private readonly SportStore _sportStore;
         private readonly NavigationStore _navigationStore;
         public int Id => Sport.Id;
         public string? SportName => Sport.Name;
@@ -26,11 +27,11 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public SportListItemViewModel(Sport sport, SportStore sportStore, NavigationStore navigationStore)
+        public SportListItemViewModel(Sport sport, NavigationStore navigationStore)
         {
             Sport = sport;
 
-            _sportStore = sportStore;
+            //_sportStore = sportStore;
             _navigationStore = navigationStore;
         }
 

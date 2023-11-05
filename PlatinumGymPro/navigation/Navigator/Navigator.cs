@@ -1,8 +1,7 @@
-﻿using PlatinumGymPro.Commands;
-using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models;
+using PlatinumGymPro.Commands;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
-using PlatinumGymPro.Stores.PlayerStores;
 using PlatinumGymPro.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,17 +15,17 @@ namespace PlatinumGymPro.State.Navigator
 {
     public class Navigator : ObservableObject, INavigator 
     {
-        private readonly PlayerStore _playerStore;
-        private readonly SportStore _sportStore;
-        private readonly TrainerStore _trainerStore;
+        //private readonly PlayerStore _playerStore;
+        //private readonly SportStore _sportStore;
+        //private readonly TrainerStore _trainerStore;
         private readonly NavigationStore _navigatorStore;
-        public Navigator(PlayerStore playerStore, SportStore sportStore, TrainerStore trainerStore, NavigationStore navigatorStore)
+        public Navigator( NavigationStore navigatorStore)
         {
-            _playerStore = playerStore;
-            _sportStore = sportStore;
-            _trainerStore = trainerStore;
+            //_playerStore = playerStore;
+            //_sportStore = sportStore;
+            //_trainerStore = trainerStore;
             _navigatorStore = navigatorStore;
-            LogoutCommand =  new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore,playerStore, sportStore, trainerStore)));
+            LogoutCommand = new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore)));
 
         }
 
@@ -46,8 +45,9 @@ namespace PlatinumGymPro.State.Navigator
             set { _isOpen = value; OnPropertChanged(nameof(IsOpen)); }
             
         }
-        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playerStore, _sportStore, _trainerStore);
+        //public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playerStore, _sportStore, _trainerStore);
         public ICommand LogoutCommand { get; }
 
+        public ICommand UpdateCurrentViewModelCommand => throw new NotImplementedException();
     }
 }
