@@ -15,17 +15,17 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
 {
     public class AddTrainerViewModel : ViewModelBase
     {
-        private readonly TrainerStore _trinerStore;
+        //private readonly TrainerStore _trinerStore;
         private readonly NavigationStore _navigationStore;
         private readonly TrainersListViewModel _trinersListViewModel;
 
-        public AddTrainerViewModel(TrainerStore trinerStore, NavigationStore navigationStore, TrainersListViewModel trinersListViewModel)
+        public AddTrainerViewModel( NavigationStore navigationStore, TrainersListViewModel trinersListViewModel)
         {
-            _trinerStore = trinerStore;
+            //_trinerStore = trinerStore;
             _navigationStore = navigationStore;
             _trinersListViewModel = trinersListViewModel;
             CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
-            SubmitCommand = new SubmitTrainerCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), trinerStore, this);
+            SubmitCommand = new SubmitTrainerCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
         }
 

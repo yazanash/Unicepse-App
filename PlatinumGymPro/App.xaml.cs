@@ -2,12 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PlatinumGymPro.DbContexts;
+using PlatinumGym.Entityframework.DbContexts;
 using PlatinumGymPro.HostBuilders;
-using PlatinumGymPro.Models;
+//using PlatinumGymPro.Models;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Services.PlayerConflictValidators;
-using PlatinumGymPro.Services.PlayerQueries;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels;
 using System;
@@ -41,17 +40,17 @@ namespace PlatinumGymPro
                    services.AddSingleton(new PlatinumGymDbContextFactory(CONNECTION_STRING));
                    //services.AddSingleton<IPlayerProvider, DatabasePlayerProvider>();
                    //services.AddSingleton<IPlayerCreator, DatabasePlayerCreator>();
-                   
-                   services.AddSingleton<IPlayerConflictValidator, DatabasePlayerConflictValidator>();
-                   //services.AddTransient<PlayersBook>();
-                   services.AddSingleton<PlayerDataService>();
-                   services.AddSingleton<Stores.PlayerStores.PlayerStore>();
-                   services.AddSingleton<SportServices>();
-                   services.AddSingleton<Stores.SportStore>();
 
-                   services.AddSingleton<GenericDataService<Employee>>();
-                   services.AddSingleton<Stores.TrainerStore>();
-                   services.AddSingleton<Stores.NavigationStore>();
+                   //services.AddSingleton<IPlayerConflictValidator, DatabasePlayerConflictValidator>();
+                   ////services.AddTransient<PlayersBook>();
+                   //services.AddSingleton<PlayerDataService>();
+                   //services.AddSingleton<Stores.PlayerStores.PlayerStore>();
+                   //services.AddSingleton<SportServices>();
+                   //services.AddSingleton<Stores.SportStore>();
+
+                   //services.AddSingleton<GenericDataService<Employee>>();
+                   //services.AddSingleton<Stores.TrainerStore>();
+                   //services.AddSingleton<Stores.NavigationStore>();
                    //services.AddSingleton((s) => new Gym(s.GetRequiredService<PlayersBook>()));
                    //services.AddSingleton<GymStore>();
                    //services.AddSingleton<ModalNavigationStore>();
@@ -73,7 +72,7 @@ namespace PlatinumGymPro
         }
 
 
-        protected  override void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
             _host.Start();
             PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
@@ -81,7 +80,7 @@ namespace PlatinumGymPro
             {
                 platinumGymDbContext.Database.Migrate();
             }
-            
+
             //NavigationService<PlayerListingViewModel> navigationService = _host.Services.GetRequiredService<NavigationService<PlayerListingViewModel>>();
             //navigationService.Navigate();
             MainWindow main = _host.Services.GetRequiredService<MainWindow>();

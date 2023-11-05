@@ -11,12 +11,12 @@ namespace PlatinumGymPro.Commands.SportsCommands
 {
     public class LoadSportsCommand : AsyncCommandBase
     {
-        private readonly SportStore _sportStore;
+        //private readonly SportStore _sportStore;
         private readonly SportListViewModel _sportListing;
 
-        public LoadSportsCommand(SportStore sportStore, SportListViewModel sportListing)
+        public LoadSportsCommand(SportListViewModel sportListing)
         {
-            _sportStore = sportStore;
+            //_sportStore = sportStore;
             _sportListing = sportListing;
         }
 
@@ -27,7 +27,7 @@ namespace PlatinumGymPro.Commands.SportsCommands
 
             try
             {
-                await _sportStore.Load();
+                //await _sportStore.Load();
             }
             catch (Exception)
             {

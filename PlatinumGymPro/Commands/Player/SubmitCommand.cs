@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Models;
+﻿//using PlatinumGymPro.Models;
+using PlatinumGym.Core.Models.Player;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores.PlayerStores;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
@@ -15,13 +16,13 @@ namespace PlatinumGymPro.Commands
     {
 
         private readonly NavigationService<PlayerListViewModel> navigationService;
-        private readonly PlayerStore _playerStore;
+        //private readonly PlayerStore _playerStore;
         private AddPlayerViewModel _addPlayerViewModel;
-        public SubmitCommand(NavigationService<PlayerListViewModel> navigationService, PlayerStore playerStore,AddPlayerViewModel addPlayerViewModel)
+        public SubmitCommand(NavigationService<PlayerListViewModel> navigationService,AddPlayerViewModel addPlayerViewModel)
         {
 
             this.navigationService = navigationService;
-            _playerStore = playerStore;
+            //_playerStore = playerStore;
             _addPlayerViewModel = addPlayerViewModel;
         }
         public override bool CanExecute(object? parameter)
@@ -45,7 +46,7 @@ namespace PlatinumGymPro.Commands
                 SubscribeEndDate = _addPlayerViewModel.SubscribeDate.AddDays(30),
                 Weight = _addPlayerViewModel.Weight,
             };
-            await _playerStore.Add(player);
+            //await _playerStore.Add(player);
             MessageBox.Show(player.FullName + " added successfully");
             navigationService.Navigate();
         }

@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Models;
+﻿//using PlatinumGymPro.Models;
+using PlatinumGym.Core.Models.Player;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores.PlayerStores;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
@@ -13,13 +14,13 @@ namespace PlatinumGymPro.Commands.PlayersCommands
     public class OpenEditPlayerCommand : CommandBase
     {
         private readonly NavigationService<EditPlayerViewModel> navigationService;
-        private readonly PlayerStore _playerStore;
+        //private readonly PlayerStore _playerStore;
         private PlayerListItemViewModel _playerListingItemViewModel;
 
-        public OpenEditPlayerCommand(NavigationService<EditPlayerViewModel> navigationService, PlayerStore playerStore, PlayerListItemViewModel playerListingItemViewModel)
+        public OpenEditPlayerCommand(NavigationService<EditPlayerViewModel> navigationService, PlayerListItemViewModel playerListingItemViewModel)
         {
             this.navigationService = navigationService;
-            _playerStore = playerStore;
+            //_playerStore = playerStore;
             _playerListingItemViewModel = playerListingItemViewModel;
         }
 

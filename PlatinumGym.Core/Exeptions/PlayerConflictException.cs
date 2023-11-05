@@ -1,4 +1,4 @@
-﻿using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGymPro.Exceptions
+namespace PlatinumGym.Core.Exceptions
 {
 
     public class PlayerConflictException : Exception

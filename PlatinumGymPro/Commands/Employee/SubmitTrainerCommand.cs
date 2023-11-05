@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models.Employee;
+//using PlatinumGymPro.Models;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.TrainersViewModels;
@@ -14,13 +15,13 @@ namespace PlatinumGymPro.Commands.TrainersCommands
     public class SubmitTrainerCommand : AsyncCommandBase
     {
         private readonly NavigationService<TrainersListViewModel> navigationService;
-        private readonly TrainerStore _trinerStore;
+        //private readonly TrainerStore _trinerStore;
         private AddTrainerViewModel _addTrainerViewModel;
 
-        public SubmitTrainerCommand(NavigationService<TrainersListViewModel> navigationService, TrainerStore trinerStore, AddTrainerViewModel addTrainerViewModel)
+        public SubmitTrainerCommand(NavigationService<TrainersListViewModel> navigationService,  AddTrainerViewModel addTrainerViewModel)
         {
             this.navigationService = navigationService;
-            _trinerStore = trinerStore;
+            //_trinerStore = trinerStore;
             _addTrainerViewModel = addTrainerViewModel;
         }
 
@@ -45,7 +46,7 @@ namespace PlatinumGymPro.Commands.TrainersCommands
                 StartDate = _addTrainerViewModel.StartDate,
                 Position = _addTrainerViewModel.Position,
             };
-            await _trinerStore.Add(employee);
+            //await _trinerStore.Add(employee);
             navigationService.Navigate();
         }
 

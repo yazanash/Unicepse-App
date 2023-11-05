@@ -1,6 +1,6 @@
 ﻿using PlatinumGymPro.Commands;
 using PlatinumGymPro.Commands.TrainersCommands;
-using PlatinumGymPro.Models;
+using PlatinumGym.Core.Models.Employee;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using System;
@@ -19,7 +19,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private readonly ObservableCollection<TrainerListItemViewModel> trainerListItemViewModels;
 
         private NavigationStore _navigatorStore;
-        private TrainerStore _trainerStore;
+        //private TrainerStore _trainerStore;
 
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
 
@@ -56,20 +56,20 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
 
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
-        public TrainersListViewModel(NavigationStore navigatorStore, TrainerStore trainerStore)
+        public TrainersListViewModel(NavigationStore navigatorStore)
         {
             _navigatorStore = navigatorStore;
-            _trainerStore = trainerStore;
-            LoadTrainerCommand = new LoadTrainersCommand(_trainerStore, this);
-            AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => new AddTrainerViewModel(_trainerStore,navigatorStore, this)));
+            //_trainerStore = trainerStore;
+            //LoadTrainerCommand = new LoadTrainersCommand(_trainerStore, this);
+            AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => new AddTrainerViewModel(navigatorStore, this)));
             trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
 
 
 
-            _trainerStore.TrainersLoaded += _trainerStore_TrainersLoaded;
-            _trainerStore.TrainerAdded += _trainerStore_TrainerAdded;
-            _trainerStore.TrainerUpdated += _trainerStore_TrainerUpdated;
-            _trainerStore.TrainerDeleted += _trainerStore_TrainerDeleted;
+            //_trainerStore.TrainersLoaded += _trainerStore_TrainersLoaded;
+            //_trainerStore.TrainerAdded += _trainerStore_TrainerAdded;
+            //_trainerStore.TrainerUpdated += _trainerStore_TrainerUpdated;
+            //_trainerStore.TrainerDeleted += _trainerStore_TrainerDeleted;
 
         }
 
@@ -103,18 +103,18 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         {
             trainerListItemViewModels.Clear();
 
-            foreach (Employee trainer in _trainerStore.Trainer)
-            {
-                AddTrainer(trainer);
-            }
+            //foreach (Employee trainer in _trainerStore.Trainer)
+            //{
+            //    AddTrainer(trainer);
+            //}
         }
 
         protected override void Dispose()
         {
-            _trainerStore.TrainersLoaded -= _trainerStore_TrainersLoaded;
-            _trainerStore.TrainerAdded -= _trainerStore_TrainerAdded;
-            _trainerStore.TrainerUpdated -= _trainerStore_TrainerUpdated;
-            _trainerStore.TrainerDeleted -= _trainerStore_TrainerDeleted;
+            //_trainerStore.TrainersLoaded -= _trainerStore_TrainersLoaded;
+            //_trainerStore.TrainerAdded -= _trainerStore_TrainerAdded;
+            //_trainerStore.TrainerUpdated -= _trainerStore_TrainerUpdated;
+            //_trainerStore.TrainerDeleted -= _trainerStore_TrainerDeleted;
             base.Dispose();
         }
 
@@ -125,12 +125,12 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private void AddTrainer(Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer, _trainerStore, _navigatorStore);
+                new TrainerListItemViewModel(trainer,  _navigatorStore);
             trainerListItemViewModels.Add(itemViewModel);
         }
-        public static TrainersListViewModel LoadViewModel(TrainerStore trainerStore, NavigationStore navigatorStore)
+        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore)
         {
-            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, trainerStore);
+            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore);
 
             viewModel.LoadTrainerCommand.Execute(null);
 

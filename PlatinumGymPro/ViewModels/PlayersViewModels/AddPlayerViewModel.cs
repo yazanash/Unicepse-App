@@ -16,13 +16,13 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
     public class AddPlayerViewModel : ViewModelBase
     {
         private readonly NavigationStore _navigationStore;
-        private readonly PlayerStore _playerStore;
-        public AddPlayerViewModel(NavigationStore navigationStore, PlayerStore playerStore,PlayerListViewModel playerListViewModel)
+        //private readonly PlayerStore _playerStore;
+        public AddPlayerViewModel(NavigationStore navigationStore,PlayerListViewModel playerListViewModel)
         {
             _navigationStore = navigationStore;
-            _playerStore = playerStore;
+            //_playerStore = playerStore;
             CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, ()=> playerListViewModel));
-            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel), _playerStore,this);
+            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel),this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
         }
 

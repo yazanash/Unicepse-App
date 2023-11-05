@@ -1,0 +1,17 @@
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\PlatinumGym.Entityframework.csproj.AssemblyReference.cache
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\PlatinumGym.Entityframework.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\PlatinumGym.Entityframework.AssemblyInfoInputs.cache
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\PlatinumGym.Entityframework.AssemblyInfo.cs
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\PlatinumGym.Entityframework.csproj.CoreCompileInputs.cache
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\bin\Debug\net6.0\PlatinumGym.Entityframework.deps.json
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\bin\Debug\net6.0\PlatinumGym.Entityframework.runtimeconfig.json
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\bin\Debug\net6.0\PlatinumGym.Entityframework.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\bin\Debug\net6.0\ref\PlatinumGym.Entityframework.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\bin\Debug\net6.0\PlatinumGym.Entityframework.pdb
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\bin\Debug\net6.0\PlatinumGym.Core.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\bin\Debug\net6.0\PlatinumGym.Core.pdb
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\PlatinumGym.Entityframework.csproj.CopyComplete
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\PlatinumGym.Entityframework.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\ref\PlatinumGym.Entityframework.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\PlatinumGym.Entityframework.pdb
+D:\Repo\PlatinumGymPro\PlatinumGym.Entityframework\obj\Debug\net6.0\PlatinumGym.Entityframework.genruntimeconfig.cache

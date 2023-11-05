@@ -1,7 +1,7 @@
 ﻿using PlatinumGymPro.Commands;
 using PlatinumGymPro.Commands.SportsCommands;
 using PlatinumGymPro.Commands.TrainersCommands;
-using PlatinumGymPro.Models;
+using PlatinumGym.Core.Models.Employee;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using System;
@@ -19,21 +19,21 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
     public class AddSportViewModel : ViewModelBase
     {
         private readonly NavigationStore _navigationStore;
-        private readonly SportStore _sportStore;
-        private readonly TrainerStore _trainerStore;
+        //private readonly SportStore _sportStore;
+        //private readonly TrainerStore _trainerStore;
         private readonly ObservableCollection<TrainersListItemViewModel> trainerListItemViewModels;
         public IEnumerable<TrainersListItemViewModel> TrainerList => trainerListItemViewModels;
-        public AddSportViewModel(NavigationStore navigationStore, SportStore sportStore, SportListViewModel sportListViewModel, TrainerStore trainerStore)
+        public AddSportViewModel(NavigationStore navigationStore, SportListViewModel sportListViewModel)
         {
             _navigationStore = navigationStore;
-            _sportStore = sportStore;
-            _trainerStore = trainerStore;
+            //_sportStore = sportStore;
+            //_trainerStore = trainerStore;
             CancelCommand = new NavaigateCommand<SportListViewModel>(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel));
-            this.SubmitCommand = new SubmitSportCommand(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel), _sportStore, this);
-            LoadTrainersCommand = new LoadTrainersForSportCommand(_trainerStore,this);
+            this.SubmitCommand = new SubmitSportCommand(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel), this);
+            //LoadTrainersCommand = new LoadTrainersForSportCommand(_trainerStore,this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             trainerListItemViewModels = new ObservableCollection<TrainersListItemViewModel>();
-            _trainerStore.TrainersLoaded += _trainerStore_TrainersLoaded;
+            //_trainerStore.TrainersLoaded += _trainerStore_TrainersLoaded;
         }
 
       
@@ -42,16 +42,16 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         {
             trainerListItemViewModels.Clear();
 
-            foreach (Employee trainer in _trainerStore.Trainer)
-            {
-                AddTrainer(trainer);
-            }
+            //foreach (Employee trainer in _trainerStore.Trainer)
+            //{
+            //    AddTrainer(trainer);
+            //}
         }
         private void AddTrainer(Employee trainer)
         {
-            TrainersListItemViewModel itemViewModel =
-                new TrainersListItemViewModel(trainer);
-            trainerListItemViewModels.Add(itemViewModel);
+            //TrainersListItemViewModel itemViewModel =
+            //    new TrainersListItemViewModel(trainer);
+            //trainerListItemViewModels.Add(itemViewModel);
         }
         private bool _isLoading;
         public bool IsLoading
@@ -166,9 +166,9 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
-        public static AddSportViewModel LoadViewModel(SportStore sportStore, NavigationStore navigatorStore,SportListViewModel sportListViewModel, TrainerStore trainerStore)
+        public static AddSportViewModel LoadViewModel( NavigationStore navigatorStore, SportListViewModel sportListViewModel )
         {
-            AddSportViewModel viewModel = new AddSportViewModel(navigatorStore, sportStore, sportListViewModel, trainerStore);
+            AddSportViewModel viewModel = new AddSportViewModel(navigatorStore, sportListViewModel);
 
             viewModel.LoadTrainersCommand.Execute(null);
 

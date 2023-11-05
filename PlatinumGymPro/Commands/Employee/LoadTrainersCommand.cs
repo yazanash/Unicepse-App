@@ -11,12 +11,12 @@ namespace PlatinumGymPro.Commands.TrainersCommands
     public class LoadTrainersCommand : AsyncCommandBase
     {
 
-        private readonly TrainerStore _trainerStore;
+        //private readonly TrainerStore _trainerStore;
         private readonly TrainersListViewModel _trainersListViewModel;
 
-        public LoadTrainersCommand(TrainerStore trainerStore, TrainersListViewModel trainersListViewModel)
+        public LoadTrainersCommand(TrainersListViewModel trainersListViewModel)
         {
-            this._trainerStore = trainerStore;
+            //this._trainerStore = trainerStore;
             this._trainersListViewModel = trainersListViewModel;
         }
 
@@ -27,7 +27,7 @@ namespace PlatinumGymPro.Commands.TrainersCommands
 
             try
             {
-                await _trainerStore.Load();
+                //await _trainerStore.Load();
             }
             catch (Exception)
             {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGymPro.Models
+namespace PlatinumGym.Core.Models
 {
     public class OrderBy
     {

@@ -11,13 +11,9 @@
         "dependencies": {
           "LoadingSpinner.WPF": "1.0.0",
           "MahApps.Metro.IconPacks.Material": "4.11.0",
-          "Microsoft.EntityFrameworkCore": "7.0.13",
-          "Microsoft.EntityFrameworkCore.Abstractions": "7.0.13",
-          "Microsoft.EntityFrameworkCore.Analyzers": "7.0.13",
-          "Microsoft.EntityFrameworkCore.Relational": "7.0.13",
-          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.13",
-          "Microsoft.EntityFrameworkCore.Tools": "7.0.13",
           "Microsoft.Extensions.Hosting": "7.0.0",
+          "PlatinumGym.Core": "1.0.0",
+          "PlatinumGym.Entityframework": "1.0.0",
           "SimpleModal.WPF": "1.0.0",
           "runtimepack.Microsoft.NETCore.App.Runtime.win-x64": "6.0.1",
           "runtimepack.Microsoft.WindowsDesktop.App.Runtime.win-x64": "6.0.1"
@@ -1099,14 +1095,6 @@
           }
         }
       },
-      "Humanizer.Core/2.14.1": {
-        "runtime": {
-          "lib/net6.0/Humanizer.dll": {
-            "assemblyVersion": "2.14.0.0",
-            "fileVersion": "2.14.1.48190"
-          }
-        }
-      },
       "LoadingSpinner.WPF/1.0.0": {
         "runtime": {
           "lib/netcoreapp3.1/LoadingSpinnerControl.dll": {
@@ -1190,20 +1178,6 @@
         }
       },
       "Microsoft.EntityFrameworkCore.Analyzers/7.0.13": {},
-      "Microsoft.EntityFrameworkCore.Design/7.0.13": {
-        "dependencies": {
-          "Humanizer.Core": "2.14.1",
-          "Microsoft.EntityFrameworkCore.Relational": "7.0.13",
-          "Microsoft.Extensions.DependencyModel": "7.0.0",
-          "Mono.TextTemplating": "2.2.1"
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.EntityFrameworkCore.Design.dll": {
-            "assemblyVersion": "7.0.13.0",
-            "fileVersion": "7.0.1323.51806"
-          }
-        }
-      },
       "Microsoft.EntityFrameworkCore.Relational/7.0.13": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "7.0.13",
@@ -1226,11 +1200,6 @@
             "assemblyVersion": "7.0.13.0",
             "fileVersion": "7.0.1323.51806"
           }
-        }
-      },
-      "Microsoft.EntityFrameworkCore.Tools/7.0.13": {
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore.Design": "7.0.13"
         }
       },
       "Microsoft.Extensions.Caching.Abstractions/7.0.0": {
@@ -1375,18 +1344,6 @@
       "Microsoft.Extensions.DependencyInjection.Abstractions/7.0.0": {
         "runtime": {
           "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
-            "assemblyVersion": "7.0.0.0",
-            "fileVersion": "7.0.22.51805"
-          }
-        }
-      },
-      "Microsoft.Extensions.DependencyModel/7.0.0": {
-        "dependencies": {
-          "System.Text.Encodings.Web": "7.0.0",
-          "System.Text.Json": "7.0.0"
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.Extensions.DependencyModel.dll": {
             "assemblyVersion": "7.0.0.0",
             "fileVersion": "7.0.22.51805"
           }
@@ -1711,17 +1668,6 @@
         }
       },
       "Microsoft.Win32.SystemEvents/6.0.0": {},
-      "Mono.TextTemplating/2.2.1": {
-        "dependencies": {
-          "System.CodeDom": "4.4.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Mono.TextTemplating.dll": {
-            "assemblyVersion": "2.2.0.0",
-            "fileVersion": "2.2.1.1"
-          }
-        }
-      },
       "runtime.any.System.Runtime/4.3.0": {
         "dependencies": {
           "System.Private.Uri": "4.3.0"
@@ -1736,7 +1682,6 @@
           }
         }
       },
-      "System.CodeDom/4.4.0": {},
       "System.Configuration.ConfigurationManager/6.0.1": {
         "dependencies": {
           "System.Security.Cryptography.ProtectedData": "6.0.0",
@@ -1878,6 +1823,23 @@
         "dependencies": {
           "System.Drawing.Common": "6.0.0"
         }
+      },
+      "PlatinumGym.Core/1.0.0": {
+        "runtime": {
+          "PlatinumGym.Core.dll": {}
+        }
+      },
+      "PlatinumGym.Entityframework/1.0.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "7.0.13",
+          "Microsoft.EntityFrameworkCore.Abstractions": "7.0.13",
+          "Microsoft.EntityFrameworkCore.Relational": "7.0.13",
+          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.13",
+          "PlatinumGym.Core": "1.0.0"
+        },
+        "runtime": {
+          "PlatinumGym.Entityframework.dll": {}
+        }
       }
     }
   },
@@ -1910,13 +1872,6 @@
       "sha512": "sha512-eHEiCO/8+MfNc9nH5dVew/+FvxdaGrkRL4OMNwIz0W79+wtJyEoeRlXJ3SrXhoy9XR58geBYKmzMR83VO7bcAw==",
       "path": "azure.identity/1.7.0",
       "hashPath": "azure.identity.1.7.0.nupkg.sha512"
-    },
-    "Humanizer.Core/2.14.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw==",
-      "path": "humanizer.core/2.14.1",
-      "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
     },
     "LoadingSpinner.WPF/1.0.0": {
       "type": "package",
@@ -1981,13 +1936,6 @@
       "path": "microsoft.entityframeworkcore.analyzers/7.0.13",
       "hashPath": "microsoft.entityframeworkcore.analyzers.7.0.13.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.Design/7.0.13": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-3DlpSAxQhuxlhblySbM5ujxHALRi5m25ORPGnKKW4LCY1CPleCStdMSRnUB53vnhWDJUX12eIIvprajN++c2Ag==",
-      "path": "microsoft.entityframeworkcore.design/7.0.13",
-      "hashPath": "microsoft.entityframeworkcore.design.7.0.13.nupkg.sha512"
-    },
     "Microsoft.EntityFrameworkCore.Relational/7.0.13": {
       "type": "package",
       "serviceable": true,
@@ -2001,13 +1949,6 @@
       "sha512": "sha512-86lPGt6HpkUgL+FHnu1nPmBmwvuBRqtYZPgj+sIhsF2OqRWOeQiXUjy3pspNgl1CK5goK5icjBAIlrl3LkMFuw==",
       "path": "microsoft.entityframeworkcore.sqlserver/7.0.13",
       "hashPath": "microsoft.entityframeworkcore.sqlserver.7.0.13.nupkg.sha512"
-    },
-    "Microsoft.EntityFrameworkCore.Tools/7.0.13": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Z2edRVeoCqvWdNNHHoqbiNhRBetXfh/GBAga6bXM0mmRWzYZ0Y8F+jUFWF/8BUdnbv/8RAafIkWLVMT0jdxMLQ==",
-      "path": "microsoft.entityframeworkcore.tools/7.0.13",
-      "hashPath": "microsoft.entityframeworkcore.tools.7.0.13.nupkg.sha512"
     },
     "Microsoft.Extensions.Caching.Abstractions/7.0.0": {
       "type": "package",
@@ -2092,13 +2033,6 @@
       "sha512": "sha512-h3j/QfmFN4S0w4C2A6X7arXij/M/OVw3uQHSOFxnND4DyAzO1F9eMX7Eti7lU/OkSthEE0WzRsfT/Dmx86jzCw==",
       "path": "microsoft.extensions.dependencyinjection.abstractions/7.0.0",
       "hashPath": "microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512"
-    },
-    "Microsoft.Extensions.DependencyModel/7.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-oONNYd71J3LzkWc4fUHl3SvMfiQMYUCo/mDHDEu76hYYxdhdrPYv6fvGv9nnKVyhE9P0h20AU8RZB5OOWQcAXg==",
-      "path": "microsoft.extensions.dependencymodel/7.0.0",
-      "hashPath": "microsoft.extensions.dependencymodel.7.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.FileProviders.Abstractions/7.0.0": {
       "type": "package",
@@ -2289,13 +2223,6 @@
       "path": "microsoft.win32.systemevents/6.0.0",
       "hashPath": "microsoft.win32.systemevents.6.0.0.nupkg.sha512"
     },
-    "Mono.TextTemplating/2.2.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-KZYeKBET/2Z0gY1WlTAK7+RHTl7GSbtvTLDXEZZojUdAPqpQNDL6tHv7VUpqfX5VEOh+uRGKaZXkuD253nEOBQ==",
-      "path": "mono.texttemplating/2.2.1",
-      "hashPath": "mono.texttemplating.2.2.1.nupkg.sha512"
-    },
     "runtime.any.System.Runtime/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -2316,13 +2243,6 @@
       "sha512": "sha512-dtTvUl6O2peKZz2oCh5Y6mRjYL+q/Izxm6+z/Nzdpbcgxdo/qTD39stwegu/sY0uBTAYGJEy2P9X8mwpOMM+rw==",
       "path": "simplemodal.wpf/1.0.0",
       "hashPath": "simplemodal.wpf.1.0.0.nupkg.sha512"
-    },
-    "System.CodeDom/4.4.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-2sCCb7doXEwtYAbqzbF/8UAeDRMNmPaQbU2q50Psg1J9KzumyVVCgKQY8s53WIPTufNT0DpSe9QRvVjOzfDWBA==",
-      "path": "system.codedom/4.4.0",
-      "hashPath": "system.codedom.4.4.0.nupkg.sha512"
     },
     "System.Configuration.ConfigurationManager/6.0.1": {
       "type": "package",
@@ -2491,6 +2411,16 @@
       "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
       "path": "system.windows.extensions/6.0.0",
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    },
+    "PlatinumGym.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PlatinumGym.Entityframework/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   },
   "runtimes": {
