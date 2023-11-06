@@ -1,0 +1,12 @@
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.AssemblyInfoInputs.cache
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.AssemblyInfo.cs
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.csproj.CoreCompileInputs.cache
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\bin\Debug\net6.0\PlatinumGym.Core.deps.json
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\bin\Debug\net6.0\PlatinumGym.Core.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\bin\Debug\net6.0\ref\PlatinumGym.Core.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\bin\Debug\net6.0\PlatinumGym.Core.pdb
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\ref\PlatinumGym.Core.dll
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.pdb
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.csproj.AssemblyReference.cache
