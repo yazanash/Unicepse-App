@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models.Player;
+//using PlatinumGymPro.Models;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
 using System;
@@ -15,7 +16,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
     public class EditPlayerViewModel : ViewModelBase
     {
         private readonly NavigationStore _navigationStore;
-        private readonly PlayerStore _playerStore;
+        //private readonly PlayerStore _playerStore;
 
 
         #region Properties
@@ -108,11 +109,11 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         #endregion
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
 
-        public EditPlayerViewModel(NavigationStore navigationStore, PlayerStore playerStore, Player player)
+        public EditPlayerViewModel(NavigationStore navigationStore, Player player)
         {
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             _navigationStore = navigationStore;
-            _playerStore = playerStore;
+            //_playerStore = playerStore;
             Id = player.Id;
             FullName = player.FullName;
             Phone = player.Phone;

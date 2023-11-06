@@ -1,4 +1,4 @@
-﻿using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models.Employee;
 using PlatinumGymPro.Stores;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
     public class TrainerListItemViewModel : ViewModelBase 
     {
         public  Employee Trainer;
-        private readonly TrainerStore _trainerStore;
+        //private readonly TrainerStore _trainerStore;
         private readonly NavigationStore _navigationStore;
         public int Id => Trainer.Id;
         public string? FullName => Trainer.FullName;
@@ -24,11 +24,11 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public TrainerListItemViewModel(Employee trainer, TrainerStore trainerStore, NavigationStore navigationStore)
+        public TrainerListItemViewModel(Employee trainer,  NavigationStore navigationStore)
         {
             Trainer = trainer;
 
-            _trainerStore = trainerStore;
+            //_trainerStore = trainerStore;
             _navigationStore = navigationStore;
         }
 

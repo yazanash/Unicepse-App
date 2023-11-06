@@ -16,10 +16,10 @@ namespace PlatinumGymPro.ViewModels
         public NavigationStore _navigatorStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
 
-        public AuthViewModel(NavigationStore navigatorStore, PlayerStore playerStore, SportStore sportStore, TrainerStore trainerStore)
+        public AuthViewModel(NavigationStore navigatorStore)
         {
             _navigatorStore= navigatorStore;
-            AuthCommand = new AuthCommand(new NavigationService<MainViewModel>(_navigatorStore, () => new MainViewModel(playerStore, sportStore, trainerStore,_navigatorStore)),this);
+            AuthCommand = new AuthCommand(new NavigationService<MainViewModel>(_navigatorStore, () => new MainViewModel(_navigatorStore)),this);
         }
         private bool _isLoading;
         public bool IsLoading

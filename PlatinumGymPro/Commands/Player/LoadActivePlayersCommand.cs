@@ -11,12 +11,12 @@ namespace PlatinumGymPro.Commands.HomeCommands
 {
     public class LoadActivePlayersCommand : AsyncCommandBase
     {
-        private readonly PlayersDailyStore _playersDailyStore;
+        //private readonly PlayersDailyStore _playersDailyStore;
         private readonly HomeViewModel _homeViewModel;
 
-        public LoadActivePlayersCommand(PlayersDailyStore playersDailyStore, HomeViewModel homeViewModel)
+        public LoadActivePlayersCommand( HomeViewModel homeViewModel)
         {
-            _playersDailyStore = playersDailyStore;
+            //_playersDailyStore = playersDailyStore;
             _homeViewModel = homeViewModel;
 
         }
@@ -28,7 +28,7 @@ namespace PlatinumGymPro.Commands.HomeCommands
             try
             {
 
-                await _playersDailyStore.LoadActivePlayerReport();
+                //await _playersDailyStore.LoadActivePlayerReport();
             }
             catch (Exception)
             {

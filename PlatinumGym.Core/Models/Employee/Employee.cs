@@ -1,4 +1,4 @@
-﻿using PlatinumGymPro.Models;
+﻿using PlatinumGym.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -1,4 +1,4 @@
-﻿using PlatinumGymPro.Models;
+﻿//using PlatinumGymPro.Models;
 using PlatinumGymPro.State.Navigator;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
@@ -19,11 +19,11 @@ namespace PlatinumGymPro.ViewModels
         //private readonly NavigationStore _navigationStore;
         public NavigationStore _navigatorStore;
 
-        public MainViewModel(PlayerStore playerStore, SportStore sportStore, TrainerStore trainerStore, NavigationStore navigatorStore)
+        public MainViewModel( NavigationStore navigatorStore)
         {
             _navigatorStore = navigatorStore;
 
-            Navigator = new Navigator(playerStore, sportStore, trainerStore, _navigatorStore);
+            Navigator = new Navigator( _navigatorStore);
             Navigator.CurrentViewModel = new HomeViewModel();
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }

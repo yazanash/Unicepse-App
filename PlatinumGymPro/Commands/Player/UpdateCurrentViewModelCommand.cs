@@ -16,15 +16,15 @@ namespace PlatinumGymPro.Commands
     public class UpdateCurrentViewModelCommand : CommandBase
     {
         public INavigator _navigator;
-        private readonly PlayerStore _playerStore;
-        private readonly SportStore _sportStore;
-        private readonly TrainerStore _trainerStore;
-        public UpdateCurrentViewModelCommand(INavigator navigator, PlayerStore playerStore, SportStore sportStore, TrainerStore trainerStore)
+        //private readonly PlayerStore _playerStore;
+        //private readonly SportStore _sportStore;
+        //private readonly TrainerStore _trainerStore;
+        public UpdateCurrentViewModelCommand(INavigator navigator)
         {
             _navigator = navigator;
-            _playerStore = playerStore;
-            _sportStore = sportStore;
-            _trainerStore = trainerStore;
+            //_playerStore = playerStore;
+            //_sportStore = sportStore;
+            //_trainerStore = trainerStore;
         }
 
         public override void Execute(object? parameter)
@@ -40,14 +40,14 @@ namespace PlatinumGymPro.Commands
                         break;
                     case ViewType.Players:
                        
-                        _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playerStore, _sportStore, _trainerStore);
+                        _navigator.CurrentViewModel = new PlayersPageViewModel(navigator);
                         break;
                     case ViewType.Sport:
 
-                        _navigator.CurrentViewModel = new SportsViewModel(navigator, _sportStore, _trainerStore);
+                        _navigator.CurrentViewModel = new SportsViewModel(navigator);
                         break;
                     case ViewType.Trainer:
-                        _navigator.CurrentViewModel = new TrainersViewModel(navigator, _trainerStore);
+                        _navigator.CurrentViewModel = new TrainersViewModel(navigator);
                         break;
                     case ViewType.Gym:
                         _navigator.CurrentViewModel = new GymViewModel();

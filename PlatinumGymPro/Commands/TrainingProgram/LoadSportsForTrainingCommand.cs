@@ -10,12 +10,12 @@ namespace PlatinumGymPro.Commands.TrainingCommands
 {
     public class LoadSportsForTrainingCommand : AsyncCommandBase
     {
-        private readonly SportStore _sportStore;
+        //private readonly SportStore _sportStore;
         private readonly AddTrainingViewModel _addTrainingViewModel;
 
-        public LoadSportsForTrainingCommand(SportStore sportStore, AddTrainingViewModel addTrainingViewModel)
+        public LoadSportsForTrainingCommand( AddTrainingViewModel addTrainingViewModel)
         {
-            this._sportStore = sportStore;
+            //this._sportStore = sportStore;
             this._addTrainingViewModel = addTrainingViewModel;
         }
 
@@ -26,7 +26,7 @@ namespace PlatinumGymPro.Commands.TrainingCommands
 
             try
             {
-                await _sportStore.Load();
+                //await _sportStore.Load();
             }
             catch (Exception)
             {
