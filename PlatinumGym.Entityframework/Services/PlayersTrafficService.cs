@@ -76,5 +76,10 @@ namespace PlatinumGym.Entityframework.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<DailyPlayerReport> CheckIfExistByName(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
