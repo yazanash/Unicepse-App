@@ -20,6 +20,11 @@ namespace PlatinumGym.Entityframework.Services
             _contextFactory = contextFactory;
         }
 
+        public Task<T> CheckIfExistByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<T> Create(T entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

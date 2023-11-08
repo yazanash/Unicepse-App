@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models;
 using PlatinumGym.Core.Models.Player;
 using PlatinumGym.Core.Services;
@@ -25,6 +26,9 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
         public async Task<Player> Create(Player entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Player existedPlayer = await CheckIfExistByName(entity.FullName!);
+            if(existedPlayer !=null)
+                throw new PlayerConflictException(existedPlayer,entity,"this player is existed");
             EntityEntry<Player> CreatedResult = await context.Set<Player>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;
@@ -43,6 +47,8 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new PlayerNotExistException();
             return entity!;
         }
 
@@ -99,6 +105,13 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
         public Task<IEnumerable<Player>> GetByFilterAll(Filter filter)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Player> CheckIfExistByName(string name)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.FullName == name);
+            return entity;
         }
     }
 }

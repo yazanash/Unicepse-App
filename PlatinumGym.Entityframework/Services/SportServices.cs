@@ -23,6 +23,10 @@ namespace PlatinumGym.Entityframework.Services
             _contextFactory = contextFactory;
         }
 
+        public Task<Sport> CheckIfExistByName(string name)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<Sport> Create(Sport entity,List<Employee> trainers)
         {
