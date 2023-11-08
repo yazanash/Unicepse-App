@@ -128,5 +128,29 @@ namespace Platinum.Test.DataServices_test
             Assert.ThrowsAsync<PlayerNotExistException>(
                async () => await playerDataService!.Update(expected_player));
         }
+
+        [Test]
+        public async Task DeletePlayer()
+        {
+            //Arrange
+            Player expected_player = playerFactory!.FakePlayer();
+            //Act
+            Player test_player = await playerDataService!.Create(expected_player);
+            await playerDataService.Delete(test_player.Id);
+            //Assert
+            Assert.ThrowsAsync<PlayerNotExistException>(
+               async () => await playerDataService!.Get(test_player.Id));
+        }
+
+        [Test]
+        public void DeleteNotExistPlayer()
+        {
+            //Arrange
+            Player expected_player = playerFactory!.FakePlayer();
+            //Act
+            //Assert
+            Assert.ThrowsAsync<PlayerNotExistException>(
+               async () => await playerDataService.Delete(expected_player.Id));
+        }
     }
 }

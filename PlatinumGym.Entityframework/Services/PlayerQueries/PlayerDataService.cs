@@ -38,6 +38,8 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new PlayerNotExistException();
             context.Set<Player>().Remove(entity!);
             await context.SaveChangesAsync();
             return true;
