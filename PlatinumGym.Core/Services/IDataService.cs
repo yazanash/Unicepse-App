@@ -15,6 +15,6 @@ namespace PlatinumGym.Core.Services
         Task<T> Create(T entity);
         Task<T> Update(T entity);
         Task<bool> Delete(int id);
-
+        Task<T> CheckIfExistByName(string name);
     }
 }
