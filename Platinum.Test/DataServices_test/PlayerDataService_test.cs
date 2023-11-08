@@ -37,18 +37,24 @@ namespace Platinum.Test.DataServices_test
         [OneTimeTearDown]
         public void Onetimetear()
         {
-           
+            using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
+            {
+                var players = platinumGymDbContext.Players.ToList();
+                platinumGymDbContext.Players.RemoveRange(players);
+                platinumGymDbContext.SaveChanges();
+                var x = platinumGymDbContext.Players.Count();
+            }
         }
 
         [SetUp]
         public void SetUp()
         {
-           
+
         }
         [TearDown]
         public void TearDown()
         {
-            
+
         }
 
         [Test]
@@ -96,6 +102,31 @@ namespace Platinum.Test.DataServices_test
             //Assert
             Assert.ThrowsAsync<PlayerNotExistException>(
                 async () => await playerDataService!.Get(expected_player.Id));
+        }
+        [Test]
+        public async Task UpdatePlayer()
+        {
+            //Arrange
+            Player expected_player = playerFactory!.FakePlayer();
+            //Act
+            Player test_player = await playerDataService!.Create(expected_player);
+            Player actual_player = await playerDataService.Get(test_player.Id);
+            actual_player.FullName = "updated Name";
+            Player updated_player = await playerDataService.Update(actual_player);
+            //Assert
+            Assert.AreEqual(actual_player.FullName, updated_player.FullName);
+        }
+
+        [Test]
+        public void UpdateNotExistPlayer()
+        {
+            //Arrange
+            Player expected_player = playerFactory!.FakePlayer();
+            //Act
+            expected_player.FullName = "updated Name";
+            //Assert
+            Assert.ThrowsAsync<PlayerNotExistException>(
+               async () => await playerDataService!.Update(expected_player));
         }
     }
 }

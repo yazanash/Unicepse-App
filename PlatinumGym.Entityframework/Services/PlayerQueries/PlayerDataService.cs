@@ -95,7 +95,9 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
         public async Task<Player> Update(Player entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-
+            Player existedPlayer = await Get(entity.Id);
+            if (existedPlayer == null)
+                throw new PlayerConflictException(existedPlayer, entity, "this player is existed");
             context.Set<Player>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
