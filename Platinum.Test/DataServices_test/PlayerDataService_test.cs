@@ -37,13 +37,7 @@ namespace Platinum.Test.DataServices_test
         [OneTimeTearDown]
         public void Onetimetear()
         {
-            using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
-            {
-                var players = platinumGymDbContext.Players.ToList();
-                platinumGymDbContext.Players.RemoveRange(players);
-                platinumGymDbContext.SaveChanges();
-                var x = platinumGymDbContext.Players.Count();
-            }
+           
         }
 
         [SetUp]
@@ -54,7 +48,25 @@ namespace Platinum.Test.DataServices_test
         [TearDown]
         public void TearDown()
         {
+            using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
+            {
+                var players = platinumGymDbContext.Players.ToList();
+                platinumGymDbContext.Players.RemoveRange(players);
+                platinumGymDbContext.SaveChanges();
+                var x = platinumGymDbContext.Players.Count();
+            }
+        }
 
+        /// <summary>
+        /// Helper functions
+        /// </summary>
+        
+        public async Task create_players(int count)
+        {
+            for(int i = 0; i < count; i++)
+            {
+                Player actual_player = await playerDataService!.Create(playerFactory!.FakePlayer());
+            }
         }
 
         [Test]
@@ -151,6 +163,18 @@ namespace Platinum.Test.DataServices_test
             //Assert
             Assert.ThrowsAsync<PlayerNotExistException>(
                async () => await playerDataService.Delete(expected_player.Id));
+        }
+
+        [Test]
+        public async Task ListAllPlayers()
+        {
+            //Arrange
+            int count = 5;
+            //Act
+            await create_players(count);
+            var players = await playerDataService.GetAll();
+            //Assert
+            Assert.AreEqual(players.Count(), count);
         }
     }
 }
