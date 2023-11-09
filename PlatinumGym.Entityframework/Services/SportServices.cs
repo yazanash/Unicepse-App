@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models;
 using PlatinumGym.Core.Models.Employee;
 using PlatinumGym.Core.Models.Sport;
@@ -23,15 +24,20 @@ namespace PlatinumGym.Entityframework.Services
             _contextFactory = contextFactory;
         }
 
-        public Task<Sport> CheckIfExistByName(string name)
+        public async Task<Sport> CheckIfExistByName(string name)
         {
-            throw new NotImplementedException();
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Sport? entity = await context.Set<Sport>().FirstOrDefaultAsync((e) => e.Name == name);
+            return entity;
         }
 
         public async Task<Sport> Create(Sport entity,List<Employee> trainers)
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
+                Sport existed_sport = await CheckIfExistByName(entity.Name!);
+                if (existed_sport != null)
+                    throw new SportConflictException();
                 foreach (Employee emp in trainers)
                 {
                     var trainer = context.Employees?.Find(emp.Id);
@@ -47,6 +53,9 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
+                Sport existed_sport = await CheckIfExistByName(entity.Name!);
+                if (existed_sport != null)
+                    throw new SportConflictException();
                 EntityEntry<Sport> CreatedResult = await context.Set<Sport>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
@@ -57,9 +66,13 @@ namespace PlatinumGym.Entityframework.Services
             throw new NotImplementedException();
         }
 
-        public Task<Sport> Get(int id)
+        public async Task<Sport> Get(int id)
         {
-            throw new NotImplementedException();
+            //using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            //Sport? entity = await context.Set<Sport>().FirstOrDefaultAsync((e) => e.Id == id);
+            //if (entity == null)
+            //    throw new NotExistException();
+            //return entity!;
         }
 
         public async Task<IEnumerable<Sport>> GetAll()
@@ -76,9 +89,15 @@ namespace PlatinumGym.Entityframework.Services
             throw new NotImplementedException();
         }
 
-        public Task<Sport> Update(Sport entity)
+        public async Task<Sport> Update(Sport entity)
         {
-            throw new NotImplementedException();
+            //////using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            //////Sport existed_sport = await Get(entity.Id);
+            //////if (existed_sport == null)
+            //////    throw new NotExistException();
+            //////context.Set<Sport>().Update(entity);
+            //////await context.SaveChangesAsync();
+            //////return entity;
         }
     }
 }
