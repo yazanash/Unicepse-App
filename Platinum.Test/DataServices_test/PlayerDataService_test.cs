@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +16,9 @@ namespace Platinum.Test.DataServices_test
     [TestFixture]
     public class PlayerDataService_test
     {
-        PlatinumGymDbContextFactory? db;
-        PlayerFactory? playerFactory;
-        PlayerDataService? playerDataService;
+        PlatinumGymDbContextFactory db;
+        PlayerFactory playerFactory;
+        PlayerDataService playerDataService;
 
         [OneTimeSetUp]
         public void OnetimeSetUp()
@@ -50,10 +50,10 @@ namespace Platinum.Test.DataServices_test
         {
             using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
             {
-                var players = platinumGymDbContext.Players.ToList();
-                platinumGymDbContext.Players.RemoveRange(players);
+                var players = platinumGymDbContext.Players!.ToList();
+                platinumGymDbContext.Players!.RemoveRange(players);
                 platinumGymDbContext.SaveChanges();
-                var x = platinumGymDbContext.Players.Count();
+                var x = platinumGymDbContext.Players!.Count();
             }
         }
 
@@ -68,8 +68,32 @@ namespace Platinum.Test.DataServices_test
                 Player actual_player = await playerDataService!.Create(playerFactory!.FakePlayer());
             }
         }
-
+        
+        public async Task create_female_players(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Player player = playerFactory!.FakePlayer();
+                player.GenderMale = false;
+                Player actual_player = await playerDataService!.Create(player);
+            }
+        }
+        public async Task create_players_withdebt(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Player player = playerFactory!.FakePlayer();
+                player.Balance = 80000;
+                Player actual_player = await playerDataService!.Create(player);
+            }
+        }
+        /// 
+        /// 
+        /// T E S T  C A S E S
+        /// 
+        /// 
         [Test]
+        /// it should create player and assert that is created
         public async Task CreatePlayer()
         {
             //Arrange
@@ -81,6 +105,7 @@ namespace Platinum.Test.DataServices_test
         }
 
         [Test]
+        /// it should try create an existing player and throw exception
         public async Task CreateExistingPlayer()
         {
             Player expected_player = playerFactory!.FakePlayer();
@@ -93,6 +118,7 @@ namespace Platinum.Test.DataServices_test
         }
 
         [Test]
+        /// it should get player info and assert it informations
         public async Task GetPlayer()
         {
             //Arrange
@@ -105,6 +131,7 @@ namespace Platinum.Test.DataServices_test
         }
 
         [Test]
+        /// it should try get not exist player and throw exception 
         public void GetNotExistPlayer()
         {
             //Arrange
@@ -116,6 +143,7 @@ namespace Platinum.Test.DataServices_test
                 async () => await playerDataService!.Get(expected_player.Id));
         }
         [Test]
+        /// it should update player and assert it information updated 
         public async Task UpdatePlayer()
         {
             //Arrange
@@ -130,6 +158,7 @@ namespace Platinum.Test.DataServices_test
         }
 
         [Test]
+        /// it should try update not exist player and throw exception
         public void UpdateNotExistPlayer()
         {
             //Arrange
@@ -142,6 +171,7 @@ namespace Platinum.Test.DataServices_test
         }
 
         [Test]
+        /// it should delete player and assert it deleted
         public async Task DeletePlayer()
         {
             //Arrange
@@ -155,6 +185,7 @@ namespace Platinum.Test.DataServices_test
         }
 
         [Test]
+        /// it should try delete not exist player and throw exception
         public void DeleteNotExistPlayer()
         {
             //Arrange
@@ -166,6 +197,7 @@ namespace Platinum.Test.DataServices_test
         }
 
         [Test]
+        /// it should List all players
         public async Task ListAllPlayers()
         {
             //Arrange
@@ -175,6 +207,34 @@ namespace Platinum.Test.DataServices_test
             var players = await playerDataService.GetAll();
             //Assert
             Assert.AreEqual(players.Count(), count);
+        }
+
+        [Test]
+        /// it should List female players
+        public async Task ListAllFemalePlayers()
+        {
+            //Arrange
+            int count = 5;
+            //Act
+            await create_female_players(count);
+            var players = await playerDataService.GetByGender(false);
+            //Assert
+            foreach (var player in players.ToList())
+                Assert.AreEqual(player.GenderMale, false);
+        }
+
+        [Test]
+        /// it should List players hich have debt
+        public async Task ListPlayersHasDebt()
+        {
+            //Arrange
+            int count = 5;
+            //Act
+            await create_players_withdebt(count);
+            var players = await playerDataService.GetByDebt();
+            //Assert
+            foreach (var player in players.ToList())
+                Assert.Greater(player.Balance, 0);
         }
     }
 }
