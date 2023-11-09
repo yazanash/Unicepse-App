@@ -91,13 +91,13 @@ namespace PlatinumGym.Entityframework.Services
 
         public async Task<Sport> Update(Sport entity)
         {
-            //////using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            //////Sport existed_sport = await Get(entity.Id);
-            //////if (existed_sport == null)
-            //////    throw new NotExistException();
-            //////context.Set<Sport>().Update(entity);
-            //////await context.SaveChangesAsync();
-            //////return entity;
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Sport existed_sport = await Get(entity.Id);
+            if (existed_sport == null)
+                throw new NotExistException();
+            context.Set<Sport>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
         }
     }
 }
