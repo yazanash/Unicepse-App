@@ -14,7 +14,7 @@ using PlatinumGym.Core.Exceptions;
 namespace Platinum.Test.DataServices_test
 {
     [TestFixture]
-    public class PlayerDataService_test
+    public class PlayerDataServiceTest
     {
         PlatinumGymDbContextFactory db;
         PlayerFactory playerFactory;
