@@ -78,6 +78,8 @@ namespace Platinum.Test.DataServices_test
                 () => sportDataService.Create(actual_sport));
         }
 
+
+
         //[Test]
         ///// it should get sport info and assert it informations
         //public async Task GetSport()
@@ -103,33 +105,58 @@ namespace Platinum.Test.DataServices_test
         //    Assert.ThrowsAsync<NotExistException>(
         //        async () => await sportDataService!.Get(expected_sport.Id));
         //}
-        //[Test]
-        ///// it should update sport and assert it information updated 
-        //public async Task UpdateSport()
-        //{
-        //    //Arrange
-        //    Sport expected_sport = sportFactory!.FakeSport();
-        //    //Act
-        //    Sport test_sport = await sportDataService!.Create(expected_sport);
-        //    Sport actual_sport = await sportDataService.Get(test_sport.Id);
-        //    actual_sport.Name = "updated Name";
-        //    Sport updated_sport = await sportDataService.Update(actual_sport);
-        //    //Assert
-        //    Assert.AreEqual(actual_sport.Name, updated_sport.Name);
-        //}
+        [Test]
+        /// it should update sport and assert it information updated 
+        public async Task UpdateSport()
+        {
+            //Arrange
+            Sport expected_sport = sportFactory!.FakeSport();
+            //Act
+            Sport test_sport = await sportDataService!.Create(expected_sport);
+            Sport actual_sport = await sportDataService.Get(test_sport.Id);
+            actual_sport.Name = "updated Name";
+            Sport updated_sport = await sportDataService.Update(actual_sport);
+            //Assert
+            Assert.AreEqual(actual_sport.Name, updated_sport.Name);
+        }
 
-        //[Test]
-        ///// it should try update not exist sport and throw exception
-        //public void UpdateNotExistSport()
-        //{
-        //    //Arrange
-        //    Sport expected_sport = sportFactory!.FakeSport();
-        //    //Act
-        //    expected_sport.Name = "updated Name";
-        //    //Assert
-        //    Assert.ThrowsAsync<NotExistException>(
-        //       async () => await sportDataService!.Update(expected_sport));
-        //}
+        [Test]
+        /// it should try update not exist sport and throw exception
+        public void UpdateNotExistSport()
+        {
+            //Arrange
+            Sport expected_sport = sportFactory!.FakeSport();
+            //Act
+            expected_sport.Name = "updated Name";
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await sportDataService!.Update(expected_sport));
+        }
 
+        [Test]
+        /// it should delete player and assert it deleted
+        public async Task DeleteSport()
+        {
+            //Arrange
+            Sport expected_sport = sportFactory!.FakeSport();
+            //Act
+            Sport test_sport = await sportDataService!.Create(expected_sport);
+            await sportDataService.Delete(test_sport.Id);
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await sportDataService!.Get(test_sport.Id));
+        }
+
+        [Test]
+        /// it should try delete not exist player and throw exception
+        public void DeleteNotExistSport()
+        {
+            //Arrange
+            Sport expected_player = sportFactory!.FakeSport();
+            //Act
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await sportDataService.Delete(expected_player.Id));
+        }
     }
 }
