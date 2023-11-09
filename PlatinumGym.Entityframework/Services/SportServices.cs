@@ -61,9 +61,15 @@ namespace PlatinumGym.Entityframework.Services
                 return CreatedResult.Entity;
             }
         }
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Sport? entity = await context.Set<Sport>().FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            context.Set<Sport>().Remove(entity!);
+            await context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<Sport> Get(int id)
@@ -73,6 +79,7 @@ namespace PlatinumGym.Entityframework.Services
             //if (entity == null)
             //    throw new NotExistException();
             //return entity!;
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Sport>> GetAll()
