@@ -62,9 +62,13 @@ namespace PlatinumGym.Entityframework.Services
             return entity!;
         }
 
-        public Task<IEnumerable<Employee>> GetAll()
+        public async Task<IEnumerable<Employee>> GetAll()
         {
-            throw new NotImplementedException();
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Employee>? entities = await context.Set<Employee>().ToListAsync();
+                return entities;
+            }
         }
 
         public async Task<Employee> Update(Employee entity)

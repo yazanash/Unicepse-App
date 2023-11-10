@@ -54,7 +54,15 @@ namespace Platinum.Test.DataServices_test
                 var employee = platinumGymDbContext.Employees!.ToList();
                 platinumGymDbContext.Employees!.RemoveRange(employee);
                 platinumGymDbContext.SaveChanges();
-                var x = platinumGymDbContext.Players!.Count();
+                var x = platinumGymDbContext.Employees!.Count();
+            }
+        }
+
+        private async Task create_employee(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Employee actual_employee = await employeeDataService!.Create(employeeFactory!.FakeEmployee());
             }
         }
 
@@ -151,6 +159,17 @@ namespace Platinum.Test.DataServices_test
             //Assert
             Assert.ThrowsAsync<NotExistException>(
                async () => await employeeDataService.Delete(expected_player.Id));
+        }
+        [Test]
+        public async Task ListAllEmployees()
+        {
+            //Arrange
+            int count = 5;
+            //Act
+            await create_employee(count);
+            var employees = await employeeDataService.GetAll();
+            //Assert
+            Assert.AreEqual(employees.Count(), count);
         }
 
     }
