@@ -166,7 +166,7 @@ namespace Platinum.Test.DataServices_test
             //Act
             expected_player.FullName = "updated Name";
             //Assert
-            Assert.ThrowsAsync<PlayerNotExistException>(
+            Assert.ThrowsAsync<NotExistException>(
                async () => await playerDataService!.Update(expected_player));
         }
 

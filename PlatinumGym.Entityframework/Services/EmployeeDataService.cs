@@ -61,9 +61,15 @@ namespace PlatinumGym.Entityframework.Services
             throw new NotImplementedException();
         }
 
-        public Task<Employee> Update(Employee entity)
+        public async Task<Employee> Update(Employee entity)
         {
-            throw new NotImplementedException();
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Employee existed_employee = await Get(entity.Id);
+            if (existed_employee == null)
+                throw new NotExistException();
+            context.Set<Employee>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
         }
     }
 }

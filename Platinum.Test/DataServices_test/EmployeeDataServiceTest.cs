@@ -99,5 +99,34 @@ namespace Platinum.Test.DataServices_test
             Assert.ThrowsAsync<NotExistException>(
                 async () => await employeeDataService!.Get(expected_employee.Id));
         }
+
+        [Test]
+        /// it should update player and assert it information updated 
+        public async Task UpdateEmployee()
+        {
+            //Arrange
+            Employee expected_player = employeeFactory!.FakeEmployee();
+            //Act
+            Employee test_player = await employeeDataService!.Create(expected_player);
+            Employee actual_employee = await employeeDataService.Get(test_player.Id);
+            actual_employee.FullName = "updated Name";
+            Employee updated_player = await employeeDataService.Update(actual_employee);
+            //Assert
+            Assert.AreEqual(actual_employee.FullName, updated_player.FullName);
+        }
+
+        [Test]
+        /// it should try update not exist player and throw exception
+        public void UpdateNotExistPlayer()
+        {
+            //Arrange
+            Employee expected_player = employeeFactory!.FakeEmployee();
+            //Act
+            expected_player.FullName = "updated Name";
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await employeeDataService!.Update(expected_player));
+        }
+
     }
 }
