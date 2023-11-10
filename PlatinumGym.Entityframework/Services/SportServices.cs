@@ -74,12 +74,11 @@ namespace PlatinumGym.Entityframework.Services
 
         public async Task<Sport> Get(int id)
         {
-            //using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            //Sport? entity = await context.Set<Sport>().FirstOrDefaultAsync((e) => e.Id == id);
-            //if (entity == null)
-            //    throw new NotExistException();
-            //return entity!;
-            throw new NotImplementedException();
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Sport? entity = await context.Set<Sport>().FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            return entity!;
         }
 
         public async Task<IEnumerable<Sport>> GetAll()
