@@ -73,5 +73,31 @@ namespace Platinum.Test.DataServices_test
             Assert.ThrowsAsync<ConflictException>(
                 () => employeeDataService.Create(actual_employee));
         }
+
+        [Test]
+        /// it should get player info and assert it informations
+        public async Task GetEmployee()
+        {
+            //Arrange
+            Employee expected_employee = employeeFactory!.FakeEmployee();
+            //Act
+            Employee test_employee = await employeeDataService!.Create(expected_employee);
+            Employee actual_employee = await employeeDataService.Get(test_employee.Id);
+            //Assert
+            Assert.AreEqual(expected_employee.FullName, actual_employee.FullName);
+        }
+
+        [Test]
+        /// it should try get not exist player and throw exception 
+        public void GetNotExistEmployee()
+        {
+            //Arrange
+            Employee expected_employee = employeeFactory!.FakeEmployee();
+            //Act
+
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+                async () => await employeeDataService!.Get(expected_employee.Id));
+        }
     }
 }

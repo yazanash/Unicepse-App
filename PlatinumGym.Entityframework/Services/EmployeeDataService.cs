@@ -47,9 +47,13 @@ namespace PlatinumGym.Entityframework.Services
             throw new NotImplementedException();
         }
 
-        public Task<Employee> Get(int id)
+        public async Task<Employee> Get(int id)
         {
-            throw new NotImplementedException();
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Employee? entity = await context.Set<Employee>().FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            return entity!;
         }
 
         public Task<IEnumerable<Employee>> GetAll()
