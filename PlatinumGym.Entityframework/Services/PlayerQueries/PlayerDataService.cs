@@ -106,10 +106,6 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
 
         }
 
-        public Task<IEnumerable<Player>> GetByFilterAll(Filter filter)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<Player> CheckIfExistByName(string name)
         {
