@@ -10,7 +10,6 @@ namespace PlatinumGym.Core.Services
     public interface IDataService<T> 
     {
         Task<IEnumerable<T>> GetAll();
-        Task<IEnumerable<T>> GetByFilterAll(Filter filter);
         Task<T> Get(int id);
         Task<T> Create(T entity);
         Task<T> Update(T entity);

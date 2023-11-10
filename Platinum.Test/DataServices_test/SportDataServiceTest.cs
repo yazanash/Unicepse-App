@@ -53,7 +53,7 @@ namespace Platinum.Test.DataServices_test
                 var sports = platinumGymDbContext.Sports!.ToList();
                 platinumGymDbContext.Sports!.RemoveRange(sports);
                 platinumGymDbContext.SaveChanges();
-                var x = platinumGymDbContext.Players!.Count();
+                var x = platinumGymDbContext.Sports!.Count();
             }
         }
 
@@ -171,15 +171,15 @@ namespace Platinum.Test.DataServices_test
 
         [Test]
         /// it should List all sport
-        public async Task ListAllPlayers()
+        public async Task ListAllSports()
         {
             //Arrange
             int count = 5;
             //Act
             await create_sport(count);
-            var players = await sportDataService.GetAll();
+            var sports = await sportDataService.GetAll();
             //Assert
-            Assert.AreEqual(players.Count(), count);
+            Assert.AreEqual(sports.Count(), count);
         }
 
       

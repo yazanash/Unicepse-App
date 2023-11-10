@@ -90,11 +90,6 @@ namespace PlatinumGym.Entityframework.Services
             }
         }
 
-        public Task<IEnumerable<Sport>> GetByFilterAll(Filter filter)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Sport> Update(Sport entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
