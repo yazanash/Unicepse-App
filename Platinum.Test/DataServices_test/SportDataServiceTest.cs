@@ -80,31 +80,32 @@ namespace Platinum.Test.DataServices_test
 
 
 
-        //[Test]
-        ///// it should get sport info and assert it informations
-        //public async Task GetSport()
-        //{
-        //    //Arrange
-        //    Sport expected_sport = sportFactory!.FakeSport();
-        //    //Act
-        //    Sport test_sport= await sportDataService!.Create(expected_sport);
-        //    Sport actual_sport = await sportDataService.Get(test_sport.Id);
-        //    //Assert
-        //    Assert.AreEqual(expected_sport.Name, actual_sport.Name);
-        //}
+        [Test]
+        /// it should get sport info and assert it informations
+        public async Task GetSport()
+        {
+            //Arrange
+            Sport expected_sport = sportFactory!.FakeSport();
+            //Act
+            Sport test_sport = await sportDataService!.Create(expected_sport);
+            Sport actual_sport = await sportDataService.Get(test_sport.Id);
+            //Assert
+            Assert.AreEqual(expected_sport.Name, actual_sport.Name);
+        }
 
-        //[Test]
-        ///// it should try get not exist sport and throw exception 
-        //public void GetNotExistSport()
-        //{
-        //    //Arrange
-        //    Sport expected_sport = sportFactory!.FakeSport();
-        //    //Act
+        [Test]
+        /// it should try get not exist sport and throw exception 
+        public void GetNotExistSport()
+        {
+            //Arrange
+            Sport expected_sport = sportFactory!.FakeSport();
+            //Act
 
-        //    //Assert
-        //    Assert.ThrowsAsync<NotExistException>(
-        //        async () => await sportDataService!.Get(expected_sport.Id));
-        //}
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+                async () => await sportDataService!.Get(expected_sport.Id));
+        }
+
         [Test]
         /// it should update sport and assert it information updated 
         public async Task UpdateSport()
