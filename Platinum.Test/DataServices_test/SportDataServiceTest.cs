@@ -50,12 +50,21 @@ namespace Platinum.Test.DataServices_test
         {
             using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
             {
-                var players = platinumGymDbContext.Players!.ToList();
-                platinumGymDbContext.Players!.RemoveRange(players);
+                var sports = platinumGymDbContext.Sports!.ToList();
+                platinumGymDbContext.Sports!.RemoveRange(sports);
                 platinumGymDbContext.SaveChanges();
                 var x = platinumGymDbContext.Players!.Count();
             }
         }
+
+        private async Task create_sport(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Sport actual_sport = await sportDataService!.Create(sportFactory!.FakeSport());
+            }
+        }
+
 
         [Test]
         public async Task CreateSport()
@@ -159,5 +168,20 @@ namespace Platinum.Test.DataServices_test
             Assert.ThrowsAsync<NotExistException>(
                async () => await sportDataService.Delete(expected_player.Id));
         }
+
+        [Test]
+        /// it should List all sport
+        public async Task ListAllPlayers()
+        {
+            //Arrange
+            int count = 5;
+            //Act
+            await create_sport(count);
+            var players = await sportDataService.GetAll();
+            //Assert
+            Assert.AreEqual(players.Count(), count);
+        }
+
+      
     }
 }
