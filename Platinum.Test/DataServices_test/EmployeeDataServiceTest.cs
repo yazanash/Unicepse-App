@@ -127,6 +127,31 @@ namespace Platinum.Test.DataServices_test
             Assert.ThrowsAsync<NotExistException>(
                async () => await employeeDataService!.Update(expected_player));
         }
+        [Test]
+        /// it should delete player and assert it deleted
+        public async Task DeleteEmployee()
+        {
+            //Arrange
+            Employee expected_emp = employeeFactory!.FakeEmployee();
+            //Act
+            Employee test_emp = await employeeDataService!.Create(expected_emp);
+            await employeeDataService.Delete(test_emp.Id);
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await employeeDataService!.Get(test_emp.Id));
+        }
+
+        [Test]
+        /// it should try delete not exist player and throw exception
+        public void DeleteNotExistEmployee()
+        {
+            //Arrange
+            Employee expected_player = employeeFactory!.FakeEmployee();
+            //Act
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await employeeDataService.Delete(expected_player.Id));
+        }
 
     }
 }
