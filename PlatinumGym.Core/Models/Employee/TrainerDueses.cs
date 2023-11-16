@@ -14,7 +14,7 @@ namespace PlatinumGym.Core.Models.Employee
       
         public Employee? Trainer { get; set; }
         public PlayerPayment? PlayerPayment { get; set; }
-        public PlayerTraining? PlayerTraining { get; set; }
+        public Subscription.Subscription? PlayerTraining { get; set; }
         public double Value { get; set; }
         public bool IsPrivate { get; set; }
         public DateTime From { get; set; }

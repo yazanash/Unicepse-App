@@ -9,4 +9,3 @@ D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.csproj.C
 D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.dll
 D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\ref\PlatinumGym.API.dll
 D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.pdb
-D:\Repo\PlatinumGymPro\PlatinumGym.API\obj\Debug\net6.0\PlatinumGym.API.csproj.AssemblyReference.cache
