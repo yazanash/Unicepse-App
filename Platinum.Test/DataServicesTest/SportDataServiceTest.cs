@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Platinum.Test.DataServices_test
+namespace Platinum.Test.DataServicesTest
 {
     [TestFixture]
     public class SportDataServiceTest
@@ -50,6 +50,8 @@ namespace Platinum.Test.DataServices_test
         {
             using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
             {
+                var subscriptions = platinumGymDbContext.Subscriptions!.ToList();
+                platinumGymDbContext.Subscriptions!.RemoveRange(subscriptions);
                 var sports = platinumGymDbContext.Sports!.ToList();
                 platinumGymDbContext.Sports!.RemoveRange(sports);
                 platinumGymDbContext.SaveChanges();

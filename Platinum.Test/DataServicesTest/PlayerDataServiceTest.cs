@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Platinum.Test.Fakes;
 using PlatinumGym.Core.Exceptions;
 
-namespace Platinum.Test.DataServices_test
+namespace Platinum.Test.DataServicesTest
 {
     [TestFixture]
     public class PlayerDataServiceTest
@@ -50,6 +50,8 @@ namespace Platinum.Test.DataServices_test
         {
             using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
             {
+                var subscriptions = platinumGymDbContext.Subscriptions!.ToList();
+                platinumGymDbContext.Subscriptions!.RemoveRange(subscriptions);
                 var players = platinumGymDbContext.Players!.ToList();
                 platinumGymDbContext.Players!.RemoveRange(players);
                 platinumGymDbContext.SaveChanges();
