@@ -13,7 +13,7 @@ namespace PlatinumGym.Core.Models.Payment
     {
        
         public Player.Player? Player { get; set; }
-        public PlayerTraining? PlayerTraining { get; set; }
+        public Subscription.Subscription? PlayerTraining { get; set; }
         public double Value { get; set; }
         public DateTime RefDate { get; set; }
     }

@@ -7,7 +7,7 @@ using PlatinumGym.Core.Models.Sport;
 
 namespace PlatinumGym.Core.Models.Subscription
 {
-    public class PlayerTraining : DomainObject
+    public class Subscription : DomainObject
     {
         public virtual Sport.Sport? Sport { get; set; }
         public DateTime LastCheck { get; set; }

@@ -14,6 +14,6 @@ namespace PlatinumGym.Core.Models.Payment
         public virtual Employee.Employee? Recipient { get; set; }
         public string? Des { get; set; }
         public DateTime PayDate { get; set; }
-        public PlayerTraining? Training { get; set; }
+        public Subscription.Subscription? Subscription { get; set; }
     }
 }

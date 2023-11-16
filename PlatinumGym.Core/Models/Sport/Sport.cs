@@ -21,7 +21,7 @@ namespace PlatinumGym.Core.Models.Sport
         public int DaysInWeek { get; set; }
         public double DailyPrice { get; set; }
         public ICollection<Employee.Employee>? Trainers { get; set; } 
-        public ICollection<PlayerTraining>? PlayerTrainings { get; set; } 
+        public ICollection<Subscription.Subscription>? PlayerTrainings { get; set; } 
         public int DaysCount { get; set; }
     }
 }
