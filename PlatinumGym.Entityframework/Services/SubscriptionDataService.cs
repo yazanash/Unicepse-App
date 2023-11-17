@@ -93,5 +93,22 @@ namespace PlatinumGym.Entityframework.Services
             await context.SaveChangesAsync();
             return entity;
         }
+        public async Task<Subscription> MoveToNewTrainer(Subscription entity,Employee trainer,DateTime movedate)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Subscription existed_subscription = await Get(entity.Id);
+            if (existed_subscription == null)
+                throw new NotExistException();
+            context.Attach(entity.Sport!);
+            context.Attach(entity.Player!);
+            context.Attach(trainer);
+            entity.PrevTrainer_Id = entity.Trainer!.Id;
+            entity.Trainer=trainer;
+            entity.IsMoved=true;
+            entity.LastCheck = movedate;
+            context.Set<Subscription>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
+        }
     }
 }
