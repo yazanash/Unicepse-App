@@ -29,7 +29,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Subscription? entity = await context.Set<Subscription>().FirstOrDefaultAsync((e) => e.Player.Id == subscription.Player.Id &&
-            e.Sport.Id==subscription.Sport.Id && e.EndDate >= subscription.RollDate);
+            e.Sport.Id == subscription.Sport.Id && e.EndDate >= subscription.RollDate);
             return entity;
         }
         public async Task<Subscription> Create(Subscription entity)
@@ -56,20 +56,30 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Subscription> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Subscription? entity = await context.Set<Subscription>().Include(e => e.Sport).Include(e=>e.Player).Include(e=>e.Trainer).FirstOrDefaultAsync((e) => e.Id == id);
+            Subscription? entity = await context.Set<Subscription>().Include(e => e.Sport).Include(e => e.Player).Include(e => e.Trainer).FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             return entity!;
         }
+
 
         public Task<IEnumerable<Subscription>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Subscription> Update(Subscription entity)
+        public async Task<Subscription> Update(Subscription entity)
         {
-            throw new NotImplementedException();
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Subscription existed_subscription = await Get(entity.Id);
+            if (existed_subscription == null)
+                throw new NotExistException();
+            context.Attach<Sport>(entity.Sport);
+            context.Attach<Player>(entity.Player);
+            context.Attach<Employee>(entity.Trainer);
+            context.Set<Subscription>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
         }
     }
 }

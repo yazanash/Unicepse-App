@@ -39,18 +39,18 @@ namespace PlatinumGym.Entityframework.DbContexts
         public DbSet<User>? Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Sport>()
-            //  .HasMany(c => c.Trainers)
-            //  .WithMany(e => e.Sports);
+            modelBuilder.Entity<Sport>()
+              .HasMany(c => c.Trainers)
+              .WithMany(e => e.Sports);
 
-            //modelBuilder.Entity<Subscription>()
-            //  .HasOne(c => c.Sport);
+            modelBuilder.Entity<Subscription>()
+              .HasOne(c => c.Sport);
 
-            //modelBuilder.Entity<Subscription>()
-            // .HasOne(c => c.Player);
+            modelBuilder.Entity<Subscription>()
+             .HasOne(c => c.Player);
 
-            //modelBuilder.Entity<Subscription>()
-            // .HasOne(c => c.Trainer);
+            modelBuilder.Entity<Subscription>()
+             .HasOne(c => c.Trainer);
             base.OnModelCreating(modelBuilder);
         }
     }
