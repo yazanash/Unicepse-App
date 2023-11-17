@@ -240,7 +240,7 @@ namespace Platinum.Test.DataServicesTest
         }
         [Test]
         /// it should List all sport
-        public async Task ListAllSports()
+        public async Task ListAllSubscriptions()
         {
             //Arrange
             int count = 5;
@@ -251,6 +251,24 @@ namespace Platinum.Test.DataServicesTest
             Assert.AreEqual(sports.Count(), count);
         }
 
-        
+        [Test]
+        /// it should List all sport
+        public async Task MoveSubscribtionToNewTrainer()
+        {
+            //Arrange
+            Player player = await create_player();
+            Sport sport = await create_sport();
+            Employee trainer = await create_trainer();
+            Subscription expected_subsciption = subscriptionFactory!.FakeSubscription(sport, player, trainer);
+            //Act
+            Subscription created_subscription = await subscriptionDataService!.Create(expected_subsciption);
+            Employee new_trainer = await create_trainer();
+            Subscription get_subscription = await subscriptionDataService!.Get(created_subscription.Id);
+            Subscription subscription = await subscriptionDataService.MoveToNewTrainer(get_subscription, new_trainer,DateTime.Now);
+            //Assert
+            Assert.AreEqual(subscription.PrevTrainer_Id, trainer.Id);
+            Assert.AreEqual(subscription.Trainer!.Id, new_trainer.Id);
+
+        }
     }
 }
