@@ -196,6 +196,37 @@ namespace Platinum.Test.DataServicesTest
             Assert.ThrowsAsync<NotExistException>(
                async () => await subscriptionDataService!.Update(expected_subscription));
         }
+        [Test]
+        /// it should delete player and assert it deleted
+        public async Task DeleteSubsciption()
+        {
+            //Arrange
+            Player player = await create_player();
+            Sport sport = await create_sport();
+            Employee trainer = await create_trainer();
+            Subscription expected_subsciption = subscriptionFactory!.FakeSubscription(sport, player, trainer);
+            //Act
+            Subscription test_subsciption = await subscriptionDataService!.Create(expected_subsciption);
+            await subscriptionDataService.Delete(test_subsciption.Id);
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await subscriptionDataService!.Get(test_subsciption.Id));
+        }
+
+        [Test]
+        /// it should try delete not exist player and throw exception
+        public async Task DeleteNotExistSubsciption()
+        {
+            //Arrange
+            Player player = await create_player();
+            Sport sport = await create_sport();
+            Employee trainer = await create_trainer();
+            Subscription expected_subsciption = subscriptionFactory!.FakeSubscription(sport, player, trainer);
+            //Act
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await subscriptionDataService!.Delete(expected_subsciption.Id));
+        }
 
     }
 }
