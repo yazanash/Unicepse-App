@@ -93,19 +93,36 @@ namespace PlatinumGym.Entityframework.Services
             await context.SaveChangesAsync();
             return entity;
         }
-        public async Task<Subscription> MoveToNewTrainer(Subscription entity,Employee trainer,DateTime movedate)
+        public async Task<Subscription> MoveToNewTrainer(Subscription entity, Employee trainer, DateTime movedate)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException();
+            if(existed_subscription.IsMoved)
+                throw new MovedBeforeException();
             context.Attach(entity.Sport!);
             context.Attach(entity.Player!);
             context.Attach(trainer);
             entity.PrevTrainer_Id = entity.Trainer!.Id;
-            entity.Trainer=trainer;
-            entity.IsMoved=true;
+            entity.Trainer = trainer;
+            entity.IsMoved = true;
             entity.LastCheck = movedate;
+            context.Set<Subscription>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
+        }
+        public async Task<Subscription> Stop(Subscription entity,DateTime stop_date)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Subscription existed_subscription = await Get(entity.Id);
+            if (existed_subscription == null)
+                throw new NotExistException();
+            entity.EndDate = stop_date;
+            entity.IsStopped = true;
+            int days = Convert.ToInt32((stop_date - entity.RollDate).TotalDays);
+            double dayPrice = entity.PriceAfterOffer / entity.Sport!.DaysCount;
+            entity.PriceAfterOffer = dayPrice * days;
             context.Set<Subscription>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
