@@ -81,6 +81,17 @@ namespace Platinum.Test.DataServicesTest
         /// H E L P E R  F U N C T I O N S
         ///
         /////////////////////////////////////////////////////
+        private async Task create_subscriptions(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Player player = await create_player();
+                Sport sport = await create_sport();
+                Employee trainer = await create_trainer();
+                Subscription actual_subscribtion = await subscriptionDataService!
+                    .Create(subscriptionFactory!.FakeSubscription(sport, player, trainer));
+            }
+        }
 
         public async Task<Player> create_player()
         {
@@ -227,6 +238,19 @@ namespace Platinum.Test.DataServicesTest
             Assert.ThrowsAsync<NotExistException>(
                async () => await subscriptionDataService!.Delete(expected_subsciption.Id));
         }
+        [Test]
+        /// it should List all sport
+        public async Task ListAllSports()
+        {
+            //Arrange
+            int count = 5;
+            //Act
+            await create_subscriptions(count);
+            var sports = await subscriptionDataService!.GetAll();
+            //Assert
+            Assert.AreEqual(sports.Count(), count);
+        }
 
+        
     }
 }
