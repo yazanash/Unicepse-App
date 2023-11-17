@@ -253,7 +253,7 @@ namespace Platinum.Test.DataServicesTest
 
         [Test]
         /// it should List all sport
-        public async Task MoveSubscribtionToNewTrainer()
+        public async Task MoveSubscriptionToNewTrainer()
         {
             //Arrange
             Player player = await create_player();
@@ -264,11 +264,53 @@ namespace Platinum.Test.DataServicesTest
             Subscription created_subscription = await subscriptionDataService!.Create(expected_subsciption);
             Employee new_trainer = await create_trainer();
             Subscription get_subscription = await subscriptionDataService!.Get(created_subscription.Id);
-            Subscription subscription = await subscriptionDataService.MoveToNewTrainer(get_subscription, new_trainer,DateTime.Now);
+            Subscription subscription = await subscriptionDataService.MoveToNewTrainer(get_subscription, new_trainer, DateTime.Now);
             //Assert
             Assert.AreEqual(subscription.PrevTrainer_Id, trainer.Id);
             Assert.AreEqual(subscription.Trainer!.Id, new_trainer.Id);
+        }
+        [Test]
+        public async Task Move_MovedSubscriptionToNewTrainer()
+        {
+            //Arrange
+            Player player = await create_player();
+            Sport sport = await create_sport();
+            Employee trainer = await create_trainer();
+            Subscription expected_subsciption = subscriptionFactory!.FakeSubscription(sport, player, trainer);
+            //Act
+            Subscription created_subscription = await subscriptionDataService!.Create(expected_subsciption);
+            Employee new_trainer = await create_trainer();
+            Subscription get_subscription = await subscriptionDataService!.Get(created_subscription.Id);
+            get_subscription.IsMoved = true;
+            Subscription subscription = await subscriptionDataService.MoveToNewTrainer(get_subscription, new_trainer, DateTime.Now);
+            //Assert
+            Assert.ThrowsAsync<MovedBeforeException>(
+               async () => await subscriptionDataService!.MoveToNewTrainer(get_subscription, new_trainer, DateTime.Now));
 
+        }
+
+        [Test]
+        /// it should List all sport
+        public async Task StopSubscription()
+        {
+            //Arrange
+            Player player = await create_player();
+            Sport sport = await create_sport();
+            Employee trainer = await create_trainer();
+            Subscription expected_subsciption = subscriptionFactory!.FakeSubscription(sport, player, trainer);
+            //Act
+            Subscription created_subscription = await subscriptionDataService!.Create(expected_subsciption);
+            DateTime stop_date = DateTime.Now;
+            Subscription get_subscription = await subscriptionDataService!.Get(expected_subsciption.Id);
+            Subscription stopped_subscription = await subscriptionDataService!.Stop(get_subscription, stop_date);
+
+            //Assert
+            int days = Convert.ToInt32((stop_date - created_subscription.RollDate).TotalDays);
+            double dayPrice = created_subscription.PriceAfterOffer / created_subscription.Sport!.DaysCount;
+            double price = dayPrice * days;
+            Assert.AreEqual(stopped_subscription.IsStopped, true);
+            Assert.AreEqual(stopped_subscription.EndDate, stop_date);
+            Assert.AreEqual(stopped_subscription.PriceAfterOffer, price);
         }
     }
 }
