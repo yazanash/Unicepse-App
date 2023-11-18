@@ -50,17 +50,6 @@ namespace Platinum.Test.DataServicesTest
             employeeDataService = new(db!);
         }
 
-        [OneTimeTearDown]
-        public void Onetimetear()
-        {
-
-        }
-
-        [SetUp]
-        public void SetUp()
-        {
-
-        }
         [TearDown]
         public void TearDown()
         {
