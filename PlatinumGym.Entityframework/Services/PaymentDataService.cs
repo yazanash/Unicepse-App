@@ -51,9 +51,15 @@ namespace PlatinumGym.Entityframework.Services
             throw new NotImplementedException();
         }
 
-        public Task<PlayerPayment> Update(PlayerPayment entity)
+        public async Task<PlayerPayment> Update(PlayerPayment entity)
         {
-            throw new NotImplementedException();
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            PlayerPayment existed_payment = await Get(entity.Id);
+            if (existed_payment == null)
+                throw new NotExistException();
+            context.Set<PlayerPayment>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
         }
     }
 }
