@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using PlatinumGym.Entityframework.DbContexts;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PlatinumGym.Core.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace PlatinumGym.Entityframework.Services
 {
@@ -34,9 +36,14 @@ namespace PlatinumGym.Entityframework.Services
             throw new NotImplementedException();
         }
 
-        public Task<PlayerPayment> Get(int id)
+        public async Task<PlayerPayment> Get(int id)
         {
-            throw new NotImplementedException();
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            PlayerPayment? entity = await context.Set<PlayerPayment>().Include(x=>x.Player)
+                .Include(x=>x.Subscription).FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            return entity!;
         }
 
         public Task<IEnumerable<PlayerPayment>> GetAll()

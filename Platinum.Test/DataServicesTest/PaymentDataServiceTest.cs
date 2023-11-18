@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Platinum.Test.Fakes;
+using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models.Employee;
 using PlatinumGym.Core.Models.Payment;
 using PlatinumGym.Core.Models.Player;
@@ -78,18 +79,6 @@ namespace Platinum.Test.DataServicesTest
         /// 
         ///////////////////////////////
 
-        //private async Task create_subscriptions(int count)
-        //{
-        //    for (int i = 0; i < count; i++)
-        //    {
-        //        Player player = await create_player();
-        //        Sport sport = await create_sport();
-        //        Employee trainer = await create_trainer();
-        //        Subscription actual_subscribtion = await subscriptionDataService!
-        //            .Create(subscriptionFactory!.FakeSubscription(sport, player, trainer));
-        //    }
-        //}
-
         public async Task<Player> create_player()
         {
             Player player = playerFactory!.FakePlayer();
@@ -129,10 +118,35 @@ namespace Platinum.Test.DataServicesTest
             // Act
             PlayerPayment created_payment = await paymentDataService!.Create(payment);
             // Assert
-            Assert.AreEqual(payment.Player!.Id , created_payment.Player.Id);
-            Assert.AreEqual(payment.Subscription!.Id, created_payment.Subscription.Id);
+            Assert.AreEqual(payment.Player!.Id , created_payment.Player!.Id);
+            Assert.AreEqual(payment.Subscription!.Id, created_payment.Subscription!.Id);
 
         }
-        
+
+        [Test]
+        public async Task GetPayment()
+        {
+            // Arrange
+            Subscription subscription = await create_subscription();
+            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            // Act
+            PlayerPayment created_payment = await paymentDataService!.Create(payment);
+            PlayerPayment get_payment = await paymentDataService!.Get(payment.Id);
+            // Assert
+            Assert.AreEqual(created_payment.Player!.Id, get_payment.Player!.Id);
+            Assert.AreEqual(created_payment.Subscription!.Id, get_payment.Subscription!.Id);
+
+        }
+        [Test]
+        public async Task GetNotExistPayment()
+        {
+            // Arrange
+            Subscription subscription = await create_subscription();
+            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            // Assert
+            Assert.ThrowsAsync<NotExistException>(
+                async () => await paymentDataService!.Get(payment.Id));
+
+        }
     }
 }
