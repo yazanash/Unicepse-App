@@ -37,5 +37,7 @@ namespace Platinum.Test.Fakes
               });
             return subscriptionFaker;
         }
+
+       
     }
 }
