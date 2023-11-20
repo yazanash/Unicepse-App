@@ -177,5 +177,31 @@ namespace Platinum.Test.DataServicesTest
                async () => await paymentDataService!.Update(payment));
 
         }
+
+        [Test]
+        public async Task DeletePayment()
+        {
+            // Arrange
+            Subscription subscription = await create_subscription();
+            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            PlayerPayment created_payment = await paymentDataService!.Create(payment);
+            // Act
+            await paymentDataService.Delete(created_payment.Id);
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await paymentDataService!.Get(created_payment.Id));
+
+        }
+        [Test]
+        public async Task DeleteNotExistPayment()
+        {
+            // Arrange
+            Subscription subscription = await create_subscription();
+            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await paymentDataService!.Delete(payment.Id));
+
+        }
     }
 }

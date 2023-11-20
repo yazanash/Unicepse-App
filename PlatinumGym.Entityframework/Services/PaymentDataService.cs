@@ -31,9 +31,15 @@ namespace PlatinumGym.Entityframework.Services
             return CreatedResult.Entity;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            PlayerPayment? entity = await context.Set<PlayerPayment>().FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            context.Set<PlayerPayment>().Remove(entity!);
+            await context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<PlayerPayment> Get(int id)
