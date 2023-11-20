@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models;
 using PlatinumGym.Core.Services;
 using PlatinumGym.Entityframework.DbContexts;
@@ -45,27 +46,29 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<T> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-                T? entity = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
-                return entity!;
+            T? entity = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            return entity!;
         }
 
         public async Task<IEnumerable<T>> GetAll()
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            
-                IEnumerable<T>? entities = await context.Set<T>().ToListAsync();
-                return entities;
-            
+
+            IEnumerable<T>? entities = await context.Set<T>().ToListAsync();
+            return entities;
+
         }
 
         public async Task<T> Update(T entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            
-                context.Set<T>().Update(entity);
-                await context.SaveChangesAsync();
-                return entity;
-            
+
+            context.Set<T>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
+
         }
     }
 }

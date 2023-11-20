@@ -9,6 +9,7 @@ using PlatinumGym.Entityframework.Services;
 using Platinum.Test.Fakes;
 using PlatinumGym.Entityframework.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using PlatinumGym.Core.Exceptions;
 
 namespace Platinum.Test.DataServicesTest
 {
@@ -54,7 +55,32 @@ namespace Platinum.Test.DataServicesTest
             Expenses actual_expenses = await expensesDataService!.Create(expected_expenses);
             Assert.AreEqual(expected_expenses.Value, actual_expenses.Value);
         }
-        
+
+        [Test]
+        // it should get a expenses 
+        public async Task GetExpenses()
+        {
+            // Arrange
+            Expenses expenses = expensesFactory!.FakeExpenses();
+            // Act
+            Expenses created_expenses = await expensesDataService!.Create(expenses);
+            Expenses get_expenses = await expensesDataService!.Get(expenses.Id);
+            // Assert
+            Assert.AreEqual(created_expenses.Value, get_expenses.Value);
+            Assert.AreEqual(created_expenses.Description, get_expenses.Description);
+
+        }
+        [Test]
+        // it should to try get a not exist expenses and throw not exist exception
+        public void GetNotExistExpenses()
+        {
+            // Arrange
+            Expenses expenses = expensesFactory!.FakeExpenses();
+            // Assert
+            Assert.ThrowsAsync<NotExistException>(
+                async () => await expensesDataService!.Get(expenses.Id));
+
+        }
 
     }
 }
