@@ -69,18 +69,22 @@ namespace Platinum.Test.DataServicesTest
 
 
         [Test]
+        //it should create a sport and assert that created
         public async Task CreateSport()
         {
+            //Arrange 
             Sport expected_sport = sportFactory.FakeSport();
-
+            //Act
             Sport actual_sport = await sportDataService.Create(expected_sport);
-
+            //assert
             Assert.AreEqual(expected_sport.Name,actual_sport.Name);
         }
 
         [Test]
+        //it should try to create an existed sport and throw conflict exception
         public async Task CreateExitingSport()
         {
+
             Sport expected_sport = sportFactory.FakeSport();
 
             Sport actual_sport = await sportDataService.Create(expected_sport);
@@ -105,7 +109,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try get not exist sport and throw exception 
+        /// it should try get not exist sport and throw not exist exption exception 
         public void GetNotExistSport()
         {
             //Arrange
@@ -133,7 +137,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try update not exist sport and throw exception
+        /// it should try update not exist sport and throw Not Exist exception
         public void UpdateNotExistSport()
         {
             //Arrange
@@ -160,12 +164,13 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try delete not exist player and throw exception
+        /// it should try delete not exist player and throw not exist exception
         public void DeleteNotExistSport()
         {
             //Arrange
             Sport expected_player = sportFactory!.FakeSport();
             //Act
+
             //Assert
             Assert.ThrowsAsync<NotExistException>(
                async () => await sportDataService.Delete(expected_player.Id));

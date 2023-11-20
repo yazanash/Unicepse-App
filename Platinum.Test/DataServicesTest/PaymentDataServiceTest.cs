@@ -56,7 +56,7 @@ namespace Platinum.Test.DataServicesTest
             sportDataService = new(db!);
             employeeDataService = new(db!);
         }
-     
+
         [TearDown]
         public void TearDown()
         {
@@ -100,8 +100,17 @@ namespace Platinum.Test.DataServicesTest
             Player player = await create_player();
             Sport sport = await create_sport();
             Employee trainer = await create_trainer();
-            Subscription subscription = subscriptionFactory!.FakeSubscription(sport,player,trainer);
+            Subscription subscription = subscriptionFactory!.FakeSubscription(sport, player, trainer);
             return await subscriptionDataService!.Create(subscription);
+        }
+        private async Task create_payments(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Subscription subscribtion = await create_subscription();
+                PlayerPayment actual_payment = await paymentDataService!
+                    .Create(paymentFactory!.FakePayments(subscribtion));
+            }
         }
 
         ////////////////////////////////
@@ -110,6 +119,7 @@ namespace Platinum.Test.DataServicesTest
         /// 
         //////////////////////////
         [Test]
+        // it should create a payment
         public async Task CreatePayment()
         {
             // Arrange
@@ -118,12 +128,13 @@ namespace Platinum.Test.DataServicesTest
             // Act
             PlayerPayment created_payment = await paymentDataService!.Create(payment);
             // Assert
-            Assert.AreEqual(payment.Player!.Id , created_payment.Player!.Id);
+            Assert.AreEqual(payment.Player!.Id, created_payment.Player!.Id);
             Assert.AreEqual(payment.Subscription!.Id, created_payment.Subscription!.Id);
 
         }
 
         [Test]
+        // it should get a payment 
         public async Task GetPayment()
         {
             // Arrange
@@ -138,6 +149,7 @@ namespace Platinum.Test.DataServicesTest
 
         }
         [Test]
+        // it should to try get a not exist payment and throw not exist exception
         public async Task GetNotExistPayment()
         {
             // Arrange
@@ -149,6 +161,7 @@ namespace Platinum.Test.DataServicesTest
 
         }
         [Test]
+        // it should update a payment and assert that it updated
         public async Task UpdatePayment()
         {
             // Arrange
@@ -165,6 +178,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
+        // it should to try update not existed payment and throw not exist exception
         public async Task UpdateNotExistPayment()
         {
             // Arrange
@@ -179,6 +193,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
+        // it should delete a payment and assert that it deleted
         public async Task DeletePayment()
         {
             // Arrange
@@ -193,6 +208,7 @@ namespace Platinum.Test.DataServicesTest
 
         }
         [Test]
+        // it should to try delete not existed payment and throw not exist exception
         public async Task DeleteNotExistPayment()
         {
             // Arrange
@@ -203,5 +219,20 @@ namespace Platinum.Test.DataServicesTest
                async () => await paymentDataService!.Delete(payment.Id));
 
         }
+        [Test]
+        // it should List all payments
+        public async Task GetAllPayments()
+        {
+            // Arrange
+            int count = 5;
+            //Act
+            await create_payments(count);
+            var sports = await subscriptionDataService!.GetAll();
+            //Assert
+            Assert.AreEqual(sports.Count(), count);
+
+        }
+
+
     }
 }
