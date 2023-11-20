@@ -106,6 +106,7 @@ namespace Platinum.Test.DataServicesTest
         //////////////////////////////////////////////////
 
         [Test]
+        // it should create subscription and assert that it created
         public async Task CreateSubscription()
         {
             Player player = await create_player();
@@ -119,6 +120,7 @@ namespace Platinum.Test.DataServicesTest
         }
     
         [Test]
+        //it should try to create existed subscription and throw conflict exception
         public async Task CreateExisteingSubscription()
         {
             Player player = await create_player();
@@ -131,7 +133,7 @@ namespace Platinum.Test.DataServicesTest
                 () => subscriptionDataService.Create(recreate_subscription));
         }
         [Test]
-        /// it should get sport info and assert it informations
+        /// it should get subscription info and assert it informations
         public async Task GetSubscription()
         {
             //Arrange
@@ -148,7 +150,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try get not exist sport and throw exception 
+        /// it should try get not exist subscription and throw not exist exception 
         public async Task GetNotExistSubscription()
         {
             //Arrange
@@ -164,7 +166,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should update sport and assert it information updated 
+        /// it should update subscription and assert it information updated 
         public async Task UpdateSubscription()
         {
             //Arrange
@@ -182,7 +184,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try update not exist sport and throw exception
+        /// it should try update not exist subscription and throw not exist exception
         public async Task UpdateNotExistSubsciption()
         {
             //Arrange
@@ -197,7 +199,7 @@ namespace Platinum.Test.DataServicesTest
                async () => await subscriptionDataService!.Update(expected_subscription));
         }
         [Test]
-        /// it should delete player and assert it deleted
+        /// it should delete subscription and assert it deleted
         public async Task DeleteSubsciption()
         {
             //Arrange
@@ -214,8 +216,8 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try delete not exist player and throw exception
-        public async Task DeleteNotExistSubsciption()
+        /// it should try delete not exist subscription and throw not exist exception
+        public async Task DeleteNotExistSubscription()
         {
             //Arrange
             Player player = await create_player();
@@ -223,12 +225,13 @@ namespace Platinum.Test.DataServicesTest
             Employee trainer = await create_trainer();
             Subscription expected_subsciption = subscriptionFactory!.FakeSubscription(sport, player, trainer);
             //Act
+
             //Assert
             Assert.ThrowsAsync<NotExistException>(
                async () => await subscriptionDataService!.Delete(expected_subsciption.Id));
         }
         [Test]
-        /// it should List all sport
+        /// it should List all Subscriptions
         public async Task ListAllSubscriptions()
         {
             //Arrange
@@ -241,7 +244,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should List all sport
+        /// it should Move subscribtion to new trainer with save previous trainer id
         public async Task MoveSubscriptionToNewTrainer()
         {
             //Arrange
@@ -259,6 +262,7 @@ namespace Platinum.Test.DataServicesTest
             Assert.AreEqual(subscription.Trainer!.Id, new_trainer.Id);
         }
         [Test]
+        /// it should thro exception because cannot move to new trainer twice
         public async Task Move_MovedSubscriptionToNewTrainer()
         {
             //Arrange
@@ -279,7 +283,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should List all sport
+        /// it should stop subscription
         public async Task StopSubscription()
         {
             //Arrange

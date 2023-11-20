@@ -16,9 +16,9 @@ namespace Platinum.Test.DataServicesTest
     [TestFixture]
     public class PlayerDataServiceTest
     {
-        PlatinumGymDbContextFactory db;
-        PlayerFactory playerFactory;
-        PlayerDataService playerDataService;
+        PlatinumGymDbContextFactory? db;
+        PlayerFactory? playerFactory;
+        PlayerDataService? playerDataService;
 
         [OneTimeSetUp]
         public void OnetimeSetUp()
@@ -48,7 +48,7 @@ namespace Platinum.Test.DataServicesTest
         [TearDown]
         public void TearDown()
         {
-            using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
+            using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
             {
                 var subscriptions = platinumGymDbContext.Subscriptions!.ToList();
                 platinumGymDbContext.Subscriptions!.RemoveRange(subscriptions);
@@ -59,9 +59,11 @@ namespace Platinum.Test.DataServicesTest
             }
         }
 
-        /// <summary>
-        /// Helper functions
-        /// </summary>
+        /////////////////////////////////////////////
+        ///
+        /// H E L P E R  F U N C T I O N S
+        ///
+        ///////////////////////////////////
         
         public async Task create_players(int count)
         {
@@ -89,11 +91,12 @@ namespace Platinum.Test.DataServicesTest
                 Player actual_player = await playerDataService!.Create(player);
             }
         }
-        /// 
-        /// 
+        /////////////////////////////////////////////
+        ///
         /// T E S T  C A S E S
-        /// 
-        /// 
+        ///
+        ///////////////////////////////////
+       
         [Test]
         /// it should create player and assert that is created
         public async Task CreatePlayer()
@@ -107,7 +110,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try create an existing player and throw exception
+        /// it should try create an existing player and throw conflict exception exception
         public async Task CreateExistingPlayer()
         {
             Player expected_player = playerFactory!.FakePlayer();
@@ -133,7 +136,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try get not exist player and throw exception 
+        /// it should try get not exist player and throw player not exist exception 
         public void GetNotExistPlayer()
         {
             //Arrange
@@ -160,7 +163,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try update not exist player and throw exception
+        /// it should try update not exist player and throw player not exist exception
         public void UpdateNotExistPlayer()
         {
             //Arrange
@@ -187,7 +190,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try delete not exist player and throw exception
+        /// it should try delete not exist player and throw player not exist exception
         public void DeleteNotExistPlayer()
         {
             //Arrange
@@ -195,7 +198,7 @@ namespace Platinum.Test.DataServicesTest
             //Act
             //Assert
             Assert.ThrowsAsync<PlayerNotExistException>(
-               async () => await playerDataService.Delete(expected_player.Id));
+               async () => await playerDataService!.Delete(expected_player.Id));
         }
 
         [Test]
@@ -206,7 +209,7 @@ namespace Platinum.Test.DataServicesTest
             int count = 5;
             //Act
             await create_players(count);
-            var players = await playerDataService.GetAll();
+            var players = await playerDataService!.GetAll();
             //Assert
             Assert.AreEqual(players.Count(), count);
         }
@@ -219,21 +222,21 @@ namespace Platinum.Test.DataServicesTest
             int count = 5;
             //Act
             await create_female_players(count);
-            var players = await playerDataService.GetByGender(false);
+            var players = await playerDataService!.GetByGender(false);
             //Assert
             foreach (var player in players.ToList())
                 Assert.AreEqual(player.GenderMale, false);
         }
 
         [Test]
-        /// it should List players hich have debt
+        /// it should List players wich have debt
         public async Task ListPlayersHasDebt()
         {
             //Arrange
             int count = 5;
             //Act
             await create_players_withdebt(count);
-            var players = await playerDataService.GetByDebt();
+            var players = await playerDataService!.GetByDebt();
             //Assert
             foreach (var player in players.ToList())
                 Assert.Greater(player.Balance, 0);

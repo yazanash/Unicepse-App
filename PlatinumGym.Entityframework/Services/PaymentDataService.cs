@@ -52,9 +52,15 @@ namespace PlatinumGym.Entityframework.Services
             return entity!;
         }
 
-        public Task<IEnumerable<PlayerPayment>> GetAll()
+        public async Task<IEnumerable<PlayerPayment>> GetAll()
         {
-            throw new NotImplementedException();
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player)
+                    .Include(x=>x.Subscription)
+                    .ToListAsync();
+                return entities;
+            }
         }
 
         public async Task<PlayerPayment> Update(PlayerPayment entity)

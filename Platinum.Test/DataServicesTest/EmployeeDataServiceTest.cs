@@ -17,9 +17,10 @@ namespace Platinum.Test.DataServicesTest
     public class EmployeeDataServiceTest
     {
 
-        PlatinumGymDbContextFactory db;
-        EmployeeFactory employeeFactory;
-        EmployeeDataService employeeDataService;
+        PlatinumGymDbContextFactory? db;
+        EmployeeFactory? employeeFactory;
+        EmployeeDataService? employeeDataService;
+
         [OneTimeSetUp]
         public void OnetimeSetUp()
         {
@@ -49,7 +50,7 @@ namespace Platinum.Test.DataServicesTest
         [TearDown]
         public void TearDown()
         {
-            using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
+            using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
             {
                 var subscriptions = platinumGymDbContext.Subscriptions!.ToList();
                 platinumGymDbContext.Subscriptions!.RemoveRange(subscriptions);
@@ -59,6 +60,11 @@ namespace Platinum.Test.DataServicesTest
                 var x = platinumGymDbContext.Employees!.Count();
             }
         }
+        ////////////////////////////////
+        ///
+        /// H E L P E R  F U N C T I O N S
+        /// 
+        //////////////////////////
 
         private async Task create_employee(int count)
         {
@@ -67,25 +73,32 @@ namespace Platinum.Test.DataServicesTest
                 Employee actual_employee = await employeeDataService!.Create(employeeFactory!.FakeEmployee());
             }
         }
+        ////////////////////////////////
+        ///
+        /// T E S T  C A S E S
+        /// 
+        //////////////////////////
 
         [Test]
+        //it sholud create an employee and assert that it created
         public async Task CreateEmployee()
         {
-            Employee expected_employee = employeeFactory.FakeEmployee();
-            Employee actual_employee = await employeeDataService.Create(expected_employee);
+            Employee expected_employee = employeeFactory!.FakeEmployee();
+            Employee actual_employee = await employeeDataService!.Create(expected_employee);
             Assert.AreEqual(expected_employee.FullName, actual_employee.FullName);
         }
         [Test]
+        //it sholud try to create ana existed employee and throw confilct exception
         public async Task CreateExistingEmployee()
         {
-            Employee expected_employee = employeeFactory.FakeEmployee();
-            Employee actual_employee = await employeeDataService.Create(expected_employee);
+            Employee expected_employee = employeeFactory!.FakeEmployee();
+            Employee actual_employee = await employeeDataService!.Create(expected_employee);
             Assert.ThrowsAsync<ConflictException>(
                 () => employeeDataService.Create(actual_employee));
         }
 
         [Test]
-        /// it should get player info and assert it informations
+        /// it should get Employee info and assert it informations
         public async Task GetEmployee()
         {
             //Arrange
@@ -98,7 +111,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try get not exist player and throw exception 
+        /// it should try get not exist Employee and throw not exist exception 
         public void GetNotExistEmployee()
         {
             //Arrange
@@ -111,7 +124,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should update player and assert it information updated 
+        /// it should update Employee and assert it information updated 
         public async Task UpdateEmployee()
         {
             //Arrange
@@ -126,7 +139,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try update not exist player and throw exception
+        /// it should try update not exist Employee and throw not exist exception
         public void UpdateNotExistPlayer()
         {
             //Arrange
@@ -138,7 +151,7 @@ namespace Platinum.Test.DataServicesTest
                async () => await employeeDataService!.Update(expected_player));
         }
         [Test]
-        /// it should delete player and assert it deleted
+        /// it should delete Employee and assert it deleted
         public async Task DeleteEmployee()
         {
             //Arrange
@@ -152,7 +165,7 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        /// it should try delete not exist player and throw exception
+        /// it should try delete not exist Employee and throw not exist exception
         public void DeleteNotExistEmployee()
         {
             //Arrange
@@ -160,16 +173,17 @@ namespace Platinum.Test.DataServicesTest
             //Act
             //Assert
             Assert.ThrowsAsync<NotExistException>(
-               async () => await employeeDataService.Delete(expected_player.Id));
+               async () => await employeeDataService!.Delete(expected_player.Id));
         }
         [Test]
+        /// it should List All Employees
         public async Task ListAllEmployees()
         {
             //Arrange
             int count = 5;
             //Act
             await create_employee(count);
-            var employees = await employeeDataService.GetAll();
+            var employees = await employeeDataService!.GetAll();
             //Assert
             Assert.AreEqual(employees.Count(), count);
         }
