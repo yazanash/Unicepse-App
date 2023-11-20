@@ -58,11 +58,6 @@ namespace PlatinumGym.Entityframework.Services
             
         }
 
-        public Task<IEnumerable<T>> GetByFilterAll(Filter filter)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<T> Update(T entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
