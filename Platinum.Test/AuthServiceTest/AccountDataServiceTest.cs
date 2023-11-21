@@ -59,6 +59,18 @@ namespace Platinum.Test.AuthServiceTest
         }
         ////////////////////////////////
         ///
+        /// H E L P E R  F U N C T I O N S
+        /// 
+        //////////////////////////
+        private async Task create_user(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                User actual_employee = await accountDataService!.Create(userFactory!.FakeUser());
+            }
+        }
+        ////////////////////////////////
+        ///
         /// T E S T  C A S E S
         /// 
         //////////////////////////
@@ -133,7 +145,7 @@ namespace Platinum.Test.AuthServiceTest
                async () => await accountDataService!.Update(expected_user));
         }
         [Test]
-        /// it should delete Employee and assert it deleted
+        /// it should delete user and assert it deleted
         public async Task DeleteUser()
         {
             //Arrange
@@ -147,8 +159,8 @@ namespace Platinum.Test.AuthServiceTest
         }
 
         [Test]
-        /// it should try delete not exist Employee and throw not exist exception
-        public void DeleteNotExistEmployee()
+        /// it should try delete not exist user and throw not exist exception
+        public void DeleteNotExistUser()
         {
             //Arrange
             User expected_user = userFactory!.FakeUser();
@@ -157,6 +169,20 @@ namespace Platinum.Test.AuthServiceTest
             Assert.ThrowsAsync<NotExistException>(
                async () => await accountDataService!.Delete(expected_user.Id));
         }
+        [Test]
+        /// it should List All users
+        public async Task ListAllUsers()
+        {
+            //Arrange
+            int count = 5;
+            //Act
+            await create_user(count);
+            var users = await accountDataService!.GetAll();
+            //Assert
+            Assert.AreEqual(users.Count(), count);
+        }
+
+      
     }
 
 }
