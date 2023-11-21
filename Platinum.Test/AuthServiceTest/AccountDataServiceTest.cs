@@ -80,6 +80,32 @@ namespace Platinum.Test.AuthServiceTest
             Assert.ThrowsAsync<ConflictException>(
                 () => accountDataService.Create(actual_user));
         }
+        [Test]
+        /// it should get user info and assert it informations
+        public async Task GetUser()
+        {
+            //Arrange
+            User expected_user = userFactory!.FakeUser();
+            //Act
+            User test_user = await accountDataService!.Create(expected_user);
+            User actual_user = await accountDataService!.Get(test_user.Id);
+            //Assert
+            Assert.AreEqual(expected_user.UserName, actual_user.UserName);
+        }
+
+        [Test]
+        /// it should try get not exist user and throw not exist exception 
+        public void GetNotExistUser()
+        {
+            //Arrange
+            User expected_user = userFactory!.FakeUser();
+            //Act
+
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+                async () => await accountDataService!.Get(expected_user.Id));
+        }
+
     }
 
 }
