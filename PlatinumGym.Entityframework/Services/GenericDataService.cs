@@ -64,7 +64,9 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<T> Update(T entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-
+            T entityToUpdate = await Get(entity.Id);
+            if (entity == null)
+                throw new NotExistException();
             context.Set<T>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
