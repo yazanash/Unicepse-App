@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "lQun4iIhkTXUQ7l3HGrXgYXNMxlUp5uMLpMaeUXwo3aqxr/MkJGShPy04Ee9jfPEd9Q5KmdRgXi50HWEutgHiw==",
+  "dgSpecHash": "vHv4juasUERwFGDgqjgQRpWaZ15tlFBC0F9ANddC29oyWgyuQBq53lZkMtvyRhZ868c26PmQaLHWEQ4CR/CFhQ==",
   "success": true,
   "projectFilePath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ANACONDA\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\ANACONDA\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
     "C:\\Users\\ANACONDA\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.aspnet.identity.core\\2.2.4\\microsoft.aspnet.identity.core.2.2.4.nupkg.sha512",
     "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.1\\microsoft.data.sqlclient.5.1.1.nupkg.sha512",
@@ -65,5 +66,16 @@
     "C:\\Users\\ANACONDA\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\ANACONDA\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.AspNet.Identity.Core 2.2.4' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.AspNet.Identity.Core",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

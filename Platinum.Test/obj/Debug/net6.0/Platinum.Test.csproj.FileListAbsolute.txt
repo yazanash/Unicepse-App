@@ -152,3 +152,4 @@ D:\Repo\PlatinumGymPro\Platinum.Test\bin\Debug\net6.0\PlatinumGym.API.pdb
 D:\Repo\PlatinumGymPro\Platinum.Test\bin\Debug\net6.0\PlatinumGym.Core.pdb
 D:\Repo\PlatinumGymPro\Platinum.Test\bin\Debug\net6.0\PlatinumGym.Entityframework.pdb
 D:\Repo\PlatinumGymPro\Platinum.Test\bin\Debug\net6.0\Bogus.dll
+D:\Repo\PlatinumGymPro\Platinum.Test\bin\Debug\net6.0\Microsoft.AspNet.Identity.Core.dll
