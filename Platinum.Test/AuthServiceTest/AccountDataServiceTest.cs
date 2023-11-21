@@ -132,6 +132,31 @@ namespace Platinum.Test.AuthServiceTest
             Assert.ThrowsAsync<NotExistException>(
                async () => await accountDataService!.Update(expected_user));
         }
+        [Test]
+        /// it should delete Employee and assert it deleted
+        public async Task DeleteUser()
+        {
+            //Arrange
+            User expected_user= userFactory!.FakeUser();
+            //Act
+            User test_user= await accountDataService!.Create(expected_user);
+            await accountDataService.Delete(test_user.Id);
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await accountDataService!.Get(test_user.Id));
+        }
+
+        [Test]
+        /// it should try delete not exist Employee and throw not exist exception
+        public void DeleteNotExistEmployee()
+        {
+            //Arrange
+            User expected_user = userFactory!.FakeUser();
+            //Act
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await accountDataService!.Delete(expected_user.Id));
+        }
     }
 
 }
