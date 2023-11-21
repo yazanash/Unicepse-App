@@ -105,7 +105,33 @@ namespace Platinum.Test.AuthServiceTest
             Assert.ThrowsAsync<NotExistException>(
                 async () => await accountDataService!.Get(expected_user.Id));
         }
+        [Test]
+        /// it should update user and assert it information updated 
+        public async Task UpdateUser()
+        {
+            //Arrange
+            User expected_user= userFactory!.FakeUser();
+            //Act
+            User test_user = await accountDataService!.Create(expected_user);
+            User actual_user = await accountDataService.Get(test_user.Id);
+            actual_user.UserName= "updated Name";
+            User updated_user = await accountDataService.Update(actual_user);
+            //Assert
+            Assert.AreEqual(actual_user.UserName, updated_user.UserName);
+        }
 
+        [Test]
+        /// it should try update not exist user and throw not exist exception
+        public void UpdateNotExistUser()
+        {
+            //Arrange
+            User expected_user = userFactory!.FakeUser();
+            //Act
+            expected_user.UserName= "updated Name";
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await accountDataService!.Update(expected_user));
+        }
     }
 
 }
