@@ -81,6 +81,37 @@ namespace Platinum.Test.DataServicesTest
                 async () => await expensesDataService!.Get(expenses.Id));
 
         }
+        [Test]
+        // it should update a expenses and assert that it updated
+        public async Task UpdatePayment()
+        {
+            // Arrange
+            Expenses expenses = expensesFactory!.FakeExpenses();
+            // Act
+            Expenses created_expenses = await expensesDataService!.Create(expenses);
+            Expenses get_expenses = await expensesDataService!.Get(expenses.Id);
+            get_expenses.Value = 30000;
+            Expenses updated_expenses = await expensesDataService.Update(get_expenses);
+            // Assert
+            Assert.AreEqual(updated_expenses.Value, 30000);
+
+        }
+
+        [Test]
+        // it should to try update not existed expenses and throw not exist exception
+        public async Task UpdateNotExistPayment()
+        {
+            // Arrange
+
+            Expenses expenses = expensesFactory!.FakeExpenses();
+            // Act
+            expenses.Value= 30000;
+            // Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await expensesDataService!.Update(expenses));
+
+        }
+
 
     }
 }
