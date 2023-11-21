@@ -112,6 +112,31 @@ namespace Platinum.Test.DataServicesTest
 
         }
 
+        [Test]
+        // it should delete a payment and assert that it deleted
+        public async Task DeletePayment()
+        {
+            // Arrange
+            Expenses expenses = expensesFactory!.FakeExpenses();
+            Expenses created_expenses = await expensesDataService!.Create(expenses);
+            // Act
+            await expensesDataService.Delete(created_expenses.Id);
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await expensesDataService!.Get(created_expenses.Id));
+
+        }
+        [Test]
+        // it should to try delete not existed payment and throw not exist exception
+        public void DeleteNotExistPayment()
+        {
+            // Arrange
+            Expenses expenses = expensesFactory!.FakeExpenses();
+            //Assert
+            Assert.ThrowsAsync<NotExistException>(
+               async () => await expensesDataService!.Delete(expenses.Id));
+
+        }
 
     }
 }

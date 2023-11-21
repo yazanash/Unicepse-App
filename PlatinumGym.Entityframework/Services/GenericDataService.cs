@@ -37,6 +37,9 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<bool> Delete(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            T entityToDelete = await Get(id);
+            if (entityToDelete == null)
+                throw new NotExistException();
             T? entity = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
             context.Set<T>().Remove(entity!);
             await context.SaveChangesAsync();
@@ -65,7 +68,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             T entityToUpdate = await Get(entity.Id);
-            if (entity == null)
+            if (entityToUpdate == null)
                 throw new NotExistException();
             context.Set<T>().Update(entity);
             await context.SaveChangesAsync();
