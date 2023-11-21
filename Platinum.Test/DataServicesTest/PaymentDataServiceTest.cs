@@ -227,9 +227,9 @@ namespace Platinum.Test.DataServicesTest
             int count = 5;
             //Act
             await create_payments(count);
-            var sports = await subscriptionDataService!.GetAll();
+            var payments = await paymentDataService!.GetAll();
             //Assert
-            Assert.AreEqual(sports.Count(), count);
+            Assert.AreEqual(payments.Count(), count);
 
         }
 

@@ -238,9 +238,9 @@ namespace Platinum.Test.DataServicesTest
             int count = 5;
             //Act
             await create_subscriptions(count);
-            var sports = await subscriptionDataService!.GetAll();
+            var subscription = await subscriptionDataService!.GetAll();
             //Assert
-            Assert.AreEqual(sports.Count(), count);
+            Assert.AreEqual(subscription.Count(), count);
         }
 
         [Test]

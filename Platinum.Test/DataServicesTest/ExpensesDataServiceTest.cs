@@ -47,6 +47,18 @@ namespace Platinum.Test.DataServicesTest
             }
         }
 
+
+        private async Task create_expenses(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Expenses actual_expenses = await expensesDataService!
+                    .Create(expensesFactory!.FakeExpenses());
+            }
+        }
+
+
+
         [Test]
         //it sholud create an Expenses and assert that it created
         public async Task CreateExpenses()
@@ -99,7 +111,7 @@ namespace Platinum.Test.DataServicesTest
 
         [Test]
         // it should to try update not existed expenses and throw not exist exception
-        public async Task UpdateNotExistPayment()
+        public void UpdateNotExistExpenses()
         {
             // Arrange
 
@@ -113,8 +125,8 @@ namespace Platinum.Test.DataServicesTest
         }
 
         [Test]
-        // it should delete a payment and assert that it deleted
-        public async Task DeletePayment()
+        // it should delete a expenses and assert that it deleted
+        public async Task DeleteExpenses()
         {
             // Arrange
             Expenses expenses = expensesFactory!.FakeExpenses();
@@ -127,8 +139,8 @@ namespace Platinum.Test.DataServicesTest
 
         }
         [Test]
-        // it should to try delete not existed payment and throw not exist exception
-        public void DeleteNotExistPayment()
+        // it should to try delete not existed expenses and throw not exist exception
+        public void DeleteNotExistExpenses()
         {
             // Arrange
             Expenses expenses = expensesFactory!.FakeExpenses();
@@ -137,6 +149,20 @@ namespace Platinum.Test.DataServicesTest
                async () => await expensesDataService!.Delete(expenses.Id));
 
         }
+        [Test]
+        // it should List all expenses
+        public async Task GetAllExpenses()
+        {
+            // Arrange
+            int count = 5;
+            //Act
+            await create_expenses(count);
+            var expenses = await expensesDataService!.GetAll();
+            //Assert
+            Assert.AreEqual(expenses.Count(), count);
 
+        }
+
+       
     }
 }
