@@ -46,7 +46,11 @@ namespace Platinum.Test.DataServicesTest
                 var x = platinumGymDbContext.Expenses!.Count();
             }
         }
-
+        ////////////////////////////////////////
+        /// 
+        ///   H E L P E R  F U N C T I O N S
+        /// 
+        ///////////////////////////////
 
         private async Task create_expenses(int count)
         {
@@ -56,9 +60,13 @@ namespace Platinum.Test.DataServicesTest
                     .Create(expensesFactory!.FakeExpenses());
             }
         }
+        
 
-
-
+        ////////////////////////////////
+        ///
+        /// T E S T  C A S E S
+        /// 
+        //////////////////////////
         [Test]
         //it sholud create an Expenses and assert that it created
         public async Task CreateExpenses()
@@ -162,7 +170,26 @@ namespace Platinum.Test.DataServicesTest
             Assert.AreEqual(expenses.Count(), count);
 
         }
+        [Test]
+        // it should List all expenses in specifice period
+        public async Task GetPeriodExpenses()
+        {
+            // Arrange
+            int count = 5;
+            DateTime pstart = DateTime.Now;
+            DateTime pend = DateTime.Now.AddMonths(1);
+            //Act
+            await create_expenses(count);
+            var expenses = await expensesDataService!.GetPeriodExpenses(pstart, pend);
+            //Assert
+            foreach(var exp in expenses)
+            {
+                Assert.GreaterOrEqual(exp.date, pstart);
+                Assert.LessOrEqual(exp.date, pend);
+            }
+            
 
-       
+        }
+
     }
 }
