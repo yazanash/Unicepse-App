@@ -1115,6 +1115,14 @@
           }
         }
       },
+      "Microsoft.AspNet.Identity.Core/2.2.4": {
+        "runtime": {
+          "lib/net45/Microsoft.AspNet.Identity.Core.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.2.4.50621"
+          }
+        }
+      },
       "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
         "runtime": {
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
@@ -1831,6 +1839,7 @@
       },
       "PlatinumGym.Entityframework/1.0.0": {
         "dependencies": {
+          "Microsoft.AspNet.Identity.Core": "2.2.4",
           "Microsoft.EntityFrameworkCore": "7.0.13",
           "Microsoft.EntityFrameworkCore.Abstractions": "7.0.13",
           "Microsoft.EntityFrameworkCore.Relational": "7.0.13",
@@ -1886,6 +1895,13 @@
       "sha512": "sha512-ZCuuxWHvXxl39XBYXk4PCMUVtw1pevT5AE1qsj7VRy2tRtDYbzHWYW0FbnH+Vf0rP7BogZrRlKns3zFEkDEjFQ==",
       "path": "mahapps.metro.iconpacks.material/4.11.0",
       "hashPath": "mahapps.metro.iconpacks.material.4.11.0.nupkg.sha512"
+    },
+    "Microsoft.AspNet.Identity.Core/2.2.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-s3u/o3iG5h0z7Ggukwo4soPwogD56ZrYbolGxTfw41zkuG6jAXUJT/V3EThqHJXGuCNvWSdSnnwAhPfT9Sn36g==",
+      "path": "microsoft.aspnet.identity.core/2.2.4",
+      "hashPath": "microsoft.aspnet.identity.core.2.2.4.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
       "type": "package",

@@ -65,7 +65,7 @@ namespace PlatinumGymPro.Views.AuthView {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/views/authview/userslistview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;V1.0.0.0;component/views/authview/userslistview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Views\AuthView\UsersListView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
