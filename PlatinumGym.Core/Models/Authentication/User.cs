@@ -13,5 +13,6 @@ namespace PlatinumGym.Core.Models.Authentication
         public string? Password { get; set; }
         public bool IsAdmin { get; set; }
         public virtual Employee.Employee? Employee { get; set; }
+        public bool Disable { get; set; }
     }
 }

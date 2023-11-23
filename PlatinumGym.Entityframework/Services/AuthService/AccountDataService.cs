@@ -71,6 +71,17 @@ namespace PlatinumGym.Entityframework.Services.AuthService
             await context.SaveChangesAsync();
             return entity;
         }
+        public async Task<User> Disable(User entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            User entityToUpdate = await Get(entity.Id);
+            if (entityToUpdate == null)
+                throw new NotExistException();
+            entity.Disable = true;
+            context.Set<User>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
+        }
         public async Task<User> GetByUsername(string username)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
