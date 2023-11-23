@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models.Authentication;
+using PlatinumGym.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,10 @@ namespace PlatinumGym.Entityframework.Services.AuthService
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly AccountDataService _accountService;
+        private readonly IAccountDataService<User> _accountService;
         private readonly IPasswordHasher _passwordHasher;
 
-        public AuthenticationService(AccountDataService accountService, IPasswordHasher passwordHasher)
+        public AuthenticationService(IAccountDataService<User> accountService, IPasswordHasher passwordHasher)
         {
             _accountService = accountService;
             _passwordHasher = passwordHasher;
@@ -26,14 +27,14 @@ namespace PlatinumGym.Entityframework.Services.AuthService
 
             if (storedAccount == null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException(username);
             }
 
             PasswordVerificationResult passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.Password, password);
 
             if (passwordResult != PasswordVerificationResult.Success)
             {
-                throw new InvalidPasswordException();
+                throw new InvalidPasswordException(username,password);
             }
 
             return storedAccount;
@@ -48,7 +49,7 @@ namespace PlatinumGym.Entityframework.Services.AuthService
                 result = RegistrationResult.PasswordsDoNotMatch;
             }
 
-            User emailAccount = await _accountService.GetByEmail(email);
+            User emailAccount = await _accountService.GetByUsername(email);
             if (emailAccount != null)
             {
                 result = RegistrationResult.EmailAlreadyExists;
