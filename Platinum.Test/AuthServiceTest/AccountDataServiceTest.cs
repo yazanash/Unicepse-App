@@ -181,8 +181,33 @@ namespace Platinum.Test.AuthServiceTest
             //Assert
             Assert.AreEqual(users.Count(), count);
         }
+        [Test]
+        /// it should disable user
+        public async Task DisableUser()
+        {
+            //Arrange
+            User expected_user = userFactory!.FakeUser();
+            //Act
+            User test_user = await accountDataService!.Create(expected_user);
+            User actual_user = await accountDataService.Get(test_user.Id);
+            actual_user.UserName = "updated Name";
+            User updated_user = await accountDataService.Disable(actual_user);
+            //Assert
+            Assert.AreEqual(updated_user.Disable, true);
 
-      
+        }
+        [Test]
+        /// it should try to disable not exist user and throw not exist exception
+        public void DisableNotExistUser()
+        {
+            //Arrange
+            User expected_user = userFactory!.FakeUser();
+            //Act
+            Assert.ThrowsAsync<NotExistException>(
+                 async () => await accountDataService!.Disable(expected_user));
+
+        }
+
     }
 
 }
