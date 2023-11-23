@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PlatinumGym.Entityframework.Services.AuthService
 {
-    public class AccountDataService : IDataService<User>
+    public class AccountDataService : IAccountDataService<User>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 
@@ -71,15 +71,6 @@ namespace PlatinumGym.Entityframework.Services.AuthService
             await context.SaveChangesAsync();
             return entity;
         }
-        public async Task<User> GetByEmail(string email)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            User? entity = await context.Set<User>().FirstOrDefaultAsync((e) => e.UserName == email);
-            if (entity == null)
-                throw new NotExistException();
-            return entity!;
-        }
-
         public async Task<User> GetByUsername(string username)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
