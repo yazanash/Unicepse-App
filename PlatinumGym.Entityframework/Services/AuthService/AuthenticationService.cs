@@ -40,7 +40,7 @@ namespace PlatinumGym.Entityframework.Services.AuthService
             return storedAccount;
         }
 
-        public async Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword)
+        public async Task<RegistrationResult> Register(string username, string password, string confirmPassword)
         {
             RegistrationResult result = RegistrationResult.Success;
 
@@ -49,7 +49,7 @@ namespace PlatinumGym.Entityframework.Services.AuthService
                 result = RegistrationResult.PasswordsDoNotMatch;
             }
 
-            User emailAccount = await _accountService.GetByUsername(email);
+            User emailAccount = await _accountService.GetByUsername(username);
             if (emailAccount != null)
             {
                 result = RegistrationResult.EmailAlreadyExists;
