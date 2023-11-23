@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Moq;
 using NUnit.Framework;
+using Platinum.Test.Fakes;
 using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models.Authentication;
 using PlatinumGym.Core.Services;
@@ -19,6 +20,7 @@ namespace Platinum.Test.AuthServiceTest
         Mock<IAccountDataService<User>>? mockAccountDataService;
         Mock<IPasswordHasher>? mockPasswordhasher;
         AuthenticationService? authenticationService;
+        UserFactory ? userFactory;
 
      [SetUp]
         public void SetUp()
@@ -26,6 +28,7 @@ namespace Platinum.Test.AuthServiceTest
             mockAccountDataService = new Mock<IAccountDataService<User>>();
             mockPasswordhasher = new Mock<IPasswordHasher>();
             authenticationService = new AuthenticationService(mockAccountDataService.Object, mockPasswordhasher.Object);
+            userFactory = new();
         }
         [Test]
         public async Task LoginUserWithCorrectUserNameAndPassword()
@@ -62,6 +65,40 @@ namespace Platinum.Test.AuthServiceTest
                 async () => await authenticationService!.Login(userName, password));
 
             Assert.AreEqual(userName, exception!.Username);
+        }
+
+        [Test]
+        public async Task RegisterUserWithCorrectUserNameAndNotMatchPassword()
+        {
+            string userName = "testuser";
+            string password = "password";
+            string confirm_password = "notconfirmpassword";
+            RegistrationResult expected = RegistrationResult.PasswordsDoNotMatch;
+            RegistrationResult actual = await authenticationService!.Register(userName, password, confirm_password);
+
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public async Task RegisterUserWithExistedUserName()
+        {
+            string userName = "testuser";
+            string password = "password";
+            string confirm_password = "notconfirmpassword";
+            mockAccountDataService!.Setup(s => s.GetByUsername(userName)).ReturnsAsync(new User { UserName = userName, Password = password });
+            RegistrationResult expected = RegistrationResult.UsernameAlreadyExists;
+            RegistrationResult actual = await authenticationService!.Register(userName, password, confirm_password);
+
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public async Task RegisterUserWithCorrectUserNameAndCorrectPassword()
+        {
+            User user = userFactory!.FakeUser();
+            //mockAccountDataService!.Setup(s => s.Create(user)).ReturnsAsync(user);
+            RegistrationResult expected = RegistrationResult.Success;
+            RegistrationResult actual = await authenticationService!.Register(user.UserName, user.Password, user.Password);
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }
