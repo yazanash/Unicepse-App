@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace PlatinumGym.Entityframework.Services
 {
+   
     public class EmployeeDataService : IDataService<Employee>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
@@ -70,7 +71,6 @@ namespace PlatinumGym.Entityframework.Services
                 return entities;
             }
         }
-
         public async Task<Employee> Update(Employee entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
