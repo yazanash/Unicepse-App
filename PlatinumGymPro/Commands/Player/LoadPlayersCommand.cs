@@ -14,15 +14,15 @@ namespace PlatinumGymPro.Commands
 {
     public class LoadPlayersCommand : AsyncCommandBase
     {
-        //private readonly PlayerStore _playerStore;
+        private readonly PlayersDataStore _playerStore;
         private readonly PlayerListViewModel _playerListing;
-       
 
-        public LoadPlayersCommand( PlayerListViewModel playerListing)
+
+        public LoadPlayersCommand(PlayerListViewModel playerListing, PlayersDataStore playerStore)
         {
-            //_playerStore = playerStore;
+            _playerStore = playerStore;
             _playerListing = playerListing;
-           
+            _playerStore = playerStore;
         }
 
         public override async Task ExecuteAsync(object? parameter)
@@ -30,47 +30,51 @@ namespace PlatinumGymPro.Commands
             _playerListing.ErrorMessage = null;
             _playerListing.IsLoading = true;
 
-            //try
-            //{
-            //    switch (_playerStore.SelectedFilters?.Id)
-            //    {
-            //        case 1:
-            //            await _playerStore.LoadByGender(true);
-            //            break;
-            //        case 2:
-            //            await _playerStore.LoadByGender(false);
-            //            break;
-            //        case 3:
-            //            await _playerStore.Load();
-            //            break;
-            //        case 4:
-            //            await _playerStore.Load(false);
-            //            break;
-            //        case 5:
-            //            await _playerStore.Load();
-            //            break;
-            //        case 6:
-            //            await _playerStore.Load(true);
-            //            break;
-            //        case 7:
-            //            await _playerStore.LoadBySubscribeEnd();
-            //            break;
-            //        case 8:
-            //            await _playerStore.LoadByDebt();
-            //            break;
-            //        default:
-            //            await _playerStore.Load(true);
-            //            break;
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    _playerListing.ErrorMessage = "Failed to load Players. Please restart the application.";
-            //}
-            //finally
-            //{
-            //    _playerListing.IsLoading = false;
-            //}
+            try
+            {
+                #region filtering
+                //switch (_playerStore.SelectedFilters?.Id)
+                //{
+                //    case 1:
+                //        await _playerStore.LoadByGender(true);
+                //        break;
+                //    case 2:
+                //        await _playerStore.LoadByGender(false);
+                //        break;
+                //    case 3:
+                //        await _playerStore.Load();
+                //        break;
+                //    case 4:
+                //        await _playerStore.Load(false);
+                //        break;
+                //    case 5:
+                //        await _playerStore.Load();
+                //        break;
+                //    case 6:
+                //        await _playerStore.Load(true);
+                //        break;
+                //    case 7:
+                //        await _playerStore.LoadBySubscribeEnd();
+                //        break;
+                //    case 8:
+                //        await _playerStore.LoadByDebt();
+                //        break;
+                //    default:
+                //        await _playerStore.Load(true);
+                //        break;
+                //}
+                #endregion
+
+                await _playerStore.GetPlayers();
+            }
+            catch (Exception)
+            {
+                _playerListing.ErrorMessage = "Failed to load Players. Please restart the application.";
+            }
+            finally
+            {
+                _playerListing.IsLoading = false;
+            }
         }
     }
 }
