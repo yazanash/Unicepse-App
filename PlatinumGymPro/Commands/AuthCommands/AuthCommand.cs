@@ -24,10 +24,7 @@ namespace PlatinumGymPro.Commands
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            authViewModel.IsLoading = true;
-            await Task.Delay(2000);
-            authViewModel.IsLoading = false;
-            navigationService.Navigate();
+           
         }
 
 

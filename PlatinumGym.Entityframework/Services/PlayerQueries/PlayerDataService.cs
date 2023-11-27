@@ -99,7 +99,7 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Player existedPlayer = await Get(entity.Id);
             if (existedPlayer == null)
-                throw new PlayerConflictException(existedPlayer, entity, "this player is existed");
+                throw new PlayerConflictException(existedPlayer!, entity, "this player is existed");
             context.Set<Player>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
@@ -111,7 +111,7 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.FullName == name);
-            return entity;
+            return entity!;
         }
     }
 }
