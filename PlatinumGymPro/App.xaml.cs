@@ -9,6 +9,7 @@ using PlatinumGymPro.Services;
 using PlatinumGymPro.Services.PlayerConflictValidators;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels;
+using PlatinumGymPro.Views.AuthView;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -37,10 +38,12 @@ namespace PlatinumGymPro
                {
                    string? CONNECTION_STRING = hostContext.Configuration.GetConnectionString("default"); ;
                    services.AddSingleton(new PlatinumGymDbContextFactory(CONNECTION_STRING));
+                   services.AddSingleton(new NavigationStore());
                    services.AddSingleton(s => new MainWindow()
                    {
                        DataContext = s.GetRequiredService<MainWindowViewModel>(),
                    });
+                   services.AddSingleton(new AuthWindow());
                }).Build();
 
 
@@ -59,8 +62,8 @@ namespace PlatinumGymPro
             {
                 platinumGymDbContext.Database.Migrate();
             }
-           
-            MainWindow main = _host.Services.GetRequiredService<MainWindow>();
+
+            AuthWindow main = _host.Services.GetRequiredService<AuthWindow>();
             main.Show();
 
             base.OnStartup(e);

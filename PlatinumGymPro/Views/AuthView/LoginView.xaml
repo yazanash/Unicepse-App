@@ -3,19 +3,139 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PlatinumGymPro.Views.AuthView"
+             xmlns:local="clr-namespace:PlatinumGymPro"
+             xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
               xmlns:converters="clr-namespace:PlatinumGymPro.Converters" 
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
-             FlowDirection="RightToLeft"
+             FlowDirection="LeftToRight"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+
+        <!--#region login page resources -->
+        <Style x:Key="textTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+        </Style>
+        <Style x:Key="normalText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="LineHeight" Value="28"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+        </Style>
+        <Style x:Key="hintText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="Panel.ZIndex" Value="1"/>
+            <Setter Property="Margin" Value="10 0 0 0"/>
+            <Setter Property="Foreground" Value="#acb0af"/>
+        </Style>
+        <Style x:Key="loginTextbox" TargetType="Control">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="Margin" Value="10 0 0 0"/>
+            <Setter Property="Foreground" Value="#878787"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style x:Key="signupBtn" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Width" Value="170"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#fdfefe"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="25" BorderThickness="1" BorderBrush="White" Padding="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#e8e8e8"/>
+                    <Setter Property="Foreground" Value="DimGray"/>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Background" Value="#d9d9d9"/>
+                    <Setter Property="Foreground" Value="DimGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <Style x:Key="circleBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="8 0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="30" BorderThickness="1"
+                                BorderBrush="#878787" Padding="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#9d9d9d"/>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Background" Value="#c4c4c4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <Style x:Key="signinBtn" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Margin" Value="0 20 0 0"/>
+            <Setter Property="Background" Value="#C8621D"/>
+            <Setter Property="Foreground" Value="#fdfefe"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="25" BorderThickness="1" BorderBrush="#C14E00" Padding="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#993300"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Background" Value="#C14E00"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Name="closebtn" TargetType="icons:PackIconMaterial">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <!--#endregion-->
     </UserControl.Resources>
-    <Border CornerRadius="20" FlowDirection="RightToLeft">
+    <!--<Border CornerRadius="20" FlowDirection="RightToLeft">
         <Border.Background>
-            <ImageBrush ImageSource="../../../Resources/Assets/backimage.png"/>
+           gym_backgroud
         </Border.Background>
         <Border CornerRadius="20" FlowDirection="RightToLeft" Opacity="0.95" Background="#EEE">
 
@@ -30,7 +150,7 @@
                           Background="#fff" BorderThickness="0" BorderBrush="#C14E00">
                         <Rectangle>
                             <Rectangle.Fill>
-                                <ImageBrush Stretch="Fill" ImageSource="../../../Resources/Assets/p1.jpg"/>
+                                <ImageBrush Stretch="Fill" ImageSource="../../Resources/Assets/p1.jpg"/>
                             </Rectangle.Fill>
                         </Rectangle>
                     </Border>
@@ -69,5 +189,89 @@
             </Border>
         </Border>
 
-    </Border>
+    </Border>-->
+   
+   
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1.5*"/>
+            </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="1" Panel.ZIndex="1" VerticalAlignment="Top" Margin="10" HorizontalAlignment="Right">
+            <icons:PackIconMaterial Kind="Close" Panel.ZIndex="2" MouseDown="Close_MouseUp" Width="15" Margin="5" Height="15" Foreground="#787878"/>
+            <icons:PackIconMaterial Kind="WindowMinimize" Panel.ZIndex="2" MouseDown="Minimize_MouseUp" Width="15" Margin="5" Height="15" Foreground="#787878"/>
+
+        </StackPanel>
+        <Border CornerRadius="10 0 0 10">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#C14E00" Offset="0"/>
+                        <GradientStop Color="#993300" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Canvas>
+                        <Polygon Points="0,20 230,140 0,270" Fill="#C15E11"/>
+                        <Polygon Points="100,400 200,370 180,450" Fill="#C15E11"/>
+                        <Ellipse Margin="250 400 0 0" Height="40" Width="40" Fill="#C15E11" />
+                        <Ellipse Margin="50 350 0 0" Height="20" Width="20" Fill="#C15E11" />
+                    </Canvas>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Signup" Style="{StaticResource textTitle}"/>
+                        <TextBlock Text="create new account and join our verse Welcome to TrioVesre" Style="{StaticResource normalText}"/>
+                        <Button Margin="10" Content="Signup" Style="{StaticResource signupBtn}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+
+            <Border Background="#ffffff" CornerRadius="0 10 10 0" Grid.Column="1">
+                <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Welcome Back" Style="{StaticResource textTitle}" Foreground="#C8621D"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 20 " HorizontalAlignment="Center">
+                    <Button Style="{StaticResource circleBtn}">
+                            <icons:PackIconMaterial Kind="Facebook" Width="20" Height="20" Foreground="#787878"/>
+                        </Button>
+                        <Button Style="{StaticResource circleBtn}">
+                            <icons:PackIconMaterial Kind="Google" Width="20" Height="20" Foreground="#787878"/>
+                        </Button>
+                        <Button Style="{StaticResource circleBtn}">
+                            <icons:PackIconMaterial Kind="Linkedin" Width="20" Height="20" Foreground="#787878"/>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Text="Login with your info" Style="{StaticResource normalText}" Margin="0 10 0 15" Foreground="#878787"/>
+                    <Border BorderThickness="1" BorderBrush="#acb8af" Margin=" 70 7">
+                        <Grid Margin="9 7">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <icons:PackIconMaterial Kind="AccountOutline" Foreground="#787878" Width="20" Height="20"/>
+                            <TextBlock Text="Enter username" Style="{StaticResource hintText}"
+                                      x:Name="lbl_username"
+                                       MouseDown="email_MouseDown"/>
+                            <TextBox x:Name="email_txt"
+                                     TextChanged="email_txt_TextChanged"
+                                     Style="{StaticResource loginTextbox}" />
+                        </Grid>
+                    </Border>
+
+                    <Border BorderThickness="1" BorderBrush="#acb8af" Margin=" 70 7">
+                        <Grid Margin="9 7">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <icons:PackIconMaterial Kind="LockOutline" Foreground="#787878" Width="20" Height="20"/>
+                            <TextBlock x:Name="lbl_password" Text="Enter password" Style="{StaticResource hintText}"
+                                      MouseDown="password_MouseDown" />
+                            <PasswordBox x:Name="password_txt" PasswordChanged="password_txt_PasswordChanged" Style="{StaticResource loginTextbox}" />
+                        </Grid>
+                    </Border>
+                    <Button Content="Signin" Style="{StaticResource signinBtn}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+   
+    
 </UserControl>

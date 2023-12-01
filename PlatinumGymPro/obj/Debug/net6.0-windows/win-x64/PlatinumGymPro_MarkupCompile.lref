@@ -1,4 +1,4 @@
-﻿D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\GeneratedInternalTypeHelper.g.cs
+﻿
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\App.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\MainWindow.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\common\HomeView.xaml;;
@@ -17,6 +17,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\ExpensesReport.xaml
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\IncomeReportView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\SalariesReportView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\AddUserView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\AuthWindow.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\EditUserView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\LoginView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\UsersListView.xaml;;

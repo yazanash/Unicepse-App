@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Filter = PlatinumGym.Core.Models.Filter;
 
 namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
@@ -137,7 +138,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             //_playerStore = playerStore;
             //_trainerStore = trainerStore;
             //_sportStore = sportStore;
-            LoadPlayersCommand = new LoadPlayersCommand( this);
+            //LoadPlayersCommand = new LoadPlayersCommand( this);
            
             AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this)));
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
