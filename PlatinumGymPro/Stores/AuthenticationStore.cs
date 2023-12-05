@@ -18,7 +18,7 @@ namespace PlatinumGymPro.Stores
             _authenticationService = authenticationService;
             _accountStore = accountStore;
         }
-
+        
         public User CurrentAccount
         {
             get
@@ -31,11 +31,12 @@ namespace PlatinumGymPro.Stores
                 StateChanged?.Invoke();
             }
         }
-
+        
         public bool IsLoggedIn => CurrentAccount != null;
 
+      
         public event Action? StateChanged;
-
+      
         public async Task Login(string username, string password)
         {
             CurrentAccount = await _authenticationService.Login(username, password);
@@ -46,7 +47,7 @@ namespace PlatinumGymPro.Stores
             CurrentAccount = null;
         }
 
-        public async Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword)
+        public async Task<RegistrationResult> Register( string username, string password, string confirmPassword)
         {
             return await _authenticationService.Register(username, password, confirmPassword);
         }

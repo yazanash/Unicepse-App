@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Assets\backimage.png" />
+    <None Remove="Resources\Assets\gym_backgroud.jpg" />
     <None Remove="Resources\Assets\p1.jpg" />
     <None Remove="Resources\Assets\p3.jpg" />
   </ItemGroup>
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Assets\gym_backgroud.jpg" />
     <Resource Include="Resources\Assets\p1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

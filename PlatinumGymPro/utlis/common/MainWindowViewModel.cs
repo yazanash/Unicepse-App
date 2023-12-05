@@ -24,7 +24,7 @@ namespace PlatinumGymPro.ViewModels
             //_playerStore = playerStore;
             //_sportStore = sportStore;
             //_trainerStore = trainerStore;
-            _navigatorStore.CurrentViewModel =new AuthViewModel(_navigatorStore); 
+            _navigatorStore.CurrentViewModel =new MainViewModel(_navigatorStore); 
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
          
         }

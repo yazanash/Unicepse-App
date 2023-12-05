@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
-    <Border Grid.Row="1" Width="50" Background="#fff"  Padding="5">
+    <Border Grid.Row="1" Width="50" Background="#C14E00" CornerRadius="20" Padding="5">
         <Border.Style>
             <Style>
                 <Style.Triggers>
@@ -21,7 +21,7 @@
                                 <Storyboard>
                                    <DoubleAnimation 
                                                             Storyboard.TargetProperty="Width"
-                                                        To="160" Duration="0:0:0.2" />
+                                                        To="200" Duration="0:0:0.2" />
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.EnterActions>
@@ -41,12 +41,36 @@
             <DockPanel>
                 <!--Logo-->
 
+            <StackPanel  DockPanel.Dock="Top" Orientation="Horizontal"  Grid.Column="0" >
+               
+               
+                <Border Width="40" FlowDirection="LeftToRight" Height="40"
+                            Margin="0 0 10 0"
+                                CornerRadius="20"
+                            HorizontalAlignment="Right"
+                            
+                          Background="#C14E00" BorderThickness="0" BorderBrush="#C14E00">
+                    <Ellipse>
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="Fill" ImageSource="../../Resources/Assets/p1.jpg"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Border>
+                <TextBlock DockPanel.Dock="Top"
+                                   Foreground="#FFF"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   TextAlignment="Center"
+                               VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                                   Text="نادي بلاتينوم" />
+            </StackPanel>
 
-                
-                <!--Menu Buttons-->
+
+            <!--Menu Buttons-->
                 <StackPanel DockPanel.Dock="Top" >
                 <CheckBox Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
-                    <Icon:PackIconMaterial Kind="Menu"/>
+                    <Icon:PackIconMaterial Kind="Menu" Foreground="#fff"/>
                 </CheckBox>
                     <Button
                                 Command="{Binding UpdateCurrentViewModelCommand}"

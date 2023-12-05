@@ -27,7 +27,7 @@ namespace PlatinumGymPro.HostBuilders
 
                 services.AddSingleton<MainViewModel>();
                 services.AddSingleton<MainWindowViewModel>();
-
+                services.AddSingleton<AuthViewModel>();
             });
             return _hostBuilder;
         }

@@ -137,7 +137,7 @@
                                         <RowDefinition Height="40"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <Button x:Name="PART_HeaderButton" Grid.Column="0" Focusable="False" FontWeight="Bold" FontSize="13" HorizontalAlignment="Center" Grid.Row="0" Template="{StaticResource HeaderButtonTemplate}" VerticalAlignment="Bottom"/>
+                                    <Button x:Name="PART_HeaderButton" Grid.Column="0" Focusable="False" FontWeight="Bold" FontSize="13" HorizontalAlignment="Center" Margin="10 0" Grid.Row="0" Template="{StaticResource HeaderButtonTemplate}" VerticalAlignment="Bottom"/>
                                     <StackPanel Orientation="Horizontal"
                                                 Grid.Row="0"
                                                 Margin="0 10 13 0"
@@ -445,7 +445,11 @@
                 <uc:DashboardCard Title="المدفوعات" Money="15000" BackColor="#FFF" Grid.Column="0" Grid.Row="0"/>
                 <uc:DashboardCard Title="الايرادات"  Money="15000" BackColor="#FFF" Grid.Column="1" Grid.Row="0"/>
                 <uc:DashboardCard Title="المصاريف"  Money="15000" BackColor="#FFF" Grid.Column="2" Grid.Row="0"/>
+
                 <Border Background="#FFF" CornerRadius="20" Grid.ColumnSpan="3" Grid.Row="3" Margin="5 10" Padding="5">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
+                    </Border.Effect>
                     <Grid >
                         <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
@@ -512,6 +516,9 @@
                 <Calendar CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" Style="{DynamicResource CalendarStyle1}" />
             </Viewbox>
             <Border Background="#FFF" CornerRadius="20" Margin="5 10"  Grid.Row="1" Grid.Column="0">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
+                </Border.Effect>
                 <Grid Grid.ColumnSpan="3" Grid.Row="3">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"

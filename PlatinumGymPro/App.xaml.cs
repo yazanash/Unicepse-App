@@ -1,14 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PlatinumGym.Core.Models.Authentication;
+using PlatinumGym.Core.Services;
 using PlatinumGym.Entityframework.DbContexts;
+using PlatinumGym.Entityframework.Services.AuthService;
 using PlatinumGymPro.HostBuilders;
 //using PlatinumGymPro.Models;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Services.PlayerConflictValidators;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels;
+using PlatinumGymPro.Views.AuthView;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -37,19 +42,47 @@ namespace PlatinumGymPro
                {
                    string? CONNECTION_STRING = hostContext.Configuration.GetConnectionString("default"); ;
                    services.AddSingleton(new PlatinumGymDbContextFactory(CONNECTION_STRING));
+                   services.AddSingleton(new NavigationStore());
+                   services.AddSingleton<IPasswordHasher, PasswordHasher>();
+                   services.AddSingleton<IAccountDataService<User>, AccountDataService>();
+                   services.AddSingleton<AuthenticationService>();
+                   services.AddSingleton<AccountStore>();
+                   services.AddSingleton<AuthenticationStore>();
                    services.AddSingleton(s => new MainWindow()
                    {
                        DataContext = s.GetRequiredService<MainWindowViewModel>(),
                    });
+                   services.AddSingleton(s => new AuthWindow()
+                   {
+                       DataContext = s.GetRequiredService<AuthViewModel>(),
+                   });
                }).Build();
-
+            AuthViewModel auth = _host.Services.GetRequiredService<AuthViewModel>();
+            auth.LoginAction += Auth_LoginAction;
 
 
 
 
 
         }
+      
+        private void Auth_LoginAction()
+        {
+            if (_host.Services.GetRequiredService<AccountStore>().CurrentAccount != null)
+            {
+                MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
+                Application.Current.MainWindow.Close();
 
+                auth.Show();
+            }
+            else
+            {
+                AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
+                auth.Show();
+
+            }
+
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -59,9 +92,10 @@ namespace PlatinumGymPro
             {
                 platinumGymDbContext.Database.Migrate();
             }
-           
-            MainWindow main = _host.Services.GetRequiredService<MainWindow>();
-            main.Show();
+
+            AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
+            auth.Show();
+
 
             base.OnStartup(e);
         }
