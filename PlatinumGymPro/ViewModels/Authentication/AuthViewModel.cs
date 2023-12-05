@@ -2,6 +2,7 @@
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
+using PlatinumGymPro.ViewModels.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,25 +16,26 @@ namespace PlatinumGymPro.ViewModels
     {
         public NavigationStore _navigatorStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
+        public event Action? LoginAction;
+        private readonly AuthenticationStore _authenticationStore;
+        public AuthViewModel(NavigationStore navigatorStore, AuthenticationStore authenticationStore)
+        {
+            _navigatorStore = navigatorStore;
+            _authenticationStore = authenticationStore;
+            _navigatorStore.CurrentViewModel = new LoginViewModel(this, navigatorStore,_authenticationStore);
+            _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
+          
+        }
 
-        public AuthViewModel(NavigationStore navigatorStore)
+        private void _navigatorStore_CurrentViewModelChanged()
         {
-            _navigatorStore= navigatorStore;
-            AuthCommand = new AuthCommand(new NavigationService<MainViewModel>(_navigatorStore, () => new MainViewModel(_navigatorStore)),this);
+            OnPropertyChanged(nameof(CurrentViewModel));
         }
-        private bool _isLoading;
-        public bool IsLoading
+
+        public void OnLoginAction()
         {
-            get
-            {
-                return _isLoading;
-            }
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
+            LoginAction?.Invoke();
         }
-        public ICommand AuthCommand { get; }
+        //public ICommand AuthCommand { get; }
     }
 }

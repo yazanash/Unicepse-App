@@ -16,15 +16,14 @@ using System.Windows.Shapes;
 namespace PlatinumGymPro.Views.AuthView
 {
     /// <summary>
-    /// Interaction logic for LoginView.xaml
+    /// Interaction logic for RegisterView.xaml
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class RegisterView : UserControl
     {
-        public LoginView()
+        public RegisterView()
         {
             InitializeComponent();
         }
-
         private void email_MouseDown(object sender, MouseButtonEventArgs e)
         {
             email_txt.Focus();
@@ -53,7 +52,6 @@ namespace PlatinumGymPro.Views.AuthView
             if (!string.IsNullOrEmpty(email_txt.Text) && email_txt.Text.Length > 0)
             {
                 lbl_username.Visibility = Visibility.Hidden;
-              
             }
             else
             {
@@ -71,6 +69,24 @@ namespace PlatinumGymPro.Views.AuthView
 
 
 
+        }
+        private void lbl_password_confirm_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            password_confirm_txt.Focus();
+        }
+
+        private void password_confirm_txt_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(password_confirm_txt.Password) && password_confirm_txt.Password.Length > 0)
+            {
+                lbl_password_confirm.Visibility = Visibility.Hidden;
+                if (this.DataContext != null)
+                { ((dynamic)this.DataContext).PasswordConfirm = ((PasswordBox)sender).Password; }
+            }
+            else
+            {
+                lbl_password_confirm.Visibility = Visibility.Visible;
+            }
         }
     }
 }

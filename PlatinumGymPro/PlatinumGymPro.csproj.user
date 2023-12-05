@@ -37,6 +37,9 @@
     <Compile Update="Views\AuthView\AuthWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AuthView\RegisterView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="utlis\Components\CustomTextBox.xaml">
@@ -70,6 +73,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\AuthWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AuthView\RegisterView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

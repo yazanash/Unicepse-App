@@ -21,6 +21,6 @@ namespace PlatinumGymPro.State.Navigator
     {
         ViewModelBase CurrentViewModel { get; set; }
 
-        ICommand UpdateCurrentViewModelCommand { get; }
+        //ICommand UpdateCurrentViewModelCommand { get; }
      }
 }

@@ -78,5 +78,6 @@ namespace PlatinumGym.Entityframework.Services.AuthService
 
             return result;
         }
+       
     }
 }

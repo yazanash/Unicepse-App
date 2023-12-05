@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlatinumGymPro.Views.AuthView"
         xmlns:view="clr-namespace:PlatinumGymPro.Views.AuthView"
+        xmlns:vm="clr-namespace:PlatinumGymPro.ViewModels.Authentication"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -125,10 +126,18 @@
             </Style.Triggers>
         </Style>
         <!--#endregion-->
+        <DataTemplate DataType="{x:Type vm:LoginViewModel }">
+            <!--<views:HomeView />-->
+            <view:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RegisterViewModel }">
+            <!--<views:HomeView />-->
+            <view:RegisterView/>
+        </DataTemplate>
     </Window.Resources>
     <Border Background="Transparent"
             MouseDown="Border_MouseDown"
             MouseLeftButtonDown="Border_MouseLeftButtonDown">
-        <view:LoginView/>
+        <ContentControl Content="{Binding CurrentViewModel}" Grid.ColumnSpan="2"/>
     </Border>
 </Window>

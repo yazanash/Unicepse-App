@@ -21,29 +21,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal"  Grid.Column="0" >
-                    <TextBlock DockPanel.Dock="Top"
-                                   Foreground="#C14E00"
-                                   FontSize="20"
-                                   FontWeight="SemiBold"
-                                   TextAlignment="Center"
-                               VerticalAlignment="Center"
-                                   Text="نادي بلاتينوم" />
-                    <Border Width="40" Height="40"
-                            Margin="10 0 0 0"
-                                CornerRadius="20"
-                            HorizontalAlignment="Left"
-                            
-                          Background="#fff" BorderThickness="0" BorderBrush="#C14E00">
-                        <Rectangle>
-                            <Rectangle.Fill>
-                                <ImageBrush Stretch="Fill" ImageSource="../Assets/p1.jpg"/>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                    </Border>
-
-                </StackPanel>
-
+                
                 <Border CornerRadius="20" Margin="10 5"  Grid.Column="1" VerticalAlignment="Top">
                     <cs:CustomTextBox Hint="ابحث هنا"/>
                 </Border>
