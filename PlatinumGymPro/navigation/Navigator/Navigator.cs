@@ -25,7 +25,7 @@ namespace PlatinumGymPro.State.Navigator
             //_sportStore = sportStore;
             //_trainerStore = trainerStore;
             _navigatorStore = navigatorStore;
-            LogoutCommand = new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore)));
+            //LogoutCommand = new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore)));
 
         }
 
@@ -48,6 +48,6 @@ namespace PlatinumGymPro.State.Navigator
         //public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playerStore, _sportStore, _trainerStore);
         public ICommand LogoutCommand { get; }
 
-        public ICommand UpdateCurrentViewModelCommand => throw new NotImplementedException();
+        //public ICommand UpdateCurrentViewModelCommand => throw new NotImplementedException();
     }
 }

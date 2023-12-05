@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlatinumGymPro"
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        xmlns:View="clr-namespace:PlatinumGymPro.Views"
+        xmlns:View="clr-namespace:PlatinumGymPro.Views.AuthView"
         xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels"
         xmlns:controls="clr-namespace:PlatinumGymPro.Controls"
-        xmlns:nav="clr-namespace:PlatinumGymPro.State.Navigator"
+        xmlns:nav="clr-namespace:PlatinumGymPro.State.Navigator" xmlns:views="clr-namespace:PlatinumGymPro.Views"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         WindowStyle="SingleBorderWindow"
@@ -21,6 +21,8 @@
             MouseLeftButtonDown="Border_MouseLeftButtonDown"
             Padding="5 10"
             CornerRadius="10">
+        <!--<views:HomeView/>-->
+  
         <ContentControl Content="{Binding CurrentViewModel}" Grid.ColumnSpan="2"/>
     </Border>
 </Window>

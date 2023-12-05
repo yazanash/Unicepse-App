@@ -676,3 +676,7 @@ D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\ref\Plati
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\PlatinumGymPro.pdb
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\PlatinumGymPro.genruntimeconfig.cache
 D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Debug\net6.0-windows\win-x64\Microsoft.AspNet.Identity.Core.dll
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\AuthView\AuthWindow.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\AuthView\AuthWindow.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\AuthView\RegisterView.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\AuthView\RegisterView.baml
