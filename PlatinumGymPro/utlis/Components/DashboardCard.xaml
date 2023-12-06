@@ -16,7 +16,7 @@
         <StackPanel>
             <TextBlock Text="{Binding ElementName=DashCard, Path=Title}" Foreground="#C14E00" FontSize="24" HorizontalAlignment="Right"/>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=DashCard, Path=Money}" FontSize="48" Foreground="#333" />
+                <TextBlock Text="{Binding ElementName=DashCard, Path=Money}" FontSize="28" Foreground="#333" />
                 <Icon:PackIconMaterial Kind="ArrowUpDropCircleOutline" Foreground="#444"/>
             </StackPanel>
             <Button  Style="{StaticResource DashboardCardbtn}" >

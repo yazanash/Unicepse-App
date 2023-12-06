@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
-    <Border Grid.Row="1" Width="50" Background="#C14E00" CornerRadius="20" Padding="5">
+    <Border Grid.Row="1" Width="50" Background="#C14E00" CornerRadius="15" Padding="5">
         <Border.Style>
             <Style>
                 <Style.Triggers>
@@ -45,16 +45,13 @@
                
                
                 <Border Width="40" FlowDirection="LeftToRight" Height="40"
-                            Margin="0 0 10 0"
-                                CornerRadius="20"
-                            HorizontalAlignment="Right"
-                            
-                          Background="#C14E00" BorderThickness="0" BorderBrush="#C14E00">
-                    <Ellipse>
-                        <Ellipse.Fill>
-                            <ImageBrush Stretch="Fill" ImageSource="../../Resources/Assets/p1.jpg"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
+                            Margin="0 5 10 5"
+                                CornerRadius="15"
+                         BorderThickness="0" BorderBrush="#C14E00">
+                    <Border.Background>
+                        <ImageBrush Stretch="Fill" ImageSource="../../Resources/Assets/p1.jpg"/>
+                    </Border.Background>
+                 
                 </Border>
                 <TextBlock DockPanel.Dock="Top"
                                    Foreground="#FFF"
@@ -72,78 +69,78 @@
                 <CheckBox Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
                     <Icon:PackIconMaterial Kind="Menu" Foreground="#fff"/>
                 </CheckBox>
-                    <Button
+                    <RadioButton
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Home}" 
-                                Style="{StaticResource MenuButton}" >
+                                Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Home"/>
                             <TextBlock  Text="الرئيسية"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
-                    </Button>
-                    <Button
+                    </RadioButton>
+                <RadioButton
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Players}" 
-                                Style="{StaticResource MenuButton}" >
+                                Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal" >
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountSupervisor" />
                             <TextBlock Text="اللاعبين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                            
                         </StackPanel>
-                    </Button>
-                    <Button
+                    </RadioButton>
+                <RadioButton
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Sport}" 
-                                Style="{StaticResource MenuButton}" >
+                                Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell" />
                             <TextBlock Text="الرياضات"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                            
                         </StackPanel>
-                    </Button>
-                    <Button
+                    </RadioButton>
+                <RadioButton
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Trainer}" 
-                                Style="{StaticResource MenuButton}" >
+                                Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                         <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountGroup" />
                             <TextBlock Text="المدربين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                           
                         </StackPanel>
-                    </Button>
-                    <Button 
+                    </RadioButton>
+                <RadioButton 
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Accounting}" 
-                                Style="{StaticResource MenuButton}" >
+                                Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCash"/>
                             <TextBlock Text="المحاسبة"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                            
                         </StackPanel>
-                    </Button>
-                    <Button
+                    </RadioButton>
+                <RadioButton
                                  Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Gym}" 
-                               Style="{StaticResource MenuButton}" >
+                               Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="RoomService"/>
                             <TextBlock Text="خدمات"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
-                    </Button>
+                    </RadioButton>
 
-                <Button
+                <RadioButton
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Sport}" 
-                                Style="{StaticResource MenuButton}" >
+                                Style="{StaticResource MenuButtonRD}" >
                     <StackPanel Orientation="Horizontal">
                         <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountSwitch" />
                         <TextBlock Text="المستخدمين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
 
                     </StackPanel>
-                </Button>
+                </RadioButton>
 
             </StackPanel>
-                <Button DockPanel.Dock="Bottom"
+            <Button DockPanel.Dock="Bottom"
                          Command="{Binding LogoutCommand}"
                                 VerticalAlignment="Bottom" 
                                 Style="{StaticResource MenuButton}" >
