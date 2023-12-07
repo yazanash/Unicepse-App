@@ -13,7 +13,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
     public class SportListItemViewModel : ViewModelBase
     {
         public Sport Sport;
-        //private readonly SportStore _sportStore;
+        private readonly SportDataStore _sportStore;
         private readonly NavigationStore _navigationStore;
         public int Id => Sport.Id;
         public string? SportName => Sport.Name;
@@ -27,11 +27,10 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public SportListItemViewModel(Sport sport, NavigationStore navigationStore)
+        public SportListItemViewModel(Sport sport, SportDataStore sportStore, NavigationStore navigationStore)
         {
             Sport = sport;
-
-            //_sportStore = sportStore;
+            _sportStore = sportStore;
             _navigationStore = navigationStore;
         }
 

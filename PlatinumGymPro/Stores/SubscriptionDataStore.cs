@@ -12,9 +12,9 @@ namespace PlatinumGymPro.Stores
     public class SubscriptionDataStore : IDataStore<Subscription>
     {
         public event Action<Subscription>? Created;
-        public event Action<IEnumerable<Subscription>>? Loaded;
+        public event Action? Loaded;
         public event Action<Subscription>? Updated;
-        public event Action<bool>? Deleted;
+        public event Action<int>? Deleted;
 
 
         private readonly SubscriptionDataService _subscriptionDataService;
@@ -42,12 +42,13 @@ namespace PlatinumGymPro.Stores
             bool deleted = await _subscriptionDataService.Delete(entity_id);
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity_id);
             _subscriptions.RemoveAt(currentIndex);
-            Deleted?.Invoke(deleted);
+            Deleted?.Invoke(entity_id);
         }
 
         public async Task GetAll()
         {
             await _initializeLazy.Value;
+            Loaded?.Invoke();
         }
 
         public async Task Initialize()

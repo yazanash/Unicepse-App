@@ -18,9 +18,9 @@ namespace PlatinumGymPro.Stores
     public class EmployeeStore : IDataStore<Employee>
     {
         public event Action<Employee>? Created;
-        public event Action<IEnumerable<Employee>>? Loaded;
+        public event Action? Loaded;
         public event Action<Employee>? Updated;
-        public event Action<bool>? Deleted;
+        public event Action<int>? Deleted;
 
 
         private readonly EmployeeDataService _employeeDataService;
@@ -46,19 +46,20 @@ namespace PlatinumGymPro.Stores
             bool deleted = await _employeeDataService.Delete(entity_id);
             int currentIndex = _employee.FindIndex(y => y.Id == entity_id);
             _employee.RemoveAt(currentIndex);
-            Deleted?.Invoke(deleted);
+            Deleted?.Invoke(entity_id);
         }
 
         public async Task GetAll()
         {
           await _initializeLazy.Value;
+            Loaded?.Invoke();
         }
         public async Task Initialize()
         {
             IEnumerable<Employee> employees = await _employeeDataService.GetAll();
             _employee.Clear();
             _employee.AddRange(employees);
-            Loaded?.Invoke(employees);
+            Loaded?.Invoke();
         }
 
         public async Task Update(Employee entity)
@@ -86,17 +87,17 @@ namespace PlatinumGymPro.Stores
                 case EmployeeRole.Trainer:
                     IEnumerable<Employee> Trainers = employees.Where(x => x.IsTrainer);
                     _employee.AddRange(Trainers);
-                    Loaded?.Invoke(Trainers);
+                    Loaded?.Invoke();
                     break;
                 case EmployeeRole.Secretaria:
                     IEnumerable<Employee> Secrtaria = employees.Where(x => x.IsSecrtaria);
                     _employee.AddRange(Secrtaria);
-                    Loaded?.Invoke(Secrtaria);
+                    Loaded?.Invoke();
                     break;
                 case EmployeeRole.Employee:
                     IEnumerable<Employee> Employee = employees.Where(x => !x.IsTrainer && !x.IsSecrtaria);
                     _employee.AddRange(Employee);
-                    Loaded?.Invoke(Employee);
+                    Loaded?.Invoke();
                     break;
             }
             

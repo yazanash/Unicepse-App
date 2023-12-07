@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using PlatinumGym.Core.Models.Authentication;
 using PlatinumGym.Core.Services;
 using PlatinumGym.Entityframework.DbContexts;
+using PlatinumGym.Entityframework.Services;
 using PlatinumGym.Entityframework.Services.AuthService;
 using PlatinumGym.Entityframework.Services.PlayerQueries;
 using PlatinumGymPro.HostBuilders;
@@ -50,6 +51,8 @@ namespace PlatinumGymPro
                    services.AddSingleton<AccountStore>();
                    services.AddSingleton<PlayersDataStore>();
                    services.AddSingleton<PlayerDataService>();
+                   services.AddSingleton<SportDataStore>();
+                   services.AddSingleton<SportServices>();
                    services.AddSingleton<AuthenticationStore>();
                    services.AddSingleton(s => new MainWindow()
                    {

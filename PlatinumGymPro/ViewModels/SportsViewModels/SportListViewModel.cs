@@ -19,7 +19,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         private readonly ObservableCollection<SportListItemViewModel> sportListItemViewModels;
        
         private NavigationStore _navigatorStore;
-        //private SportStore _sportStore;
+        private SportDataStore _sportStore;
         //private TrainerStore _trinerStore;
         public IEnumerable<SportListItemViewModel> SportList => sportListItemViewModels;
        
@@ -56,21 +56,21 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadSportsCommand { get; }
-        public SportListViewModel(NavigationStore navigatorStore)
+        public SportListViewModel(NavigationStore navigatorStore, SportDataStore sportStore)
         {
             _navigatorStore = navigatorStore;
-            //_sportStore = playerStore;
+            _sportStore = sportStore;
             //_trinerStore = trinerStore;
-            LoadSportsCommand = new LoadSportsCommand( this);
+            LoadSportsCommand = new LoadSportsCommand( this,_sportStore);
             AddSportCommand = new NavaigateCommand<AddSportViewModel>(new NavigationService<AddSportViewModel>(_navigatorStore, () => CreateAddSportViewModel(navigatorStore, this)));
             sportListItemViewModels = new ObservableCollection<SportListItemViewModel>();
 
-          
 
-            //_sportStore.SportLoaded += _sportStore_SportLoaded;
-            //_sportStore.SportAdded += _sportStore_SportAdded;
-            //_sportStore.SportUpdated += _sportStore_SportUpdated;
-            //_sportStore.SportDeleted += _sportStore_SportDeleted;
+
+            _sportStore.Loaded += _sportStore_SportLoaded;
+            _sportStore.Created += _sportStore_SportAdded;
+            _sportStore.Updated += _sportStore_SportUpdated;
+            _sportStore.Deleted += _sportStore_SportDeleted;
 
         }
 
@@ -104,18 +104,18 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         {
             sportListItemViewModels.Clear();
 
-            //foreach (Sport sport in _sportStore.Sports)
-            //{
-            //    AddSport(sport);
-            //}
+            foreach (Sport sport in _sportStore.Sports)
+            {
+                AddSport(sport);
+            }
         }
 
         protected override void Dispose()
         {
-            //_sportStore.SportLoaded -= _sportStore_SportLoaded;
-            //_sportStore.SportAdded -= _sportStore_SportAdded;
-            //_sportStore.SportUpdated -= _sportStore_SportUpdated;
-            //_sportStore.SportDeleted -= _sportStore_SportDeleted;
+            _sportStore.Loaded -= _sportStore_SportLoaded;
+            _sportStore.Created -= _sportStore_SportAdded;
+            _sportStore.Updated -= _sportStore_SportUpdated;
+            _sportStore.Deleted -= _sportStore_SportDeleted;
             base.Dispose();
         }
      
@@ -125,13 +125,13 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
       
         private void AddSport(Sport sport)
         {
-            //SportListItemViewModel itemViewModel =
-            //    new SportListItemViewModel(sport, _sportStore, _navigatorStore);
-            //sportListItemViewModels.Add(itemViewModel);
+            SportListItemViewModel itemViewModel =
+                new SportListItemViewModel(sport, _sportStore, _navigatorStore);
+            sportListItemViewModels.Add(itemViewModel);
         }
-        public static SportListViewModel LoadViewModel(NavigationStore navigatorStore)
+        public static SportListViewModel LoadViewModel(NavigationStore navigatorStore, SportDataStore sportStore)
         {
-            SportListViewModel viewModel = new SportListViewModel(navigatorStore);
+            SportListViewModel viewModel = new SportListViewModel(navigatorStore , sportStore);
 
             viewModel.LoadSportsCommand.Execute(null);
 

@@ -11,12 +11,12 @@ namespace PlatinumGymPro.Commands.SportsCommands
 {
     public class LoadSportsCommand : AsyncCommandBase
     {
-        //private readonly SportStore _sportStore;
+        private readonly SportDataStore _sportStore;
         private readonly SportListViewModel _sportListing;
 
-        public LoadSportsCommand(SportListViewModel sportListing)
+        public LoadSportsCommand(SportListViewModel sportListing, SportDataStore sportStore)
         {
-            //_sportStore = sportStore;
+            _sportStore = sportStore;
             _sportListing = sportListing;
         }
 
@@ -27,11 +27,11 @@ namespace PlatinumGymPro.Commands.SportsCommands
 
             try
             {
-                //await _sportStore.Load();
+                await _sportStore.GetAll();
             }
             catch (Exception)
             {
-                _sportListing.ErrorMessage = "Failed to load YouTube viewers. Please restart the application.";
+                _sportListing.ErrorMessage = "Failed to load Sports . Please restart the application.";
             }
             finally
             {

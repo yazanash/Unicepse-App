@@ -11,9 +11,9 @@ namespace PlatinumGymPro.Stores
     public class SportDataStore : IDataStore<Sport>
     {
         public event Action<Sport>? Created;
-        public event Action<IEnumerable<Sport>>? Loaded;
+        public event Action? Loaded;
         public event Action<Sport>? Updated;
-        public event Action<bool>? Deleted;
+        public event Action<int>? Deleted;
 
         private readonly SportServices _sportDataService;
         private readonly List<Sport> _sports;
@@ -40,12 +40,13 @@ namespace PlatinumGymPro.Stores
             bool deleted = await _sportDataService.Delete(entity_id);
             int currentIndex = _sports.FindIndex(y => y.Id == entity_id);
             _sports.RemoveAt(currentIndex);
-            Deleted?.Invoke(deleted);
+            Deleted?.Invoke(entity_id);
         }
 
         public async Task GetAll()
         {
             await _initializeLazy.Value;
+            Loaded?.Invoke();
         }
 
         public async Task Initialize()
