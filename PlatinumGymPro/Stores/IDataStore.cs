@@ -9,9 +9,9 @@ namespace PlatinumGymPro.Stores
     public interface IDataStore<T>
     {
         public event Action<T>? Created;
-        public event Action<IEnumerable<T>>? Loaded;
+        public event Action? Loaded;
         public event Action<T>? Updated;
-        public event Action<bool>? Deleted;
+        public event Action<int>? Deleted;
         public  Task GetAll();
         public  Task Add(T entity);
         public  Task Update(T entity);
