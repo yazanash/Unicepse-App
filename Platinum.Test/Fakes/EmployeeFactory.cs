@@ -26,8 +26,14 @@ namespace Platinum.Test.Fakes
                    employee.SalaryValue = Convert.ToDouble(fake.Commerce.Price(100000, 1000000));
                    employee.ParcentValue = fake.Random.Number(10, 75);
                    employee.IsTrainer = fake.Random.Bool();
-                   employee.IsSecrtaria = !employee.IsTrainer;
-                   employee.Position = fake.Lorem.Paragraph();
+                   employee.IsSecrtaria = fake.Random.Bool();
+                   if (employee.IsTrainer)
+                       employee.Position = "مدرب";
+                   else if (employee.IsSecrtaria)
+                       employee.Position = "سكرتارية";
+                   else
+                       employee.Position = "موظف";
+
                    employee.StartDate = fake.Date.Past(60);
                });
             return employee_faker;
