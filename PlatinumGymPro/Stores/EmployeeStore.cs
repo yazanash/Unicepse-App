@@ -26,11 +26,11 @@ namespace PlatinumGymPro.Stores
         private readonly EmployeeDataService _employeeDataService;
         private readonly List<Employee> _employee;
         private readonly Lazy<Task> _initializeLazy;
-        public IEnumerable<Employee> Sports => _employee;
-        public EmployeeStore(EmployeeDataService employeeDataService, List<Employee> employee)
+        public IEnumerable<Employee> Employees => _employee;
+        public EmployeeStore(EmployeeDataService employeeDataService)
         {
             _employeeDataService = employeeDataService;
-            _employee = employee;
+            _employee = new List<Employee>() ;
             _initializeLazy = new Lazy<Task>(Initialize);
         }
 
@@ -59,7 +59,6 @@ namespace PlatinumGymPro.Stores
             IEnumerable<Employee> employees = await _employeeDataService.GetAll();
             _employee.Clear();
             _employee.AddRange(employees);
-            Loaded?.Invoke();
         }
 
         public async Task Update(Employee entity)
