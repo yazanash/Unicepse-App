@@ -442,9 +442,9 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <uc:DashboardCard Title="المدفوعات" Money="15000" BackColor="#FFF" Grid.Column="0" Grid.Row="0"/>
-                <uc:DashboardCard Title="الايرادات"  Money="15000" BackColor="#FFF" Grid.Column="1" Grid.Row="0"/>
-                <uc:DashboardCard Title="المصاريف"  Money="15000" BackColor="#FFF" Grid.Column="2" Grid.Row="0"/>
+                <uc:DashboardCard Title="المدفوعات" Money="150,000,000" BackColor="#FFF" Grid.Column="0" Grid.Row="0"/>
+                <uc:DashboardCard Title="الايرادات"  Money="150,000,000" BackColor="#FFF" Grid.Column="1" Grid.Row="0"/>
+                <uc:DashboardCard Title="المصاريف"  Money="150,000,000" BackColor="#FFF" Grid.Column="2" Grid.Row="0"/>
 
                 <Border Background="#FFF" CornerRadius="20" Grid.ColumnSpan="3" Grid.Row="3" Margin="5 10" Padding="5">
                     <Border.Effect>

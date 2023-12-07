@@ -23,9 +23,9 @@ namespace PlatinumGymPro.Stores
 
         public IEnumerable<Player> Players => _players;
         public event Action<Player>? player_created;
-        public event Action<IEnumerable<Player>>? players_loaded;
+        public event Action? players_loaded;
         public event Action<Player>? player_update;
-        public event Action<bool>? player_deleted;
+        public event Action<int>? player_deleted;
         public PlayersDataStore(PlayerDataService playerDataService)
         {
             _playerDataService = playerDataService;
@@ -59,7 +59,7 @@ namespace PlatinumGymPro.Stores
         {
             _players.Clear();
             _players.AddRange(players!);
-            players_loaded?.Invoke(players);
+            players_loaded?.Invoke();
         }
         public async Task GetPlayers(Filter filter , bool statusOrGender)
         {
@@ -108,7 +108,7 @@ namespace PlatinumGymPro.Stores
             bool deleted = await _playerDataService.Delete(player_id);
             int currentIndex = _players.FindIndex(y => y.Id == player_id);
             _players.RemoveAt(currentIndex);
-            player_deleted?.Invoke(deleted);
+            player_deleted?.Invoke(player_id);
         }
 
 

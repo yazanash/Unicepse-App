@@ -7,6 +7,7 @@ using PlatinumGym.Core.Models.Authentication;
 using PlatinumGym.Core.Services;
 using PlatinumGym.Entityframework.DbContexts;
 using PlatinumGym.Entityframework.Services.AuthService;
+using PlatinumGym.Entityframework.Services.PlayerQueries;
 using PlatinumGymPro.HostBuilders;
 //using PlatinumGymPro.Models;
 using PlatinumGymPro.Services;
@@ -47,6 +48,8 @@ namespace PlatinumGymPro
                    services.AddSingleton<IAccountDataService<User>, AccountDataService>();
                    services.AddSingleton<AuthenticationService>();
                    services.AddSingleton<AccountStore>();
+                   services.AddSingleton<PlayersDataStore>();
+                   services.AddSingleton<PlayerDataService>();
                    services.AddSingleton<AuthenticationStore>();
                    services.AddSingleton(s => new MainWindow()
                    {
@@ -93,7 +96,7 @@ namespace PlatinumGymPro
                 platinumGymDbContext.Database.Migrate();
             }
 
-            AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
+            MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
             auth.Show();
 
 

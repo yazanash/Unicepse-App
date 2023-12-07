@@ -18,13 +18,14 @@ namespace PlatinumGymPro.ViewModels
         public INavigator Navigator { get; set; }
         //private readonly NavigationStore _navigationStore;
         public NavigationStore _navigatorStore;
-
-        public MainViewModel( NavigationStore navigatorStore)
+        private readonly PlayersDataStore _playerStore;
+        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore)
         {
             _navigatorStore = navigatorStore;
-
-            Navigator = new Navigator( _navigatorStore);
+            _playerStore = playerStore;
+            Navigator = new Navigator(_navigatorStore, _playerStore);
             Navigator.CurrentViewModel = new HomeViewModel();
+          
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
 

@@ -16,17 +16,17 @@ namespace PlatinumGymPro.ViewModels
     public class PlayersPageViewModel:ViewModelBase
     {
         public NavigationStore _navigatorStore;
-        //private readonly PlayerStore _playerStore ;
+        private readonly PlayersDataStore _playerStore;
         //private SportStore _sportStore;
         //private  TrainerStore _trainerStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
-        public PlayersPageViewModel(NavigationStore navigatorStore )
+        public PlayersPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore)
         {
             _navigatorStore = navigatorStore;
-            //_playerStore = playerStore;
+            _playerStore = playerStore;
             //_sportStore = sportStore;
             //_trainerStore = trainerStore;
-            navigatorStore.CurrentViewModel = CreatePlayersViewModel(_navigatorStore);
+            navigatorStore.CurrentViewModel = CreatePlayersViewModel(_navigatorStore, _playerStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
             
         }
@@ -35,9 +35,9 @@ namespace PlatinumGymPro.ViewModels
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-        private PlayerListViewModel CreatePlayersViewModel(NavigationStore navigatorStore)
+        private PlayerListViewModel CreatePlayersViewModel(NavigationStore navigatorStore,PlayersDataStore playerStore)
         {
-            return PlayerListViewModel.LoadViewModel( navigatorStore);
+            return PlayerListViewModel.LoadViewModel( navigatorStore, playerStore);
         }
 
     }

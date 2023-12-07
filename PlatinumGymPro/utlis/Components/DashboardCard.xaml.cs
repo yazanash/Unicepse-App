@@ -41,14 +41,14 @@ namespace PlatinumGymPro.Components
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register
             ("Title", typeof(string), typeof(DashboardCard));
-        public decimal Money
+        public string Money
         {
-            get { return (decimal)GetValue(MoneyProperty); }
+            get { return (string)GetValue(MoneyProperty); }
             set { SetValue(MoneyProperty, value); }
         }
 
         public static readonly DependencyProperty MoneyProperty = DependencyProperty.Register
-            ("Money", typeof(decimal), typeof(DashboardCard));
+            ("Money", typeof(string), typeof(DashboardCard));
 
     }
 }

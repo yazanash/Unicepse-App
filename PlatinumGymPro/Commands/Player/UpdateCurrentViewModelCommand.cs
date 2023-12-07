@@ -16,15 +16,11 @@ namespace PlatinumGymPro.Commands
     public class UpdateCurrentViewModelCommand : CommandBase
     {
         public INavigator _navigator;
-        //private readonly PlayerStore _playerStore;
-        //private readonly SportStore _sportStore;
-        //private readonly TrainerStore _trainerStore;
-        public UpdateCurrentViewModelCommand(INavigator navigator)
+        public PlayersDataStore _playersStore;
+        public UpdateCurrentViewModelCommand(INavigator navigator, PlayersDataStore playersStore)
         {
             _navigator = navigator;
-            //_playerStore = playerStore;
-            //_sportStore = sportStore;
-            //_trainerStore = trainerStore;
+            _playersStore = playersStore;
         }
 
         public override void Execute(object? parameter)
@@ -39,11 +35,9 @@ namespace PlatinumGymPro.Commands
                         _navigator.CurrentViewModel =new HomeViewModel();
                         break;
                     case ViewType.Players:
-                       
-                        _navigator.CurrentViewModel = new PlayersPageViewModel(navigator);
+                        _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore);
                         break;
                     case ViewType.Sport:
-
                         _navigator.CurrentViewModel = new SportsViewModel(navigator);
                         break;
                     case ViewType.Trainer:

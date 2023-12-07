@@ -25,7 +25,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly ObservableCollection<FiltersItemViewModel> filtersItemViewModel;
         private readonly ObservableCollection<OrderByItemViewModel> OrderByItemViewModel;
         private NavigationStore _navigatorStore;
-        //private PlayerStore _playerStore;
+        private PlayersDataStore _playerStore;
         //private TrainerStore _trainerStore;
         //private SportStore _sportStore;
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
@@ -132,22 +132,20 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadPlayersCommand { get; }
-        public PlayerListViewModel(NavigationStore navigatorStore)
+        public PlayerListViewModel(NavigationStore navigatorStore , PlayersDataStore playerStore)
         {
             _navigatorStore = navigatorStore;
-            //_playerStore = playerStore;
-            //_trainerStore = trainerStore;
-            //_sportStore = sportStore;
-            //LoadPlayersCommand = new LoadPlayersCommand( this);
-           
+            _playerStore = playerStore;
+            LoadPlayersCommand = new LoadPlayersCommand(this, _playerStore);
+
             AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this)));
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
 
 
-            //_playerStore.PlayersLoaded += _playerStore_PlayersLoaded;
-            //_playerStore.PlayerAdded += _playerStore_PlayerAdded;
-            //_playerStore.PlayerUpdated += _playerStore_PlayerUpdated;
-            //_playerStore.PlayerDeleted += _playerStore_PlayerDeleted;
+            _playerStore.players_loaded += _playerStore_PlayersLoaded;
+            _playerStore.player_created += _playerStore_PlayerAdded;
+            _playerStore.player_update += _playerStore_PlayerUpdated;
+            _playerStore.player_deleted += _playerStore_PlayerDeleted; ;
             //_playerStore.SelectedFilterChanged += _playerStore_SelectedFilterChanged;
             //_playerStore.SelectedOrderByChanged += _playerStore_SelectedOrderByChanged;
 
@@ -202,8 +200,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
         protected override void Dispose()
         {
-            //_playerStore.PlayersLoaded -= _playerStore_PlayersLoaded;
-            //_playerStore.PlayerAdded -= _playerStore_PlayerAdded;
+            //_playerStore.Loaded -= _playerStore_PlayersLoaded;
+            //_playerStore.Added -= _playerStore_PlayerAdded;
             //_playerStore.PlayerUpdated -= _playerStore_PlayerUpdated;
             //_playerStore.PlayerDeleted -= _playerStore_PlayerDeleted;
             //_playerStore.SelectedFilterChanged -= _playerStore_SelectedFilterChanged;
@@ -244,11 +242,10 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void _playerStore_PlayersLoaded()
         {
             playerListItemViewModels.Clear();
-
-            //foreach (Player player in _playerStore.Players)
-            //{
-            //    AddPlayer(player);
-            //}
+            foreach (Player player in _playerStore.Players)
+            {
+                AddPlayer(player);
+            }
             PlayersCount = playerListItemViewModels.Count();
             PlayersFemaleCount = playerListItemViewModels.Where(x => !x.GenderMale).Count();
             PlayersMaleCount = playerListItemViewModels.Where(x => x.GenderMale).Count();
@@ -261,9 +258,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
                 new PlayerListItemViewModel(player,_navigatorStore, this);
             playerListItemViewModels.Add(itemViewModel);
         }
-        public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore)
+        public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore)
         {
-            PlayerListViewModel viewModel = new PlayerListViewModel(navigatorStore);
+            PlayerListViewModel viewModel = new PlayerListViewModel(navigatorStore, playersStore);
 
             viewModel.LoadPlayersCommand.Execute(null);
 
