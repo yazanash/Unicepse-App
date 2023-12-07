@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PlatinumGymPro.Views.TrainerViews
+namespace PlatinumGymPro.Views.EmployeeViews
 {
     /// <summary>
-    /// Interaction logic for TrainerListView.xaml
+    /// Interaction logic for EmployeesListView.xaml
     /// </summary>
-    public partial class TrainerListView : UserControl
+    public partial class EmployeesListView : UserControl
     {
-        public TrainerListView()
+        public EmployeesListView()
         {
             InitializeComponent();
         }

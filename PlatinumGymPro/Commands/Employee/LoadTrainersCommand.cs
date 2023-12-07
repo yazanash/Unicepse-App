@@ -11,12 +11,12 @@ namespace PlatinumGymPro.Commands.TrainersCommands
     public class LoadTrainersCommand : AsyncCommandBase
     {
 
-        //private readonly TrainerStore _trainerStore;
+        private readonly EmployeeStore _employeeStore;
         private readonly TrainersListViewModel _trainersListViewModel;
 
-        public LoadTrainersCommand(TrainersListViewModel trainersListViewModel)
+        public LoadTrainersCommand(EmployeeStore employeeStore, TrainersListViewModel trainersListViewModel)
         {
-            //this._trainerStore = trainerStore;
+            this._employeeStore = employeeStore;
             this._trainersListViewModel = trainersListViewModel;
         }
 
@@ -27,11 +27,11 @@ namespace PlatinumGymPro.Commands.TrainersCommands
 
             try
             {
-                //await _trainerStore.Load();
+                await _employeeStore.GetAll();
             }
             catch (Exception)
             {
-                _trainersListViewModel.ErrorMessage = "Failed to load YouTube viewers. Please restart the application.";
+                _trainersListViewModel.ErrorMessage = "Failed to load Employees . Please restart the application.";
             }
             finally
             {

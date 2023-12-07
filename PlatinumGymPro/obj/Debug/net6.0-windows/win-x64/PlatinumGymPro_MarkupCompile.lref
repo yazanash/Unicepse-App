@@ -40,15 +40,15 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\EditSportDetailView.xaml
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportDetailsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportsView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainerViews\EditTrainerDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainerViews\TrainerDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainerViews\TrainerDues.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainerViews\TrainerListView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainerViews\TrainersView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Categories\CategoriesDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Categories\EditCategoriesDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\EditTrainingDetailsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Programs\AddProgramDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Programs\EditProgramDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\TrainingDetailsView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\EditTrainerDetailView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\TrainerDetailView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\TrainerDues.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\TrainersView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\EmployeesListView.xaml;;
 

@@ -8,6 +8,7 @@
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.TrainersViewModels"
              xmlns:views="clr-namespace:PlatinumGymPro.Views.TrainerViews"
+              xmlns:eviews="clr-namespace:PlatinumGymPro.Views.EmployeeViews"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -15,7 +16,7 @@
             <views:TrainerDetailView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type vms:TrainersListViewModel }">
-            <views:TrainerListView/>
+            <eviews:EmployeesListView/>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>

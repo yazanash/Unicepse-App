@@ -19,7 +19,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private readonly ObservableCollection<TrainerListItemViewModel> trainerListItemViewModels;
 
         private NavigationStore _navigatorStore;
-        //private TrainerStore _trainerStore;
+        private EmployeeStore _employeeStore;
 
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
 
@@ -56,20 +56,20 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
 
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
-        public TrainersListViewModel(NavigationStore navigatorStore)
+        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
         {
             _navigatorStore = navigatorStore;
-            //_trainerStore = trainerStore;
-            //LoadTrainerCommand = new LoadTrainersCommand(_trainerStore, this);
+            _employeeStore = employeeStore;
+            LoadTrainerCommand = new LoadTrainersCommand(_employeeStore, this);
             AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => new AddTrainerViewModel(navigatorStore, this)));
             trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
 
 
 
-            //_trainerStore.TrainersLoaded += _trainerStore_TrainersLoaded;
-            //_trainerStore.TrainerAdded += _trainerStore_TrainerAdded;
-            //_trainerStore.TrainerUpdated += _trainerStore_TrainerUpdated;
-            //_trainerStore.TrainerDeleted += _trainerStore_TrainerDeleted;
+            _employeeStore.Loaded += _trainerStore_TrainersLoaded;
+            _employeeStore.Created += _trainerStore_TrainerAdded;
+            _employeeStore.Updated += _trainerStore_TrainerUpdated;
+            _employeeStore.Deleted += _trainerStore_TrainerDeleted;
 
         }
 
@@ -103,18 +103,19 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         {
             trainerListItemViewModels.Clear();
 
-            //foreach (Employee trainer in _trainerStore.Trainer)
-            //{
-            //    AddTrainer(trainer);
-            //}
+            foreach (Employee trainer in _employeeStore.Employees)
+            {
+                AddTrainer(trainer);
+            }
         }
 
         protected override void Dispose()
         {
-            //_trainerStore.TrainersLoaded -= _trainerStore_TrainersLoaded;
-            //_trainerStore.TrainerAdded -= _trainerStore_TrainerAdded;
-            //_trainerStore.TrainerUpdated -= _trainerStore_TrainerUpdated;
-            //_trainerStore.TrainerDeleted -= _trainerStore_TrainerDeleted;
+
+            _employeeStore.Loaded -= _trainerStore_TrainersLoaded;
+            _employeeStore.Created -= _trainerStore_TrainerAdded;
+            _employeeStore.Updated -= _trainerStore_TrainerUpdated;
+            _employeeStore.Deleted -= _trainerStore_TrainerDeleted;
             base.Dispose();
         }
 
@@ -125,12 +126,12 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private void AddTrainer(Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer,  _navigatorStore);
+                new TrainerListItemViewModel(trainer, _navigatorStore);
             trainerListItemViewModels.Add(itemViewModel);
         }
-        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore)
+        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
         {
-            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore);
+            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore);
 
             viewModel.LoadTrainerCommand.Execute(null);
 

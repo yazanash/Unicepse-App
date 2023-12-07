@@ -74,19 +74,16 @@
     <Compile Update="Views\AuthView\UsersListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainerViews\TrainersView.xaml.cs">
+    <Compile Update="Views\EmployeeViews\TrainersView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainerViews\EditTrainerDetailView.xaml.cs">
+    <Compile Update="Views\EmployeeViews\EditTrainerDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainerViews\TrainerDetailView.xaml.cs">
+    <Compile Update="Views\EmployeeViews\TrainerDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TrainerViews\TrainerDues.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\TrainerViews\TrainerListView.xaml.cs">
+    <Compile Update="Views\EmployeeViews\TrainerDues.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Expenses\EditExpansesDetailView.xaml.cs">

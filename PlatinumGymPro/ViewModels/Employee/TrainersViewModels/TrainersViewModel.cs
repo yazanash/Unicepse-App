@@ -11,22 +11,22 @@ namespace PlatinumGymPro.ViewModels
     public class TrainersViewModel : ViewModelBase
     {
         public NavigationStore _navigatorStore;
-        //private readonly TrainerStore _trainerStore;
+        private readonly EmployeeStore _employeeStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
-        public TrainersViewModel(NavigationStore navigatorStore)
+        public TrainersViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
         {
             _navigatorStore = navigatorStore;
-            //_trainerStore = trainerStore;
-            navigatorStore.CurrentViewModel = CreateTrainerViewModel(_navigatorStore);
+            _employeeStore = employeeStore;
+            navigatorStore.CurrentViewModel = CreateTrainerViewModel(_navigatorStore, _employeeStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
         }
         private void NavigatorStore_CurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-        private TrainersListViewModel CreateTrainerViewModel(NavigationStore navigatorStore)
+        private TrainersListViewModel CreateTrainerViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
         {
-            return TrainersListViewModel.LoadViewModel(navigatorStore);
+            return TrainersListViewModel.LoadViewModel(navigatorStore, employeeStore);
         }
     }
 }

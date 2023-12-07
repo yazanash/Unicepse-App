@@ -20,7 +20,8 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public double ParcentValue => Trainer.ParcentValue;
         public string? Phone => Trainer.Phone;
         public int BirthDate => Trainer.BirthDate;
-
+        public string? Position => Trainer.Position;
+        
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
 
