@@ -193,11 +193,14 @@
                                         <DataTemplate>
 
                                             <StackPanel Orientation="Horizontal">
-                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                                 <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
+                                                </Button>
+                                                <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
+                                                    <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                             </StackPanel>
                                         </DataTemplate>

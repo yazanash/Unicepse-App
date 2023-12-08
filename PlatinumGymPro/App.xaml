@@ -5,7 +5,9 @@
              xmlns:local="clr-namespace:PlatinumGymPro"
              xmlns:viewmodels="clr-namespace:PlatinumGymPro.ViewModels"
                xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.PlayersViewModels"
+             xmlns:vmodels="clr-namespace:PlatinumGymPro.ViewModels.Expenses"
              xmlns:views="clr-namespace:PlatinumGymPro.Views"
+             xmlns:vs="clr-namespace:PlatinumGymPro.Views.Expenses"
                xmlns:vi="clr-namespace:PlatinumGymPro.Views.PlayerViews"
               xmlns:login="clr-namespace:PlatinumGymPro.Views.AuthView"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
@@ -589,6 +591,7 @@
         <Style x:Key="GridremoveBtn" TargetType="Button" BasedOn="{StaticResource GridEditBtn}">
             <Setter Property="Background" Value="#C14E00"/>
             <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Margin" Value="5 0"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -1087,8 +1090,8 @@
         <DataTemplate DataType="{x:Type viewmodels:TrainersViewModel}">
             <views:TrainersView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:AccountingViewModel }">
-            <vi:PlayerProfile/>
+        <DataTemplate DataType="{x:Type vmodels:ExpensesViewModel }">
+            <vs:ExpensesView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:PlayersPageViewModel }">
             <views:PlayersView/>

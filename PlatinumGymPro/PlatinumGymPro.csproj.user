@@ -43,6 +43,9 @@
     <Compile Update="Views\EmployeeViews\EmployeesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Expenses\ExpensesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="utlis\Components\CustomTextBox.xaml">
@@ -82,6 +85,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EmployeeViews\EmployeesListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Expenses\ExpensesView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
