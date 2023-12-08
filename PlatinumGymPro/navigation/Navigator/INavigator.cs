@@ -12,7 +12,7 @@ namespace PlatinumGymPro.State.Navigator
     {
         Home,
         Players,
-        Gym,
+        Expenses,
         Accounting,
         Sport,
         Trainer,

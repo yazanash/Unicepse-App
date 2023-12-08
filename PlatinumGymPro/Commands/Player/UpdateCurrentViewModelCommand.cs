@@ -3,6 +3,7 @@ using PlatinumGymPro.State.Navigator;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
 using PlatinumGymPro.ViewModels;
+using PlatinumGymPro.ViewModels.Expenses;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,13 +20,15 @@ namespace PlatinumGymPro.Commands
         private readonly PlayersDataStore _playersStore;
         private readonly SportDataStore _sportStore;
         private readonly EmployeeStore _employeeStore;
+        private readonly ExpensesDataStore _expensesStore;
         public UpdateCurrentViewModelCommand(INavigator navigator, PlayersDataStore playersStore,
-            SportDataStore sportStore, EmployeeStore employeeStore)
+            SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore)
         {
             _navigator = navigator;
             _playersStore = playersStore;
             _sportStore = sportStore;
             _employeeStore = employeeStore;
+            _expensesStore = expensesStore;
         }
 
         public override void Execute(object? parameter)
@@ -48,8 +51,8 @@ namespace PlatinumGymPro.Commands
                     case ViewType.Trainer:
                         _navigator.CurrentViewModel = new TrainersViewModel(navigator,_employeeStore);
                         break;
-                    case ViewType.Gym:
-                        _navigator.CurrentViewModel = new GymViewModel();
+                    case ViewType.Expenses:
+                        _navigator.CurrentViewModel = new ExpensesViewModel(navigator, _expensesStore);
                         break;
                     case ViewType.Accounting:
                         _navigator.CurrentViewModel = new AccountingViewModel();

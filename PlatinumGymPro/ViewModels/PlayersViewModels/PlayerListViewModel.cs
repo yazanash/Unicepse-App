@@ -200,10 +200,10 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
         protected override void Dispose()
         {
-            //_playerStore.Loaded -= _playerStore_PlayersLoaded;
-            //_playerStore.Added -= _playerStore_PlayerAdded;
-            //_playerStore.PlayerUpdated -= _playerStore_PlayerUpdated;
-            //_playerStore.PlayerDeleted -= _playerStore_PlayerDeleted;
+            _playerStore.players_loaded -= _playerStore_PlayersLoaded;
+            _playerStore.player_created -= _playerStore_PlayerAdded;
+            _playerStore.player_update -= _playerStore_PlayerUpdated;
+            _playerStore.player_deleted -= _playerStore_PlayerDeleted;
             //_playerStore.SelectedFilterChanged -= _playerStore_SelectedFilterChanged;
             //_playerStore.SelectedOrderByChanged -= _playerStore_SelectedOrderByChanged;
             base.Dispose();

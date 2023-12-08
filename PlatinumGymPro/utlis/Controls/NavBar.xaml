@@ -72,6 +72,7 @@
                     <RadioButton
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Home}" 
+                        IsChecked="True"
                                 Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Home"/>
@@ -110,7 +111,7 @@
                     </RadioButton>
                 <RadioButton 
                                 Command="{Binding UpdateCurrentViewModelCommand}"
-                                CommandParameter="{x:Static nav:ViewType.Accounting}" 
+                                CommandParameter="{x:Static nav:ViewType.Expenses}" 
                                 Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCash"/>
@@ -120,7 +121,7 @@
                     </RadioButton>
                 <RadioButton
                                  Command="{Binding UpdateCurrentViewModelCommand}"
-                                CommandParameter="{x:Static nav:ViewType.Gym}" 
+                                CommandParameter="{x:Static nav:ViewType.Accounting}" 
                                Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="RoomService"/>

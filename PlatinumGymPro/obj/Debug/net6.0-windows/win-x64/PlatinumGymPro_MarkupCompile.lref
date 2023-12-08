@@ -22,9 +22,15 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\EditUserView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\LoginView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\RegisterView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\UsersListView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\EditTrainerDetailView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\EmployeesListView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\TrainerDetailView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\TrainerDues.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\TrainersView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Expenses\EditExpansesDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Expenses\ExpansesDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Expenses\ExpansesListView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Expenses\ExpensesView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Metrics\AddMetricDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Metrics\EditMetricDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Metrics\MetricListView.xaml;;
@@ -46,9 +52,4 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\EditTrainingDetailsVi
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Programs\AddProgramDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Programs\EditProgramDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\TrainingDetailsView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\EditTrainerDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\TrainerDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\TrainerDues.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\TrainersView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\EmployeesListView.xaml;;
 
