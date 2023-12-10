@@ -5,9 +5,9 @@
              xmlns:local="clr-namespace:PlatinumGymPro"
              xmlns:viewmodels="clr-namespace:PlatinumGymPro.ViewModels"
                xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.PlayersViewModels"
-             xmlns:vmodels="clr-namespace:PlatinumGymPro.ViewModels.Expenses"
+             xmlns:vmodels="clr-namespace:PlatinumGymPro.ViewModels.Accountant"
              xmlns:views="clr-namespace:PlatinumGymPro.Views"
-             xmlns:vs="clr-namespace:PlatinumGymPro.Views.Expenses"
+             xmlns:vs="clr-namespace:PlatinumGymPro.Views.AccountingViews"
                xmlns:vi="clr-namespace:PlatinumGymPro.Views.PlayerViews"
               xmlns:login="clr-namespace:PlatinumGymPro.Views.AuthView"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
@@ -834,6 +834,35 @@
         </Style>
 
 
+        <Style x:Key="BarButtonRD" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#C14E00"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template" >
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}" Padding="10 5" BorderBrush="#fff" BorderThickness="0" CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C14E00"/>
+                    <Setter Property="Foreground" Value="#dcdcdc"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#C14E00"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
 
 
 
@@ -1090,8 +1119,8 @@
         <DataTemplate DataType="{x:Type viewmodels:TrainersViewModel}">
             <views:TrainersView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vmodels:ExpensesViewModel }">
-            <vs:ExpensesView/>
+        <DataTemplate DataType="{x:Type vmodels:AccountingViewModel }">
+            <vs:AccountnigView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:PlayersPageViewModel }">
             <views:PlayersView/>

@@ -3,6 +3,7 @@ using PlatinumGymPro.State.Navigator;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
 using PlatinumGymPro.ViewModels;
+using PlatinumGymPro.ViewModels.Accountant;
 using PlatinumGymPro.ViewModels.Expenses;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
 using System;
@@ -55,7 +56,7 @@ namespace PlatinumGymPro.Commands
                         _navigator.CurrentViewModel = new ExpensesViewModel(navigator, _expensesStore);
                         break;
                     case ViewType.Accounting:
-                        _navigator.CurrentViewModel = new AccountingViewModel();
+                        _navigator.CurrentViewModel = new AccountingViewModel(navigator, _expensesStore);
                         break;
                     default:
                         break;

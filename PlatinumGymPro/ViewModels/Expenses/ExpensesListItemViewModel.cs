@@ -13,7 +13,7 @@ namespace PlatinumGymPro.ViewModels.Expenses
     {
         public Exp.Expenses Expenses { get; set; }
 
-        public ExpensesListItemViewModel(Exp.Expenses expenses, NavigationStore _navigatorStore, ExpensesListViewModel expensesListViewModel)
+        public ExpensesListItemViewModel(Exp.Expenses expenses, NavigationStore _navigatorStore)
         {
             Expenses = expenses;
         }

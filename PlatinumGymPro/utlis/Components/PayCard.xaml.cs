@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PlatinumGymPro.Views.AccountingViews
+namespace PlatinumGymPro.utlis.Components
 {
     /// <summary>
-    /// Interaction logic for AccountnigView.xaml
+    /// Interaction logic for PayCard.xaml
     /// </summary>
-    public partial class AccountnigView : UserControl
+    public partial class PayCard : UserControl
     {
-        public AccountnigView()
+        public PayCard()
         {
             InitializeComponent();
         }
