@@ -10,8 +10,10 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SportCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\TrainerCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\HeaderBar.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\HorizontalNav.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\InfoCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\NavBar.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\AccountingState.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\AccountingView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\ExpensesReport.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\IncomeReportView.xaml;;
@@ -42,6 +44,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerProfile.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayersListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayersView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SplashScreen.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\EditSportDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportDetailsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportListView.xaml;;
@@ -52,4 +55,5 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\EditTrainingDetailsVi
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Programs\AddProgramDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Programs\EditProgramDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\TrainingDetailsView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PayCard.xaml;;
 

@@ -111,7 +111,7 @@
                     </RadioButton>
                 <RadioButton 
                                 Command="{Binding UpdateCurrentViewModelCommand}"
-                                CommandParameter="{x:Static nav:ViewType.Expenses}" 
+                                CommandParameter="{x:Static nav:ViewType.Accounting}" 
                                 Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCash"/>

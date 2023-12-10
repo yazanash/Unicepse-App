@@ -71,7 +71,7 @@ namespace PlatinumGymPro.ViewModels.Expenses
         private void AddExpenses(Exp.Expenses expenses)
         {
             ExpensesListItemViewModel itemViewModel =
-                new ExpensesListItemViewModel(expenses, _navigatorStore, this);
+                new ExpensesListItemViewModel(expenses, _navigatorStore);
             expensesListItemViewModels.Add(itemViewModel);
         }
         private bool _isLoading;

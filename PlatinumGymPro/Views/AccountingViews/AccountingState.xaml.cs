@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace PlatinumGymPro.Views.AccountingViews
 {
     /// <summary>
-    /// Interaction logic for AccountnigView.xaml
+    /// Interaction logic for AccountingState.xaml
     /// </summary>
-    public partial class AccountnigView : UserControl
+    public partial class AccountingState : UserControl
     {
-        public AccountnigView()
+        public AccountingState()
         {
             InitializeComponent();
         }
