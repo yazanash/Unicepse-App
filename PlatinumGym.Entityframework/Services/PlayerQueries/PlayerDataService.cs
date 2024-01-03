@@ -70,30 +70,6 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
                 return entities;
             }
         }
-        public async Task<IEnumerable<Player>> GetByGender(bool GenderMale)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Player>? entities = await context.Set<Player>().Where(x => x.GenderMale == GenderMale).ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<Player>> GetBySubscribeEnd()
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Player>? entities = await context.Set<Player>().Where(x => x.SubscribeEndDate < DateTime.Now).ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<Player>> GetByDebt()
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Player>? entities = await context.Set<Player>().Where(x => x.Balance < 0).ToListAsync();
-                return entities;
-            }
-        }
         public async Task<Player> Update(Player entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -105,8 +81,6 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
             return entity;
 
         }
-
-
         public async Task<Player> CheckIfExistByName(string name)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

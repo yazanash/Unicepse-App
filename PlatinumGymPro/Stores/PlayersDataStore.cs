@@ -1,5 +1,6 @@
 ﻿using PlatinumGym.Core.Models.Player;
 using PlatinumGym.Entityframework.Services.PlayerQueries;
+using PlatinumGymPro.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,7 @@ using System.Threading.Tasks;
 
 namespace PlatinumGymPro.Stores
 {
-    public enum Filter
-    {
-        ByStatus,
-        ByGender,
-        ByDebt,
-        BySubscribeEnd
-    }
+ 
     public class PlayersDataStore
     {
         private readonly PlayerDataService _playerDataService;
@@ -33,53 +28,49 @@ namespace PlatinumGymPro.Stores
             _initializeLazy = new Lazy<Task>(Initialize);
         }
 
+        private Filter? _selectedFilter;
+        public Filter? SelectedFilter
+        {
+            get
+            {
+                return _selectedFilter;
+            }
+            set
+            {
+                _selectedFilter = value;
+                FilterChanged?.Invoke(_selectedFilter);
+            }
+        }
 
+        public event Action<Filter?>? FilterChanged;
+        private Order? _selectedOrder;
+        public Order? SelectedOrder
+        {
+            get
+            {
+                return _selectedOrder;
+            }
+            set
+            {
+                _selectedOrder = value;
+                OrderChanged?.Invoke(_selectedOrder);
+            }
+        }
+
+        public event Action<Order?>? OrderChanged;
         public async Task GetPlayers()
         {
             await _initializeLazy.Value;
+            players_loaded?.Invoke();
         }
 
-        public async Task GetPlayers(Filter filter)
-        {
-            IEnumerable<Player>? players;
-            switch (filter)
-            {
-                case Filter.BySubscribeEnd:
-                    players = await _playerDataService.GetBySubscribeEnd();
-                    RearrengeList(players);
-                    break;
-                case Filter.ByDebt:
-                    players = await _playerDataService.GetByDebt();
-                    RearrengeList(players);
-                    break;
-            }
-           
-        }
         public void RearrengeList(IEnumerable<Player> players )
         {
             _players.Clear();
             _players.AddRange(players!);
             players_loaded?.Invoke();
         }
-        public async Task GetPlayers(Filter filter , bool statusOrGender)
-        {
-            IEnumerable<Player> players;
-            switch (filter)
-            {
-                case Filter.ByStatus:
-                    players = await _playerDataService.GetByStatus(statusOrGender);
-                    RearrengeList(players);
-                    break;
-                case Filter.ByGender:
-                    players = await _playerDataService.GetByGender(statusOrGender);
-                    RearrengeList(players);
-                    break;
-                default:
-                    players = await _playerDataService.GetByStatus(statusOrGender);
-                    RearrengeList(players);
-                    break;
-            }
-        }
+     
 
         public async Task AddPlayer(Player player)
         {

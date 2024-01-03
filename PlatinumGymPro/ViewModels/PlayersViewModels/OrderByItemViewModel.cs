@@ -1,4 +1,5 @@
 ﻿using PlatinumGym.Core.Models;
+using PlatinumGymPro.Enums;
 //using PlatinumGymPro.Models;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,15 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
     public class OrderByItemViewModel : ViewModelBase
     {
-        public OrderBy OrderBy;
-        public int Id => OrderBy.Id;
-        public string? Content => OrderBy.Content;
+        public Order OrderBy;
+        public int Id { get; }
+        public string? Content { get; }
 
-        public OrderByItemViewModel(OrderBy orderBy)
+        public OrderByItemViewModel(Order orderBy,int id,string name)
         {
             OrderBy = orderBy;
+            Id = id;
+            Content = name;
         }
     }
 }

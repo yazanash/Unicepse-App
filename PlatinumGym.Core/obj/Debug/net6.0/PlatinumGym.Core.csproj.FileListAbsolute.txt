@@ -9,3 +9,4 @@ D:\Repo\PlatinumGymPro\PlatinumGym.Core\bin\Debug\net6.0\PlatinumGym.Core.pdb
 D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.dll
 D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\ref\PlatinumGym.Core.dll
 D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.pdb
+D:\Repo\PlatinumGymPro\PlatinumGym.Core\obj\Debug\net6.0\PlatinumGym.Core.csproj.AssemblyReference.cache

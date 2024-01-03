@@ -8,6 +8,8 @@
              xmlns:training="clr-namespace:PlatinumGymPro.Views.TrainingViews"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.PlayersViewModels"
+             xmlns:subview="clr-namespace:PlatinumGymPro.Views.SubscriptionView"
+             xmlns:subvm="clr-namespace:PlatinumGymPro.ViewModels.SubscriptionViewModel"
               xmlns:trvms="clr-namespace:PlatinumGymPro.ViewModels.TrainingViewModels"
              xmlns:views="clr-namespace:PlatinumGymPro.Views.PlayerViews"
              mc:Ignorable="d" 
@@ -21,6 +23,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type vms:EditPlayerViewModel }">
             <views:EditPlayerDetailsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type subvm:SubscriptionDetailsViewModel }">
+            <subview:SubscriptionDetailView/>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>

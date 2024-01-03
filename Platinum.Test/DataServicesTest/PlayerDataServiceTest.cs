@@ -214,32 +214,6 @@ namespace Platinum.Test.DataServicesTest
             Assert.AreEqual(players.Count(), count);
         }
 
-        [Test]
-        /// it should List female players
-        public async Task ListAllFemalePlayers()
-        {
-            //Arrange
-            int count = 5;
-            //Act
-            await create_female_players(count);
-            var players = await playerDataService!.GetByGender(false);
-            //Assert
-            foreach (var player in players.ToList())
-                Assert.AreEqual(player.GenderMale, false);
-        }
-
-        [Test]
-        /// it should List players wich have debt
-        public async Task ListPlayersHasDebt()
-        {
-            //Arrange
-            int count = 5;
-            //Act
-            await create_players_withdebt(count);
-            var players = await playerDataService!.GetByDebt();
-            //Assert
-            foreach (var player in players.ToList())
-                Assert.Greater(player.Balance, 0);
-        }
+    
     }
 }
