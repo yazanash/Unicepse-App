@@ -1,8 +1,10 @@
 ﻿using PlatinumGym.Core.Models.Player;
 using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.SubscriptionCommand;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
+using PlatinumGymPro.ViewModels.SubscriptionViewModel;
 using PlatinumGymPro.ViewModels.TrainingViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,10 +19,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
     public class PlayerListItemViewModel : ViewModelBase
     {
         public Player Player;
-        //private readonly PlayerStore _playerStore;
         private readonly NavigationStore _navigationStore;
-        //private readonly TrainerStore _trainerStore;
-        //private readonly SportStore _sportStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PlayerListViewModel playerListingViewModel;
         public int Id => Player.Id;
         public string? FullName => Player.FullName;
@@ -38,18 +38,16 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
-
-        public PlayerListItemViewModel(Player player, NavigationStore navigationStore, PlayerListViewModel playerListingViewModel)
+        public ICommand? SubscriptionCommand { get; }
+        public PlayerListItemViewModel(Player player, NavigationStore navigationStore, PlayerListViewModel playerListingViewModel,SubscriptionDataStore subscriptionDataStore)
         {
             Player = player;
 
-            //_playerStore = playerStore;
+            _subscriptionDataStore = subscriptionDataStore;
             _navigationStore = navigationStore;
-            //_trainerStore = trainerStore;
             this.playerListingViewModel = playerListingViewModel;
-            //_sportStore = sportStore;
             EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(_navigationStore, () => new EditPlayerViewModel(_navigationStore,player)));
-           
+            SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigationStore, () => new SubscriptionDetailsViewModel()));
         }
 
         public void Update(Player player)

@@ -20,14 +20,16 @@ namespace PlatinumGymPro.State.Navigator
         private readonly SportDataStore _sportStore;
         private readonly EmployeeStore _employeeStore;
         private readonly ExpensesDataStore _expensesStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         public Navigator(NavigationStore navigatorStore, PlayersDataStore playersStore,
-            SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore)
+            SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore)
         {
             _navigatorStore = navigatorStore;
             _playersStore = playersStore;
             _sportStore = sportStore;
             _employeeStore = employeeStore;
             _expensesStore = expensesStore;
+            _subscriptionDataStore = subscriptionDataStore;
             //LogoutCommand = new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore)));
 
         }
@@ -48,7 +50,7 @@ namespace PlatinumGymPro.State.Navigator
             set { _isOpen = value; OnPropertChanged(nameof(IsOpen)); }
             
         }
-        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore,_sportStore,_employeeStore, _expensesStore);
+        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore,_sportStore,_employeeStore, _expensesStore, _subscriptionDataStore);
         //public ICommand LogoutCommand { get; }
 
     }

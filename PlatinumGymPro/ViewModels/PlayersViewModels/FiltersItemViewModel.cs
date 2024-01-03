@@ -1,5 +1,5 @@
-﻿using PlatinumGym.Core.Models;
-//using PlatinumGymPro.Models;
+﻿
+using PlatinumGymPro.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +8,18 @@ using System.Threading.Tasks;
 
 namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
+
     public class FiltersItemViewModel : ViewModelBase
     {
-        public Filter Filter;
-        public int Id =>Filter.Id;
-        public string? Content => Filter.Content;
+        public Enums.Filter Filter;
+        public int Id { get;  }
+        public string? Content { get;  }
 
-        public FiltersItemViewModel(Filter filter)
+        public FiltersItemViewModel(Filter filter,int id,string name)
         {
             Filter = filter;
+            Id=id;
+            Content = name;
         }
     }
 }

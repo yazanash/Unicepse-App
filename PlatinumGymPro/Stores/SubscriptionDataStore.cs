@@ -1,4 +1,5 @@
 ﻿using PlatinumGym.Core.Models.Payment;
+using PlatinumGym.Core.Models.Player;
 using PlatinumGym.Core.Models.Subscription;
 using PlatinumGym.Entityframework.Services;
 using System;
@@ -22,6 +23,22 @@ namespace PlatinumGymPro.Stores
         private readonly Lazy<Task> _initializeLazy;
 
         public IEnumerable<Subscription> Subscriptions => _subscriptions;
+
+        private Player? _currentPlayer;
+        public Player? CurrentPlayer
+        {
+            get
+            {
+                return _currentPlayer;
+            }
+            set
+            {
+                _currentPlayer = value;
+                StateChanged?.Invoke();
+            }
+        }
+
+        public event Action? StateChanged;
 
         public SubscriptionDataStore(SubscriptionDataService subscriptionDataService)
         {

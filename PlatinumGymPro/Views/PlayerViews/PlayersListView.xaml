@@ -146,6 +146,7 @@
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+                            
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
@@ -192,16 +193,17 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
 
-                                            <StackPanel Orientation="Horizontal">
+                                            <StackPanel Orientation="Horizontal" x:Name="menu">
                                                 <Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                                 <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
-                                                <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
+                                                <Button Command="{Binding SubscriptionCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
+                                                
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
