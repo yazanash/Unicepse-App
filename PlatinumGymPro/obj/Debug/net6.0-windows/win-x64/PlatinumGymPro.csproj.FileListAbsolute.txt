@@ -692,3 +692,4 @@ D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Com
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Components\PayCard.baml
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\SubscriptionView\SubscriptionDetailView.g.cs
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\SubscriptionView\SubscriptionDetailView.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Dictionaries\CalendarStyle.baml

@@ -99,6 +99,9 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="utlis\Dictionaries\CalendarStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\AccountingViews\AccountingState.xaml">
       <SubType>Designer</SubType>
     </Page>

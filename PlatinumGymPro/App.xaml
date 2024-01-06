@@ -8,6 +8,7 @@
              xmlns:vmodels="clr-namespace:PlatinumGymPro.ViewModels.Accountant"
              xmlns:views="clr-namespace:PlatinumGymPro.Views"
              xmlns:vs="clr-namespace:PlatinumGymPro.Views.AccountingViews"
+             xmlns:playervs="clr-namespace:PlatinumGymPro.Views.PlayerViews"
                xmlns:vi="clr-namespace:PlatinumGymPro.Views.PlayerViews"
               xmlns:login="clr-namespace:PlatinumGymPro.Views.AuthView"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
@@ -1135,7 +1136,7 @@
             <Setter Property="BorderBrush" Value="#999"/>
             <Setter Property="Padding" Value="10 8"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="15"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBoxBase">

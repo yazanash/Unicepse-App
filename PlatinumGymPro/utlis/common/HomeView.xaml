@@ -418,6 +418,12 @@
         </Style>
 
 
+        <ResourceDictionary x:Key="res" >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Dictionaries/CalendarStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
 
 
     </UserControl.Resources>

@@ -26,12 +26,14 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public string? FullName => Player.FullName;
         public string? Phone => Player.Phone;
         public int BirthDate => Player.BirthDate;
+        public string Gendertext => Player.GenderMale? "ذكر" : "انثى";
         public bool GenderMale => Player.GenderMale;
         public double Weight => Player.Weight;
         public double Hieght => Player.Hieght;
-        public string? SubscribeDate => Player.SubscribeDate.ToShortDateString();
-        public string? SubscribeEndDate => Player.SubscribeEndDate.ToShortDateString();
+        public string? SubscribeDate => Player.SubscribeDate.ToString("ddd,MMM dd,yyy");
+        public string? SubscribeEndDate => Player.SubscribeEndDate.ToString("ddd,MMM dd,yyy");
         public bool IsTakenContainer => Player.IsTakenContainer;
+        public int DayLeft => (int) Player.SubscribeEndDate.Subtract(Player.SubscribeDate).TotalDays;
         public Brush IsSubscribed => Player.IsSubscribed ? Brushes.Green : Brushes.Red;
         public double Balance => Player.Balance;
 
