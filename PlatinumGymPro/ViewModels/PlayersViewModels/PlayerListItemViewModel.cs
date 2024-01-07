@@ -26,19 +26,21 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public string? FullName => Player.FullName;
         public string? Phone => Player.Phone;
         public int BirthDate => Player.BirthDate;
+        public string Gendertext => Player.GenderMale? "ذكر" : "انثى";
         public bool GenderMale => Player.GenderMale;
         public double Weight => Player.Weight;
         public double Hieght => Player.Hieght;
-        public string? SubscribeDate => Player.SubscribeDate.ToShortDateString();
-        public string? SubscribeEndDate => Player.SubscribeEndDate.ToShortDateString();
+        public string? SubscribeDate => Player.SubscribeDate.ToString("ddd,MMM dd,yyy");
+        public string? SubscribeEndDate => Player.SubscribeEndDate.ToString("ddd,MMM dd,yyy");
         public bool IsTakenContainer => Player.IsTakenContainer;
+        public int DayLeft => (int) Player.SubscribeEndDate.Subtract(Player.SubscribeDate).TotalDays;
         public Brush IsSubscribed => Player.IsSubscribed ? Brushes.Green : Brushes.Red;
         public double Balance => Player.Balance;
 
 
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
-        public ICommand? SubscriptionCommand { get; }
+        public ICommand? OpenProfileCommand { get; }
         public PlayerListItemViewModel(Player player, NavigationStore navigationStore, PlayerListViewModel playerListingViewModel,SubscriptionDataStore subscriptionDataStore)
         {
             Player = player;
@@ -47,7 +49,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _navigationStore = navigationStore;
             this.playerListingViewModel = playerListingViewModel;
             EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(_navigationStore, () => new EditPlayerViewModel(_navigationStore,player)));
-            SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigationStore, () => new SubscriptionDetailsViewModel()));
+            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore,subscriptionDataStore,player)));
         }
 
         public void Update(Player player)
@@ -56,6 +58,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             OnPropertyChanged(nameof(FullName));
         }
-       
+        private PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, Player player)
+        {
+            return PlayerProfileViewModel.LoadViewModel(navigatorStore, subscriptionDataStore,player);
+        }
     }
 }
