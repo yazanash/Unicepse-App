@@ -139,7 +139,7 @@
 
            
 
-            <Border  Background="#FFF" CornerRadius="20" Grid.Row="4" Margin="5 10" Padding="5">
+            <Border  Background="#FFF" CornerRadius="10" Grid.Row="4" Margin="5 10" Padding="5">
                 <Grid  Grid.Row="4">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
@@ -212,7 +212,7 @@
                                                 <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>-->
-                                                <Button Command="{Binding SubscriptionCommand}" Style="{StaticResource GridremoveBtn}">
+                                                <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                             </StackPanel>

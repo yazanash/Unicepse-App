@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.IconPacks;
 
 namespace PlatinumGymPro.utlis.Components
 {
@@ -24,5 +25,24 @@ namespace PlatinumGymPro.utlis.Components
         {
             InitializeComponent();
         }
+
+        public PackIconMaterialKind Icon
+        {
+            get { return (PackIconMaterialKind)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
+        }
+
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register
+            ("Icon", typeof(PackIconMaterialKind), typeof(CustomRadioButton));
+
+
+        public string RadioText
+        {
+            get { return (string)GetValue(RadioTextProperty); }
+            set { SetValue(RadioTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty RadioTextProperty = DependencyProperty.Register
+            ("RadioText", typeof(string), typeof(CustomRadioButton));
     }
 }

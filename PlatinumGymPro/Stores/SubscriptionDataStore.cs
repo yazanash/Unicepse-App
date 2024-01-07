@@ -62,12 +62,20 @@ namespace PlatinumGymPro.Stores
             Deleted?.Invoke(entity_id);
         }
 
-        public async Task GetAll()
+        public async Task GetAll(Player player)
         {
-            await _initializeLazy.Value;
+            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(player);
+            _subscriptions.Clear();
+            _subscriptions.AddRange(subscriptions);
             Loaded?.Invoke();
         }
-
+        public async Task GetAll()
+        {
+            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll();
+            _subscriptions.Clear();
+            _subscriptions.AddRange(subscriptions);
+            Loaded?.Invoke();
+        }
         public async Task Initialize()
         {
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll();
