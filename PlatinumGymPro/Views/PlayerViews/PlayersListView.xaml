@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:PlatinumGymPro.Views.PlayerViews"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              Background="Transparent"
+              xmlns:cs="clr-namespace:PlatinumGymPro.Components"
              xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
@@ -35,30 +36,42 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top">
+                        <cs:CustomTextBox Hint="ابحث هنا"/>
+                    </Border>
                     <ComboBox SelectedItem="{Binding SelectedOrderBy, UpdateSourceTrigger=PropertyChanged}"
                               VerticalAlignment="Center" Margin="5 0 5 0" Tag="الترتيب حسب"
                               ItemsSource="{Binding OrderByList}"
                               ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"
-                              Grid.Row="0" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                              Grid.Column="2"
+                              Grid.Row="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <ComboBoxItem Content="{Binding Content}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox  SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" ItemsSource="{Binding FiltersList}" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" Tag="التصنيف حسب" Grid.Row="0" Grid.Column="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                    <ComboBox  SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" 
+                               VerticalAlignment="Center" ItemsSource="{Binding FiltersList}"
+                               ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" 
+                               Tag="التصنيف حسب" Grid.Row="1" Grid.Column="3" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <ComboBoxItem Content="{Binding Content}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <StackPanel  Margin="0 5" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="2" >
+                    <StackPanel  Margin="0 5" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="1" >
                         <!--<Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -85,7 +98,7 @@
 
                     </StackPanel>
 
-                    <Grid Grid.Column="3">
+                    <Grid Grid.Column="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -126,7 +139,7 @@
 
            
 
-            <Border  Background="#FFF" CornerRadius="20" Grid.Row="4" Margin="5 10" Padding="5">
+            <Border  Background="#FFF" CornerRadius="10" Grid.Row="4" Margin="5 10" Padding="5">
                 <Grid  Grid.Row="4">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
@@ -153,7 +166,7 @@
                                     Binding="{Binding Id}"
                                     CanUserResize="False"/>
 
-                                <DataGridTemplateColumn Header="الاسم" Width="*" IsReadOnly="True">
+                                <DataGridTemplateColumn Header="الاسم" Width="1.5*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -166,11 +179,11 @@
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="تاريخ الميلاد" IsReadOnly="True"
                                      Binding="{Binding BirthDate}"
-                                    Width="*"
+                                    Width="auto"
                                     />
                                 <DataGridTextColumn Header="الجنس" IsReadOnly="True"
-                                     Binding="{Binding GenderMale}"
-                                    Width="*"
+                                     Binding="{Binding Gendertext}"
+                                    Width="auto"
                                     />
                                 
                                 <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
@@ -182,28 +195,26 @@
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="الايام المتبقية" IsReadOnly="True"
-                                     Binding="{Binding SubscribeEndDate}"
-                                    Width="*"
+                                     Binding="{Binding DayLeft}"
+                                    Width="auto"
                                     />
                                 <DataGridTextColumn Header="رصيد الحساب" IsReadOnly="True"
                                      Binding="{Binding Balance}"
-                                    Width="*"
+                                    Width="auto"
                                     />
-                                <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">
+                                <DataGridTemplateColumn Header="عمليات" Width="auto" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-
                                             <StackPanel Orientation="Horizontal" x:Name="menu">
-                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
+                                                <!--<Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                                 <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
-                                                <Button Command="{Binding SubscriptionCommand}" Style="{StaticResource GridremoveBtn}">
+                                                </Button>-->
+                                                <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
-                                                
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

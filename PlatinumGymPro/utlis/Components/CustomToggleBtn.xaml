@@ -9,7 +9,7 @@
     <UserControl.Resources>
     
     </UserControl.Resources>
-    <Grid Background="Blue">
+    <Grid >
         <Border VerticalAlignment="Center" HorizontalAlignment="Center"
                 Background="#fff"
                 Width="300"

@@ -6,11 +6,22 @@
              xmlns:local="clr-namespace:PlatinumGymPro.Views.PlayerViews"
              xmlns:ctrl="clr-namespace:PlatinumGymPro.Controls"
              xmlns:cdr="clr-namespace:PlatinumGymPro.Components"
+             xmlns:ctrls="clr-namespace:PlatinumGymPro.utlis.Controls"
+             xmlns:comp="clr-namespace:PlatinumGymPro.utlis.Components"
+                xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
+             xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
              FlowDirection="RightToLeft"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              Background="Transparent"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+
+
+
+    </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>
             <Grid.RowDefinitions>
@@ -18,61 +29,63 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2"  CornerRadius="10" Padding="5 5" Margin="0 0 0 5" Background="#fff">
                 <DockPanel>
-                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!--<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center">
                         <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
                         <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
-                    </StackPanel>
-                    <!--<StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
-                        </Button>
                     </StackPanel>-->
+                    <ctrls:PlayerBar HorizontalAlignment="Center"/>
                 </DockPanel>
             </Border>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Border Background="#fff" CornerRadius="10" Grid.Column="2"  Grid.Row="0" Grid.RowSpan="2"  Padding="5"  Margin="5">
+                <!--<Border Grid.Row="0" Grid.Column="2"  Background="#fff" Margin="5" CornerRadius="10" Padding="5">
                     <DockPanel>
-                        <TextBlock Text="قياسات اللاعب" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Top"/>
-
-                        <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"  ItemsPanel="{DynamicResource ListBoxItemsPanel2}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" ItemsSource="{Binding PlayerList}" DockPanel.Dock="Top" BorderBrush="#fff"  >
+                        <TextBlock Foreground="#C14E00" Text="المدفوعات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
+                        <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SelectedSportListingItemViewModel.TrainerList}" >
 
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <cdr:MetricCard/>
+                                    <Grid>
+                                        <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
+                                    </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-                          
                         </ListBox>
                     </DockPanel>
+                </Border>-->
+
+              
+                <Border Background="#fff" CornerRadius="10" Grid.Column="0" Grid.RowSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
+
+                    <ctrl:InfoCard DockPanel.Dock="Top"/>
                 </Border>
 
-                <Border Background="#fff" CornerRadius="10" Grid.Column="0"   Grid.Row="0"  Padding="5"  Margin="5">
-                    <DockPanel>
-                        <TextBlock Text="معلومات اللاعب" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Top"/>
-                        <ctrl:InfoCard DockPanel.Dock="Top"/>
-                   </DockPanel>
-                </Border>
 
 
 
 
-                <Grid Grid.Row="1" Grid.Column="0">
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Row="1" Grid.Column="0" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
+
+                    <comp:PlayerMetricCard Grid.Row="0" Grid.Column="0"/>
+                    <comp:PlayerMetricCard Grid.Row="0" Grid.Column="1"/>
+                    <comp:PlayerMetricCard Grid.Row="0" Grid.Column="2"/>
+
+                    <!--<Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
                         <DockPanel>
                             <TextBlock Foreground="#C14E00" Text="التسجيلات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
 
@@ -87,26 +100,128 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </DockPanel>
+                    </Border>-->
+
+                    <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">
+                        <Grid  Grid.Row="4">
+                            <custom:LoadingSpinner
+                IsLoading="{Binding IsLoading}"
+                Diameter="100" Thickness="3" Color="#C14E00" />
+                            <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="13*"/>
+                                    <ColumnDefinition Width="20*"/>
+                                    <ColumnDefinition Width="7*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
+
+                                <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
+                                    FlowDirection="RightToLeft" ItemsSource="{Binding SubscriptionList}" 
+                                    CanUserReorderColumns="True"
+                                    x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
+                                    CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                    ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="#" IsReadOnly="True"
+                                    Width="auto"
+                                    Binding="{Binding Id}"
+                                    CanUserResize="False"/>
+
+                                        <DataGridTemplateColumn Header="الرياضة" Width="1.5*" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <!--<Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
+                                                        </Border>-->
+                                                        <TextBlock Margin="10 0 0 0" Text="{Binding SportName}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTextColumn Header="المدرب" IsReadOnly="True"
+                                     Binding="{Binding Trainer}"
+                                    Width="*"
+                                    />
+                                       
+                                        <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
+                                     Binding="{Binding RollDate}"
+                                    Width="*"
+                                    />
+                                        <DataGridTextColumn Header="السعر" IsReadOnly="True"
+                                     Binding="{Binding Price}"
+                                    Width="auto"
+                                    />
+
+                                      
+                                        <!--<DataGridTextColumn Header="الحسم" IsReadOnly="True"
+                                     Binding="{Binding OfferDes}"
+                                    Width="120"
+                                    />
+                                        <DataGridTextColumn Header="قيمة الحسم" IsReadOnly="True"
+                                     Binding="{Binding OfferValue}"
+                                    Width="auto"
+                                    />-->
+                                        <DataGridTextColumn Header="السعر بعد الحسم" IsReadOnly="True"
+                                     Binding="{Binding PriceAfterOffer}"
+                                    Width="auto"
+                                    />
+                                        <!--<DataGridTextColumn Header="تدريب خاص" IsReadOnly="True"
+                                     Binding="{Binding IsPrivate}"
+                                    Width="auto"
+                                    />
+                                        <DataGridTextColumn Header="سعر التدريب الخاص" IsReadOnly="True"
+                                     Binding="{Binding PrivatePrice}"
+                                    Width="auto"
+                                    />-->
+
+
+                                        <DataGridTemplateColumn Header="الحالة" Width="1.5*" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border Width="100" Padding="5 3" Margin="0 0 0 0" Background="{Binding IsPaidColor}" CornerRadius="10">
+                                                        <TextBlock HorizontalAlignment="Center" Foreground="#fff" Margin="0 0 0 0" Text="{Binding IsPaid}" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <!--<DataGridTextColumn Header="المدفوع" IsReadOnly="True"
+                                     Binding="{Binding PaidValue}"
+                                    Width="*"
+                                    />-->
+                                        <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
+                                     Binding="{Binding EndDate}"
+                                    Width="*"
+                                    />
+
+                                        <DataGridTemplateColumn Header="عمليات" Width="auto" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" x:Name="menu">
+                                                        <Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
+                                                    <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
+                                                </Button>
+                                                <!--<Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
+                                                    <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
+                                                </Button>
+                                                        <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
+                                                            <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
+                                                        </Button>-->
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Grid>
                     </Border>
 
 
-
-                    <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"  Background="#fff" Margin="5" CornerRadius="10" Padding="5">
-                        <DockPanel>
-                            <TextBlock Foreground="#C14E00" Text="المدفوعات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
-                            <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SelectedSportListingItemViewModel.TrainerList}" >
-
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </DockPanel>
-                    </Border>
                 </Grid>
+
 
             </Grid>
 

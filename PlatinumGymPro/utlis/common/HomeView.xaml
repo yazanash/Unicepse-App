@@ -56,7 +56,7 @@
                             <Border Background="{TemplateBinding Background}"  
                                     BorderBrush="{TemplateBinding BorderBrush}" 
                                     BorderThickness="{TemplateBinding BorderThickness}" 
-                                    CornerRadius="15">
+                                    CornerRadius="10">
                                 <Border.Effect>
                                     <DropShadowEffect ShadowDepth="1" Opacity="0.2"/>
                                 </Border.Effect>
@@ -418,6 +418,12 @@
         </Style>
 
 
+        <ResourceDictionary x:Key="res" >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Dictionaries/CalendarStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
 
 
     </UserControl.Resources>
@@ -446,7 +452,7 @@
                 <uc:DashboardCard Title="الايرادات"  Money="150,000,000" BackColor="#FFF" Grid.Column="1" Grid.Row="0"/>
                 <uc:DashboardCard Title="المصاريف"  Money="150,000,000" BackColor="#FFF" Grid.Column="2" Grid.Row="0"/>
 
-                <Border Background="#FFF" CornerRadius="20" Grid.ColumnSpan="3" Grid.Row="3" Margin="5 10" Padding="5">
+                <Border Background="#FFF" CornerRadius="10" Grid.ColumnSpan="3" Grid.Row="3" Margin="5 10" Padding="5">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
                     </Border.Effect>
@@ -515,7 +521,7 @@
             <Viewbox Margin="5 0" VerticalAlignment="Top" Stretch="Uniform" Grid.Row="0" Grid.Column="0" >
                 <Calendar CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" Style="{DynamicResource CalendarStyle1}" />
             </Viewbox>
-            <Border Background="#FFF" CornerRadius="20" Margin="5 10"  Grid.Row="1" Grid.Column="0">
+            <Border Background="#FFF" CornerRadius="10" Margin="5 10"  Grid.Row="1" Grid.Column="0">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
                 </Border.Effect>

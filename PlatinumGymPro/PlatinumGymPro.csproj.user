@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="utlis\Components\CustomRadioButton.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\CustomTextBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -20,6 +23,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Components\PayCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\PlayerMetricCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Components\SportCard.xaml.cs">
@@ -38,6 +44,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Controls\NavBar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Controls\PlayerBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\AccountingViews\AccountingState.xaml.cs">
@@ -63,6 +72,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="utlis\Components\CustomRadioButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="utlis\Components\CustomTextBox.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -76,6 +88,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\PayCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\PlayerMetricCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\SportCard.xaml">
@@ -97,6 +112,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Controls\PlayerBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\CalendarStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AccountingViews\AccountingState.xaml">

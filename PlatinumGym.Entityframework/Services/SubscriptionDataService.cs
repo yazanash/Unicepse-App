@@ -69,18 +69,22 @@ namespace PlatinumGym.Entityframework.Services
         }
 
 
-        public async Task<IEnumerable<Subscription>> GetAll()
+        public async Task<IEnumerable<Subscription>> GetAll(Player player)
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Include(x => x.Trainer)
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x=>x.Player!.Id==player.Id).Include(x => x.Trainer)
                     .Include(x => x.Player)
                     .Include(x => x.Sport).ToListAsync();
                 return entities;
             }
         }
+        public  Task<IEnumerable<Subscription>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task<Subscription> Update(Subscription entity)
+            public async Task<Subscription> Update(Subscription entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Subscription existed_subscription = await Get(entity.Id);
