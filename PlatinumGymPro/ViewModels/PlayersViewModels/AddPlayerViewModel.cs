@@ -38,6 +38,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             {
                 _fullName = value;
                 OnPropertyChanged(nameof(FullName));
+                ClearError(nameof(FullName));
+                if (string.IsNullOrEmpty(FullName?.Trim()))
+                {
+                    AddError("هذا الحقل مطلوب", nameof(FullName));
+                    OnErrorChanged(nameof(Phone));
+                }
             }
         }
         private string? _phone;
@@ -56,46 +62,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             }
         }
-        private bool _hasOffer;
-        public bool HasOffer
-        {
-            get
-            {
-                return _hasOffer;
-            }
-            set
-            {
-                _hasOffer = value;
-                OnPropertyChanged(nameof(HasOffer));
-            }
-        }
-        private bool _isPrivate;
-        public bool IsPrivate
-        {
-            get
-            {
-                return _isPrivate;
-            }
-            set
-            {
-                _isPrivate = value;
-                OnPropertyChanged(nameof(IsPrivate));
-            }
-        }
-        private bool _hasPayment;
-        public bool HasPayment
-        {
-            get
-            {
-                return _hasPayment;
-            }
-            set
-            {
-                _hasPayment = value;
-                OnPropertyChanged(nameof(HasPayment));
-            }
-        }
-
+        
         private void AddError(string? ErrorMsg, string? propertyName)
         {
             if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
@@ -134,13 +101,27 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public double Weight
         {
             get { return _weight; }
-            set { _weight = value; OnPropertyChanged(nameof(Weight)); }
+            set { _weight = value; OnPropertyChanged(nameof(Weight));
+                ClearError(nameof(Weight));
+                if (string.IsNullOrEmpty(Weight.ToString()))
+                {
+                    AddError("لا يمكن ان يكون هذا الحقل فارغا", nameof(Weight));
+                    OnErrorChanged(nameof(Weight));
+                }
+            }
         }
         private double _hieght;
         public double Hieght
         {
             get { return _hieght; }
-            set { _hieght = value; OnPropertyChanged(nameof(Hieght)); }
+            set { _hieght = value; OnPropertyChanged(nameof(Hieght));
+                ClearError(nameof(Hieght));
+                if (string.IsNullOrEmpty(Hieght.ToString()))
+                {
+                    AddError("لا يمكن ان يكون هذا الحقل فارغا", nameof(Hieght));
+                    OnErrorChanged(nameof(Hieght));
+                }
+            }
         }
         private DateTime _subscribeDate = DateTime.Now.Date;
         public DateTime SubscribeDate
@@ -148,30 +129,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             get { return _subscribeDate; }
             set { _subscribeDate = value; OnPropertyChanged(nameof(SubscribeDate)); }
         }
-        private string? _subscribeEndDate = DateTime.Now.Date.ToShortDateString();
-        public string? SubscribeEndDate
-        {
-            get { return _subscribeEndDate; }
-            set { _subscribeEndDate = value; OnPropertyChanged(nameof(SubscribeEndDate)); }
-        }
-        private bool _isTakenContainer;
-        public bool IsTakenContainer
-        {
-            get { return _isTakenContainer; }
-            set { _isTakenContainer = value; OnPropertyChanged(nameof(IsTakenContainer)); }
-        }
-        private bool _isSubscribed;
-        public bool IsSubscribed
-        {
-            get { return _isSubscribed; }
-            set { _isSubscribed = value; OnPropertyChanged(nameof(IsSubscribed)); }
-        }
-        private double _balance;
-        public double Balance
-        {
-            get { return _balance; }
-            set { _balance = value; OnPropertyChanged(nameof(Balance)); }
-        }
+       
+        
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; } 
         #endregion

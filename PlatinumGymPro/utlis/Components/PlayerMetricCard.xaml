@@ -13,17 +13,17 @@
             <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
         </Border.Effect>
         <StackPanel Orientation="Horizontal">
-          <StackPanel HorizontalAlignment="Left">
-                <TextBlock Margin="0 0 0 10"
-                       TextAlignment="Left" Text="22" FontWeight="DemiBold" FontSize="28" Foreground="#C14E00" />
+
+            <Icon:PackIconMaterial Kind="ChartArc" HorizontalAlignment="Right" Foreground="#C14E00" Width="40" Height="40" VerticalAlignment="Center" Margin="10"/>
+            <StackPanel HorizontalAlignment="Left">
                 <TextBlock 
                 Text="الاشتراكات"
-                Foreground="#aaa" FontWeight="Heavy" FontSize="24" HorizontalAlignment="Right"/>
-                <Icon:PackIconMaterial Kind="ArrowUpCircleOutline" HorizontalAlignment="Left" Height="20" Width="20" RotationAngle="45" Foreground="#aaa"/>
-               
-            </StackPanel>
-            <Icon:PackIconMaterial Kind="ChartArc" HorizontalAlignment="Right" Foreground="#aaa" Width="60" Height="60" VerticalAlignment="Center" Margin="10"/>
+                Foreground="#888" FontWeight="Heavy" FontSize="16" HorizontalAlignment="Right"/>
+                <TextBlock Margin="0 0 0 10"
+                       TextAlignment="Left" Text="22" FontWeight="DemiBold" FontSize="30" Foreground="#C14E00" />
+                <!--<Icon:PackIconMaterial Kind="ArrowUpCircleOutline" HorizontalAlignment="Left" Height="20" Width="20" RotationAngle="45" Foreground="#aaa"/>-->
 
+            </StackPanel>
         </StackPanel>
        
     </Border>

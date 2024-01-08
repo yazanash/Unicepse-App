@@ -15,6 +15,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         private readonly NavigationStore _navigationStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
         //private readonly PlayerListViewModel playerListingViewModel;
+        public int Id => Subscription.Id;
         public string? SportName => Subscription.Sport!.Name;
         public DateTime LastCheck => Subscription.LastCheck;
         public string? Trainer => Subscription.Trainer!.FullName;
@@ -26,9 +27,10 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         public string IsPrivate => Subscription.IsPrivate ? "تدريب خاص" : "لا يوجد";
         //public bool IsStopped => Subscription.IsStopped? "اشتراك مسحوب" : "لا يوجد";
         //public bool IsMoved { get; set; }
-        public double PrivatePrice => Subscription.PrivatePrice;
+        public double PrivatePrice => Subscription.IsPrivate ? Subscription.PrivatePrice : 0;
         public string IsPaid => Subscription.IsPaid ? "مدفوع" : "غير مدفوع";
         public Brush IsPaidColor => Subscription.IsPaid ? Brushes.Green : Brushes.Red;
+        //public Brush IsPaidTextColor => !Subscription.IsPaid ? new BrushConverter().ConvertFromString("#80A894") as SolidColorBrush : new BrushConverter().ConvertFromString("#BE99C3") as SolidColorBrush;
         public double PaidValue => Subscription.PaidValue;
         //public double RestValue { get; set; }
         public string EndDate => Subscription.EndDate.ToString("ddd,MMM dd,yyy");

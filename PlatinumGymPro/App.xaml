@@ -513,7 +513,7 @@
             <Setter Property="Template" >
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ScrollBar}">
-                        <Grid x:Name="GridRoot" Width="6" Background="{x:Null}">
+                        <Grid x:Name="GridRoot" Width="2" Background="{x:Null}">
                             <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="True" Focusable="False">
                                 <Track.Thumb>
                                     <Thumb x:Name="thumb" Background="{TemplateBinding Foreground}" 
