@@ -13,10 +13,10 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
     {
         private readonly SubscriptionDataStore _subscriptionStore;
         private readonly PlayerProfileViewModel _subscriptionListing;
-        private Player _player;
+        private readonly PlayerListItemViewModel _player;
 
 
-        public LoadSubscriptions(PlayerProfileViewModel subscriptionListing, SubscriptionDataStore subscriptionStore,Player player)
+        public LoadSubscriptions(PlayerProfileViewModel subscriptionListing, SubscriptionDataStore subscriptionStore, PlayerListItemViewModel player)
         {
             _subscriptionStore = subscriptionStore;
             _subscriptionListing = subscriptionListing;
@@ -31,7 +31,7 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
             try
             {
 
-                await _subscriptionStore.GetAll(_player);
+                await _subscriptionStore.GetAll(_player.Player);
             }
             catch (Exception)
             {

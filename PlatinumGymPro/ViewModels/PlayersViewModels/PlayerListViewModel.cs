@@ -23,8 +23,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly ObservableCollection<PlayerListItemViewModel> playerListItemViewModels;
         private readonly ObservableCollection<FiltersItemViewModel> filtersItemViewModel;
         private readonly ObservableCollection<OrderByItemViewModel> OrderByItemViewModel;
-        private NavigationStore _navigatorStore;
-        private PlayersDataStore _playerStore;
+        private readonly NavigationStore _navigatorStore;
+        private readonly PlayersDataStore _playerStore;
         private readonly SubscriptionDataStore _subscriptionStore;
         //private TrainerStore _trainerStore;
         //private SportStore _sportStore;
@@ -56,6 +56,20 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             set
             {
                 _playerStore.SelectedOrder = value?.OrderBy;
+
+            }
+        }
+
+
+        public PlayerListItemViewModel? SelectedPlayer
+        {
+            get
+            {
+                return _playerStore.SelectedPlayer;
+            }
+            set
+            {
+                _playerStore.SelectedPlayer = value;
 
             }
         }
@@ -139,16 +153,16 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _subscriptionStore = subscriptionStore;
             LoadPlayersCommand = new LoadPlayersCommand(this, _playerStore);
 
-            AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this)));
+            AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this,_playerStore,_subscriptionStore)));
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
 
 
-            _playerStore.players_loaded += _playerStore_PlayersLoaded;
-            _playerStore.player_created += _playerStore_PlayerAdded;
-            _playerStore.player_update += _playerStore_PlayerUpdated;
-            _playerStore.player_deleted += _playerStore_PlayerDeleted;
-            _playerStore.FilterChanged += _playerStore_FilterChanged;
-            _playerStore.OrderChanged += _playerStore_OrderChanged;
+            _playerStore.Players_loaded += PlayerStore_PlayersLoaded;
+            _playerStore.Player_created += PlayerStore_PlayerAdded;
+            _playerStore.Player_update += PlayerStore_PlayerUpdated;
+            _playerStore.Player_deleted += PlayerStore_PlayerDeleted;
+            _playerStore.FilterChanged += PlayerStore_FilterChanged;
+            _playerStore.OrderChanged += PlayerStore_OrderChanged;
             //_playerStore.SelectedFilterChanged += _playerStore_SelectedFilterChanged;
             //_playerStore.SelectedOrderByChanged += _playerStore_SelectedOrderByChanged;
 
@@ -176,26 +190,26 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
         }
 
-        private void _playerStore_OrderChanged(Enums.Order? order)
+        private void PlayerStore_OrderChanged(Enums.Order? order)
         {
             FilterPlayers(order, _playerStore.SelectedFilter);
         }
 
-        private void _playerStore_FilterChanged(Enums.Filter? filter)
+        private void PlayerStore_FilterChanged(Enums.Filter? filter)
         {
             FilterPlayers(_playerStore.SelectedOrder, filter);
         }
         protected override void Dispose()
         {
-            _playerStore.players_loaded -= _playerStore_PlayersLoaded;
-            _playerStore.player_created -= _playerStore_PlayerAdded;
-            _playerStore.player_update -= _playerStore_PlayerUpdated;
-            _playerStore.player_deleted -= _playerStore_PlayerDeleted;
-            _playerStore.FilterChanged -= _playerStore_FilterChanged;
-            _playerStore.OrderChanged -= _playerStore_OrderChanged;
+            _playerStore.Players_loaded -= PlayerStore_PlayersLoaded;
+            _playerStore.Player_created -= PlayerStore_PlayerAdded;
+            _playerStore.Player_update -= PlayerStore_PlayerUpdated;
+            _playerStore.Player_deleted -= PlayerStore_PlayerDeleted;
+            _playerStore.FilterChanged -= PlayerStore_FilterChanged;
+            _playerStore.OrderChanged -= PlayerStore_OrderChanged;
             base.Dispose();
         }
-        private void _playerStore_PlayerDeleted(int id)
+        private void PlayerStore_PlayerDeleted(int id)
         {
             PlayerListItemViewModel? itemViewModel = playerListItemViewModels.FirstOrDefault(y => y.Player?.Id == id);
 
@@ -205,7 +219,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             }
         }
 
-        private void _playerStore_PlayerUpdated(Player player)
+        private void PlayerStore_PlayerUpdated(Player player)
         {
             PlayerListItemViewModel? playerViewModel =
                    playerListItemViewModels.FirstOrDefault(y => y.Player.Id == player.Id);
@@ -216,7 +230,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             }
         }
 
-        private void _playerStore_PlayerAdded(Player player)
+        private void PlayerStore_PlayerAdded(Player player)
         {
             AddPlayer(player);
             PlayersCount++;
@@ -226,7 +240,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
                 PlayersMaleCount++;
         }
 
-        private void _playerStore_PlayersLoaded()
+        private void PlayerStore_PlayersLoaded()
         {
 
             FilterPlayers(_playerStore.SelectedOrder, _playerStore.SelectedFilter);
@@ -276,7 +290,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             {
                 AddPlayer(player);
             }
-            PlayersCount = playerListItemViewModels.Count();
+            PlayersCount = playerListItemViewModels.Count;
             PlayersFemaleCount = playerListItemViewModels.Where(x => !x.GenderMale).Count();
             PlayersMaleCount = playerListItemViewModels.Where(x => x.GenderMale).Count();
 
@@ -284,12 +298,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new PlayerListItemViewModel(player, _navigatorStore, this, _subscriptionStore);
+                new (player, _navigatorStore, this, _subscriptionStore,_playerStore);
             playerListItemViewModels.Add(itemViewModel);
         }
         public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore)
         {
-            PlayerListViewModel viewModel = new PlayerListViewModel(navigatorStore, playersStore, subscriptionDataStore);
+            PlayerListViewModel viewModel = new (navigatorStore, playersStore, subscriptionDataStore);
 
             viewModel.LoadPlayersCommand.Execute(null);
 

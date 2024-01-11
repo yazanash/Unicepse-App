@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Commands;
+﻿using PlatinumGym.Core.Models.Player;
+using PlatinumGymPro.Commands;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
@@ -13,20 +14,50 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
-    public class AddPlayerViewModel : ViewModelBase
+    public class AddPlayerViewModel : ViewModelBase,INotifyDataErrorInfo
     {
         private readonly NavigationStore _navigationStore;
-        //private readonly PlayerStore _playerStore;
-        public AddPlayerViewModel(NavigationStore navigationStore,PlayerListViewModel playerListViewModel)
+        private readonly PlayersDataStore _playerStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly PlayerListViewModel _playerListViewModel;
+        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore)
         {
             _navigationStore = navigationStore;
-            //_playerStore = playerStore;
-            CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, ()=> playerListViewModel));
-            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel),this);
+            _playerStore = playerStore;
+            _subscriptionDataStore = subscriptionDataStore;
+            _playerListViewModel = playerListViewModel;
+            CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
+            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(navigationStore, _subscriptionDataStore, _playerStore)), this, _playerStore,_navigationStore,_playerListViewModel,_subscriptionDataStore);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
+            
         }
 
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore)
+        {
+            return PlayerProfileViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore);
+        }
+        private bool? _submited = false;
+        public bool? Submited
+        {
+            get { return _submited; }
+            set
+            {
+                _submited = value;
+                OnPropertyChanged(nameof(Submited));
+               
+            }
+        }
+        private string? _submitMessage;
+        public string? SubmitMessage
+        {
+            get { return _submitMessage; }
+            set
+            {
+                _submitMessage = value;
+                OnPropertyChanged(nameof(SubmitMessage));
 
+            }
+        }
         #region Properties
         public int Id { get; }
 
@@ -63,28 +94,6 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             }
         }
         
-        private void AddError(string? ErrorMsg, string? propertyName)
-        {
-            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
-            {
-                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
-
-            }
-            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void ClearError(string? propertyName)
-        {
-            PropertyNameToErrorsDictionary.Remove(propertyName!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void OnErrorChanged(string? PropertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
-        }
-
         private int _birthDate;
         public int BirthDate
         {
@@ -132,14 +141,42 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
        
         
         public ICommand? SubmitCommand { get; }
-        public ICommand? CancelCommand { get; } 
+        public ICommand? CancelCommand { get; }
         #endregion
 
+
+        public bool CanSubmit => !HasErrors;
+
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
+       
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
+        private void AddError(string? ErrorMsg, string? propertyName)
+        {
+            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
+            {
+                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
+
+            }
+            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
+            OnErrorChanged(propertyName);
+        }
+
+        private void ClearError(string? propertyName)
+        {
+            PropertyNameToErrorsDictionary.Remove(propertyName!);
+            OnErrorChanged(propertyName);
+        }
+
+        private void OnErrorChanged(string? PropertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
+          OnPropertyChanged(nameof(CanSubmit));
+        }
+
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();
 
-        public IEnumerable? GetErrors(string? propertyName)
+        public IEnumerable GetErrors(string? propertyName)
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }

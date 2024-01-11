@@ -709,7 +709,8 @@
 
 
             <Grid Grid.Row="1" >
-                <Border Background="#fff" CornerRadius="10" Grid.Column="0" Grid.ColumnSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
+               
+                <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
                     <DockPanel HorizontalAlignment="Center" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
                             <TextBlock Text="معلومات اللاعب" Foreground="#C14E00" FontSize="24" DockPanel.Dock="Left"/>
@@ -751,7 +752,7 @@
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <ComboBox Style="{DynamicResource ComboBoxStyle1}"  ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
-                                    <ComboBoxItem Content="1999"/>
+                                    <ComboBoxItem Content="1999" Selector.IsSelected="True"/>
                                     <ComboBoxItem Content="2000"/>
                                     <ComboBoxItem Content="2001"/>
                                     <ComboBoxItem Content="2002"/>
@@ -764,7 +765,7 @@
                                    Foreground="#993300"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
-                                <TextBox Text="{Binding Weight, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                <TextBox Text="{Binding Weight, UpdateSourceTrigger=PropertyChanged }" Style="{StaticResource textBoxStyle}"/>
 
                             </StackPanel>
 
@@ -796,17 +797,20 @@
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <RadioButton Style="{StaticResource BarButtonRD}" >
+                                    <RadioButton Style="{StaticResource RadioChoose}" IsChecked="{Binding GenderMale}" >
                                         <RadioButton.Content>
-                                            <StackPanel Orientation="Vertical">
-                                                <Icon:PackIconMaterial Kind="FaceMan" Width="40" Height="40" />
-                                                <TextBlock Text="ذكر"  TextAlignment="Center" FontSize="18"
+                                           <!--<Border Padding="5" CornerRadius="10" BorderThickness="1" BorderBrush="#C14E00"> -->
+                                                <StackPanel Orientation="Vertical">
+                                                    <Icon:PackIconMaterial Kind="FaceMan" Width="40" Height="40" />
+                                                    <TextBlock Text="ذكر"  TextAlignment="Center" FontSize="18"
                                                            FontWeight="Bold"/>
-                                            </StackPanel>
-                                           
+                                                </StackPanel>
+                                                <!--</Border>-->
+
+
                                         </RadioButton.Content>
                                     </RadioButton>
-                                    <RadioButton Style="{StaticResource BarButtonRD}" >
+                                    <RadioButton Style="{StaticResource RadioChoose}" >
                                         <RadioButton.Content>
                                             <StackPanel Orientation="Vertical">
                                                 <Icon:PackIconMaterial Kind="FaceWoman" Width="40" Height="40" />
@@ -819,7 +823,12 @@
                                 </StackPanel>
                             </StackPanel>
 
-
+                            <!--<StackPanel Grid.Row="3" Grid.Column="1">
+                                <Border BorderBrush="Green" Height="30" BorderThickness="2" CornerRadius="10"
+                                        Visibility="{Binding Submited ,Converter={StaticResource BoolToVis}}">
+                                    <TextBlock FontSize="15" Text="{Binding SubmitMessage, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Foreground="Green" HorizontalAlignment="Center"/>
+                                </Border> 
+                            </StackPanel>-->
                             <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Margin="0 20 0 0" HorizontalAlignment="Right">
                                 <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
                                 </Button>
