@@ -1,6 +1,7 @@
 ﻿using PlatinumGym.Core.Models.Player;
 using PlatinumGym.Entityframework.Services.PlayerQueries;
 using PlatinumGymPro.Enums;
+using PlatinumGymPro.ViewModels.PlayersViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,33 @@ namespace PlatinumGymPro.Stores
         private readonly Lazy<Task> _initializeLazy;
 
         public IEnumerable<Player> Players => _players;
-        public event Action<Player>? player_created;
-        public event Action? players_loaded;
-        public event Action<Player>? player_update;
-        public event Action<int>? player_deleted;
+        public event Action<Player>? Player_created;
+        public event Action? Players_loaded;
+        public event Action<Player>? Player_update;
+        public event Action<int>? Player_deleted;
+
+
+        public event Action<Filter?>? FilterChanged;
+        public event Action<PlayerListItemViewModel?>? PlayerChanged;
         public PlayersDataStore(PlayerDataService playerDataService)
         {
             _playerDataService = playerDataService;
             _players = new List<Player>();
             _initializeLazy = new Lazy<Task>(Initialize);
+        }
+
+        private PlayerListItemViewModel? _selectedPlayer;
+        public PlayerListItemViewModel? SelectedPlayer
+        {
+            get
+            {
+                return _selectedPlayer;
+            }
+            set
+            {
+                _selectedPlayer = value;
+                PlayerChanged?.Invoke(_selectedPlayer);
+            }
         }
 
         private Filter? _selectedFilter;
@@ -42,7 +61,7 @@ namespace PlatinumGymPro.Stores
             }
         }
 
-        public event Action<Filter?>? FilterChanged;
+        
         private Order? _selectedOrder;
         public Order? SelectedOrder
         {
@@ -61,22 +80,20 @@ namespace PlatinumGymPro.Stores
         public async Task GetPlayers()
         {
             await _initializeLazy.Value;
-            players_loaded?.Invoke();
+            Players_loaded?.Invoke();
         }
 
         public void RearrengeList(IEnumerable<Player> players )
         {
             _players.Clear();
             _players.AddRange(players!);
-            players_loaded?.Invoke();
+            Players_loaded?.Invoke();
         }
-     
-
         public async Task AddPlayer(Player player)
         {
             await _playerDataService.Create(player);
             _players.Add(player);
-            player_created?.Invoke(player);
+            Player_created?.Invoke(player);
         }
         public async Task UpdatePlayer(Player player)
         {
@@ -91,7 +108,7 @@ namespace PlatinumGymPro.Stores
             {
                 _players.Add(player);
             }
-            player_update?.Invoke(player);
+            Player_update?.Invoke(player);
         }
 
         public async Task DeletePlayer(int player_id)
@@ -99,7 +116,7 @@ namespace PlatinumGymPro.Stores
             bool deleted = await _playerDataService.Delete(player_id);
             int currentIndex = _players.FindIndex(y => y.Id == player_id);
             _players.RemoveAt(currentIndex);
-            player_deleted?.Invoke(player_id);
+            Player_deleted?.Invoke(player_id);
         }
 
 

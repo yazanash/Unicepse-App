@@ -513,7 +513,7 @@
             <Setter Property="Template" >
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ScrollBar}">
-                        <Grid x:Name="GridRoot" Width="6" Background="{x:Null}">
+                        <Grid x:Name="GridRoot" Width="2" Background="{x:Null}">
                             <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="True" Focusable="False">
                                 <Track.Thumb>
                                     <Thumb x:Name="thumb" Background="{TemplateBinding Foreground}" 
@@ -862,7 +862,33 @@
         </Style>
 
 
+        <Style x:Key="RadioChoose" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#999"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template" >
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="rd_border" Background="{TemplateBinding Background}" Padding="10" BorderBrush="{TemplateBinding Foreground}" BorderThickness="1" CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
 
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#C14E00"/>
+                    <Setter Property="BorderBrush" Value="#C14E00"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Foreground" Value="#C14E00"/>
+                    <Setter Property="BorderBrush" Value="#C14E00"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
 
 
@@ -1135,9 +1161,19 @@
             <Setter Property="Padding" Value="10 8"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <AdornedElementPlaceholder/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBoxBase">
+                        <StackPanel>
+                            
+                        
                         <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 SnapsToDevicePixels="True"
@@ -1145,6 +1181,16 @@
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Hidden"/>
                         </Border>
+
+                            <ItemsControl ItemsSource="{TemplateBinding Validation.Errors}" >
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Foreground="Red" Text="{Binding ErrorContent}"/>
+                                        
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="BorderBrush" Value="#993300" TargetName="border"/>
@@ -1212,6 +1258,10 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#993300"/>
+                </Trigger>
+
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#B1B0B5"/>
                 </Trigger>
             </Style.Triggers>
         </Style>

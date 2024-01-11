@@ -63,7 +63,7 @@
               
                 <Border Background="#fff" CornerRadius="10" Grid.Column="0" Grid.RowSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
 
-                    <ctrl:InfoCard DockPanel.Dock="Top"/>
+                    <ctrl:InfoCard DockPanel.Dock="Top" DataContext="{Binding Player}"/>
                 </Border>
 
 
@@ -132,19 +132,21 @@
                                         <DataGridTemplateColumn Header="الرياضة" Width="1.5*" IsReadOnly="True">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal">
+                                                    <StackPanel Orientation="Vertical">
                                                         <!--<Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
                                                         </Border>-->
-                                                        <TextBlock Margin="10 0 0 0" Text="{Binding SportName}" VerticalAlignment="Center"/>
+                                                        <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding SportName}" VerticalAlignment="Center"/>
+                                                        <TextBlock Margin="10 0 0 0" Text="{Binding Trainer}"
+                                                                  Foreground="#888" FontSize="13" VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
 
-                                        <DataGridTextColumn Header="المدرب" IsReadOnly="True"
+                                        <!--<DataGridTextColumn Header="المدرب" IsReadOnly="True"
                                      Binding="{Binding Trainer}"
                                     Width="*"
-                                    />
+                                    />-->
                                        
                                         <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
                                      Binding="{Binding RollDate}"
@@ -168,21 +170,22 @@
                                      Binding="{Binding PriceAfterOffer}"
                                     Width="auto"
                                     />
-                                        <!--<DataGridTextColumn Header="تدريب خاص" IsReadOnly="True"
-                                     Binding="{Binding IsPrivate}"
-                                    Width="auto"
-                                    />
-                                        <DataGridTextColumn Header="سعر التدريب الخاص" IsReadOnly="True"
-                                     Binding="{Binding PrivatePrice}"
-                                    Width="auto"
-                                    />-->
 
-
-                                        <DataGridTemplateColumn Header="الحالة" Width="1.5*" IsReadOnly="True">
+                                        <DataGridTemplateColumn Header="تدريب خاص" Width="auto" IsReadOnly="True">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Border Width="100" Padding="5 3" Margin="0 0 0 0" Background="{Binding IsPaidColor}" CornerRadius="10">
-                                                        <TextBlock HorizontalAlignment="Center" Foreground="#fff" Margin="0 0 0 0" Text="{Binding IsPaid}" VerticalAlignment="Center"/>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock Text="{Binding IsPrivate}" FontSize="12"/>
+                                                        <TextBlock Text="{Binding PrivatePrice}" FontSize="12"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="الحالة" Width="100" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border  Padding="5 3" Margin="0 0 0 0" BorderThickness="1" BorderBrush="{Binding IsPaidColor}" CornerRadius="10">
+                                                        <TextBlock HorizontalAlignment="Center" Foreground="{Binding IsPaidColor}" Margin="0 0 0 0" Text="{Binding IsPaid}" VerticalAlignment="Center"/>
                                                     </Border>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
@@ -200,7 +203,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal" x:Name="menu">
-                                                        <Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
+                                                        <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
                                                     <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                                 <!--<Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">

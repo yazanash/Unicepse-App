@@ -18,7 +18,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly ObservableCollection<SubscriptionListItemViewModel> subscriptionListItemViewModels;
         private NavigationStore _navigatorStore;
         private readonly SubscriptionDataStore _subscriptionStore;
-        public Player _player;
+        private readonly PlayersDataStore _playersDataStore;
+        public PlayerListItemViewModel Player => _playersDataStore.SelectedPlayer;
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => subscriptionListItemViewModels;
 
 
@@ -54,12 +55,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadSubscriptionCommand { get; }
-        public PlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, Player player)
+        public PlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore)
         {
             _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
-            _player = player;
-            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _player);
+            _playersDataStore = playersDataStore;
+            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _playersDataStore.SelectedPlayer);
             subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             _subscriptionStore.Loaded += _subscriptionStore_Loaded;
             _subscriptionStore.Created += _subscriptionStore_Created;
@@ -117,9 +118,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
                 new SubscriptionListItemViewModel(subscription, _navigatorStore, _subscriptionStore);
             subscriptionListItemViewModels.Add(itemViewModel);
         }
-        public static PlayerProfileViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore,Player player)
+        public static PlayerProfileViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore ,PlayersDataStore playersDataStore)
         {
-            PlayerProfileViewModel viewModel = new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, player);
+            PlayerProfileViewModel viewModel = new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore);
             viewModel.LoadSubscriptionCommand.Execute(null);
             return viewModel;
         }

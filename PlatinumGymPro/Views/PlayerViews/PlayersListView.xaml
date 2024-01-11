@@ -156,6 +156,7 @@
                         <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
                                     FlowDirection="RightToLeft" ItemsSource="{Binding PlayerList}" 
                                     CanUserReorderColumns="True"
+                                    SelectedItem="{Binding SelectedPlayer}"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
