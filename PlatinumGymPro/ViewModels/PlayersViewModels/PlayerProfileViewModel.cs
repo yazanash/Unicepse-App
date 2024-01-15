@@ -15,114 +15,36 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
     public class PlayerProfileViewModel : ViewModelBase
     {
-        private readonly ObservableCollection<SubscriptionListItemViewModel> subscriptionListItemViewModels;
         private NavigationStore _navigatorStore;
         private readonly SubscriptionDataStore _subscriptionStore;
         private readonly PlayersDataStore _playersDataStore;
-        public PlayerListItemViewModel Player => _playersDataStore.SelectedPlayer;
-        public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => subscriptionListItemViewModels;
+        public PlayerListItemViewModel? Player => _playersDataStore.SelectedPlayer;
+        public ViewModelBase? CurrentPlayerViewModel => _navigatorStore.CurrentViewModel;
 
-
-        private bool _isLoading;
-        public bool IsLoading
-        {
-            get
-            {
-                return _isLoading;
-            }
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        private string? _errorMessage;
-        public string? ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-                OnPropertyChanged(nameof(HasErrorMessage));
-            }
-        }
-
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
-
-        public ICommand LoadSubscriptionCommand { get; }
         public PlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore)
         {
             _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
             _playersDataStore = playersDataStore;
-            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _playersDataStore.SelectedPlayer);
-            subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
-            _subscriptionStore.Loaded += _subscriptionStore_Loaded;
-            _subscriptionStore.Created += _subscriptionStore_Created;
-            _subscriptionStore.Updated += _subscriptionStore_Updated;
-            _subscriptionStore.Deleted += _subscriptionStore_Deleted;
+
+            navigatorStore.CurrentViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore);
+            navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
+            _playersDataStore.PlayerChanged += _playersDataStore_PlayerChanged;
         }
 
-        private void _subscriptionStore_Deleted(int id)
+        private void _playersDataStore_PlayerChanged(PlayerListItemViewModel? obj)
         {
-            SubscriptionListItemViewModel? itemViewModel = subscriptionListItemViewModels.FirstOrDefault(y => y.Subscription?.Id == id);
-
-            if (itemViewModel != null)
-            {
-                subscriptionListItemViewModels.Remove(itemViewModel);
-            }
+            OnPropertyChanged(nameof(Player));
         }
 
-        private void _subscriptionStore_Updated(Subscription subscription)
+        private void NavigatorStore_CurrentViewModelChanged()
         {
-            SubscriptionListItemViewModel? subscriptionViewModel =
-                  subscriptionListItemViewModels.FirstOrDefault(y => y.Subscription.Id == subscription.Id);
-
-            if (subscriptionViewModel != null)
-            {
-                subscriptionViewModel.Update(subscription);
-            }
+            OnPropertyChanged(nameof(CurrentPlayerViewModel));
         }
-
-        private void _subscriptionStore_Created(Subscription subscription)
+        private PlayerMainPageViewModel LoadPlayerMainPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore)
         {
-            AddSubscription(subscription);
+            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playerStore);
         }
-
-        private void _subscriptionStore_Loaded()
-        {
-            subscriptionListItemViewModels.Clear();
-
-            foreach (Subscription subscription in _subscriptionStore.Subscriptions)
-            {
-                AddSubscription(subscription);
-            }
-        }
-
-        protected override void Dispose()
-        {
-            _subscriptionStore.Loaded -= _subscriptionStore_Loaded;
-            _subscriptionStore.Created -= _subscriptionStore_Created;
-            _subscriptionStore.Updated -= _subscriptionStore_Updated;
-            _subscriptionStore.Deleted -= _subscriptionStore_Deleted;
-            base.Dispose();
-        }
-        private void AddSubscription(Subscription subscription)
-        {
-            SubscriptionListItemViewModel itemViewModel =
-                new SubscriptionListItemViewModel(subscription, _navigatorStore, _subscriptionStore);
-            subscriptionListItemViewModels.Add(itemViewModel);
-        }
-        public static PlayerProfileViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore ,PlayersDataStore playersDataStore)
-        {
-            PlayerProfileViewModel viewModel = new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore);
-            viewModel.LoadSubscriptionCommand.Execute(null);
-            return viewModel;
-        }
+      
     }
 }

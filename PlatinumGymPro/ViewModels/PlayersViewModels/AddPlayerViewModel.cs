@@ -34,7 +34,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
         private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore)
         {
-            return PlayerProfileViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore);
+            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore);
         }
         private bool? _submited = false;
         public bool? Submited

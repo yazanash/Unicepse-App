@@ -1,5 +1,5 @@
 ﻿//using PlatinumGymPro.Models;
-using PlatinumGym.Core.Models.Player;
+using PlatinumGym.Core.Models;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
@@ -50,7 +50,7 @@ namespace PlatinumGymPro.Commands
         public override async Task ExecuteAsync(object? parameter)
         {
             _addPlayerViewModel.Submited = false;
-             Player player = new ()
+              PlatinumGym.Core.Models.Player.Player player = new ()
             {
                 FullName = _addPlayerViewModel.FullName,
                 BirthDate = _addPlayerViewModel.BirthDate,
@@ -65,7 +65,7 @@ namespace PlatinumGymPro.Commands
             MessageBox.Show(player.FullName + " added successfully");
             //_addPlayerViewModel.Submited = true;
             //_addPlayerViewModel.SubmitMessage = player.FullName + " added successfully";
-            _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _PlayerListViewModel,_subscriptionDataStore, _playerStore);
+            _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore,_subscriptionDataStore, _playerStore);
            //await Task.Delay(5000);
             navigationService.Navigate();
         }

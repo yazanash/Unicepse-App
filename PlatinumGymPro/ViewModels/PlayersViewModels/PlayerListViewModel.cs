@@ -298,7 +298,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new (player, _navigatorStore, this, _subscriptionStore,_playerStore);
+                new (player, _navigatorStore, _subscriptionStore,_playerStore);
             playerListItemViewModels.Add(itemViewModel);
         }
         public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore)

@@ -12,11 +12,11 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
     public class LoadSubscriptions : AsyncCommandBase
     {
         private readonly SubscriptionDataStore _subscriptionStore;
-        private readonly PlayerProfileViewModel _subscriptionListing;
+        private readonly PlayerMainPageViewModel _subscriptionListing;
         private readonly PlayerListItemViewModel _player;
 
 
-        public LoadSubscriptions(PlayerProfileViewModel subscriptionListing, SubscriptionDataStore subscriptionStore, PlayerListItemViewModel player)
+        public LoadSubscriptions(PlayerMainPageViewModel subscriptionListing, SubscriptionDataStore subscriptionStore, PlayerListItemViewModel player)
         {
             _subscriptionStore = subscriptionStore;
             _subscriptionListing = subscriptionListing;

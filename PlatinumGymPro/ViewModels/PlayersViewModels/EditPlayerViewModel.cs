@@ -1,27 +1,35 @@
-﻿using PlatinumGym.Core.Models.Player;
+﻿using PlatinumGym.Core.Models;
+using PlatinumGym.Core.Models.Player;
+using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.Player;
+using PlatinumGymPro.Services;
 //using PlatinumGymPro.Models;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
-    public class EditPlayerViewModel : ViewModelBase
+    public class EditPlayerViewModel : ViewModelBase,INotifyDataErrorInfo
     {
         private readonly NavigationStore _navigationStore;
-        //private readonly PlayerStore _playerStore;
+        private readonly PlayersDataStore _playerStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly PlayerMainPageViewModel _playerProfileViewModel;
+        public ObservableCollection<Year> years;
 
-
+        public IEnumerable<Year> Years => years;
         #region Properties
-
-        public int Id { get; } 
+        public int Id { get; }
 
         private string? _fullName;
         public string? FullName
@@ -31,6 +39,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             {
                 _fullName = value;
                 OnPropertyChanged(nameof(FullName));
+                ClearError(nameof(FullName));
+                if (string.IsNullOrEmpty(FullName?.Trim()))
+                {
+                    AddError("هذا الحقل مطلوب", nameof(FullName));
+                    OnErrorChanged(nameof(Phone));
+                }
             }
         }
         private string? _phone;
@@ -49,7 +63,67 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             }
         }
-    
+
+        private Year? _year;
+        public Year? Year
+        {
+            get { return _year; }
+            set {
+                _year = value;
+                
+                OnPropertyChanged(nameof(Year));
+            }
+        }
+        private bool _genderMale;
+        public bool GenderMale
+        {
+            get { return _genderMale; }
+            set { _genderMale = value; OnPropertyChanged(nameof(GenderMale)); }
+        }
+        private double _weight;
+        public double Weight
+        {
+            get { return _weight; }
+            set
+            {
+                _weight = value; OnPropertyChanged(nameof(Weight));
+                ClearError(nameof(Weight));
+                if (string.IsNullOrEmpty(Weight.ToString()))
+                {
+                    AddError("لا يمكن ان يكون هذا الحقل فارغا", nameof(Weight));
+                    OnErrorChanged(nameof(Weight));
+                }
+            }
+        }
+        private double _hieght;
+        public double Hieght
+        {
+            get { return _hieght; }
+            set
+            {
+                _hieght = value; OnPropertyChanged(nameof(Hieght));
+                ClearError(nameof(Hieght));
+                if (string.IsNullOrEmpty(Hieght.ToString()))
+                {
+                    AddError("لا يمكن ان يكون هذا الحقل فارغا", nameof(Hieght));
+                    OnErrorChanged(nameof(Hieght));
+                }
+            }
+        }
+        private DateTime _subscribeDate = DateTime.Now.Date;
+        public DateTime SubscribeDate
+        {
+            get { return _subscribeDate; }
+            set { _subscribeDate = value; OnPropertyChanged(nameof(SubscribeDate)); }
+        }
+
+
+        public ICommand? SubmitCommand { get; }
+        public ICommand? CancelCommand { get; }
+        #endregion
+
+
+
 
         private void AddError(string? ErrorMsg, string? propertyName)
         {
@@ -64,7 +138,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
         private void ClearError(string? propertyName)
         {
-            //PropertyNameToErrorsDictionary.Remove(propertyName!);
+            PropertyNameToErrorsDictionary.Remove(propertyName!);
             OnErrorChanged(propertyName);
         }
 
@@ -73,62 +147,66 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
         }
 
-        private int _birthDate;
-        public int BirthDate
-        {
-            get { return _birthDate; }
-            set { _birthDate = value; OnPropertyChanged(nameof(BirthDate)); }
-        }
-        private bool _genderMale;
-        public bool GenderMale
-        {
-            get { return _genderMale; }
-            set { _genderMale = value; OnPropertyChanged(nameof(GenderMale)); }
-        }
-        private double _weight;
-        public double Weight
-        {
-            get { return _weight; }
-            set { _weight = value; OnPropertyChanged(nameof(Weight)); }
-        }
-        private double _hieght;
-        public double Hieght
-        {
-            get { return _hieght; }
-            set { _hieght = value; OnPropertyChanged(nameof(Hieght)); }
-        }
-        private DateTime _subscribeDate = DateTime.Now.Date;
-        public DateTime SubscribeDate
-        {
-            get { return _subscribeDate; }
-            set { _subscribeDate = value; OnPropertyChanged(nameof(SubscribeDate)); }
-        }
-        public ICommand? SubmitCommand { get; }
-        public ICommand? CancelCommand { get; }
-
-        #endregion
+       
+      
+     
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
 
-        public EditPlayerViewModel(NavigationStore navigationStore, Player player)
+        public EditPlayerViewModel(NavigationStore navigationStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PlayerMainPageViewModel playerProfileViewModel)
         {
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
+            years = new ObservableCollection<Year>();
+           for(int i = 1990;i<2023;i++)
+                years.Add(new Year() { year =i});
             _navigationStore = navigationStore;
-            //_playerStore = playerStore;
-            Id = player.Id;
-            FullName = player.FullName;
-            Phone = player.Phone;
-            BirthDate = player.BirthDate;
-            GenderMale = player.GenderMale;
-            Weight = player.Weight;
-            Hieght = player.Hieght;
-            SubscribeDate = player.SubscribeDate;
-          
-        }
+            _playerStore = playerStore;
+            _subscriptionDataStore = subscriptionDataStore;
+            _playerProfileViewModel = playerProfileViewModel;
+            Id = _playerStore.SelectedPlayer!.Player.Id;
+            FullName = _playerStore.SelectedPlayer!.Player.FullName;
+            Phone = _playerStore.SelectedPlayer!.Player.Phone;
+            Year = years.SingleOrDefault(x=>x.year == _playerStore.SelectedPlayer!.Player.BirthDate) ;
+            GenderMale = _playerStore.SelectedPlayer!.Player.GenderMale;
+            Weight = _playerStore.SelectedPlayer!.Player.Weight;
+            Hieght = _playerStore.SelectedPlayer!.Player.Hieght;
+            SubscribeDate = _playerStore.SelectedPlayer!.Player.SubscribeDate;
 
+            SubmitCommand = new EditPlayerCommand(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore)), this, _playerStore, _navigationStore, _subscriptionDataStore);
+            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => _playerProfileViewModel));
+
+        }
+        private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore)
+        {
+            return new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore);
+        }
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();
 
-        public IEnumerable? GetErrors(string? propertyName)
+        public bool CanSubmit => !HasErrors;
+        private bool? _submited = false;
+        public bool? Submited
+        {
+            get { return _submited; }
+            set
+            {
+                _submited = value;
+                OnPropertyChanged(nameof(Submited));
+
+            }
+        }
+        private string? _submitMessage;
+        public string? SubmitMessage
+        {
+            get { return _submitMessage; }
+            set
+            {
+                _submitMessage = value;
+                OnPropertyChanged(nameof(SubmitMessage));
+
+            }
+        }
+       
+        public IEnumerable GetErrors(string? propertyName)
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
