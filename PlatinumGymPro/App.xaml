@@ -358,7 +358,8 @@
             </Setter>
         </Style>
       <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
-
+            <StackPanel>
+              
             <Border Background="{TemplateBinding Background}" Padding="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
                 <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
                     <Grid.ColumnDefinitions>
@@ -385,6 +386,15 @@
                     <TextBlock Text="{TemplateBinding Tag}" Foreground="#C14E00" Grid.Column="0" VerticalAlignment="Center"/>
                 </Grid>
             </Border>
+                <ItemsControl ItemsSource="{TemplateBinding Validation.Errors}" >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Foreground="Red" Text="{Binding ErrorContent}"/>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
             <ControlTemplate.Triggers>
                 <!--<Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
                     <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
@@ -420,6 +430,13 @@
             <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
             <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
             <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <AdornedElementPlaceholder/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
             
         </Style>
@@ -1096,6 +1113,32 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="EditBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#C14E00"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <!--<Setter Property="Width" Value="150"/>-->
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Grid.Row" Value="0"/>
+            <Setter Property="Template" >
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" Padding="5"  CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#dcdcdc"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="TabBtn" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#121518"/>
@@ -1386,12 +1429,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#EEE"/>
-        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#EEE"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#eee"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#ccc"/>
         <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="#EEE"/>
-        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#444"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#C14E00"/>
         <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="#3DDADADA"/>
-        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#FFDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#C14E00"/>
         <Style x:Key="ListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Padding" Value="5"/>
@@ -1404,11 +1447,43 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border CornerRadius="10" x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <!--<Border CornerRadius="10" x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">-->
+
+                        <Border Background="#eee" FlowDirection="RightToLeft" x:Name="Bd" CornerRadius="10" Margin="5" BorderThickness="1" BorderBrush="#fff"  Padding="10 5">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding SportName}" Grid.Row="0" FontSize="15" MaxHeight="30"
+                           VerticalAlignment="Center"
+                       Margin="0 5"
+                           LineStackingStrategy="BlockLineHeight" TextWrapping="WrapWithOverflow"
+                           TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="#333"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Daily price : " Foreground="#666" Grid.Column="0" Grid.Row="0"/>
+                                    <TextBlock Text="{Binding DailyPrice}" Foreground="#666" Grid.Column="1" Grid.Row="0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Days in week : " Foreground="#666" Grid.Column="0" Grid.Row="1"/>
+                                    <TextBlock Text="{Binding DaysInWeek}" Foreground="#666" Grid.Column="1" Grid.Row="1"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Subscription Days : " Foreground="#666" Grid.Column="0" Grid.Row="2"/>
+                                    <TextBlock Text="{Binding DaysCount}" Foreground="#666" Grid.Column="1" Grid.Row="2"/>
+                                </StackPanel>
+
+
+
+
+                                <TextBlock Text="{Binding Price}" Foreground="#C14E00" Margin="0 10" FontSize="20" FontWeight="Bold" />
+                            </StackPanel>
+
                         </Border>
+
+
+                       
+                        <!--</Border>-->
                         <ControlTemplate.Triggers>
+                         <!--<ContentPresenter />-->
                             <MultiTrigger>
+                        <!--HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"-->
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsMouseOver" Value="True"/>
                                 </MultiTrigger.Conditions>
@@ -1440,7 +1515,7 @@
             </Setter>
         </Style>
         <ItemsPanelTemplate x:Key="ListBoxItemsPanel1">
-            <StackPanel Orientation="Vertical" SnapsToDevicePixels="True"/>
+            <StackPanel Orientation="Vertical" SnapsToDevicePixels="False"/>
         </ItemsPanelTemplate>
         <ItemsPanelTemplate x:Key="ListBoxItemsPanel2">
             <WrapPanel  Orientation="Horizontal" />

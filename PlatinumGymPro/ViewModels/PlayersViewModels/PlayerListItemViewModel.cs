@@ -22,7 +22,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly NavigationStore _navigationStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PlayersDataStore _playersDataStore;
-        private readonly PlayerListViewModel playerListingViewModel;
+        private readonly SportDataStore _sportDataStore;
         public int Id => Player.Id;
         public string? FullName => Player.FullName;
         public string? Phone => Player.Phone;
@@ -42,17 +42,17 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
         public ICommand? OpenProfileCommand { get; }
-        public PlayerListItemViewModel(Player player, NavigationStore navigationStore, PlayerListViewModel playerListingViewModel, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore)
+        public PlayerListItemViewModel(Player player, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore)
         {
             Player = player;
             _playersDataStore = playersDataStore;
             _subscriptionDataStore = subscriptionDataStore;
             _navigationStore = navigationStore;
-            this.playerListingViewModel = playerListingViewModel;
-            EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(_navigationStore, () => new EditPlayerViewModel(_navigationStore, player)));
-            
-            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore,_playersDataStore)));
-            
+            _sportDataStore = sportDataStore;
+            NavigationStore PlayerMainPageNavigation = new NavigationStore();
+            EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(PlayerMainPageNavigation, () => new EditPlayerViewModel(PlayerMainPageNavigation, _playersDataStore, _subscriptionDataStore, CreatePlayerMainPageViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore),_sportDataStore)));
+
+            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore)));
         }
 
         public void Update(Player player)
@@ -61,11 +61,15 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             OnPropertyChanged(nameof(FullName));
         }
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore)
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,SportDataStore sportDataStore)
         {
             //playersDataStore.SelectedPlayer = this;
-            return PlayerProfileViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore);
+            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore);
         }
-        
+        private static PlayerMainPageViewModel CreatePlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore)
+        {
+            //playersDataStore.SelectedPlayer = this;
+            return new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore);
+        }
     }
 }

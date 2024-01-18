@@ -64,6 +64,9 @@
     <Compile Update="Views\Expenses\ExpensesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\SplashScreen.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -133,6 +136,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Expenses\ExpensesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerViews\PlayerMainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SplashScreen.xaml">

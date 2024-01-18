@@ -9,6 +9,10 @@
              xmlns:ctrls="clr-namespace:PlatinumGymPro.utlis.Controls"
              xmlns:comp="clr-namespace:PlatinumGymPro.utlis.Components"
                 xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
+             xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.PlayersViewModels"
+             xmlns:view="clr-namespace:PlatinumGymPro.Views.PlayerViews"
+              xmlns:subsvms="clr-namespace:PlatinumGymPro.ViewModels.SubscriptionViewModel"
+             xmlns:subsview="clr-namespace:PlatinumGymPro.Views.SubscriptionView"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
              FlowDirection="RightToLeft"
@@ -19,8 +23,15 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
 
-
-
+        <DataTemplate DataType="{x:Type vms:EditPlayerViewModel }">
+            <view:EditPlayerDetailsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:PlayerMainPageViewModel }">
+            <view:PlayerMainPage />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type subsvms:SubscriptionDetailsViewModel }">
+            <subsview:SubscriptionDetailView />
+        </DataTemplate>
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>
@@ -29,20 +40,64 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2"  CornerRadius="10" Padding="5 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="5" Margin="5" Background="#fff">
                 <DockPanel>
-                    <!--<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
-                        <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
-                    </StackPanel>-->
-                    <ctrls:PlayerBar HorizontalAlignment="Center"/>
+                    <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
+                        <RadioButton
+                         IsChecked="True"   
+                            Command="{Binding PlayerHomeCommand}"
+                            Style="{StaticResource BarButtonRD}" >
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Account"/>
+                                <TextBlock  Text="الصفحة الشخصية"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                    Command="{Binding SubscriptionCommand}"
+                                Style="{StaticResource BarButtonRD}" >
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>
+                                <TextBlock  Text="اضافة اشتراك"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Command="{Binding PaymentCommand}"
+                                Style="{StaticResource BarButtonRD}" >
+                            <StackPanel Orientation="Horizontal" >
+                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
+                                <TextBlock Text="اضافة دفعة"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Command="{Binding MetricsCommand}"
+                                Style="{StaticResource BarButtonRD}" >
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartArc" />
+                                <TextBlock Text="القياسات"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Command="{Binding TrainingProgramCommand}"
+                                Style="{StaticResource BarButtonRD}" >
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ListStatus" />
+                                <TextBlock Text="البرنامج الرياضي"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+
+                            </StackPanel>
+                        </RadioButton>
+
+
+
+                    </StackPanel>
                 </DockPanel>
             </Border>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <!--<Border Grid.Row="0" Grid.Column="2"  Background="#fff" Margin="5" CornerRadius="10" Padding="5">
                     <DockPanel>
@@ -61,168 +116,16 @@
                 </Border>-->
 
               
-                <Border Background="#fff" CornerRadius="10" Grid.Column="0" Grid.RowSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
+                <Border Background="#fff" CornerRadius="10" Grid.Column="1" Grid.RowSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
 
-                    <ctrl:InfoCard DockPanel.Dock="Top" DataContext="{Binding Player}"/>
+                    <ctrl:InfoCard DockPanel.Dock="Top" DataContext="{Binding Player,UpdateSourceTrigger=PropertyChanged}"/>
                 </Border>
 
 
 
-
-
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <comp:PlayerMetricCard Grid.Row="0" Grid.Column="0"/>
-                    <comp:PlayerMetricCard Grid.Row="0" Grid.Column="1"/>
-                    <comp:PlayerMetricCard Grid.Row="0" Grid.Column="2"/>
-
-                    <!--<Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
-                        <DockPanel>
-                            <TextBlock Foreground="#C14E00" Text="التسجيلات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
-
-                            <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SelectedSportListingItemViewModel.TrainerList}" >
-
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </DockPanel>
-                    </Border>-->
-
-                    <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">
-                        <Grid  Grid.Row="4">
-                            <custom:LoadingSpinner
-                IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="#C14E00" />
-                            <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="13*"/>
-                                    <ColumnDefinition Width="20*"/>
-                                    <ColumnDefinition Width="7*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
-
-                                <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
-                                    FlowDirection="RightToLeft" ItemsSource="{Binding SubscriptionList}" 
-                                    CanUserReorderColumns="True"
-                                    x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
-                                    CellStyle="{DynamicResource DataGridCellStyle1}" 
-                                    ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="#" IsReadOnly="True"
-                                    Width="auto"
-                                    Binding="{Binding Id}"
-                                    CanUserResize="False"/>
-
-                                        <DataGridTemplateColumn Header="الرياضة" Width="1.5*" IsReadOnly="True">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Vertical">
-                                                        <!--<Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
-                                                        </Border>-->
-                                                        <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding SportName}" VerticalAlignment="Center"/>
-                                                        <TextBlock Margin="10 0 0 0" Text="{Binding Trainer}"
-                                                                  Foreground="#888" FontSize="13" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-
-                                        <!--<DataGridTextColumn Header="المدرب" IsReadOnly="True"
-                                     Binding="{Binding Trainer}"
-                                    Width="*"
-                                    />-->
-                                       
-                                        <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding RollDate}"
-                                    Width="*"
-                                    />
-                                        <DataGridTextColumn Header="السعر" IsReadOnly="True"
-                                     Binding="{Binding Price}"
-                                    Width="auto"
-                                    />
-
-                                      
-                                        <!--<DataGridTextColumn Header="الحسم" IsReadOnly="True"
-                                     Binding="{Binding OfferDes}"
-                                    Width="120"
-                                    />
-                                        <DataGridTextColumn Header="قيمة الحسم" IsReadOnly="True"
-                                     Binding="{Binding OfferValue}"
-                                    Width="auto"
-                                    />-->
-                                        <DataGridTextColumn Header="السعر بعد الحسم" IsReadOnly="True"
-                                     Binding="{Binding PriceAfterOffer}"
-                                    Width="auto"
-                                    />
-
-                                        <DataGridTemplateColumn Header="تدريب خاص" Width="auto" IsReadOnly="True">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Vertical">
-                                                        <TextBlock Text="{Binding IsPrivate}" FontSize="12"/>
-                                                        <TextBlock Text="{Binding PrivatePrice}" FontSize="12"/>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="الحالة" Width="100" IsReadOnly="True">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Border  Padding="5 3" Margin="0 0 0 0" BorderThickness="1" BorderBrush="{Binding IsPaidColor}" CornerRadius="10">
-                                                        <TextBlock HorizontalAlignment="Center" Foreground="{Binding IsPaidColor}" Margin="0 0 0 0" Text="{Binding IsPaid}" VerticalAlignment="Center"/>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <!--<DataGridTextColumn Header="المدفوع" IsReadOnly="True"
-                                     Binding="{Binding PaidValue}"
-                                    Width="*"
-                                    />-->
-                                        <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding EndDate}"
-                                    Width="*"
-                                    />
-
-                                        <DataGridTemplateColumn Header="عمليات" Width="auto" IsReadOnly="True">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" x:Name="menu">
-                                                        <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
-                                                    <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
-                                                <!--<Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
-                                                    <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
-                                                        <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
-                                                            <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
-                                                        </Button>-->
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Grid>
-                        </Grid>
-                    </Border>
-
-
+                
+                <Grid Grid.Column="0">
+                    <ContentControl Content="{Binding CurrentPlayerViewModel}"/>
                 </Grid>
 
 

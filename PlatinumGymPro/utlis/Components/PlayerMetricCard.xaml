@@ -9,9 +9,7 @@
              FlowDirection="RightToLeft"
              >
     <Border Background="#fff"  CornerRadius="10" Padding="10 5" Margin="5">
-        <Border.Effect>
-            <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
-        </Border.Effect>
+      
         <StackPanel Orientation="Horizontal">
 
             <Icon:PackIconMaterial Kind="ChartArc" HorizontalAlignment="Right" Foreground="#C14E00" Width="40" Height="40" VerticalAlignment="Center" Margin="10"/>

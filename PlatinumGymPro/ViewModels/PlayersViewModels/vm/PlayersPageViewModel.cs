@@ -18,18 +18,19 @@ namespace PlatinumGymPro.ViewModels
         public NavigationStore _navigatorStore;
         private readonly PlayersDataStore _playerStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly SportDataStore _sportDataStore;
         //private SportStore _sportStore;
         //private  TrainerStore _trainerStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
-        public PlayersPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore)
+        public PlayersPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore)
         {
             _navigatorStore = navigatorStore;
             _playerStore = playerStore;
             _subscriptionDataStore = subscriptionDataStore;
+            _sportDataStore = sportDataStore;
 
-            //_sportStore = sportStore;
             //_trainerStore = trainerStore;
-            navigatorStore.CurrentViewModel = CreatePlayersViewModel(_navigatorStore, _playerStore, _subscriptionDataStore);
+            navigatorStore.CurrentViewModel = CreatePlayersViewModel(_navigatorStore, _playerStore, _subscriptionDataStore,_sportDataStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
         }
 
@@ -37,9 +38,9 @@ namespace PlatinumGymPro.ViewModels
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-        private PlayerListViewModel CreatePlayersViewModel(NavigationStore navigatorStore,PlayersDataStore playerStore,SubscriptionDataStore subscriptionDataStore)
+        private PlayerListViewModel CreatePlayersViewModel(NavigationStore navigatorStore,PlayersDataStore playerStore,SubscriptionDataStore subscriptionDataStore,SportDataStore sportDataStore)
         {
-            return PlayerListViewModel.LoadViewModel( navigatorStore, playerStore, subscriptionDataStore);
+            return PlayerListViewModel.LoadViewModel( navigatorStore, playerStore, subscriptionDataStore, sportDataStore);
         }
 
     }

@@ -16,7 +16,7 @@ namespace Platinum.Test.Fakes
               .StrictMode(false)
               .Rules((fake, sport) =>
               {
-                  sport.Name = fake.Lorem.Paragraph();
+                  sport.Name = fake.Company.CompanyName();
                   sport.DaysCount = 30;
                   sport.DaysInWeek = 6;
                   sport.DailyPrice = 2000;

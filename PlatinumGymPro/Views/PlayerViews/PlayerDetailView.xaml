@@ -810,7 +810,7 @@
 
                                         </RadioButton.Content>
                                     </RadioButton>
-                                    <RadioButton Style="{StaticResource RadioChoose}" >
+                                    <RadioButton Style="{StaticResource RadioChoose}" IsChecked="True">
                                         <RadioButton.Content>
                                             <StackPanel Orientation="Vertical">
                                                 <Icon:PackIconMaterial Kind="FaceWoman" Width="40" Height="40" />
