@@ -1,4 +1,5 @@
-﻿using PlatinumGym.Core.Models.Sport;
+﻿using PlatinumGym.Core.Models.Employee;
+using PlatinumGym.Core.Models.Sport;
 //using PlatinumGymPro.Models;
 using PlatinumGymPro.Stores;
 using System;

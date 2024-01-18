@@ -25,7 +25,7 @@
 
             <!--left Menu-->
             <controls:NavBar  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" DataContext="{Binding Navigator}" />
-            <controls:HeaderBar Grid.Column="0" Grid.Row="0"   DataContext="{Binding Navigator}" />
+            <!--<controls:HeaderBar Grid.Column="0" Grid.Row="0"   DataContext="{Binding Navigator}" />-->
 
             <!--<controls:NavBar Grid.Row="1" DataContext="{Binding Navigator}" Grid.Column="1"/>-->
             <!--MenuSection-->

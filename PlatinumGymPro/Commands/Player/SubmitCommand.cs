@@ -19,10 +19,11 @@ namespace PlatinumGymPro.Commands
         private readonly NavigationService<PlayerProfileViewModel> navigationService;
         private readonly NavigationStore _navigationStore ;
         private readonly PlayersDataStore _playerStore;
+        private readonly SportDataStore _sportStore;
         private readonly PlayerListViewModel _PlayerListViewModel;
         private readonly AddPlayerViewModel _addPlayerViewModel;
         private readonly SubscriptionDataStore _subscriptionDataStore;
-        public SubmitCommand(NavigationService<PlayerProfileViewModel> navigationService, AddPlayerViewModel addPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, PlayerListViewModel playerListViewModel, SubscriptionDataStore subscriptionDataStore)
+        public SubmitCommand(NavigationService<PlayerProfileViewModel> navigationService, AddPlayerViewModel addPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, PlayerListViewModel playerListViewModel, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore)
         {
 
             this.navigationService = navigationService;
@@ -32,6 +33,7 @@ namespace PlatinumGymPro.Commands
             _navigationStore = navigationStore;
             _PlayerListViewModel = playerListViewModel;
             _subscriptionDataStore = subscriptionDataStore;
+            _sportStore = sportStore;
         }
 
         private void AddPlayerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -65,7 +67,7 @@ namespace PlatinumGymPro.Commands
             MessageBox.Show(player.FullName + " added successfully");
             //_addPlayerViewModel.Submited = true;
             //_addPlayerViewModel.SubmitMessage = player.FullName + " added successfully";
-            _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore,_subscriptionDataStore, _playerStore);
+            _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore,_subscriptionDataStore, _playerStore,_sportStore);
            //await Task.Delay(5000);
             navigationService.Navigate();
         }

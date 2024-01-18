@@ -1429,12 +1429,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#EEE"/>
-        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#EEE"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#eee"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#ccc"/>
         <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="#EEE"/>
-        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#444"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#C14E00"/>
         <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="#3DDADADA"/>
-        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#FFDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#C14E00"/>
         <Style x:Key="ListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Padding" Value="5"/>
@@ -1447,11 +1447,43 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border CornerRadius="10" x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <!--<Border CornerRadius="10" x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">-->
+
+                        <Border Background="#eee" FlowDirection="RightToLeft" x:Name="Bd" CornerRadius="10" Margin="5" BorderThickness="1" BorderBrush="#fff"  Padding="10 5">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding SportName}" Grid.Row="0" FontSize="15" MaxHeight="30"
+                           VerticalAlignment="Center"
+                       Margin="0 5"
+                           LineStackingStrategy="BlockLineHeight" TextWrapping="WrapWithOverflow"
+                           TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="#333"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Daily price : " Foreground="#666" Grid.Column="0" Grid.Row="0"/>
+                                    <TextBlock Text="{Binding DailyPrice}" Foreground="#666" Grid.Column="1" Grid.Row="0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Days in week : " Foreground="#666" Grid.Column="0" Grid.Row="1"/>
+                                    <TextBlock Text="{Binding DaysInWeek}" Foreground="#666" Grid.Column="1" Grid.Row="1"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Subscription Days : " Foreground="#666" Grid.Column="0" Grid.Row="2"/>
+                                    <TextBlock Text="{Binding DaysCount}" Foreground="#666" Grid.Column="1" Grid.Row="2"/>
+                                </StackPanel>
+
+
+
+
+                                <TextBlock Text="{Binding Price}" Foreground="#C14E00" Margin="0 10" FontSize="20" FontWeight="Bold" />
+                            </StackPanel>
+
                         </Border>
+
+
+                       
+                        <!--</Border>-->
                         <ControlTemplate.Triggers>
+                         <!--<ContentPresenter />-->
                             <MultiTrigger>
+                        <!--HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"-->
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsMouseOver" Value="True"/>
                                 </MultiTrigger.Conditions>
@@ -1483,7 +1515,7 @@
             </Setter>
         </Style>
         <ItemsPanelTemplate x:Key="ListBoxItemsPanel1">
-            <StackPanel Orientation="Vertical" SnapsToDevicePixels="True"/>
+            <StackPanel Orientation="Vertical" SnapsToDevicePixels="False"/>
         </ItemsPanelTemplate>
         <ItemsPanelTemplate x:Key="ListBoxItemsPanel2">
             <WrapPanel  Orientation="Horizontal" />

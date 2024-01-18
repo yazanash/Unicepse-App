@@ -25,6 +25,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly ObservableCollection<OrderByItemViewModel> OrderByItemViewModel;
         private readonly NavigationStore _navigatorStore;
         private readonly PlayersDataStore _playerStore;
+        private readonly SportDataStore _sportStore;
         private readonly SubscriptionDataStore _subscriptionStore;
         //private TrainerStore _trainerStore;
         //private SportStore _sportStore;
@@ -146,14 +147,14 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadPlayersCommand { get; }
-        public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore)
+        public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore)
         {
             _navigatorStore = navigatorStore;
             _playerStore = playerStore;
             _subscriptionStore = subscriptionStore;
             LoadPlayersCommand = new LoadPlayersCommand(this, _playerStore);
 
-            AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this,_playerStore,_subscriptionStore)));
+            AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this, _playerStore, _subscriptionStore, _sportStore)));
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
 
 
@@ -168,9 +169,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             OrderByItemViewModel = new();
 
-            OrderByItemViewModel.Add(new OrderByItemViewModel( Enums.Order.ByName, 1,  "الاسم" ));
-            OrderByItemViewModel.Add(new OrderByItemViewModel( Enums.Order.ByDebt, 2,  "الديون" ));
-            OrderByItemViewModel.Add(new OrderByItemViewModel( Enums.Order.BySubscribeEnd, 3,  "منتهي الاشتراك" ));
+            OrderByItemViewModel.Add(new OrderByItemViewModel(Enums.Order.ByName, 1, "الاسم"));
+            OrderByItemViewModel.Add(new OrderByItemViewModel(Enums.Order.ByDebt, 2, "الديون"));
+            OrderByItemViewModel.Add(new OrderByItemViewModel(Enums.Order.BySubscribeEnd, 3, "منتهي الاشتراك"));
 
             SelectedOrderBy = OrderByItemViewModel.FirstOrDefault(x => x.Id == 1);
 
@@ -186,8 +187,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.HaveDebt, 8, "ديون"));
 
             SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Id == 6);
-
-
+            _sportStore = sportStore;
         }
 
         private void PlayerStore_OrderChanged(Enums.Order? order)
@@ -298,12 +298,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new (player, _navigatorStore, _subscriptionStore,_playerStore);
+                new (player, _navigatorStore, _subscriptionStore,_playerStore,_sportStore);
             playerListItemViewModels.Add(itemViewModel);
         }
-        public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore)
+        public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore,SportDataStore sportDataStore)
         {
-            PlayerListViewModel viewModel = new (navigatorStore, playersStore, subscriptionDataStore);
+            PlayerListViewModel viewModel = new (navigatorStore, playersStore, subscriptionDataStore, sportDataStore);
 
             viewModel.LoadPlayersCommand.Execute(null);
 

@@ -53,18 +53,17 @@
                     </Border>-->
 
         <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">
-            <Grid  Grid.Row="4">
+          
+            <DockPanel DockPanel.Dock="Top" >
+                <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="#C14E00" FontSize="18" DockPanel.Dock="Top"/>
+                <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
+                <Grid  Grid.Row="4">
                 <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
                 Diameter="100" Thickness="3" Color="#C14E00" />
                 <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="13*"/>
-                        <ColumnDefinition Width="20*"/>
-                        <ColumnDefinition Width="7*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
+                        
+                        <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
                     <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
                                     FlowDirection="RightToLeft" ItemsSource="{Binding SubscriptionList}" 
@@ -168,8 +167,13 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                </Grid>
+
+                        <!--<Border Background="#fff">
+                            
+                        </Border>-->
+                    </Grid>
             </Grid>
+            </DockPanel>
         </Border>
 
 

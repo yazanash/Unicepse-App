@@ -15,9 +15,10 @@ namespace PlatinumGymPro.Commands.Player
         private readonly NavigationService<PlayerMainPageViewModel> navigationService;
         private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
+        private readonly SportDataStore _sportStore;
         private readonly EditPlayerViewModel _editPlayerViewModel;
         private readonly SubscriptionDataStore _subscriptionDataStore;
-        public EditPlayerCommand(NavigationService<PlayerMainPageViewModel> navigationService, EditPlayerViewModel editPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
+        public EditPlayerCommand(NavigationService<PlayerMainPageViewModel> navigationService, EditPlayerViewModel editPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore)
         {
 
             this.navigationService = navigationService;
@@ -26,6 +27,7 @@ namespace PlatinumGymPro.Commands.Player
             _editPlayerViewModel.PropertyChanged += AddPlayerViewModel_PropertyChanged;
             _navigationStore = navigationStore;
             _subscriptionDataStore = subscriptionDataStore;
+            _sportStore = sportStore;
         }
 
         private void AddPlayerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -59,7 +61,7 @@ namespace PlatinumGymPro.Commands.Player
             MessageBox.Show(player.FullName + " edited successfully");
             //_addPlayerViewModel.Submited = true;
             //_addPlayerViewModel.SubmitMessage = player.FullName + " added successfully";
-            _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore);
+            _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore);
             //await Task.Delay(5000);
             navigationService.Navigate();
         }

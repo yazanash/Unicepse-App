@@ -23,6 +23,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
     {
         private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
+        private readonly SportDataStore _sportStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PlayerMainPageViewModel _playerProfileViewModel;
         public ObservableCollection<Year> years;
@@ -152,12 +153,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
      
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
 
-        public EditPlayerViewModel(NavigationStore navigationStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PlayerMainPageViewModel playerProfileViewModel)
+        public EditPlayerViewModel(NavigationStore navigationStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PlayerMainPageViewModel playerProfileViewModel, SportDataStore sportStore)
         {
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             years = new ObservableCollection<Year>();
-           for(int i = 1990;i<2023;i++)
-                years.Add(new Year() { year =i});
+            for (int i = 1990; i < 2023; i++)
+                years.Add(new Year() { year = i });
             _navigationStore = navigationStore;
             _playerStore = playerStore;
             _subscriptionDataStore = subscriptionDataStore;
@@ -165,15 +166,15 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             Id = _playerStore.SelectedPlayer!.Player.Id;
             FullName = _playerStore.SelectedPlayer!.Player.FullName;
             Phone = _playerStore.SelectedPlayer!.Player.Phone;
-            Year = years.SingleOrDefault(x=>x.year == _playerStore.SelectedPlayer!.Player.BirthDate) ;
+            Year = years.SingleOrDefault(x => x.year == _playerStore.SelectedPlayer!.Player.BirthDate);
             GenderMale = _playerStore.SelectedPlayer!.Player.GenderMale;
             Weight = _playerStore.SelectedPlayer!.Player.Weight;
             Hieght = _playerStore.SelectedPlayer!.Player.Hieght;
             SubscribeDate = _playerStore.SelectedPlayer!.Player.SubscribeDate;
+            _sportStore = sportStore;
 
-            SubmitCommand = new EditPlayerCommand(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore)), this, _playerStore, _navigationStore, _subscriptionDataStore);
+            SubmitCommand = new EditPlayerCommand(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore)), this, _playerStore, _navigationStore, _subscriptionDataStore,_sportStore);
             CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => _playerProfileViewModel));
-
         }
         private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore)
         {

@@ -8,7 +8,7 @@
              Background="White"
              FlowDirection="RightToLeft"
              xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks">
-    <Border Background="White" CornerRadius="15" Width="200" Margin="5" Padding="10 5">
+    <Border Background="White" CornerRadius="15" Width="220" Margin="5" Padding="10 5">
         <!--<Border.Effect>
             <DropShadowEffect BlurRadius="5" ShadowDepth="0.5"/>
         </Border.Effect>-->
