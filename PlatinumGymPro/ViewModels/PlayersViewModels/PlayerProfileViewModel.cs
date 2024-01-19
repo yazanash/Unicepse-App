@@ -20,23 +20,25 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private NavigationStore _navigatorStore;
         private readonly SubscriptionDataStore _subscriptionStore;
         private readonly PlayersDataStore _playersDataStore;
+        private readonly PaymentDataStore _paymentDataStore;
         private readonly SportDataStore _sportDataStore;
         public PlayerListItemViewModel? Player => _playersDataStore.SelectedPlayer;
         public ViewModelBase? CurrentPlayerViewModel => _navigatorStore.CurrentViewModel;
 
-        public PlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, 
-            PlayersDataStore playersDataStore, SportDataStore sportDataStore)
+        public PlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore,
+            PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore)
         {
             _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
             _playersDataStore = playersDataStore;
             _sportDataStore = sportDataStore;
+            _paymentDataStore = paymentDataStore;
 
-            navigatorStore.CurrentViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore);
+            navigatorStore.CurrentViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
             _playersDataStore.PlayerChanged += _playersDataStore_PlayerChanged;
             //PlayerHomeCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => new SubscriptionDetailsViewModel()));
-            SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore,()=> LoadSubscriptionViewModel(_navigatorStore,_sportDataStore)));
+            SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => LoadSubscriptionViewModel(_navigatorStore, _sportDataStore)));
             //PaymentCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => new SubscriptionDetailsViewModel()));
             //MetricsCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => new SubscriptionDetailsViewModel()));
             //TrainingProgramCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => new SubscriptionDetailsViewModel()));
@@ -51,9 +53,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         {
             OnPropertyChanged(nameof(CurrentPlayerViewModel));
         }
-        private PlayerMainPageViewModel LoadPlayerMainPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore)
+        private PlayerMainPageViewModel LoadPlayerMainPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore,PaymentDataStore paymentDataStore)
         {
-            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playerStore);
+            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playerStore, paymentDataStore);
         }
 
         private SubscriptionDetailsViewModel LoadSubscriptionViewModel(NavigationStore navigatorStore, SportDataStore sportDataStore)

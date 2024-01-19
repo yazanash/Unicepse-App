@@ -37,7 +37,7 @@ namespace Platinum.Test.DataServicesTest
         [OneTimeSetUp]
         public void OnetimeSetUp()
         {
-            string CONNECTION_STRING = @"data source =.\sqlexpress; initial catalog = PlatinumDB_test; integrated security = SSPI; TrustServerCertificate = True; ";
+            string CONNECTION_STRING = @"data source =.\sqlexpress; initial catalog = PlatinumDBD; integrated security = SSPI; TrustServerCertificate = True; ";
             db = new PlatinumGymDbContextFactory(CONNECTION_STRING);
 
             using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
@@ -60,17 +60,17 @@ namespace Platinum.Test.DataServicesTest
         [TearDown]
         public void TearDown()
         {
-            using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
-            {
-                var payments = platinumGymDbContext.PlayerPayments!.ToList();
-                platinumGymDbContext.PlayerPayments!.RemoveRange(payments);
-                var subscriptions = platinumGymDbContext.Subscriptions!.ToList();
-                platinumGymDbContext.Subscriptions!.RemoveRange(subscriptions);
-                var sports = platinumGymDbContext.Sports!.ToList();
-                platinumGymDbContext.Sports!.RemoveRange(sports);
-                platinumGymDbContext.SaveChanges();
-                var x = platinumGymDbContext.Sports!.Count();
-            }
+            //using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
+            //{
+            //    var payments = platinumGymDbContext.PlayerPayments!.ToList();
+            //    platinumGymDbContext.PlayerPayments!.RemoveRange(payments);
+            //    var subscriptions = platinumGymDbContext.Subscriptions!.ToList();
+            //    platinumGymDbContext.Subscriptions!.RemoveRange(subscriptions);
+            //    var sports = platinumGymDbContext.Sports!.ToList();
+            //    platinumGymDbContext.Sports!.RemoveRange(sports);
+            //    platinumGymDbContext.SaveChanges();
+            //    var x = platinumGymDbContext.Sports!.Count();
+            //}
         }
 
         ////////////////////////////////////////

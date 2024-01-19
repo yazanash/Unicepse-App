@@ -19,23 +19,25 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
         private readonly SportDataStore _sportStore;
+        private readonly PaymentDataStore _paymentDataStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PlayerListViewModel _playerListViewModel;
-        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore)
+        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, PaymentDataStore paymentDataStore)
         {
             _navigationStore = navigationStore;
             _playerStore = playerStore;
             _subscriptionDataStore = subscriptionDataStore;
+            _paymentDataStore = paymentDataStore;
             _sportStore = sportStore;
             _playerListViewModel = playerListViewModel;
             CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
-            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(navigationStore, _subscriptionDataStore, _playerStore,_sportStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore,_sportStore);
+            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(navigationStore, _subscriptionDataStore, _playerStore, _sportStore,_paymentDataStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
         }
 
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,SportDataStore sportDataStore)
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,SportDataStore sportDataStore,PaymentDataStore paymentDataStore)
         {
-            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore);
+            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore);
         }
         private bool? _submited = false;
         public bool? Submited

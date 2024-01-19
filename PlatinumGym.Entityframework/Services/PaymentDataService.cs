@@ -9,6 +9,7 @@ using PlatinumGym.Entityframework.DbContexts;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PlatinumGym.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using PlatinumGym.Core.Models.Player;
 
 namespace PlatinumGym.Entityframework.Services
 {
@@ -62,7 +63,16 @@ namespace PlatinumGym.Entityframework.Services
                 return entities;
             }
         }
-
+        public async Task<IEnumerable<PlayerPayment>> GetPlayerPayments(Player player)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player)
+                    .Include(x => x.Subscription).Where(x => x.Player!.Id == player.Id)
+                    .ToListAsync();
+                return entities;
+            }
+        }
         public async Task<PlayerPayment> Update(PlayerPayment entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

@@ -67,7 +67,7 @@ namespace PlatinumGymPro.Commands
             MessageBox.Show(player.FullName + " added successfully");
             //_addPlayerViewModel.Submited = true;
             //_addPlayerViewModel.SubmitMessage = player.FullName + " added successfully";
-            _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore,_subscriptionDataStore, _playerStore,_sportStore);
+            //_playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore,_subscriptionDataStore, _playerStore,_sportStore);
            //await Task.Delay(5000);
             navigationService.Navigate();
         }

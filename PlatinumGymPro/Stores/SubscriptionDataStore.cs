@@ -39,7 +39,7 @@ namespace PlatinumGymPro.Stores
         }
 
         public event Action? StateChanged;
-
+       
         public SubscriptionDataStore(SubscriptionDataService subscriptionDataService)
         {
             _subscriptionDataService = subscriptionDataService;

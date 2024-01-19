@@ -31,9 +31,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <comp:PlayerMetricCard Grid.Row="0" Grid.Column="0"/>
-        <comp:PlayerMetricCard Grid.Row="0" Grid.Column="1"/>
-        <comp:PlayerMetricCard Grid.Row="0" Grid.Column="2"/>
+        <comp:PlayerMetricCard DataContext="{Binding PlayerSubscription,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0"/>
+        <comp:PlayerMetricCard DataContext="{Binding PlayerPayments,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1"/>
+        <comp:PlayerMetricCard DataContext="{Binding PlayerSubscriptionCount,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="2"/>
 
         <!--<Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
                         <DockPanel>
