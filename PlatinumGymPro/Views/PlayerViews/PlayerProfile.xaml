@@ -13,6 +13,8 @@
              xmlns:view="clr-namespace:PlatinumGymPro.Views.PlayerViews"
               xmlns:subsvms="clr-namespace:PlatinumGymPro.ViewModels.SubscriptionViewModel"
              xmlns:subsview="clr-namespace:PlatinumGymPro.Views.SubscriptionView"
+             xmlns:payvms="clr-namespace:PlatinumGymPro.ViewModels.PaymentsViewModels"
+             xmlns:payview="clr-namespace:PlatinumGymPro.Views.PaymentViews"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
              FlowDirection="RightToLeft"
@@ -31,6 +33,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type subsvms:SubscriptionDetailsViewModel }">
             <subsview:SubscriptionDetailView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type payvms:AddPaymentViewModel}">
+            <payview:PaymentDetalView />
         </DataTemplate>
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models.Employee;
+using PlatinumGym.Core.Models.Sport;
 using PlatinumGym.Core.Services;
 using PlatinumGym.Entityframework.DbContexts;
 using System;
@@ -37,6 +38,10 @@ namespace PlatinumGym.Entityframework.Services
                 Employee existed_sport = await CheckIfExistByName(entity.FullName!);
                 if (existed_sport != null)
                     throw new ConflictException();
+               foreach(Sport sport in entity.Sports!)
+                {
+                    context.Attach(sport);
+                }
                 EntityEntry<Employee> CreatedResult = await context.Set<Employee>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;

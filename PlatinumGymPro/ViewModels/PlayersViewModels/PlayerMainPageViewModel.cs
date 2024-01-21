@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
-    public class PlayerMainPageViewModel : ViewModelBase
+    public class PlayerMainPageViewModel : ListingViewModelBase
     {
         private readonly ObservableCollection<SubscriptionListItemViewModel> subscriptionListItemViewModels;
         private NavigationStore _navigatorStore;
@@ -88,37 +88,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             PlayerPayments!.StateValue = _paymentStore.GetSum();
         }
 
-        private bool _isLoading;
-        public bool IsLoading
-        {
-            get
-            {
-                return _isLoading;
-            }
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        private string? _errorMessage;
-        public string? ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-                OnPropertyChanged(nameof(HasErrorMessage));
-            }
-        }
-
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
-
+      
         public ICommand LoadSubscriptionCommand { get; }
 
         public ICommand LoadPaymentsCommand { get; }

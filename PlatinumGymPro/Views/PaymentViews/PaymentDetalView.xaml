@@ -32,27 +32,6 @@
                     </StackPanel>
                 </DockPanel>
             </Border>
-            <Border Background="#fff" Grid.Row="1" Grid.ColumnSpan="2"  CornerRadius="10" Padding="5"  Margin="5">
-                <DockPanel >
-                    <TextBlock Text="معلومات اللاعب" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Top"/>
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-
-                        </Grid.RowDefinitions>
-                        <TextBlock HorizontalAlignment="left" Margin="5" Text="الاسم : " FontSize="16" DockPanel.Dock="Top" Grid.Row="0"/>
-                        <TextBlock HorizontalAlignment="left" Margin="5" Text="مصطفى احمد العوضي" FontSize="16" DockPanel.Dock="Top" Grid.Row="0" Grid.Column="1"/>
-                        <TextBlock HorizontalAlignment="left" Margin="5" Text="رقم الهاتف :" FontSize="16" DockPanel.Dock="Top" Grid.Row="1"/>
-                        <TextBlock HorizontalAlignment="left" Margin="5" FlowDirection="LeftToRight" Text="0994 916 917" FontSize="16" DockPanel.Dock="Top" Grid.Row="1" Grid.Column="1"/>
-                    </Grid>
-
-                </DockPanel>
-            </Border>
 
             <Border Background="#fff" CornerRadius="10" Grid.Column="1"  Grid.Row="2"  Padding="5"  Margin="5">
                 <Grid>

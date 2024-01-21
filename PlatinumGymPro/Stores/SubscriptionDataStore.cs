@@ -1,7 +1,10 @@
-﻿using PlatinumGym.Core.Models.Payment;
+﻿using PlatinumGym.Core.Models.Employee;
+using PlatinumGym.Core.Models.Payment;
 using PlatinumGym.Core.Models.Player;
+using PlatinumGym.Core.Models.Sport;
 using PlatinumGym.Core.Models.Subscription;
 using PlatinumGym.Entityframework.Services;
+using PlatinumGymPro.ViewModels.SportsViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,22 +27,36 @@ namespace PlatinumGymPro.Stores
 
         public IEnumerable<Subscription> Subscriptions => _subscriptions;
 
-        private Player? _currentPlayer;
-        public Player? CurrentPlayer
+        private Sport? _selectedSport;
+        public Sport? SelectedSport
         {
             get
             {
-                return _currentPlayer;
+                return _selectedSport;
             }
             set
             {
-                _currentPlayer = value;
-                StateChanged?.Invoke();
+                _selectedSport = value;
+                StateChanged?.Invoke(SelectedSport);
             }
         }
 
-        public event Action? StateChanged;
-       
+        public event Action<Sport?>? StateChanged;
+        private Employee? _selectedTrainer;
+        public Employee? SelectedTrainer
+        {
+            get
+            {
+                return _selectedTrainer;
+            }
+            set
+            {
+                _selectedTrainer = value;
+                TrainerChanged?.Invoke(SelectedTrainer);
+            }
+        }
+
+        public event Action<Employee?>? TrainerChanged;
         public SubscriptionDataStore(SubscriptionDataService subscriptionDataService)
         {
             _subscriptionDataService = subscriptionDataService;

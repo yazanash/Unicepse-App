@@ -31,6 +31,9 @@
     <Compile Update="utlis\Components\SportCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\SubscriptionCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\TrainerCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -97,6 +100,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\SportCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\SubscriptionCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\TrainerCard.xaml">
