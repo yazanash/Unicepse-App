@@ -4,6 +4,7 @@ using PlatinumGymPro.Commands;
 using PlatinumGymPro.Commands.SubscriptionCommand;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
+using PlatinumGymPro.ViewModels.PaymentsViewModels;
 using PlatinumGymPro.ViewModels.SubscriptionViewModel;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _playersDataStore.PlayerChanged += _playersDataStore_PlayerChanged;
             //PlayerHomeCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => new SubscriptionDetailsViewModel()));
             SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => LoadSubscriptionViewModel(_navigatorStore, _sportDataStore,_subscriptionStore,_playersDataStore,_paymentDataStore)));
-            //PaymentCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => new SubscriptionDetailsViewModel()));
+            PaymentCommand = new NavaigateCommand<AddPaymentViewModel>(new NavigationService<AddPaymentViewModel>(_navigatorStore, () => LoadAddPaymentViewModel(_paymentDataStore, _subscriptionStore, _playersDataStore,_navigatorStore)));
             //MetricsCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => new SubscriptionDetailsViewModel()));
             //TrainingProgramCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => new SubscriptionDetailsViewModel()));
         }
@@ -61,6 +62,10 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private SubscriptionDetailsViewModel LoadSubscriptionViewModel(NavigationStore navigatorStore, SportDataStore sportDataStore,SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,PaymentDataStore paymentDataStore)
         {
             return SubscriptionDetailsViewModel.LoadViewModel(sportDataStore,navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore);
+        }
+        private AddPaymentViewModel LoadAddPaymentViewModel(PaymentDataStore paymentDataStore,SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,NavigationStore navigatorStore)
+        {
+            return AddPaymentViewModel.LoadViewModel(paymentDataStore, subscriptionDataStore, playersDataStore, navigatorStore);
         }
         public ICommand? PlayerHomeCommand { get; }
         public ICommand? SubscriptionCommand { get; }

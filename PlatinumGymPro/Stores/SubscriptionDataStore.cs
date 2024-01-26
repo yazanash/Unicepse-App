@@ -57,6 +57,23 @@ namespace PlatinumGymPro.Stores
         }
 
         public event Action<Employee?>? TrainerChanged;
+
+
+        private Subscription? _selectedSubscription;
+        public Subscription? SelectedSubscription
+        {
+            get
+            {
+                return _selectedSubscription;
+            }
+            set
+            {
+                _selectedSubscription = value;
+                SubscriptionChanged?.Invoke(SelectedSubscription);
+            }
+        }
+
+        public event Action<Subscription?>? SubscriptionChanged;
         public SubscriptionDataStore(SubscriptionDataService subscriptionDataService)
         {
             _subscriptionDataService = subscriptionDataService;

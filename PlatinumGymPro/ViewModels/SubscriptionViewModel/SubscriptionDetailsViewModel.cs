@@ -71,12 +71,12 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             _sportDataStore.Loaded += _sportDataStore_Loaded;
             _subscriptionStore.StateChanged += _subscriptionStore_StateChanged;
             LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
-            SubmitCommand = new CreateSubscriptionCommand(_subscriptionStore, this, _playerDataStore, new NavigationService<AddPaymentViewModel>(_navigatorStore, () => CreatePaymentViewModel(_paymentDataStore,_subscriptionStore, _playerDataStore)));
+            SubmitCommand = new CreateSubscriptionCommand(_subscriptionStore, this, _playerDataStore, new NavigationService<AddPaymentViewModel>(_navigatorStore, () => CreatePaymentViewModel(_paymentDataStore,_subscriptionStore, _playerDataStore,_navigatorStore)));
         }
 
-        private static AddPaymentViewModel CreatePaymentViewModel(PaymentDataStore paymentDataStore,SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore)
+        private static AddPaymentViewModel CreatePaymentViewModel(PaymentDataStore paymentDataStore,SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,NavigationStore navigationStore)
         {
-            return new AddPaymentViewModel(paymentDataStore,subscriptionDataStore, playersDataStore);
+            return new AddPaymentViewModel(paymentDataStore,subscriptionDataStore, playersDataStore, navigationStore);
         }
 
         private void _subscriptionStore_StateChanged(Sport? sport)

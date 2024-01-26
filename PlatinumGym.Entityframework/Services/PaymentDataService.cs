@@ -26,7 +26,8 @@ namespace PlatinumGym.Entityframework.Services
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             context.Attach(entity.Subscription!);
-            context.Attach(entity.Player!);
+            //context.Attach(entity.Subscription!.Player!);
+            //context.tity.Player!);
             EntityEntry<PlayerPayment> CreatedResult = await context.Set<PlayerPayment>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;

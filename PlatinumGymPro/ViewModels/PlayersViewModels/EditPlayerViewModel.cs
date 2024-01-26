@@ -176,11 +176,11 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _sportStore = sportStore;
 
             SubmitCommand = new EditPlayerCommand(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore,_paymentDataStore)), this, _playerStore, _navigationStore, _subscriptionDataStore, _sportStore);
-            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => _playerProfileViewModel));
+            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore, _paymentDataStore)));
         }
         private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore)
         {
-            return new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore);
+            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore);
         }
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();
