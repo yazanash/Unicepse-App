@@ -64,6 +64,8 @@ namespace PlatinumGymPro
 
                    services.AddSingleton<ExpensesDataService>();
                    services.AddSingleton<ExpensesDataStore>();
+                   services.AddSingleton<MetricDataService>();
+                   services.AddSingleton<MetricDataStore>();
 
                    services.AddSingleton<AuthenticationStore>();
                    services.AddSingleton(s => new MainWindow()

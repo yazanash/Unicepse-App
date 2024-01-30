@@ -28,7 +28,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly SportDataStore _sportStore;
         private readonly SubscriptionDataStore _subscriptionStore;
         private readonly PaymentDataStore _paymentDataStore;
-        //private TrainerStore _trainerStore;
+        private readonly MetricDataStore _metricDataStore;
         //private SportStore _sportStore;
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
@@ -148,16 +148,17 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadPlayersCommand { get; }
-        public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore, PaymentDataStore paymentDataStore)
+        public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore)
         {
             _navigatorStore = navigatorStore;
             _playerStore = playerStore;
             _subscriptionStore = subscriptionStore;
             _sportStore = sportStore;
             _paymentDataStore = paymentDataStore;
+            _metricDataStore = metricDataStore;
             LoadPlayersCommand = new LoadPlayersCommand(this, _playerStore);
 
-            AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this, _playerStore, _subscriptionStore, _sportStore,_paymentDataStore)));
+            AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this, _playerStore, _subscriptionStore, _sportStore,_paymentDataStore,_metricDataStore)));
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
 
 
@@ -301,12 +302,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new (player, _navigatorStore, _subscriptionStore,_playerStore,_sportStore,_paymentDataStore);
+                new (player, _navigatorStore, _subscriptionStore,_playerStore,_sportStore,_paymentDataStore,_metricDataStore);
             playerListItemViewModels.Add(itemViewModel);
         }
-        public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore,SportDataStore sportDataStore, PaymentDataStore paymentDataStore)
+        public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore,SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore)
         {
-            PlayerListViewModel viewModel = new (navigatorStore, playersStore, subscriptionDataStore, sportDataStore, paymentDataStore);
+            PlayerListViewModel viewModel = new (navigatorStore, playersStore, subscriptionDataStore, sportDataStore, paymentDataStore,metricDataStore);
 
             viewModel.LoadPlayersCommand.Execute(null);
 

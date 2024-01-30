@@ -4,20 +4,121 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PlatinumGymPro.Components"
+             xmlns:comp="clr-namespace:PlatinumGymPro.utlis.Components"
              FlowDirection="RightToLeft"
              xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d">
-    <Border Background="#fff" CornerRadius="10" Padding="5" Width="125">
-        <DockPanel>
-            <TextBlock Text="{Binding Description}" FontSize="16" TextWrapping="WrapWithOverflow" TextTrimming="CharacterEllipsis" FontWeight="SemiBold" Foreground="#C14E00" DockPanel.Dock="Top"/>
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="10 5">
-                <TextBlock Text="{Binding Count}" FontSize="28" FontWeight="Bold" DockPanel.Dock="Top" Foreground="#222"/>
-                <StackPanel VerticalAlignment="Center" Margin="5 0">
-                    <icon:PackIconMaterial   Kind="ArrowUp" VerticalAlignment="Top" Width="20" Foreground="Green" Height="20" />
-                    <icon:PackIconMaterial Visibility="Collapsed" Kind="ArrowDown" Width="20" VerticalAlignment="Bottom" Foreground="Red" Height="20" />
-                </StackPanel>
-            </StackPanel>
-            
-        </DockPanel>
-    </Border>
+    <ScrollViewer  Grid.Column="1">
+        <ItemsControl >
+
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <comp:MetricItem Grid.Column="0" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Height.png" 
+                             Title="الطول" 
+                             MetricValue="{Binding Hieght,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="0"/>
+                <comp:MetricItem Grid.Column="1" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Weight.png" 
+                             Title="الوزن" 
+                             MetricValue="{Binding Wieght,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="0"/>
+            </Grid>
+
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <comp:MetricItem Grid.Column="0" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Neck.png" 
+                             Title="رقبة" 
+                             MetricValue="{Binding Nick,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="0"/>
+                <comp:MetricItem Grid.Column="1" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Shoulder.png" 
+                             Title="اكتاف" 
+                             MetricValue="{Binding Shoulders,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="0"/>
+            </Grid>
+
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <comp:MetricItem Grid.Column="0" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Chest.png" 
+                             Title="الصدر" 
+                             MetricValue="{Binding Chest,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="1"/>
+                <comp:MetricItem Grid.Column="1" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Waist.png" 
+                             Title="الوسط" 
+                             MetricValue="{Binding Waist,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="1"/>
+            </Grid>
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <comp:MetricItem Grid.Column="0" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/ForeArm.png" 
+                             Title="ذراع ايمن" 
+                             MetricValue="{Binding R_Arm,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="1"/>
+                <comp:MetricItem Grid.Column="1" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/ForeArm.png" 
+                             Title="ذراع ايسر" 
+                             MetricValue="{Binding L_Arm,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="1"/>
+            </Grid>
+
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <comp:MetricItem Grid.Column="0" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Thigh.png" 
+                             Title="فخذ ايمن" 
+                             MetricValue="{Binding R_Thigh,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="1"/>
+                <comp:MetricItem Grid.Column="1" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Thigh.png" 
+                             Title="فخذ ايسر" 
+                             MetricValue="{Binding L_Thigh,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="1"/>
+            </Grid>
+
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <comp:MetricItem Grid.Column="0" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Leg.png" 
+                             Title="ساق ايمن" 
+                             MetricValue="{Binding R_Leg,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="1"/>
+                <comp:MetricItem Grid.Column="1" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Leg.png" 
+                             Title="ساق ايسر" 
+                             MetricValue="{Binding L_Leg,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="1"/>
+            </Grid>
+        </ItemsControl>
+
+    </ScrollViewer>
+
 </UserControl>

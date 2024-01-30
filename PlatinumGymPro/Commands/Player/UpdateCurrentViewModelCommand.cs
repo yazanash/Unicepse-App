@@ -24,9 +24,11 @@ namespace PlatinumGymPro.Commands
         private readonly ExpensesDataStore _expensesStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PaymentDataStore _paymentDataStore;
+        private readonly MetricDataStore _metricDataStore;
         public UpdateCurrentViewModelCommand(INavigator navigator, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore,
-            SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore)
+            SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
+            MetricDataStore metricDataStore)
         {
             _navigator = navigator;
             _playersStore = playersStore;
@@ -35,6 +37,7 @@ namespace PlatinumGymPro.Commands
             _expensesStore = expensesStore;
             _subscriptionDataStore = subscriptionDataStore;
             _paymentDataStore = paymentDataStore;
+            _metricDataStore = metricDataStore;
         }
 
         public override void Execute(object? parameter)
@@ -49,7 +52,7 @@ namespace PlatinumGymPro.Commands
                         _navigator.CurrentViewModel =new HomeViewModel();
                         break;
                     case ViewType.Players:
-                        _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore,_sportStore,_paymentDataStore);
+                        _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore,_sportStore,_paymentDataStore,_metricDataStore);
                         break;
                     case ViewType.Sport:
                         _navigator.CurrentViewModel = new SportsViewModel(navigator,_sportStore);

@@ -249,6 +249,72 @@ namespace PlatinumGymPro.Migrations
                     b.ToTable("Expenses");
                 });
 
+            modelBuilder.Entity("PlatinumGym.Core.Models.Metric.Metric", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CheckDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("Chest")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Hieght")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Hips")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("L_Arm")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("L_Humerus")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("L_Leg")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("L_Thigh")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Nick")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("R_Arm")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("R_Humerus")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("R_Leg")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("R_Thigh")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Shoulders")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Waist")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Wieght")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Metrics");
+                });
+
             modelBuilder.Entity("PlatinumGym.Core.Models.Payment.PayReferance", b =>
                 {
                     b.Property<int>("Id")
@@ -644,6 +710,15 @@ namespace PlatinumGymPro.Migrations
                         .HasForeignKey("RecipientId");
 
                     b.Navigation("Recipient");
+                });
+
+            modelBuilder.Entity("PlatinumGym.Core.Models.Metric.Metric", b =>
+                {
+                    b.HasOne("PlatinumGym.Core.Models.Player.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId");
+
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Payment.PayReferance", b =>

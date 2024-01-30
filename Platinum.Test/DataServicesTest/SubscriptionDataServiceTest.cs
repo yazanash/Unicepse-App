@@ -55,6 +55,8 @@ namespace Platinum.Test.DataServicesTest
         {
             //using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
             //{
+            //    var payments = platinumGymDbContext.PlayerPayments!.ToList();
+            //    platinumGymDbContext.PlayerPayments!.RemoveRange(payments);
             //    var subscriptions = platinumGymDbContext.Subscriptions!.ToList();
             //    platinumGymDbContext.Subscriptions!.RemoveRange(subscriptions);
             //    var players = platinumGymDbContext.Players!.ToList();
@@ -230,18 +232,18 @@ namespace Platinum.Test.DataServicesTest
             Assert.ThrowsAsync<NotExistException>(
                async () => await subscriptionDataService!.Delete(expected_subsciption.Id));
         }
-        //[Test]
-        ///// it should List all Subscriptions
-        //public async Task ListAllSubscriptions()
-        //{
-        //    //Arrange
-        //    int count = 5;
-        //    //Act
-        //    await create_subscriptions(count);
-        //    var subscription = await subscriptionDataService!.GetAll();
-        //    //Assert
-        //    Assert.AreEqual(subscription.Count(), count);
-        //}
+        [Test]
+        /// it should List all Subscriptions
+        public async Task ListAllSubscriptions()
+        {
+            //Arrange
+            int count = 5;
+            //Act
+            await create_subscriptions(count);
+            var subscription = await subscriptionDataService!.GetAll();
+            //Assert
+            Assert.AreEqual(subscription.Count(), count);
+        }
 
         [Test]
         /// it should Move subscribtion to new trainer with save previous trainer id

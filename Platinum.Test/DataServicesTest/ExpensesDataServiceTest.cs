@@ -38,13 +38,13 @@ namespace Platinum.Test.DataServicesTest
         [TearDown]
         public void TearDown()
         {
-            //using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
-            //{
-            //    var expenses = platinumGymDbContext.Expenses!.ToList();
-            //    platinumGymDbContext.Expenses!.RemoveRange(expenses);
-            //    platinumGymDbContext.SaveChanges();
-            //    var x = platinumGymDbContext.Expenses!.Count();
-            //}
+            using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
+            {
+                var expenses = platinumGymDbContext.Expenses!.ToList();
+                platinumGymDbContext.Expenses!.RemoveRange(expenses);
+                platinumGymDbContext.SaveChanges();
+                var x = platinumGymDbContext.Expenses!.Count();
+            }
         }
         ////////////////////////////////////////
         /// 

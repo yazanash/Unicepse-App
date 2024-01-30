@@ -22,6 +22,12 @@
     <Compile Update="utlis\Components\MetricCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\MetricItem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\MetricItemRL.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\PayCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -67,6 +73,9 @@
     <Compile Update="Views\Expenses\ExpensesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Metrics\MetricsCardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -91,6 +100,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\MetricCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\MetricItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\MetricItemRL.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\PayCard.xaml">
@@ -142,6 +157,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Expenses\ExpensesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Metrics\MetricsCardView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayerViews\PlayerMainPage.xaml">
