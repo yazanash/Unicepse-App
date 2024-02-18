@@ -1,5 +1,6 @@
 ﻿using PlatinumGym.Core.Models.Player;
 using PlatinumGymPro.Stores;
+using PlatinumGymPro.ViewModels;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
     public class LoadSubscriptions : AsyncCommandBase
     {
         private readonly SubscriptionDataStore _subscriptionStore;
-        private readonly PlayerMainPageViewModel _subscriptionListing;
+        private readonly ListingViewModelBase _subscriptionListing;
         private readonly PlayerListItemViewModel _player;
 
 
-        public LoadSubscriptions(PlayerMainPageViewModel subscriptionListing, SubscriptionDataStore subscriptionStore, PlayerListItemViewModel player)
+        public LoadSubscriptions(ListingViewModelBase subscriptionListing, SubscriptionDataStore subscriptionStore, PlayerListItemViewModel player)
         {
             _subscriptionStore = subscriptionStore;
             _subscriptionListing = subscriptionListing;

@@ -27,7 +27,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly PlayersDataStore _playerStore;
         private readonly SportDataStore _sportStore;
         private readonly SubscriptionDataStore _subscriptionStore;
-        //private TrainerStore _trainerStore;
+        private readonly PaymentDataStore _paymentDataStore;
+        private readonly MetricDataStore _metricDataStore;
+        private readonly RoutineDataStore _routineDataStore;
         //private SportStore _sportStore;
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
@@ -147,14 +149,18 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadPlayersCommand { get; }
-        public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore)
+        public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
         {
             _navigatorStore = navigatorStore;
             _playerStore = playerStore;
             _subscriptionStore = subscriptionStore;
+            _sportStore = sportStore;
+            _paymentDataStore = paymentDataStore;
+            _metricDataStore = metricDataStore;
+            _routineDataStore = routineDataStore;
             LoadPlayersCommand = new LoadPlayersCommand(this, _playerStore);
 
-            AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this, _playerStore, _subscriptionStore, _sportStore)));
+            AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this, _playerStore, _subscriptionStore, _sportStore, _paymentDataStore, _metricDataStore,_routineDataStore)));
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
 
 
@@ -187,7 +193,6 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.HaveDebt, 8, "ديون"));
 
             SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Id == 6);
-            _sportStore = sportStore;
         }
 
         private void PlayerStore_OrderChanged(Enums.Order? order)
@@ -298,12 +303,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new (player, _navigatorStore, _subscriptionStore,_playerStore,_sportStore);
+                new (player, _navigatorStore, _subscriptionStore,_playerStore,_sportStore,_paymentDataStore,_metricDataStore,_routineDataStore);
             playerListItemViewModels.Add(itemViewModel);
         }
-        public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore,SportDataStore sportDataStore)
+        public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore,SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore,RoutineDataStore routineDataStore)
         {
-            PlayerListViewModel viewModel = new (navigatorStore, playersStore, subscriptionDataStore, sportDataStore);
+            PlayerListViewModel viewModel = new (navigatorStore, playersStore, subscriptionDataStore, sportDataStore, paymentDataStore,metricDataStore, routineDataStore);
 
             viewModel.LoadPlayersCommand.Execute(null);
 

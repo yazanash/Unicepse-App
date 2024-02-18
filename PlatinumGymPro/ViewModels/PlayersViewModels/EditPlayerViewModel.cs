@@ -25,6 +25,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly PlayersDataStore _playerStore;
         private readonly SportDataStore _sportStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly PaymentDataStore _paymentDataStore ;
         private readonly PlayerMainPageViewModel _playerProfileViewModel;
         public ObservableCollection<Year> years;
 
@@ -153,7 +154,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
      
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
 
-        public EditPlayerViewModel(NavigationStore navigationStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PlayerMainPageViewModel playerProfileViewModel, SportDataStore sportStore)
+        public EditPlayerViewModel(NavigationStore navigationStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PlayerMainPageViewModel playerProfileViewModel, SportDataStore sportStore, PaymentDataStore paymentDataStore)
         {
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             years = new ObservableCollection<Year>();
@@ -162,6 +163,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _navigationStore = navigationStore;
             _playerStore = playerStore;
             _subscriptionDataStore = subscriptionDataStore;
+            _paymentDataStore = paymentDataStore;
             _playerProfileViewModel = playerProfileViewModel;
             Id = _playerStore.SelectedPlayer!.Player.Id;
             FullName = _playerStore.SelectedPlayer!.Player.FullName;
@@ -173,12 +175,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             SubscribeDate = _playerStore.SelectedPlayer!.Player.SubscribeDate;
             _sportStore = sportStore;
 
-            SubmitCommand = new EditPlayerCommand(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore)), this, _playerStore, _navigationStore, _subscriptionDataStore,_sportStore);
-            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => _playerProfileViewModel));
+            SubmitCommand = new EditPlayerCommand(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore,_paymentDataStore)), this, _playerStore, _navigationStore, _subscriptionDataStore, _sportStore);
+            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore, _paymentDataStore)));
         }
-        private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore)
+        private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore)
         {
-            return new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore);
+            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore);
         }
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();

@@ -13,15 +13,20 @@ namespace PlatinumGymPro.ViewModels
     {
         public NavigationStore _navigatorStore;
         private readonly PlayersDataStore _playerStore;
-        private SportDataStore _sportStore;
-        private EmployeeStore _employeeStore;
-        private ExpensesDataStore _expensesStore;
-        private SubscriptionDataStore _subscriptionDataStore;
+        private readonly SportDataStore _sportStore;
+        private readonly EmployeeStore _employeeStore;
+        private readonly ExpensesDataStore _expensesStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly PaymentDataStore _paymentDataStore;
+        private readonly MetricDataStore _metricDataStore;
+        private readonly RoutineDataStore _routineDataStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
 
         public MainWindowViewModel(NavigationStore navigatorStore,
             PlayersDataStore playerStore, SportDataStore sportStore,
-            EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore)
+            EmployeeStore employeeStore, ExpensesDataStore expensesStore,
+            SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, 
+            MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
         {
 
             _navigatorStore = navigatorStore;
@@ -29,10 +34,12 @@ namespace PlatinumGymPro.ViewModels
             _sportStore = sportStore;
             _employeeStore = employeeStore;
             _expensesStore = expensesStore;
+            _paymentDataStore = paymentDataStore;
+            _metricDataStore = metricDataStore;
             _subscriptionDataStore = subscriptionDataStore;
-            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore,_subscriptionDataStore);
+            _routineDataStore = routineDataStore;
+            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore,_routineDataStore);
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
-            
         }
 
         private void _navigatorStore_CurrentViewModelChanged()

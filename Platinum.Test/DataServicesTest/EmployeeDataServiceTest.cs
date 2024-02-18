@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Platinum.Test.Fakes;
 using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models.Employee;
+using PlatinumGym.Core.Models.Sport;
 using PlatinumGym.Entityframework.DbContexts;
 using PlatinumGym.Entityframework.Services;
 using System;
@@ -20,7 +21,8 @@ namespace Platinum.Test.DataServicesTest
         PlatinumGymDbContextFactory? db;
         EmployeeFactory? employeeFactory;
         EmployeeDataService? employeeDataService;
-
+        SportFactory? sportFactory;
+        SportServices? sportDataService;
         [OneTimeSetUp]
         public void OnetimeSetUp()
         {
@@ -34,6 +36,8 @@ namespace Platinum.Test.DataServicesTest
             employeeFactory = new();
             employeeDataService = new(db!);
 
+            sportFactory = new();
+            sportDataService = new(db!);
         }
 
         [OneTimeTearDown]
@@ -52,6 +56,8 @@ namespace Platinum.Test.DataServicesTest
         {
             using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
             {
+                var payments = platinumGymDbContext.PlayerPayments!.ToList();
+                platinumGymDbContext.PlayerPayments!.RemoveRange(payments);
                 var subscriptions = platinumGymDbContext.Subscriptions!.ToList();
                 platinumGymDbContext.Subscriptions!.RemoveRange(subscriptions);
                 var employee = platinumGymDbContext.Employees!.ToList();
@@ -73,6 +79,13 @@ namespace Platinum.Test.DataServicesTest
                 Employee actual_employee = await employeeDataService!.Create(employeeFactory!.FakeEmployee());
             }
         }
+
+
+        public async Task<Sport> create_sport()
+        {
+            Sport sport = sportFactory!.FakeSport();
+            return await sportDataService!.Create(sport);
+        }
         ////////////////////////////////
         ///
         /// T E S T  C A S E S
@@ -86,6 +99,16 @@ namespace Platinum.Test.DataServicesTest
             Employee expected_employee = employeeFactory!.FakeEmployee();
             Employee actual_employee = await employeeDataService!.Create(expected_employee);
             Assert.AreEqual(expected_employee.FullName, actual_employee.FullName);
+        }
+        [Test]
+        //it sholud create an employee and assert that it created
+        public async Task CreateEmployeeWithSport()
+        {
+            Employee expected_employee = employeeFactory!.FakeEmployee();
+            Sport sport = await create_sport();
+            expected_employee.Sports!.Add(sport);
+            Employee actual_employee = await employeeDataService!.Create(expected_employee);
+            Assert.AreEqual(expected_employee.Sports.Count, actual_employee.Sports!.Count);
         }
         [Test]
         //it sholud try to create ana existed employee and throw confilct exception

@@ -17,7 +17,6 @@ namespace PlatinumGymPro.Commands
     {
 
         private readonly NavigationService<PlayerProfileViewModel> navigationService;
-        private readonly NavigationStore _navigationStore ;
         private readonly PlayersDataStore _playerStore;
         private readonly SportDataStore _sportStore;
         private readonly PlayerListViewModel _PlayerListViewModel;
@@ -30,7 +29,6 @@ namespace PlatinumGymPro.Commands
             _playerStore = playerStore;
             _addPlayerViewModel = addPlayerViewModel;
             _addPlayerViewModel.PropertyChanged += AddPlayerViewModel_PropertyChanged;
-            _navigationStore = navigationStore;
             _PlayerListViewModel = playerListViewModel;
             _subscriptionDataStore = subscriptionDataStore;
             _sportStore = sportStore;
@@ -67,7 +65,7 @@ namespace PlatinumGymPro.Commands
             MessageBox.Show(player.FullName + " added successfully");
             //_addPlayerViewModel.Submited = true;
             //_addPlayerViewModel.SubmitMessage = player.FullName + " added successfully";
-            _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore,_subscriptionDataStore, _playerStore,_sportStore);
+            //_playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore,_subscriptionDataStore, _playerStore,_sportStore);
            //await Task.Delay(5000);
             navigationService.Navigate();
         }

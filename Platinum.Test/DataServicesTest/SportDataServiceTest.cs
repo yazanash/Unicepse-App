@@ -16,9 +16,9 @@ namespace Platinum.Test.DataServicesTest
     [TestFixture]
     public class SportDataServiceTest
     {
-        PlatinumGymDbContextFactory db;
-        SportFactory sportFactory;
-        SportServices sportDataService;
+        PlatinumGymDbContextFactory? db;
+        SportFactory? sportFactory;
+        SportServices? sportDataService;
 
         [OneTimeSetUp]
         public void OnetimeSetUp()
@@ -48,7 +48,7 @@ namespace Platinum.Test.DataServicesTest
         [TearDown]
         public void TearDown()
         {
-            using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
+            using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
             {
                 var subscriptions = platinumGymDbContext.Subscriptions!.ToList();
                 platinumGymDbContext.Subscriptions!.RemoveRange(subscriptions);
@@ -73,9 +73,9 @@ namespace Platinum.Test.DataServicesTest
         public async Task CreateSport()
         {
             //Arrange 
-            Sport expected_sport = sportFactory.FakeSport();
+            Sport expected_sport = sportFactory!.FakeSport();
             //Act
-            Sport actual_sport = await sportDataService.Create(expected_sport);
+            Sport actual_sport = await sportDataService!.Create(expected_sport);
             //assert
             Assert.AreEqual(expected_sport.Name,actual_sport.Name);
         }
@@ -85,9 +85,9 @@ namespace Platinum.Test.DataServicesTest
         public async Task CreateExitingSport()
         {
 
-            Sport expected_sport = sportFactory.FakeSport();
+            Sport expected_sport = sportFactory!.FakeSport();
 
-            Sport actual_sport = await sportDataService.Create(expected_sport);
+            Sport actual_sport = await sportDataService!.Create(expected_sport);
 
             Assert.ThrowsAsync<SportConflictException>(
                 () => sportDataService.Create(actual_sport));
@@ -173,7 +173,7 @@ namespace Platinum.Test.DataServicesTest
 
             //Assert
             Assert.ThrowsAsync<NotExistException>(
-               async () => await sportDataService.Delete(expected_player.Id));
+               async () => await sportDataService!.Delete(expected_player.Id));
         }
 
         [Test]
@@ -184,7 +184,7 @@ namespace Platinum.Test.DataServicesTest
             int count = 5;
             //Act
             await create_sport(count);
-            var sports = await sportDataService.GetAll();
+            var sports = await sportDataService!.GetAll();
             //Assert
             Assert.AreEqual(sports.Count(), count);
         }

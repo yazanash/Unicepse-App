@@ -28,9 +28,9 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Subscription> CheckIfSubscriptionExist(Subscription subscription)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Subscription? entity = await context.Set<Subscription>().FirstOrDefaultAsync((e) => e.Player.Id == subscription.Player.Id &&
-            e.Sport.Id == subscription.Sport.Id && e.EndDate >= subscription.RollDate);
-            return entity;
+            Subscription? entity = await context.Set<Subscription>().FirstOrDefaultAsync((e) => e.Player!.Id == subscription.Player!.Id &&
+            e.Sport!.Id == subscription.Sport!.Id && e.EndDate >= subscription.RollDate);
+            return entity!;
         }
         public async Task<Subscription> Create(Subscription entity)
         {
@@ -39,9 +39,9 @@ namespace PlatinumGym.Entityframework.Services
                 Subscription existed_subscription = await CheckIfSubscriptionExist(entity);
                 if (existed_subscription != null)
                     throw new ConflictException();
-                context.Attach<Sport>(entity.Sport);
-                context.Attach<Player>(entity.Player);
-                context.Attach<Employee>(entity.Trainer);
+                context.Attach<Sport>(entity.Sport!);
+                context.Attach<Player>(entity.Player!);
+                context.Attach<Employee>(entity.Trainer!);
                 EntityEntry<Subscription> CreatedResult = await context.Set<Subscription>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
@@ -79,9 +79,15 @@ namespace PlatinumGym.Entityframework.Services
                 return entities;
             }
         }
-        public  Task<IEnumerable<Subscription>> GetAll()
+        public async  Task<IEnumerable<Subscription>> GetAll()
         {
-            throw new NotImplementedException();
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Include(x => x.Trainer)
+                    .Include(x => x.Player)
+                    .Include(x => x.Sport).ToListAsync();
+                return entities;
+            }
         }
 
             public async Task<Subscription> Update(Subscription entity)
@@ -90,9 +96,9 @@ namespace PlatinumGym.Entityframework.Services
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException();
-            context.Attach<Sport>(entity.Sport);
-            context.Attach<Player>(entity.Player);
-            context.Attach<Employee>(entity.Trainer);
+            context.Attach<Sport>(entity.Sport!);
+            context.Attach<Player>(entity.Player!);
+            context.Attach<Employee>(entity.Trainer!);
             context.Set<Subscription>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
