@@ -303,7 +303,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new (player, _navigatorStore, _subscriptionStore,_playerStore,_sportStore,_paymentDataStore,_metricDataStore,_routineDataStore);
+                new (player, _navigatorStore, _subscriptionStore,_playerStore,_sportStore,_paymentDataStore,_metricDataStore,_routineDataStore,this);
             playerListItemViewModels.Add(itemViewModel);
         }
         public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore,SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore,RoutineDataStore routineDataStore)

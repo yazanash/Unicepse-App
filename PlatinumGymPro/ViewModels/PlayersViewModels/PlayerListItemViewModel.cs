@@ -1,5 +1,6 @@
 ﻿using PlatinumGym.Core.Models.Player;
 using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.Player;
 using PlatinumGymPro.Commands.SubscriptionCommand;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
@@ -47,7 +48,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public ICommand? OpenProfileCommand { get; }
         public PlayerListItemViewModel(Player player, NavigationStore navigationStore,
             SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,
-            SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
+            SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayerListViewModel playerList)
         {
             Player = player;
             _playersDataStore = playersDataStore;
@@ -60,8 +61,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
             EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(PlayerMainPageNavigation, () => new EditPlayerViewModel(PlayerMainPageNavigation, _playersDataStore, _subscriptionDataStore, CreatePlayerMainPageViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _paymentDataStore), _sportDataStore, _paymentDataStore)));
-
-            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore,_routineDataStore)));
+            DeleteCommand = new DeletePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList),_playersDataStore);
+            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore)));
         }
 
         public void Update(Player player)

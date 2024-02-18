@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "zV54Xs9rSpag96Exrh26lUsO2SdEOJ8c58ECSTOR7BqDlN4q1eoLFHlo9u1bdMXbOFrN8Aobm532VAEweF29PQ==",
+  "dgSpecHash": "ctrM/Q8iHnHOgAdi7y1BLx7h86PUnk71jkhOD+oUvHteXF7prppjI5jxywPwSqhVBYo1q/g6K1OemwNbIobGag==",
   "success": true,
   "projectFilePath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\PlatinumGym.API.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.0\\microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.extensions.logging\\8.0.0\\microsoft.extensions.logging.8.0.0.nupkg.sha512",
+    "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.extensions.options\\8.0.0\\microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "C:\\Users\\ANACONDA\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\ANACONDA\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
