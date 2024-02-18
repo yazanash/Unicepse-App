@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PlatinumGymPro.Views.Programs
+namespace PlatinumGymPro.utlis.Components
 {
     /// <summary>
-    /// Interaction logic for EditProgramDetailView.xaml
+    /// Interaction logic for MuscleGroupItem.xaml
     /// </summary>
-    public partial class EditProgramDetailView : UserControl
+    public partial class MuscleGroupItem : UserControl
     {
-        public EditProgramDetailView()
+        public MuscleGroupItem()
         {
             InitializeComponent();
         }

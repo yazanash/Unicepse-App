@@ -25,7 +25,8 @@ namespace PlatinumGymPro.ViewModels
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PaymentDataStore _paymentDataStore;
         private readonly MetricDataStore _metricDataStore;
-        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore)
+        private readonly RoutineDataStore _routineDataStore;
+        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
         {
             _navigatorStore = navigatorStore;
             _playerStore = playerStore;
@@ -35,7 +36,9 @@ namespace PlatinumGymPro.ViewModels
             _paymentDataStore = paymentDataStore;
             _subscriptionDataStore = subscriptionDataStore;
             _metricDataStore = metricDataStore;
-            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore,_paymentDataStore, _metricDataStore);
+            _routineDataStore = routineDataStore;
+
+            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore,_routineDataStore);
             Navigator.CurrentViewModel = new HomeViewModel();
 
 

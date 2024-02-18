@@ -34,9 +34,9 @@ namespace PlatinumGym.Entityframework.DbContexts
         public DbSet<PayReferance>? PayReferance { get; set; }
         public DbSet<Sport>? Sports { get; set; }
         public DbSet<TrainerDueses>? TrainerDueses { get; set; }
-        public DbSet<TrainingProgram>? TrainingProgram { get; set; }
-        public DbSet<Training>? Training { get; set; }
-        public DbSet<TrainingCategory>? TrainingCategory { get; set; }
+        public DbSet<Exercises>? Exercises { get; set; }
+        public DbSet<RoutineItems>? RoutineItems{ get; set; }
+        public DbSet<PlayerRoutine>? PlayerRoutine{ get; set; }
         public DbSet<User>? Users { get; set; }
         public DbSet<Metric>? Metrics { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

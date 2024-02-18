@@ -26,7 +26,7 @@ namespace Platinum.Test.DataServicesTest
         [OneTimeSetUp]
         public void OnetimeSetUp()
         {
-            string CONNECTION_STRING = @"data source =.\sqlexpress; initial catalog = PlatinumDBD; integrated security = SSPI; TrustServerCertificate = True; ";
+            string CONNECTION_STRING = @"data source =.\sqlexpress; initial catalog = PlatinumDB_test; integrated security = SSPI; TrustServerCertificate = True; ";
             db = new PlatinumGymDbContextFactory(CONNECTION_STRING);
 
             using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
@@ -43,13 +43,13 @@ namespace Platinum.Test.DataServicesTest
         [TearDown]
         public void TearDown()
         {
-            //using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
-            //{
-            //    var metric = platinumGymDbContext.Metrics!.ToList();
-            //    platinumGymDbContext.Metrics!.RemoveRange(metric);
-            //    platinumGymDbContext.SaveChanges();
-            //    var x = platinumGymDbContext.Metrics!.Count();
-            //}
+            using (PlatinumGymDbContext platinumGymDbContext = db!.CreateDbContext())
+            {
+                var metric = platinumGymDbContext.Metrics!.ToList();
+                platinumGymDbContext.Metrics!.RemoveRange(metric);
+                platinumGymDbContext.SaveChanges();
+                var x = platinumGymDbContext.Metrics!.Count();
+            }
         }
         ////////////////////////////////////////
         /// 

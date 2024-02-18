@@ -23,10 +23,11 @@ namespace PlatinumGymPro.State.Navigator
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PaymentDataStore _paymentDataStore ;
         private readonly MetricDataStore _metricDataStore;
+        private readonly RoutineDataStore _routineDataStore;
         public Navigator(NavigationStore navigatorStore, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore,
             ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore,
-            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore)
+            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
         {
             _navigatorStore = navigatorStore;
             _playersStore = playersStore;
@@ -35,7 +36,8 @@ namespace PlatinumGymPro.State.Navigator
             _expensesStore = expensesStore;
             _subscriptionDataStore = subscriptionDataStore;
             _paymentDataStore = paymentDataStore;
-            _metricDataStore=metricDataStore;
+            _metricDataStore = metricDataStore;
+            _routineDataStore = routineDataStore;
             //LogoutCommand = new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore)));
 
         }
@@ -56,7 +58,7 @@ namespace PlatinumGymPro.State.Navigator
             set { _isOpen = value; OnPropertChanged(nameof(IsOpen)); }
             
         }
-        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore,_sportStore,_employeeStore, _expensesStore, _subscriptionDataStore,_paymentDataStore,_metricDataStore);
+        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore,_sportStore,_employeeStore, _expensesStore, _subscriptionDataStore,_paymentDataStore,_metricDataStore,_routineDataStore);
         //public ICommand LogoutCommand { get; }
 
     }

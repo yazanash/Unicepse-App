@@ -1,4 +1,4 @@
-﻿
+﻿D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\GeneratedInternalTypeHelper.g.cs
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\App.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\MainWindow.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\common\HomeView.xaml;;
@@ -7,9 +7,11 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\CustomRadioButton.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\CustomTextBox.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\CustomToggleBtn.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\DashboardCard.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\ExerciseCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricItem.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricItemRL.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MuscleGroupItem.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PayCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PlayerMetricCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SportCard.xaml;;
@@ -53,16 +55,11 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerProfile.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayersListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayersView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\RoutineView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SplashScreen.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\EditSportDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportDetailsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\SubscriptionDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Categories\CategoriesDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Categories\EditCategoriesDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\EditTrainingDetailsView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Programs\AddProgramDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\Programs\EditProgramDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\TrainingViews\TrainingDetailsView.xaml;;
 

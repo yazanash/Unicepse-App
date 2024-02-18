@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Assets\backimage.png" />
+    <None Remove="Resources\Assets\Exercises\9.png" />
     <None Remove="Resources\Assets\gym_backgroud.jpg" />
     <None Remove="Resources\Assets\Metric\Chest.png" />
     <None Remove="Resources\Assets\Metric\ForeArm.png" />
@@ -47,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Assets\Exercises\9.png" />
     <Resource Include="Resources\Assets\gym_backgroud.jpg" />
     <Resource Include="Resources\Assets\Metric\Chest.png" />
     <Resource Include="Resources\Assets\Metric\ForeArm.png" />
@@ -170,24 +172,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SportViews\SportListView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\TrainingViews\Categories\CategoriesDetailView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\TrainingViews\Categories\EditCategoriesDetailView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\TrainingViews\Programs\AddProgramDetailView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\TrainingViews\Programs\EditProgramDetailView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\TrainingViews\EditTrainingDetailsView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\TrainingViews\TrainingDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

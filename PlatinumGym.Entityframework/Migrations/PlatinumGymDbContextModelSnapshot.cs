@@ -540,7 +540,7 @@ namespace PlatinumGymPro.Migrations
                     b.ToTable("Subscriptions");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerProgram", b =>
+            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.Exercises", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -548,49 +548,24 @@ namespace PlatinumGymPro.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Group")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SportId")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("SportId");
-
-                    b.ToTable("PlayerProgram");
-                });
-
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.Training", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Muscle")
+                    b.Property<string>("Muscel")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SportId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("SportId");
-
-                    b.ToTable("Training");
+                    b.ToTable("Exercises");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.TrainingCategory", b =>
+            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -598,46 +573,49 @@ namespace PlatinumGymPro.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RoutineData")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RoutineNo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("PlayerRoutine");
+                });
+
+            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.RoutineItems", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ExerciseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Orders")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("TrainingCategory");
-                });
-
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.TrainingProgram", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Counter")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PlayerProgramId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rounds")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TrainingsId")
+                    b.Property<int?>("PlayerRoutineId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ExerciseId");
 
-                    b.HasIndex("PlayerProgramId");
+                    b.HasIndex("PlayerRoutineId");
 
-                    b.HasIndex("TrainingsId");
-
-                    b.ToTable("TrainingProgram");
+                    b.ToTable("RoutineItems");
                 });
 
             modelBuilder.Entity("EmployeeSport", b =>
@@ -778,54 +756,36 @@ namespace PlatinumGymPro.Migrations
                     b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerProgram", b =>
+            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Sport.Sport", "Sport")
+                    b.HasOne("PlatinumGym.Core.Models.Player.Player", "Player")
                         .WithMany()
-                        .HasForeignKey("SportId");
+                        .HasForeignKey("PlayerId");
 
-                    b.Navigation("Sport");
+                    b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.Training", b =>
+            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.RoutineItems", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.TrainingCategory", "Category")
+                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.Exercises", "Exercise")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("ExerciseId");
 
-                    b.HasOne("PlatinumGym.Core.Models.Sport.Sport", "Sport")
-                        .WithMany()
-                        .HasForeignKey("SportId");
+                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", null)
+                        .WithMany("RoutineSchedule")
+                        .HasForeignKey("PlayerRoutineId");
 
-                    b.Navigation("Category");
-
-                    b.Navigation("Sport");
-                });
-
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.TrainingProgram", b =>
-                {
-                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.TrainingCategory", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.PlayerProgram", "PlayerProgram")
-                        .WithMany()
-                        .HasForeignKey("PlayerProgramId");
-
-                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.Training", "Trainings")
-                        .WithMany()
-                        .HasForeignKey("TrainingsId");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("PlayerProgram");
-
-                    b.Navigation("Trainings");
+                    b.Navigation("Exercise");
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Sport.Sport", b =>
                 {
                     b.Navigation("PlayerTrainings");
+                });
+
+            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", b =>
+                {
+                    b.Navigation("RoutineSchedule");
                 });
 #pragma warning restore 612, 618
         }

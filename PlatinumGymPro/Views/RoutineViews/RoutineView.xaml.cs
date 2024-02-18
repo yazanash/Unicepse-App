@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PlatinumGymPro.Views.Programs
+namespace PlatinumGymPro.Views.RoutineViews
 {
     /// <summary>
-    /// Interaction logic for AddProgramDetailView.xaml
+    /// Interaction logic for RoutineView.xaml
     /// </summary>
-    public partial class AddProgramDetailView : UserControl
+    public partial class RoutineView : UserControl
     {
-        public AddProgramDetailView()
+        public RoutineView()
         {
             InitializeComponent();
         }

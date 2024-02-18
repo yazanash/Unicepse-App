@@ -13,16 +13,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PlatinumGymPro.Views.Categories
+namespace PlatinumGymPro.utlis.Components
 {
     /// <summary>
-    /// Interaction logic for EditCategoriesDetailView.xaml
+    /// Interaction logic for ExerciseCard.xaml
     /// </summary>
-    public partial class EditCategoriesDetailView : UserControl
+    public partial class ExerciseCard : UserControl
     {
-        public EditCategoriesDetailView()
+        public ExerciseCard()
         {
             InitializeComponent();
         }
+       
+
     }
 }
