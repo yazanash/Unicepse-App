@@ -466,6 +466,9 @@ namespace PlatinumGymPro.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("DaysCount")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -746,7 +749,7 @@ namespace PlatinumGymPro.Migrations
                         .HasForeignKey("SportId");
 
                     b.HasOne("PlatinumGym.Core.Models.Employee.Employee", "Trainer")
-                        .WithMany()
+                        .WithMany("PlayerTrainings")
                         .HasForeignKey("TrainerId");
 
                     b.Navigation("Player");
@@ -776,6 +779,11 @@ namespace PlatinumGymPro.Migrations
                         .HasForeignKey("PlayerRoutineId");
 
                     b.Navigation("Exercise");
+                });
+
+            modelBuilder.Entity("PlatinumGym.Core.Models.Employee.Employee", b =>
+                {
+                    b.Navigation("PlayerTrainings");
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Sport.Sport", b =>

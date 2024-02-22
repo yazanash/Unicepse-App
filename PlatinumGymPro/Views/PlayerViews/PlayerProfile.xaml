@@ -38,6 +38,9 @@
         <DataTemplate DataType="{x:Type subsvms:SubscriptionDetailsViewModel }">
             <subsview:SubscriptionDetailView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type subsvms:EditSubscriptionViewModel }">
+            <subsview:EditSubscriptionDetailsView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type payvms:AddPaymentViewModel}">
             <payview:PaymentDetalView />
         </DataTemplate>
@@ -60,11 +63,11 @@
                     <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                         <RadioButton
                          IsChecked="True"   
-                            Command="{Binding PaymentCommand}"
+                            Command="{Binding PlayerHomeCommand}"
                             Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Account"/>
-                                <TextBlock  Text="الصفحة الشخصية"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                                <TextBlock  Text="الصفحة الشخصية" />
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
@@ -72,7 +75,7 @@
                                 Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>
-                                <TextBlock  Text="اضافة اشتراك"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                                <TextBlock  Text="اضافة اشتراك" />
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
@@ -80,7 +83,7 @@
                                 Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal" >
                                 <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
-                                <TextBlock Text="اضافة دفعة"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                                <TextBlock Text="اضافة دفعة"  />
 
                             </StackPanel>
                         </RadioButton>
@@ -89,7 +92,7 @@
                                 Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartArc" />
-                                <TextBlock Text="القياسات"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                                <TextBlock Text="القياسات"  />
 
                             </StackPanel>
                         </RadioButton>
@@ -98,7 +101,7 @@
                                 Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ListStatus" />
-                                <TextBlock Text="البرنامج الرياضي"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                                <TextBlock Text="البرنامج الرياضي" />
 
                             </StackPanel>
                         </RadioButton>

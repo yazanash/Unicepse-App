@@ -141,7 +141,7 @@
                 </RadioButton>
 
             </StackPanel>
-            <Button DockPanel.Dock="Bottom"
+            <!--<Button DockPanel.Dock="Bottom"
                          Command="{Binding LogoutCommand}"
                                 VerticalAlignment="Bottom" 
                                 Style="{StaticResource MenuButton}" >
@@ -151,7 +151,7 @@
                        
 
                     </StackPanel>
-                </Button>
+                </Button>-->
             </DockPanel>
         </Border>
     

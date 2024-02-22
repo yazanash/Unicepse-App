@@ -39,8 +39,10 @@ namespace PlatinumGym.Entityframework.Services
                 Subscription existed_subscription = await CheckIfSubscriptionExist(entity);
                 if (existed_subscription != null)
                     throw new ConflictException();
+              
                 context.Attach<Sport>(entity.Sport!);
                 context.Attach<Player>(entity.Player!);
+                if(entity.Trainer!=null)
                 context.Attach<Employee>(entity.Trainer!);
                 EntityEntry<Subscription> CreatedResult = await context.Set<Subscription>().AddAsync(entity);
                 await context.SaveChangesAsync();
@@ -73,13 +75,13 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x=>x.Player!.Id==player.Id).Include(x => x.Trainer)
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.Player!.Id == player.Id).Include(x => x.Trainer)
                     .Include(x => x.Player)
                     .Include(x => x.Sport).ToListAsync();
                 return entities;
             }
         }
-        public async  Task<IEnumerable<Subscription>> GetAll()
+        public async Task<IEnumerable<Subscription>> GetAll()
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
@@ -90,15 +92,18 @@ namespace PlatinumGym.Entityframework.Services
             }
         }
 
-            public async Task<Subscription> Update(Subscription entity)
+        public async Task<Subscription> Update(Subscription entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            //context.Attach(entity!);
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException();
-            context.Attach<Sport>(entity.Sport!);
-            context.Attach<Player>(entity.Player!);
-            context.Attach<Employee>(entity.Trainer!);
+            context.Attach(entity.Sport!);
+            context.Attach(entity.Player!);
+            //context.Entry(entity).Property("TrainerId").CurrentValue = null;
+            if (entity.Trainer != null)
+                context.Attach(entity.Trainer);
             context.Set<Subscription>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
@@ -109,7 +114,7 @@ namespace PlatinumGym.Entityframework.Services
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException();
-            if(existed_subscription.IsMoved)
+            if (existed_subscription.IsMoved)
                 throw new MovedBeforeException();
             context.Attach(entity.Sport!);
             context.Attach(entity.Player!);
@@ -122,7 +127,7 @@ namespace PlatinumGym.Entityframework.Services
             await context.SaveChangesAsync();
             return entity;
         }
-        public async Task<Subscription> Stop(Subscription entity,DateTime stop_date)
+        public async Task<Subscription> Stop(Subscription entity, DateTime stop_date)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Subscription existed_subscription = await Get(entity.Id);

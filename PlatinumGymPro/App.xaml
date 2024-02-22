@@ -1579,9 +1579,9 @@
                                 <!--<Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.Pressed.Glyph}"/>-->
                             </Trigger>
                             <Trigger Property="IsChecked" Value="true">
-                                <Setter Property="Background" TargetName="radioButtonBorder" Value="#fece15"/>
-                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="Red"/>
-
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="#fff"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="#C14E00"/>
+                                <Setter Property="Foreground"  Value="#C14E00"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="{x:Null}">
                                 <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>

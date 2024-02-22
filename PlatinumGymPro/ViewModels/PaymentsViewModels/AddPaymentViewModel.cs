@@ -24,9 +24,10 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
         private readonly NavigationStore _navigatorStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PlayersDataStore _playersDataStore;
+        private readonly SportDataStore _sportDataStore;
         private readonly ObservableCollection<SubscriptionCardViewModel> _subscriptionListViewModel;
         public IEnumerable<SubscriptionCardViewModel> SubscriptionList => _subscriptionListViewModel;
-        public AddPaymentViewModel(PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore)
+        public AddPaymentViewModel(PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore, SportDataStore sportDataStore)
         {
             _paymentDataStore = paymentDataStore;
             _subscriptionDataStore = subscriptionDataStore;
@@ -35,12 +36,13 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore.SelectedPlayer!);
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
-            SubmitCommand = new SubmitPaymentCommand(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => CreatePlayerProfileViewModel(_navigatorStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore)), _paymentDataStore, this, _playersDataStore);
+            SubmitCommand = new SubmitPaymentCommand(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => CreatePlayerProfileViewModel(_navigatorStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _sportDataStore)), _paymentDataStore, this, _playersDataStore);
+            _sportDataStore = sportDataStore;
             //CancelCommand = new NavaigateCommand()
         }
-        private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore)
+        private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore,SportDataStore sportDataStore)
         {
-            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore);
+            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore,sportDataStore);
         }
         private void _subscriptionDataStore_Loaded()
         {
@@ -95,9 +97,9 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
                 new SubscriptionCardViewModel(subscription);
             _subscriptionListViewModel.Add(itemViewModel);
         }
-        public static AddPaymentViewModel LoadViewModel(PaymentDataStore paymentDataStore ,SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,NavigationStore navigationStore)
+        public static AddPaymentViewModel LoadViewModel(PaymentDataStore paymentDataStore ,SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,NavigationStore navigationStore,SportDataStore  sportDataStore)
         {
-            AddPaymentViewModel viewModel = new(paymentDataStore, subscriptionDataStore, playersDataStore, navigationStore);
+            AddPaymentViewModel viewModel = new(paymentDataStore, subscriptionDataStore, playersDataStore, navigationStore, sportDataStore);
 
             viewModel.LoadSubscriptionCommand.Execute(null);
 

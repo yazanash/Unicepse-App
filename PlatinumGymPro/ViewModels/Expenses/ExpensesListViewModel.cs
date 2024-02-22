@@ -117,7 +117,7 @@ namespace PlatinumGymPro.ViewModels.Expenses
             return viewModel;
         }
 
-        protected override void Dispose()
+        public override void Dispose()
         {
             _expensesStore.Loaded -= _expensesStore_Loaded;
             _expensesStore.Created -= _expensesStore_Created;

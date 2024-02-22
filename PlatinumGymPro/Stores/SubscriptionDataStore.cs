@@ -37,6 +37,7 @@ namespace PlatinumGymPro.Stores
             set
             {
                 _selectedSport = value;
+                
                 StateChanged?.Invoke(SelectedSport);
             }
         }

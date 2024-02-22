@@ -49,10 +49,11 @@ namespace PlatinumGym.Entityframework.DbContexts
               .HasOne(c => c.Sport);
 
             modelBuilder.Entity<Subscription>()
-             .HasOne(c => c.Player);
+             .HasOne(c => c.Player) ;
 
             modelBuilder.Entity<Subscription>()
-             .HasOne(c => c.Trainer);
+             .HasOne(c => c.Trainer)
+             .WithMany(c => c.PlayerTrainings).HasForeignKey(x=>x.TrainerId);
             base.OnModelCreating(modelBuilder);
         }
     }

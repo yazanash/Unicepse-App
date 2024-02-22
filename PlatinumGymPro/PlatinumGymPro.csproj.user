@@ -91,6 +91,9 @@
     <Compile Update="Views\SplashScreen.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\SubscriptionView\EditSubscriptionDetailsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\SubscriptionView\SubscriptionDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -184,6 +187,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SplashScreen.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SubscriptionView\EditSubscriptionDetailsView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SubscriptionView\SubscriptionDetailView.xaml">

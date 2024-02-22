@@ -23,11 +23,12 @@ namespace PlatinumGym.Core.Models.Employee
         public bool IsActive { get; set; }
         public bool IsTrainer { get; set; }
         public ICollection<Sport.Sport>? Sports { get; set; }
-
+        public ICollection<Subscription.Subscription>? PlayerTrainings { get; set; }
 
         public Employee()
         {
             Sports = new HashSet<Sport.Sport>();
+            PlayerTrainings=new HashSet<Subscription.Subscription>();
         }
     }
 }
