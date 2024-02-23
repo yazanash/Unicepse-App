@@ -156,9 +156,9 @@
                                             <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
                                                 <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                             </Button>
-                                                <!--<Button Command="{Binding OpenPaymentCommand}" Style="{StaticResource GridEditBtn}">
-                                                    <Icon:PackIconMaterial Kind="Cash" Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>-->
+                                                <Button Command="{Binding StopSubscriptionCommand}" Style="{StaticResource GridEditBtn}">
+                                                    <Icon:PackIconMaterial Kind="Stop" Style="{StaticResource GridBtnIcon}"/>
+                                                </Button>
                                                 <!--<Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>

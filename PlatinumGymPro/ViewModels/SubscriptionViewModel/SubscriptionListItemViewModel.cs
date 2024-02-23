@@ -20,6 +20,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly SportDataStore _sportDataStore;
         private readonly PlayersDataStore _playersDataStore;
+        private readonly PaymentDataStore _paymentDataStore;
         private readonly PlayerMainPageViewModel _playerMainPageViewModel;
         //private readonly PlayerListViewModel playerListingViewModel;
         public int Id => Subscription.Id;
@@ -46,20 +47,18 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
 
         public ICommand? EditCommand { get; }
         //public ICommand? DeleteCommand { get; }
-        //public ICommand? OpenProfileCommand { get; }
-        public SubscriptionListItemViewModel(Subscription subscription, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel)
+        public ICommand? StopSubscriptionCommand { get; }
+        public SubscriptionListItemViewModel(Subscription subscription, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel, PaymentDataStore paymentDataStore)
         {
             Subscription = subscription;
             _sportDataStore = sportDataStore;
             _subscriptionDataStore = subscriptionDataStore;
             _navigationStore = navigationStore;
+            _paymentDataStore = paymentDataStore;
             _playersDataStore = playersDataStore;
             _playerMainPageViewModel = playerMainPageViewModel;
-            EditCommand = new NavaigateCommand<EditSubscriptionViewModel>(new NavigationService<EditSubscriptionViewModel>(_navigationStore, () => EditSubscription(_sportDataStore, _navigationStore, _subscriptionDataStore,_playersDataStore,_playerMainPageViewModel)));
-            
-            //this.playerListingViewModel = playerListingViewModel;
-            //EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(_navigationStore, () => new EditPlayerViewModel(_navigationStore, player)));
-            //OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => new PlayerProfileViewModel(_navigationStore, subscriptionDataStore, player)));
+            EditCommand = new NavaigateCommand<EditSubscriptionViewModel>(new NavigationService<EditSubscriptionViewModel>(_navigationStore, () => EditSubscription(_sportDataStore, _navigationStore, _subscriptionDataStore, _playersDataStore, _playerMainPageViewModel)));
+            StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore,_paymentDataStore,_playerMainPageViewModel)));
         }
 
         public void Update(Subscription subscription)

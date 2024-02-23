@@ -164,7 +164,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void AddSubscription(Subscription subscription)
         {
             SubscriptionListItemViewModel itemViewModel =
-                new SubscriptionListItemViewModel(subscription, _navigatorStore, _subscriptionStore,_sportDataStore,_playersDataStore,this);
+                new SubscriptionListItemViewModel(subscription, _navigatorStore, _subscriptionStore,_sportDataStore,_playersDataStore,this,_paymentStore);
             subscriptionListItemViewModels.Add(itemViewModel);
         }
 

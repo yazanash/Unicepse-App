@@ -46,6 +46,9 @@
     <Compile Update="utlis\Components\SubscriptionCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\SubscriptionDetailsCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\TrainerCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,6 +97,9 @@
     <Compile Update="Views\SubscriptionView\EditSubscriptionDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\SubscriptionView\StopSubscriptionView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\SubscriptionView\SubscriptionDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -136,6 +142,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\SubscriptionCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\SubscriptionDetailsCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\TrainerCard.xaml">
@@ -190,6 +199,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SubscriptionView\EditSubscriptionDetailsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SubscriptionView\StopSubscriptionView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SubscriptionView\SubscriptionDetailView.xaml">
