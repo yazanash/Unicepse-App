@@ -58,7 +58,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             set
             {
                 _subscribeStopDate = value;
-                OnPropertyChanged(nameof(SubscribeDays));
+                OnPropertyChanged(nameof(SubscribeStopDate));
                 CountCoast();
 
             }

@@ -15,7 +15,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         {
             this.trainer = trainer;
         }
-
+        public int Id => trainer.Id;
         public string? TrainerName => trainer.FullName;
 
     }

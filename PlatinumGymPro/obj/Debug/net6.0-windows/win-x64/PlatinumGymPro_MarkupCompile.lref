@@ -16,6 +16,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PayCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PlayerMetricCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SportCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SubscriptionCard.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SubscriptionDetailsCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\TrainerCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\HeaderBar.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\HorizontalNav.xaml;;
@@ -62,7 +63,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportDetailsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\EditSubscriptionDetailsView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\SubscriptionDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SubscriptionDetailsCard.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\MoveToNewTrainerView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\StopSubscriptionView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\SubscriptionDetailView.xaml;;
 

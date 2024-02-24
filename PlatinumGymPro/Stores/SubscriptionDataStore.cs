@@ -148,5 +148,20 @@ namespace PlatinumGymPro.Stores
             }
             Updated?.Invoke(entity);
         }
+        public async Task MoveToNewTrainer(Subscription entity, Employee trainer, DateTime movedate)
+        {
+            await _subscriptionDataService.MoveToNewTrainer(entity, trainer, movedate);
+            int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
+
+            if (currentIndex != -1)
+            {
+                _subscriptions[currentIndex] = entity;
+            }
+            else
+            {
+                _subscriptions.Add(entity);
+            }
+            Updated?.Invoke(entity);
+        }
     }
 }

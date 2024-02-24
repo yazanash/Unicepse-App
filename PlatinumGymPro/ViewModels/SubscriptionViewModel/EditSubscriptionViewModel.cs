@@ -56,7 +56,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             set
             {
                 _subscriptionStore.SelectedTrainer = value?.trainer;
-
+                OnPropertyChanged(nameof(SelectedTrainer));
             }
         }
         //private readonly PlayersDataStore _playersDataStore;
@@ -83,7 +83,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
 
             _sportDataStore.Loaded += _sportDataStore_Loaded;
             _subscriptionStore.StateChanged += _subscriptionStore_StateChanged;
-
+            //SelectedTrainer = TrainerList.SingleOrDefault(x=>x.tr);
             SubmitCommand = new EditSubscriptionCommand(_subscriptionStore, this, _playerDataStore, new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
         }
 
@@ -94,6 +94,8 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             {
                 AddTrainer(trainer);
             }
+            if(_subscriptionStore.SelectedSubscription!.Sport!.Id==sport.Id)
+            SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.Trainer!.Id);
         }
         private void CountTotal()
         {

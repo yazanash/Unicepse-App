@@ -41,6 +41,9 @@
         <DataTemplate DataType="{x:Type subsvms:StopSubscriptionViewModel}">
             <subsview:StopSubscriptionView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type subsvms:MoveToNewTrainerViewModel}">
+            <subsview:MoveToNewTrainerView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type subsvms:EditSubscriptionViewModel }">
             <subsview:EditSubscriptionDetailsView />
         </DataTemplate>

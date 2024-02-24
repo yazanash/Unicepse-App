@@ -76,7 +76,7 @@ namespace PlatinumGym.Entityframework.Services
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.Player!.Id == player.Id).Include(x => x.Trainer)
-                    .Include(x => x.Player)
+                    .Include(x => x.Player).Include(x=>x.Sport!.Trainers)
                     .Include(x => x.Sport).ToListAsync();
                 return entities;
             }
@@ -119,6 +119,7 @@ namespace PlatinumGym.Entityframework.Services
             context.Attach(entity.Sport!);
             context.Attach(entity.Player!);
             context.Attach(trainer);
+            if(entity.Trainer != null)
             entity.PrevTrainer_Id = entity.Trainer!.Id;
             entity.Trainer = trainer;
             entity.IsMoved = true;
