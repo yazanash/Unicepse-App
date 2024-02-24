@@ -33,11 +33,12 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             _subscriptionDataStore = subscriptionDataStore;
             _playersDataStore = playersDataStore;
             _navigatorStore = navigatorStore;
+            _sportDataStore = sportDataStore;
+
             _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore.SelectedPlayer!);
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
             SubmitCommand = new SubmitPaymentCommand(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => CreatePlayerProfileViewModel(_navigatorStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _sportDataStore)), _paymentDataStore, this, _playersDataStore);
-            _sportDataStore = sportDataStore;
             //CancelCommand = new NavaigateCommand()
         }
         private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore,SportDataStore sportDataStore)

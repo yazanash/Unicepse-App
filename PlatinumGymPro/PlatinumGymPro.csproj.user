@@ -85,6 +85,9 @@
     <Compile Update="Views\Metrics\MetricsCardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PaymentViews\PaymentListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -190,6 +193,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Metrics\MetricsCardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PaymentViews\PaymentListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayerViews\PlayerMainPage.xaml">

@@ -90,7 +90,6 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _subscriptionStore.Updated += _subscriptionStore_Updated;
             _subscriptionStore.Deleted += _subscriptionStore_Deleted;
             _paymentStore.SumUpdated += _paymentStore_SumUpdated;
-            LoadPaymentsCommand = new LoadPaymentsCommand(_playersDataStore.SelectedPlayer!, _paymentStore);
             PlayerSubscription = new() { PlayerState = "قيمة الاشتراكات", StateValue = 0, IconPacks = MahApps.Metro.IconPacks.PackIconMaterialKind.Account };
             PlayerPayments = new() { PlayerState = "المدفوعات", StateValue = 0, IconPacks = MahApps.Metro.IconPacks.PackIconMaterialKind.ChartBar };
             PlayerSubscriptionCount = new() { PlayerState = "الاشتراكات", StateValue = 0, IconPacks = MahApps.Metro.IconPacks.PackIconMaterialKind.AccountCashOutline };
@@ -104,8 +103,6 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
       
         public ICommand LoadSubscriptionCommand { get; }
-
-        public ICommand LoadPaymentsCommand { get; }
 
 
 
@@ -172,7 +169,6 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         {
             PlayerMainPageViewModel viewModel = new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore);
             viewModel.LoadSubscriptionCommand.Execute(null);
-            viewModel.LoadPaymentsCommand.Execute(null);
             return viewModel;
         }
     }
