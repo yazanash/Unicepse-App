@@ -1,5 +1,6 @@
 ﻿using PlatinumGym.Core.Models.Payment;
 using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.Payments;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using System;
@@ -34,9 +35,10 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             _navigatorStore = navigatorStore;
             _paymentListViewModel = paymentListViewModel;
             EditCommand = new NavaigateCommand<EditPaymentViewModel>(new NavigationService<EditPaymentViewModel>(_navigatorStore, () => LoadEditPaymentViewModel( _paymentDataStore,  _subscriptionDataStore,  _playersDataStore,  _navigatorStore,  _paymentListViewModel)));
-            
+            DeleteCommand = new DeletePaymentCommand(_paymentDataStore, _playersDataStore, _subscriptionDataStore);
         }
         public ICommand? EditCommand { get; }
+        public ICommand? DeleteCommand { get; }
         public void Update(PlayerPayment payment)
         {
             this.payment = payment;
