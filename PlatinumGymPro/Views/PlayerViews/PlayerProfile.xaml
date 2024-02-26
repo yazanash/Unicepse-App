@@ -62,6 +62,9 @@
         <DataTemplate DataType="{x:Type metricvms:AddMetricsViewModel}">
             <metricview:AddMetricDetailView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type metricvms:EditMetricsViewModel}">
+            <metricview:EditMetricDetailView />
+        </DataTemplate>
 
         <DataTemplate DataType="{x:Type routinevms:RoutinePlayerViewModels}">
             <routineview:RoutineView />

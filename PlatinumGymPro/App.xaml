@@ -1681,8 +1681,12 @@
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                         <Border   x:Name="Bd" BorderThickness="1" Margin=" 0 5" BorderBrush="#aaa" Background="#fff" CornerRadius="10" Padding="5">
                             <DockPanel >
-                                <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                   
                                     <TextBlock Text="{Binding CheckDate}" FontSize="18" FontWeight="SemiBold" Margin="0 5" />
+                                    <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                        <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
+                                    </Button>
                                 </StackPanel>
 
                             </DockPanel>
