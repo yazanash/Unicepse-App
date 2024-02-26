@@ -49,6 +49,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Metrics\MetricListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Metrics\MetricsCardView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\EditPaymentDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\PaymentDetalView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\PaymentListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\EditPlayerDetailsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerMainPage.xaml;;
@@ -66,5 +67,4 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\EditSubscriptionDe
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\MoveToNewTrainerView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\StopSubscriptionView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\SubscriptionDetailView.xaml;;
-FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\PaymentListView.xaml;;
 

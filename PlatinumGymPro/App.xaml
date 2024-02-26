@@ -1613,8 +1613,8 @@
                                 <!--<TextBlock Text="معلومات الاشتراك" FontWeight="Bold" Foreground="#C14E00" DockPanel.Dock="Top" FontSize="20"/>-->
                                 <!--<Separator Margin="5" Background="#ccc" DockPanel.Dock="Top"/>-->
                                 <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding SportName}" FontSize="18" FontWeight="SemiBold" Margin="0 5" />
-                                    <TextBlock Text="{Binding Trainer}" FontSize="16"/>
+                                    <TextBlock Text="{Binding SportName}" TextWrapping="Wrap" FontSize="16" FontWeight="SemiBold" Margin="0 5" />
+                                    <TextBlock Text="{Binding Trainer}" FontSize="14"/>
 
                                     <StackPanel Orientation="Horizontal" Margin="5">
                                         <TextBlock Text="{Binding RollDate}" Foreground="#787878" FontSize="14"/>
@@ -1622,21 +1622,9 @@
                                         <TextBlock Text="{Binding EndDate}" Foreground="#787878" FontSize="14"/>
                                     </StackPanel>
 
-                                    <Border Margin="5" Padding="5" CornerRadius="10" Background="#eee">
-                                        <StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
-                                            <DockPanel>
-                                                <TextBlock Text="تفاصيل التسجيل" FontSize="14"/>
-                                                <CheckBox DockPanel.Dock="Left" Style="{StaticResource ComboBoxToggleButton}"/>
-                                            </DockPanel>
-                                        </StackPanel>
-
-
-
-                                    </Border>
-
                                     <DockPanel >
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding PriceAfterOffer}" FontSize="28" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                                        <TextBlock Text="الاجمالي" VerticalAlignment="Center"  FontSize="18" DockPanel.Dock="Left"/>
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding PriceAfterOffer}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                                        <TextBlock Text="الاجمالي" VerticalAlignment="Center"  FontSize="15" DockPanel.Dock="Left"/>
 
                                     </DockPanel>
                                 </StackPanel>

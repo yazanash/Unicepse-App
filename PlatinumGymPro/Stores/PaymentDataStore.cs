@@ -1,7 +1,6 @@
 ﻿using PlatinumGym.Core.Models.Payment;
 using PlatinumGym.Core.Models.Player;
 using PlatinumGym.Entityframework.Services;
-using PlatinumGymPro.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,26 @@ namespace PlatinumGymPro.Stores
         private readonly PaymentDataService _paymentDataService;
         private readonly List<PlayerPayment> _payments;
         public IEnumerable<PlayerPayment> Payments => _payments;
-       
+
+
+
+
+        private PlayerPayment? _selectedPayment;
+        public PlayerPayment? SelectedPayment
+        {
+            get
+            {
+                return _selectedPayment;
+            }
+            set
+            {
+                _selectedPayment = value;
+            }
+        }
+
+
+
+
         public async Task Add(PlayerPayment entity)
         {
             await _paymentDataService.Create(entity);

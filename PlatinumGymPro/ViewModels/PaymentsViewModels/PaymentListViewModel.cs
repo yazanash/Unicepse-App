@@ -1,7 +1,9 @@
 ﻿using PlatinumGym.Core.Models.Payment;
 using PlatinumGym.Core.Models.Subscription;
+using PlatinumGymPro.Commands;
 using PlatinumGymPro.Commands.Payments;
 using PlatinumGymPro.Commands.SubscriptionCommand;
+using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
 using System;
@@ -18,16 +20,21 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
     {
         private readonly PaymentDataStore _paymentDataStore;
         private readonly PlayersDataStore _playersDataStore;
+        private readonly NavigationStore _navigationStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly ObservableCollection<PaymentListItemViewModel> _paymentListItemViewModels;
         public IEnumerable<PaymentListItemViewModel> PaymentList => _paymentListItemViewModels;
         public ICommand LoadPaymentsCommand { get; }
+        public ICommand AddPaymentsCommand { get; }
 
-        public PaymentListViewModel(PaymentDataStore paymentDataStore, PlayersDataStore playersDataStore)
+        public PaymentListViewModel(PaymentDataStore paymentDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
         {
             _paymentDataStore = paymentDataStore;
             _playersDataStore = playersDataStore;
-          
+            _navigationStore = navigationStore;
+            _subscriptionDataStore = subscriptionDataStore;
 
+            AddPaymentsCommand = new NavaigateCommand<AddPaymentViewModel>(new NavigationService<AddPaymentViewModel>(navigationStore, () => LoadAddPaymentViewModel(_paymentDataStore, _subscriptionDataStore, _playersDataStore, _navigationStore,this)));
             _paymentListItemViewModels = new ObservableCollection<PaymentListItemViewModel>();
             _paymentDataStore.Loaded += _paymentDataStore_Loaded;
             _paymentDataStore.Created += _paymentDataStore_Created;
@@ -36,6 +43,23 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
 
             LoadPaymentsCommand = new LoadPaymentsCommand(_playersDataStore, _paymentDataStore);
         }
+
+        public PaymentListItemViewModel? SelectedPayment
+        {
+            get
+            {
+                return PaymentList
+                    .FirstOrDefault(y => y?.payment == _paymentDataStore.SelectedPayment);
+            }
+            set
+            {
+                _paymentDataStore.SelectedPayment= value?.payment;
+                OnPropertyChanged(nameof(SelectedPayment));
+            }
+        }
+
+
+
 
         private void _paymentDataStore_Deleted(int id)
         {
@@ -66,7 +90,7 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
         private void AddPayment(PlayerPayment payment)
         {
             PaymentListItemViewModel itemViewModel =
-             new PaymentListItemViewModel(payment);
+             new PaymentListItemViewModel(payment, _paymentDataStore, _subscriptionDataStore, _playersDataStore, _navigationStore, this);
             _paymentListItemViewModels.Add(itemViewModel);
         }
         private void _paymentDataStore_Loaded()
@@ -86,9 +110,13 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             _paymentDataStore.Deleted -= _paymentDataStore_Deleted;
             base.Dispose();
         }
-        public static PaymentListViewModel LoadViewModel(PaymentDataStore paymentDataStore, PlayersDataStore playersDataStore )
+        private AddPaymentViewModel LoadAddPaymentViewModel(PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore,PaymentListViewModel paymentListViewModel)
         {
-            PaymentListViewModel viewModel = new PaymentListViewModel(paymentDataStore, playersDataStore);
+            return AddPaymentViewModel.LoadViewModel(paymentDataStore, subscriptionDataStore, playersDataStore, navigatorStore, paymentListViewModel);
+        }
+        public static PaymentListViewModel LoadViewModel(PaymentDataStore paymentDataStore, PlayersDataStore playersDataStore ,NavigationStore navigationStore,SubscriptionDataStore subscriptionDataStore)
+        {
+            PaymentListViewModel viewModel = new PaymentListViewModel(paymentDataStore, playersDataStore, navigationStore, subscriptionDataStore);
             viewModel.LoadPaymentsCommand.Execute(null);
             return viewModel;
         }

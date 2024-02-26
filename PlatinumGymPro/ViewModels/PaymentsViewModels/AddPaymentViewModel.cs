@@ -24,32 +24,28 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
         private readonly NavigationStore _navigatorStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PlayersDataStore _playersDataStore;
-        private readonly SportDataStore _sportDataStore;
+        private readonly PaymentListViewModel _paymentListViewModel;
         private readonly ObservableCollection<SubscriptionCardViewModel> _subscriptionListViewModel;
         public IEnumerable<SubscriptionCardViewModel> SubscriptionList => _subscriptionListViewModel;
-        public AddPaymentViewModel(PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore, SportDataStore sportDataStore)
+        public AddPaymentViewModel(PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore, PaymentListViewModel paymentListViewModel)
         {
             _paymentDataStore = paymentDataStore;
             _subscriptionDataStore = subscriptionDataStore;
             _playersDataStore = playersDataStore;
             _navigatorStore = navigatorStore;
-            _sportDataStore = sportDataStore;
-
+            _paymentListViewModel = paymentListViewModel;
             _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore.SelectedPlayer!);
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
-            SubmitCommand = new SubmitPaymentCommand(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => CreatePlayerProfileViewModel(_navigatorStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _sportDataStore)), _paymentDataStore, this, _playersDataStore);
+            SubmitCommand = new SubmitPaymentCommand(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel), _paymentDataStore, this, _playersDataStore,_subscriptionDataStore);
             //CancelCommand = new NavaigateCommand()
         }
-        private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore,SportDataStore sportDataStore)
-        {
-            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore,sportDataStore);
-        }
+      
         private void _subscriptionDataStore_Loaded()
         {
             _subscriptionListViewModel.Clear();
 
-            foreach (Subscription subscription in _subscriptionDataStore.Subscriptions)
+            foreach (Subscription subscription in _subscriptionDataStore.Subscriptions.Where(x=>!x.IsPaid))
             {
                 AddSubscriptiont(subscription);
             }
@@ -98,9 +94,9 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
                 new SubscriptionCardViewModel(subscription);
             _subscriptionListViewModel.Add(itemViewModel);
         }
-        public static AddPaymentViewModel LoadViewModel(PaymentDataStore paymentDataStore ,SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,NavigationStore navigationStore,SportDataStore  sportDataStore)
+        public static AddPaymentViewModel LoadViewModel(PaymentDataStore paymentDataStore ,SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,NavigationStore navigationStore,PaymentListViewModel paymentListViewModel)
         {
-            AddPaymentViewModel viewModel = new(paymentDataStore, subscriptionDataStore, playersDataStore, navigationStore, sportDataStore);
+            AddPaymentViewModel viewModel = new(paymentDataStore, subscriptionDataStore, playersDataStore, navigationStore, paymentListViewModel);
 
             viewModel.LoadSubscriptionCommand.Execute(null);
 

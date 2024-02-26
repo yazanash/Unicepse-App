@@ -15,16 +15,18 @@ namespace PlatinumGymPro.Commands.Payments
 {
     public class SubmitPaymentCommand : AsyncCommandBase
     {
-        private readonly NavigationService<PlayerMainPageViewModel> _navigationService;
+        private readonly NavigationService<PaymentListViewModel> _navigationService;
         private readonly PlayersDataStore _playersDataStore;
         private readonly PaymentDataStore _paymentDataStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         private AddPaymentViewModel _addPaymentViewModel;
-        public SubmitPaymentCommand(NavigationService<PlayerMainPageViewModel> navigationService,PaymentDataStore paymentDataStore, AddPaymentViewModel addPaymentViewModel, PlayersDataStore playersDataStore)
+        public SubmitPaymentCommand(NavigationService<PaymentListViewModel> navigationService, PaymentDataStore paymentDataStore, AddPaymentViewModel addPaymentViewModel, PlayersDataStore playersDataStore, SubscriptionDataStore subscriptionDataStore)
         {
             _navigationService = navigationService;
             _paymentDataStore = paymentDataStore;
             _playersDataStore = playersDataStore;
             _addPaymentViewModel = addPaymentViewModel;
+            _subscriptionDataStore = subscriptionDataStore;
         }
         public override bool CanExecute(object? parameter)
         {
@@ -39,13 +41,17 @@ namespace PlatinumGymPro.Commands.Payments
                 PaymentValue = _addPaymentViewModel.PaymentValue,
                 Des = _addPaymentViewModel.Descriptiones,
                 Subscription = _addPaymentViewModel.SelectedSubscription!.Subscription,
-                Player = _addPaymentViewModel.SelectedSubscription!.Subscription.Player
-
+                Player = _addPaymentViewModel.SelectedSubscription!.Subscription.Player,
+                
             };
+            _subscriptionDataStore.SelectedSubscription!.PaidValue += payment.PaymentValue;
+            if(_subscriptionDataStore.SelectedSubscription!.PaidValue == _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer)
+                _subscriptionDataStore.SelectedSubscription.IsPaid= true;
 
             await _paymentDataStore.Add(payment);
+            await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription);
             MessageBox.Show("payment added successfully");
-            _navigationService.Navigate();
+            _navigationService.ReNavigate();
         }
     }
 }

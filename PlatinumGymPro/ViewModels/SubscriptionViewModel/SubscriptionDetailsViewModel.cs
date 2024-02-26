@@ -77,14 +77,17 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             _sportDataStore.Loaded += _sportDataStore_Loaded;
             _subscriptionStore.StateChanged += _subscriptionStore_StateChanged;
             LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
-            SubmitCommand = new CreateSubscriptionCommand(_subscriptionStore, this, _playerDataStore, new NavigationService<AddPaymentViewModel>(_navigatorStore, () => CreatePaymentViewModel(_paymentDataStore,_subscriptionStore, _playerDataStore,_navigatorStore,_sportDataStore)));
+            SubmitCommand = new CreateSubscriptionCommand(_subscriptionStore, this, _playerDataStore, new NavigationService<AddPaymentViewModel>(_navigatorStore, () => CreatePaymentViewModel(_paymentDataStore,_subscriptionStore, _playerDataStore,_navigatorStore,CreatePaymentListViewModel(_paymentDataStore,_playerDataStore,_navigatorStore,_subscriptionStore))));
         }
 
-        private static AddPaymentViewModel CreatePaymentViewModel(PaymentDataStore paymentDataStore,SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,NavigationStore navigationStore,SportDataStore sportDataStore)
+        private static AddPaymentViewModel CreatePaymentViewModel(PaymentDataStore paymentDataStore,SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,NavigationStore navigationStore,PaymentListViewModel paymentListViewModel)
         {
-            return new AddPaymentViewModel(paymentDataStore,subscriptionDataStore, playersDataStore, navigationStore,sportDataStore);
+            return AddPaymentViewModel.LoadViewModel(paymentDataStore, subscriptionDataStore, playersDataStore, navigationStore, paymentListViewModel);
         }
-
+        private static PaymentListViewModel CreatePaymentListViewModel(PaymentDataStore paymentDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore,SubscriptionDataStore subscriptionDataStore )
+        {
+            return new PaymentListViewModel(paymentDataStore, playersDataStore, navigationStore, subscriptionDataStore);
+        }
         private void _subscriptionStore_StateChanged(Sport? sport)
         {
             foreach(var trainer in sport!.Trainers!)

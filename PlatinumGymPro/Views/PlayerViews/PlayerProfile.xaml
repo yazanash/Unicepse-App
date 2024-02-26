@@ -53,6 +53,9 @@
         <DataTemplate DataType="{x:Type payvms:PaymentListViewModel}">
             <payview:PaymentListView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type payvms:EditPaymentViewModel}">
+            <payview:EditPaymentDetailView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type metricvms:MetricReportViewModel}">
             <metricview:MetricsCardView />
         </DataTemplate>

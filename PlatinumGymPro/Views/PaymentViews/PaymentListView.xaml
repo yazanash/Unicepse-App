@@ -40,6 +40,19 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>-->
+                        <Button Grid.Column="0" Margin="5 0"  Command="{Binding AddPaymentsCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="أضافة دفعة" />
+                                <Icon:PackIconMaterial Kind="Plus"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                        </Button>
                     </StackPanel>
                     
                     <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
@@ -54,7 +67,7 @@
                             <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
                                     FlowDirection="RightToLeft" ItemsSource="{Binding PaymentList}" 
                                     CanUserReorderColumns="True"
-                                SelectedItem="{Binding SelectedSubscription}"
+                                        SelectedItem="{Binding SelectedPayment,UpdateSourceTrigger=PropertyChanged}"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">

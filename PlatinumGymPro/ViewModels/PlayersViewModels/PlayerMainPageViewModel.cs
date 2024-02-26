@@ -84,6 +84,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _playersDataStore = playersDataStore;
             _paymentStore = paymentStore;
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _playersDataStore.SelectedPlayer!);
+            LoadPaymentCommand= new LoadPaymentsCommand(_playersDataStore,_paymentStore);
             subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             _subscriptionStore.Loaded += _subscriptionStore_Loaded;
             _subscriptionStore.Created += _subscriptionStore_Created;
@@ -103,7 +104,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
       
         public ICommand LoadSubscriptionCommand { get; }
-
+        public ICommand LoadPaymentCommand { get; }
 
 
         private void _subscriptionStore_Deleted(int id)
@@ -169,6 +170,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         {
             PlayerMainPageViewModel viewModel = new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore);
             viewModel.LoadSubscriptionCommand.Execute(null);
+            viewModel.LoadPaymentCommand.Execute(null);
             return viewModel;
         }
     }
