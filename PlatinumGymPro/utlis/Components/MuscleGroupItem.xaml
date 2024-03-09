@@ -6,12 +6,20 @@
              xmlns:local="clr-namespace:PlatinumGymPro.utlis.Components"
              mc:Ignorable="d" 
             >
-    <Border BorderThickness="1" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
-
-        <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-            <TextBlock Text="البرنامج رقم : " Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="18" />
-
-            <TextBlock Text="20/10/2020" Foreground="#999" HorizontalAlignment="Left" FontSize="16" />
+    <Border CornerRadius="10" Background="#fff" >
+        <StackPanel Orientation="Horizontal">
+            <Image Source="{Binding Image,UpdateSourceTrigger=PropertyChanged}" 
+                 RenderOptions.BitmapScalingMode="HighQuality"
+       RenderOptions.EdgeMode="Aliased"
+                   Height="40" Width="40" Margin="10 5"/>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock
+                    FontSize="16" Foreground="#797979" FontWeight="Bold"
+                    Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center"/>
+                <!--<TextBlock 
+                     FontSize="22" FontWeight="Bold"
+                    Text="{Binding ElementName=metricItem,Path=MetricValue,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>-->
+            </StackPanel>
         </StackPanel>
     </Border>
 </UserControl>

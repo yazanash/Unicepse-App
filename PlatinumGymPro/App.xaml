@@ -4,14 +4,14 @@
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:PlatinumGymPro"
              xmlns:viewmodels="clr-namespace:PlatinumGymPro.ViewModels"
-               xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.PlayersViewModels"
+             xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.PlayersViewModels"
              xmlns:vmodels="clr-namespace:PlatinumGymPro.ViewModels.Accountant"
              xmlns:views="clr-namespace:PlatinumGymPro.Views"
              xmlns:vs="clr-namespace:PlatinumGymPro.Views.AccountingViews"
              xmlns:playervs="clr-namespace:PlatinumGymPro.Views.PlayerViews"
-               xmlns:vi="clr-namespace:PlatinumGymPro.Views.PlayerViews"
-              xmlns:login="clr-namespace:PlatinumGymPro.Views.AuthView"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+             xmlns:vi="clr-namespace:PlatinumGymPro.Views.PlayerViews"
+             xmlns:login="clr-namespace:PlatinumGymPro.Views.AuthView"
+             xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Application.Resources>
 
         <!--#region login page resources -->
@@ -582,7 +582,28 @@
 
         </Style>
         <!--#endregion-->
+        <Style x:Key="IconBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#787878"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Template" >
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5" BorderThickness="1" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
 
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#dcdcdc"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <!--#region  Datagrid styles-->
         <Style x:Key="GridEditBtn" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -906,20 +927,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1726,16 +1733,6 @@
         </Style>
 
 
-
-
-
-
-
-
-
-
-
-
         <Style x:Key="RoutineItemsListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Padding" Value="5"/>
@@ -1752,18 +1749,40 @@
 
                         <Border BorderThickness="1" x:Name="Bd" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
                             <DockPanel >
+
                                 <Image Width="150"
                    Source="{Binding imageId}"
+                                           DockPanel.Dock="Left"
                     RenderOptions.BitmapScalingMode="HighQuality"
        RenderOptions.EdgeMode="Aliased"
-                   Height="100" DockPanel.Dock="Left"/>
-                                <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Notes}" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="16" />
-                                    <TextBlock Text="{Binding Orders}" HorizontalAlignment="Left" FontSize="16" Foreground="#999"/>
-                                </StackPanel>
+                   Height="100"/>
+                                <Grid  Margin="5" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        
+                                        <TextBlock Text="{Binding ItemsOrder}"  VerticalAlignment="Center" Margin="0 0 0 10" HorizontalAlignment="Left" FontSize="18" />
+
+
+                                        <TextBlock Text="{Binding ExerciseName}" VerticalAlignment="Center" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="18" />
+
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1">
+                                        <TextBlock Text="{Binding Orders}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" FontSize="16" Foreground="#999"/>
+                                        <TextBlock Text="{Binding Notes}" Grid.Row="1" Grid.Column="1" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="16" />
+
+                                    </StackPanel>
+                                    </Grid>
                             </DockPanel>
                         </Border>
-                        <ControlTemplate.Triggers>
+
+                       <ControlTemplate.Triggers>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsMouseOver" Value="True"/>
@@ -1798,9 +1817,6 @@
 
 
 
-
-
-
         <Style x:Key="RoutinesListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Padding" Value="5"/>
@@ -1817,7 +1833,23 @@
                         <Border BorderThickness="1" x:Name="Bd" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
 
                             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding RoutineNo}" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="18" />
+                              
+                                    <Button Visibility="Hidden" x:Name="editbtn" HorizontalAlignment="Left" Command="{Binding EditCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
+
+                                        <StackPanel Orientation="Horizontal">
+
+                                            <TextBlock Text="تعديل"  VerticalAlignment="Center"/>
+                                            <Icon:PackIconMaterial Kind="Pen"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 0"
+                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                    </Button>
+
+                                    <TextBlock Text="{Binding RoutineNo}" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="18" />
+
 
                                 <TextBlock Text="{Binding routineDate}" Foreground="#999" HorizontalAlignment="Left" FontSize="16" />
                             </StackPanel>
@@ -1828,6 +1860,180 @@
                                     <Condition Property="IsMouseOver" Value="True"/>
                                 </MultiTrigger.Conditions>
                                 <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.MouseOver.Border}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+                              
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Border}"/>
+                                <Setter Property="Visibility" TargetName="editbtn" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="ExercisesListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+
+                        <Border BorderThickness="1" x:Name="Bd" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
+                                <DockPanel >
+                                    <Image Width="200"
+                   Source="{Binding ExerciseImage}"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+       RenderOptions.EdgeMode="Aliased"
+                   Height="112" DockPanel.Dock="Top"/>
+                                    <StackPanel Orientation="Vertical" Margin="5" DockPanel.Dock="Top" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding ExerciseName}" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="14" />
+
+                                    </StackPanel>
+                                <Button VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0" DockPanel.Dock="Bottom"  Command="{Binding AddToRoutineCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <TextBlock Text="أضافة" />
+                                        <Icon:PackIconMaterial Kind="Plus"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                </Button>
+
+                            </DockPanel>
+                        </Border>
+                        <!--<ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                --><!--<Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>--><!--
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.MouseOver.Border}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Border}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>-->
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="AddRoutineItemsListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+
+
+                        <Border BorderThickness="1" x:Name="Bd" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
+                            <DockPanel >
+                                <Button Style="{StaticResource IconBtn}" Command="{Binding RemoveItemCommand}">
+                                    <Icon:PackIconMaterial Kind="Close" Panel.ZIndex="2" Width="15" Margin="5" Height="15" Foreground="#787878"/>
+                                </Button>
+
+                                <Image Width="150"
+                   Source="{Binding imageId}"
+                                           DockPanel.Dock="Left"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+       RenderOptions.EdgeMode="Aliased"
+                   Height="100"/>
+                                    <Grid  Margin="5" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                                            <TextBox Width="40"
+                                    Text="{Binding ItemOrder, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                        </StackPanel>
+                                        
+                                        <TextBlock Text="{Binding ExerciseName}" VerticalAlignment="Center" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="18" />
+
+                                    </StackPanel>
+                                        
+                                        
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                                        <TextBlock Text="العد والجولات" 
+                                       Foreground="#993300"
+                                       Margin="0 0 0 5"
+                                       FontSize="13"/>
+                                        <TextBox 
+                                    Text="{Binding Orders, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                                        <TextBlock Text="ملاحظات" 
+                                       Foreground="#993300"
+                                       Margin="0 0 0 5"
+                                       FontSize="13"/>
+                                        <TextBox 
+                                    Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
                                 <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.MouseOver.Border}"/>
                             </MultiTrigger>
                             <MultiTrigger>

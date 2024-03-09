@@ -69,6 +69,13 @@
         <DataTemplate DataType="{x:Type routinevms:RoutinePlayerViewModels}">
             <routineview:RoutineView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type routinevms:AddRoutineViewModel}">
+            <routineview:AddRoutineView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type routinevms:EditRoutineViewModel}">
+            <routineview:EditRoutineView />
+        </DataTemplate>
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>

@@ -22,6 +22,9 @@
     <Compile Update="utlis\Components\ExerciseCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\ExercisesItemsCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\MetricCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -38,6 +41,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Components\PlayerMetricCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\RoutineItemFillCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Components\SportCard.xaml.cs">
@@ -91,6 +97,12 @@
     <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\RoutineViews\AddRoutineView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineViews\EditRoutineView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\RoutineViews\RoutineView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -126,6 +138,9 @@
     <Page Update="utlis\Components\ExerciseCard.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="utlis\Components\ExercisesItemsCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="utlis\Components\MetricCard.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -142,6 +157,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\PlayerMetricCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\RoutineItemFillCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\SportCard.xaml">
@@ -199,6 +217,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayerViews\PlayerMainPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineViews\AddRoutineView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineViews\EditRoutineView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineViews\RoutineView.xaml">

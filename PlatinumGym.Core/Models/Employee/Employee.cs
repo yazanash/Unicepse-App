@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PlatinumGym.Core.Models.Sport;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlatinumGym.Core.Models.Employee
 {

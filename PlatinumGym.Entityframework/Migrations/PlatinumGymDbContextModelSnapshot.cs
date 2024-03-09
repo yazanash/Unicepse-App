@@ -55,10 +55,10 @@ namespace PlatinumGymPro.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.HasKey("Id");
 
@@ -136,7 +136,7 @@ namespace PlatinumGymPro.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<bool>("GenderMale")
                         .HasColumnType("bit");
@@ -157,10 +157,10 @@ namespace PlatinumGymPro.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("Position")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<bool>("Salary")
                         .HasColumnType("bit");
@@ -228,7 +228,7 @@ namespace PlatinumGymPro.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<int?>("RecipientId")
                         .HasColumnType("int");
@@ -260,52 +260,52 @@ namespace PlatinumGymPro.Migrations
                     b.Property<DateTime>("CheckDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("Chest")
+                    b.Property<double>("Chest")
                         .HasColumnType("float");
 
-                    b.Property<double?>("Hieght")
+                    b.Property<double>("Hieght")
                         .HasColumnType("float");
 
-                    b.Property<double?>("Hips")
+                    b.Property<double>("Hips")
                         .HasColumnType("float");
 
-                    b.Property<double?>("L_Arm")
+                    b.Property<double>("L_Arm")
                         .HasColumnType("float");
 
-                    b.Property<double?>("L_Humerus")
+                    b.Property<double>("L_Humerus")
                         .HasColumnType("float");
 
-                    b.Property<double?>("L_Leg")
+                    b.Property<double>("L_Leg")
                         .HasColumnType("float");
 
-                    b.Property<double?>("L_Thigh")
+                    b.Property<double>("L_Thigh")
                         .HasColumnType("float");
 
-                    b.Property<double?>("Nick")
+                    b.Property<double>("Nick")
                         .HasColumnType("float");
 
                     b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<double?>("R_Arm")
+                    b.Property<double>("R_Arm")
                         .HasColumnType("float");
 
-                    b.Property<double?>("R_Humerus")
+                    b.Property<double>("R_Humerus")
                         .HasColumnType("float");
 
-                    b.Property<double?>("R_Leg")
+                    b.Property<double>("R_Leg")
                         .HasColumnType("float");
 
-                    b.Property<double?>("R_Thigh")
+                    b.Property<double>("R_Thigh")
                         .HasColumnType("float");
 
-                    b.Property<double?>("Shoulders")
+                    b.Property<double>("Shoulders")
                         .HasColumnType("float");
 
-                    b.Property<double?>("Waist")
+                    b.Property<double>("Waist")
                         .HasColumnType("float");
 
-                    b.Property<double?>("Wieght")
+                    b.Property<double>("Wieght")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
@@ -353,7 +353,7 @@ namespace PlatinumGymPro.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Des")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<DateTime>("PayDate")
                         .HasColumnType("datetime2");
@@ -396,7 +396,7 @@ namespace PlatinumGymPro.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<bool>("GenderMale")
                         .HasColumnType("bit");
@@ -411,7 +411,7 @@ namespace PlatinumGymPro.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<DateTime>("SubscribeDate")
                         .HasColumnType("datetime2");
@@ -448,7 +448,7 @@ namespace PlatinumGymPro.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -497,7 +497,7 @@ namespace PlatinumGymPro.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("OfferDes")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<double>("OfferValue")
                         .HasColumnType("float");
@@ -551,21 +551,677 @@ namespace PlatinumGymPro.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Group")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ImageId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("Muscel")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<int>("Tid")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Exercises");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GroupId = 1,
+                            ImageId = "6",
+                            Muscel = "صدر",
+                            Name = "ضغط مستوي بالبار",
+                            Tid = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            GroupId = 1,
+                            ImageId = "8",
+                            Muscel = "صدر",
+                            Name = "ضغط عالي بالبار",
+                            Tid = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            GroupId = 1,
+                            ImageId = "2",
+                            Muscel = "صدر",
+                            Name = "ضغط اسفل بالبار",
+                            Tid = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            GroupId = 1,
+                            Muscel = "صدر",
+                            Name = "ضغط جالسا على الالة ",
+                            Tid = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            GroupId = 1,
+                            ImageId = "1",
+                            Muscel = "صدر",
+                            Name = "ضغط عالي على الألة",
+                            Tid = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            GroupId = 1,
+                            ImageId = "9",
+                            Muscel = "صدر",
+                            Name = "متوازي",
+                            Tid = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            GroupId = 1,
+                            ImageId = "3",
+                            Muscel = "صدر",
+                            Name = "ضغط دامبلز",
+                            Tid = 7
+                        },
+                        new
+                        {
+                            Id = 8,
+                            GroupId = 1,
+                            Muscel = "صدر",
+                            Name = "فتح دامبلز",
+                            Tid = 8
+                        },
+                        new
+                        {
+                            Id = 9,
+                            GroupId = 1,
+                            ImageId = "5",
+                            Muscel = "صدر",
+                            Name = "تجميع بالالة",
+                            Tid = 9
+                        },
+                        new
+                        {
+                            Id = 10,
+                            GroupId = 1,
+                            ImageId = "7",
+                            Muscel = "صدر",
+                            Name = "تجميع بالكابل ",
+                            Tid = 10
+                        },
+                        new
+                        {
+                            Id = 11,
+                            GroupId = 1,
+                            ImageId = "4",
+                            Muscel = "صدر",
+                            Name = "بلوفر",
+                            Tid = 11
+                        },
+                        new
+                        {
+                            Id = 12,
+                            GroupId = 2,
+                            ImageId = "2",
+                            Muscel = "اكتاف",
+                            Name = "ضغط بار خلف الراس جالسا",
+                            Tid = 1
+                        },
+                        new
+                        {
+                            Id = 13,
+                            GroupId = 2,
+                            ImageId = "8",
+                            Muscel = "اكتاف",
+                            Name = "ضغط بار امام الراس جالسا",
+                            Tid = 2
+                        },
+                        new
+                        {
+                            Id = 14,
+                            GroupId = 2,
+                            ImageId = "1",
+                            Muscel = "اكتاف",
+                            Name = "ضغط دامبلز جالسا",
+                            Tid = 3
+                        },
+                        new
+                        {
+                            Id = 15,
+                            GroupId = 2,
+                            ImageId = "10",
+                            Muscel = "اكتاف",
+                            Name = "تبادل امامي دامبلز",
+                            Tid = 4
+                        },
+                        new
+                        {
+                            Id = 16,
+                            GroupId = 2,
+                            ImageId = "6",
+                            Muscel = "اكتاف",
+                            Name = "رفع امامي يالبار مستلقيا على الكرسي المائل",
+                            Tid = 5
+                        },
+                        new
+                        {
+                            Id = 17,
+                            GroupId = 2,
+                            ImageId = "3",
+                            Muscel = "اكتاف",
+                            Name = "رفرفه جانبية بالدامبلز واقفا ",
+                            Tid = 6
+                        },
+                        new
+                        {
+                            Id = 18,
+                            GroupId = 2,
+                            ImageId = "11",
+                            Muscel = "اكتاف",
+                            Name = "رفع جانبي بالدامبلز مستلقيا",
+                            Tid = 7
+                        },
+                        new
+                        {
+                            Id = 19,
+                            GroupId = 2,
+                            ImageId = "4",
+                            Muscel = "اكتاف",
+                            Name = "رفع جانبي بالكابل ",
+                            Tid = 8
+                        },
+                        new
+                        {
+                            Id = 20,
+                            GroupId = 2,
+                            ImageId = "5",
+                            Muscel = "اكتاف",
+                            Name = "رفع جانبي منحني 90",
+                            Tid = 9
+                        },
+                        new
+                        {
+                            Id = 21,
+                            GroupId = 2,
+                            ImageId = "9",
+                            Muscel = "اكتاف",
+                            Name = "نشل بالبار تحت الذقن ",
+                            Tid = 10
+                        },
+                        new
+                        {
+                            Id = 22,
+                            GroupId = 2,
+                            ImageId = "7",
+                            Muscel = "اكتاف",
+                            Name = "هز الاكتاف ",
+                            Tid = 11
+                        },
+                        new
+                        {
+                            Id = 23,
+                            GroupId = 3,
+                            ImageId = "3",
+                            Muscel = "ظهر",
+                            Name = "السحب بالبكرة ",
+                            Tid = 1
+                        },
+                        new
+                        {
+                            Id = 24,
+                            GroupId = 3,
+                            ImageId = "2",
+                            Muscel = "ظهر",
+                            Name = "السحب على الالة للاسفل",
+                            Tid = 2
+                        },
+                        new
+                        {
+                            Id = 25,
+                            GroupId = 3,
+                            ImageId = "9",
+                            Muscel = "ظهر",
+                            Name = "رفع الجذع على الكرسي الروماني",
+                            Tid = 3
+                        },
+                        new
+                        {
+                            Id = 26,
+                            GroupId = 3,
+                            ImageId = "7",
+                            Muscel = "ظهر",
+                            Name = "الرفعة الميتة",
+                            Tid = 4
+                        },
+                        new
+                        {
+                            Id = 27,
+                            GroupId = 3,
+                            ImageId = "4",
+                            Muscel = "ظهر",
+                            Name = "السحب على الثابت",
+                            Tid = 5
+                        },
+                        new
+                        {
+                            Id = 28,
+                            GroupId = 3,
+                            Muscel = "ظهر",
+                            Name = "السحب العلوي بالقبضات المتقابلة",
+                            Tid = 6
+                        },
+                        new
+                        {
+                            Id = 29,
+                            GroupId = 3,
+                            ImageId = "8",
+                            Muscel = "ظهر",
+                            Name = "التجديف جالسا بالقبضات المتقابلة",
+                            Tid = 7
+                        },
+                        new
+                        {
+                            Id = 30,
+                            GroupId = 3,
+                            ImageId = "6",
+                            Muscel = "ظهر",
+                            Name = "التجديف بالدامبلز",
+                            Tid = 8
+                        },
+                        new
+                        {
+                            Id = 31,
+                            GroupId = 3,
+                            ImageId = "1",
+                            Muscel = "ظهر",
+                            Name = "T - BAR",
+                            Tid = 9
+                        },
+                        new
+                        {
+                            Id = 32,
+                            GroupId = 3,
+                            ImageId = "10",
+                            Muscel = "ظهر",
+                            Name = "تجديف منحني بالبار ",
+                            Tid = 10
+                        },
+                        new
+                        {
+                            Id = 33,
+                            GroupId = 3,
+                            Muscel = "ظهر",
+                            Name = "تجديف جالسا",
+                            Tid = 11
+                        },
+                        new
+                        {
+                            Id = 34,
+                            GroupId = 4,
+                            ImageId = "5",
+                            Muscel = "ارجل",
+                            Name = "سكوات",
+                            Tid = 1
+                        },
+                        new
+                        {
+                            Id = 35,
+                            GroupId = 4,
+                            ImageId = "3",
+                            Muscel = "ارجل",
+                            Name = "مكبس",
+                            Tid = 2
+                        },
+                        new
+                        {
+                            Id = 36,
+                            GroupId = 4,
+                            ImageId = "10",
+                            Muscel = "ارجل",
+                            Name = "هاك سكوات",
+                            Tid = 3
+                        },
+                        new
+                        {
+                            Id = 37,
+                            GroupId = 4,
+                            ImageId = "4",
+                            Muscel = "ارجل",
+                            Name = "طاولة امامي",
+                            Tid = 4
+                        },
+                        new
+                        {
+                            Id = 38,
+                            GroupId = 4,
+                            ImageId = "9",
+                            Muscel = "ارجل",
+                            Name = "سيسي سكوات",
+                            Tid = 5
+                        },
+                        new
+                        {
+                            Id = 39,
+                            GroupId = 4,
+                            ImageId = "7",
+                            Muscel = "ارجل",
+                            Name = "الاندفاع للامام",
+                            Tid = 6
+                        },
+                        new
+                        {
+                            Id = 40,
+                            GroupId = 4,
+                            ImageId = "8",
+                            Muscel = "ارجل",
+                            Name = "رفع الارجل شبه مشدودة للاعلى",
+                            Tid = 7
+                        },
+                        new
+                        {
+                            Id = 41,
+                            GroupId = 4,
+                            ImageId = "1",
+                            Muscel = "ارجل",
+                            Name = "ثني الارجل مستلقيا",
+                            Tid = 8
+                        },
+                        new
+                        {
+                            Id = 42,
+                            GroupId = 4,
+                            ImageId = "2",
+                            Muscel = "ارجل",
+                            Name = "الثني برجل واحدة ",
+                            Tid = 9
+                        },
+                        new
+                        {
+                            Id = 43,
+                            GroupId = 4,
+                            ImageId = "6",
+                            Muscel = "ارجل",
+                            Name = "الرفعة الميتة",
+                            Tid = 10
+                        },
+                        new
+                        {
+                            Id = 44,
+                            GroupId = 5,
+                            ImageId = "1",
+                            Muscel = "بايسيبس",
+                            Name = "واقفا بالبار",
+                            Tid = 1
+                        },
+                        new
+                        {
+                            Id = 45,
+                            GroupId = 5,
+                            ImageId = "6",
+                            Muscel = "بايسيبس",
+                            Name = "مقعد سكوات",
+                            Tid = 2
+                        },
+                        new
+                        {
+                            Id = 46,
+                            GroupId = 5,
+                            ImageId = "4",
+                            Muscel = "بايسيبس",
+                            Name = "ثني اليدين بالبكرة",
+                            Tid = 3
+                        },
+                        new
+                        {
+                            Id = 47,
+                            GroupId = 5,
+                            ImageId = "8",
+                            Muscel = "بايسيبس",
+                            Name = "تبادل بالدامبلز",
+                            Tid = 4
+                        },
+                        new
+                        {
+                            Id = 48,
+                            GroupId = 5,
+                            ImageId = "5",
+                            Muscel = "بايسيبس",
+                            Name = "تركيز بالدامبلز",
+                            Tid = 5
+                        },
+                        new
+                        {
+                            Id = 49,
+                            GroupId = 5,
+                            ImageId = "3",
+                            Muscel = "بايسيبس",
+                            Name = "تركيز بالكابل",
+                            Tid = 6
+                        },
+                        new
+                        {
+                            Id = 50,
+                            GroupId = 5,
+                            ImageId = "7",
+                            Muscel = "بايسيبس",
+                            Name = "مقعد سكوت بالدامبلز",
+                            Tid = 7
+                        },
+                        new
+                        {
+                            Id = 51,
+                            GroupId = 5,
+                            ImageId = "2",
+                            Muscel = "بايسيبس",
+                            Name = "هز سواعد بالبار ",
+                            Tid = 8
+                        },
+                        new
+                        {
+                            Id = 52,
+                            GroupId = 6,
+                            ImageId = "1",
+                            Muscel = "تراي سيبس",
+                            Name = "ثني اليدين بالبار مستلقيا ",
+                            Tid = 1
+                        },
+                        new
+                        {
+                            Id = 53,
+                            GroupId = 6,
+                            ImageId = "8",
+                            Muscel = "تراي سيبس",
+                            Name = "ثني اليدين جالسا بالبار",
+                            Tid = 2
+                        },
+                        new
+                        {
+                            Id = 54,
+                            GroupId = 6,
+                            ImageId = "3",
+                            Muscel = "تراي سيبس",
+                            Name = "ضغط مستوي قبضة ضيقة ",
+                            Tid = 3
+                        },
+                        new
+                        {
+                            Id = 55,
+                            GroupId = 6,
+                            Muscel = "تراي سيبس",
+                            Name = "الغطس بين مقعدين",
+                            Tid = 4
+                        },
+                        new
+                        {
+                            Id = 56,
+                            GroupId = 6,
+                            ImageId = "7",
+                            Muscel = "تراي سيبس",
+                            Name = "الدفع للاسفل بالبكرة ",
+                            Tid = 5
+                        },
+                        new
+                        {
+                            Id = 57,
+                            GroupId = 6,
+                            ImageId = "4",
+                            Muscel = "تراي سيبس",
+                            Name = "سحب خلف الراس بالكابل",
+                            Tid = 6
+                        },
+                        new
+                        {
+                            Id = 58,
+                            GroupId = 6,
+                            ImageId = "6",
+                            Muscel = "تراي سيبس",
+                            Name = "تركيز دامبل خلف الراس",
+                            Tid = 7
+                        },
+                        new
+                        {
+                            Id = 59,
+                            GroupId = 6,
+                            ImageId = "5",
+                            Muscel = "تراي سيبس",
+                            Name = "تركيز بالدامبل مستلقيا",
+                            Tid = 8
+                        },
+                        new
+                        {
+                            Id = 60,
+                            GroupId = 6,
+                            ImageId = "9",
+                            Muscel = "تراي سيبس",
+                            Name = "متوازي",
+                            Tid = 9
+                        },
+                        new
+                        {
+                            Id = 61,
+                            GroupId = 7,
+                            ImageId = "5",
+                            Muscel = "بطات الارجل",
+                            Name = "واقفا ",
+                            Tid = 1
+                        },
+                        new
+                        {
+                            Id = 62,
+                            GroupId = 7,
+                            ImageId = "1",
+                            Muscel = "بطات الارجل",
+                            Name = "مكبس",
+                            Tid = 2
+                        },
+                        new
+                        {
+                            Id = 63,
+                            GroupId = 7,
+                            ImageId = "2",
+                            Muscel = "بطات الارجل",
+                            Name = "هاك سكواد",
+                            Tid = 3
+                        },
+                        new
+                        {
+                            Id = 64,
+                            GroupId = 7,
+                            ImageId = "4",
+                            Muscel = "بطات الارجل",
+                            Name = "واقفا برجل واحدة",
+                            Tid = 4
+                        },
+                        new
+                        {
+                            Id = 65,
+                            GroupId = 7,
+                            ImageId = "3",
+                            Muscel = "بطات الارجل",
+                            Name = "جالسا",
+                            Tid = 5
+                        },
+                        new
+                        {
+                            Id = 66,
+                            GroupId = 8,
+                            Muscel = "البطن",
+                            Name = "رفع الجذع مستلقيا",
+                            Tid = 1
+                        },
+                        new
+                        {
+                            Id = 67,
+                            GroupId = 8,
+                            ImageId = "6",
+                            Muscel = "البطن",
+                            Name = "مد و جزر",
+                            Tid = 2
+                        },
+                        new
+                        {
+                            Id = 68,
+                            GroupId = 8,
+                            ImageId = "1",
+                            Muscel = "البطن",
+                            Name = "طحن",
+                            Tid = 3
+                        },
+                        new
+                        {
+                            Id = 69,
+                            GroupId = 8,
+                            ImageId = "8",
+                            Muscel = "البطن",
+                            Name = "طحن بالكابل",
+                            Tid = 4
+                        },
+                        new
+                        {
+                            Id = 70,
+                            GroupId = 8,
+                            ImageId = "7",
+                            Muscel = "البطن",
+                            Name = "رفع الارجل مستلقيا",
+                            Tid = 5
+                        },
+                        new
+                        {
+                            Id = 71,
+                            GroupId = 8,
+                            ImageId = "3",
+                            Muscel = "البطن",
+                            Name = "رفع الارجل على المتوازي",
+                            Tid = 6
+                        },
+                        new
+                        {
+                            Id = 72,
+                            GroupId = 8,
+                            ImageId = "5",
+                            Muscel = "البطن",
+                            Name = "رفع الارجل على الثابت",
+                            Tid = 7
+                        },
+                        new
+                        {
+                            Id = 73,
+                            GroupId = 8,
+                            ImageId = "4",
+                            Muscel = "البطن",
+                            Name = "دوران الجذع جالسا ",
+                            Tid = 8
+                        });
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", b =>
@@ -600,21 +1256,24 @@ namespace PlatinumGymPro.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ExerciseId")
+                    b.Property<int?>("ExercisesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemOrder")
                         .HasColumnType("int");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("Orders")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<int?>("PlayerRoutineId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExerciseId");
+                    b.HasIndex("ExercisesId");
 
                     b.HasIndex("PlayerRoutineId");
 
@@ -770,15 +1429,15 @@ namespace PlatinumGymPro.Migrations
 
             modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.RoutineItems", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.Exercises", "Exercise")
+                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.Exercises", "Exercises")
                         .WithMany()
-                        .HasForeignKey("ExerciseId");
+                        .HasForeignKey("ExercisesId");
 
                     b.HasOne("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", null)
                         .WithMany("RoutineSchedule")
                         .HasForeignKey("PlayerRoutineId");
 
-                    b.Navigation("Exercise");
+                    b.Navigation("Exercises");
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Employee.Employee", b =>
