@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <None Remove="Resources\Assets\backimage.png" />
-    <None Remove="Resources\Assets\Exercises\9.png" />
     <None Remove="Resources\Assets\gym_backgroud.jpg" />
     <None Remove="Resources\Assets\Metric\Chest.png" />
     <None Remove="Resources\Assets\Metric\ForeArm.png" />
@@ -40,6 +39,8 @@
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -48,7 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Assets\Exercises\9.png" />
     <Resource Include="Resources\Assets\gym_backgroud.jpg" />
     <Resource Include="Resources\Assets\Metric\Chest.png" />
     <Resource Include="Resources\Assets\Metric\ForeArm.png" />

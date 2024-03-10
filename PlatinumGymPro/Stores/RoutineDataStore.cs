@@ -13,17 +13,43 @@ namespace PlatinumGymPro.Stores
     {
         public event Action<PlayerRoutine>? Created;
         public event Action? Loaded;
+        public event Action? ExercisesLoaded;
         public event Action<PlayerRoutine>? Updated;
         public event Action<int>? Deleted;
         private readonly PlayerRoutineDataService _playerRoutineDataService;
         private readonly List<PlayerRoutine> _playerRoutines;
+        private readonly List<Exercises> _exercises;
+
+        private readonly List<RoutineItems> _routineItems;
+        public event Action<RoutineItems>? RoutineItemCreated;
+        public event Action<RoutineItems>? RoutineItemDeleted;
 
         public IEnumerable<PlayerRoutine> Routines => _playerRoutines;
+        public IEnumerable<Exercises> Exercises => _exercises;
+
+        public IEnumerable<RoutineItems> RoutineItems => _routineItems;
         public RoutineDataStore(PlayerRoutineDataService playerRoutineDataService)
         {
             _playerRoutineDataService = playerRoutineDataService;
             _playerRoutines = new List<PlayerRoutine>();
+            _exercises = new List<Exercises>();
+            _routineItems = new List<RoutineItems>();
         }
+        private MuscleGroup? _selectedMuscleGroup;
+        public MuscleGroup? SelectedMuscle
+        {
+            get
+            {
+                return _selectedMuscleGroup;
+            }
+            set
+            {
+                _selectedMuscleGroup = value;
+                MuscleChanged?.Invoke(SelectedMuscle);
+
+            }
+        }
+        public event Action<MuscleGroup?>? MuscleChanged;
         private PlayerRoutine? _selectedRoutine;
         public PlayerRoutine? SelectedRoutine
         {
@@ -44,8 +70,20 @@ namespace PlatinumGymPro.Stores
             await _playerRoutineDataService.Create(entity);
             _playerRoutines.Add(entity);
             Created?.Invoke(entity);
+            _routineItems.Clear();
         }
-
+        public void AddRoutineItem(RoutineItems entity)
+        {
+            //await _playerRoutineDataService.Create(entity);
+            _routineItems.Add(entity);
+            RoutineItemCreated?.Invoke(entity);
+        }
+        public void DeleteRoutineItem(RoutineItems entity)
+        {
+            //await _playerRoutineDataService.Create(entity);
+            _routineItems.Remove(entity);
+            RoutineItemDeleted?.Invoke(entity);
+        }
         public async Task Delete(int entity_id)
         {
             bool deleted = await _playerRoutineDataService.Delete(entity_id);
@@ -62,6 +100,16 @@ namespace PlatinumGymPro.Stores
             _playerRoutines.AddRange(routines);
             Loaded?.Invoke();
         }
+
+        public async Task GetAllExercises()
+        {
+
+            IEnumerable<Exercises> routines = await _playerRoutineDataService.GetAllExercises();
+            _exercises.Clear();
+            _exercises.AddRange(routines);
+            ExercisesLoaded?.Invoke();
+        }
+
         public async Task GetAll(Player player)
         {
 
@@ -78,6 +126,7 @@ namespace PlatinumGymPro.Stores
 
         public async Task Update(PlayerRoutine entity)
         {
+            await _playerRoutineDataService.DeleteRoutineItems(entity.Id);
             await _playerRoutineDataService.Update(entity);
             int currentIndex = _playerRoutines.FindIndex(y => y.Id == entity.Id);
 

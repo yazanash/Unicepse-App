@@ -20,10 +20,24 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly SubscriptionDataStore _subscriptionStore;
         private readonly PaymentDataStore _paymentStore;
         private readonly PlayersDataStore _playersDataStore;
+        private readonly SportDataStore _sportDataStore;
         public PlayerListItemViewModel? Player => _playersDataStore.SelectedPlayer;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => subscriptionListItemViewModels;
+        public SubscriptionListItemViewModel? SelectedSubscription
+        {
+            get
+            {
+                return SubscriptionList
+                    .FirstOrDefault(y => y?.Subscription == _subscriptionStore.SelectedSubscription);
+            }
+            set
+            {
+                _subscriptionStore.SelectedSubscription = value?.Subscription;
 
+            }
+        }
+        
         private PlayerStatesViewModel? _playerSubscription;
         public PlayerStatesViewModel? PlayerSubscription
         {
@@ -63,24 +77,24 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
                 OnPropertyChanged(nameof(PlayerSubscriptionCount));
             }
         }
-        public PlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore, PaymentDataStore paymentStore)
+        public PlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore, PaymentDataStore paymentStore, SportDataStore sportDataStore)
         {
             _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
             _playersDataStore = playersDataStore;
             _paymentStore = paymentStore;
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _playersDataStore.SelectedPlayer!);
+            LoadPaymentCommand= new LoadPaymentsCommand(_playersDataStore,_paymentStore);
             subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             _subscriptionStore.Loaded += _subscriptionStore_Loaded;
             _subscriptionStore.Created += _subscriptionStore_Created;
             _subscriptionStore.Updated += _subscriptionStore_Updated;
             _subscriptionStore.Deleted += _subscriptionStore_Deleted;
             _paymentStore.SumUpdated += _paymentStore_SumUpdated;
-            LoadPaymentsCommand = new LoadPaymentsCommand(_playersDataStore.SelectedPlayer!,_paymentStore);
             PlayerSubscription = new() { PlayerState = "قيمة الاشتراكات", StateValue = 0, IconPacks = MahApps.Metro.IconPacks.PackIconMaterialKind.Account };
             PlayerPayments = new() { PlayerState = "المدفوعات", StateValue = 0, IconPacks = MahApps.Metro.IconPacks.PackIconMaterialKind.ChartBar };
             PlayerSubscriptionCount = new() { PlayerState = "الاشتراكات", StateValue = 0, IconPacks = MahApps.Metro.IconPacks.PackIconMaterialKind.AccountCashOutline };
-          
+            _sportDataStore = sportDataStore;
         }
 
         private void _paymentStore_SumUpdated()
@@ -90,9 +104,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
       
         public ICommand LoadSubscriptionCommand { get; }
-
-        public ICommand LoadPaymentsCommand { get; }
-
+        public ICommand LoadPaymentCommand { get; }
 
 
         private void _subscriptionStore_Deleted(int id)
@@ -139,7 +151,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             PlayerSubscriptionCount!.StateValue = subscriptionListItemViewModels.Count();
             PlayerSubscription!.StateValue = subscriptionListItemViewModels.Sum(x=>x.PriceAfterOffer);
         }
-        protected override void Dispose()
+        public override void Dispose()
         {
             _subscriptionStore.Loaded -= _subscriptionStore_Loaded;
             _subscriptionStore.Created -= _subscriptionStore_Created;
@@ -150,15 +162,15 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private void AddSubscription(Subscription subscription)
         {
             SubscriptionListItemViewModel itemViewModel =
-                new SubscriptionListItemViewModel(subscription, _navigatorStore, _subscriptionStore);
+                new SubscriptionListItemViewModel(subscription, _navigatorStore, _subscriptionStore,_sportDataStore,_playersDataStore,this,_paymentStore);
             subscriptionListItemViewModels.Add(itemViewModel);
         }
 
-        public static PlayerMainPageViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore)
+        public static PlayerMainPageViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore,SportDataStore sportDataStore)
         {
-            PlayerMainPageViewModel viewModel = new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore);
+            PlayerMainPageViewModel viewModel = new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore);
             viewModel.LoadSubscriptionCommand.Execute(null);
-            viewModel.LoadPaymentsCommand.Execute(null);
+            viewModel.LoadPaymentCommand.Execute(null);
             return viewModel;
         }
     }

@@ -32,11 +32,13 @@ namespace PlatinumGym.Entityframework.Services
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 EntityEntry<PlayerRoutine> CreatedResult = await context.Set<PlayerRoutine>().AddAsync(entity);
-                PlayerRoutine existed_routine = await CheckIfRoutineExist(entity);
-                if (existed_routine != null)
-                    throw new ConflictException();
+                //PlayerRoutine existed_routine = await CheckIfRoutineExist(entity);
+                //if (existed_routine != null)
+                //    throw new ConflictException();
                 if(entity.Player!=null)
                 context.Attach(entity.Player!);
+                foreach (var ex in entity.RoutineSchedule)
+                    context.Attach(ex.Exercises!);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
             }
@@ -45,7 +47,7 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<bool> Delete(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            PlayerRoutine? entity = await context.Set<PlayerRoutine>().Include(x=>x.RoutineSchedule).FirstOrDefaultAsync((e) => e.Id == id);
+            PlayerRoutine? entity = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x=>x.Exercises).FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
 
@@ -54,11 +56,19 @@ namespace PlatinumGym.Entityframework.Services
             await context.SaveChangesAsync();
             return true;
         }
-
+        public async Task<bool> DeleteRoutineItems(int id)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            IEnumerable<RoutineItems>? entity = await context.Set<RoutineItems>().Where(x => x.PlayerRoutine!.Id == id).ToListAsync() ;
+            
+            context.Set<RoutineItems>().RemoveRange(entity);
+            await context.SaveChangesAsync();
+            return true;
+        }
         public async Task<PlayerRoutine> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            PlayerRoutine? entity = await context.Set<PlayerRoutine>().Include(x=>x.RoutineSchedule).ThenInclude(x=>x.Exercise).FirstOrDefaultAsync((e) => e.Id == id);
+            PlayerRoutine? entity = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             return entity!;
@@ -68,7 +78,16 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercise).ToListAsync();
+                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).ToListAsync();
+                return entities;
+            }
+        }
+
+        public async Task<IEnumerable<Exercises>> GetAllExercises()
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Exercises>? entities = await context.Set<Exercises>().ToListAsync();
                 return entities;
             }
         }
@@ -76,7 +95,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Where(x=>x.Player!.Id==player.Id).Include(x=>x.RoutineSchedule).ThenInclude(x => x.Exercise).ToListAsync();
+                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).Where(x=>x.Player!.Id==player.Id).ToListAsync();
                 return entities;
             }
         }

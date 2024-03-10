@@ -12,7 +12,7 @@
             <Image Source="{Binding ElementName=metricItem,Path=Icon,UpdateSourceTrigger=PropertyChanged}" 
                  RenderOptions.BitmapScalingMode="HighQuality"
        RenderOptions.EdgeMode="Aliased"
-                   Height="80" Width="80"/>
+                   Height="60" Width="60"/>
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"> 
                 <TextBlock
                     FontSize="16" Foreground="#797979" FontWeight="Bold"

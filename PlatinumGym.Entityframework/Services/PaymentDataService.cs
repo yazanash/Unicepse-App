@@ -69,7 +69,7 @@ namespace PlatinumGym.Entityframework.Services
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player)
-                    .Include(x => x.Subscription).Where(x => x.Player!.Id == player.Id)
+                    .Include(x => x.Subscription).Include(x=>x.Subscription!.Sport).Include(x => x.Subscription!.Trainer).Where(x => x.Player!.Id == player.Id)
                     .ToListAsync();
                 return entities;
             }

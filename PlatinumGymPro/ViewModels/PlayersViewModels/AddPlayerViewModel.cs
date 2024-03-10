@@ -35,7 +35,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _routineDataStore = routineDataStore;
             _metricStore = metricStore;
             CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
-            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(navigationStore, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricStore, _routineDataStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore);
+            NavigationStore PlayerMainPageNavigation = new NavigationStore();
+            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricStore, _routineDataStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore,_metricStore,_routineDataStore,_paymentDataStore);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
         }
 

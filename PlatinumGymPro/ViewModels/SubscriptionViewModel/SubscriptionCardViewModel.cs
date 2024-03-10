@@ -14,8 +14,9 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         //private readonly PlayerListViewModel playerListingViewModel;
         public int Id => Subscription.Id;
         public string? SportName => Subscription.Sport!.Name;
+        public int DaysCount => Subscription.DaysCount;
         public DateTime LastCheck => Subscription.LastCheck;
-        public string? Trainer => Subscription.Trainer!.FullName;
+        public string? Trainer => Subscription.Trainer!=null?  Subscription.Trainer!.FullName : "بدون مدرب";
         public string RollDate => Subscription.RollDate.ToString("ddd,MMM dd,yyy");
         public double Price => Subscription.Price;
         public double OfferValue => Subscription.OfferValue;

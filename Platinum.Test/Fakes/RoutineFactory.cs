@@ -28,7 +28,7 @@ namespace Platinum.Test.Fakes
                   routine.RoutineData = DateTime.Now;
                   for (int i = 0; i < 15; i++)
                   {
-                      routine.RoutineSchedule.Add(_routineItemFactory.FakeRoutineItem());
+                      //routine.RoutineSchedule.Add(_routineItemFactory.FakeRoutineItem());
                   }
               });
             

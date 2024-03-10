@@ -22,6 +22,9 @@
     <Compile Update="utlis\Components\ExerciseCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\ExercisesItemsCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\MetricCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -40,10 +43,16 @@
     <Compile Update="utlis\Components\PlayerMetricCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\RoutineItemFillCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\SportCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Components\SubscriptionCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\SubscriptionDetailsCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Components\TrainerCard.xaml.cs">
@@ -82,13 +91,31 @@
     <Compile Update="Views\Metrics\MetricsCardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PaymentViews\PaymentListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineViews\AddRoutineView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineViews\EditRoutineView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\RoutineViews\RoutineView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SplashScreen.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SubscriptionView\EditSubscriptionDetailsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SubscriptionView\MoveToNewTrainerView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SubscriptionView\StopSubscriptionView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SubscriptionView\SubscriptionDetailView.xaml.cs">
@@ -111,6 +138,9 @@
     <Page Update="utlis\Components\ExerciseCard.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="utlis\Components\ExercisesItemsCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="utlis\Components\MetricCard.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -129,10 +159,16 @@
     <Page Update="utlis\Components\PlayerMetricCard.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="utlis\Components\RoutineItemFillCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="utlis\Components\SportCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\SubscriptionCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\SubscriptionDetailsCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\TrainerCard.xaml">
@@ -177,13 +213,31 @@
     <Page Update="Views\Metrics\MetricsCardView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\PaymentViews\PaymentListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\PlayerViews\PlayerMainPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineViews\AddRoutineView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineViews\EditRoutineView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineViews\RoutineView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SplashScreen.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SubscriptionView\EditSubscriptionDetailsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SubscriptionView\MoveToNewTrainerView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SubscriptionView\StopSubscriptionView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SubscriptionView\SubscriptionDetailView.xaml">

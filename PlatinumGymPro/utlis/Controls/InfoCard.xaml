@@ -60,7 +60,19 @@
                     </StackPanel>
                 </Border>
             </StackPanel>
+            <Button HorizontalAlignment="Center" Command="{Binding DeleteCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
 
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Text="حذف الحساب"  VerticalAlignment="Center"/>
+                    <icon:PackIconMaterial Kind="TrashCan"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 0"
+                                       VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </Button>
         </StackPanel>
     </Border>
 </UserControl>

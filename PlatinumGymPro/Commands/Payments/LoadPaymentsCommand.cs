@@ -10,13 +10,13 @@ namespace PlatinumGymPro.Commands.Payments
 {
     public class LoadPaymentsCommand : AsyncCommandBase
     {
-        private readonly PlayerListItemViewModel _player;
+        private readonly PlayersDataStore _playersDataStore;
         private readonly PaymentDataStore _paymentDataStore;
 
 
-        public LoadPaymentsCommand(PlayerListItemViewModel player, PaymentDataStore paymentDataStore)
+        public LoadPaymentsCommand(PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore)
         {
-            _player = player;
+            _playersDataStore = playersDataStore;
             _paymentDataStore = paymentDataStore;
         }
 
@@ -25,7 +25,7 @@ namespace PlatinumGymPro.Commands.Payments
             //try
             //{
 
-                await _paymentDataStore.GetPlayerPayments(_player.Player);
+                await _paymentDataStore.GetPlayerPayments(_playersDataStore.SelectedPlayer!.Player);
             //}
             //catch (Exception)
             //{
