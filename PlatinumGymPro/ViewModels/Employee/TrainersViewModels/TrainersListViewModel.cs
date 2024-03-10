@@ -109,7 +109,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             }
         }
 
-        protected override void Dispose()
+        public override void Dispose()
         {
 
             _employeeStore.Loaded -= _trainerStore_TrainersLoaded;

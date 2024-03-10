@@ -10,8 +10,10 @@ namespace PlatinumGym.Core.Models.TrainingProgram
     {
 
         public int Id { get; set; }
-        public virtual Exercises? Exercise { get; set; }
+        public virtual Exercises? Exercises { get; set; }
         public string? Notes { get; set; }
-        public string? Orders   { get; set; }   
+        public string? Orders   { get; set; }
+        public int ItemOrder { get; set; }
+        public virtual PlayerRoutine? PlayerRoutine { get; set; }
     }
 }

@@ -68,6 +68,7 @@
                     <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
                                     FlowDirection="RightToLeft" ItemsSource="{Binding SubscriptionList}" 
                                     CanUserReorderColumns="True"
+                                SelectedItem="{Binding SelectedSubscription}"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
@@ -155,8 +156,8 @@
                                             <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
                                                 <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                             </Button>
-                                                <Button Command="{Binding OpenPaymentCommand}" Style="{StaticResource GridEditBtn}">
-                                                    <Icon:PackIconMaterial Kind="Cash" Style="{StaticResource GridBtnIcon}"/>
+                                                <Button Command="{Binding StopSubscriptionCommand}" Style="{StaticResource GridEditBtn}">
+                                                    <Icon:PackIconMaterial Kind="Stop" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                                 <!--<Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>

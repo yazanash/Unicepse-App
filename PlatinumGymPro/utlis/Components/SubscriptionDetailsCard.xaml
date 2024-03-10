@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="PlatinumGymPro.utlis.Components.SubscriptionDetailsCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PlatinumGymPro.utlis.Components"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVis"/>
+    </UserControl.Resources>
+
+    <Border   Background="#fff" CornerRadius="10" Padding="5"  Margin="5">
+        <DockPanel >
+            <TextBlock FontSize="18"  Text="معلومات الاشتراك" Foreground="#C14E00" DockPanel.Dock="Top"/>
+            <Separator DockPanel.Dock="Top" Foreground="#aaa" Margin="10 5"/>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding SportName,UpdateSourceTrigger=PropertyChanged}" Foreground="#993300"  FontSize="18" FontWeight="SemiBold" Margin="5" />
+                <TextBlock Text="{Binding Trainer,UpdateSourceTrigger=PropertyChanged}" Margin="5" FontSize="16"/>
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="{Binding RollDate}" Foreground="#787878" FontSize="14"/>
+                    <Separator Width="10" Margin="10 0" Background="#787878"/>
+                    <TextBlock Text="{Binding EndDate}" Foreground="#787878" FontSize="14"/>
+                </StackPanel>
+                <DockPanel Margin="5">
+                    <TextBlock HorizontalAlignment="Center" Text="{Binding DaysCount,UpdateSourceTrigger=PropertyChanged}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                    <TextBlock Text="عدد ايام الاشتراك" VerticalAlignment="Center"  FontSize="16" DockPanel.Dock="Left"/>
+                </DockPanel>
+
+                <DockPanel Margin="5">
+                    <TextBlock HorizontalAlignment="Center" Text="{Binding PriceAfterOffer,UpdateSourceTrigger=PropertyChanged}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                    <TextBlock Text="الاجمالي" VerticalAlignment="Center"  FontSize="16" DockPanel.Dock="Left"/>
+                </DockPanel>
+                <DockPanel Margin="5">
+                    <TextBlock HorizontalAlignment="Center" Foreground="#993300" Text="{Binding PaidValue,UpdateSourceTrigger=PropertyChanged}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                    <TextBlock Text="المدفوع" Foreground="#993300" VerticalAlignment="Center"  FontSize="16" DockPanel.Dock="Left"/>
+                </DockPanel>
+            </StackPanel>
+
+        </DockPanel>
+
+    </Border>
+</UserControl>

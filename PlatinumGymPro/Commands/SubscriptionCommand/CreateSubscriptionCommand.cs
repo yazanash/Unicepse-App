@@ -31,24 +31,28 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
         {
             Subscription subscription = new()
             {
+                /// subscription info
+                DaysCount = _addSubscriptionViewModel.SubscribeDays,
                 Sport = _subscriptionDataStore.SelectedSport,
                 LastCheck = _addSubscriptionViewModel.SubscribeDate,
                 Trainer = _subscriptionDataStore.SelectedTrainer,
                 Player = _playerDataStore.SelectedPlayer!.Player,
                 RollDate = _addSubscriptionViewModel.SubscribeDate,
                 Price = _subscriptionDataStore.SelectedSport!.Price,
-                
+                /// offer info
                 OfferValue = _addSubscriptionViewModel.OfferValue,
                 OfferDes = _addSubscriptionViewModel.Offer,
                 PriceAfterOffer = _subscriptionDataStore.SelectedSport.Price - _addSubscriptionViewModel.OfferValue,
+                /// private info
                 IsPrivate = _addSubscriptionViewModel.PrivatePrice >0,
+                IsPlayerPay = _addSubscriptionViewModel.PrivateProvider,
                 PrivatePrice = _addSubscriptionViewModel.PrivatePrice,
                 EndDate = _addSubscriptionViewModel.SubscribeDate.AddDays(_addSubscriptionViewModel.SubscribeDays),
             };
             await _subscriptionDataStore.Add(subscription);
             MessageBox.Show(subscription.Sport!.Name+ " registered successfully");
 
-            _navigationService.Navigate();
+            _navigationService.ReNavigate();
         }
     }
 }

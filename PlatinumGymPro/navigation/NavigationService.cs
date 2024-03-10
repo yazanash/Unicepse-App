@@ -25,8 +25,12 @@ namespace PlatinumGymPro.Services
 
         public  void Navigate()
         {
+            _navigator.CurrentViewModel?.Dispose();
             _navigator.CurrentViewModel = _CreateViewModel();
         }
-       
+        public void ReNavigate()
+        {
+            _navigator.CurrentViewModel = _CreateViewModel();
+        }
     }
 }

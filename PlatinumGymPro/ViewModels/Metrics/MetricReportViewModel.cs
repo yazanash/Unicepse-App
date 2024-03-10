@@ -1,5 +1,7 @@
 ﻿using PlatinumGym.Core.Models.Metric;
+using PlatinumGymPro.Commands;
 using PlatinumGymPro.Commands.MetricsCommand;
+using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using System;
 using System.Collections.Generic;
@@ -34,6 +36,7 @@ namespace PlatinumGymPro.ViewModels.Metrics
             }
         }
         public ICommand LoadMetricCommand { get; }
+        public ICommand AddMetricsCommand { get; }
         public MetricReportViewModel(MetricDataStore metricDataStore, PlayersDataStore playerDataStore, NavigationStore navigationStore)
         {
             _metricDataStore = metricDataStore;
@@ -45,7 +48,7 @@ namespace PlatinumGymPro.ViewModels.Metrics
             _metricDataStore.Updated += _metricDataStore_Updated;
             _metricDataStore.Deleted += _metricDataStore_Deleted;
             LoadMetricCommand = new LoadMetricsCommand(this, _metricDataStore, _playerDataStore!.SelectedPlayer!);
-           
+            AddMetricsCommand = new  NavaigateCommand<AddMetricsViewModel>(new NavigationService<AddMetricsViewModel>(_navigationStore, () => new AddMetricsViewModel(_metricDataStore, _navigationStore,this, _playerDataStore)));
         }
 
         private void _metricDataStore_Deleted(int id)
@@ -82,11 +85,12 @@ namespace PlatinumGymPro.ViewModels.Metrics
                 AddMetric(metric);
 
             }
+            SelectedMetric = Metrics.FirstOrDefault();
         }
 
         private void AddMetric(Metric metric)
         {
-            MetricListItemViewModel viewmodel = new (metric);
+            MetricListItemViewModel viewmodel = new (metric,_metricDataStore,_navigationStore,this,_playerDataStore);
             _metricListItemViewModels.Add(viewmodel);
         }
 

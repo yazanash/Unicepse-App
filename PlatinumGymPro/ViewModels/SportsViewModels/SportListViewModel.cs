@@ -110,7 +110,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
             }
         }
 
-        protected override void Dispose()
+        public override void Dispose()
         {
             _sportStore.Loaded -= _sportStore_SportLoaded;
             _sportStore.Created -= _sportStore_SportAdded;

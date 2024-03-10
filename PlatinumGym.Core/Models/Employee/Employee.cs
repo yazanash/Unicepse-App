@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PlatinumGym.Core.Models.Sport;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlatinumGym.Core.Models.Employee
 {
@@ -23,11 +24,12 @@ namespace PlatinumGym.Core.Models.Employee
         public bool IsActive { get; set; }
         public bool IsTrainer { get; set; }
         public ICollection<Sport.Sport>? Sports { get; set; }
-
+        public ICollection<Subscription.Subscription>? PlayerTrainings { get; set; }
 
         public Employee()
         {
             Sports = new HashSet<Sport.Sport>();
+            PlayerTrainings=new HashSet<Subscription.Subscription>();
         }
     }
 }

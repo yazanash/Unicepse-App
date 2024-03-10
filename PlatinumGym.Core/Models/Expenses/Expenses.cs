@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,6 @@ namespace PlatinumGym.Core.Models.Expenses
 {
     public class Expenses : DomainObject
     {
-        
         public string? Description { get; set; }
         public double Value { get; set; }
         public DateTime date { get; set; }

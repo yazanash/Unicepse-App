@@ -37,7 +37,13 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             set
             {
                 _subscriptionStore.SelectedSport = value?.Sport;
-
+               
+                OnPropertyChanged(nameof(SelectedSport));
+                if (DaysCounter)
+                    SubscribeDays = SelectedSport!.DaysCount;
+                else
+                    SubscribeDays = 1;
+                OnPropertyChanged(nameof(Total));
             }
         }
 
@@ -71,14 +77,17 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             _sportDataStore.Loaded += _sportDataStore_Loaded;
             _subscriptionStore.StateChanged += _subscriptionStore_StateChanged;
             LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
-            SubmitCommand = new CreateSubscriptionCommand(_subscriptionStore, this, _playerDataStore, new NavigationService<AddPaymentViewModel>(_navigatorStore, () => CreatePaymentViewModel(_paymentDataStore,_subscriptionStore, _playerDataStore,_navigatorStore)));
+            SubmitCommand = new CreateSubscriptionCommand(_subscriptionStore, this, _playerDataStore, new NavigationService<AddPaymentViewModel>(_navigatorStore, () => CreatePaymentViewModel(_paymentDataStore,_subscriptionStore, _playerDataStore,_navigatorStore,CreatePaymentListViewModel(_paymentDataStore,_playerDataStore,_navigatorStore,_subscriptionStore))));
         }
 
-        private static AddPaymentViewModel CreatePaymentViewModel(PaymentDataStore paymentDataStore,SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,NavigationStore navigationStore)
+        private static AddPaymentViewModel CreatePaymentViewModel(PaymentDataStore paymentDataStore,SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,NavigationStore navigationStore,PaymentListViewModel paymentListViewModel)
         {
-            return new AddPaymentViewModel(paymentDataStore,subscriptionDataStore, playersDataStore, navigationStore);
+            return AddPaymentViewModel.LoadViewModel(paymentDataStore, subscriptionDataStore, playersDataStore, navigationStore, paymentListViewModel);
         }
-
+        private static PaymentListViewModel CreatePaymentListViewModel(PaymentDataStore paymentDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore,SubscriptionDataStore subscriptionDataStore )
+        {
+            return new PaymentListViewModel(paymentDataStore, playersDataStore, navigationStore, subscriptionDataStore);
+        }
         private void _subscriptionStore_StateChanged(Sport? sport)
         {
             foreach(var trainer in sport!.Trainers!)
@@ -87,9 +96,22 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             }
         }
 
+        private void CountTotal()
+        {
+            if (SelectedSport != null)
+            {
+                if (DaysCounter)
+                    SportPrice = SelectedSport!.Price;
+                else
+                    SportPrice = SelectedSport!.DailyPrice * SubscribeDays;
 
+                Total = SportPrice - OfferValue;
+            }
+           
+        }
+       
         #region Properties
-
+        private double SportPrice { get; set; }
         private int _subscribeDays;
         public int SubscribeDays
         {
@@ -98,18 +120,34 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             {
                 _subscribeDays = value;
                 OnPropertyChanged(nameof(SubscribeDays));
-               
-            }
-        }
-        private string? _total;
-        public string? Total
-        {
-            get { return _total; }
-            set
-            {
-                _total = value; 
+                CountTotal();
                 OnPropertyChanged(nameof(Total));
             }
+        }
+     
+          private bool _daysCounter=true;
+        public bool DaysCounter
+        {
+            get { return _daysCounter; }
+            set
+            {
+                _daysCounter = value;
+                CountTotal();
+                if(SelectedSport != null)
+                if (DaysCounter)
+                    SubscribeDays = SelectedSport!.DaysCount;
+                else
+                    SubscribeDays = 1;
+                OnPropertyChanged(nameof(DaysCounter));
+                OnPropertyChanged(nameof(Total));
+
+            }
+        }
+        //private double? _total;
+        public double? Total
+        {
+            get;
+            set;
         }
 
         private string? _offer;
@@ -122,7 +160,12 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         public double OfferValue
         {
             get { return _offerValue; }
-            set { _offerValue = value; OnPropertyChanged(nameof(OfferValue)); }
+            set {
+                _offerValue = value;
+                CountTotal();
+                OnPropertyChanged(nameof(OfferValue));
+                OnPropertyChanged(nameof(Total));
+            }
         }
         private double _privatePrice;
         public double PrivatePrice
@@ -131,6 +174,17 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             set
             {
                 _privatePrice = value; OnPropertyChanged(nameof(PrivatePrice));
+            }
+        }
+        private bool _privateProvider;
+        public bool PrivateProvider
+        {
+            get { return _privateProvider; }
+            set
+            {
+                _privateProvider = value;
+                OnPropertyChanged(nameof(PrivateProvider));
+
             }
         }
         private DateTime _subscribeDate = DateTime.Now.Date;

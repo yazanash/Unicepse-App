@@ -19,7 +19,7 @@ namespace PlatinumGymPro.Commands
         }
         public override void Execute(object? parameter)
         {
-            _navigationService.Navigate();
+            _navigationService.ReNavigate();
         }
     }
 }

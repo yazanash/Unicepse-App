@@ -37,6 +37,7 @@ namespace PlatinumGymPro.Stores
             set
             {
                 _selectedSport = value;
+                
                 StateChanged?.Invoke(SelectedSport);
             }
         }
@@ -132,6 +133,35 @@ namespace PlatinumGymPro.Stores
             }
             Updated?.Invoke(entity);
         }
+        public async Task Stop(Subscription entity,DateTime stopDate)
+        {
+            await _subscriptionDataService.Stop(entity, stopDate);
+            int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
 
+            if (currentIndex != -1)
+            {
+                _subscriptions[currentIndex] = entity;
+            }
+            else
+            {
+                _subscriptions.Add(entity);
+            }
+            Updated?.Invoke(entity);
+        }
+        public async Task MoveToNewTrainer(Subscription entity, Employee trainer, DateTime movedate)
+        {
+            await _subscriptionDataService.MoveToNewTrainer(entity, trainer, movedate);
+            int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
+
+            if (currentIndex != -1)
+            {
+                _subscriptions[currentIndex] = entity;
+            }
+            else
+            {
+                _subscriptions.Add(entity);
+            }
+            Updated?.Invoke(entity);
+        }
     }
 }

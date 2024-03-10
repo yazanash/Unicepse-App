@@ -17,6 +17,6 @@ namespace PlatinumGymPro.ViewModels
         }
 
 
-        protected virtual void Dispose() { }
+        public virtual void Dispose() { }
     }
 }

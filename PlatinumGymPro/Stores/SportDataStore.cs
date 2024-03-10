@@ -54,7 +54,6 @@ namespace PlatinumGymPro.Stores
             IEnumerable<Sport> sports = await _sportDataService.GetAll();
             _sports.Clear();
             _sports.AddRange(sports);
-            Loaded?.Invoke();
         }
 
         public async Task Update(Sport entity)

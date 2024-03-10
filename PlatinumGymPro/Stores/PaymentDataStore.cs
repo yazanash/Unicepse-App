@@ -26,6 +26,25 @@ namespace PlatinumGymPro.Stores
         private readonly List<PlayerPayment> _payments;
         public IEnumerable<PlayerPayment> Payments => _payments;
 
+
+
+
+        private PlayerPayment? _selectedPayment;
+        public PlayerPayment? SelectedPayment
+        {
+            get
+            {
+                return _selectedPayment;
+            }
+            set
+            {
+                _selectedPayment = value;
+            }
+        }
+
+
+
+
         public async Task Add(PlayerPayment entity)
         {
             await _paymentDataService.Create(entity);

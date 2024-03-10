@@ -4,31 +4,58 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PlatinumGymPro.Views.Metrics"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:comp="clr-namespace:PlatinumGymPro.Components"
              mc:Ignorable="d" >
     <Border Background="#eee"  Padding="5">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Border Grid.Row="0" Grid.Column="0" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
-                <DockPanel>
-                    <TextBlock Foreground="#C14E00" Text="سجل القياسات" FontSize="18" Margin="5" DockPanel.Dock="Top"/>
+
+            <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Padding="5">
+
+                <DockPanel DockPanel.Dock="Top" >
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                        <TextBlock Text="سجل القياسات"  HorizontalAlignment="Left" Margin="10" Foreground="#C14E00" FontSize="18" DockPanel.Dock="Left"/>
+
+                    <Button Grid.Column="0" Margin="5 0"  Command="{Binding AddMetricsCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="أضافة قياس" />
+                                <Icon:PackIconMaterial Kind="Plus"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                        </Button>
+                    </StackPanel>
+
                     <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
-                    <!--<ScrollViewer DockPanel.Dock="Top" >-->
-                    <ListView ScrollViewer.CanContentScroll="True"
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Row="0" Grid.Column="0" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
+                        <DockPanel>
+                            <!--<ScrollViewer DockPanel.Dock="Top" >-->
+                            <ListView ScrollViewer.CanContentScroll="True"
                                     SelectedItem="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" 
                               ItemsSource="{Binding Metrics}" ItemContainerStyle="{DynamicResource MetricListBoxItemContainerStyle1}" >
-                    </ListView>
-                    <!--</ScrollViewer>-->
+                            </ListView>
+                            <!--</ScrollViewer>-->
 
-                </DockPanel>
+                        </DockPanel>
+                    </Border>
+
+                    <comp:MetricCard DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"/>
+                </Grid>
+
+            </DockPanel>
             </Border>
-
-            <comp:MetricCard DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"/>
-        </Grid>
-
+           
     </Border>
 </UserControl>

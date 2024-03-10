@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace PlatinumGymPro.ViewModels.RoutineViewModels
 {
-    public class RoutineExcersisesItemsViewModel : ViewModelBase
+    public class RoutineExercisesItemsViewModel : ViewModelBase
     {
         public RoutineItems routineItem;
 
-        public RoutineExcersisesItemsViewModel(RoutineItems routineItem)
+        public RoutineExercisesItemsViewModel(RoutineItems routineItem)
         {
             this.routineItem = routineItem;
         }
-
-        public string? imageId=> routineItem.Exercise!.ImageId;
+        public string? ExerciseName => routineItem.Exercises!.Name;
+        public int ItemOrder => routineItem.ItemOrder;
+        public string? imageId => "pack://application:,,,/Resources/Assets/Exercises/" + routineItem.Exercises!.GroupId + "/" + routineItem.Exercises!.ImageId + ".png";
         public string? Notes =>routineItem.Notes;
         public string? Orders =>routineItem.Orders;
     }
