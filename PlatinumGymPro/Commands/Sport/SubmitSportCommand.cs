@@ -15,13 +15,13 @@ namespace PlatinumGymPro.Commands.SportsCommands
     public class SubmitSportCommand : AsyncCommandBase
     {
         private readonly NavigationService<SportListViewModel> navigationService;
-        //private readonly SportStore _sportStore;
+        private readonly SportDataStore _sportStore;
         private AddSportViewModel _addSportViewModel;
-        public SubmitSportCommand(NavigationService<SportListViewModel> navigationService, AddSportViewModel addSportViewModel)
+        public SubmitSportCommand(NavigationService<SportListViewModel> navigationService, AddSportViewModel addSportViewModel, SportDataStore sportStore)
         {
 
             this.navigationService = navigationService;
-            //_sportStore = sportStore;
+            _sportStore = sportStore;
             _addSportViewModel = addSportViewModel;
         }
         public override bool CanExecute(object? parameter)
@@ -44,17 +44,13 @@ namespace PlatinumGymPro.Commands.SportsCommands
                 IsActive = true
 
             };
-            List<Employee> trainers = new();
             foreach(var TrainerListItem in _addSportViewModel.TrainerList)
             {
-                trainers.Add(TrainerListItem.trainer);
+                if(TrainerListItem.IsSelected)
+                sport.Trainers!.Add(TrainerListItem.trainer);
             }
-           
-            //await _sportStore.Add(sport,trainers);
-          
-          
+            await _sportStore.Add(sport);
 
-            //await _sportStore.Update(sport);
             MessageBox.Show("Sport added successfully");
             navigationService.Navigate();
         }

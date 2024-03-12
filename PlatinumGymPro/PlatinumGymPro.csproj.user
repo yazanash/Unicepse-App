@@ -123,6 +123,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Resources\CustomStyles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Theme\LightThemeResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="utlis\Components\CustomRadioButton.xaml">
       <SubType>Designer</SubType>
     </Page>

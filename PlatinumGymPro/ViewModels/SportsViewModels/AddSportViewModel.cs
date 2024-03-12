@@ -19,39 +19,41 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
     public class AddSportViewModel : ViewModelBase
     {
         private readonly NavigationStore _navigationStore;
-        //private readonly SportStore _sportStore;
-        //private readonly TrainerStore _trainerStore;
+        private readonly SportDataStore _sportStore;
+        private readonly EmployeeStore _trainerStore;
         private readonly ObservableCollection<TrainersListItemViewModel> trainerListItemViewModels;
         public IEnumerable<TrainersListItemViewModel> TrainerList => trainerListItemViewModels;
-        public AddSportViewModel(NavigationStore navigationStore, SportListViewModel sportListViewModel)
+        public AddSportViewModel(NavigationStore navigationStore, SportListViewModel sportListViewModel, SportDataStore sportStore, EmployeeStore trainerStore)
         {
             _navigationStore = navigationStore;
-            //_sportStore = sportStore;
-            //_trainerStore = trainerStore;
+            _sportStore = sportStore;
+            _trainerStore = trainerStore;
             CancelCommand = new NavaigateCommand<SportListViewModel>(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel));
-            this.SubmitCommand = new SubmitSportCommand(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel), this);
-            //LoadTrainersCommand = new LoadTrainersForSportCommand(_trainerStore,this);
+            this.SubmitCommand = new SubmitSportCommand(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel), this,_sportStore);
+            LoadTrainersCommand = new LoadTrainersForSportCommand(_trainerStore, this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             trainerListItemViewModels = new ObservableCollection<TrainersListItemViewModel>();
-            //_trainerStore.TrainersLoaded += _trainerStore_TrainersLoaded;
+            _sportStore = sportStore;
+            _trainerStore = trainerStore;
+            _trainerStore.Loaded += _trainerStore_TrainersLoaded;
         }
 
-      
+
 
         private void _trainerStore_TrainersLoaded()
         {
             trainerListItemViewModels.Clear();
 
-            //foreach (Employee trainer in _trainerStore.Trainer)
-            //{
-            //    AddTrainer(trainer);
-            //}
+            foreach (Employee trainer in _trainerStore.Employees.Where(x=>x.IsTrainer))
+            {
+                AddTrainer(trainer);
+            }
         }
         private void AddTrainer(Employee trainer)
         {
-            //TrainersListItemViewModel itemViewModel =
-            //    new TrainersListItemViewModel(trainer);
-            //trainerListItemViewModels.Add(itemViewModel);
+            TrainersListItemViewModel itemViewModel =
+                new TrainersListItemViewModel(trainer);
+            trainerListItemViewModels.Add(itemViewModel);
         }
         private bool _isLoading;
         public bool IsLoading
@@ -166,9 +168,9 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
-        public static AddSportViewModel LoadViewModel( NavigationStore navigatorStore, SportListViewModel sportListViewModel )
+        public static AddSportViewModel LoadViewModel( NavigationStore navigatorStore, SportListViewModel sportListViewModel ,SportDataStore sportDataStore,EmployeeStore employeeStore)
         {
-            AddSportViewModel viewModel = new AddSportViewModel(navigatorStore, sportListViewModel);
+            AddSportViewModel viewModel = new AddSportViewModel(navigatorStore, sportListViewModel,sportDataStore,employeeStore);
 
             viewModel.LoadTrainersCommand.Execute(null);
 
