@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.SportsViewModels
 {
-    public class AddSportViewModel : ViewModelBase
+    public class AddSportViewModel : ListingViewModelBase
     {
         private readonly NavigationStore _navigationStore;
         private readonly SportDataStore _sportStore;
@@ -55,38 +55,11 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
                 new TrainersListItemViewModel(trainer);
             trainerListItemViewModels.Add(itemViewModel);
         }
-        private bool _isLoading;
-        public bool IsLoading
-        {
-            get
-            {
-                return _isLoading;
-            }
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
+       
 
-        private string? _errorMessage;
-        public string? ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-                OnPropertyChanged(nameof(HasErrorMessage));
-            }
-        }
+       
 
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
-
-
+     
         public int Id { get; }
 
         private string? _sportName;

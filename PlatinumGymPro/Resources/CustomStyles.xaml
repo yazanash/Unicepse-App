@@ -146,6 +146,34 @@
 
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Trigger.EnterActions >
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="#993300" Duration="0:0:0.2"/>
+                                        <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
+                                                            Storyboard.TargetProperty="Margin"
+                                                        To="15 0 0 0" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Trigger.EnterActions >
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="#aaa" Duration="0:0:0.2"/>
+                                        <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
+                                                            Storyboard.TargetProperty="Margin"
+                                                        To="0 0 0 0" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
                         <EventTrigger RoutedEvent="Checked">
                             <BeginStoryboard>
                                 <Storyboard>
@@ -158,6 +186,7 @@
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
+                      
                         <EventTrigger RoutedEvent="Unchecked">
                             <BeginStoryboard>
                                 <Storyboard>
@@ -1092,6 +1121,7 @@
     <DataTemplate DataType="{x:Type viewmodels:SportsViewModel }">
         <views:SportsView/>
     </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewmodels:TrainersViewModel}">
         <views:TrainersView/>
     </DataTemplate>
@@ -1522,12 +1552,10 @@
                        Margin="0 5"
                            LineStackingStrategy="BlockLineHeight" TextWrapping="WrapWithOverflow"
                            TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="#333"/>
-                            <CheckBox   Style="{DynamicResource toggleBtnStyle}" HorizontalAlignment="Left" IsChecked="{Binding IsSelected}"/>
+                            <CheckBox  Style="{StaticResource toggleBtnStyle}" HorizontalAlignment="Left" IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
 
                     </Border>
-
-
 
                     <ControlTemplate.Triggers>
                         <MultiTrigger>

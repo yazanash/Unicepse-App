@@ -22,7 +22,8 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         private SportDataStore _sportStore;
         private EmployeeStore _trainerStore;
         public IEnumerable<SportListItemViewModel> SportList => sportListItemViewModels;
-       
+        public SearchBoxViewModel SearchBox { get; set; }
+      
         public ICommand AddSportCommand { get; }
         private bool _isLoading;
         public bool IsLoading
@@ -37,7 +38,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
-
+       
         private string? _errorMessage;
         public string? ErrorMessage
         {
@@ -64,14 +65,35 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
             LoadSportsCommand = new LoadSportsCommand( this,_sportStore);
             AddSportCommand = new NavaigateCommand<AddSportViewModel>(new NavigationService<AddSportViewModel>(_navigatorStore, () => CreateAddSportViewModel(navigatorStore, this,_sportStore,_trainerStore)));
             sportListItemViewModels = new ObservableCollection<SportListItemViewModel>();
-
-
-
+            SearchBox = new SearchBoxViewModel();
+            SearchBox.SearchedText += SearchBox_SearchedText;
             _sportStore.Loaded += _sportStore_SportLoaded;
             _sportStore.Created += _sportStore_SportAdded;
             _sportStore.Updated += _sportStore_SportUpdated;
             _sportStore.Deleted += _sportStore_SportDeleted;
 
+        }
+        public SportListItemViewModel? SelectedSport
+        {
+            get
+            {
+                return SportList
+                    .FirstOrDefault(y => y?.Sport == _sportStore.SelectedSport);
+            }
+            set
+            {
+                _sportStore.SelectedSport = value?.Sport;
+
+            }
+        }
+        private void SearchBox_SearchedText(string? obj)
+        {
+            sportListItemViewModels.Clear();
+
+            foreach (Sport sport in _sportStore.Sports.Where(x=>x.Name!.Contains(obj!)))
+            {
+                AddSport(sport);
+            }
         }
 
         private void _sportStore_SportDeleted(int id)
@@ -126,7 +148,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         private void AddSport(Sport sport)
         {
             SportListItemViewModel itemViewModel =
-                new SportListItemViewModel(sport, _sportStore, _navigatorStore);
+                new SportListItemViewModel(sport, _sportStore, _navigatorStore,_trainerStore,this);
             sportListItemViewModels.Add(itemViewModel);
         }
         public static SportListViewModel LoadViewModel(NavigationStore navigatorStore, SportDataStore sportStore,EmployeeStore employeeStore)

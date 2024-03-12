@@ -1,5 +1,5 @@
 ﻿using PlatinumGym.Core.Models.Employee;
-using PlatinumGym.Core.Models.Sport;
+using sp = PlatinumGym.Core.Models.Sport;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.SportsViewModels;
@@ -30,11 +30,7 @@ namespace PlatinumGymPro.Commands.SportsCommands
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-           foreach (var item in _addSportViewModel.TrainerList)
-            {
-                MessageBox.Show(item.TrainerName + " " + item.IsSelected.ToString());
-            }
-            Sport sport = new Sport()
+            sp.Sport sport = new sp.Sport()
             {
                 Name = _addSportViewModel.SportName,
                 DailyPrice = _addSportViewModel.DailyPrice,
@@ -51,7 +47,7 @@ namespace PlatinumGymPro.Commands.SportsCommands
             }
             await _sportStore.Add(sport);
 
-            MessageBox.Show("Sport added successfully");
+            MessageBox.Show("Sport edit successfully");
             navigationService.Navigate();
         }
        

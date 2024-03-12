@@ -1,4 +1,5 @@
 ﻿using PlatinumGymPro.Stores;
+using PlatinumGymPro.ViewModels;
 using PlatinumGymPro.ViewModels.SportsViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ namespace PlatinumGymPro.Commands.SportsCommands
     public class LoadTrainersForSportCommand : AsyncCommandBase
     {
         private readonly EmployeeStore _trainerStore;
-        private readonly AddSportViewModel _addSportViewModel;
-        public LoadTrainersForSportCommand(EmployeeStore trainerStore, AddSportViewModel addSportViewModel)
+        private readonly ListingViewModelBase _addSportViewModel;
+        public LoadTrainersForSportCommand(EmployeeStore trainerStore, ListingViewModelBase addSportViewModel)
         {
             _trainerStore = trainerStore;
             _addSportViewModel = addSportViewModel;

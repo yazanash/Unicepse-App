@@ -27,7 +27,21 @@ namespace PlatinumGymPro.Stores
             _sports = new List<Sport>();
             _initializeLazy = new Lazy<Task>(Initialize);
         }
+        private Sport? _selectedSport;
+        public Sport? SelectedSport
+        {
+            get
+            {
+                return _selectedSport;
+            }
+            set
+            {
+                _selectedSport = value;
+                StateChanged?.Invoke(SelectedSport);
+            }
+        }
 
+        public event Action<Sport?>? StateChanged;
         public async Task Add(Sport entity)
         {
             await _sportDataService.Create(entity);
@@ -42,7 +56,14 @@ namespace PlatinumGymPro.Stores
             _sports.RemoveAt(currentIndex);
             Deleted?.Invoke(entity_id);
         }
-
+        public async Task Delete(Sport entity)
+        {
+            entity.IsActive = false;
+            await _sportDataService.Update(entity);
+            int currentIndex = _sports.FindIndex(y => y.Id == entity.Id);
+            _sports.RemoveAt(currentIndex);
+            Deleted?.Invoke(entity.Id);
+        }
         public async Task GetAll()
         {
             await _initializeLazy.Value;
@@ -55,7 +76,11 @@ namespace PlatinumGymPro.Stores
             _sports.Clear();
             _sports.AddRange(sports);
         }
-
+        public async Task DeleteConnectedTrainers(int Id)
+        {
+            await _sportDataService.DeleteConnectedTrainers(Id);
+         
+        }
         public async Task Update(Sport entity)
         {
             await _sportDataService.Update(entity);

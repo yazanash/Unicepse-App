@@ -73,7 +73,17 @@ namespace PlatinumGym.Entityframework.Services
             await context.SaveChangesAsync();
             return true;
         }
-
+        public async Task<bool> DeleteConnectedTrainers(int id)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Sport? entity = await context.Set<Sport>().Include(x=>x.Trainers).FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            entity.Trainers!.Clear();
+            context.Set<Sport>().Update(entity!);
+            await context.SaveChangesAsync();
+            return true;
+        }
         public async Task<Sport> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -87,7 +97,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Sport>? entities = await context.Set<Sport>().Include(x => x.Trainers).ToListAsync();
+                IEnumerable<Sport>? entities = await context.Set<Sport>().Include(x => x.Trainers).Where(x=>x.IsActive).ToListAsync();
                 return entities;
             }
         }

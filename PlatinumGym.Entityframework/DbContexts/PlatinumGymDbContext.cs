@@ -45,13 +45,13 @@ namespace PlatinumGym.Entityframework.DbContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-           // modelBuilder
-           //.Entity<PlayerRoutine>()
-           //.OwnsMany(routine => routine.RoutineSchedule, builder => { builder.ToJson(); });
-           // modelBuilder.Entity<PlayerRoutine>()
-           //         .Property(e => e.RoutineSchedule)
-           //         .HasConversion((itemData) => JsonConvert.SerializeObject(itemData), str => JsonConvert.DeserializeObject<List<RoutineItems>>(str)!);
-
+            // modelBuilder
+            //.Entity<PlayerRoutine>()
+            //.OwnsMany(routine => routine.RoutineSchedule, builder => { builder.ToJson(); });
+            // modelBuilder.Entity<PlayerRoutine>()
+            //         .Property(e => e.RoutineSchedule)
+            //         .HasConversion((itemData) => JsonConvert.SerializeObject(itemData), str => JsonConvert.DeserializeObject<List<RoutineItems>>(str)!);
+            
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             modelBuilder.ApplyConfiguration(new ExercisesConfiguration());
             modelBuilder.ApplyConfiguration(new ExpensesConfiguration());
