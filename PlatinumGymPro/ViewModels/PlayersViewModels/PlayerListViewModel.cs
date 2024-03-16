@@ -30,7 +30,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly PaymentDataStore _paymentDataStore;
         private readonly MetricDataStore _metricDataStore;
         private readonly RoutineDataStore _routineDataStore;
-        //private SportStore _sportStore;
+
+        public SearchBoxViewModel SearchBox { get; set; }
+
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public IEnumerable<OrderByItemViewModel> OrderByList => OrderByItemViewModel;
@@ -170,8 +172,10 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _playerStore.Player_deleted += PlayerStore_PlayerDeleted;
             _playerStore.FilterChanged += PlayerStore_FilterChanged;
             _playerStore.OrderChanged += PlayerStore_OrderChanged;
-            //_playerStore.SelectedFilterChanged += _playerStore_SelectedFilterChanged;
-            //_playerStore.SelectedOrderByChanged += _playerStore_SelectedOrderByChanged;
+
+
+            SearchBox = new SearchBoxViewModel();
+            SearchBox.SearchedText += SearchBox_SearchedText;
 
             OrderByItemViewModel = new();
 
@@ -193,6 +197,17 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.HaveDebt, 8, "ديون"));
 
             SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Id == 6);
+        }
+
+        private void SearchBox_SearchedText(string? obj)
+        {
+            playerListItemViewModels.Clear();
+            if (!string.IsNullOrEmpty(obj))
+            {
+                LoadPlayers(_playerStore.Players, obj);
+            }
+            else
+                FilterPlayers(_playerStore.SelectedOrder, _playerStore.SelectedFilter);
         }
 
         private void PlayerStore_OrderChanged(Enums.Order? order)
@@ -292,6 +307,19 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
                     break;
             }
             foreach (Player player in players)
+            {
+                AddPlayer(player);
+            }
+            PlayersCount = playerListItemViewModels.Count;
+            PlayersFemaleCount = playerListItemViewModels.Where(x => !x.GenderMale).Count();
+            PlayersMaleCount = playerListItemViewModels.Where(x => x.GenderMale).Count();
+
+        }
+        void LoadPlayers(IEnumerable<Player> players, string query)
+        {
+           playerListItemViewModels.Clear();
+         
+            foreach (Player player in players.Where(x=>x.FullName!.ToLower().Contains(query.ToLower())))
             {
                 AddPlayer(player);
             }

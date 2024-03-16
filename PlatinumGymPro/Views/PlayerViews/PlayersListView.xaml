@@ -47,7 +47,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top">
-                        <cs:CustomTextBox Hint="ابحث هنا"/>
+                        <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
                     </Border>
                     <ComboBox SelectedItem="{Binding SelectedOrderBy, UpdateSourceTrigger=PropertyChanged}"
                               VerticalAlignment="Center" Margin="5 0 5 0" Tag="الترتيب حسب"
