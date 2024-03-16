@@ -20,9 +20,10 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
        
         private NavigationStore _navigatorStore;
         private SportDataStore _sportStore;
-        //private TrainerStore _trinerStore;
+        private EmployeeStore _trainerStore;
         public IEnumerable<SportListItemViewModel> SportList => sportListItemViewModels;
-       
+        public SearchBoxViewModel SearchBox { get; set; }
+      
         public ICommand AddSportCommand { get; }
         private bool _isLoading;
         public bool IsLoading
@@ -37,7 +38,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
-
+       
         private string? _errorMessage;
         public string? ErrorMessage
         {
@@ -56,22 +57,43 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadSportsCommand { get; }
-        public SportListViewModel(NavigationStore navigatorStore, SportDataStore sportStore)
+        public SportListViewModel(NavigationStore navigatorStore, SportDataStore sportStore,EmployeeStore trainerStore)
         {
             _navigatorStore = navigatorStore;
             _sportStore = sportStore;
-            //_trinerStore = trinerStore;
+            _trainerStore = trainerStore;
             LoadSportsCommand = new LoadSportsCommand( this,_sportStore);
-            AddSportCommand = new NavaigateCommand<AddSportViewModel>(new NavigationService<AddSportViewModel>(_navigatorStore, () => CreateAddSportViewModel(navigatorStore, this)));
+            AddSportCommand = new NavaigateCommand<AddSportViewModel>(new NavigationService<AddSportViewModel>(_navigatorStore, () => CreateAddSportViewModel(navigatorStore, this,_sportStore,_trainerStore)));
             sportListItemViewModels = new ObservableCollection<SportListItemViewModel>();
-
-
-
+            SearchBox = new SearchBoxViewModel();
+            SearchBox.SearchedText += SearchBox_SearchedText;
             _sportStore.Loaded += _sportStore_SportLoaded;
             _sportStore.Created += _sportStore_SportAdded;
             _sportStore.Updated += _sportStore_SportUpdated;
             _sportStore.Deleted += _sportStore_SportDeleted;
 
+        }
+        public SportListItemViewModel? SelectedSport
+        {
+            get
+            {
+                return SportList
+                    .FirstOrDefault(y => y?.Sport == _sportStore.SelectedSport);
+            }
+            set
+            {
+                _sportStore.SelectedSport = value?.Sport;
+
+            }
+        }
+        private void SearchBox_SearchedText(string? obj)
+        {
+            sportListItemViewModels.Clear();
+
+            foreach (Sport sport in _sportStore.Sports.Where(x=>x.Name!.Contains(obj!)))
+            {
+                AddSport(sport);
+            }
         }
 
         private void _sportStore_SportDeleted(int id)
@@ -126,12 +148,12 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         private void AddSport(Sport sport)
         {
             SportListItemViewModel itemViewModel =
-                new SportListItemViewModel(sport, _sportStore, _navigatorStore);
+                new SportListItemViewModel(sport, _sportStore, _navigatorStore,_trainerStore,this);
             sportListItemViewModels.Add(itemViewModel);
         }
-        public static SportListViewModel LoadViewModel(NavigationStore navigatorStore, SportDataStore sportStore)
+        public static SportListViewModel LoadViewModel(NavigationStore navigatorStore, SportDataStore sportStore,EmployeeStore employeeStore)
         {
-            SportListViewModel viewModel = new SportListViewModel(navigatorStore , sportStore);
+            SportListViewModel viewModel = new SportListViewModel(navigatorStore ,sportStore, employeeStore);
 
             viewModel.LoadSportsCommand.Execute(null);
 
@@ -139,9 +161,9 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         }
 
 
-        private AddSportViewModel CreateAddSportViewModel(NavigationStore navigatorStore,SportListViewModel sportListViewModel)
+        private AddSportViewModel CreateAddSportViewModel(NavigationStore navigatorStore,SportListViewModel sportListViewModel,SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
-            return AddSportViewModel.LoadViewModel(navigatorStore, sportListViewModel);
+            return AddSportViewModel.LoadViewModel(navigatorStore, sportListViewModel,sportDataStore, employeeStore);
         }
     }
 }

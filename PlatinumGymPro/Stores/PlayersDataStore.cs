@@ -109,11 +109,16 @@ namespace PlatinumGymPro.Stores
                 _players.Add(player);
             }
             Player_update?.Invoke(player);
-            await Task.Delay(20000);
+        }
+        public async Task DeletePlayer(Player player)
+        {
+            await _playerDataService.Update(player);
+            int currentIndex = _players.FindIndex(y => y.Id == player.Id);
+            _players.RemoveAt(currentIndex);
             Player_deleted?.Invoke(player.Id);
         }
 
-        public async Task DeletePlayer(int player_id)
+        public async Task ForceDeletePlayer(int player_id)
         {
             bool deleted = await _playerDataService.Delete(player_id);
             int currentIndex = _players.FindIndex(y => y.Id == player_id);

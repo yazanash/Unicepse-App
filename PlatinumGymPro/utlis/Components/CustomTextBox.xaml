@@ -18,7 +18,7 @@
                        IsHitTestVisible="False" Panel.ZIndex="1" FontSize="14"
                        Text="{Binding ElementName=CustomBox, Path=Hint}"
                        Visibility="{Binding ElementName=mytextBox, Path=Text.IsEmpty,Converter={StaticResource boolToVis}}"/>
-            <TextBox Text="{Binding ElementName=CustomBox, Path=Text}" Style="{StaticResource SearchText}" x:Name="mytextBox"/>
+            <TextBox Text="{Binding SearchText,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchText}" x:Name="mytextBox"/>
         </Grid>
     </StackPanel>
 </UserControl>

@@ -24,7 +24,7 @@ namespace PlatinumGymPro.Commands.Player
         {
             PlatinumGym.Core.Models.Player.Player player = _playerStore.SelectedPlayer!.Player;
             player.IsSubscribed = false;
-            await _playerStore.UpdatePlayer(player);
+            await _playerStore.DeletePlayer(player);
             MessageBox.Show(player.FullName + "deleted successfully");
             navigationService.Navigate();
         }
