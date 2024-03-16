@@ -24,38 +24,40 @@ namespace PlatinumGym.Entityframework.Services
             _contextFactory = contextFactory;
         }
 
-        public async Task<Sport> CheckIfExistByName(string name)
+        public async Task<Sport?> CheckIfExistByName(string name)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Sport? entity = await context.Set<Sport>().FirstOrDefaultAsync((e) => e.Name == name);
             return entity;
         }
 
-        public async Task<Sport> Create(Sport entity,List<Employee> trainers)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                Sport existed_sport = await CheckIfExistByName(entity.Name!);
-                if (existed_sport != null)
-                    throw new SportConflictException();
-                foreach (Employee emp in trainers)
-                {
-                    var trainer = context.Employees?.Find(emp.Id);
-                    if(trainer != null)
-                    entity.Trainers!.Add(trainer);
-                }
-                EntityEntry<Sport> CreatedResult = await context.Set<Sport>().AddAsync(entity);
-                await context.SaveChangesAsync();
-                return CreatedResult.Entity;
-            }
-        }
+        //public async Task<Sport> Create(Sport entity,List<Employee> trainers)
+        //{
+        //    using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+        //    {
+        //        Sport? existed_sport = await CheckIfExistByName(entity.Name!);
+        //        if (existed_sport != null)
+        //            throw new SportConflictException();
+        //        foreach (Employee emp in trainers)
+        //        {
+        //            var trainer = context.Employees?.Find(emp.Id);
+        //            if(trainer != null)
+        //            entity.Trainers!.Add(trainer);
+        //        }
+        //        EntityEntry<Sport> CreatedResult = await context.Set<Sport>().AddAsync(entity);
+        //        await context.SaveChangesAsync();
+        //        return CreatedResult.Entity;
+        //    }
+        //}
         public async Task<Sport> Create(Sport entity)
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                Sport existed_sport = await CheckIfExistByName(entity.Name!);
+                Sport? existed_sport = await CheckIfExistByName(entity.Name!);
                 if (existed_sport != null)
                     throw new SportConflictException();
+                foreach (var trainer in entity.Trainers!)
+                    context.Attach(trainer);
                 EntityEntry<Sport> CreatedResult = await context.Set<Sport>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
@@ -71,7 +73,17 @@ namespace PlatinumGym.Entityframework.Services
             await context.SaveChangesAsync();
             return true;
         }
-
+        public async Task<bool> DeleteConnectedTrainers(int id)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Sport? entity = await context.Set<Sport>().Include(x=>x.Trainers).FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            entity.Trainers!.Clear();
+            context.Set<Sport>().Update(entity!);
+            await context.SaveChangesAsync();
+            return true;
+        }
         public async Task<Sport> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -85,7 +97,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Sport>? entities = await context.Set<Sport>().Include(x => x.Trainers).ToListAsync();
+                IEnumerable<Sport>? entities = await context.Set<Sport>().Include(x => x.Trainers).Where(x=>x.IsActive).ToListAsync();
                 return entities;
             }
         }

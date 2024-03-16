@@ -1,4 +1,5 @@
 ﻿using PlatinumGymPro.Stores;
+using PlatinumGymPro.ViewModels;
 using PlatinumGymPro.ViewModels.SportsViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ namespace PlatinumGymPro.Commands.SportsCommands
 {
     public class LoadTrainersForSportCommand : AsyncCommandBase
     {
-        //private readonly TrainerStore _trainerStore;
-        private readonly AddSportViewModel _addSportViewModel;
-        public LoadTrainersForSportCommand( AddSportViewModel addSportViewModel)
+        private readonly EmployeeStore _trainerStore;
+        private readonly ListingViewModelBase _addSportViewModel;
+        public LoadTrainersForSportCommand(EmployeeStore trainerStore, ListingViewModelBase addSportViewModel)
         {
-            //_trainerStore = trainerStore;
+            _trainerStore = trainerStore;
             _addSportViewModel = addSportViewModel;
         }
         public override async Task ExecuteAsync(object? parameter)
@@ -24,7 +25,7 @@ namespace PlatinumGymPro.Commands.SportsCommands
 
             try
             {
-                //await _trainerStore.Load();
+                await _trainerStore.GetAll();
             }
             catch (Exception)
             {

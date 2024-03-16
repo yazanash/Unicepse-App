@@ -16,10 +16,9 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         {
             this.trainer = trainer;
         }
-
         public string? TrainerName => trainer.FullName;
         public int TrainerAge => trainer.BirthDate;
-        private bool _isSelected;
+        private bool _isSelected = false;
 
         public bool IsSelected
         {

@@ -119,7 +119,7 @@ namespace PlatinumGymPro
             MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
             auth.Show();
 
-
+            //MessageBox.Show(System.Environment.CurrentDirectory) ;
             base.OnStartup(e);
         }
 
