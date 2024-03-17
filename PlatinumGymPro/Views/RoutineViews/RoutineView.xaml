@@ -21,9 +21,9 @@
                 <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
                              Grid.Column="1"
                           Margin="10 5"
-                                            ItemsSource="{Binding MuscleGroup}"
+                                            ItemsSource="{Binding RoutineList}"
                              
-                                SelectedItem="{Binding SelectedMuscle,UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding SelectedRoutine,UpdateSourceTrigger=PropertyChanged}"
                                       ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -61,13 +61,13 @@
             <Separator Margin="10" Background="#aaa" DockPanel.Dock="Top"/>
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff"
-                             SelectedItem="{Binding SelectedRoutine}"
-                              ItemsSource="{Binding RoutineList}" ItemContainerStyle="{StaticResource RoutinesListBoxItemContainerStyle1}" >
+                             SelectedItem="{Binding  SelectedMuscle }"
+                              ItemsSource="{Binding   MuscleGroup}" ItemContainerStyle="{StaticResource MuscelListBoxItemContainerStyle1}" >
 
                 </ListBox>
                 <DockPanel Grid.Column="1">
