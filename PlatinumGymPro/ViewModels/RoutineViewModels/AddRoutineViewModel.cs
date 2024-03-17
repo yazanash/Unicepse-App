@@ -112,7 +112,9 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             }));
             SelectedMuscle = MuscleGroup.FirstOrDefault();
             SubmitCommand = new SubmitRoutineCommand(_routineDataStore, _playersDataStore,_navigationService);
+            //ReorderCommand = new ReorderCommand(this);
         }
+      
 
         private void _routineDataStore_RoutineItemDeleted(RoutineItems obj)
         {
@@ -134,6 +136,7 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             _exercisesListItemViewModel.Remove(_exercisesListItemViewModel.Where(x => x.Id == obj.Exercises!.Id).SingleOrDefault()!);
         }
 
+     
         private void _routineDataStore_MuscleChanged(MuscleGroup? muscle)
         {
             _exercisesListItemViewModel.Clear();
@@ -173,6 +176,6 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
         }
         public ICommand LoadExercisesItems { get; }
         public ICommand SubmitCommand { get; }
-
+        public ICommand ReorderCommand { get; }
     }
 }

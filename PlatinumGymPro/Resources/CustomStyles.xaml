@@ -1804,7 +1804,7 @@
 
 
 
-    <Style x:Key="RoutinesListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
+    <Style x:Key="MuscelListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Padding" Value="5"/>
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
@@ -1818,27 +1818,19 @@
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
                     <Border BorderThickness="1" x:Name="Bd" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
-
-                        <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-
-                            <Button Visibility="Hidden" x:Name="editbtn" HorizontalAlignment="Left" Command="{Binding EditCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
-
-                                <StackPanel Orientation="Horizontal">
-
-                                    <TextBlock Text="تعديل"  VerticalAlignment="Center"/>
-                                    <Icon:PackIconMaterial Kind="Pen"
-                                       Width="11"
-                                       Height="11"
-                                       Margin="8 0 0 0"
-                                       VerticalAlignment="Center"/>
-                                </StackPanel>
-
-                            </Button>
-
-                            <TextBlock Text="{Binding RoutineNo}" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="18" />
-
-
-                            <TextBlock Text="{Binding routineDate}" Foreground="#999" HorizontalAlignment="Left" FontSize="16" />
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="{Binding Image,UpdateSourceTrigger=PropertyChanged}" 
+                 RenderOptions.BitmapScalingMode="HighQuality"
+       RenderOptions.EdgeMode="Aliased"
+                   Height="40" Width="40" Margin="10 5"/>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock
+                    FontSize="16" Foreground="#797979" FontWeight="Bold"
+                    Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center"/>
+                                <!--<TextBlock 
+                     FontSize="22" FontWeight="Bold"
+                    Text="{Binding ElementName=metricItem,Path=MetricValue,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>-->
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -1865,7 +1857,7 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Background}"/>
                             <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Border}"/>
-                            <Setter Property="Visibility" TargetName="editbtn" Value="Visible"/>
+                            <!--<Setter Property="Visibility" TargetName="editbtn" Value="Visible"/>-->
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
