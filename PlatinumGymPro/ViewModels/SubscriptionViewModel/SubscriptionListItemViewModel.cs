@@ -3,6 +3,7 @@ using PlatinumGymPro.Commands;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
+using PlatinumGymPro.ViewModels.PrintViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
 
 
         public ICommand? EditCommand { get; }
-        //public ICommand? DeleteCommand { get; }
+        public ICommand? PrintCommand { get; }
         public ICommand? StopSubscriptionCommand { get; }
         public SubscriptionListItemViewModel(Subscription subscription, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel, PaymentDataStore paymentDataStore)
         {
@@ -60,6 +61,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             EditCommand = new NavaigateCommand<EditSubscriptionViewModel>(new NavigationService<EditSubscriptionViewModel>(_navigationStore, () => EditSubscription(_sportDataStore, _navigationStore, _subscriptionDataStore, _playersDataStore, _playerMainPageViewModel)));
             //StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore,_paymentDataStore,_playerMainPageViewModel)));
             StopSubscriptionCommand = new NavaigateCommand<MoveToNewTrainerViewModel>(new NavigationService<MoveToNewTrainerViewModel>(_navigationStore, () => new MoveToNewTrainerViewModel(_navigationStore, _subscriptionDataStore, _playerMainPageViewModel)));
+            PrintCommand = new PrintCommand(new PrintWindowViewModel(new SubscriptionPrintViewModel(this.Subscription), new NavigationStore()));
         }
 
         public void Update(Subscription subscription)

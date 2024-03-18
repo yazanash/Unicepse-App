@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PlatinumGym.Core.Models.Payment;
 using PlatinumGym.Core.Models.Sport;
 
 namespace PlatinumGym.Core.Models.Subscription
 {
     public class Subscription : DomainObject
     {
+        public Subscription()
+        {
+            Payments = new HashSet<PlayerPayment>();
+        }
         public virtual Sport.Sport? Sport { get; set; }
         public DateTime LastCheck { get; set; }
         public int? TrainerId { get; set; }
@@ -32,5 +37,6 @@ namespace PlatinumGym.Core.Models.Subscription
         public double RestValue { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime LastPaid { get; set; }
+        public ICollection<PlayerPayment>? Payments { get; set; }
     }
 }

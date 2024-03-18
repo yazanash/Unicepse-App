@@ -64,7 +64,7 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Subscription> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Subscription? entity = await context.Set<Subscription>().Include(e => e.Sport).Include(e => e.Player).Include(e => e.Trainer).FirstOrDefaultAsync((e) => e.Id == id);
+            Subscription? entity = await context.Set<Subscription>().Include(e => e.Sport).Include(e => e.Player).Include(x => x.Payments).Include(e => e.Trainer).FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             return entity!;
@@ -77,7 +77,7 @@ namespace PlatinumGym.Entityframework.Services
             {
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.Player!.Id == player.Id).Include(x => x.Trainer)
                     .Include(x => x.Player).Include(x=>x.Sport!.Trainers)
-                    .Include(x => x.Sport).ToListAsync();
+                    .Include(x => x.Sport).Include(x=>x.Payments).ToListAsync();
                 return entities;
             }
         }

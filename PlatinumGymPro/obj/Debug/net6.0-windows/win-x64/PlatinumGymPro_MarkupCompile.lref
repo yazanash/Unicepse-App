@@ -1,6 +1,7 @@
 ﻿
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\App.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\MainWindow.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\PrintWindowDialog.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Resources\CustomStyles.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\common\HomeView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\common\MainView.xaml;;
@@ -26,6 +27,8 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\HorizontalNav.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\InfoCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\NavBar.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\PlayerBar.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Pages\PlayerRoutinePrintView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Pages\SubscriptionPrintView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\AccountingState.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\AccountingView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\ExpensesReport.xaml;;
