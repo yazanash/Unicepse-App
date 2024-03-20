@@ -24,10 +24,11 @@ namespace PlatinumGymPro.State.Navigator
         private readonly PaymentDataStore _paymentDataStore ;
         private readonly MetricDataStore _metricDataStore;
         private readonly RoutineDataStore _routineDataStore;
+        private readonly PlayersAttendenceStore _playersAttendenceStore;
         public Navigator(NavigationStore navigatorStore, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore,
             ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore,
-            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
+            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
         {
             _navigatorStore = navigatorStore;
             _playersStore = playersStore;
@@ -38,6 +39,7 @@ namespace PlatinumGymPro.State.Navigator
             _paymentDataStore = paymentDataStore;
             _metricDataStore = metricDataStore;
             _routineDataStore = routineDataStore;
+            _playersAttendenceStore = playersAttendenceStore;
             //LogoutCommand = new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore)));
 
         }
@@ -58,7 +60,7 @@ namespace PlatinumGymPro.State.Navigator
             set { _isOpen = value; OnPropertChanged(nameof(IsOpen)); }
             
         }
-        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore,_sportStore,_employeeStore, _expensesStore, _subscriptionDataStore,_paymentDataStore,_metricDataStore,_routineDataStore);
+        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore,_sportStore,_employeeStore, _expensesStore, _subscriptionDataStore,_paymentDataStore,_metricDataStore,_routineDataStore, _playersAttendenceStore);
         //public ICommand LogoutCommand { get; }
 
     }

@@ -10,6 +10,9 @@
     <Compile Update="PrintWindowDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="SearchWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\CustomRadioButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -47,6 +50,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Components\RoutineItemFillCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\SearchboxWithPopupList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Components\SportCard.xaml.cs">
@@ -103,6 +109,9 @@
     <Compile Update="Views\PaymentViews\PaymentListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -139,6 +148,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Theme\LightThemeResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SearchWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\CustomRadioButton.xaml">
@@ -178,6 +190,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\RoutineItemFillCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\SearchboxWithPopupList.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\SportCard.xaml">
@@ -238,6 +253,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PaymentViews\PaymentListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayerViews\PlayerMainPage.xaml">

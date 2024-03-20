@@ -16,7 +16,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
 
-        
+
 
     </UserControl.Resources>
 
@@ -30,7 +30,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-           
+
             <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
 
 
@@ -104,7 +104,7 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Margin="5 0"  Command="{Binding AddPlayerCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+                        <Button Grid.Column="0" Margin="5,16,5,17"  Command="{Binding AddPlayerCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Stretch">
 
                             <StackPanel Orientation="Horizontal">
 
@@ -137,7 +137,7 @@
 
             </Border>
 
-           
+
 
             <Border  Background="#FFF" CornerRadius="10" Grid.Row="4" Margin="5 10" Padding="5">
                 <Grid  Grid.Row="4">
@@ -160,7 +160,7 @@
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-                            
+
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
@@ -186,7 +186,7 @@
                                      Binding="{Binding Gendertext}"
                                     Width="auto"
                                     />
-                                
+
                                 <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
                                      Binding="{Binding SubscribeDate}"
                                     Width="*"

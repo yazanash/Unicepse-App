@@ -26,7 +26,8 @@ namespace PlatinumGymPro.ViewModels
         private readonly PaymentDataStore _paymentDataStore;
         private readonly MetricDataStore _metricDataStore;
         private readonly RoutineDataStore _routineDataStore;
-        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
+        private readonly PlayersAttendenceStore _playersAttendenceStore;
+        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
         {
             _navigatorStore = navigatorStore;
             _playerStore = playerStore;
@@ -37,15 +38,19 @@ namespace PlatinumGymPro.ViewModels
             _subscriptionDataStore = subscriptionDataStore;
             _metricDataStore = metricDataStore;
             _routineDataStore = routineDataStore;
+            _playersAttendenceStore = playersAttendenceStore;
 
-            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore,_routineDataStore);
-            Navigator.CurrentViewModel = new HomeViewModel();
+            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore,_playersAttendenceStore);
+            Navigator.CurrentViewModel = CreateHomeViewModel(_playerStore, _playersAttendenceStore);
 
 
 
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
-
+        private HomeViewModel CreateHomeViewModel( PlayersDataStore playersDataStore,PlayersAttendenceStore playersAttendenceStore)
+        {
+            return HomeViewModel.LoadViewModel(playersDataStore,playersAttendenceStore);
+        }
         //private void NavigationStore_CurrentViewModelChanged()
         //{
         //    OnPropertyChanged(nameof(CurrentViewModel));

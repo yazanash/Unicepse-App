@@ -1,8 +1,9 @@
-﻿
+﻿D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\GeneratedInternalTypeHelper.g.cs
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\App.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\MainWindow.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\PrintWindowDialog.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Resources\CustomStyles.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\SearchWindow.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\common\HomeView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\common\MainView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\CustomRadioButton.xaml;;
@@ -18,6 +19,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MuscleGroupItem.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PayCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PlayerMetricCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\RoutineItemFillCard.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SearchboxWithPopupList.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SportCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SubscriptionCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SubscriptionDetailsCard.xaml;;
@@ -56,6 +58,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\Metrics\MetricsCardView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\EditPaymentDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\PaymentDetalView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\PaymentListView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\EditPlayerDetailsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerMainPage.xaml;;

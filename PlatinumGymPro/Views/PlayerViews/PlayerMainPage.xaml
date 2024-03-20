@@ -156,7 +156,7 @@
                                     Width="*"
                                     />
 
-                            <DataGridTemplateColumn Header="عمليات" Width="auto" IsReadOnly="True">
+                            <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" x:Name="menu">
