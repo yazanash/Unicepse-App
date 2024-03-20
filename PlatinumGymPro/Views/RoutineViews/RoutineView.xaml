@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:PlatinumGymPro.Views.RoutineViews"
              xmlns:comp="clr-namespace:PlatinumGymPro.utlis.Components"
              mc:Ignorable="d" 
+             FlowDirection="RightToLeft"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:Height="400" d:Width="800">
     <Border CornerRadius="10" Background="#fff" Padding="5" Margin="5">

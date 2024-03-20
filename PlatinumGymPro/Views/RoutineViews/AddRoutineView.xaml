@@ -7,17 +7,25 @@
              xmlns:comp="clr-namespace:PlatinumGymPro.utlis.Components"
              mc:Ignorable="d" 
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             FlowDirection="RightToLeft"
+             
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10" Background="#fff" Padding="5" Margin="5">
         <DockPanel >
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" DockPanel.Dock="Top" VerticalAlignment="Center" Text="البرنامج التدريبي " />
+                <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0" Grid.ColumnSpan="2"
+                                  ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff"
+                             SelectedItem="{Binding  SelectedMuscle }"
+                              ItemsSource="{Binding   MuscleGroup}" ItemContainerStyle="{StaticResource MuscelListBoxItemContainerStyle1}" >
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel  Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
                 <!--<ComboBox Style="{DynamicResource ComboBoxStyle1}" 
                              Grid.Column="1"
                           Margin="10 5"
@@ -33,7 +41,7 @@
                     </ComboBox.ItemTemplate>
 
                 </ComboBox>-->
-                <Button Grid.Column="2" Margin="5 0"  Command="{Binding SubmitCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+                <!--<Button Grid.Column="2" Margin="5 0"  Command="{Binding SubmitCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
                     <StackPanel Orientation="Horizontal">
 
@@ -48,24 +56,18 @@
                     <StackPanel Orientation="Horizontal">
                         <Icon:PackIconMaterial Kind="Printer"/>
                     </StackPanel>
-                </Button>
+                </Button>-->
 
 
             </Grid>
             <Separator Margin="10" Background="#aaa" DockPanel.Dock="Top"/>
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
                     <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+              
                 <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                  ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff"
-                             SelectedItem="{Binding  SelectedMuscle }"
-                              ItemsSource="{Binding   MuscleGroup}" ItemContainerStyle="{StaticResource MuscelListBoxItemContainerStyle1}" >
-
-                </ListBox>
-                <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="1"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff"
                              SelectedItem="{Binding SelectedExercises}"
                          VirtualizingPanel.ScrollUnit="Pixel"
@@ -73,10 +75,10 @@
                               ItemsSource="{Binding ExercisesList}" ItemContainerStyle="{StaticResource ExercisesListBoxItemContainerStyle1}" >
 
                 </ListBox>
-                <DockPanel Grid.Column="2">
+                <DockPanel Grid.Column="1">
                     <Button HorizontalAlignment="Left" DockPanel.Dock="Top" Command="{Binding ReorderCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
 
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal"> 
 
                             <TextBlock Text="اعادة ترتيب"/>
                             <Icon:PackIconMaterial Kind="Sort"

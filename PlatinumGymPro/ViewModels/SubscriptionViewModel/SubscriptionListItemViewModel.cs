@@ -45,10 +45,17 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         public string EndDate => Subscription.EndDate.ToString("ddd,MMM dd,yyy");
         //public DateTime LastPaid => Subscription
 
+        private bool _isOpen;
+        public bool IsOpen
+        {
+            get { return _isOpen; }
+            set { _isOpen = value; OnPropertyChanged(nameof(IsOpen)); }
 
+        }
         public ICommand? EditCommand { get; }
         public ICommand? PrintCommand { get; }
         public ICommand? StopSubscriptionCommand { get; }
+        public ICommand? MoveToNewTrainerCommand { get; }
         public SubscriptionListItemViewModel(Subscription subscription, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel, PaymentDataStore paymentDataStore)
         {
             Subscription = subscription;
@@ -59,8 +66,8 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             _playersDataStore = playersDataStore;
             _playerMainPageViewModel = playerMainPageViewModel;
             EditCommand = new NavaigateCommand<EditSubscriptionViewModel>(new NavigationService<EditSubscriptionViewModel>(_navigationStore, () => EditSubscription(_sportDataStore, _navigationStore, _subscriptionDataStore, _playersDataStore, _playerMainPageViewModel)));
-            //StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore,_paymentDataStore,_playerMainPageViewModel)));
-            StopSubscriptionCommand = new NavaigateCommand<MoveToNewTrainerViewModel>(new NavigationService<MoveToNewTrainerViewModel>(_navigationStore, () => new MoveToNewTrainerViewModel(_navigationStore, _subscriptionDataStore, _playerMainPageViewModel)));
+            StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _playerMainPageViewModel)));
+            MoveToNewTrainerCommand = new NavaigateCommand<MoveToNewTrainerViewModel>(new NavigationService<MoveToNewTrainerViewModel>(_navigationStore, () => new MoveToNewTrainerViewModel(_navigationStore, _subscriptionDataStore, _playerMainPageViewModel)));
             PrintCommand = new PrintCommand(new PrintWindowViewModel(new SubscriptionPrintViewModel(this.Subscription), new NavigationStore()));
         }
 

@@ -5,6 +5,7 @@ using PlatinumGymPro.Commands.SubscriptionCommand;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
+using PlatinumGymPro.ViewModels.RoutineViewModels;
 using PlatinumGymPro.ViewModels.SubscriptionViewModel;
 using PlatinumGymPro.ViewModels.TrainingViewModels;
 using System;
@@ -44,7 +45,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
 
         public ICommand? EditCommand { get; }
-        public ICommand? DeleteCommand { get; }
+        public ICommand? TrainingProgramCommand { get; }
         public ICommand? OpenProfileCommand { get; }
         public PlayerListItemViewModel(Player player, NavigationStore navigationStore,
             SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,
@@ -61,8 +62,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
             EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(PlayerMainPageNavigation, () => new EditPlayerViewModel(PlayerMainPageNavigation, _playersDataStore, _subscriptionDataStore, CreatePlayerMainPageViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _sportDataStore), _sportDataStore, _paymentDataStore)));
-            DeleteCommand = new DeletePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList),_playersDataStore);
+            //DeleteCommand = new DeletePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList),_playersDataStore);
             OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore)));
+            TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigationStore)));
         }
 
         public void Update(Player player)
@@ -80,6 +82,10 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         {
             //playersDataStore.SelectedPlayer = this
             return new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore);
+        }
+        private RoutinePlayerViewModels LoadRoutineViewModel(RoutineDataStore routineDataStore, PlayersDataStore playerDataStore, NavigationStore navigationStore)
+        {
+            return RoutinePlayerViewModels.LoadViewModel(routineDataStore, playerDataStore, navigationStore);
         }
     }
 }

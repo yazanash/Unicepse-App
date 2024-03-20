@@ -24,5 +24,10 @@ namespace PlatinumGymPro.Views.PlayerViews
         {
             InitializeComponent();
         }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

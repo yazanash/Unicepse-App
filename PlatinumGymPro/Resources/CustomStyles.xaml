@@ -10,6 +10,8 @@
              xmlns:playervs="clr-namespace:PlatinumGymPro.Views.PlayerViews"
              xmlns:vi="clr-namespace:PlatinumGymPro.Views.PlayerViews"
              xmlns:login="clr-namespace:PlatinumGymPro.Views.AuthView"
+                       xmlns:routinevms="clr-namespace:PlatinumGymPro.ViewModels.RoutineViewModels"
+             xmlns:routineview="clr-namespace:PlatinumGymPro.Views.RoutineViews"
              xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
   
@@ -1131,6 +1133,20 @@
     <DataTemplate DataType="{x:Type viewmodels:PlayersPageViewModel }">
         <views:PlayersView/>
     </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type routinevms:RoutinePlayerViewModels}">
+        <routineview:RoutineView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type routinevms:AddRoutineViewModel}">
+        <routineview:AddRoutineView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type routinevms:EditRoutineViewModel}">
+        <routineview:EditRoutineView />
+    </DataTemplate>
+
+
     <!--#endregion-->
 
 
@@ -1817,12 +1833,12 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
-                    <Border BorderThickness="1" x:Name="Bd" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
+                    <Border BorderThickness="1" Width="100" x:Name="Bd" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
                         <StackPanel Orientation="Vertical">
-                            <Image Source="{Binding Image,UpdateSourceTrigger=PropertyChanged}" 
+                            <!--<Image Source="{Binding Image,UpdateSourceTrigger=PropertyChanged}" 
                  RenderOptions.BitmapScalingMode="HighQuality"
        RenderOptions.EdgeMode="Aliased"
-                   Height="40" Width="40" Margin="10 5"/>
+                   Height="40" Width="40" Margin="10 5"/>-->
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <TextBlock
                     FontSize="16" Foreground="#797979" FontWeight="Bold"
