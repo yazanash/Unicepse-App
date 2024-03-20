@@ -59,6 +59,9 @@ namespace PlatinumGymPro
                    services.AddSingleton<PaymentDataService>();
                    services.AddSingleton<PaymentDataStore>();
 
+                   services.AddSingleton<PlayersAttendenceService>();
+                   services.AddSingleton<PlayersAttendenceStore>();
+
                    services.AddSingleton<SubscriptionDataStore>();
                    services.AddSingleton<SubscriptionDataService>();
 

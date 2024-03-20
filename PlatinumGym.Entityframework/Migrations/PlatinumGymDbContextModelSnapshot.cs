@@ -78,6 +78,9 @@ namespace PlatinumGymPro.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsLogged")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsTakenKey")
                         .HasColumnType("bit");
 
@@ -1387,7 +1390,7 @@ namespace PlatinumGymPro.Migrations
                         .HasForeignKey("RecipientId");
 
                     b.HasOne("PlatinumGym.Core.Models.Subscription.Subscription", "Subscription")
-                        .WithMany()
+                        .WithMany("Payments")
                         .HasForeignKey("SubscriptionId");
 
                     b.Navigation("Player");
@@ -1433,11 +1436,13 @@ namespace PlatinumGymPro.Migrations
                         .WithMany()
                         .HasForeignKey("ExercisesId");
 
-                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", null)
+                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", "PlayerRoutine")
                         .WithMany("RoutineSchedule")
                         .HasForeignKey("PlayerRoutineId");
 
                     b.Navigation("Exercises");
+
+                    b.Navigation("PlayerRoutine");
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Employee.Employee", b =>
@@ -1448,6 +1453,11 @@ namespace PlatinumGymPro.Migrations
             modelBuilder.Entity("PlatinumGym.Core.Models.Sport.Sport", b =>
                 {
                     b.Navigation("PlayerTrainings");
+                });
+
+            modelBuilder.Entity("PlatinumGym.Core.Models.Subscription.Subscription", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", b =>

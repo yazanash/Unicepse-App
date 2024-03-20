@@ -15,10 +15,10 @@ namespace PlatinumGymPro.Commands
     public class LoadPlayersCommand : AsyncCommandBase
     {
         private readonly PlayersDataStore _playerStore;
-        private readonly PlayerListViewModel _playerListing;
+        private readonly ListingViewModelBase _playerListing;
 
 
-        public LoadPlayersCommand(PlayerListViewModel playerListing, PlayersDataStore playerStore)
+        public LoadPlayersCommand(ListingViewModelBase playerListing, PlayersDataStore playerStore)
         {
             _playerStore = playerStore;
             _playerListing = playerListing;

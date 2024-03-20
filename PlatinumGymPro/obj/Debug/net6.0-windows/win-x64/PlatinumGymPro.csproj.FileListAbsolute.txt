@@ -792,3 +792,15 @@ D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Debug\net6.0-windows\win-x64\Resources
 D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Debug\net6.0-windows\win-x64\Resources\Assets\Exercises\8\8.png
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Resources\Theme\LightThemeResourceDictionary.baml
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Resources\CustomStyles.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Pages\PlayerRoutinePrintView.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Pages\SubscriptionPrintView.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Pages\PlayerRoutinePrintView.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Pages\SubscriptionPrintView.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\PrintWindowDialog.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\PrintWindowDialog.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Components\SearchboxWithPopupList.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Components\SearchboxWithPopupList.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\SearchWindow.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\PlayersAttendenceViews\LogPlayerAttendenceView.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\SearchWindow.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\PlayersAttendenceViews\LogPlayerAttendenceView.baml

@@ -26,10 +26,11 @@ namespace PlatinumGymPro.Commands
         private readonly PaymentDataStore _paymentDataStore;
         private readonly MetricDataStore _metricDataStore;
         private readonly RoutineDataStore _routineDataStore;
+        private readonly PlayersAttendenceStore _playersAttendenceStore1 ;
         public UpdateCurrentViewModelCommand(INavigator navigator, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore,
             SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
-            MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
+            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1)
         {
             _navigator = navigator;
             _playersStore = playersStore;
@@ -40,6 +41,7 @@ namespace PlatinumGymPro.Commands
             _paymentDataStore = paymentDataStore;
             _metricDataStore = metricDataStore;
             _routineDataStore = routineDataStore;
+            _playersAttendenceStore1 = playersAttendenceStore1;
         }
 
         public override void Execute(object? parameter)
@@ -51,7 +53,7 @@ namespace PlatinumGymPro.Commands
                 switch (viewType)
                 {
                     case ViewType.Home:
-                        _navigator.CurrentViewModel =new HomeViewModel();
+                        _navigator.CurrentViewModel = CreateHomeViewModel(_playersStore, _playersAttendenceStore1);
                         break;
                     case ViewType.Players:
                         _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore,_sportStore,_paymentDataStore,_metricDataStore, _routineDataStore);
@@ -74,6 +76,10 @@ namespace PlatinumGymPro.Commands
                 
             }
         }
-      
+        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore)
+        {
+            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore);
+        }
+
     }
 }
