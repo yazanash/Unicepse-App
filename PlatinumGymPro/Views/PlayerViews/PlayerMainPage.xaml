@@ -72,8 +72,15 @@
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-
-                        <DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="نقل الى مدرب" Command="{Binding MoveToNewTrainerCommand}"/>
+                                    <MenuItem Header="ايقاف الاشتراك" Command="{Binding StopSubscriptionCommand}"/>
+                                    <MenuItem Header="طباعة" Command="{Binding PrintCommand}"/>
+                                    <!-- Add more menu items as needed -->
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                            <DataGrid.Columns>
                             <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
                                     Binding="{Binding Id}"
@@ -149,23 +156,47 @@
                                     Width="*"
                                     />
 
-                            <DataGridTemplateColumn Header="عمليات" Width="auto" IsReadOnly="True">
+                            <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" x:Name="menu">
-                                            <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
-                                                <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                            </Button>
-                                                <Button Command="{Binding StopSubscriptionCommand}" Style="{StaticResource GridEditBtn}">
-                                                    <Icon:PackIconMaterial Kind="Stop" Style="{StaticResource GridBtnIcon}"/>
+                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                    <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
-                                                <!--<Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
-                                                    <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
-                                                        <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
-                                                            <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
-                                                        </Button>-->
-                                        </StackPanel>
+                                                <CheckBox Click="CheckBox_Click"   Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
+                                                    
+                                                    <Icon:PackIconMaterial Kind="Menu" Style="{StaticResource GridBtnIcon}"/>
+                                                </CheckBox>
+                                                <!-- Popup control -->
+                                                <Popup Name="MyPopup" IsOpen="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
+                                                    <!-- Customize the popup content here -->
+                                                    <Border Background="#fff" Padding="5" CornerRadius="10">
+                                                        <StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Button Command="{Binding PrintCommand}" Style="{StaticResource GridEditBtn}">
+                                                                    <Icon:PackIconMaterial Kind="Printer" Style="{StaticResource GridBtnIcon}"/>
+                                                                </Button>
+                                                                <TextBlock Text="طباعة" FontSize="12" Foreground="#787878"/>
+                                                            </StackPanel>
+
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Button Command="{Binding MoveToNewTrainerCommand}" Style="{StaticResource GridEditBtn}">
+                                                                    <Icon:PackIconMaterial Kind="AccountCog" Style="{StaticResource GridBtnIcon}"/>
+                                                                </Button>
+                                                                <TextBlock Text="نقل الى مدرب " FontSize="12" Foreground="#787878"/>
+                                                            </StackPanel>
+
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Button Command="{Binding StopSubscriptionCommand}" Style="{StaticResource GridEditBtn}">
+                                                                    <Icon:PackIconMaterial Kind="BookCancel" Style="{StaticResource GridBtnIcon}"/>
+                                                                </Button>
+                                                                <TextBlock Text="ايقاف الاشتراك" FontSize="12" Foreground="#787878"/>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    
+                                                    </Border>
+                                                </Popup>
+                                            </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

@@ -15,5 +15,6 @@ namespace PlatinumGym.Core.Models.DailyActivity
         public DateTime logoutTime { get; set; }
         public virtual Player.Player? Player { get; set; }
         public bool IsTakenKey { get; set; }
+        public bool IsLogged { get; set; }
     }
 }

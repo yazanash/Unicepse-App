@@ -18,7 +18,7 @@ using System.Windows.Input;
 namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
   
-    public class PlayerListViewModel : ViewModelBase
+    public class PlayerListViewModel : ListingViewModelBase
     {
         private readonly ObservableCollection<PlayerListItemViewModel> playerListItemViewModels;
         private readonly ObservableCollection<FiltersItemViewModel> filtersItemViewModel;
@@ -118,37 +118,6 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
                 OnPropertyChanged(nameof(PlayersMaleCount));
             }
         }
-
-        private bool _isLoading;
-        public bool IsLoading
-        {
-            get
-            {
-                return _isLoading;
-            }
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        private string? _errorMessage;
-        public string? ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-                OnPropertyChanged(nameof(HasErrorMessage));
-            }
-        }
-
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadPlayersCommand { get; }
         public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
