@@ -10,52 +10,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using PlatinumGymPro.ViewModels.PlayersViewModels;
 
 namespace PlatinumGymPro.ViewModels.TrainersViewModels
 {
-    public class TrainersListViewModel : ViewModelBase
+    public class TrainersListViewModel : ListingViewModelBase
     {
 
         private readonly ObservableCollection<TrainerListItemViewModel> trainerListItemViewModels;
-
+        private readonly ObservableCollection<FiltersItemViewModel> filtersItemViewModel;
         private NavigationStore _navigatorStore;
         private EmployeeStore _employeeStore;
 
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
-
+        public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public ICommand AddTrainerCommand { get; }
         public ICommand LoadTrainerCommand { get; }
-        private bool _isLoading;
-        public bool IsLoading
+        public FiltersItemViewModel? SelectedFilter
         {
             get
             {
-                return _isLoading;
+                return filtersItemViewModel
+                    .FirstOrDefault(y => y?.Filter == _employeeStore.SelectedFilter);
             }
             set
             {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
+                _employeeStore.SelectedFilter = value?.Filter;
+
             }
         }
-
-        private string? _errorMessage;
-        public string? ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-                OnPropertyChanged(nameof(HasErrorMessage));
-            }
-        }
-
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
-
+        public SearchBoxViewModel SearchBox { get; set; }
         public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
         {
             _navigatorStore = navigatorStore;
@@ -70,7 +54,73 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             _employeeStore.Created += _trainerStore_TrainerAdded;
             _employeeStore.Updated += _trainerStore_TrainerUpdated;
             _employeeStore.Deleted += _trainerStore_TrainerDeleted;
+            SearchBox = new SearchBoxViewModel();
+            SearchBox.SearchedText += SearchBox_SearchedText;
 
+
+            filtersItemViewModel = new();
+
+            filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.All, 1, "الكل"));
+            filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.Trainer, 2, "المدربين"));
+            filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.Secretary, 3, "السكرتارية"));
+            filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.Employee, 3, "الموظفين"));
+
+            _employeeStore.FilterChanged += _employeeStore_FilterChanged;
+        }
+
+        private void _employeeStore_FilterChanged(Enums.Filter? filter)
+        {
+           
+            switch (filter)
+            {
+                case Enums.Filter.All:
+                    LoadEmployees(_employeeStore.Employees);
+                    break;
+                case Enums.Filter.Trainer:
+                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsTrainer == true));
+                    break;
+                case Enums.Filter.Secretary:
+                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsSecrtaria == true));
+                    break;
+                case Enums.Filter.Employee:
+                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsSecrtaria == false&& x.IsTrainer == false));
+                    break;
+              
+
+            }
+        }
+        void LoadEmployees(IEnumerable<Employee> employees)
+        {
+            trainerListItemViewModels.Clear();
+          
+            foreach (Employee employee in employees)
+            {
+                AddTrainer(employee);
+            }
+           
+
+        }
+        public TrainerListItemViewModel? SelectedEmployee
+        {
+            get
+            {
+                return TrainerList
+                    .FirstOrDefault(y => y?.Trainer == _employeeStore.SelectedEmployee);
+            }
+            set
+            {
+                _employeeStore.SelectedEmployee = value?.Trainer;
+
+            }
+        }
+        private void SearchBox_SearchedText(string? obj)
+        {
+            trainerListItemViewModels.Clear();
+
+            foreach (Employee employee in _employeeStore.Employees.Where(x => x.FullName!.ToLower().Contains(obj!.ToLower())))
+            {
+                AddTrainer(employee);
+            }
         }
 
         private void _trainerStore_TrainerDeleted(int id)

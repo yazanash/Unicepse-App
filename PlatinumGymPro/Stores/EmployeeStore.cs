@@ -1,5 +1,6 @@
 ﻿using PlatinumGym.Core.Models.Employee;
 using PlatinumGym.Entityframework.Services;
+using PlatinumGymPro.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace PlatinumGymPro.Stores
         public event Action? Loaded;
         public event Action<Employee>? Updated;
         public event Action<int>? Deleted;
-
+        public event Action<Filter?>? FilterChanged;
 
         private readonly EmployeeDataService _employeeDataService;
         private readonly List<Employee> _employee;
@@ -32,6 +33,36 @@ namespace PlatinumGymPro.Stores
             _employeeDataService = employeeDataService;
             _employee = new List<Employee>() ;
             _initializeLazy = new Lazy<Task>(Initialize);
+        }
+
+
+        private Employee? _selectedEmployee;
+        public Employee? SelectedEmployee
+        {
+            get
+            {
+                return _selectedEmployee;
+            }
+            set
+            {
+                _selectedEmployee = value;
+                StateChanged?.Invoke(SelectedEmployee);
+            }
+        }
+        public event Action<Employee?>? StateChanged;
+
+        private Filter? _selectedFilter;
+        public Filter? SelectedFilter
+        {
+            get
+            {
+                return _selectedFilter;
+            }
+            set
+            {
+                _selectedFilter = value;
+                FilterChanged?.Invoke(_selectedFilter);
+            }
         }
 
         public async Task Add(Employee entity)

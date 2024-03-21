@@ -8,7 +8,13 @@
         SubscribeEnd,
         Active,
         InActive,
-        WithoutTrainer
+        WithoutTrainer,
+
+
+        Employee,
+        Trainer,
+        Secretary,
+        All
     }
     public enum Order
     {

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PlatinumGymPro.Views.EmployeeViews"
                   Background="#fff"
+                xmlns:cs="clr-namespace:PlatinumGymPro.Components"
             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
                xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
@@ -28,34 +29,32 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox VerticalAlignment="Center" Margin="5 0 5 0" Tag="الترتيب حسب" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"  Grid.Row="0" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
-                        <ComboBoxItem  Content="ذكور"/>
-                        <ComboBoxItem  Content="اناث"/>
-                        <ComboBoxItem  Content="بدون مدرب"/>
-                        <ComboBoxItem  Content="غير فعال"/>
-                        <ComboBoxItem  Content="الكل"/>
-                        <ComboBoxItem  Content="فعال"/>
-                        <ComboBoxItem  Content="منتهي الاشتراك"/>
-                        <ComboBoxItem  Content="غير فعال"/>
-                        <ComboBoxItem  Content="ديون"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="0"  VerticalAlignment="Top">
+                        <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
+                    </Border>
+                 
+                    <ComboBox  SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" 
+                               VerticalAlignment="Center" ItemsSource="{Binding FiltersList}"
+                               ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" 
+                               Tag="التصنيف حسب" Grid.Row="1" Grid.Column="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ComboBoxItem Content="{Binding Content}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox VerticalAlignment="Center" ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" Tag="التصنيف حسب" Grid.Row="0" Grid.Column="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
-                        <ComboBoxItem  Content="ذكور"/>
-                        <ComboBoxItem  Content="اناث" />
-                        <ComboBoxItem  Content="بدون مدرب" />
-                        <ComboBoxItem  Content="غير فعال" />
-                        <ComboBoxItem  Content="الكل" />
-                        <ComboBoxItem  Content="فعال"/>
-                        <ComboBoxItem  Content="منتهي الاشتراك" />
-                        <ComboBoxItem  Content="غير فعال" />
-                        <ComboBoxItem  Content="ديون" />
-                    </ComboBox>
-                    <Grid Grid.Column="3">
+               
+                    <Grid Grid.Column="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -84,7 +83,7 @@
                                        VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Grid.Column="2" Grid.Row="1" Command="{Binding AddPlayerCommand}" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
+                        <!--<Button Grid.Column="2" Grid.Row="1" Command="{Binding AddPlayerCommand}" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
 
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="FileExcel"/>
@@ -95,8 +94,9 @@
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="Printer"/>
                             </StackPanel>
-                        </Button>
+                        </Button>-->
                     </Grid>
+
 
 
 
@@ -121,7 +121,7 @@
 
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                        <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding TrainerList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+                        <DataGrid SelectedItem="{Binding SelectedEmployee}" Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding TrainerList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
