@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using emp = PlatinumGym.Core.Models.Employee;
 
 namespace PlatinumGymPro.ViewModels.TrainersViewModels
 {
     public class TrainerListItemViewModel : ViewModelBase 
     {
-        public  Employee Trainer;
-        //private readonly TrainerStore _trainerStore;
+        public emp.Employee Trainer;
+        //privatemp.e readonly TrainerStore _trainerStore;
         private readonly NavigationStore _navigationStore;
         public int Id => Trainer.Id;
         public string? FullName => Trainer.FullName;
@@ -25,7 +26,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public TrainerListItemViewModel(Employee trainer,  NavigationStore navigationStore)
+        public TrainerListItemViewModel(emp.Employee trainer,  NavigationStore navigationStore)
         {
             Trainer = trainer;
 
@@ -33,7 +34,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             _navigationStore = navigationStore;
         }
 
-        public void Update(Employee trainer)
+        public void Update(emp.Employee trainer)
         {
             this.Trainer = trainer;
 

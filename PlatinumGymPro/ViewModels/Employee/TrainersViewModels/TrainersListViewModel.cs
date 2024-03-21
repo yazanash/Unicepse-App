@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
-
+using emp = PlatinumGym.Core.Models.Employee;
 namespace PlatinumGymPro.ViewModels.TrainersViewModels
 {
     public class TrainersListViewModel : ListingViewModelBase
@@ -21,7 +21,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private readonly ObservableCollection<FiltersItemViewModel> filtersItemViewModel;
         private NavigationStore _navigatorStore;
         private EmployeeStore _employeeStore;
-
+        private SportDataStore  _sportDataStore;
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public ICommand AddTrainerCommand { get; }
@@ -40,12 +40,14 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             }
         }
         public SearchBoxViewModel SearchBox { get; set; }
-        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
+        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
+            _sportDataStore = sportDataStore;
+
             LoadTrainerCommand = new LoadTrainersCommand(_employeeStore, this);
-            AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => new AddTrainerViewModel(navigatorStore, this)));
+            AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => CreateAddTrainerViewModel(navigatorStore, this,_sportDataStore, _employeeStore)));
             trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
 
 
@@ -89,11 +91,11 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
 
             }
         }
-        void LoadEmployees(IEnumerable<Employee> employees)
+        void LoadEmployees(IEnumerable<emp.Employee> employees)
         {
             trainerListItemViewModels.Clear();
           
-            foreach (Employee employee in employees)
+            foreach (emp.Employee employee in employees)
             {
                 AddTrainer(employee);
             }
@@ -117,7 +119,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         {
             trainerListItemViewModels.Clear();
 
-            foreach (Employee employee in _employeeStore.Employees.Where(x => x.FullName!.ToLower().Contains(obj!.ToLower())))
+            foreach (emp.Employee employee in _employeeStore.Employees.Where(x => x.FullName!.ToLower().Contains(obj!.ToLower())))
             {
                 AddTrainer(employee);
             }
@@ -133,7 +135,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             }
         }
 
-        private void _trainerStore_TrainerUpdated(Employee trainer)
+        private void _trainerStore_TrainerUpdated(emp.Employee trainer)
         {
             TrainerListItemViewModel? sportViewModel =
                   trainerListItemViewModels.FirstOrDefault(y => y.Trainer.Id == trainer.Id);
@@ -144,7 +146,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             }
         }
 
-        private void _trainerStore_TrainerAdded(Employee trainer)
+        private void _trainerStore_TrainerAdded(emp.Employee trainer)
         {
             AddTrainer(trainer);
         }
@@ -153,7 +155,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         {
             trainerListItemViewModels.Clear();
 
-            foreach (Employee trainer in _employeeStore.Employees)
+            foreach (emp.Employee trainer in _employeeStore.Employees)
             {
                 AddTrainer(trainer);
             }
@@ -173,20 +175,23 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
 
 
 
-        private void AddTrainer(Employee trainer)
+        private void AddTrainer(emp.Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
                 new TrainerListItemViewModel(trainer, _navigatorStore);
             trainerListItemViewModels.Add(itemViewModel);
         }
-        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
+        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore,SportDataStore sportDataStore)
         {
-            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore);
+            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore);
 
             viewModel.LoadTrainerCommand.Execute(null);
 
             return viewModel;
         }
-
+        private AddTrainerViewModel CreateAddTrainerViewModel(NavigationStore navigatorStore, TrainersListViewModel trainersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        {
+            return AddTrainerViewModel.LoadViewModel(navigatorStore, trainersListViewModel, sportDataStore, employeeStore);
+        }
     }
 }

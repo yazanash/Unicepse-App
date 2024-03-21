@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using emp = PlatinumGym.Core.Models.Employee;
 
 namespace PlatinumGymPro.ViewModels.SportsViewModels
 {
@@ -50,7 +51,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         {
             trainerListItemViewModels.Clear();
 
-            foreach (Employee trainer in _trainerStore.Employees.Where(x => x.IsTrainer))
+            foreach (emp.Employee trainer in _trainerStore.Employees.Where(x => x.IsTrainer))
             {
                
                     AddTrainer(trainer);
@@ -62,7 +63,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
                 TrainerList.SingleOrDefault(x=>x.trainer.Id==t.Id)!.IsSelected= true;
             }
         }
-        private void AddTrainer(Employee trainer)
+        private void AddTrainer(emp.Employee trainer)
         {
             
             TrainersListItemViewModel itemViewModel =

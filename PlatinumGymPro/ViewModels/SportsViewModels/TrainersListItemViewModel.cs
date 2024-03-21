@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using emp = PlatinumGym.Core.Models.Employee;
 namespace PlatinumGymPro.ViewModels.SportsViewModels
 {
     public class TrainersListItemViewModel : ViewModelBase
     {
-        public Employee trainer;
+        public emp.Employee trainer;
 
-        public TrainersListItemViewModel(Employee trainer)
+        public TrainersListItemViewModel(emp.Employee trainer)
         {
             this.trainer = trainer;
         }

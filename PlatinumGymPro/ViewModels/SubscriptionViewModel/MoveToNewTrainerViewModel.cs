@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using emp = PlatinumGym.Core.Models.Employee;
 namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
 {
     public class MoveToNewTrainerViewModel : ViewModelBase
@@ -66,7 +66,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             }
         }
         #endregion
-        private void AddTrainer(Employee trainer)
+        private void AddTrainer(emp.Employee trainer)
         {
             SubscriptionTrainerListItem itemViewModel =
                 new SubscriptionTrainerListItem(trainer);
