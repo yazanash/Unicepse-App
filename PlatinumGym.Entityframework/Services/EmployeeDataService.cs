@@ -28,7 +28,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Employee? entity = await context.Set<Employee>().FirstOrDefaultAsync((e) => e.FullName == name);
-            return entity;
+            return entity!;
         }
 
         public async Task<Employee> Create(Employee entity)
@@ -62,7 +62,7 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Employee> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Employee? entity = await context.Set<Employee>().FirstOrDefaultAsync((e) => e.Id == id);
+            Employee? entity = await context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             return entity!;
@@ -72,7 +72,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Employee>? entities = await context.Set<Employee>().ToListAsync();
+                IEnumerable<Employee>? entities = await context.Set<Employee>().AsNoTracking().Include(x=>x.Sports).ToListAsync();
                 return entities;
             }
         }
@@ -82,9 +82,25 @@ namespace PlatinumGym.Entityframework.Services
             Employee existed_employee = await Get(entity.Id);
             if (existed_employee == null)
                 throw new NotExistException();
+            //context.Attach(entity);
+            foreach (Sport sport in entity.Sports!)
+            {
+                context.Attach(sport);
+            }
             context.Set<Employee>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
+        }
+        public async Task<bool> DeleteConnectedSports(int id)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Employee? entity = await context.Set<Employee>().Include(x => x.Sports).FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            entity.Sports!.Clear();
+            context.Set<Employee>().Update(entity!);
+            await context.SaveChangesAsync();
+            return true;
         }
     }
 }

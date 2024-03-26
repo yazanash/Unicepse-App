@@ -132,5 +132,10 @@ namespace PlatinumGymPro.Stores
             }
             
         }
+        public async Task DeleteConnectedSports(int Id)
+        {
+            await _employeeDataService.DeleteConnectedSports(Id);
+
+        }
     }
 }

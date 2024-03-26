@@ -14,34 +14,6 @@
              Background="Transparent"
              FlowDirection="RightToLeft"
                d:DesignHeight="600" d:DesignWidth="1200">
-    <!--<Border CornerRadius="10" Background="#EEE" Padding="10"  >
-        <Grid>
-           
-            <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="1"  Padding="5"  Margin="5">
-                <DockPanel>
-                    <TextBlock Foreground="#C14E00" Text="الرياضات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
-                    <ListBox SelectedItem="{Binding SelectedSportListingItemViewModel}" 
-    ItemsPanel="{DynamicResource ListBoxItemsPanel1}"
-    ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SportList}" >
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="35"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="{Binding SportName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-
-                    </ListBox>
-                </DockPanel>
-            </Border>
-        </Grid>
-
-
-
-    </Border>-->
 
     <UserControl.Resources>
         <con:ErrorsConverter x:Key="conv"/>
@@ -155,7 +127,7 @@
                                    FontSize="18"/>
                                 <!--<TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>-->
                                 <DatePicker Style="{DynamicResource DatePickerStyle1}"
-                                    SelectedDate="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
                                     CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />
                             </StackPanel>

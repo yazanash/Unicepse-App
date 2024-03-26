@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using emp = PlatinumGym.Core.Models.Employee;
 namespace PlatinumGymPro.Commands.TrainersCommands
 {
     public class SubmitTrainerCommand : AsyncCommandBase
@@ -31,7 +31,7 @@ namespace PlatinumGymPro.Commands.TrainersCommands
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            Employee employee = new Employee()
+            emp.Employee employee = new emp.Employee()
             {
                 FullName = _addTrainerViewModel.FullName,
                 Balance = _addTrainerViewModel.Balance,
@@ -52,7 +52,7 @@ namespace PlatinumGymPro.Commands.TrainersCommands
                     employee.Sports!.Add(SportListItem.sport);
             }
             await _employeeStore.Add(employee);
-            navigationService.Navigate();
+            navigationService.ReNavigate();
         }
 
     }

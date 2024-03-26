@@ -7,6 +7,7 @@
                 Background="#ffffff"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.TrainersViewModels"
+              xmlns:evms="clr-namespace:PlatinumGymPro.ViewModels.Employee.TrainersViewModels"
              xmlns:views="clr-namespace:PlatinumGymPro.Views.TrainerViews"
               xmlns:eviews="clr-namespace:PlatinumGymPro.Views.EmployeeViews"
              mc:Ignorable="d" 
@@ -17,6 +18,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type vms:TrainersListViewModel }">
             <eviews:EmployeesListView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type evms:EditTrainerViewModel }">
+            <views:EditTrainerDetailView/>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
