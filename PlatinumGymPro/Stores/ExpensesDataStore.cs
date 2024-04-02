@@ -29,7 +29,20 @@ namespace PlatinumGymPro.Stores
             _initializeLazy = new Lazy<Task>(Initialize);
         }
 
-
+        private Expenses? _selectedExpenses;
+        public Expenses? SelectedExpenses
+        {
+            get
+            {
+                return _selectedExpenses;
+            }
+            set
+            { 
+                _selectedExpenses = value;
+                StateChanged?.Invoke(SelectedExpenses);
+            }
+        }
+        public event Action<Expenses?>? StateChanged;
         public async Task Add(Expenses entity)
         {
             await _expensesDataService.Create(entity);
