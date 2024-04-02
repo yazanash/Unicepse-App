@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using emp = PlatinumGym.Core.Models.Employee;
 namespace PlatinumGymPro.ViewModels.TrainingViewModels
 {
     public class SportSelectListItemViewModel : ViewModelBase
@@ -22,7 +22,7 @@ namespace PlatinumGymPro.ViewModels.TrainingViewModels
 
         public int DaysCount => Sport.DaysCount;
 
-        public List<Employee> TrainerList=>Sport.Trainers?.ToList() ?? new List<Employee>();
+        public List<emp.Employee> TrainerList=>Sport.Trainers?.ToList() ?? new List<emp.Employee>();
         public SportSelectListItemViewModel(Sport sport)
         {
             Sport = sport;

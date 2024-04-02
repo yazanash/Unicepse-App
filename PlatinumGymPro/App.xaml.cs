@@ -56,6 +56,8 @@ namespace PlatinumGymPro
                    services.AddSingleton<EmployeeDataService>();
                    services.AddSingleton<EmployeeStore>();
 
+                   services.AddSingleton<DausesDataService>();
+
                    services.AddSingleton<PaymentDataService>();
                    services.AddSingleton<PaymentDataStore>();
 
@@ -119,9 +121,10 @@ namespace PlatinumGymPro
                 platinumGymDbContext.Database.Migrate();
             }
 
+            //AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
+            //auth.Show();
             MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
             auth.Show();
-
             //MessageBox.Show(System.Environment.CurrentDirectory) ;
             base.OnStartup(e);
         }

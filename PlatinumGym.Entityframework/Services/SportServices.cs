@@ -27,7 +27,7 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Sport?> CheckIfExistByName(string name)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Sport? entity = await context.Set<Sport>().FirstOrDefaultAsync((e) => e.Name == name);
+            Sport? entity = await context.Set<Sport>().AsNoTracking().FirstOrDefaultAsync((e) => e.Name == name);
             return entity;
         }
 
@@ -53,9 +53,9 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                Sport? existed_sport = await CheckIfExistByName(entity.Name!);
-                if (existed_sport != null)
-                    throw new SportConflictException();
+                //Sport? existed_sport = await CheckIfExistByName(entity.Name!);
+                //if (existed_sport != null)
+                //    throw new SportConflictException();
                 foreach (var trainer in entity.Trainers!)
                     context.Attach(trainer);
                 EntityEntry<Sport> CreatedResult = await context.Set<Sport>().AddAsync(entity);
@@ -76,7 +76,7 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<bool> DeleteConnectedTrainers(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Sport? entity = await context.Set<Sport>().Include(x=>x.Trainers).FirstOrDefaultAsync((e) => e.Id == id);
+            Sport? entity = await context.Set<Sport>().AsNoTracking().Include(x=>x.Trainers).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             entity.Trainers!.Clear();
@@ -87,7 +87,7 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Sport> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Sport? entity = await context.Set<Sport>().FirstOrDefaultAsync((e) => e.Id == id);
+            Sport? entity = await context.Set<Sport>().AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             return entity!;
@@ -97,7 +97,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Sport>? entities = await context.Set<Sport>().Include(x => x.Trainers).Where(x=>x.IsActive).ToListAsync();
+                IEnumerable<Sport>? entities = await context.Set<Sport>().AsNoTracking().Include(x => x.Trainers).AsNoTracking().Where(x=>x.IsActive).ToListAsync();
                 return entities;
             }
         }

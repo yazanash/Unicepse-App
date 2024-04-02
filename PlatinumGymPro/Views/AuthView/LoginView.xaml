@@ -97,36 +97,7 @@
         </Style>
 
 
-        <Style x:Key="signinBtn" TargetType="Button">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Width" Value="200"/>
-            <Setter Property="Margin" Value="0 20 0 0"/>
-            <Setter Property="Background" Value="#C8621D"/>
-            <Setter Property="Foreground" Value="#fdfefe"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="25" BorderThickness="1" BorderBrush="#C14E00" Padding="15">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#993300"/>
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsMouseCaptured" Value="True">
-                    <Setter Property="Background" Value="#C14E00"/>
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
+        
         <Style x:Name="closebtn" TargetType="icons:PackIconMaterial">
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -205,16 +176,16 @@
             <Border CornerRadius="10 0 0 10">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#C14E00" Offset="0"/>
-                        <GradientStop Color="#993300" Offset="1"/>
+                        <GradientStop Color="{StaticResource colors.color.primary}" Offset="0"/>
+                        <GradientStop Color="{StaticResource colors.color.secondry}" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
                 <Grid>
                     <Canvas>
-                        <Polygon Points="0,20 230,140 0,270" Fill="#C15E11"/>
-                        <Polygon Points="100,400 200,370 180,450" Fill="#C15E11"/>
-                        <Ellipse Margin="250 400 0 0" Height="40" Width="40" Fill="#C15E11" />
-                        <Ellipse Margin="50 350 0 0" Height="20" Width="20" Fill="#C15E11" />
+                        <Polygon Points="0,20 230,140 0,270" Fill="{StaticResource colors.secondry}"/>
+                        <Polygon Points="100,400 200,370 180,450" Fill="{StaticResource colors.secondry}"/>
+                        <Ellipse Margin="250 400 0 0" Height="40" Width="40" Fill="{StaticResource colors.secondry}" />
+                        <Ellipse Margin="50 350 0 0" Height="20" Width="20" Fill="{StaticResource colors.secondry}" />
                     </Canvas>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="Signup" Style="{StaticResource textTitle}"/>
@@ -227,7 +198,7 @@
 
             <Border Background="#ffffff" CornerRadius="0 10 10 0" Grid.Column="1">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="Welcome Back" Style="{StaticResource textTitle}" Foreground="#C8621D"/>
+                    <TextBlock Text="Welcome Back" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.secondry}"/>
                     <StackPanel Orientation="Horizontal" Margin="0 20 " HorizontalAlignment="Center">
                         <Button Style="{StaticResource circleBtn}">
                             <icons:PackIconMaterial Kind="Facebook" Width="20" Height="20" Foreground="#787878"/>

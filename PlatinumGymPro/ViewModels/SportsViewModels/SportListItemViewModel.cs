@@ -43,7 +43,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
             EditCommand = new NavaigateCommand<EditSportViewModel>(new NavigationService<EditSportViewModel>(_navigationStore, () => CreateEditSportViewModel(_navigationStore, _sportListViewModel, _sportStore, _employeeStore)));
             DeleteCommand = new DeleteSportCommand(_sportStore);
         }
-
+      
         private EditSportViewModel CreateEditSportViewModel(NavigationStore navigationStore, SportListViewModel sportListViewModel, SportDataStore sportStore, EmployeeStore employeeStore)
         {
             return EditSportViewModel.LoadViewModel(navigationStore, sportListViewModel, sportStore, employeeStore);

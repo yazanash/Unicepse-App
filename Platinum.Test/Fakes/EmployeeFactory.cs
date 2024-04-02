@@ -24,7 +24,7 @@ namespace Platinum.Test.Fakes
                    employee.Parcent = fake.Random.Bool();
                    employee.Salary = fake.Random.Bool();
                    employee.SalaryValue = Convert.ToDouble(fake.Commerce.Price(100000, 1000000));
-                   employee.ParcentValue = fake.Random.Number(10, 75);
+                   employee.ParcentValue = 25;
                    employee.IsTrainer = fake.Random.Bool();
                    employee.IsSecrtaria = fake.Random.Bool();
                    if (employee.IsTrainer)

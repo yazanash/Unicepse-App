@@ -28,15 +28,18 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
-                    <Image Source="pack://application:,,,/Resources/Assets/p1.jpg" Margin="0 0 5 0" Width="40" Height="40" VerticalAlignment="Center"/>
-                    <TextBlock Text="نادي بلاتينوم" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Foreground="#C14E00"/>
+                    <Image Source="pack://application:,,,/Resources/Assets/p1.jpg"
+                             RenderOptions.BitmapScalingMode="HighQuality"
+                                                         RenderOptions.EdgeMode="Aliased"
+                           Margin="0 0 5 0" Width="40" Height="40" VerticalAlignment="Center"/>
+                    <TextBlock Text="نادي بلاتينوم" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10" Grid.Column="1">
-                    <TextBlock Text="وصل اشتراك" FontSize="22" VerticalAlignment="Center"  Foreground="#787878"/>
+                    <TextBlock Text="وصل اشتراك" FontSize="22" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10" Grid.Column="2">
-                    <TextBlock Text="رقم الاشتراك :" FontSize="18" VerticalAlignment="Center"  Foreground="#787878"/>
-                    <TextBlock Text="{Binding Id}" FontSize="18" VerticalAlignment="Center"  Foreground="#787878"/>
+                    <TextBlock Text="رقم الاشتراك :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
+                    <TextBlock Text="{Binding Id}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                 </StackPanel>
             </Grid>
                 
@@ -59,7 +62,7 @@
                
                     <!--Account Info-->
                     <StackPanel Margin="10" Grid.Row="0" Grid.Column="0">
-                        <TextBlock Foreground="#787878" Text="الحساب الشخصي" FontWeight="DemiBold" FontSize="18"/>
+                        <TextBlock Foreground="{StaticResource colors.secondry}" Text="الحساب الشخصي" FontWeight="DemiBold" FontSize="18"/>
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -82,7 +85,7 @@
 
                     <!--Sport Info-->
                     <StackPanel Margin="10" Grid.Row="0" Grid.Column="1">
-                        <TextBlock Foreground="#787878" Text="معلومات الرياضة" FontWeight="DemiBold" FontSize="18"/>
+                        <TextBlock Foreground="{StaticResource colors.secondry}" Text="معلومات الرياضة" FontWeight="DemiBold" FontSize="18"/>
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -109,7 +112,7 @@
 
                     <!--Coach Info-->
                     <StackPanel Margin="10" Grid.Row="1" Grid.Column="0">
-                        <TextBlock Foreground="#787878" Text="معلومات المدرب" FontWeight="DemiBold" FontSize="18"/>
+                        <TextBlock Foreground="{StaticResource colors.secondry}" Text="معلومات المدرب" FontWeight="DemiBold" FontSize="18"/>
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -124,7 +127,7 @@
 
                     <!--Subscription Info-->
                     <StackPanel Margin="10" Grid.Row="1" Grid.Column="1">
-                        <TextBlock Foreground="#787878" Text="معلومات الاشتراك" FontWeight="DemiBold" FontSize="18"/>
+                        <TextBlock Foreground="{StaticResource colors.secondry}" Text="معلومات الاشتراك" FontWeight="DemiBold" FontSize="18"/>
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -151,7 +154,7 @@
 
                     <!--Discount Info Info-->
                     <StackPanel  Margin="10" Grid.Row="2" Grid.Column="0">
-                        <TextBlock Foreground="#787878" Text="معلومات الاشتراك" FontWeight="DemiBold" FontSize="18"/>
+                        <TextBlock Foreground="{StaticResource colors.secondry}" Text="معلومات الاشتراك" FontWeight="DemiBold" FontSize="18"/>
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -174,7 +177,7 @@
                    
                 <!--Total Card-->
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1">
-                        <Border Background="#C14E00" CornerRadius="7" Margin="5" Padding="5">
+                        <Border Background="{StaticResource colors.secondry}" CornerRadius="7" Margin="5" Padding="5">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
@@ -198,9 +201,10 @@
                         <!--<TextBlock Foreground="#C14E00" Text="معلومات الدفع"  FontSize="22" FontWeight="Bold"/>-->
 
 
-                        <TextBlock Foreground="#C14E00" Text="الدفعات" FontSize="18" Margin="5" DockPanel.Dock="Top"/>
+                        <TextBlock Foreground="{StaticResource colors.secondry}" Text="الدفعات" FontSize="18" Margin="5" DockPanel.Dock="Top"/>
                         <Grid  Grid.Row="4">
-                            <DataGrid   
+                            <DataGrid  
+                                GridLinesVisibility="All"
                                     FlowDirection="RightToLeft" ItemsSource="{Binding PaymentsList}" 
                                     CanUserReorderColumns="True"
                                         SelectedItem="{Binding SelectedPayment,UpdateSourceTrigger=PropertyChanged}"
@@ -244,10 +248,13 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
-                    <Image Source="pack://application:,,,/Resources/Assets/p1.jpg" Margin="10" Width="30" Height="30" VerticalAlignment="Center"/>
-                    <TextBlock Text="Uniceps" FontSize="25" VerticalAlignment="Center" Foreground="#C14E00"/>
+                    <Image Source="pack://application:,,,/Resources/Assets/Logo.png"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                                                         RenderOptions.EdgeMode="Aliased"  
+                           Margin="10" Width="60" Height="65" VerticalAlignment="Center"/>
+                    <TextBlock Text="Uniceps" FontSize="25" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                 </StackPanel>
-                <StackPanel Orientation="Vertical" Margin="10" Grid.Column="1">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10" Grid.Column="1">
                     <TextBlock Text="تمت طباعة هذا الوصل بواسطة برنامج يونيسيبس لادارة الاندية الرياضية " FontSize="14" VerticalAlignment="Center"  Foreground="#787878"/>
                     <TextBlock Text="UNICEPS جميع الحقوق محفوظة" FontSize="14" VerticalAlignment="Center"  Foreground="#787878"/>
                 </StackPanel>

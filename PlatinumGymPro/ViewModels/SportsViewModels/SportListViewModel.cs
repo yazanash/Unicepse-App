@@ -90,7 +90,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         {
             sportListItemViewModels.Clear();
 
-            foreach (Sport sport in _sportStore.Sports.Where(x=>x.Name!.Contains(obj!)))
+            foreach (Sport sport in _sportStore.Sports.Where(x=>x.Name!.ToLower().Contains(obj!.ToLower())))
             {
                 AddSport(sport);
             }

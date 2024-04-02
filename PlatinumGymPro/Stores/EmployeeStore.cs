@@ -1,5 +1,6 @@
 ﻿using PlatinumGym.Core.Models.Employee;
 using PlatinumGym.Entityframework.Services;
+using PlatinumGymPro.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,17 +22,49 @@ namespace PlatinumGymPro.Stores
         public event Action? Loaded;
         public event Action<Employee>? Updated;
         public event Action<int>? Deleted;
-
+        public event Action<Filter?>? FilterChanged;
 
         private readonly EmployeeDataService _employeeDataService;
+        private readonly DausesDataService _dausesDataService;
         private readonly List<Employee> _employee;
         private readonly Lazy<Task> _initializeLazy;
         public IEnumerable<Employee> Employees => _employee;
-        public EmployeeStore(EmployeeDataService employeeDataService)
+        public EmployeeStore(EmployeeDataService employeeDataService, DausesDataService dausesDataService)
         {
             _employeeDataService = employeeDataService;
-            _employee = new List<Employee>() ;
+            _employee = new List<Employee>();
             _initializeLazy = new Lazy<Task>(Initialize);
+            _dausesDataService = dausesDataService;
+        }
+
+
+        private Employee? _selectedEmployee;
+        public Employee? SelectedEmployee
+        {
+            get
+            {
+                return _selectedEmployee;
+            }
+            set
+            {
+                _selectedEmployee = value;
+                StateChanged?.Invoke(SelectedEmployee);
+            }
+        }
+        public event Action<Employee?>? StateChanged;
+
+        private Filter? _selectedFilter;
+        public Filter? SelectedFilter
+        {
+            get
+            {
+                return _selectedFilter;
+            }
+            set
+            {
+                _selectedFilter = value;
+                FilterChanged?.Invoke(_selectedFilter);
+            }
         }
 
         public async Task Add(Employee entity)
@@ -100,6 +133,11 @@ namespace PlatinumGymPro.Stores
                     break;
             }
             
+        }
+        public async Task DeleteConnectedSports(int Id)
+        {
+            await _employeeDataService.DeleteConnectedSports(Id);
+
         }
     }
 }
