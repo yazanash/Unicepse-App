@@ -28,7 +28,7 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Subscription> CheckIfSubscriptionExist(Subscription subscription)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Subscription? entity = await context.Set<Subscription>().FirstOrDefaultAsync((e) => e.Player!.Id == subscription.Player!.Id &&
+            Subscription? entity = await context.Set<Subscription>().AsNoTracking().FirstOrDefaultAsync((e) => e.Player!.Id == subscription.Player!.Id &&
             e.Sport!.Id == subscription.Sport!.Id && e.EndDate >= subscription.RollDate);
             return entity!;
         }
@@ -64,7 +64,11 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Subscription> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Subscription? entity = await context.Set<Subscription>().Include(e => e.Sport).Include(e => e.Player).Include(x => x.Payments).Include(e => e.Trainer).FirstOrDefaultAsync((e) => e.Id == id);
+            Subscription? entity = await context.Set<Subscription>().Include(e => e.Sport).AsNoTracking()
+                .Include(e => e.Player).AsNoTracking()
+                .Include(x => x.Payments).AsNoTracking()
+                .Include(e => e.Trainer).AsNoTracking()
+                .FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             return entity!;
@@ -75,19 +79,30 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.Player!.Id == player.Id).Include(x => x.Trainer)
-                    .Include(x => x.Player).Include(x=>x.Sport!.Trainers)
-                    .Include(x => x.Sport).Include(x=>x.Payments).ToListAsync();
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.Player!.Id == player.Id).Include(x => x.Trainer)
+                    .Include(x => x.Player).AsNoTracking().Include(x=>x.Sport!.Trainers).AsNoTracking()
+                    .Include(x => x.Sport).AsNoTracking().Include(x=>x.Payments).AsNoTracking().ToListAsync();
                 return entities;
             }
         }
+        public async Task<IEnumerable<Subscription>> GetAll(Employee trainer)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.Trainer!.Id == trainer.Id).Include(x => x.Trainer).AsNoTracking()
+                    .Include(x => x.Player).AsNoTracking().Include(x => x.Sport!.Trainers).AsNoTracking()
+                    .Include(x => x.Sport).AsNoTracking().Include(x => x.Payments).ToListAsync();
+                return entities;
+            }
+        }
+
         public async Task<IEnumerable<Subscription>> GetAll()
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Include(x => x.Trainer)
-                    .Include(x => x.Player)
-                    .Include(x => x.Sport).ToListAsync();
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Include(x => x.Trainer).AsNoTracking()
+                    .Include(x => x.Player).AsNoTracking()
+                    .Include(x => x.Sport).AsNoTracking().ToListAsync();
                 return entities;
             }
         }
@@ -116,10 +131,19 @@ namespace PlatinumGym.Entityframework.Services
                 throw new NotExistException();
             if (existed_subscription.IsMoved)
                 throw new MovedBeforeException();
+            foreach (var t in entity.Sport!.Trainers!)
+            {
+                context.Entry(t).State = EntityState.Detached;
+
+            }
+           
+            context.Entry(entity.Sport!).State = EntityState.Unchanged;
+            context.Entry(trainer).State = EntityState.Unchanged;
             context.Attach(entity.Sport!);
             context.Attach(entity.Player!);
             context.Attach(trainer);
-            if(entity.Trainer != null)
+           
+            if (entity.Trainer != null)
             entity.PrevTrainer_Id = entity.Trainer!.Id;
             entity.Trainer = trainer;
             entity.IsMoved = true;

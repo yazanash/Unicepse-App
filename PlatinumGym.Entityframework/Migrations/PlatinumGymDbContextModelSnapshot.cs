@@ -355,8 +355,14 @@ namespace PlatinumGymPro.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CoverDays")
+                        .HasColumnType("int");
+
                     b.Property<string>("Des")
                         .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("PayDate")
                         .HasColumnType("datetime2");
@@ -372,6 +378,9 @@ namespace PlatinumGymPro.Migrations
 
                     b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

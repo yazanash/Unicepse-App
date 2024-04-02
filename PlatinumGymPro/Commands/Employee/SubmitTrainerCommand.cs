@@ -9,19 +9,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using emp = PlatinumGym.Core.Models.Employee;
 namespace PlatinumGymPro.Commands.TrainersCommands
 {
     public class SubmitTrainerCommand : AsyncCommandBase
     {
         private readonly NavigationService<TrainersListViewModel> navigationService;
-        //private readonly TrainerStore _trinerStore;
+        private readonly EmployeeStore _employeeStore;
         private AddTrainerViewModel _addTrainerViewModel;
 
-        public SubmitTrainerCommand(NavigationService<TrainersListViewModel> navigationService,  AddTrainerViewModel addTrainerViewModel)
+        public SubmitTrainerCommand(NavigationService<TrainersListViewModel> navigationService, AddTrainerViewModel addTrainerViewModel, EmployeeStore employeeStore)
         {
             this.navigationService = navigationService;
-            //_trinerStore = trinerStore;
+            _employeeStore = employeeStore;
             _addTrainerViewModel = addTrainerViewModel;
         }
 
@@ -31,7 +31,7 @@ namespace PlatinumGymPro.Commands.TrainersCommands
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            Employee employee = new Employee()
+            emp.Employee employee = new emp.Employee()
             {
                 FullName = _addTrainerViewModel.FullName,
                 Balance = _addTrainerViewModel.Balance,
@@ -46,8 +46,13 @@ namespace PlatinumGymPro.Commands.TrainersCommands
                 StartDate = _addTrainerViewModel.StartDate,
                 Position = _addTrainerViewModel.Position,
             };
-            //await _trinerStore.Add(employee);
-            navigationService.Navigate();
+            foreach (var SportListItem in _addTrainerViewModel.SportList)
+            {
+                if (SportListItem.IsSelected)
+                    employee.Sports!.Add(SportListItem.sport);
+            }
+            await _employeeStore.Add(employee);
+            navigationService.ReNavigate();
         }
 
     }

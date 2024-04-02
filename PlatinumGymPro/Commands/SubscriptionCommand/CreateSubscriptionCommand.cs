@@ -39,6 +39,7 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
                 Player = _playerDataStore.SelectedPlayer!.Player,
                 RollDate = _addSubscriptionViewModel.SubscribeDate,
                 Price = _subscriptionDataStore.SelectedSport!.Price,
+                LastPaid = _addSubscriptionViewModel.SubscribeDate,
                 /// offer info
                 OfferValue = _addSubscriptionViewModel.OfferValue,
                 OfferDes = _addSubscriptionViewModel.Offer,

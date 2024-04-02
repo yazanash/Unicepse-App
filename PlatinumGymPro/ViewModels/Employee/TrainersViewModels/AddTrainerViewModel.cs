@@ -1,10 +1,15 @@
-﻿using PlatinumGymPro.Commands;
+﻿using PlatinumGym.Core.Models.Sport;
+using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.SubscriptionCommand;
 using PlatinumGymPro.Commands.TrainersCommands;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
+using PlatinumGymPro.ViewModels.Employee.TrainersViewModels;
+using PlatinumGymPro.ViewModels.SportsViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -15,18 +20,39 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
 {
     public class AddTrainerViewModel : ViewModelBase
     {
-        //private readonly TrainerStore _trinerStore;
+        private readonly ObservableCollection<SportTrainerListItemViewModel> _sportListItemViewModels;
+        private readonly SportDataStore  _sportDataStore ;
         private readonly NavigationStore _navigationStore;
         private readonly TrainersListViewModel _trinersListViewModel;
-
-        public AddTrainerViewModel( NavigationStore navigationStore, TrainersListViewModel trinersListViewModel)
+        private readonly EmployeeStore _employeeStore;
+        public IEnumerable<SportTrainerListItemViewModel> SportList => _sportListItemViewModels;
+        public AddTrainerViewModel(NavigationStore navigationStore, TrainersListViewModel trinersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
-            //_trinerStore = trinerStore;
+            _sportDataStore = sportDataStore;
             _navigationStore = navigationStore;
             _trinersListViewModel = trinersListViewModel;
+            _employeeStore = employeeStore;
+            _sportListItemViewModels = new();
+            _sportDataStore.Loaded += _sportDataStore_Loaded;
             CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
-            SubmitCommand = new SubmitTrainerCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), this);
+            SubmitCommand = new SubmitTrainerCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), this,_employeeStore);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
+            LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore); 
+        }
+
+        private void _sportDataStore_Loaded()
+        {
+            _sportListItemViewModels.Clear();
+            foreach(var sport in _sportDataStore.Sports)
+            {
+                AddSport(sport);
+            }
+        }
+
+        private void AddSport(Sport sport)
+        {
+            SportTrainerListItemViewModel sportListItemViewModel = new(sport);
+            _sportListItemViewModels.Add(sportListItemViewModel);
         }
 
         private string? _fullName;
@@ -159,7 +185,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
-
+        public ICommand LoadSportsCommand { get; }
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();
@@ -167,6 +193,14 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public IEnumerable? GetErrors(string? propertyName)
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
+        }
+        public static AddTrainerViewModel LoadViewModel(NavigationStore navigatorStore, TrainersListViewModel trainersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        {
+            AddTrainerViewModel viewModel = new AddTrainerViewModel(navigatorStore, trainersListViewModel, sportDataStore, employeeStore);
+
+            viewModel.LoadSportsCommand.Execute(null);
+
+            return viewModel;
         }
     }
 }

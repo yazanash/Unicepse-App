@@ -31,7 +31,7 @@
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
                         <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
-                        <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <TextBlock Text="الرياضات / تسجيل رياضة" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
                     </StackPanel>
 
                 </DockPanel>

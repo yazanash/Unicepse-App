@@ -15,8 +15,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15" MaxHeight="30" LineStackingStrategy="BlockLineHeight" TextWrapping="WrapWithOverflow" TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="#C14E00"/>
-            <TextBlock Text="{Binding Price}" Grid.Row="1" FontSize="12" FontWeight="SemiBold" Foreground="#C14E00"/>
+            <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15" MaxHeight="30" LineStackingStrategy="BlockLineHeight" TextWrapping="WrapWithOverflow" TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="{StaticResource colors.primary}"/>
+            <TextBlock Text="{Binding Price}" Grid.Row="1" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource colors.primary}"/>
         </Grid>
     </Border>
 </UserControl>

@@ -10,58 +10,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using PlatinumGymPro.ViewModels.PlayersViewModels;
+using emp = PlatinumGym.Core.Models.Employee;
 namespace PlatinumGymPro.ViewModels.TrainersViewModels
 {
-    public class TrainersListViewModel : ViewModelBase
+    public class TrainersListViewModel : ListingViewModelBase
     {
 
         private readonly ObservableCollection<TrainerListItemViewModel> trainerListItemViewModels;
-
+        private readonly ObservableCollection<FiltersItemViewModel> filtersItemViewModel;
         private NavigationStore _navigatorStore;
         private EmployeeStore _employeeStore;
-
+        private SportDataStore _sportDataStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
-
+        public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public ICommand AddTrainerCommand { get; }
         public ICommand LoadTrainerCommand { get; }
-        private bool _isLoading;
-        public bool IsLoading
+        public FiltersItemViewModel? SelectedFilter
         {
             get
             {
-                return _isLoading;
+                return filtersItemViewModel
+                    .FirstOrDefault(y => y?.Filter == _employeeStore.SelectedFilter);
             }
             set
             {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
+                _employeeStore.SelectedFilter = value?.Filter;
+
             }
         }
-
-        private string? _errorMessage;
-        public string? ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-                OnPropertyChanged(nameof(HasErrorMessage));
-            }
-        }
-
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
-
-        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
+        public SearchBoxViewModel SearchBox { get; set; }
+        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
+            _sportDataStore = sportDataStore;
+            _subscriptionDataStore = subscriptionDataStore;
             LoadTrainerCommand = new LoadTrainersCommand(_employeeStore, this);
-            AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => new AddTrainerViewModel(navigatorStore, this)));
+            AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => CreateAddTrainerViewModel(navigatorStore, this, _sportDataStore, _employeeStore)));
             trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
 
 
@@ -70,7 +57,74 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             _employeeStore.Created += _trainerStore_TrainerAdded;
             _employeeStore.Updated += _trainerStore_TrainerUpdated;
             _employeeStore.Deleted += _trainerStore_TrainerDeleted;
+            SearchBox = new SearchBoxViewModel();
+            SearchBox.SearchedText += SearchBox_SearchedText;
 
+
+            filtersItemViewModel = new();
+
+            filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.All, 1, "الكل"));
+            filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.Trainer, 2, "المدربين"));
+            filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.Secretary, 3, "السكرتارية"));
+            filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.Employee, 3, "الموظفين"));
+
+            _employeeStore.FilterChanged += _employeeStore_FilterChanged;
+
+        }
+
+        private void _employeeStore_FilterChanged(Enums.Filter? filter)
+        {
+
+            switch (filter)
+            {
+                case Enums.Filter.All:
+                    LoadEmployees(_employeeStore.Employees);
+                    break;
+                case Enums.Filter.Trainer:
+                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsTrainer == true));
+                    break;
+                case Enums.Filter.Secretary:
+                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsSecrtaria == true));
+                    break;
+                case Enums.Filter.Employee:
+                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsSecrtaria == false && x.IsTrainer == false));
+                    break;
+
+
+            }
+        }
+        void LoadEmployees(IEnumerable<emp.Employee> employees)
+        {
+            trainerListItemViewModels.Clear();
+
+            foreach (emp.Employee employee in employees)
+            {
+                AddTrainer(employee);
+            }
+
+
+        }
+        public TrainerListItemViewModel? SelectedEmployee
+        {
+            get
+            {
+                return TrainerList
+                    .FirstOrDefault(y => y?.Trainer == _employeeStore.SelectedEmployee);
+            }
+            set
+            {
+                _employeeStore.SelectedEmployee = value?.Trainer;
+
+            }
+        }
+        private void SearchBox_SearchedText(string? obj)
+        {
+            trainerListItemViewModels.Clear();
+
+            foreach (emp.Employee employee in _employeeStore.Employees.Where(x => x.FullName!.ToLower().Contains(obj!.ToLower())))
+            {
+                AddTrainer(employee);
+            }
         }
 
         private void _trainerStore_TrainerDeleted(int id)
@@ -83,7 +137,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             }
         }
 
-        private void _trainerStore_TrainerUpdated(Employee trainer)
+        private void _trainerStore_TrainerUpdated(emp.Employee trainer)
         {
             TrainerListItemViewModel? sportViewModel =
                   trainerListItemViewModels.FirstOrDefault(y => y.Trainer.Id == trainer.Id);
@@ -94,7 +148,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             }
         }
 
-        private void _trainerStore_TrainerAdded(Employee trainer)
+        private void _trainerStore_TrainerAdded(emp.Employee trainer)
         {
             AddTrainer(trainer);
         }
@@ -103,7 +157,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         {
             trainerListItemViewModels.Clear();
 
-            foreach (Employee trainer in _employeeStore.Employees)
+            foreach (emp.Employee trainer in _employeeStore.Employees)
             {
                 AddTrainer(trainer);
             }
@@ -123,20 +177,23 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
 
 
 
-        private void AddTrainer(Employee trainer)
+        private void AddTrainer(emp.Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer, _navigatorStore);
+                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this,_subscriptionDataStore);
             trainerListItemViewModels.Add(itemViewModel);
         }
-        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
+        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore,SubscriptionDataStore subscriptionDataStore)
         {
-            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore);
+            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore,subscriptionDataStore);
 
             viewModel.LoadTrainerCommand.Execute(null);
 
             return viewModel;
         }
-
+        private AddTrainerViewModel CreateAddTrainerViewModel(NavigationStore navigatorStore, TrainersListViewModel trainersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        {
+            return AddTrainerViewModel.LoadViewModel(navigatorStore, trainersListViewModel, sportDataStore, employeeStore);
+        }
     }
 }

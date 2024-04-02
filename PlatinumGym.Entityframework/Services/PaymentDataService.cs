@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PlatinumGym.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using PlatinumGym.Core.Models.Player;
+using PlatinumGym.Core.Models.Employee;
 
 namespace PlatinumGym.Entityframework.Services
 {
@@ -28,6 +29,9 @@ namespace PlatinumGym.Entityframework.Services
             context.Attach(entity.Subscription!);
             //context.Attach(entity.Subscription!.Player!);
             //context.tity.Player!);
+            double dayPrice = entity.Subscription!.PriceAfterOffer / entity.Subscription!.DaysCount;
+            entity.CoverDays = (int)(entity.PaymentValue / dayPrice);
+            entity.To = entity.From.AddDays(entity.CoverDays);
             EntityEntry<PlayerPayment> CreatedResult = await context.Set<PlayerPayment>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;
@@ -47,8 +51,8 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<PlayerPayment> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            PlayerPayment? entity = await context.Set<PlayerPayment>().Include(x=>x.Player)
-                .Include(x=>x.Subscription).FirstOrDefaultAsync((e) => e.Id == id);
+            PlayerPayment? entity = await context.Set<PlayerPayment>().Include(x=>x.Player).AsNoTracking()
+                .Include(x=>x.Subscription).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             return entity!;
@@ -58,8 +62,8 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player)
-                    .Include(x=>x.Subscription)
+                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
+                    .Include(x=>x.Subscription).AsNoTracking()
                     .ToListAsync();
                 return entities;
             }
@@ -68,11 +72,38 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player)
-                    .Include(x => x.Subscription).Include(x=>x.Subscription!.Sport).Include(x => x.Subscription!.Trainer).Where(x => x.Player!.Id == player.Id)
+                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
+                    .Include(x => x.Subscription).AsNoTracking().Include(x=>x.Subscription!.Sport).AsNoTracking().Include(x => x.Subscription!.Trainer).AsNoTracking().Where(x => x.Player!.Id == player.Id).AsNoTracking()
                     .ToListAsync();
                 return entities;
             }
+        }
+        public async Task<IEnumerable<PlayerPayment>> GetTrainerPayments(Employee trainer,DateTime date)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
+                    .Include(x => x.Subscription).AsNoTracking()
+                    .Include(x => x.Subscription!.Sport).AsNoTracking()
+                    .Include(x => x.Subscription!.Trainer).AsNoTracking()
+                    .Where(x => x.Subscription!.Trainer!.Id == trainer.Id &&
+                    ( 
+                    x.PayDate.Month==date.Month &&x.PayDate.Year==date.Year ||
+                    x.To.Month == date.Month && x.To.Year == date.Year
+                    )
+                    ).AsNoTracking()
+                    .ToListAsync();
+                return entities;
+            }
+        }
+
+        public async Task<Employee> GetPreviousTrainer(int id)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Employee? entity = await context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
+            if (entity == null)
+                throw new NotExistException();
+            return entity!;
         }
         public async Task<PlayerPayment> Update(PlayerPayment entity)
         {

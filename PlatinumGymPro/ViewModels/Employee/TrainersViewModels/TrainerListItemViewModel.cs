@@ -1,18 +1,25 @@
 ﻿using PlatinumGym.Core.Models.Employee;
+using PlatinumGymPro.Commands;
+using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
+using PlatinumGymPro.ViewModels.Employee.TrainersViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using emp = PlatinumGym.Core.Models.Employee;
 
 namespace PlatinumGymPro.ViewModels.TrainersViewModels
 {
-    public class TrainerListItemViewModel : ViewModelBase 
+    public class TrainerListItemViewModel : ViewModelBase
     {
-        public  Employee Trainer;
-        //private readonly TrainerStore _trainerStore;
+        public emp.Employee Trainer;
+        private readonly EmployeeStore _employeeStore;
+        private readonly SportDataStore _sportDataStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly TrainersListViewModel  _trainersListViewModel;
         private readonly NavigationStore _navigationStore;
         public int Id => Trainer.Id;
         public string? FullName => Trainer.FullName;
@@ -21,19 +28,29 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public string? Phone => Trainer.Phone;
         public int BirthDate => Trainer.BirthDate;
         public string? Position => Trainer.Position;
-        
+
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public TrainerListItemViewModel(Employee trainer,  NavigationStore navigationStore)
+        public TrainerListItemViewModel(emp.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, SubscriptionDataStore subscriptionDataStore)
         {
             Trainer = trainer;
+            _employeeStore = employeeStore;
+            _sportDataStore = sportDataStore;
+            _trainersListViewModel = trainersListViewModel;
+            _subscriptionDataStore = subscriptionDataStore;
 
-            //_trainerStore = trainerStore;
             _navigationStore = navigationStore;
+            EditCommand = new NavaigateCommand<EditTrainerViewModel>(new NavigationService<EditTrainerViewModel>(_navigationStore, () => CreateEditTrainerViewModel(_navigationStore, _trainersListViewModel, sportDataStore, employeeStore)));
+            DeleteCommand = new NavaigateCommand<TrainerDausesListViewModel>(new NavigationService<TrainerDausesListViewModel>(_navigationStore, () => new TrainerDausesListViewModel(_employeeStore,_subscriptionDataStore)));
         }
 
-        public void Update(Employee trainer)
+        private EditTrainerViewModel CreateEditTrainerViewModel(NavigationStore navigationStore, TrainersListViewModel trainersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        {
+            return EditTrainerViewModel.LoadViewModel(navigationStore, trainersListViewModel, sportDataStore, employeeStore);
+        }
+
+        public void Update(emp.Employee trainer)
         {
             this.Trainer = trainer;
 

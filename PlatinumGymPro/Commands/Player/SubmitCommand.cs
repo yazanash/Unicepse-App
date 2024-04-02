@@ -58,7 +58,7 @@ namespace PlatinumGymPro.Commands
         public override async Task ExecuteAsync(object? parameter)
         {
             _addPlayerViewModel.Submited = false;
-              PlatinumGym.Core.Models.Player.Player player = new ()
+            PlatinumGym.Core.Models.Player.Player player = new()
             {
                 FullName = _addPlayerViewModel.FullName,
                 BirthDate = _addPlayerViewModel.BirthDate,
@@ -68,6 +68,7 @@ namespace PlatinumGymPro.Commands
                 SubscribeDate = _addPlayerViewModel.SubscribeDate,
                 SubscribeEndDate = _addPlayerViewModel.SubscribeDate.AddDays(30),
                 Weight = _addPlayerViewModel.Weight,
+                IsSubscribed = true
             };
             await _playerStore.AddPlayer(player);
             _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore,_paymentDataStore, _metricDataStore, _routineDataStore, _PlayerListViewModel);
