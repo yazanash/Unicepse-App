@@ -25,7 +25,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <!--<Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
 
 
                 <Grid>
@@ -35,8 +35,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <DatePickerTextBox Grid.Column="0"/>
-                    <DatePicker Grid.Column="1"/>
+                    <TextBlock Text="المصاريف"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.secondry}" FontSize="18" DockPanel.Dock="Left"/>
+
                     <Grid Grid.Column="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -44,7 +44,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button  Grid.Column="0" Margin="5 0" FlowDirection="LeftToRight" Command="{Binding AddSportCommand}" Style="{StaticResource AddBtn}">
+                        <Button  Grid.Column="0" Margin="5 0" FlowDirection="LeftToRight" Command="{Binding AddExpensesCommand}" Style="{StaticResource AddBtn}">
                             <StackPanel Orientation="Horizontal">
 
                                 <TextBlock Text="أضافة مصروف" />
@@ -55,28 +55,25 @@
                                        VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Grid.Column="1" Grid.Row="1" Command="{Binding AddPlayerCommand}" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
+                        <!--<Button Grid.Column="1" Grid.Row="1" Command="{Binding AddPlayerCommand}" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
 
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="FileExcel"/>
                             </StackPanel>
-                        </Button>
-                        <Button Grid.Column="2" Grid.Row="1" Command="{Binding AddPlayerCommand}"  FlowDirection="LeftToRight" Margin="5 0" Width="50"  Style="{StaticResource AddBtn}">
+                        </Button>-->
+                        <!--<Button Grid.Column="2" Grid.Row="1" Command="{Binding AddPlayerCommand}"  FlowDirection="LeftToRight" Margin="5 0" Width="50"  Style="{StaticResource AddBtn}">
 
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="Printer"/>
                             </StackPanel>
-                        </Button>
+                        </Button>-->
                     </Grid>
 
 
 
                 </Grid>
 
-            </Border>-->
-
-
-            <nav:HorizontalNav/>
+            </Border>
 
             <Border  Background="#FFF" CornerRadius="20" Grid.Row="4" Margin="5 10" Padding="5">
                 <Grid  Grid.Row="3">

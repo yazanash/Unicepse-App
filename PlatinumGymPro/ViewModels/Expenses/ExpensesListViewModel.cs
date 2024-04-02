@@ -1,4 +1,6 @@
-﻿using PlatinumGymPro.Commands.ExpensesCommands;
+﻿using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.ExpensesCommands;
+using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using Exp = PlatinumGym.Core.Models.Expenses ;
 
 namespace PlatinumGymPro.ViewModels.Expenses
 {
-    public class ExpensesListViewModel : ViewModelBase
+    public class ExpensesListViewModel : ListingViewModelBase
     {
         private readonly NavigationStore _navigatorStore;
         private readonly ExpensesDataStore _expensesStore;
@@ -31,6 +33,7 @@ namespace PlatinumGymPro.ViewModels.Expenses
             _expensesStore.Created += _expensesStore_Created;
             _expensesStore.Updated += _expensesStore_Updated;
             _expensesStore.Deleted += _expensesStore_Deleted;
+            AddExpensesCommand = new NavaigateCommand<AddExpenseViewModel>(new NavigationService<AddExpenseViewModel>(_navigatorStore, () => new AddExpenseViewModel( _expensesStore, _navigatorStore,this)));
         }
 
         private void _expensesStore_Deleted(int obj)
