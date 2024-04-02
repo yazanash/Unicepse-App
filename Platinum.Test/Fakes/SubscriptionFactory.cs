@@ -20,17 +20,18 @@ namespace Platinum.Test.Fakes
               .Rules((fake, subscription) =>
               {
                   subscription.Sport = sport;
+                  subscription.DaysCount = sport.DaysCount;
                   subscription.Player = player;
                   subscription.Trainer = trainer;
                   subscription.Price = sport.Price;
                   subscription.PaidValue = 0;
                   subscription.PriceAfterOffer = sport.Price;
-                  subscription.RollDate = DateTime.Now;
+                  subscription.RollDate = DateTime.Now.AddDays(-20);
                   subscription.RestValue = 0;
-                  subscription.PrivatePrice = Convert.ToDouble(fake.Commerce.Price());
+                  subscription.PrivatePrice =0;
                   subscription.OfferValue = 0;
-                  subscription.OfferDes = fake.Lorem.Paragraph();
-                  subscription.LastPaid = DateTime.Now;
+                  subscription.OfferDes = "";
+                  subscription.LastPaid = subscription.RollDate;
                   subscription.EndDate = subscription.RollDate.AddDays(sport.DaysCount);
                   subscription.IsPaid = false;
 

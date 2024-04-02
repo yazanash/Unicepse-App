@@ -16,8 +16,9 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
     public class TrainerListItemViewModel : ViewModelBase
     {
         public emp.Employee Trainer;
-        private readonly EmployeeStore employeeStore;
-        private readonly SportDataStore sportDataStore;
+        private readonly EmployeeStore _employeeStore;
+        private readonly SportDataStore _sportDataStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly TrainersListViewModel  _trainersListViewModel;
         private readonly NavigationStore _navigationStore;
         public int Id => Trainer.Id;
@@ -31,14 +32,17 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public TrainerListItemViewModel(emp.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel)
+        public TrainerListItemViewModel(emp.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, SubscriptionDataStore subscriptionDataStore)
         {
             Trainer = trainer;
-            this.employeeStore = employeeStore;
-            this.sportDataStore = sportDataStore;
+            _employeeStore = employeeStore;
+            _sportDataStore = sportDataStore;
             _trainersListViewModel = trainersListViewModel;
+            _subscriptionDataStore = subscriptionDataStore;
+
             _navigationStore = navigationStore;
             EditCommand = new NavaigateCommand<EditTrainerViewModel>(new NavigationService<EditTrainerViewModel>(_navigationStore, () => CreateEditTrainerViewModel(_navigationStore, _trainersListViewModel, sportDataStore, employeeStore)));
+            DeleteCommand = new NavaigateCommand<TrainerDausesListViewModel>(new NavigationService<TrainerDausesListViewModel>(_navigationStore, () => new TrainerDausesListViewModel(_employeeStore,_subscriptionDataStore)));
         }
 
         private EditTrainerViewModel CreateEditTrainerViewModel(NavigationStore navigationStore, TrainersListViewModel trainersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)

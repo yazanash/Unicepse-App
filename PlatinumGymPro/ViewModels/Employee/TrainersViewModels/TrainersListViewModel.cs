@@ -21,7 +21,8 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private readonly ObservableCollection<FiltersItemViewModel> filtersItemViewModel;
         private NavigationStore _navigatorStore;
         private EmployeeStore _employeeStore;
-        private SportDataStore  _sportDataStore;
+        private SportDataStore _sportDataStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public ICommand AddTrainerCommand { get; }
@@ -40,14 +41,14 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             }
         }
         public SearchBoxViewModel SearchBox { get; set; }
-        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore)
+        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
             _sportDataStore = sportDataStore;
-
+            _subscriptionDataStore = subscriptionDataStore;
             LoadTrainerCommand = new LoadTrainersCommand(_employeeStore, this);
-            AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => CreateAddTrainerViewModel(navigatorStore, this,_sportDataStore, _employeeStore)));
+            AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => CreateAddTrainerViewModel(navigatorStore, this, _sportDataStore, _employeeStore)));
             trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
 
 
@@ -68,11 +69,12 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.Employee, 3, "الموظفين"));
 
             _employeeStore.FilterChanged += _employeeStore_FilterChanged;
+
         }
 
         private void _employeeStore_FilterChanged(Enums.Filter? filter)
         {
-           
+
             switch (filter)
             {
                 case Enums.Filter.All:
@@ -85,21 +87,21 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
                     LoadEmployees(_employeeStore.Employees.Where(x => x.IsSecrtaria == true));
                     break;
                 case Enums.Filter.Employee:
-                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsSecrtaria == false&& x.IsTrainer == false));
+                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsSecrtaria == false && x.IsTrainer == false));
                     break;
-              
+
 
             }
         }
         void LoadEmployees(IEnumerable<emp.Employee> employees)
         {
             trainerListItemViewModels.Clear();
-          
+
             foreach (emp.Employee employee in employees)
             {
                 AddTrainer(employee);
             }
-           
+
 
         }
         public TrainerListItemViewModel? SelectedEmployee
@@ -178,12 +180,12 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private void AddTrainer(emp.Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer, _navigatorStore,_employeeStore,_sportDataStore,this);
+                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this,_subscriptionDataStore);
             trainerListItemViewModels.Add(itemViewModel);
         }
-        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore,SportDataStore sportDataStore)
+        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore,SubscriptionDataStore subscriptionDataStore)
         {
-            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore);
+            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore,subscriptionDataStore);
 
             viewModel.LoadTrainerCommand.Execute(null);
 

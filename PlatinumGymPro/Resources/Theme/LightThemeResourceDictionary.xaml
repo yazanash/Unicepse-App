@@ -1,8 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Color x:Key="primary_color">#AABBCC</Color>
-    <Color x:Key="seconry_color">#AABBCC</Color>
-    <Color x:Key="app_background_color">#AABBCC</Color>
-    <Color x:Key="items_background_color">#AABBCC</Color>
-    <Color x:Key="white_foreground_color">#ffffff</Color>
+  
+    
+    
+    
+    
+    
+    
+    
+    
 </ResourceDictionary>

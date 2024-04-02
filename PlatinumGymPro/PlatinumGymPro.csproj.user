@@ -64,6 +64,9 @@
     <Compile Update="utlis\Components\SubscriptionDetailsCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\SubscriptionForTrainerItem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\TrainerCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -100,6 +103,9 @@
     <Compile Update="Views\EmployeeViews\EmployeesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\EmployeeViews\TrainerDuesesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Expenses\ExpensesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -113,6 +119,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\TrainerPlayerSubscriptionDausesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\RoutineViews\AddRoutineView.xaml.cs">
@@ -204,6 +213,9 @@
     <Page Update="utlis\Components\SubscriptionDetailsCard.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="utlis\Components\SubscriptionForTrainerItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="utlis\Components\TrainerCard.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -228,6 +240,51 @@
     <Page Update="utlis\Dictionaries\CalendarStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="utlis\Dictionaries\DataTemplate\DataTemplateResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\MetricItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\PaymentInvoiceItemResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\RoutineItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\SportItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\SubscriptionItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\TrainerItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\PagesStyle\LoginPageResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\ButtonsStyleResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\CalendarStyleResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\DataGridResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\DropDownResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\InputControlsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\ListViewResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\ScrollViewerResouceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="utlis\Pages\PlayerRoutinePrintView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -246,6 +303,9 @@
     <Page Update="Views\EmployeeViews\EmployeesListView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\EmployeeViews\TrainerDuesesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Expenses\ExpensesView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -259,6 +319,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayerViews\PlayerMainPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerViews\TrainerPlayerSubscriptionDausesListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineViews\AddRoutineView.xaml">

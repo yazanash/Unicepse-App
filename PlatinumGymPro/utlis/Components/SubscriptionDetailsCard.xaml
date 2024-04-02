@@ -11,7 +11,7 @@
 
     <Border   Background="#fff" CornerRadius="10" Padding="5"  Margin="5">
         <DockPanel >
-            <TextBlock FontSize="18"  Text="معلومات الاشتراك" Foreground="#C14E00" DockPanel.Dock="Top"/>
+            <TextBlock FontSize="18"  Text="معلومات الاشتراك" Foreground="{StaticResource colors.primary}" DockPanel.Dock="Top"/>
             <Separator DockPanel.Dock="Top" Foreground="#aaa" Margin="10 5"/>
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="{Binding SportName,UpdateSourceTrigger=PropertyChanged}" Foreground="#993300"  FontSize="18" FontWeight="SemiBold" Margin="5" />

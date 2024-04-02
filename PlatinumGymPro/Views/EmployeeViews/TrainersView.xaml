@@ -22,6 +22,9 @@
         <DataTemplate DataType="{x:Type evms:EditTrainerViewModel }">
             <views:EditTrainerDetailView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type evms:TrainerDausesListViewModel }">
+            <eviews:TrainerDuesesView/>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}"/>

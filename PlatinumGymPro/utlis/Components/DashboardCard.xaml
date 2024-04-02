@@ -7,6 +7,7 @@
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              x:Name="DashCard"
              mc:Ignorable="d" 
+             FlowDirection="LeftToRight"
            >
 
     <Border Background="{Binding ElementName=DashCard, Path=BackColor}" CornerRadius="10" Padding="10 5" Margin="5">
@@ -14,17 +15,17 @@
             <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
         </Border.Effect>
         <StackPanel>
-            <TextBlock Text="{Binding ElementName=DashCard, Path=Title}" Foreground="#C14E00" FontSize="24" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding ElementName=DashCard, Path=Title}" Foreground="{StaticResource colors.foreground}" FontSize="24" HorizontalAlignment="Right"/>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=DashCard, Path=Money}" FontSize="28" Foreground="#333" />
+                <TextBlock Text="{Binding ElementName=DashCard, Path=Money}" FontSize="28" Foreground="{StaticResource colors.secondry}" />
                 <Icon:PackIconMaterial Kind="ArrowUpDropCircleOutline" Foreground="#444"/>
             </StackPanel>
-            <Button  Style="{StaticResource DashboardCardbtn}" >
+            <!--<Button  Style="{StaticResource DashboardCardbtn}" >
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="أضافة دفعة" Foreground="#C14E00"/>
-                    <Icon:PackIconMaterial Style="{StaticResource DashboardCardIcon}" Foreground="#C14E00" Kind="Home"/>
+                    <TextBlock Text="أضافة دفعة" Foreground="{StaticResource colors.primary}"/>
+                    <Icon:PackIconMaterial Style="{StaticResource DashboardCardIcon}" Foreground="{StaticResource colors.primary}" Kind="Home"/>
                 </StackPanel>
-            </Button>
+            </Button>-->
         </StackPanel>
     </Border>
 </UserControl>

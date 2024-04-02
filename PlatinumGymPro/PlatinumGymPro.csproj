@@ -88,6 +88,11 @@
     <None Remove="Resources\Assets\Exercises\8\7.png" />
     <None Remove="Resources\Assets\Exercises\8\8.png" />
     <None Remove="Resources\Assets\gym_backgroud.jpg" />
+    <None Remove="Resources\Assets\logo.png" />
+    <None Remove="Resources\Assets\logo_black.png" />
+    <None Remove="Resources\Assets\logo_dark.png" />
+    <None Remove="Resources\Assets\logo_p.png" />
+    <None Remove="Resources\Assets\logo_white.png" />
     <None Remove="Resources\Assets\Metric\Chest.png" />
     <None Remove="Resources\Assets\Metric\ForeArm.png" />
     <None Remove="Resources\Assets\Metric\Height.png" />
@@ -313,6 +318,10 @@
 
   <ItemGroup>
     <Resource Include="Resources\Assets\gym_backgroud.jpg" />
+    <Resource Include="Resources\Assets\logo.png" />
+    <Resource Include="Resources\Assets\logo_black.png" />
+    <Resource Include="Resources\Assets\logo_dark.png" />
+    <Resource Include="Resources\Assets\logo_white.png" />
     <Resource Include="Resources\Assets\Metric\Chest.png" />
     <Resource Include="Resources\Assets\Metric\ForeArm.png" />
     <Resource Include="Resources\Assets\Metric\Height.png" />

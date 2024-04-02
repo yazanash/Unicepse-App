@@ -27,7 +27,7 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Employee> CheckIfExistByName(string name)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Employee? entity = await context.Set<Employee>().FirstOrDefaultAsync((e) => e.FullName == name);
+            Employee? entity = await context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync((e) => e.FullName == name);
             return entity!;
         }
 
@@ -72,7 +72,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Employee>? entities = await context.Set<Employee>().AsNoTracking().Include(x=>x.Sports).ToListAsync();
+                IEnumerable<Employee>? entities = await context.Set<Employee>().AsNoTracking().Include(x=>x.Sports).AsNoTracking().ToListAsync();
                 return entities;
             }
         }
@@ -94,7 +94,7 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<bool> DeleteConnectedSports(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Employee? entity = await context.Set<Employee>().Include(x => x.Sports).FirstOrDefaultAsync((e) => e.Id == id);
+            Employee? entity = await context.Set<Employee>().AsNoTracking().Include(x => x.Sports).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             entity.Sports!.Clear();
@@ -102,5 +102,6 @@ namespace PlatinumGym.Entityframework.Services
             await context.SaveChangesAsync();
             return true;
         }
+       
     }
 }

@@ -52,7 +52,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
-            IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(x=>x.IsLogged).Include(x=>x.Player).ToListAsync();
+            IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(x=>x.IsLogged).Include(x=>x.Player).AsNoTracking().ToListAsync();
             return entities;
         }
         public async Task<IEnumerable<DailyPlayerReport>> GetPlayerLogging(int id)

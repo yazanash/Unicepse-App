@@ -25,14 +25,16 @@ namespace PlatinumGymPro.Stores
         public event Action<Filter?>? FilterChanged;
 
         private readonly EmployeeDataService _employeeDataService;
+        private readonly DausesDataService _dausesDataService;
         private readonly List<Employee> _employee;
         private readonly Lazy<Task> _initializeLazy;
         public IEnumerable<Employee> Employees => _employee;
-        public EmployeeStore(EmployeeDataService employeeDataService)
+        public EmployeeStore(EmployeeDataService employeeDataService, DausesDataService dausesDataService)
         {
             _employeeDataService = employeeDataService;
-            _employee = new List<Employee>() ;
+            _employee = new List<Employee>();
             _initializeLazy = new Lazy<Task>(Initialize);
+            _dausesDataService = dausesDataService;
         }
 
 
