@@ -89,7 +89,13 @@
 
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                        <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding ExpenseList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+                        <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"
+                                   FlowDirection="RightToLeft" ItemsSource="{Binding ExpenseList}"
+                                   SelectedItem="{Binding SelectedExpenses,UpdateSourceTrigger=PropertyChanged}"
+                                   x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}"
+                                   CellStyle="{DynamicResource DataGridCellStyle1}"
+                                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
+                                   RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
@@ -121,10 +127,10 @@
                                         <DataTemplate>
 
                                             <StackPanel Orientation="Horizontal">
-                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
+                                                <Button Command="{Binding EditExpensesCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
-                                                <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
+                                                <Button Command="{Binding DeleteExpensesCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                             </StackPanel>

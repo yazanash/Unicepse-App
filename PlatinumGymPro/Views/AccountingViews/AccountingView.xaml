@@ -25,9 +25,9 @@
         <DataTemplate DataType="{x:Type expvms:AddExpenseViewModel}">
             <expviews:ExpansesDetailView/>
         </DataTemplate>
-        <!--<DataTemplate DataType="{x:Type expvms:ExpensesListViewModel}">
-            <expviews:ExpansesListView/>
-        </DataTemplate>-->
+        <DataTemplate DataType="{x:Type expvms:EditExpenseViewModel}">
+            <expviews:EditExpansesDetailView/>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
