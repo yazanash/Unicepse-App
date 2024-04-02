@@ -1,4 +1,6 @@
-﻿using PlatinumGymPro.Commands.ExpensesCommands;
+﻿using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.ExpensesCommands;
+using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using Exp = PlatinumGym.Core.Models.Expenses ;
 
 namespace PlatinumGymPro.ViewModels.Expenses
 {
-    public class ExpensesListViewModel : ViewModelBase
+    public class ExpensesListViewModel : ListingViewModelBase
     {
         private readonly NavigationStore _navigatorStore;
         private readonly ExpensesDataStore _expensesStore;
@@ -31,6 +33,20 @@ namespace PlatinumGymPro.ViewModels.Expenses
             _expensesStore.Created += _expensesStore_Created;
             _expensesStore.Updated += _expensesStore_Updated;
             _expensesStore.Deleted += _expensesStore_Deleted;
+            AddExpensesCommand = new NavaigateCommand<AddExpenseViewModel>(new NavigationService<AddExpenseViewModel>(_navigatorStore, () => new AddExpenseViewModel( _expensesStore, _navigatorStore,this)));
+        }
+        public ExpensesListItemViewModel? SelectedExpenses
+        {
+            get
+            {
+                return ExpenseList
+                    .FirstOrDefault(y => y?.Expenses == _expensesStore.SelectedExpenses);
+            }
+            set
+            {
+                _expensesStore.SelectedExpenses = value?.Expenses;
+
+            }
         }
 
         private void _expensesStore_Deleted(int obj)
@@ -71,39 +87,10 @@ namespace PlatinumGymPro.ViewModels.Expenses
         private void AddExpenses(Exp.Expenses expenses)
         {
             ExpensesListItemViewModel itemViewModel =
-                new ExpensesListItemViewModel(expenses, _navigatorStore);
+                new ExpensesListItemViewModel(expenses, _navigatorStore,_expensesStore,this);
             expensesListItemViewModels.Add(itemViewModel);
         }
-        private bool _isLoading;
-        public bool IsLoading
-        {
-            get
-            {
-                return _isLoading;
-            }
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        private string? _errorMessage;
-        public string? ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-                OnPropertyChanged(nameof(HasErrorMessage));
-            }
-        }
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
-
+       
 
 
         public ICommand LoadExpenseCommand { get; private set; }

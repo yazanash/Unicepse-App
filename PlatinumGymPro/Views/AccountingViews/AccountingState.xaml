@@ -10,6 +10,7 @@
              xmlns:converters="clr-namespace:PlatinumGymPro.Converters" 
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
+             FlowDirection="RightToLeft"
              xmlns:vus="clr-namespace:PlatinumGymPro.utlis.Components"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -23,11 +24,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="370"/>
+               
                 <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="370"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="1" Margin="5 0" Grid.RowSpan="2" >
+            <Grid Grid.Column="0" Margin="5 0" Grid.RowSpan="2" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -42,84 +44,101 @@
                 <uc:DashboardCard Title="المصاريف"  Money="150,000,000" BackColor="#FFF" Grid.Column="2" Grid.Row="0"/>
 
                 <Border Background="#FFF" CornerRadius="20" Grid.ColumnSpan="3" Grid.Row="3" Margin="5 10" Padding="5">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
-                    </Border.Effect>
-                    <Grid >
-                        <custom:LoadingSpinner
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                            <TextBlock Text="المصاريف"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.secondry}" FontSize="18" DockPanel.Dock="Left"/>
+                         
+                            <Button Grid.Column="0" Margin="5 0"  Command="{Binding AddPaymentsCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                                <StackPanel Orientation="Horizontal">
+
+                                    <TextBlock Text="أضافة مصروف" />
+                                    <Icon:PackIconMaterial Kind="Plus"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                            </Button>
+                        </StackPanel>
+                        <Grid >
+                            <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
                 Diameter="100" Thickness="3" Color="#C14E00" />
-                        <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="13*"/>
-                                <ColumnDefinition Width="20*"/>
-                                <ColumnDefinition Width="7*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="13*"/>
+                                    <ColumnDefinition Width="20*"/>
+                                    <ColumnDefinition Width="7*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
+                                <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
 
-                            <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding ExpenseList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="#" IsReadOnly="True"
+                                <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding ExpenseList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
                                     Binding="{Binding Id}"
                                     CanUserResize="False"/>
 
-                                    <DataGridTemplateColumn Header="البيان" Width="2*" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding Description}" VerticalAlignment="Center"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn Header="قيمة المصروف" IsReadOnly="True"
+                                        <DataGridTemplateColumn Header="البيان" Width="2*" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Description}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="قيمة المصروف" IsReadOnly="True"
                                      Binding="{Binding Value}"
                                     Width="*"
                                     />
-                                    <DataGridTextColumn Header="التاريخ" IsReadOnly="True"
+                                        <DataGridTextColumn Header="التاريخ" IsReadOnly="True"
                                      Binding="{Binding date}"
                                     Width="*"
                                     />
 
 
 
-                                    <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
+                                        <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
 
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
-                                                        <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                                    </Button>
-                                                    <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
-                                                        <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
-                                                    </Button>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
+                                                            <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
+                                                        </Button>
+                                                        <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
+                                                            <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </DockPanel>
+                   
                 </Border>
 
 
             </Grid>
 
 
-            <Border Grid.Row="0" Background="#fff"   Margin="5" CornerRadius="10" Padding="5">
+            <!--<Border Grid.Row="0" Grid.Column="1" Background="#fff"   Margin="5" CornerRadius="10" Padding="5">
                 <DockPanel>
-                    <TextBlock HorizontalAlignment="Right" Foreground="#C14E00" Text="المسحوبات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Foreground="#C14E00" Text="المسحوبات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
                     <ListBox Height="600"  ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SportList}" >
-                        <!--<ListBox.ItemTemplate>
+                        --><!--<ListBox.ItemTemplate>
                             <DataTemplate>
                                 <vus:PayCard/>
                             </DataTemplate>
-                        </ListBox.ItemTemplate>-->
+                        </ListBox.ItemTemplate>--><!--
                         <vus:PayCard/>
                         <vus:PayCard/>
                         <vus:PayCard/>
@@ -129,7 +148,7 @@
                         <vus:PayCard/>
                     </ListBox>
                 </DockPanel>
-            </Border>
+            </Border>-->
         </Grid>
     </Border>
 </UserControl>

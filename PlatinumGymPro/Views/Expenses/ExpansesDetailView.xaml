@@ -7,91 +7,87 @@
              mc:Ignorable="d" 
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
-             d:DesignHeight="450" d:DesignWidth="800">
+            >
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+
             <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
                         <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
-                        <TextBlock Text="المصاريف /  اضافة مصروف" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <TextBlock Text="المصاريف / تسجيل مصروف" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
-                        </Button>
-                    </StackPanel>
+
                 </DockPanel>
             </Border>
 
-            <Border Background="#fff"  CornerRadius="10" Grid.Column="0"   Grid.Row="1"  Padding="5"  Margin="5">
-                <DockPanel >
-                    <DockPanel DockPanel.Dock="Top" >
-                        <TextBlock Text="معلومات المصروف" Foreground="#C14E00" FontSize="20" DockPanel.Dock="Left"/>
-                        <!--<CheckBox DockPanel.Dock="Right"
-                                      HorizontalAlignment="Right"
-                      Style="{DynamicResource toggleBtnStyle}"/>-->
+
+            <Grid Grid.Row="1" >
+
+                <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
+                    <DockPanel HorizontalAlignment="Center" Width="800" >
+                        <DockPanel DockPanel.Dock="Top" >
+                            <TextBlock Text="معلومات المصروف" Foreground="#C14E00" FontSize="24" DockPanel.Dock="Left"/>
+                        </DockPanel>
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="5">
+                                <TextBlock Text="بيان المصروف" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="18"/>
+                                <TextBox Text="{Binding Descriptiones, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1"  Grid.Column="0" Margin="5">
+                                <TextBlock Text="قيمة المصروف" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="18"/>
+                                <TextBox Text="{Binding ExpensesValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                            </StackPanel>
+                            <StackPanel Grid.Row="1"  Grid.Column="1" Margin="5">
+                                <TextBlock Text="تاريخ المصروف" 
+                                   Foreground="#993300"
+                                   Margin="0 0 0 8"
+                                   FontSize="18"/>
+                                <DatePicker Style="{DynamicResource DatePickerStyle1}"
+                                    SelectedDate="{Binding ExpensesDate, UpdateSourceTrigger=PropertyChanged}"
+                                    CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
+                                   />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Margin="0 20 0 0" HorizontalAlignment="Right">
+                                <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Margin="0 20 0 0" HorizontalAlignment="Left">
+                                <Button Command="{Binding CancelCommand}" Style="{StaticResource ScFormButton}" Width="200" Height="30"  Content="الغاء"/>
+                            </StackPanel>
+                        </Grid>
+
                     </DockPanel>
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                           
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
-                            <TextBlock Text="البيان" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                            <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-
-                        </StackPanel>
-
-                        
-                       
-                     
-
-                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
-                            <TextBlock Text="قيمة المصروف" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                            <TextBox Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-
-                        </StackPanel>
+                </Border>
 
 
-                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
-                            <TextBlock Text="تاريخ العملية" 
-                                   Foreground="#993300"
-                                   Margin="0 0 0 8"
-                                   FontSize="13"/>
-                            <TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-
-                        </StackPanel>
-
-                        
-
-                    </Grid>
-
-                </DockPanel>
-            </Border>
-
-
+            </Grid>
         </Grid>
     </Border>
 </UserControl>
