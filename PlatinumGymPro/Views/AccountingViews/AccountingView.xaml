@@ -8,6 +8,8 @@
              xmlns:uc="clr-namespace:PlatinumGymPro.utlis.Controls"
              xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.Accountant"
              xmlns:views="clr-namespace:PlatinumGymPro.Views.AccountingViews"
+              xmlns:expvms="clr-namespace:PlatinumGymPro.ViewModels.Expenses"
+             xmlns:expviews="clr-namespace:PlatinumGymPro.Views.Expenses"
              Background="Transparent"
              xmlns:converters="clr-namespace:PlatinumGymPro.Converters" 
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
@@ -17,6 +19,15 @@
         <DataTemplate DataType="{x:Type vms:AccountingStateViewModel }">
             <views:AccountingState/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type expvms:ExpensesListViewModel}">
+            <expviews:ExpansesListView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type expvms:AddExpenseViewModel}">
+            <expviews:ExpansesDetailView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type expvms:EditExpenseViewModel}">
+            <expviews:EditExpansesDetailView/>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -24,7 +35,60 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <uc:HorizontalNav Grid.Row="0"/>
+        <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="5" Margin="5" Background="#fff">
+            <DockPanel>
+                <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
+                    <RadioButton
+                         IsChecked="True"   
+                           
+                            Style="{StaticResource BarButtonRD}" >
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="StackExchange"/>
+                            <TextBlock  Text="الحركة اليومية" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
+                    Command="{Binding ExpensesCommand}"
+                                Style="{StaticResource BarButtonRD}" >
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashRegister"/>
+                            <TextBlock  Text="المصاريف" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
+                    Command="{Binding ExpensesReportCommand}"
+                                Style="{StaticResource BarButtonRD}" >
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashFast"/>
+                            <TextBlock  Text="تقربر المصاريف" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
+                            Command="{Binding PaymentReportCommand}"
+                                Style="{StaticResource BarButtonRD}" >
+                        <StackPanel Orientation="Horizontal" >
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
+                            <TextBlock Text="تقرير الايرادات"  />
+
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
+                            Command="{Binding IncomeReportCommand}"
+                                Style="{StaticResource BarButtonRD}" >
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple" />
+                            <TextBlock Text="الدخل"  />
+
+                        </StackPanel>
+                    </RadioButton>
+                   
+
+
+
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
     </Grid>
 </UserControl>
