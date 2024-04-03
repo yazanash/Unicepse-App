@@ -130,10 +130,7 @@
             <!--<views:HomeView />-->
             <view:LoginView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:RegisterViewModel }">
-            <!--<views:HomeView />-->
-            <view:RegisterView/>
-        </DataTemplate>
+      
     </Window.Resources>
     <Border Background="Transparent"
             MouseDown="Border_MouseDown"

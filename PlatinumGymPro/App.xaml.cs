@@ -49,6 +49,7 @@ namespace PlatinumGymPro
                    services.AddSingleton<IAccountDataService<User>, AccountDataService>();
                    services.AddSingleton<AuthenticationService>();
                    services.AddSingleton<AccountStore>();
+                   services.AddSingleton<UsersDataStore>();
                    services.AddSingleton<PlayersDataStore>();
                    services.AddSingleton<PlayerDataService>();
                    services.AddSingleton<SportDataStore>();
@@ -121,10 +122,10 @@ namespace PlatinumGymPro
                 platinumGymDbContext.Database.Migrate();
             }
 
-            //AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
-            //auth.Show();
-            MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
+            AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
             auth.Show();
+            //MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
+            //auth.Show();
             //MessageBox.Show(System.Environment.CurrentDirectory) ;
             base.OnStartup(e);
         }

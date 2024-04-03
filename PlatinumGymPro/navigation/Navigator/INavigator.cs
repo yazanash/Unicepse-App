@@ -16,6 +16,7 @@ namespace PlatinumGymPro.State.Navigator
         Accounting,
         Sport,
         Trainer,
+        Users
     }
     public interface INavigator
     {

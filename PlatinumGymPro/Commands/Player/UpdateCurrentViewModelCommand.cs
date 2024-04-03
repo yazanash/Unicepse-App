@@ -4,6 +4,7 @@ using PlatinumGymPro.Stores;
 using PlatinumGymPro.Stores.PlayerStores;
 using PlatinumGymPro.ViewModels;
 using PlatinumGymPro.ViewModels.Accountant;
+using PlatinumGymPro.ViewModels.Authentication;
 using PlatinumGymPro.ViewModels.Expenses;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
 using System;
@@ -27,10 +28,11 @@ namespace PlatinumGymPro.Commands
         private readonly MetricDataStore _metricDataStore;
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore1 ;
+        private readonly UsersDataStore _usersDataStore;
         public UpdateCurrentViewModelCommand(INavigator navigator, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore,
             SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
-            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1)
+            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1, UsersDataStore usersDataStore)
         {
             _navigator = navigator;
             _playersStore = playersStore;
@@ -42,6 +44,7 @@ namespace PlatinumGymPro.Commands
             _metricDataStore = metricDataStore;
             _routineDataStore = routineDataStore;
             _playersAttendenceStore1 = playersAttendenceStore1;
+            _usersDataStore = usersDataStore;
         }
 
         public override void Execute(object? parameter)
@@ -64,9 +67,9 @@ namespace PlatinumGymPro.Commands
                     case ViewType.Trainer:
                         _navigator.CurrentViewModel = new TrainersViewModel(navigator,_employeeStore,_sportStore,_subscriptionDataStore);
                         break;
-                    //case ViewType.Expenses:
-                    //    _navigator.CurrentViewModel = new ExpensesViewModel(navigator, _expensesStore);
-                    //    break;
+                    case ViewType.Users:
+                        _navigator.CurrentViewModel = new UsersViewModel(navigator, _usersDataStore,_employeeStore);
+                        break;
                     case ViewType.Accounting:
                         _navigator.CurrentViewModel = new AccountingViewModel(navigator, _expensesStore);
                         break;
