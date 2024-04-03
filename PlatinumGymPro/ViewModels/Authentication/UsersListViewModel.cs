@@ -42,7 +42,19 @@ namespace PlatinumGymPro.ViewModels.Authentication
             AddUserCommand = new NavaigateCommand<AddUserViewModel>(new NavigationService<AddUserViewModel>(_navigatorStore,
                 () => CreateUserViewModel(_usersDataStore, _navigatorStore, this, _employeeStore)));
         }
+        public UserListItemViewModel? SelectedUser
+        {
+            get
+            {
+                return UsersList
+                    .FirstOrDefault(y => y?.user == _usersDataStore.SelectedUser);
+            }
+            set
+            {
+                _usersDataStore.SelectedUser = value?.user;
 
+            }
+        }
         private void SearchBox_SearchedText(string? obj)
         {
             _userListItemViewModels.Clear();
@@ -102,7 +114,7 @@ namespace PlatinumGymPro.ViewModels.Authentication
         }
         private void AddUser(User user) 
         {
-            UserListItemViewModel userListItemViewModel = new UserListItemViewModel(user);
+            UserListItemViewModel userListItemViewModel = new UserListItemViewModel(user,_navigatorStore,_usersDataStore,this,_employeeStore);
             _userListItemViewModels.Add(userListItemViewModel);
 
         }

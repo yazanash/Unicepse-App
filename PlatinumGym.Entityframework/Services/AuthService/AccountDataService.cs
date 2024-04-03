@@ -62,7 +62,7 @@ namespace PlatinumGym.Entityframework.Services.AuthService
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
-            IEnumerable<User>? entities = await context.Set<User>().ToListAsync();
+            IEnumerable<User>? entities = await context.Set<User>().Include(x=>x.Employee).ToListAsync();
             return entities;
         }
 

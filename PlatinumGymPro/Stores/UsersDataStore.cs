@@ -21,6 +21,20 @@ namespace PlatinumGymPro.Stores
             _users = new List<User>();
 
         }
+
+        private User? _selectedUser;
+        public User? SelectedUser
+        {
+            get
+            {
+                return _selectedUser;
+            }
+            set
+            {
+                _selectedUser = value;
+
+            }
+        }
         public event Action<User>? Created;
         public event Action? Loaded;
         public event Action<User>? Updated;
