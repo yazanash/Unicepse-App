@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models.Authentication;
@@ -15,10 +16,11 @@ namespace PlatinumGym.Entityframework.Services.AuthService
     public class AccountDataService : IAccountDataService<User>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
-
-        public AccountDataService(PlatinumGymDbContextFactory contextFactory)
+        private readonly IPasswordHasher _passwordHasher;
+        public AccountDataService(PlatinumGymDbContextFactory contextFactory, IPasswordHasher passwordHasher)
         {
             _contextFactory = contextFactory;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<User> Create(User entity)
@@ -27,7 +29,10 @@ namespace PlatinumGym.Entityframework.Services.AuthService
             User existed_user = await GetByUsername(entity.UserName!);
             if (existed_user != null)
                 throw new ConflictException();
-            EntityEntry<User> CreatedResult = await context.Set<User>().AddAsync(entity);
+            context.Attach(entity.Employee!);
+            string pass =  _passwordHasher.HashPassword(entity.Password);
+            entity.Password = pass;
+            EntityEntry <User> CreatedResult = await context.Set<User>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;
         }
@@ -67,6 +72,8 @@ namespace PlatinumGym.Entityframework.Services.AuthService
             User entityToUpdate = await Get(entity.Id);
             if (entityToUpdate == null)
                 throw new NotExistException();
+            string pass = _passwordHasher.HashPassword(entity.Password);
+            entity.Password = pass;
             context.Set<User>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

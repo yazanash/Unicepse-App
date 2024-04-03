@@ -13,6 +13,9 @@
         <DataTemplate DataType="{x:Type authvms:UsersListViewModel}">
             <authvs:UsersListView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type authvms:AddUserViewModel}">
+            <authvs:AddUserView/>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}"/>

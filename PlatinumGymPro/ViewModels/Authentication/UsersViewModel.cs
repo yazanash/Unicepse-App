@@ -11,22 +11,24 @@ namespace PlatinumGymPro.ViewModels.Authentication
     {
         public NavigationStore _navigatorStore;
         private readonly UsersDataStore _usersDataStore;
+        private readonly EmployeeStore _employeeStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
-        public UsersViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore)
+        public UsersViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore)
         {
             _navigatorStore = navigatorStore;
             _usersDataStore = usersDataStore;
-            navigatorStore.CurrentViewModel = CreateUserListViewModel(_navigatorStore,_usersDataStore);
-            navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
+            _employeeStore = employeeStore;
 
+            navigatorStore.CurrentViewModel = CreateUserListViewModel(_navigatorStore, _usersDataStore, _employeeStore);
+            navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
         }
         private void NavigatorStore_CurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-        private UsersListViewModel CreateUserListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore)
+        private UsersListViewModel CreateUserListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore)
         {
-            return UsersListViewModel.LoadViewModel(navigatorStore, usersDataStore);
+            return UsersListViewModel.LoadViewModel(navigatorStore, usersDataStore,employeeStore);
         }
     }
 }

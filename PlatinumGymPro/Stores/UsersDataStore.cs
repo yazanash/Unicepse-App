@@ -1,4 +1,5 @@
 ﻿using PlatinumGym.Core.Models.Authentication;
+using PlatinumGym.Core.Models.Employee;
 using PlatinumGym.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,19 @@ namespace PlatinumGymPro.Stores
         public event Action? Loaded;
         public event Action<User>? Updated;
         public event Action<int>? Deleted;
-
+        private Employee? _selectedEmployee;
+        public Employee? SelectedEmployee
+        {
+            get
+            {
+                return _selectedEmployee;
+            }
+            set
+            {
+                _selectedEmployee = value;
+                
+            }
+        }
         public async Task Add(User entity)
         {
             await _accountDataService.Create(entity);

@@ -9,6 +9,8 @@
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
                xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
              mc:Ignorable="d" 
+             xmlns:cs="clr-namespace:PlatinumGymPro.Components"
+             FlowDirection="RightToLeft"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -25,23 +27,26 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
 
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
+                    <Border CornerRadius="20"  Grid.Row="0"  Grid.Column="0"  VerticalAlignment="Top">
+                        <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
+                    </Border>
                     <Grid Grid.Column="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Button  Grid.Column="0" Margin="5 0" FlowDirection="LeftToRight"  Command="{Binding AddTrainerCommand}" Style="{StaticResource AddBtn}">
+                        <Button  Grid.Column="3" Margin="5 0" FlowDirection="LeftToRight"  Command="{Binding AddUserCommand}" Style="{StaticResource AddBtn}">
                             <StackPanel Orientation="Horizontal">
 
                                 <TextBlock Text="أضافة مستخدم" />
@@ -106,10 +111,10 @@
                                         <DataTemplate>
 
                                             <StackPanel Orientation="Horizontal">
-                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                <Button Command="{Binding EditUserCommand}" Style="{StaticResource GridEditBtn}">
                                                     <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
-                                                <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
+                                                <Button Command="{Binding DeleteUserCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                             </StackPanel>

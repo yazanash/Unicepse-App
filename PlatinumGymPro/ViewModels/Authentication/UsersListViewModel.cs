@@ -1,5 +1,7 @@
 ﻿using PlatinumGym.Core.Models.Authentication;
+using PlatinumGymPro.Commands;
 using PlatinumGymPro.Commands.AuthCommands;
+using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using System;
 using System.Collections.Generic;
@@ -17,25 +19,48 @@ namespace PlatinumGymPro.ViewModels.Authentication
         private readonly ObservableCollection<UserListItemViewModel> _userListItemViewModels;
         private NavigationStore _navigatorStore;
         private readonly UsersDataStore _usersDataStore;
+        private readonly EmployeeStore  _employeeStore;
         public IEnumerable<UserListItemViewModel> UsersList => _userListItemViewModels;
-        //public ICommand AddUserCommand { get; }
+        public ICommand AddUserCommand { get; }
         public ICommand LoadUsersCommand { get; }
-
-        public UsersListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore)
+        public SearchBoxViewModel SearchBox { get; set; }
+        public UsersListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore)
         {
             _navigatorStore = navigatorStore;
             _usersDataStore = usersDataStore;
+            _employeeStore = employeeStore;
+
             _userListItemViewModels = new ObservableCollection<UserListItemViewModel>();
             _usersDataStore.Created += _usersDataStore_Created;
             _usersDataStore.Deleted += _usersDataStore_Deleted;
             _usersDataStore.Updated += _usersDataStore_Updated;
             _usersDataStore.Loaded += _usersDataStore_Loaded;
+            SearchBox = new SearchBoxViewModel();
+            SearchBox.SearchedText += SearchBox_SearchedText;
+
             LoadUsersCommand = new LoadUsersCommand(_usersDataStore);
+            AddUserCommand = new NavaigateCommand<AddUserViewModel>(new NavigationService<AddUserViewModel>(_navigatorStore,
+                () => CreateUserViewModel(_usersDataStore, _navigatorStore, this, _employeeStore)));
         }
 
-        public static UsersListViewModel LoadViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore)
+        private void SearchBox_SearchedText(string? obj)
         {
-            UsersListViewModel usersListViewModel = new UsersListViewModel(navigatorStore,usersDataStore);
+            _userListItemViewModels.Clear();
+
+            foreach (User user in _usersDataStore.Users.Where(x => x.UserName!.ToLower().Contains(obj!.ToLower())))
+            {
+                AddUser(user);
+            }
+        }
+
+        private AddUserViewModel CreateUserViewModel(UsersDataStore usersDataStore, NavigationStore navigatorStore, UsersListViewModel usersListViewModel, EmployeeStore employeeStore)
+        {
+            return AddUserViewModel.loadViewModel(usersDataStore, navigatorStore, usersListViewModel, employeeStore);
+        }
+
+        public static UsersListViewModel LoadViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore)
+        {
+            UsersListViewModel usersListViewModel = new UsersListViewModel(navigatorStore,usersDataStore,employeeStore);
             usersListViewModel.LoadUsersCommand.Execute(null);
             return usersListViewModel;
         }
