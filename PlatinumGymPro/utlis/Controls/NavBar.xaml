@@ -122,19 +122,10 @@
                            
                         </StackPanel>
                     </RadioButton>
-                <RadioButton
-                                 Command="{Binding UpdateCurrentViewModelCommand}"
-                                CommandParameter="{x:Static nav:ViewType.Accounting}" 
-                               Style="{StaticResource MenuButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="RoomService"/>
-                            <TextBlock Text="خدمات"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
-                        </StackPanel>
-                    </RadioButton>
-
+             
                 <RadioButton
                                 Command="{Binding UpdateCurrentViewModelCommand}"
-                                CommandParameter="{x:Static nav:ViewType.Sport}" 
+                                CommandParameter="{x:Static nav:ViewType.Users}" 
                                 Style="{StaticResource MenuButtonRD}" >
                     <StackPanel Orientation="Horizontal">
                         <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountSwitch" />

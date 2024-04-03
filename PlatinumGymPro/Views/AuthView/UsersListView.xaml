@@ -77,7 +77,7 @@
 
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                        <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding TrainerList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+                        <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding UsersList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
@@ -88,17 +88,17 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding FullName}" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding EmployeeName}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="اسم المستخدم" IsReadOnly="True"
-                                     Binding="{Binding Phone}"
+                                     Binding="{Binding username}"
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="المسمى الوظيفي" IsReadOnly="True"
-                                     Binding="{Binding BirthDate}"
+                                     Binding="{Binding Postion}"
                                     Width="*"
                                     />
                                 <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">

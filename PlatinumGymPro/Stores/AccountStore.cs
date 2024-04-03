@@ -1,4 +1,6 @@
 ﻿using PlatinumGym.Core.Models.Authentication;
+using PlatinumGym.Core.Services;
+using PlatinumGym.Entityframework.Services.AuthService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,8 @@ namespace PlatinumGymPro.Stores
 {
     public class AccountStore
     {
-        private User _currentAccount;
-        public User CurrentAccount
+        private User? _currentAccount;
+        public User? CurrentAccount
         {
             get
             {
@@ -23,6 +25,6 @@ namespace PlatinumGymPro.Stores
             }
         }
 
-        public event Action StateChanged;
+        public event Action? StateChanged;
     }
 }

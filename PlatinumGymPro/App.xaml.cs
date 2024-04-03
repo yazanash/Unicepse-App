@@ -49,6 +49,7 @@ namespace PlatinumGymPro
                    services.AddSingleton<IAccountDataService<User>, AccountDataService>();
                    services.AddSingleton<AuthenticationService>();
                    services.AddSingleton<AccountStore>();
+                   services.AddSingleton<UsersDataStore>();
                    services.AddSingleton<PlayersDataStore>();
                    services.AddSingleton<PlayerDataService>();
                    services.AddSingleton<SportDataStore>();
