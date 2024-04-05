@@ -24,11 +24,14 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SubscriptionCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SubscriptionDetailsCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\SubscriptionForTrainerItem.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\TrainerCard.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\AppCard.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\GymSubscriptionCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\HeaderBar.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\HorizontalNav.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\InfoCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\NavBar.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\PlayerBar.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\UserSettingsCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Dictionaries\DataTemplate\DataTemplateResourceDictionary.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Pages\PlayerRoutinePrintView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Pages\SubscriptionPrintView.xaml;;
@@ -37,6 +40,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\AccountingView.xaml
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\ExpensesReport.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\IncomeReportView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\SalariesReportView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\ApplicationAboutView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\AddUserView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\AuthWindow.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\EditUserView.xaml;;
@@ -82,4 +86,6 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\EditSubscriptionDe
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\MoveToNewTrainerView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\StopSubscriptionView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SubscriptionView\SubscriptionDetailView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\UserSettingsViews\ApplicationInfoView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\UserSettingsViews\UserSettingsView.xaml;;
 

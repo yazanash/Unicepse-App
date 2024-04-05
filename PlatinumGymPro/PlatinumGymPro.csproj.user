@@ -70,6 +70,12 @@
     <Compile Update="utlis\Components\TrainerCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Controls\AppCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Controls\GymSubscriptionCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Controls\HeaderBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -85,6 +91,9 @@
     <Compile Update="utlis\Controls\PlayerBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Controls\UserSettingsCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Pages\PlayerRoutinePrintView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -92,6 +101,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\AccountingViews\AccountingState.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ApplicationAboutView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\AuthView\AuthWindow.xaml.cs">
@@ -149,6 +161,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SubscriptionView\SubscriptionDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\UserSettingsViews\ApplicationInfoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\UserSettingsViews\UserSettingsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -222,6 +240,12 @@
     <Page Update="utlis\Components\TrainerCard.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="utlis\Controls\AppCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Controls\GymSubscriptionCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="utlis\Controls\HeaderBar.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -238,6 +262,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Controls\PlayerBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Controls\UserSettingsCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Dictionaries\CalendarStyle.xaml">
@@ -297,6 +324,9 @@
     <Page Update="Views\AccountingViews\AccountingState.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\ApplicationAboutView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\AuthView\AuthWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -352,6 +382,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SubscriptionView\SubscriptionDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\UserSettingsViews\ApplicationInfoView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\UserSettingsViews\UserSettingsView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
