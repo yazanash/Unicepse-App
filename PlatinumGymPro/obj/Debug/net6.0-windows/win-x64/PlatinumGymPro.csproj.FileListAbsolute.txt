@@ -841,3 +841,8 @@ D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Con
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Controls\AppCard.baml
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Interop.Microsoft.Office.Interop.Excel.dll
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\PlatinumGymPro.csproj.ResolveComReference.cache
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Dictionaries\ListBoxItems\GroupDaysSelectionListView.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Components\MuscleDayGroupCard.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\RoutineViews\SelectRoutineDayMuscleGroup.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Components\MuscleDayGroupCard.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\RoutineViews\SelectRoutineDayMuscleGroup.baml

@@ -1,6 +1,7 @@
 ﻿using PlatinumGym.Core.Models.Player;
 using PlatinumGym.Core.Models.TrainingProgram;
 using PlatinumGym.Entityframework.Services;
+using PlatinumGymPro.ViewModels.RoutineViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,7 +127,7 @@ namespace PlatinumGymPro.Stores
 
         public async Task Update(PlayerRoutine entity)
         {
-            await _playerRoutineDataService.DeleteRoutineItems(entity.Id);
+            //await _playerRoutineDataService.DeleteRoutineItems(entity.Id);
             await _playerRoutineDataService.Update(entity);
             int currentIndex = _playerRoutines.FindIndex(y => y.Id == entity.Id);
 
@@ -138,6 +139,7 @@ namespace PlatinumGymPro.Stores
             {
                 _playerRoutines.Add(entity);
             }
+            _routineItems.Clear();
             Updated?.Invoke(entity);
         }
     }

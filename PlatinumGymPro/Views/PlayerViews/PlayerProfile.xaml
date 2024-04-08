@@ -66,7 +66,25 @@
             <metricview:EditMetricDetailView />
         </DataTemplate>
 
-       
+
+
+        <DataTemplate DataType="{x:Type routinevms:AddRoutineViewModel}">
+            <routineview:AddRoutineView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type routinevms:EditRoutineViewModel}">
+            <routineview:EditRoutineView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type routinevms:RoutinePlayerViewModels}">
+            <routineview:RoutineView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type routinevms:SelectRoutineDaysMuscleGroupViewModel}">
+            <routineview:SelectRoutineDayMuscleGroup />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type routinevms:EditSelectRoutineDaysMuscleGroupViewModel}">
+            <routineview:SelectRoutineDayMuscleGroup />
+        </DataTemplate>
+
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>

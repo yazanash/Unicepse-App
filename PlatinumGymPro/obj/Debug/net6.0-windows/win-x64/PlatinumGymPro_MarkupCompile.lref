@@ -14,6 +14,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\ExercisesItemsCard.xaml;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricItem.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricItemRL.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MuscleDayGroupCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MuscleGroupItem.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PayCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PlayerMetricCard.xaml;;
@@ -77,6 +78,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\TrainerPlayerSubscripti
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\AddRoutineView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\EditRoutineView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\RoutineView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\SelectRoutineDayMuscleGroup.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SplashScreen.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\EditSportDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SportViews\SportDetailsView.xaml;;

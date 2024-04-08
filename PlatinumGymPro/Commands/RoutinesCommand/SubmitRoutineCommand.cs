@@ -1,4 +1,5 @@
-﻿using PlatinumGym.Core.Models.TrainingProgram;
+﻿using Newtonsoft.Json.Linq;
+using PlatinumGym.Core.Models.TrainingProgram;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.RoutineViewModels;
@@ -16,22 +17,30 @@ namespace PlatinumGymPro.Commands.RoutinesCommand
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersDataStore _playersDataStore;
         private readonly NavigationService<RoutinePlayerViewModels> _navigationService;
-        public SubmitRoutineCommand(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationService<RoutinePlayerViewModels> navigationService)
+        private readonly SelectRoutineDaysMuscleGroupViewModel selectRoutineDaysMuscleGroupViewModel;
+        public SubmitRoutineCommand(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationService<RoutinePlayerViewModels> navigationService, SelectRoutineDaysMuscleGroupViewModel selectRoutineDaysMuscleGroupViewModel)
         {
             _routineDataStore = routineDataStore;
             _playersDataStore = playersDataStore;
             _navigationService = navigationService;
+            this.selectRoutineDaysMuscleGroupViewModel = selectRoutineDaysMuscleGroupViewModel;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
             PlayerRoutine playerRoutine = new()
             {
-                RoutineNo = 1,
-                RoutineData = DateTime.Now,
+                RoutineNo = selectRoutineDaysMuscleGroupViewModel.Number,
+                RoutineData =selectRoutineDaysMuscleGroupViewModel.Date,
                 Player=_playersDataStore.SelectedPlayer!.Player,
+                
             };
+            
             playerRoutine.RoutineSchedule.AddRange(_routineDataStore.RoutineItems);
+           foreach (var item in selectRoutineDaysMuscleGroupViewModel.DayGroupList)
+            {
+                playerRoutine.DaysGroupMap!.Add(item.SelectedDay, item.Groups);
+            }
            
             await _routineDataStore.Add(playerRoutine);
             MessageBox.Show("Player Routine Added Successfully");

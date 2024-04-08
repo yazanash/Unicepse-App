@@ -210,9 +210,9 @@
                                                 <!--<Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>-->
-                                                <Button Command="{Binding TrainingProgramCommand}" Style="{StaticResource GridremoveBtn}">
+                                                <!--<Button Command="{Binding TrainingProgramCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Dumbbell"  Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
+                                                </Button>-->
                                                 <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>

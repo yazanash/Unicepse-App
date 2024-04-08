@@ -40,6 +40,9 @@
     <Compile Update="utlis\Components\MetricItemRL.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\MuscleDayGroupCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\MuscleGroupItem.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -148,6 +151,9 @@
     <Compile Update="Views\RoutineViews\RoutineView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\RoutineViews\SelectRoutineDayMuscleGroup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\SplashScreen.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -208,6 +214,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\MetricItemRL.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\MuscleDayGroupCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\MuscleGroupItem.xaml">
@@ -271,6 +280,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Dictionaries\DataTemplate\DataTemplateResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\GroupDaysSelectionListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Dictionaries\ListBoxItems\MetricItemsResourceDictionary.xaml">
@@ -367,6 +379,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineViews\RoutineView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineViews\SelectRoutineDayMuscleGroup.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SplashScreen.xaml">
