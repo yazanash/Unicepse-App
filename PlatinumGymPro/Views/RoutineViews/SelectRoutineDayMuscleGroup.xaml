@@ -50,6 +50,17 @@
                                     CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />
                         </StackPanel>
+
+
+                        <Button Grid.Column="2" Margin="10 5"  Command="{Binding PrintCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="معاينة" />
+
+                            </StackPanel>
+
+                        </Button>
                     </StackPanel>
                 </DockPanel>
             </Grid>

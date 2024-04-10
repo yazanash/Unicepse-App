@@ -111,6 +111,17 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
                     Groups.Remove(((int)EMuscleGroup.Abs));
             }
         }
-
+        public string GetGroups()
+        {
+            string groups = "";
+            if (Abs) groups += "معدة ";
+            if (Chest) groups += "صدر ";
+            if (Back) groups += " ظهر";
+            if (Shoulders) groups += " اكتاف";
+            if (Triceps) groups += " ترايسبس";
+            if (Legs) groups += " ارجل";
+            if (Biceps) groups += " بايسيبس";
+            return groups;
+        }
     }
 }

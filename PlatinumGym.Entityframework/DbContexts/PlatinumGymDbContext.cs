@@ -82,11 +82,11 @@ namespace PlatinumGym.Entityframework.DbContexts
              .HasOne(c => c.Trainer)
              .WithMany(c => c.PlayerTrainings).HasForeignKey(x => x.TrainerId);
 
-            string fileName = "Training.json";
-            string jsonString = File.ReadAllText(fileName);
-            List<Exercises> exercises = JsonConvert.DeserializeObject<List<Exercises>>(jsonString)!;
+            //string fileName = "Training.json";
+            //string jsonString = File.ReadAllText(fileName);
+            //List<Exercises> exercises = JsonConvert.DeserializeObject<List<Exercises>>(jsonString)!;
 
-            modelBuilder.Entity<Exercises>().HasData(exercises);
+            //modelBuilder.Entity<Exercises>().HasData(exercises);
 
             base.OnModelCreating(modelBuilder);
         }

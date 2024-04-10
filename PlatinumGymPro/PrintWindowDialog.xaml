@@ -8,32 +8,37 @@
         xmlns:subprintvms="clr-namespace:PlatinumGymPro.ViewModels.PrintViewModels"
         xmlns:subprintvs="clr-namespace:PlatinumGymPro.utlis.Pages"
         WindowState="Normal"
-        Title="PrintWindowDialog" WindowStyle="SingleBorderWindow" ResizeMode="NoResize"  Height="600" Width="920">
+        Title="PrintWindowDialog"   >
     <Window.Resources>
         <DataTemplate DataType="{x:Type subprintvms:SubscriptionPrintViewModel }">
             <subprintvs:SubscriptionPrintView />
         </DataTemplate>
-        <!--<DataTemplate DataType="{x:Type vms:PlayerMainPageViewModel }">
-            <view:PlayerMainPage />
-        </DataTemplate>-->
+        <DataTemplate DataType="{x:Type subprintvms:RoutinePrintViewModel }">
+            <subprintvs:PlayerRoutinePrintView />
+        </DataTemplate>
     </Window.Resources>
-    <ScrollViewer>
         <Border Background="#fff"
             Padding="5 10" 
             CornerRadius="10">
         <!--<views:HomeView/>-->
-        <Grid  >
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0">
-                <Button Content="Print" Click="Button_Click" Height="50"   />
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Style="{StaticResource AddBtn}" Content="Print" Click="Button_Click" Height="50"   />
 
             </StackPanel>
            
-            <ContentControl Grid.Row="1" x:Name="print" Content="{Binding CurrentPrint}" />
+                <ScrollViewer CanContentScroll="True" Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+               
+                    <ContentControl Grid.Row="1" x:Name="print" Content="{Binding CurrentPrint}" />
+             
+            </ScrollViewer>
+
+            
         </Grid>
+      
     </Border>
-    </ScrollViewer>
 </Window>
