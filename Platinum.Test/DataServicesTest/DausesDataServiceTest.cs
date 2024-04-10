@@ -174,8 +174,9 @@ namespace Platinum.Test.DataServicesTest
 
 
         //}
-        public async Task GenerateData(Employee triner)
+        public async Task<List<Subscription>> GenerateData(Employee triner)
         {
+            List<Subscription> subscriptions = new List<Subscription>();
             Subscription subscription1 = await create_subscription(triner, 30000, new DateTime(2024, 4, 12));
 
             await create_paymentforsubscription(subscription1, new DateTime(2024, 4, 12), 30000, new DateTime(2024, 4, 12));
@@ -189,9 +190,9 @@ namespace Platinum.Test.DataServicesTest
 
 
 
-            Subscription subscription3 = await create_subscription(triner, 90000, new DateTime(2024, 4, 18));
+            Subscription subscription3 = await create_subscription(triner, 80000, new DateTime(2024, 4, 18));
             await create_paymentforsubscription(subscription3, new DateTime(2024, 4, 18), 60000, new DateTime(2024, 4, 18));
-            await create_paymentforsubscription(subscription3, new DateTime(2024, 5, 10), 30000, new DateTime(2024, 5, 10));
+            await create_paymentforsubscription(subscription3, new DateTime(2024, 5, 10), 20000, new DateTime(2024, 5, 10));
 
 
 
@@ -223,10 +224,19 @@ namespace Platinum.Test.DataServicesTest
 
 
 
-            Subscription subscription9 = await create_subscription(triner,90000, new DateTime(2024, 4, 25));
-            await create_paymentforsubscription(subscription9, new DateTime(2024, 5, 30), 90000, new DateTime(2024, 4, 25));
+            Subscription subscription9 = await create_subscription(triner,80000, new DateTime(2024, 4, 25));
+            await create_paymentforsubscription(subscription9, new DateTime(2024, 5, 30), 80000, new DateTime(2024, 4, 25));
 
-
+            subscriptions.Add(subscription1);
+            subscriptions.Add(subscription2);
+            subscriptions.Add(subscription3);
+            subscriptions.Add(subscription4);
+            subscriptions.Add(subscription5);
+            subscriptions.Add(subscription6);
+            subscriptions.Add(subscription7);
+            subscriptions.Add(subscription8);
+            subscriptions.Add(subscription9);
+            return subscriptions;
         }
         private async Task<PlayerPayment> create_paymentforsubscription(Subscription subscription, DateTime paydate,double pay,DateTime from)
         {
@@ -292,7 +302,7 @@ namespace Platinum.Test.DataServicesTest
             DateTime date1 = new DateTime(2024, 4, 30);
             DateTime date2 = new DateTime(2024, 5, 31);
             Employee triner = await create_trainer();
-            await GenerateData(triner);
+           List<Subscription> subscriptions = await GenerateData(triner);
 
 
 
@@ -320,10 +330,11 @@ namespace Platinum.Test.DataServicesTest
             }
 
             double total = date1TD + date2TD;
-
+            double allTotal = subscriptions.Sum(x => x.PriceAfterOffer);
+            double allDauses = (allTotal * triner.ParcentValue)/100;
             //Assert.AreEqual(37000, (int)date1TD);
             //Assert.AreEqual(58916, (int) date2TD);
-            Assert.AreEqual(116250, (int)(date1TD+date2TD));
+            Assert.AreEqual(allDauses, (int)(date1TD+date2TD));
 
         }
 

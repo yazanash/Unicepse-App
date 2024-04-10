@@ -133,7 +133,16 @@
 
                     </StackPanel>
                 </RadioButton>
+                <RadioButton
+                                Command="{Binding UpdateCurrentViewModelCommand}"
+                                CommandParameter="{x:Static nav:ViewType.About}" 
+                                Style="{StaticResource MenuButtonRD}" >
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Information" />
+                        <TextBlock Text="حول"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
 
+                    </StackPanel>
+                </RadioButton>
             </StackPanel>
             <!--<Button DockPanel.Dock="Bottom"
                          Command="{Binding LogoutCommand}"

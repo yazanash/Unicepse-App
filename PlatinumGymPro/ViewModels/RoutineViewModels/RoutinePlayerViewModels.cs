@@ -130,7 +130,7 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             }));
             SelectedMuscle = MuscleGroup.FirstOrDefault();
 
-            AddRoutineCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadAddRoutineViewModel( _playersDataStore,  _routineDataStore,new NavigationService<RoutinePlayerViewModels>(_navigationStore,()=>this))));
+            AddRoutineCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadAddRoutineViewModel( _playersDataStore,  _routineDataStore,new NavigationService<RoutinePlayerViewModels>(_navigationStore,()=>this),_navigationStore)));
 
         }
 
@@ -153,9 +153,9 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             _selectedRoutineItemsViewModels.Add(routineExercisesItemsViewModel);
         }
 
-        private AddRoutineViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore,NavigationService<RoutinePlayerViewModels> navigationService)
+        private AddRoutineViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore,NavigationService<RoutinePlayerViewModels> navigationService,NavigationStore navigationStore)
         {
-            return AddRoutineViewModel.LoadViewModel( playerStore, routineDataStore, navigationService);
+            return AddRoutineViewModel.LoadViewModel( playerStore, routineDataStore, navigationService, navigationStore);
         }
         private void _routineDataStore_StateChanged(PlayerRoutine? obj)
         {

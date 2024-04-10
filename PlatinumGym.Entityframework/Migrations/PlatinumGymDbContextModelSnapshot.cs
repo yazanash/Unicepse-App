@@ -1244,6 +1244,9 @@ namespace PlatinumGymPro.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("DaysGroupMap")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 

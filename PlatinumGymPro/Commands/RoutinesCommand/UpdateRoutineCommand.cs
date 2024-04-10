@@ -1,4 +1,5 @@
-﻿using PlatinumGym.Core.Models.TrainingProgram;
+﻿using Newtonsoft.Json.Linq;
+using PlatinumGym.Core.Models.TrainingProgram;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.RoutineViewModels;
@@ -16,12 +17,13 @@ namespace PlatinumGymPro.Commands.RoutinesCommand
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersDataStore _playersDataStore;
         private readonly NavigationService<RoutinePlayerViewModels> _navigationService;
-
-        public UpdateRoutineCommand(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationService<RoutinePlayerViewModels> navigationService)
+        private readonly EditSelectRoutineDaysMuscleGroupViewModel _editSelectRoutineDaysMuscleGroupViewModel;
+        public UpdateRoutineCommand(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationService<RoutinePlayerViewModels> navigationService, EditSelectRoutineDaysMuscleGroupViewModel editSelectRoutineDaysMuscleGroupViewModel)
         {
             _routineDataStore = routineDataStore;
             _playersDataStore = playersDataStore;
             _navigationService = navigationService;
+            _editSelectRoutineDaysMuscleGroupViewModel= editSelectRoutineDaysMuscleGroupViewModel;
         }
 
         public override async Task ExecuteAsync(object? parameter)
@@ -29,8 +31,17 @@ namespace PlatinumGymPro.Commands.RoutinesCommand
             PlayerRoutine playerRoutine = _routineDataStore.SelectedRoutine!;
             playerRoutine.RoutineSchedule.Clear();
             playerRoutine.RoutineSchedule.AddRange(_routineDataStore.RoutineItems);
+            playerRoutine.DaysGroupMap!.Clear();
 
+            foreach (var item in _editSelectRoutineDaysMuscleGroupViewModel.DayGroupList)
+            {
+                playerRoutine.DaysGroupMap!.Add(item.SelectedDay, item.Groups);
+            }
+
+            playerRoutine.RoutineData = _editSelectRoutineDaysMuscleGroupViewModel.Date;
+            playerRoutine.RoutineNo = _editSelectRoutineDaysMuscleGroupViewModel.Number;
             await _routineDataStore.Update(playerRoutine);
+
             MessageBox.Show("Player Routine Updated Successfully");
             _navigationService.ReNavigate();
         }

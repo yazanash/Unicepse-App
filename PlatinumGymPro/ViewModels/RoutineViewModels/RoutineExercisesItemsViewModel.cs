@@ -16,6 +16,7 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             this.routineItem = routineItem;
         }
         public string? ExerciseName => routineItem.Exercises!.Name;
+        public int GroupId => routineItem.Exercises!.GroupId;
         public int ItemOrder => routineItem.ItemOrder;
         public string? imageId => "pack://application:,,,/Resources/Assets/Exercises/" + routineItem.Exercises!.GroupId + "/" + routineItem.Exercises!.ImageId + ".png";
         public string? Notes =>routineItem.Notes;

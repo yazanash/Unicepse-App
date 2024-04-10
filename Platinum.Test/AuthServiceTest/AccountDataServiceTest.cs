@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Platinum.Test.Fakes;
 using PlatinumGym.Core.Exceptions;
@@ -31,7 +32,7 @@ namespace Platinum.Test.AuthServiceTest
                 platinumGymDbContext.Database.Migrate();
             }
             userFactory = new();
-            accountDataService = new(db!);
+            accountDataService = new(db!,new PasswordHasher());
 
         }
 

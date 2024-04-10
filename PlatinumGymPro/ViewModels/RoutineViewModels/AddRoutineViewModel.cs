@@ -1,4 +1,5 @@
 ﻿using PlatinumGym.Core.Models.TrainingProgram;
+using PlatinumGymPro.Commands;
 using PlatinumGymPro.Commands.RoutinesCommand;
 using PlatinumGymPro.Enums;
 using PlatinumGymPro.Services;
@@ -22,6 +23,7 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
 
         private readonly PlayersDataStore _playersDataStore;
         private readonly RoutineDataStore _routineDataStore;
+        private readonly NavigationStore  _navigationStore;
         private readonly NavigationService<RoutinePlayerViewModels> _navigationService;
         public GroupMuscleListItemViewModel? SelectedMuscle
         {
@@ -40,11 +42,12 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
         public IEnumerable<ExercisesListItemViewModel> ExercisesList => _exercisesListItemViewModel;
         public IEnumerable<GroupMuscleListItemViewModel> MuscleGroup => _groupMuscleListItemViewModels;
         public IEnumerable<RoutineItemFillViewModel> RoutineItems => _routineExercisesItemsViewModels;
-        public AddRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore,  NavigationService<RoutinePlayerViewModels> navigationService)
+        public AddRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore)
         {
             _playersDataStore = playersDataStore;
             _routineDataStore = routineDataStore;
             _navigationService = navigationService;
+            _navigationStore = navigationStore;
 
             _exercisesListItemViewModel = new ObservableCollection<ExercisesListItemViewModel>();
             _groupMuscleListItemViewModels = new ObservableCollection<GroupMuscleListItemViewModel>();
@@ -111,10 +114,10 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
                 Id = ((int)EMuscleGroup.Chest)
             }));
             SelectedMuscle = MuscleGroup.FirstOrDefault();
-            SubmitCommand = new SubmitRoutineCommand(_routineDataStore, _playersDataStore,_navigationService);
+            SubmitCommand = new NavaigateCommand<SelectRoutineDaysMuscleGroupViewModel>(new NavigationService<SelectRoutineDaysMuscleGroupViewModel>(_navigationStore,() => new SelectRoutineDaysMuscleGroupViewModel(_routineDataStore,_navigationService,_playersDataStore)));
             //ReorderCommand = new ReorderCommand(this);
         }
-      
+
 
         private void _routineDataStore_RoutineItemDeleted(RoutineItems obj)
         {
@@ -166,9 +169,9 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             ExercisesListItemViewModel exercisesListItemViewModel = new ExercisesListItemViewModel(exercise,_routineDataStore,_playersDataStore);
             _exercisesListItemViewModel.Add(exercisesListItemViewModel);
         }
-        public static AddRoutineViewModel LoadViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService)
+        public static AddRoutineViewModel LoadViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService,NavigationStore navigationStore)
         {
-            AddRoutineViewModel viewModel = new(playersDataStore, routineDataStore, navigationService);
+            AddRoutineViewModel viewModel = new(playersDataStore, routineDataStore, navigationService, navigationStore);
 
             viewModel.LoadExercisesItems.Execute(null);
 
@@ -176,6 +179,5 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
         }
         public ICommand LoadExercisesItems { get; }
         public ICommand SubmitCommand { get; }
-        public ICommand ReorderCommand { get; }
     }
 }
