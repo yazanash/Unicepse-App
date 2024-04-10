@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PlatinumGym.Core.Models.Authentication;
 using PlatinumGym.Core.Models.DailyActivity;
 using PlatinumGym.Core.Models.Employee;
@@ -25,7 +26,7 @@ namespace PlatinumGym.Entityframework.DbContexts
         public PlatinumGymDbContext(DbContextOptions options) : base(options)
         {
         }
-      
+
         public DbSet<Player>? Players { get; set; }
         public DbSet<PlayerPayment>? PlayerPayments { get; set; }
         public DbSet<Subscription>? Subscriptions { get; set; }
@@ -39,7 +40,7 @@ namespace PlatinumGym.Entityframework.DbContexts
         public DbSet<TrainerDueses>? TrainerDueses { get; set; }
         public DbSet<Exercises>? Exercises { get; set; }
         public DbSet<RoutineItems>? RoutineItems { get; set; }
-        public DbSet<PlayerRoutine>? PlayerRoutine{ get; set; }
+        public DbSet<PlayerRoutine>? PlayerRoutine { get; set; }
         public DbSet<User>? Users { get; set; }
         public DbSet<Metric>? Metrics { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,7 +52,7 @@ namespace PlatinumGym.Entityframework.DbContexts
             // modelBuilder.Entity<PlayerRoutine>()
             //         .Property(e => e.RoutineSchedule)
             //         .HasConversion((itemData) => JsonConvert.SerializeObject(itemData), str => JsonConvert.DeserializeObject<List<RoutineItems>>(str)!);
-            
+
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             modelBuilder.ApplyConfiguration(new ExercisesConfiguration());
             modelBuilder.ApplyConfiguration(new ExpensesConfiguration());
@@ -61,6 +62,12 @@ namespace PlatinumGym.Entityframework.DbContexts
             modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new SportConfiguration());
+            modelBuilder.Entity<PlayerRoutine>()
+         .Property(c => c.DaysGroupMap)
+         .HasConversion(
+             v => JsonConvert.SerializeObject(v),
+             v => JsonConvert.DeserializeObject<Dictionary<int, List<int>>>(v)!);
+
             modelBuilder.Entity<Sport>()
               .HasMany(c => c.Trainers)
               .WithMany(e => e.Sports);
@@ -69,11 +76,11 @@ namespace PlatinumGym.Entityframework.DbContexts
               .HasOne(c => c.Sport);
 
             modelBuilder.Entity<Subscription>()
-             .HasOne(c => c.Player) ;
+             .HasOne(c => c.Player);
 
             modelBuilder.Entity<Subscription>()
              .HasOne(c => c.Trainer)
-             .WithMany(c => c.PlayerTrainings).HasForeignKey(x=>x.TrainerId);
+             .WithMany(c => c.PlayerTrainings).HasForeignKey(x => x.TrainerId);
 
             //string fileName = "Training.json";
             //string jsonString = File.ReadAllText(fileName);
@@ -88,7 +95,7 @@ namespace PlatinumGym.Entityframework.DbContexts
     {
         public void Configure(EntityTypeBuilder<Sport> builder)
         {
-          builder.Property(p=>p.Name).HasColumnType("nvarchar(4000)");
+            builder.Property(p => p.Name).HasColumnType("nvarchar(4000)");
         }
     }
 }

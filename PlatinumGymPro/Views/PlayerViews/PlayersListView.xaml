@@ -117,7 +117,7 @@
                             </StackPanel>
 
                         </Button>
-                        <Button Grid.Column="1" Grid.Row="1" Command="{Binding AddPlayerCommand}" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
+                        <Button Grid.Column="1" Grid.Row="1" Click="Button_Click" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
 
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="FileExcel"/>
@@ -210,9 +210,9 @@
                                                 <!--<Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>-->
-                                                <Button Command="{Binding TrainingProgramCommand}" Style="{StaticResource GridremoveBtn}">
+                                                <!--<Button Command="{Binding TrainingProgramCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Dumbbell"  Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
+                                                </Button>-->
                                                 <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>

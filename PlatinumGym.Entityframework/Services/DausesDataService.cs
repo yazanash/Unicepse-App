@@ -24,14 +24,14 @@ namespace PlatinumGym.Entityframework.Services
                 if (entity.To <= date)
                 {
                     int days = (int)entity.To.Subtract(firstDayInMonth).TotalDays+1;
-                    double dayprice = entity.Subscription!.PriceAfterOffer / entity.Subscription.DaysCount;
+                    double dayprice = entity.PaymentValue / entity.CoverDays;
                     double total = (days * dayprice);
                     return (total * trainer.ParcentValue) / 100;
                 }
                 else if (entity.To > date)
                 {
                     int days = (int)date.Subtract(firstDayInMonth).TotalDays ;
-                    double dayprice = entity.Subscription!.PriceAfterOffer / entity.Subscription.DaysCount;
+                    double dayprice = entity.PaymentValue / entity.CoverDays;
                     double total = (days * dayprice);
                     return (total * trainer.ParcentValue) / 100;
                 }
@@ -43,7 +43,7 @@ namespace PlatinumGym.Entityframework.Services
                 else if (entity.To > date)
                 {
                     int days = (int) date.Subtract(entity.From).TotalDays;
-                       double dayprice = entity.Subscription!.PriceAfterOffer / entity.Subscription.DaysCount;
+                       double dayprice = entity.PaymentValue / entity.CoverDays;
                     double total = (days * dayprice);
                     return (total * trainer.ParcentValue) / 100;
                 }

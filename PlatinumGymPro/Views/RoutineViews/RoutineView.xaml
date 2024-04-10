@@ -74,7 +74,7 @@
                 <DockPanel Grid.Column="1">
 
                     <ListBox ScrollViewer.CanContentScroll="True"
-                                  ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" 
+                                    VirtualizingPanel.ScrollUnit="Pixel"  ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" 
                               ItemsSource="{Binding SelectedRoutineItemsList}" ItemContainerStyle="{StaticResource RoutineItemsListBoxItemContainerStyle1}" >
 
                     </ListBox>

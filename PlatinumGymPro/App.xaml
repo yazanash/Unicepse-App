@@ -39,6 +39,7 @@
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/SportItemsResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/SubscriptionItemsResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/TrainerItemsResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/GroupDaysSelectionListView.xaml"/>
             </ResourceDictionary.MergedDictionaries>
          
         </ResourceDictionary>
