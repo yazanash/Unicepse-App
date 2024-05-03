@@ -28,7 +28,7 @@ namespace PlatinumGym.Entityframework.Services.PlayerQueries
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Player existedPlayer = await CheckIfExistByName(entity.FullName!);
             if(existedPlayer !=null)
-                throw new PlayerConflictException(existedPlayer,entity,"this player is existed");
+                throw new PlayerConflictException(existedPlayer,entity,"هذا اللاعب موجود بالفعل");
             EntityEntry<Player> CreatedResult = await context.Set<Player>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;

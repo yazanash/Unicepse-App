@@ -61,7 +61,7 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Button  Grid.Column="0" Margin="5 0" FlowDirection="LeftToRight"  Command="{Binding AddTrainerCommand}" Style="{StaticResource AddBtn}">
+                        <Button  Grid.Column="0" Margin="5 0" FlowDirection="LeftToRight"  Command="{Binding AddEmployeeCommand}" Style="{StaticResource AddBtn}">
                             <StackPanel Orientation="Horizontal">
 
                                 <TextBlock Text="أضافة موظف" />
@@ -128,7 +128,7 @@
                                     Binding="{Binding Id}"
                                     CanUserResize="False"/>
 
-                                <DataGridTemplateColumn Header="اسم الموظف" Width="*" IsReadOnly="True">
+                                <DataGridTemplateColumn Header="اسم الموظف" Width="2*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -155,7 +155,7 @@
                                     />
                                 <DataGridTextColumn Header="النسبة" IsReadOnly="True"
                                      Binding="{Binding ParcentValue}"
-                                    Width="*"
+                                    Width="auto"
                                     />
 
                                 <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">
@@ -163,11 +163,8 @@
                                         <DataTemplate>
 
                                             <StackPanel Orientation="Horizontal">
-                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                <Button Command="{Binding OpenAccountCommand}" Style="{StaticResource GridEditBtn}">
                                                     <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
-                                                <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
-                                                    <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                             </StackPanel>
                                         </DataTemplate>

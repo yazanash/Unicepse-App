@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using emp = PlatinumGym.Core.Models.Employee;
 
 namespace PlatinumGymPro.ViewModels.TrainersViewModels
@@ -16,11 +17,11 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
     public class TrainerListItemViewModel : ViewModelBase
     {
         public emp.Employee Trainer;
-        private readonly EmployeeStore _employeeStore;
-        private readonly SportDataStore _sportDataStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
-        private readonly TrainersListViewModel  _trainersListViewModel;
-        private readonly NavigationStore _navigationStore;
+        private readonly EmployeeStore? _employeeStore;
+        private readonly SportDataStore? _sportDataStore;
+        private readonly SubscriptionDataStore? _subscriptionDataStore;
+        private readonly TrainersListViewModel? _trainersListViewModel;
+        private readonly NavigationStore? _navigationStore;
         public int Id => Trainer.Id;
         public string? FullName => Trainer.FullName;
         public double SalaryValue => Trainer.SalaryValue;
@@ -28,9 +29,9 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public string? Phone => Trainer.Phone;
         public int BirthDate => Trainer.BirthDate;
         public string? Position => Trainer.Position;
-
+        public Brush IsSubscribed => Trainer.IsActive ? Brushes.Green : Brushes.Red;
         public ICommand? EditCommand { get; }
-        public ICommand? DeleteCommand { get; }
+        public ICommand? OpenAccountCommand { get; }
 
         public TrainerListItemViewModel(emp.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, SubscriptionDataStore subscriptionDataStore)
         {
@@ -41,8 +42,16 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             _subscriptionDataStore = subscriptionDataStore;
 
             _navigationStore = navigationStore;
-            EditCommand = new NavaigateCommand<EditTrainerViewModel>(new NavigationService<EditTrainerViewModel>(_navigationStore, () => CreateEditTrainerViewModel(_navigationStore, _trainersListViewModel, sportDataStore, employeeStore)));
-            DeleteCommand = new NavaigateCommand<TrainerDausesListViewModel>(new NavigationService<TrainerDausesListViewModel>(_navigationStore, () => new TrainerDausesListViewModel(_employeeStore,_subscriptionDataStore)));
+            if (trainer.IsTrainer)
+                EditCommand = new NavaigateCommand<EditTrainerViewModel>(new NavigationService<EditTrainerViewModel>(_navigationStore, () => CreateEditTrainerViewModel(_navigationStore, _trainersListViewModel, sportDataStore, employeeStore)));
+            else if (trainer.IsSecrtaria)
+                EditCommand = new NavaigateCommand<EditEmployeeViewModel>(new NavigationService<EditEmployeeViewModel>(_navigationStore, () => new EditEmployeeViewModel(_navigationStore, _trainersListViewModel, employeeStore)));
+            NavigationStore EmployeeAccountPageNavigation = new NavigationStore();
+            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore)));
+        }
+        public TrainerListItemViewModel(emp.Employee trainer)
+        {
+            Trainer = trainer;
         }
 
         private EditTrainerViewModel CreateEditTrainerViewModel(NavigationStore navigationStore, TrainersListViewModel trainersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)

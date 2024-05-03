@@ -5,11 +5,11 @@
 
 
 
-    <Color x:Key="colors.color.primary">#263137</Color>
-    <SolidColorBrush x:Key="colors.primary">#263137</SolidColorBrush>
+    <Color x:Key="colors.color.primary">#00a9b9</Color>
+    <SolidColorBrush x:Key="colors.primary">#00a9b9</SolidColorBrush>
 
-    <Color x:Key="colors.color.secondry">#00a9b9</Color>
-    <SolidColorBrush x:Key="colors.secondry">#00a9b9</SolidColorBrush>
+    <Color x:Key="colors.color.secondry">#263137</Color>
+    <SolidColorBrush x:Key="colors.secondry">#263137</SolidColorBrush>
 
     <Color x:Key="colors.color.background">#F0BA15</Color>
     <SolidColorBrush x:Key="colors.background">#AABBCC</SolidColorBrush>

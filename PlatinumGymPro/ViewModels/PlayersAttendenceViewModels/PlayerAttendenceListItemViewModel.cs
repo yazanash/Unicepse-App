@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace PlatinumGymPro.ViewModels.PlayersAttendenceViewModels
 {
@@ -28,5 +29,7 @@ namespace PlatinumGymPro.ViewModels.PlayersAttendenceViewModels
         public string? PlayerName=> dailyPlayerReport.Player!.FullName;
         public string? SubscribeEndDate => dailyPlayerReport.Player!.FullName;
         public bool IsLogged=> dailyPlayerReport.IsLogged;
+        public Brush IsSubscribed => dailyPlayerReport.Player!.IsSubscribed ? Brushes.Green : Brushes.Red;
+        public int Id => dailyPlayerReport.Player!.Id;
     }
 }

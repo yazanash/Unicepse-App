@@ -1,10 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PlatinumGym.Core.Models.TrainingProgram;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.RoutineViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,7 +47,44 @@ namespace PlatinumGymPro.Commands.RoutinesCommand
            
             await _routineDataStore.Add(playerRoutine);
             MessageBox.Show("Player Routine Added Successfully");
+            string jsonString = ExportToJsonTemplate(playerRoutine);
+
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.FileName = "player_routine"; // Default file name
+            dlg.DefaultExt = ".json"; // Default file extension
+            dlg.Filter = "JSON files (.json)|*.json"; // Filter files by extension
+
+            bool? result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                File.WriteAllText(filename, jsonString);
+            }
             _navigationService.ReNavigate();
+        }
+
+        public string ExportToJsonTemplate(PlayerRoutine playerRoutine)
+        {
+            var customJson = new JObject
+            {
+                ["RoutineId"] = playerRoutine.Id,
+                ["RoutineNumber"] = playerRoutine.RoutineNo,
+                ["RoutineDate"] = playerRoutine.RoutineData.ToString("yyyy-MM-dd"),
+                ["pid"] = playerRoutine.Player != null ? playerRoutine.Player.Id  : null,
+                ["Schedule"] = JArray.FromObject(playerRoutine.RoutineSchedule.Select(x=>new
+                {
+                    id=x.Id,
+                    ExerciseName = x.Exercises!.Name,
+                    ExerciseImage = x.Exercises.ImageId,
+                    Muscle_Group = x.Exercises.GroupId,
+                    orders = x.Orders,
+                    notes = x.Notes,
+                    itemOrder = x.ItemOrder
+                })),
+                ["GroupMapping"] = JObject.FromObject(playerRoutine.DaysGroupMap)
+            };
+            return customJson.ToString(Formatting.Indented); ;
         }
     }
 }

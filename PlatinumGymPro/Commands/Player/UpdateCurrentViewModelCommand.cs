@@ -56,7 +56,7 @@ namespace PlatinumGymPro.Commands
                 switch (viewType)
                 {
                     case ViewType.Home:
-                        _navigator.CurrentViewModel = CreateHomeViewModel(_playersStore, _playersAttendenceStore1);
+                        _navigator.CurrentViewModel = CreateHomeViewModel(_playersStore, _playersAttendenceStore1,_employeeStore);
                         break;
                     case ViewType.Players:
                         _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore,_sportStore,_paymentDataStore,_metricDataStore, _routineDataStore);
@@ -82,9 +82,9 @@ namespace PlatinumGymPro.Commands
                 
             }
         }
-        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore)
+        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore,EmployeeStore employeeStore)
         {
-            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore);
+            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore);
         }
 
     }

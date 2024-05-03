@@ -6,6 +6,9 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <ApplicationIcon>logo_white.ico</ApplicationIcon>
+    <PlatformTarget>x64</PlatformTarget>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
@@ -105,6 +108,11 @@
     <None Remove="Resources\Assets\Metric\Weight.png" />
     <None Remove="Resources\Assets\p1.jpg" />
     <None Remove="Resources\Assets\p3.jpg" />
+    <None Remove="Resources\Icons\logo.ico" />
+    <None Remove="Resources\Icons\logo_black.ico" />
+    <None Remove="Resources\Icons\logo_dark.ico" />
+    <None Remove="Resources\Icons\logo_light.ico" />
+    <None Remove="Resources\Icons\logo_white.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -120,6 +128,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="logo_white.ico" />
     <Content Include="Resources\Assets\Exercises\1\1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -349,6 +358,11 @@
     <Resource Include="Resources\Assets\p3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\logo.ico" />
+    <Resource Include="Resources\Icons\logo_black.ico" />
+    <Resource Include="Resources\Icons\logo_dark.ico" />
+    <Resource Include="Resources\Icons\logo_light.ico" />
+    <Resource Include="Resources\Icons\logo_white.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -475,6 +489,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Fonts\" />
   </ItemGroup>
 
 </Project>

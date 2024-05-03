@@ -93,7 +93,7 @@
                                     Binding="{Binding Id}"
                                     CanUserResize="False"/>
 
-                                <DataGridTemplateColumn Header="اسم الرياضة" Width="*" IsReadOnly="True">
+                                <DataGridTemplateColumn Header="اسم الرياضة" Width="2*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">

@@ -43,15 +43,15 @@ namespace PlatinumGymPro.ViewModels
             _usersDataStore = usersDataStore;
 
             Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore,_usersDataStore);
-            Navigator.CurrentViewModel = CreateHomeViewModel(_playerStore, _playersAttendenceStore);
+            Navigator.CurrentViewModel = CreateHomeViewModel(_playerStore, _playersAttendenceStore,_employeeStore);
 
 
 
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
-        private HomeViewModel CreateHomeViewModel( PlayersDataStore playersDataStore,PlayersAttendenceStore playersAttendenceStore)
+        private HomeViewModel CreateHomeViewModel( PlayersDataStore playersDataStore,PlayersAttendenceStore playersAttendenceStore,EmployeeStore employeeStore)
         {
-            return HomeViewModel.LoadViewModel(playersDataStore,playersAttendenceStore);
+            return HomeViewModel.LoadViewModel(playersDataStore,playersAttendenceStore, employeeStore);
         }
         //private void NavigationStore_CurrentViewModelChanged()
         //{

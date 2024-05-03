@@ -1,4 +1,5 @@
-﻿using PlatinumGym.Core.Models.Player;
+﻿using PlatinumGym.Core.Models;
+using PlatinumGym.Core.Models.Player;
 using PlatinumGymPro.Commands;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
@@ -6,6 +7,7 @@ using PlatinumGymPro.Stores.PlayerStores;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -14,7 +16,7 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.PlayersViewModels
 {
-    public class AddPlayerViewModel : ViewModelBase,INotifyDataErrorInfo
+    public class AddPlayerViewModel : ErrorNotifyViewModelBase
     {
         private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
@@ -24,8 +26,15 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PlayerListViewModel _playerListViewModel;
         private readonly RoutineDataStore _routineDataStore;
+        public ObservableCollection<Year> years;
+
+        public IEnumerable<Year> Years => years;
         public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore)
         {
+            years = new ObservableCollection<Year>();
+            for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
+                years.Add(new Year() { year = i });
+            Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
             _navigationStore = navigationStore;
             _playerStore = playerStore;
             _subscriptionDataStore = subscriptionDataStore;
@@ -37,35 +46,13 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
             this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricStore, _routineDataStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore,_metricStore,_routineDataStore,_paymentDataStore);
-            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
         }
 
         private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,SportDataStore sportDataStore,PaymentDataStore paymentDataStore, MetricDataStore metricStore,RoutineDataStore routineDataStore)
         {
             return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore,metricStore,routineDataStore);
         }
-        private bool? _submited = false;
-        public bool? Submited
-        {
-            get { return _submited; }
-            set
-            {
-                _submited = value;
-                OnPropertyChanged(nameof(Submited));
-               
-            }
-        }
-        private string? _submitMessage;
-        public string? SubmitMessage
-        {
-            get { return _submitMessage; }
-            set
-            {
-                _submitMessage = value;
-                OnPropertyChanged(nameof(SubmitMessage));
-
-            }
-        }
+      
         #region Properties
         public int Id { get; }
 
@@ -81,7 +68,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
                 if (string.IsNullOrEmpty(FullName?.Trim()))
                 {
                     AddError("هذا الحقل مطلوب", nameof(FullName));
-                    OnErrorChanged(nameof(Phone));
+                    OnErrorChanged(nameof(FullName));
                 }
             }
         }
@@ -101,12 +88,17 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             }
         }
-        
-        private int _birthDate;
-        public int BirthDate
+
+        private Year? _year;
+        public Year? Year
         {
-            get { return _birthDate; }
-            set { _birthDate = value; OnPropertyChanged(nameof(BirthDate)); }
+            get { return _year; }
+            set
+            {
+                _year = value;
+
+                OnPropertyChanged(nameof(Year));
+            }
         }
         private bool _genderMale;
         public bool GenderMale
@@ -152,41 +144,5 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public ICommand? CancelCommand { get; }
         #endregion
 
-
-        public bool CanSubmit => !HasErrors;
-
-        public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
-       
-        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
-        private void AddError(string? ErrorMsg, string? propertyName)
-        {
-            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
-            {
-                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
-
-            }
-            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void ClearError(string? propertyName)
-        {
-            PropertyNameToErrorsDictionary.Remove(propertyName!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void OnErrorChanged(string? PropertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
-          OnPropertyChanged(nameof(CanSubmit));
-        }
-
-        public bool HasErrors => PropertyNameToErrorsDictionary.Any();
-
-        public IEnumerable GetErrors(string? propertyName)
-        {
-            return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
-        }
     }
 }

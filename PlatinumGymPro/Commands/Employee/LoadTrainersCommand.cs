@@ -1,4 +1,5 @@
 ﻿using PlatinumGymPro.Stores;
+using PlatinumGymPro.ViewModels;
 using PlatinumGymPro.ViewModels.TrainersViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace PlatinumGymPro.Commands.TrainersCommands
     {
 
         private readonly EmployeeStore _employeeStore;
-        private readonly TrainersListViewModel _trainersListViewModel;
+        private readonly ListingViewModelBase _trainersListViewModel;
 
-        public LoadTrainersCommand(EmployeeStore employeeStore, TrainersListViewModel trainersListViewModel)
+        public LoadTrainersCommand(EmployeeStore employeeStore, ListingViewModelBase trainersListViewModel)
         {
             this._employeeStore = employeeStore;
             this._trainersListViewModel = trainersListViewModel;

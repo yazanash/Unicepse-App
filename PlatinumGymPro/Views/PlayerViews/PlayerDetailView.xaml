@@ -25,10 +25,9 @@
             <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
-                        <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                        <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                     </StackPanel>
-
                 </DockPanel>
             </Border>
 
@@ -38,7 +37,7 @@
                 <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
                     <DockPanel HorizontalAlignment="Center" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
-                            <TextBlock Text="معلومات اللاعب" Foreground="#C14E00" FontSize="24" DockPanel.Dock="Left"/>
+                            <TextBlock Text="معلومات اللاعب" Foreground="{StaticResource colors.secondry}" FontSize="24" DockPanel.Dock="Left"/>
                         </DockPanel>
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -52,10 +51,11 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                                 <TextBlock Text="اسم اللاعب" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.primary}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -64,7 +64,7 @@
 
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
                                 <TextBlock Text="رقم الهاتف" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.primary}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -73,21 +73,23 @@
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="5"  VerticalAlignment="Bottom">
                                 <TextBlock Text="سنة الميلاد" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.primary}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
-                                <ComboBox Style="{DynamicResource ComboBoxStyle1}"  ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
-                                    <ComboBoxItem Content="1999" Selector.IsSelected="True"/>
-                                    <ComboBoxItem Content="2000"/>
-                                    <ComboBoxItem Content="2001"/>
-                                    <ComboBoxItem Content="2002"/>
-                                    <ComboBoxItem Content="2003"/>
-                                    <ComboBoxItem Content="2004"/>
+                                <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+                                          ItemsSource="{Binding Years,UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedItem="{Binding Year,UpdateSourceTrigger=PropertyChanged}"
+                                          ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <ComboBoxItem Content="{Binding year}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
                                 <TextBlock Text="الوزن" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.primary}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Weight, UpdateSourceTrigger=PropertyChanged }" Style="{StaticResource textBoxStyle}"/>
@@ -96,7 +98,7 @@
 
                             <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
                                 <TextBlock Text="الطول" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.primary}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -106,7 +108,7 @@
 
                             <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
                                 <TextBlock Text="تاريخ الاشتراك" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.primary}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <!--<TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>-->
@@ -118,7 +120,7 @@
 
                             <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
                                 <TextBlock Text="الجنس" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.primary}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <StackPanel Orientation="Horizontal">
@@ -154,11 +156,11 @@
                                     <TextBlock FontSize="15" Text="{Binding SubmitMessage, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Foreground="Green" HorizontalAlignment="Center"/>
                                 </Border> 
                             </StackPanel>-->
-                            <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Margin="0 20 0 0" HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" Margin="0 20 0 0" HorizontalAlignment="Right">
                                 <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
                                 </Button>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Margin="0 20 0 0" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Margin="0 20 0 0" HorizontalAlignment="Left">
                                 <Button Command="{Binding CancelCommand}" Style="{StaticResource ScFormButton}" Width="200" Height="30"  Content="الغاء"/>
                             </StackPanel>
                         </Grid>
