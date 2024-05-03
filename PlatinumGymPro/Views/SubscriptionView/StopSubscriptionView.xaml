@@ -612,7 +612,7 @@
             
             <Border Background="#fff" Grid.Column="1" CornerRadius="10" Grid.Row="0"  Padding="5"  Margin="5">
                 <DockPanel >
-                    <TextBlock Text="عملية ايقاف الاشتراك" Margin="5" Foreground="#C14E00" FontSize="18" DockPanel.Dock="Top"/>
+                    <TextBlock Text="عملية ايقاف الاشتراك" Margin="5" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
                     <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
 
                     <Grid >
@@ -631,7 +631,7 @@
                 
                         <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
                             <TextBlock Text="عدد الايام المستحقة" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
                             <TextBox 
@@ -640,7 +640,7 @@
                         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
 
                             <TextBlock Text="تاريخ ايقاف الاشتراك" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
                             <DatePicker Style="{DynamicResource DatePickerStyle1}"
@@ -651,14 +651,14 @@
 
                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5 5">
                             <TextBlock Text="المستحق" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
                             <TextBox Text="{Binding DuesCash, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.Column="2"  Margin="5 5">
                             <TextBlock Text="المرتجع" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
                             <TextBox Text="{Binding ReturnCash, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>

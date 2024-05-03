@@ -19,8 +19,8 @@
             <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
-                        <TextBlock Text="المصاريف / تسجيل مصروف" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                        <TextBlock Text="المصاريف / تسجيل مصروف" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                     </StackPanel>
 
                 </DockPanel>
@@ -32,7 +32,7 @@
                 <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
                     <DockPanel HorizontalAlignment="Center" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
-                            <TextBlock Text="معلومات المصروف" Foreground="#C14E00" FontSize="24" DockPanel.Dock="Left"/>
+                            <TextBlock Text="معلومات المصروف" Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
                         </DockPanel>
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -49,7 +49,7 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="5">
                                 <TextBlock Text="بيان المصروف" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Descriptiones, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -58,7 +58,7 @@
 
                             <StackPanel Grid.Row="1"  Grid.Column="0" Margin="5">
                                 <TextBlock Text="قيمة المصروف" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding ExpensesValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -66,7 +66,7 @@
                             </StackPanel>
                             <StackPanel Grid.Row="1"  Grid.Column="1" Margin="5">
                                 <TextBlock Text="تاريخ المصروف" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <DatePicker Style="{DynamicResource DatePickerStyle1}"

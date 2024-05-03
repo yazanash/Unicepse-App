@@ -94,10 +94,10 @@
                 </Border.Background>
                 <Grid>
                     <Canvas>
-                        <Polygon Points="0,20 230,140 0,270" Fill="{StaticResource colors.secondry}"/>
-                        <Polygon Points="100,400 200,370 180,450" Fill="{StaticResource colors.secondry}"/>
-                        <Ellipse Margin="250 400 0 0" Height="40" Width="40" Fill="{StaticResource colors.secondry}" />
-                        <Ellipse Margin="50 350 0 0" Height="20" Width="20" Fill="{StaticResource colors.secondry}" />
+                        <Polygon Points="0,20 230,140 0,270" Fill="{StaticResource colors.primary}"/>
+                        <Polygon Points="100,400 200,370 180,450" Fill="{StaticResource colors.primary}"/>
+                        <Ellipse Margin="250 400 0 0" Height="40" Width="40" Fill="{StaticResource colors.primary}" />
+                        <Ellipse Margin="50 350 0 0" Height="20" Width="20" Fill="{StaticResource colors.primary}" />
                     </Canvas>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="Signup" Style="{StaticResource textTitle}"/>

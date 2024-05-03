@@ -35,7 +35,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="المصاريف"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.secondry}" FontSize="18" DockPanel.Dock="Left"/>
+                    <TextBlock Text="المصاريف"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Left"/>
 
                     <Grid Grid.Column="3">
                         <Grid.ColumnDefinitions>

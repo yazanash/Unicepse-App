@@ -30,8 +30,8 @@
             <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
-                        <TextBlock Text="الرياضات / تسجيل رياضة" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                        <TextBlock Text="الرياضات / تسجيل رياضة" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                     </StackPanel>
 
                 </DockPanel>
@@ -46,7 +46,7 @@
                 <Border Background="#fff" CornerRadius="10" Grid.Column="1"  Grid.Row="0"  Padding="5"  Margin="5">
                     <DockPanel HorizontalAlignment="Center" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
-                            <TextBlock Text="معلومات الرياضة " Foreground="#C14E00" FontSize="24" DockPanel.Dock="Left"/>
+                            <TextBlock Text="معلومات الرياضة " Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
                         </DockPanel>
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -63,7 +63,7 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                                 <TextBlock Text="اسم الرياضة" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
                                 <TextBox Text="{Binding SportName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -72,7 +72,7 @@
 
                             <StackPanel  Grid.Row="0" Grid.Column="1" Margin="5">
                                 <TextBlock Text="الاشتراك الشهري" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
                                 <TextBox Text="{Binding MonthlyPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -81,7 +81,7 @@
 
                             <StackPanel  Grid.Row="1" Grid.Column="2" Margin="5">
                                 <TextBlock Text="الاشتراك اليومي" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
                                 <TextBox Text="{Binding DailyPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -90,7 +90,7 @@
 
                             <StackPanel  Grid.Row="2" Grid.Column="3" Margin="5">
                                 <TextBlock Text=" عدد ايام التدريب في الاسبوع" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
                                 <TextBox Text="{Binding WeeklyTrainingDays, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -98,7 +98,7 @@
                             </StackPanel>
                             <StackPanel  Grid.Row="1" Grid.Column="0" Margin="5">
                                 <TextBlock Text="مدة الاشتراك" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
                                 <TextBox Text="{Binding SubscribeLength, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -121,7 +121,7 @@
 
                 <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="1"  Padding="5"  Margin="5">
                     <DockPanel>
-                        <TextBlock Foreground="#C14E00" Text="المدربين" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
+                        <TextBlock Foreground="{StaticResource colors.primary}" Text="المدربين" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
                         <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource TrainersItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding TrainerList}" >
 
                           

@@ -20,7 +20,7 @@
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
                         <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
-                        <TextBlock Text="المستخدمين / تسجيل مستخدم" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <TextBlock Text="المستخدمين / تسجيل مستخدم" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                     </StackPanel>
 
                 </DockPanel>
@@ -32,7 +32,7 @@
                 <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
                     <DockPanel HorizontalAlignment="Center" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
-                            <TextBlock Text="معلومات المستخدم" Foreground="#C14E00" FontSize="24" DockPanel.Dock="Left"/>
+                            <TextBlock Text="معلومات المستخدم" Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
                         </DockPanel>
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -49,7 +49,7 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                                 <TextBlock Text="اسم المستخدم" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -58,7 +58,7 @@
 
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
                                 <TextBlock Text="كلمة المرور" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -67,7 +67,7 @@
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
                                 <TextBlock Text="الموظف" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
@@ -87,7 +87,7 @@
 
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
                                 <TextBlock Text="المسمى الوظيفي" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Position, UpdateSourceTrigger=PropertyChanged }" Style="{StaticResource textBoxStyle}"/>
