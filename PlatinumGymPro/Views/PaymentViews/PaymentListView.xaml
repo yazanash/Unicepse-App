@@ -29,7 +29,7 @@
 
                 <DockPanel DockPanel.Dock="Top" >
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                        <TextBlock Text="الدفعات"  HorizontalAlignment="Left" Margin="10" Foreground="#C14E00" FontSize="18" DockPanel.Dock="Left"/>
+                        <TextBlock Text="الدفعات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Left"/>
                         <!--<ComboBox  DockPanel.Dock="Right" SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" 
                                VerticalAlignment="Center" ItemsSource="{Binding FiltersList}"
                                ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" 
@@ -59,7 +59,7 @@
                     <Grid  Grid.Row="4">
                         <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="#C14E00" />
+                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
                         <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
 
                             <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>

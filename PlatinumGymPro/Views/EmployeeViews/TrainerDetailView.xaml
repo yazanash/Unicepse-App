@@ -29,8 +29,8 @@
             <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
-                        <TextBlock Text="الموظفين / تسجيل مدرب" FontSize="18" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                        <TextBlock Text="الموظفين / تسجيل مدرب" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                     </StackPanel>
 
                 </DockPanel>
@@ -45,7 +45,7 @@
                 <Border Background="#fff" CornerRadius="10" Grid.Column="1"  Grid.Row="0"  Padding="5"  Margin="5">
                     <DockPanel HorizontalAlignment="Center" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
-                            <TextBlock Text="معلومات المدرب " Foreground="#C14E00" FontSize="24" DockPanel.Dock="Left"/>
+                            <TextBlock Text="معلومات المدرب " Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
                         </DockPanel>
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -62,7 +62,7 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                                 <TextBlock Text="اسم المدرب" 
-                                    Foreground="#993300"
+                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -71,7 +71,7 @@
 
                             <StackPanel  Grid.Row="0" Grid.Column="1" Margin="5">
                                 <TextBlock Text="رقم الهاتف" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -80,7 +80,7 @@
 
                             <StackPanel  Grid.Row="1" Grid.Column="2" Margin="5">
                                 <TextBlock Text="سنة الميلاد" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <ComboBox Style="{DynamicResource ComboBoxStyle1}"  ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
@@ -95,7 +95,7 @@
 
                             <StackPanel  Grid.Row="2" Grid.Column="3" Margin="5">
                                 <TextBlock Text="قيمة الراتب" 
-                                     Foreground="#993300"
+                                     Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding SalaryValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -104,7 +104,7 @@
                            
                             <StackPanel  Grid.Row="1" Grid.Column="0" Margin="5">
                                 <TextBlock Text="النسبة" 
-                                    Foreground="#993300"
+                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding ParcentValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -113,7 +113,7 @@
 
                             <StackPanel  Grid.Row="2" Grid.Column="0" Margin="5">
                                 <TextBlock Text="المسمى الوظيفي" 
-                                    Foreground="#993300"
+                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Position, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -122,7 +122,7 @@
 
                             <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
                                 <TextBlock Text="تاريخ الاشتراك" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <!--<TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>-->
@@ -133,7 +133,7 @@
                             </StackPanel>
                             <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
                                 <TextBlock Text="الجنس" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <StackPanel Orientation="Horizontal">
@@ -177,7 +177,7 @@
 
                 <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="1"  Padding="5"  Margin="5">
                     <DockPanel>
-                        <TextBlock Foreground="#C14E00" Text="الرياضات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
+                        <TextBlock Foreground="{StaticResource colors.primary}" Text="الرياضات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
                         <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" 
                                  ItemContainerStyle="{DynamicResource SportsItemContainerStyle1}"
                                  Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top"

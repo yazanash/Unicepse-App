@@ -28,16 +28,16 @@
             <Border CornerRadius="10 0 0 10">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#C14E00" Offset="0"/>
-                        <GradientStop Color="#993300" Offset="1"/>
+                        <GradientStop Color="{StaticResource colors.color.primary}" Offset="0"/>
+                        <GradientStop Color="{StaticResource colors.color.secondry}" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
                 <Grid>
                     <Canvas>
-                        <Polygon Points="0,20 230,140 0,270" Fill="#C15E11"/>
-                        <Polygon Points="100,400 200,370 180,450" Fill="#C15E11"/>
-                        <Ellipse Margin="250 400 0 0" Height="40" Width="40" Fill="#C15E11" />
-                        <Ellipse Margin="50 350 0 0" Height="20" Width="20" Fill="#C15E11" />
+                        <Polygon Points="0,20 230,140 0,270" Fill="{StaticResource colors.primary}"/>
+                        <Polygon Points="100,400 200,370 180,450" Fill="{StaticResource colors.primary}"/>
+                        <Ellipse Margin="250 400 0 0" Height="40" Width="40" Fill="{StaticResource colors.primary}" />
+                        <Ellipse Margin="50 350 0 0" Height="20" Width="20" Fill="{StaticResource colors.primary}" />
                     </Canvas>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="Login" Style="{StaticResource textTitle}"/>
@@ -50,7 +50,7 @@
 
             <Border Background="#ffffff" CornerRadius="0 10 10 0" Grid.Column="1">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="Welcome To our system" Style="{StaticResource textTitle}" Foreground="#C8621D"/>
+                    <TextBlock Text="Welcome To our system" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.primary}"/>
                     <StackPanel Orientation="Horizontal" Margin="0 20 " HorizontalAlignment="Center">
                         <Button Style="{StaticResource circleBtn}">
                             <icons:PackIconMaterial Kind="Facebook" Width="20" Height="20" Foreground="#787878"/>

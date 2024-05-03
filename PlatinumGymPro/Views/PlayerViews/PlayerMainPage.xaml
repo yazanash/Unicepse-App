@@ -55,7 +55,7 @@
         <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">
           
             <DockPanel DockPanel.Dock="Top" >
-                <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="#C14E00" FontSize="18" DockPanel.Dock="Top"/>
+                <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
                 <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
                 <Grid  Grid.Row="4">
                 <custom:LoadingSpinner

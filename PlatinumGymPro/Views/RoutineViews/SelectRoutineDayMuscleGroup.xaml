@@ -33,7 +33,7 @@
                     <StackPanel Orientation="Vertical" Margin="5">
                         <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                             <TextBlock Text="رقم البرنامج" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
                             <TextBox Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -42,7 +42,7 @@
 
                         <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                             <TextBlock Text="تاريخ البرنامج" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
                             <DatePicker Style="{DynamicResource DatePickerStyle1}"
