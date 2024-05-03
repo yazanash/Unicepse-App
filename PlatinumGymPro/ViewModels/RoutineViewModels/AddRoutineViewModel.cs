@@ -158,6 +158,8 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
         private void _routineDataStore_ExercisesLoaded()
         {
             _exercisesListItemViewModel.Clear();
+            if(SelectedMuscle==null)
+                SelectedMuscle = MuscleGroup.FirstOrDefault();
             foreach (var exercise in _routineDataStore.Exercises.Where(x => x.GroupId == SelectedMuscle!.MuscleGroup!.Id))
             {
                 AddExercise(exercise);

@@ -8,6 +8,7 @@
         xmlns:subprintvms="clr-namespace:PlatinumGymPro.ViewModels.PrintViewModels"
         xmlns:subprintvs="clr-namespace:PlatinumGymPro.utlis.Pages"
         WindowState="Normal"
+         Icon="Resources/icons/Logo.ico"
         Title="PrintWindowDialog"   >
     <Window.Resources>
         <DataTemplate DataType="{x:Type subprintvms:SubscriptionPrintViewModel }">

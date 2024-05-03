@@ -22,7 +22,16 @@
         <DataTemplate DataType="{x:Type evms:EditTrainerViewModel }">
             <views:EditTrainerDetailView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type evms:AddEmployeeViewModel}">
+            <eviews:EmployeeDetailsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type evms:EditEmployeeViewModel}">
+            <eviews:EmployeeDetailsView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type evms:TrainerDausesListViewModel }">
+            <eviews:TrainerDuesesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type evms:EmployeeAccountViewModel }">
             <eviews:TrainerDuesesView/>
         </DataTemplate>
     </UserControl.Resources>

@@ -158,7 +158,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         {
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             years = new ObservableCollection<Year>();
-            for (int i = 1990; i < 2023; i++)
+            for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
                 years.Add(new Year() { year = i });
             _navigationStore = navigationStore;
             _playerStore = playerStore;

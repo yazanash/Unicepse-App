@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
 using emp = PlatinumGym.Core.Models.Employee;
+using PlatinumGymPro.ViewModels.Employee.TrainersViewModels;
+
 namespace PlatinumGymPro.ViewModels.TrainersViewModels
 {
     public class TrainersListViewModel : ListingViewModelBase
@@ -26,6 +28,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public ICommand AddTrainerCommand { get; }
+        public ICommand AddEmployeeCommand { get; }
         public ICommand LoadTrainerCommand { get; }
         public FiltersItemViewModel? SelectedFilter
         {
@@ -49,6 +52,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             _subscriptionDataStore = subscriptionDataStore;
             LoadTrainerCommand = new LoadTrainersCommand(_employeeStore, this);
             AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => CreateAddTrainerViewModel(navigatorStore, this, _sportDataStore, _employeeStore)));
+            AddEmployeeCommand = new NavaigateCommand<AddEmployeeViewModel>(new NavigationService<AddEmployeeViewModel>(_navigatorStore, () => new AddEmployeeViewModel(navigatorStore, this, _employeeStore)));
             trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
 
 

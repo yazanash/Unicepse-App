@@ -85,7 +85,7 @@
                     </StackPanel>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" Value="#993300" TargetName="border"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.secondry}" TargetName="border"/>
 
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
@@ -149,7 +149,7 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#993300"/>
+                <Setter Property="Background" Value="{StaticResource colors.secondry}"/>
             </Trigger>
 
             <Trigger Property="IsEnabled" Value="False">
@@ -157,7 +157,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="ScFormButton" TargetType="Button" BasedOn="{StaticResource FormButton}">
+    <Style x:Key="ScFormButton" TargetType="Button" >
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
         <Setter Property="Template" >

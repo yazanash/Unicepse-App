@@ -1,4 +1,5 @@
 ﻿//using PlatinumGymPro.Models;
+using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
@@ -53,33 +54,40 @@ namespace PlatinumGymPro.Commands
         public override bool CanExecute(object? parameter)
         {
 
-            return  _addPlayerViewModel.CanSubmit && base.CanExecute(null) ;
+            return _addPlayerViewModel.CanSubmit && base.CanExecute(null);
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            _addPlayerViewModel.Submited = false;
-            PlatinumGym.Core.Models.Player.Player player = new()
+            try
             {
-                FullName = _addPlayerViewModel.FullName,
-                BirthDate = _addPlayerViewModel.BirthDate,
-                GenderMale = _addPlayerViewModel.GenderMale,
-                Hieght = _addPlayerViewModel.Hieght,
-                Phone = _addPlayerViewModel.Phone,
-                SubscribeDate = _addPlayerViewModel.SubscribeDate,
-                SubscribeEndDate = _addPlayerViewModel.SubscribeDate.AddDays(30),
-                Weight = _addPlayerViewModel.Weight,
-                IsSubscribed = true
-            };
-            await _playerStore.AddPlayer(player);
-            _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore,_paymentDataStore, _metricDataStore, _routineDataStore, _PlayerListViewModel);
-            MessageBox.Show(player.FullName + " added successfully");
-            //_addPlayerViewModel.Submited = true;
-            //_addPlayerViewModel.SubmitMessage = player.FullName + " added successfully";
-            //_playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore,_subscriptionDataStore, _playerStore,_sportStore);
-           //await Task.Delay(5000);
-            navigationService.ReNavigate();
+
+
+                _addPlayerViewModel.Submited = false;
+                PlatinumGym.Core.Models.Player.Player player = new()
+                {
+                    FullName = _addPlayerViewModel.FullName,
+                    BirthDate = _addPlayerViewModel.Year!.year,
+                    GenderMale = _addPlayerViewModel.GenderMale,
+                    Hieght = _addPlayerViewModel.Hieght,
+                    Phone = _addPlayerViewModel.Phone,
+                    SubscribeDate = _addPlayerViewModel.SubscribeDate,
+                    SubscribeEndDate = _addPlayerViewModel.SubscribeDate.AddDays(30),
+                    Weight = _addPlayerViewModel.Weight,
+                    IsSubscribed = true
+                };
+                await _playerStore.AddPlayer(player);
+                _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _PlayerListViewModel);
+                _addPlayerViewModel.Submited = true;
+                navigationService.ReNavigate();
+            }
+            catch (PlayerConflictException ex)
+            {
+                _addPlayerViewModel.ClearError(nameof(_addPlayerViewModel.FullName));
+                _addPlayerViewModel.AddError(ex.Message, nameof(_addPlayerViewModel.FullName));
+                _addPlayerViewModel.OnErrorChanged(nameof(_addPlayerViewModel.FullName));
+            }
         }
 
-        
+
     }
 }

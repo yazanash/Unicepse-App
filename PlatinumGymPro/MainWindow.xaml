@@ -13,7 +13,7 @@
         mc:Ignorable="d"
         WindowStyle="SingleBorderWindow"
         WindowState="Maximized"
-         Icon="Resources/Logo_light.ico"
+         Icon="Resources/icons/Logo.ico"
         Title="PlatinumGym - Release" Height="720" Width="1080">
     
     <Border Background="#fff"

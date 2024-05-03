@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         xmlns:logvms="clr-namespace:PlatinumGymPro.ViewModels.PlayersAttendenceViewModels"
         xmlns:logvs="clr-namespace:PlatinumGymPro.Views.PlayersAttendenceViews"
+         Icon="Resources/icons/Logo.ico"
         Title="SearchWindow" Height="450" Width="800">
     <Window.Resources>
         <DataTemplate DataType="{x:Type logvms:LogPlayerAttendenceViewModel }">

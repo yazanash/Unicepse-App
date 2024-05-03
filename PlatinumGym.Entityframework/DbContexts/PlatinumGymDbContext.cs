@@ -18,6 +18,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace PlatinumGym.Entityframework.DbContexts
 {
@@ -82,11 +84,9 @@ namespace PlatinumGym.Entityframework.DbContexts
              .HasOne(c => c.Trainer)
              .WithMany(c => c.PlayerTrainings).HasForeignKey(x => x.TrainerId);
 
-            //string fileName = "Training.json";
-            //string jsonString = File.ReadAllText(fileName);
-            //List<Exercises> exercises = JsonConvert.DeserializeObject<List<Exercises>>(jsonString)!;
+           
 
-            //modelBuilder.Entity<Exercises>().HasData(exercises);
+            
 
             base.OnModelCreating(modelBuilder);
         }

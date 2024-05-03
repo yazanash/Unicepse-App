@@ -48,6 +48,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
 
         public ICommand? EditCommand { get; }
+        public ICommand? DeleteCommand { get; }
         public ICommand? TrainingProgramCommand { get; }
         public ICommand? OpenProfileCommand { get; }
         public ICommand? LogInCommand { get; }
@@ -66,7 +67,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
             EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(PlayerMainPageNavigation, () => new EditPlayerViewModel(PlayerMainPageNavigation, _playersDataStore, _subscriptionDataStore, CreatePlayerMainPageViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _sportDataStore), _sportDataStore, _paymentDataStore)));
-            //DeleteCommand = new DeletePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList),_playersDataStore);
+            DeleteCommand = new DeletePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList), _playersDataStore);
             OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore)));
             TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigationStore)));
         }

@@ -21,7 +21,7 @@
             <views:PlayersListView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vms:EditPlayerViewModel }">
-            <views:EditPlayerDetailsView/>
+            <views:PlayerDetailView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type subvm:SubscriptionDetailsViewModel }">
             <subview:SubscriptionDetailView/>

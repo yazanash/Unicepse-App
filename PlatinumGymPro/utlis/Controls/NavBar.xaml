@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
-    <Border Grid.Row="1" Width="50" Background="{StaticResource ResourceKey=colors.primary}" CornerRadius="15" Padding="5">
+    <Border Grid.Row="1" Width="50" Background="{StaticResource ResourceKey=colors.background.white}" CornerRadius="15" Padding="5">
         <Border.Style>
             <Style>
                 <Style.Triggers>
@@ -57,7 +57,7 @@
                  
                 </Border>
                 <TextBlock DockPanel.Dock="Top"
-                                   Foreground="{StaticResource colors.background.white}"
+                                   Foreground="{StaticResource colors.secondry}"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    TextAlignment="Center"
@@ -70,7 +70,7 @@
             <!--Menu Buttons-->
                 <StackPanel DockPanel.Dock="Top" >
                 <CheckBox Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
-                    <Icon:PackIconMaterial Kind="Menu" Foreground="#fff"/>
+                    <Icon:PackIconMaterial Kind="Menu"/>
                 </CheckBox>
                     <RadioButton
                                 Command="{Binding UpdateCurrentViewModelCommand}"
