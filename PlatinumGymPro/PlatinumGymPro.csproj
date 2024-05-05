@@ -108,6 +108,18 @@
     <None Remove="Resources\Assets\Metric\Weight.png" />
     <None Remove="Resources\Assets\p1.jpg" />
     <None Remove="Resources\Assets\p3.jpg" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Black.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-ExtraLight.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Light.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Medium.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Regular.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-SemiBold.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-Bold.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-Medium.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-Regular.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-SemiBold.ttf" />
     <None Remove="Resources\Icons\logo.ico" />
     <None Remove="Resources\Icons\logo_black.ico" />
     <None Remove="Resources\Icons\logo_dark.ico" />
@@ -358,6 +370,18 @@
     <Resource Include="Resources\Assets\p3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Black.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-ExtraLight.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Light.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Medium.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Regular.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-SemiBold.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-Bold.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-Medium.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-Regular.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-SemiBold.ttf" />
     <Resource Include="Resources\Icons\logo.ico" />
     <Resource Include="Resources\Icons\logo_black.ico" />
     <Resource Include="Resources\Icons\logo_dark.ico" />
@@ -489,10 +513,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\Fonts\" />
   </ItemGroup>
 
 </Project>

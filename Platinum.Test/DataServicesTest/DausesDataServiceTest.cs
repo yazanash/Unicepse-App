@@ -311,7 +311,7 @@ namespace Platinum.Test.DataServicesTest
             double date1TD = 0;
             foreach (var pay in playerPayments)
             {
-                date1TD += dausesDataService!.GetParcent(pay, triner, date1);
+                date1TD += dausesDataService!.GetParcent(pay, date1);
             }
 
            
@@ -326,7 +326,7 @@ namespace Platinum.Test.DataServicesTest
             double date2TD = 0;
             foreach (var pay in playerPayments2)
             {
-                date2TD += dausesDataService!.GetParcent(pay, triner, date2);
+                date2TD += dausesDataService!.GetParcent(pay, date2);
             }
 
             double total = date1TD + date2TD;
@@ -334,7 +334,7 @@ namespace Platinum.Test.DataServicesTest
             double allDauses = (allTotal * triner.ParcentValue)/100;
             //Assert.AreEqual(37000, (int)date1TD);
             //Assert.AreEqual(58916, (int) date2TD);
-            Assert.AreEqual(allDauses, (int)(date1TD+date2TD));
+            Assert.AreEqual(allDauses, (int)((date1TD+date2TD)*triner.ParcentValue)/100);
 
         }
 

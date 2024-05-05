@@ -26,10 +26,11 @@ namespace PlatinumGymPro.State.Navigator
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly UsersDataStore _usersDataStore;
+        private readonly DausesDataStore _dausesDataStore;
         public Navigator(NavigationStore navigatorStore, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore,
             ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore,
-            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore)
+            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore)
         {
             _navigatorStore = navigatorStore;
             _playersStore = playersStore;
@@ -42,6 +43,7 @@ namespace PlatinumGymPro.State.Navigator
             _routineDataStore = routineDataStore;
             _playersAttendenceStore = playersAttendenceStore;
             _usersDataStore = usersDataStore;
+            _dausesDataStore = dausesDataStore;
             //LogoutCommand = new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore)));
 
         }
@@ -62,7 +64,7 @@ namespace PlatinumGymPro.State.Navigator
             set { _isOpen = value; OnPropertChanged(nameof(IsOpen)); }
             
         }
-        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore,_sportStore,_employeeStore, _expensesStore, _subscriptionDataStore,_paymentDataStore,_metricDataStore,_routineDataStore, _playersAttendenceStore,_usersDataStore);
+        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore,_sportStore,_employeeStore, _expensesStore, _subscriptionDataStore,_paymentDataStore,_metricDataStore,_routineDataStore, _playersAttendenceStore,_usersDataStore, _dausesDataStore);
         //public ICommand LogoutCommand { get; }
 
     }

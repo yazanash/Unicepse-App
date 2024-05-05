@@ -11,14 +11,13 @@ namespace PlatinumGym.Core.Models.Employee
 {
     public class TrainerDueses : DomainObject
     {
-      
         public Employee? Trainer { get; set; }
-        public PlayerPayment? PlayerPayment { get; set; }
-        public Subscription.Subscription? PlayerTraining { get; set; }
-        public double Value { get; set; }
-        public bool IsPrivate { get; set; }
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public double TotalSubscriptions { get; set; }
+        public int CountSubscription { get; set; }
+        public DateTime IssueDate { get; set; }
+        public double Parcent { get; set; }
+        public double Credits { get; set; }
+        public double Salary { get; set; }
+        public double CreditsCount { get; set; }
     }
 }

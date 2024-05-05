@@ -1,4 +1,6 @@
-﻿using PlatinumGym.Core.Models.Subscription;
+﻿using PlatinumGym.Core.Models.Employee;
+using PlatinumGym.Core.Models.Subscription;
+using PlatinumGymPro.Commands.Employee;
 using PlatinumGymPro.Stores;
 using System;
 using System.Collections.Generic;
@@ -6,36 +8,35 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
 {
     public class TrainerDausesListViewModel : ListingViewModelBase
     {
         private readonly EmployeeStore _employeeStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
-        private ObservableCollection<TrainerDausesListItemViewModel> _trainerDausesListItemViewModels;
+        private readonly DausesDataStore _dausesDataStore;
 
-        public TrainerDausesListViewModel(EmployeeStore employeeStore, SubscriptionDataStore subscriptionDataStore)
+        public TrainerMounthlyReportViewModel? TrainerMounthlyReportViewModel { get; set; }
+        public TrainerDausesListViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore)
         {
             _employeeStore = employeeStore;
-            _subscriptionDataStore = subscriptionDataStore;
-            _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
-            _trainerDausesListItemViewModels = new ObservableCollection<TrainerDausesListItemViewModel>();
+            _dausesDataStore = dausesDataStore;
+            _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
+            //LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, _employeeStore, this);
         }
 
-        private void _subscriptionDataStore_Loaded()
+        private void _dausesDataStore_StateChanged(TrainerDueses? obj)
         {
-          foreach(Subscription subscription in _subscriptionDataStore.Subscriptions)
-            {
-                AddSubscription(subscription);
-            }
+            TrainerMounthlyReportViewModel = new(obj!);
         }
 
-        private void AddSubscription(Subscription subscription)
+        private DateTime _reportDate = DateTime.Now;
+        public DateTime ReportDate
         {
-            TrainerDausesListItemViewModel trainerdause = new TrainerDausesListItemViewModel(subscription);
-            _trainerDausesListItemViewModels.Add(trainerdause);
+            get { return _reportDate; }
+            set { _reportDate = value; OnPropertyChanged(nameof(ReportDate)); }
         }
-        public IEnumerable<TrainerDausesListItemViewModel> Dauses => _trainerDausesListItemViewModels;
+        public ICommand LoadMounthlyReport { get; }
     }
 }

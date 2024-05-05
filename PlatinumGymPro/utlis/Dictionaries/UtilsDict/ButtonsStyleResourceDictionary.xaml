@@ -113,8 +113,8 @@
                 <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.secondry}"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Background" Value="#eee"/>
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
+                <Setter Property="Background" Value="{StaticResource ResourceKey=colors.secondry}"/>
+                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.background.white}"/>
             </Trigger>
         </Style.Triggers>
     </Style>

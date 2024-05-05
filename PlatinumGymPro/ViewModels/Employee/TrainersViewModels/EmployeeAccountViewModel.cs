@@ -13,14 +13,17 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
     {
         private NavigationStore _navigatorStore;
         private readonly EmployeeStore  _employeeStore;
+        private readonly DausesDataStore _dausesDataStore;
         public TrainerListItemViewModel? Employee => new(_employeeStore.SelectedEmployee!) ;
         public ViewModelBase? CurrentEmployeeViewModel => _navigatorStore.CurrentViewModel;
 
-        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
+        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
-            navigatorStore.CurrentViewModel = LoadEmployeeAccountantPageViewModel(_navigatorStore ,_employeeStore);
+            _dausesDataStore = dausesDataStore;
+
+            navigatorStore.CurrentViewModel = LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
             //PlayerHomeCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore)));
             //SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => LoadSubscriptionViewModel(_navigatorStore, _sportDataStore, _subscriptionStore, _playersDataStore, _paymentDataStore)));
@@ -29,9 +32,9 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             //TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigatorStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigatorStore)));
         }
 
-        private ViewModelBase LoadEmployeeAccountantPageViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore)
+        private ViewModelBase LoadEmployeeAccountantPageViewModel( EmployeeStore employeeStore,DausesDataStore dausesDataStore)
         {
-            return new EmployeeAccountantPageViewModel(navigatorStore, employeeStore);
+            return new EmployeeAccountantPageViewModel(employeeStore, dausesDataStore);
         }
 
         private void NavigatorStore_CurrentViewModelChanged()
