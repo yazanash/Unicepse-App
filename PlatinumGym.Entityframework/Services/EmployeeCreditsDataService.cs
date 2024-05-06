@@ -26,6 +26,8 @@ namespace PlatinumGym.Entityframework.Services
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 EntityEntry<Credit> CreatedResult = await context.Set<Credit>().AddAsync(entity);
+                if (entity.EmpPerson != null)
+                    context.Attach(entity.EmpPerson);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
             }

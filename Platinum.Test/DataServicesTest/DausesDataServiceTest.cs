@@ -51,7 +51,7 @@ namespace Platinum.Test.DataServicesTest
             employeeDataService = new(db!);
             subscriptionFactory = new();
             subscriptionDataService = new(db!);
-            dausesDataService = new();
+            dausesDataService = new(db!);
             playerFactory = new();
             playerDataService = new(db!);
 

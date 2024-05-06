@@ -9,6 +9,8 @@
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.Employee.TrainersViewModels"
              xmlns:vs="clr-namespace:PlatinumGymPro.Views.TrainerViews"
+                xmlns:cvms="clr-namespace:PlatinumGymPro.ViewModels.Employee.CreditViewModels"
+             xmlns:cvs="clr-namespace:PlatinumGymPro.Views.EmployeeViews.CreditViews"
              FlowDirection="RightToLeft"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -17,6 +19,15 @@
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
         <DataTemplate DataType="{x:Type vms:EmployeeAccountantPageViewModel}">
             <vs:TrainerDues/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type cvms:CreditListViewModel}">
+            <cvs:CreditsListView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type cvms:CreditDetailsViewModel}">
+            <cvs:CreditDetailView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type cvms:EditCreditDetailsViewModel}">
+            <cvs:CreditDetailView/>
         </DataTemplate>
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
@@ -39,7 +50,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
-                    Command="{Binding SubscriptionCommand}"
+                    Command="{Binding EmployeeCreditsCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>

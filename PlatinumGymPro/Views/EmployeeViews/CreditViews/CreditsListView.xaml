@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="PlatinumGymPro.Views.EmployeeViews.CreditViews.CreditsListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PlatinumGymPro.Views.EmployeeViews.CreditViews"
+             mc:Ignorable="d" 
+                xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+                xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
+                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             FlowDirection="RightToLeft"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+
+    </UserControl.Resources>
+    <Border CornerRadius="10" Background="#fff" Padding="5" Margin="5" x:Name="parent">
+        <Grid Grid.Column="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Padding="5">
+
+                <DockPanel DockPanel.Dock="Top" >
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                        <TextBlock Text="المسحوبات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Left"/>
+                        <!--<ComboBox  DockPanel.Dock="Right" SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" 
+                               VerticalAlignment="Center" ItemsSource="{Binding FiltersList}"
+                               ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" 
+                               Tag="التصنيف حسب" Grid.Row="1" Grid.Column="3" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <ComboBoxItem Content="{Binding Content}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>-->
+                        <Button Grid.Column="0" Margin="5 0"  Command="{Binding CreateCreditsCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="أضافة سحب" />
+                                <Icon:PackIconMaterial Kind="Plus"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                        </Button>
+                    </StackPanel>
+
+                    <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
+                    <Grid  Grid.Row="4">
+                        <custom:LoadingSpinner
+                IsLoading="{Binding IsLoading}"
+                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                        <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+
+                            <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
+
+                            <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
+                                    FlowDirection="RightToLeft" ItemsSource="{Binding Credits}" 
+                                    CanUserReorderColumns="True"
+                                        SelectedItem="{Binding SelectedCredit,UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
+                                    CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                    ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="#" IsReadOnly="True"
+                                    Width="auto"
+                                    Binding="{Binding Id}"
+                                    CanUserResize="False"/>
+
+
+                                 
+
+                                    <DataGridTextColumn Header="قيمة السحب" IsReadOnly="True"
+                                     Binding="{Binding CreditValue}"
+                                    Width="auto"
+                                    />
+
+
+
+                                    <DataGridTextColumn Header="تاريخ السحب" IsReadOnly="True"
+                                     Binding="{Binding Date}"
+                                    Width="*"
+                                    />
+
+                                    <DataGridTextColumn Header="البيان" IsReadOnly="True"
+                                     Binding="{Binding Description}"
+                                    Width="*"
+                                    />
+
+
+                                    <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" x:Name="menu">
+                                                    <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                        <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
+                                                    </Button>
+                                                    <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridEditBtn}">
+                                                        <Icon:PackIconMaterial Kind="TrashCan" Style="{StaticResource GridBtnIcon}"/>
+                                                    </Button>
+                                                    <!--<Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
+                                                    <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
+                                                </Button>
+                                                        <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
+                                                            <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
+                                                        </Button>-->
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <!--<Border Background="#fff">
+                            
+                        </Border>-->
+                        </Grid>
+                    </Grid>
+                </DockPanel>
+            </Border>
+
+
+        </Grid>
+    </Border>
+</UserControl>

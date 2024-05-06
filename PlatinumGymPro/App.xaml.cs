@@ -65,6 +65,7 @@ namespace PlatinumGymPro
 
                    services.AddSingleton<DausesDataService>();
                    services.AddSingleton<EmployeeCreditsDataService>();
+                   services.AddSingleton<CreditsDataStore>();
                    services.AddSingleton<DausesDataStore>();
 
                    services.AddSingleton<PaymentDataService>();

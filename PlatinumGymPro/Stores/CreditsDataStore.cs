@@ -24,6 +24,20 @@ namespace PlatinumGymPro.Stores
         public event Action<Credit>? Updated;
         public event Action<int>? Deleted;
 
+        private Credit? _selectedCredit;
+        public Credit? SelectedCredit
+        {
+            get
+            {
+                return _selectedCredit;
+            }
+            set
+            {
+                _selectedCredit = value;
+                StateChanged?.Invoke(SelectedCredit);
+            }
+        }
+        public event Action<Credit?>? StateChanged;
         public async Task Add(Credit entity)
         {
             await _employeeCreditsDataService.Create(entity);
