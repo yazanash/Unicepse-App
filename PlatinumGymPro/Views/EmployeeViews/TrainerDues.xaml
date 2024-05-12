@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              FlowDirection="RightToLeft"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignWidth="800">
     <Border CornerRadius="10" Background="#EEE" Padding="5" >
        
             <Grid Grid.Row="1">
@@ -23,21 +23,35 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="معلومات الكشف :" Foreground="{StaticResource colors.secondry}" FontSize="22" Margin="0 0 20 0" />
-
-                    <StackPanel Grid.Column="1" Orientation="Horizontal"  >
-                        <TextBlock Text="تاريخ الكشف " Foreground="{StaticResource colors.secondry}" Margin="0 0 20 0" FontSize="20" VerticalAlignment="Center" DockPanel.Dock="Top"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="تاريخ التقرير " Foreground="{StaticResource colors.secondry}" Margin="0 0 20 0" FontSize="20" VerticalAlignment="Center" DockPanel.Dock="Top"/>
                         <DatePicker Style="{DynamicResource DatePickerStyle1}"
                                     SelectedDate="{Binding ReportDate, UpdateSourceTrigger=PropertyChanged}"
-                                    Width="250"
+                                    
                                     CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />
-                        <Button Grid.Column="0" Margin="10 0"  Command="{Binding LoadMounthlyReport}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Stretch">
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal"  >
+                       <Button Grid.Column="0" Margin="10 0"  Command="{Binding LoadMounthlyReport}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Stretch">
 
                             <StackPanel Orientation="Horizontal">
 
-                                <TextBlock Text="تحضير الكشف" />
+                                <TextBlock Text="تحضير التقرير" />
                                 <Icon:PackIconMaterial Kind="Refresh"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                        </Button>
+                        <Button Grid.Column="0" Margin="10 0"  Command="{Binding SaveMounthlyReport}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Stretch">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="حفظ التقرير" />
+                                <Icon:PackIconMaterial Kind="ContentSave"
                                        Width="11"
                                        Height="11"
                                        Margin="8 0 0 1"
@@ -52,6 +66,7 @@
             <Border Background="#fff" CornerRadius="10" Grid.Column="1"   Grid.Row="1"  Padding="5"  Margin="5">
                 <DockPanel>
                     <cdr:EmployeeAccountantCard DockPanel.Dock="Top" DataContext="{Binding TrainerMounthlyReportViewModel,UpdateSourceTrigger=PropertyChanged}"/>
+                   
                 </DockPanel>
             </Border>
         </Grid>

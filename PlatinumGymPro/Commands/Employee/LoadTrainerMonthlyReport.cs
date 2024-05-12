@@ -1,4 +1,5 @@
 ﻿using PlatinumGymPro.Stores;
+using PlatinumGymPro.ViewModels.Employee.DausesViewModels;
 using PlatinumGymPro.ViewModels.Employee.TrainersViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace PlatinumGymPro.Commands.Employee
     {
         private readonly DausesDataStore _dausesDataStore;
         private readonly EmployeeStore _employeeStore;
-        private readonly EmployeeAccountantPageViewModel _trainerDausesListViewModel;
+        private readonly DausesDetailsViewModel _trainerDausesListViewModel;
 
-        public LoadTrainerMonthlyReport(DausesDataStore dausesDataStore, EmployeeStore employeeStore, EmployeeAccountantPageViewModel trainerDausesListViewModel)
+        public LoadTrainerMonthlyReport(DausesDataStore dausesDataStore, EmployeeStore employeeStore, DausesDetailsViewModel trainerDausesListViewModel)
         {
             _dausesDataStore = dausesDataStore;
             _trainerDausesListViewModel = trainerDausesListViewModel;

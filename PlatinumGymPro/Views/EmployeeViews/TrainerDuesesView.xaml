@@ -7,8 +7,9 @@
                 xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
                 xmlns:ctrl="clr-namespace:PlatinumGymPro.Controls"
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.Employee.TrainersViewModels"
-             xmlns:vs="clr-namespace:PlatinumGymPro.Views.TrainerViews"
+             xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.Employee.DausesViewModels"
+             xmlns:vs="clr-namespace:PlatinumGymPro.Views.EmployeeViews.DausesViews"
+              xmlns:dvs="clr-namespace:PlatinumGymPro.Views.TrainerViews"
                 xmlns:cvms="clr-namespace:PlatinumGymPro.ViewModels.Employee.CreditViewModels"
              xmlns:cvs="clr-namespace:PlatinumGymPro.Views.EmployeeViews.CreditViews"
              FlowDirection="RightToLeft"
@@ -17,8 +18,11 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-        <DataTemplate DataType="{x:Type vms:EmployeeAccountantPageViewModel}">
-            <vs:TrainerDues/>
+        <DataTemplate DataType="{x:Type vms:DauseListViewModel}">
+            <vs:YearlyDausesListView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:DausesDetailsViewModel}">
+            <dvs:TrainerDues/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type cvms:CreditListViewModel}">
             <cvs:CreditsListView/>
@@ -41,8 +45,9 @@
                 <DockPanel>
                     <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                         <RadioButton
-                         IsChecked="True"   
-                            Command="{Binding PlayerHomeCommand}"
+                            Visibility="{Binding IsTrainer,Converter={StaticResource BoolToVis}}"
+                         IsChecked="{Binding IsTrainer}"   
+                            Command="{Binding EmployeeCreditsCommand}"
                             Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple"/>
@@ -50,6 +55,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
+                            IsChecked="True"
                     Command="{Binding EmployeeCreditsCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal">

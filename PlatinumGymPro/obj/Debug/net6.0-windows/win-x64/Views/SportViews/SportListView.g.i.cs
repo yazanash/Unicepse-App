@@ -66,7 +66,7 @@ namespace PlatinumGymPro.Views.SportViews {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;V1.0.0.0;component/views/sportviews/sportlistview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/views/sportviews/sportlistview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Views\SportViews\SportListView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

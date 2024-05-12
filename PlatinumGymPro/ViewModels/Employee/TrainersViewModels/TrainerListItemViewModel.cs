@@ -18,7 +18,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
     {
         public emp.Employee Trainer;
         private readonly EmployeeStore? _employeeStore;
-        private readonly DausesDataStore?  _dausesDataStore;
+        private readonly DausesDataStore? _dausesDataStore;
         private readonly SportDataStore? _sportDataStore;
         private readonly SubscriptionDataStore? _subscriptionDataStore;
         private readonly TrainersListViewModel? _trainersListViewModel;
@@ -31,6 +31,8 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public string? Phone => Trainer.Phone;
         public int BirthDate => Trainer.BirthDate;
         public string? Position => Trainer.Position;
+        public string? Gendertext => Trainer.GenderMale ? "ذكر" : "انثى";
+        public string? SubscribeDate => Trainer.StartDate.ToString("ddd,MMM dd,yyy");
         public Brush IsSubscribed => Trainer.IsActive ? Brushes.Green : Brushes.Red;
         public ICommand? EditCommand { get; }
         public ICommand? OpenAccountCommand { get; }
@@ -51,7 +53,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             else if (trainer.IsSecrtaria)
                 EditCommand = new NavaigateCommand<EditEmployeeViewModel>(new NavigationService<EditEmployeeViewModel>(_navigationStore, () => new EditEmployeeViewModel(_navigationStore, _trainersListViewModel, employeeStore)));
             NavigationStore EmployeeAccountPageNavigation = new NavigationStore();
-            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!,_creditsDataStore!)));
+            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!)));
         }
         public TrainerListItemViewModel(emp.Employee trainer)
         {

@@ -28,9 +28,9 @@
         <DataTemplate DataType="{x:Type evms:EditEmployeeViewModel}">
             <eviews:EmployeeDetailsView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type evms:TrainerDausesListViewModel }">
+        <!--<DataTemplate DataType="{x:Type evms:TrainerDausesListViewModel }">
             <eviews:TrainerDuesesView/>
-        </DataTemplate>
+        </DataTemplate>-->
         <DataTemplate DataType="{x:Type evms:EmployeeAccountViewModel }">
             <eviews:TrainerDuesesView/>
         </DataTemplate>

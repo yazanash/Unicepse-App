@@ -429,6 +429,8 @@ namespace PlatinumGymPro
             //auth.Show();
             MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
             auth.Show();
+            //CameraReader cameraReader = new CameraReader();
+            //cameraReader.Show();
             //MessageBox.Show(System.Environment.CurrentDirectory) ;
             base.OnStartup(e);
         }

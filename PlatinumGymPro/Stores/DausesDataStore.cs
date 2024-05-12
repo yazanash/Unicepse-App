@@ -62,18 +62,21 @@ namespace PlatinumGymPro.Stores
             IEnumerable<TrainerDueses> employees = await _dausesDataService.GetAll();
             _dauses.Clear();
             _dauses.AddRange(employees);
+            Loaded?.Invoke();
         }
         public async Task GetAll(Employee employee)
         {
             IEnumerable<TrainerDueses> employees = await _dausesDataService.GetAll(employee);
             _dauses.Clear();
             _dauses.AddRange(employees);
+            Loaded?.Invoke();
         }
         public async Task GetAll(Employee employee,DateTime date)
         {
             IEnumerable<TrainerDueses> employees = await _dausesDataService.GetAll(employee, date);
             _dauses.Clear();
             _dauses.AddRange(employees);
+            Loaded?.Invoke();
         }
         public async Task Add(TrainerDueses entity)
         {
@@ -82,9 +85,20 @@ namespace PlatinumGymPro.Stores
             Created?.Invoke(entity);
         }
 
-        public Task Update(TrainerDueses entity)
+        public async Task Update(TrainerDueses entity)
         {
-            throw new NotImplementedException();
+            await _dausesDataService.Update(entity);
+            int currentIndex = _dauses.FindIndex(y => y.Id == entity.Id);
+
+            if (currentIndex != -1)
+            {
+                _dauses[currentIndex] = entity;
+            }
+            else
+            {
+                _dauses.Add(entity);
+            }
+            Updated?.Invoke(entity);
         }
 
         public async Task Delete(int entity_id)

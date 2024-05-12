@@ -70,8 +70,11 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             MoveToNewTrainerCommand = new NavaigateCommand<MoveToNewTrainerViewModel>(new NavigationService<MoveToNewTrainerViewModel>(_navigationStore, () => new MoveToNewTrainerViewModel(_navigationStore, _subscriptionDataStore, _playerMainPageViewModel)));
             PrintCommand = new PrintCommand(new PrintWindowViewModel(new SubscriptionPrintViewModel(this.Subscription), new NavigationStore()));
         }
-
-        public void Update(Subscription subscription)
+        public SubscriptionListItemViewModel(Subscription subscription)
+        {
+            Subscription = subscription;
+        }
+            public void Update(Subscription subscription)
         {
             this.Subscription = subscription;
 

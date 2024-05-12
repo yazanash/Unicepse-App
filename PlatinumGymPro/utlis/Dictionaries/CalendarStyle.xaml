@@ -22,7 +22,7 @@
                 <ControlTemplate TargetType="{x:Type CalendarItem}">
                     <ControlTemplate.Resources>
                         <DataTemplate x:Key="{x:Static CalendarItem.DayTitleTemplateResourceKey}">
-                            <TextBlock Foreground="#888" FontFamily="Verdana" FontWeight="Bold" FontSize="9.5" HorizontalAlignment="Center" Margin="0,6,0,6" Text="{Binding}" VerticalAlignment="Center"/>
+                            <TextBlock Foreground="#fff" FontFamily="Verdana" FontWeight="Bold" FontSize="9.5" HorizontalAlignment="Center" Margin="0,6,0,6" Text="{Binding}" VerticalAlignment="Center"/>
                         </DataTemplate>
                     </ControlTemplate.Resources>
                     <Grid x:Name="PART_Root">
@@ -49,7 +49,7 @@
                             <Grid>
                                 <Grid.Resources>
                                     <ControlTemplate x:Key="PreviousButtonTemplate" TargetType="{x:Type Button}">
-                                        <Border Cursor="Hand" CornerRadius="20" Background="#C14E00">
+                                        <Border Cursor="Hand" CornerRadius="20" Background="{StaticResource colors.primary}">
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
                                                     <VisualState x:Name="Normal"/>
@@ -71,7 +71,7 @@
                                         </Border>
                                     </ControlTemplate>
                                     <ControlTemplate x:Key="NextButtonTemplate" TargetType="{x:Type Button}">
-                                        <Border Cursor="Hand" CornerRadius="20" Background="#C14E00">
+                                        <Border Cursor="Hand" CornerRadius="20" Background="red">
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
                                                     <VisualState x:Name="Normal"/>
@@ -298,10 +298,10 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle x:Name="TodayBackground" Fill="#C14E00" Opacity="0" RadiusX="50" RadiusY="50"/>
-                        <Rectangle x:Name="SelectedBackground" Fill="#aaa" Opacity="0" RadiusX="50" RadiusY="50"/>
+                        <Rectangle x:Name="TodayBackground" Fill="{StaticResource colors.primary}" Opacity="0" RadiusX="50" RadiusY="50"/>
+                        <Rectangle x:Name="SelectedBackground" Fill="{StaticResource colors.secondry}" Opacity="0" RadiusX="50" RadiusY="50"/>
                         <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
-                        <Rectangle x:Name="HighlightBackground" Fill="#aaa" Opacity="0" RadiusX="50" RadiusY="50"/>
+                        <Rectangle x:Name="HighlightBackground" Fill="#fff" Opacity="0" RadiusX="50" RadiusY="50"/>
                         <ContentPresenter x:Name="NormalText" TextElement.Foreground="#FFF" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="5,1,5,1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         <Path x:Name="Blackout" Data="M8.1772461,11.029181 L10.433105,11.029181 L11.700684,12.801641 L12.973633,11.029181 L15.191895,11.029181 L12.844727,13.999395 L15.21875,17.060919 L12.962891,17.060919 L11.673828,15.256231 L10.352539,17.060919 L8.1396484,17.060919 L10.519043,14.042364 z" Fill="#FF000000" HorizontalAlignment="Stretch" Margin="3" Opacity="0" RenderTransformOrigin="0.5,0.5" Stretch="Fill" VerticalAlignment="Stretch"/>
                         <Rectangle x:Name="DayButtonFocusVisual" IsHitTestVisible="false" RadiusX="50" RadiusY="50" Stroke="Transparent" Visibility="Collapsed"/>
@@ -390,8 +390,8 @@
                         </VisualStateManager.VisualStateGroups>
                         <Rectangle x:Name="SelectedBackground" Fill="{TemplateBinding Background}" Opacity="0" RadiusX="1" RadiusY="1"/>
                         <Rectangle x:Name="Background" Fill="{TemplateBinding Background}" Opacity="0" RadiusX="1" RadiusY="1"/>
-                        <ContentPresenter x:Name="NormalText" TextElement.Foreground="#FF333333" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1,0,1,1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        <Rectangle x:Name="CalendarButtonFocusVisual" IsHitTestVisible="false" RadiusX="1" RadiusY="1" Stroke="#FF45D6FA" Visibility="Collapsed"/>
+                        <ContentPresenter x:Name="NormalText" TextElement.Foreground="#fff" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1,0,1,1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <Rectangle x:Name="CalendarButtonFocusVisual" IsHitTestVisible="false" RadiusX="1" RadiusY="1" Stroke="{StaticResource colors.primary}" Visibility="Collapsed"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True">

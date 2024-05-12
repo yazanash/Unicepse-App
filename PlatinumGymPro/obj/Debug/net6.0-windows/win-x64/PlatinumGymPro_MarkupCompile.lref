@@ -1,5 +1,6 @@
-﻿D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\GeneratedInternalTypeHelper.g.cs
+﻿
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\App.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\CameraReader.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\MainWindow.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\PrintWindowDialog.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\SearchWindow.xaml;;
@@ -37,6 +38,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Controls\UserSettingsCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Dictionaries\DataTemplate\DataTemplateResourceDictionary.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Pages\PlayerRoutinePrintView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Pages\SubscriptionPrintView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Pages\TrainerDetailedReport.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\AccountingState.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\AccountingView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\ExpensesReport.xaml;;
@@ -52,6 +54,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\UsersListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\UsersView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\CreditViews\CreditDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\CreditViews\CreditsListView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\DausesViews\YearlyDausesListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\EditTrainerDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\EmployeeDetailsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\EmployeeViews\EmployeesListView.xaml;;
