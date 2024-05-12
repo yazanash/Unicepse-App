@@ -56,7 +56,7 @@
 
                             <StackPanel Orientation="Horizontal">
 
-                                <TextBlock Text="تسجيل دخول لاعب" />
+                                <TextBlock   Text="تسجيل دخول لاعب" />
                                 <Icon:PackIconMaterial Kind="Plus"
                                        Width="11"
                                        Height="11"

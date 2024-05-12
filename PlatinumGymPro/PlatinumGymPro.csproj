@@ -108,6 +108,18 @@
     <None Remove="Resources\Assets\Metric\Weight.png" />
     <None Remove="Resources\Assets\p1.jpg" />
     <None Remove="Resources\Assets\p3.jpg" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Black.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-ExtraLight.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Light.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Medium.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Regular.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-SemiBold.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-Bold.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-Medium.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-Regular.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-SemiBold.ttf" />
     <None Remove="Resources\Icons\logo.ico" />
     <None Remove="Resources\Icons\logo_black.ico" />
     <None Remove="Resources\Icons\logo_dark.ico" />
@@ -124,6 +136,12 @@
       <Lcid>0</Lcid>
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="{d37e2a3e-8545-3a39-9f4f-31827c9124ab}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>d37e2a3e-8545-3a39-9f4f-31827c9124ab</Guid>
     </COMReference>
   </ItemGroup>
 
@@ -325,12 +343,18 @@
     <Resource Include="Resources/Logo_light.ico" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AForge" Version="2.2.5" />
+    <PackageReference Include="AForge.Video" Version="2.2.5" />
+    <PackageReference Include="AForge.Video.DirectShow" Version="2.2.5" />
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.4" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+    <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlatinumGym.Core\PlatinumGym.Core.csproj" />
@@ -358,6 +382,18 @@
     <Resource Include="Resources\Assets\p3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Black.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-ExtraLight.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Light.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Medium.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Regular.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-SemiBold.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-Bold.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-Medium.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-Regular.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-SemiBold.ttf" />
     <Resource Include="Resources\Icons\logo.ico" />
     <Resource Include="Resources\Icons\logo_black.ico" />
     <Resource Include="Resources\Icons\logo_dark.ico" />
@@ -489,10 +525,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\Fonts\" />
   </ItemGroup>
 
 </Project>

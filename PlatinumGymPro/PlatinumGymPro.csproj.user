@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="CameraReader.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="PrintWindowDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -106,6 +109,9 @@
     <Compile Update="utlis\Pages\SubscriptionPrintView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Pages\TrainerDetailedReport.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\AccountingViews\AccountingState.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -119,6 +125,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\AuthView\UsersView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\CreditViews\CreditsListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\DausesViews\YearlyDausesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\EmployeeViews\EmployeeDetailsView.xaml.cs">
@@ -183,6 +198,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="CameraReader.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="PrintWindowDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -342,6 +360,9 @@
     <Page Update="utlis\Pages\SubscriptionPrintView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="utlis\Pages\TrainerDetailedReport.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\AccountingViews\AccountingState.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -355,6 +376,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\UsersView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\CreditViews\CreditsListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\DausesViews\YearlyDausesListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EmployeeViews\EmployeeDetailsView.xaml">

@@ -29,10 +29,12 @@ namespace PlatinumGymPro.Commands
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore1 ;
         private readonly UsersDataStore _usersDataStore;
+        private readonly DausesDataStore _dausesDataStore;
+        private readonly CreditsDataStore _creditsDataStore;
         public UpdateCurrentViewModelCommand(INavigator navigator, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore,
             SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
-            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1, UsersDataStore usersDataStore)
+            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
         {
             _navigator = navigator;
             _playersStore = playersStore;
@@ -45,6 +47,8 @@ namespace PlatinumGymPro.Commands
             _routineDataStore = routineDataStore;
             _playersAttendenceStore1 = playersAttendenceStore1;
             _usersDataStore = usersDataStore;
+            _dausesDataStore = dausesDataStore;
+            _creditsDataStore = creditsDataStore;
         }
 
         public override void Execute(object? parameter)
@@ -65,7 +69,7 @@ namespace PlatinumGymPro.Commands
                         _navigator.CurrentViewModel = new SportsViewModel(navigator,_sportStore,_employeeStore);
                         break;
                     case ViewType.Trainer:
-                        _navigator.CurrentViewModel = new TrainersViewModel(navigator,_employeeStore,_sportStore,_subscriptionDataStore);
+                        _navigator.CurrentViewModel = new TrainersViewModel(navigator,_employeeStore,_sportStore,_subscriptionDataStore,_dausesDataStore,_creditsDataStore);
                         break;
                     case ViewType.Users:
                         _navigator.CurrentViewModel = new UsersViewModel(navigator, _usersDataStore,_employeeStore);

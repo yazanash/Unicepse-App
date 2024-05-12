@@ -17,6 +17,9 @@
         <DataTemplate DataType="{x:Type subprintvms:RoutinePrintViewModel }">
             <subprintvs:PlayerRoutinePrintView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type subprintvms:TrainerDetiledReportViewModel }">
+            <subprintvs:TrainerDetailedReport />
+        </DataTemplate>
     </Window.Resources>
         <Border Background="#fff"
             Padding="5 10" 

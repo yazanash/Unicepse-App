@@ -24,6 +24,8 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private NavigationStore _navigatorStore;
         private EmployeeStore _employeeStore;
         private SportDataStore _sportDataStore;
+        private DausesDataStore _dausesDataStore;
+        private readonly CreditsDataStore _creditsDataStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
@@ -44,12 +46,15 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             }
         }
         public SearchBoxViewModel SearchBox { get; set; }
-        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore)
+        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
             _sportDataStore = sportDataStore;
             _subscriptionDataStore = subscriptionDataStore;
+            _dausesDataStore = dausesDataStore;
+            _creditsDataStore = creditsDataStore;
+
             LoadTrainerCommand = new LoadTrainersCommand(_employeeStore, this);
             AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => CreateAddTrainerViewModel(navigatorStore, this, _sportDataStore, _employeeStore)));
             AddEmployeeCommand = new NavaigateCommand<AddEmployeeViewModel>(new NavigationService<AddEmployeeViewModel>(_navigatorStore, () => new AddEmployeeViewModel(navigatorStore, this, _employeeStore)));
@@ -73,7 +78,6 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(Enums.Filter.Employee, 3, "الموظفين"));
 
             _employeeStore.FilterChanged += _employeeStore_FilterChanged;
-
         }
 
         private void _employeeStore_FilterChanged(Enums.Filter? filter)
@@ -184,12 +188,12 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private void AddTrainer(emp.Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this,_subscriptionDataStore);
+                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this,_subscriptionDataStore,_dausesDataStore, _creditsDataStore);
             trainerListItemViewModels.Add(itemViewModel);
         }
-        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore,SubscriptionDataStore subscriptionDataStore)
+        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore,SubscriptionDataStore subscriptionDataStore,DausesDataStore dausesDataStore,CreditsDataStore creditsDataStore)
         {
-            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore,subscriptionDataStore);
+            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore,subscriptionDataStore, dausesDataStore, creditsDataStore);
 
             viewModel.LoadTrainerCommand.Execute(null);
 

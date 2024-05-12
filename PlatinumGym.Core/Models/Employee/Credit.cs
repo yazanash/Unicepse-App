@@ -12,5 +12,6 @@ namespace PlatinumGym.Core.Models.Employee
         public virtual Employee? EmpPerson { get; set; }
         public double CreditValue { get; set; }
         public DateTime Date { get; set; }
+        public string? Description { get; set; }
     }
 }

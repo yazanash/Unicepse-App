@@ -326,11 +326,11 @@
 
                         <!--Buttons-->
                         <StackPanel Orientation="Horizontal" Grid.Row="12" Grid.Column="3" Margin="0 20 0 0" HorizontalAlignment="Right">
-                            <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
+                            <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4"  Content="حفظ"  HorizontalAlignment="Right">
                             </Button>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Row="12" Grid.Column="0" Margin="0 20 0 0" HorizontalAlignment="Left">
-                            <Button Command="{Binding CancelCommand}" Style="{StaticResource ScFormButton}" Width="200" Height="30"  Content="الغاء"/>
+                            <Button Command="{Binding CancelCommand}" Style="{StaticResource ScFormButton}" Width="200"   Content="الغاء"/>
                         </StackPanel>
 
                     </Grid>

@@ -24,6 +24,17 @@
     <Color x:Key="items_background_color">#AABBCC</Color>
     <Color x:Key="white_foreground_color">#ffffff</Color>
 
+    <FontFamily x:Key="NotoSans">pack://application:,,,/Resources/Fonts/#NotoNaskhArabic</FontFamily>
+    <FontFamily x:Key="Cairo">pack://application:,,,/Resources/Fonts/Cairo/#Cairo</FontFamily>
+    <!--<FontFamily x:Key="NotoSansSymbols">pack://application:,,,/Resources/Fonts/#Noto Sans Symbols</FontFamily>-->
+
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Cairo}"/>
+    </Style>
+
+    <Style TargetType="{x:Type Control}">
+        <Setter Property="FontFamily" Value="{StaticResource Cairo}"/>
+    </Style>
     <!--<Style x:Key="SearchPlayerListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Padding" Value="5"/>

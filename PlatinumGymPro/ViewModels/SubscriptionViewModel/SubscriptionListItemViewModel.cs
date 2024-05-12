@@ -28,7 +28,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         public string? SportName => Subscription.Sport!.Name;
         public DateTime LastCheck => Subscription.LastCheck;
         public string? Trainer =>  Subscription.Trainer != null ? Subscription.Trainer!.FullName:"بدون مدرب";
-        public string RollDate => Subscription.RollDate.ToString("ddd,MMM dd,yyy");
+        public string RollDate => Subscription.RollDate.ToShortDateString();
         public double Price => Subscription.Price;
         public double OfferValue => Subscription.OfferValue;
         public string? OfferDes => Subscription.OfferDes;
@@ -42,7 +42,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         //public Brush IsPaidTextColor => !Subscription.IsPaid ? new BrushConverter().ConvertFromString("#80A894") as SolidColorBrush : new BrushConverter().ConvertFromString("#BE99C3") as SolidColorBrush;
         public double PaidValue => Subscription.PaidValue;
         //public double RestValue { get; set; }
-        public string EndDate => Subscription.EndDate.ToString("ddd,MMM dd,yyy");
+        public string EndDate => Subscription.EndDate.ToShortDateString();
         //public DateTime LastPaid => Subscription
 
         private bool _isOpen;
@@ -70,8 +70,11 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             MoveToNewTrainerCommand = new NavaigateCommand<MoveToNewTrainerViewModel>(new NavigationService<MoveToNewTrainerViewModel>(_navigationStore, () => new MoveToNewTrainerViewModel(_navigationStore, _subscriptionDataStore, _playerMainPageViewModel)));
             PrintCommand = new PrintCommand(new PrintWindowViewModel(new SubscriptionPrintViewModel(this.Subscription), new NavigationStore()));
         }
-
-        public void Update(Subscription subscription)
+        public SubscriptionListItemViewModel(Subscription subscription)
+        {
+            Subscription = subscription;
+        }
+            public void Update(Subscription subscription)
         {
             this.Subscription = subscription;
 

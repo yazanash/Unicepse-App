@@ -60,7 +60,7 @@
                     </StackPanel>
                 </Border>
             </StackPanel>
-            <Button HorizontalAlignment="Center" Command="{Binding DeleteCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
+            <Button HorizontalAlignment="Center"   FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
 
                 <StackPanel Orientation="Horizontal">
 

@@ -22,15 +22,15 @@ namespace PlatinumGymPro.ViewModels
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly UsersDataStore _usersDataStore;
-
-
+        private readonly DausesDataStore _dausesDataStore;
+        private readonly CreditsDataStore _creditsDataStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
 
         public MainWindowViewModel(NavigationStore navigatorStore,
             PlayersDataStore playerStore, SportDataStore sportStore,
             EmployeeStore employeeStore, ExpensesDataStore expensesStore,
             SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
-            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore)
+            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
         {
 
             _navigatorStore = navigatorStore;
@@ -43,10 +43,11 @@ namespace PlatinumGymPro.ViewModels
             _subscriptionDataStore = subscriptionDataStore;
             _routineDataStore = routineDataStore;
             _playersAttendenceStore = playersAttendenceStore;
+            _dausesDataStore = dausesDataStore;
+            _creditsDataStore = creditsDataStore;
             _usersDataStore = usersDataStore;
-            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore);
+            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore);
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
-
         }
 
         private void _navigatorStore_CurrentViewModelChanged()

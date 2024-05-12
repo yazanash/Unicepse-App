@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:PlatinumGymPro.Views.UserSettingsViews"
              FlowDirection="RightToLeft"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignWidth="800">
     <Grid Grid.Column="1">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -19,7 +19,7 @@
         <Border  Background="#FFF" CornerRadius="10" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">
 
             <DockPanel DockPanel.Dock="Top" >
-                <TextBlock Text="معلومات المستخدم"  HorizontalAlignment="Left" Margin="10" Foreground="#C14E00" FontSize="18" DockPanel.Dock="Top"/>
+                <TextBlock Text="معلومات المستخدم"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
                 <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -32,7 +32,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                         <TextBlock Text="اسم المستخدم" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                         <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -40,14 +40,14 @@
                     </StackPanel>
                     <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
                         <TextBlock Text="كلمة المرور" 
-                                   Foreground="#993300"
+                                   Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                         <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Margin="0 20 0 0" HorizontalAlignment="Right">
-                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
+                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4"  Content="حفظ"  HorizontalAlignment="Right">
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -58,7 +58,7 @@
         <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">
 
             <DockPanel DockPanel.Dock="Top" >
-                <TextBlock Text="الاعدادات"  HorizontalAlignment="Left" Margin="10" Foreground="#C14E00" FontSize="18" DockPanel.Dock="Top"/>
+                <TextBlock Text="الاعدادات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
                 <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
                 <Grid>
                     <Grid.ColumnDefinitions>

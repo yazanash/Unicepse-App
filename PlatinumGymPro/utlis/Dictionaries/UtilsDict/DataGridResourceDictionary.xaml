@@ -171,7 +171,7 @@
     <Style x:Key="DataGridColumnHeaderStyle1" TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="#121518"/>
+        <Setter Property="Foreground" Value="{StaticResource colors.secondry}"/>
         <Setter Property="Margin" Value="15 0 15 10"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -189,6 +189,7 @@
     </Style>
     <Style x:Key="DataGridRowStyle1" TargetType="{x:Type DataGridRow}">
         <Setter Property="Background" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
         <Setter Property="Margin" Value="0 4 0 0"/>
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>

@@ -64,6 +64,9 @@ namespace PlatinumGymPro
                    services.AddSingleton<EmployeeStore>();
 
                    services.AddSingleton<DausesDataService>();
+                   services.AddSingleton<EmployeeCreditsDataService>();
+                   services.AddSingleton<CreditsDataStore>();
+                   services.AddSingleton<DausesDataStore>();
 
                    services.AddSingleton<PaymentDataService>();
                    services.AddSingleton<PaymentDataStore>();
@@ -144,7 +147,7 @@ namespace PlatinumGymPro
 
             //       player.Id = Convert.ToInt32(columns[0]);
 
-            //       player.FullName = columns[5];
+            //       player.FullName = columns[5].Replace("\"", "").Trim();
 
             //       player.Balance = Convert.ToDouble(columns[12]);
 
@@ -154,7 +157,7 @@ namespace PlatinumGymPro
 
             //       player.Hieght = Convert.ToDouble(columns[2]);
 
-            //       player.Phone = columns[6];
+            //       player.Phone = columns[6].Replace("\"", "").Trim();
 
             //       player.IsSubscribed = Convert.ToBoolean(Convert.ToInt32(columns[9]));
 
@@ -175,12 +178,12 @@ namespace PlatinumGymPro
             //   {
             //       var columns = line.Split(',');
             //       PlayerPayment payment = new PlayerPayment();
-            //       payment.PayDate= Convert.ToDateTime(columns[4]);
+            //       payment.PayDate = Convert.ToDateTime(columns[4]);
             //       payment.Player = new Player { Id = Convert.ToInt32(columns[2]) };
             //       payment.PaymentValue = Convert.ToDouble(columns[1]);
             //       payment.Des = columns[5];
-            //   if (columns[6].Trim() != "NULL")
-            //       payment.Subscription = new Subscription { Id = Convert.ToInt32(columns[6]) };
+            //       if (columns[6].Trim() != "NULL")
+            //           payment.Subscription = new Subscription { Id = Convert.ToInt32(columns[6]) };
             //       return payment;
 
             //   }).ToList();
@@ -191,57 +194,57 @@ namespace PlatinumGymPro
             // {
             //     var columns = line.Split(',');
             //     Subscription subscription = new Subscription();
-            //     /////////// 0
-            //     int sId = Convert.ToInt32(columns[0]);
-            //     /////////// 4
-            //     subscription.Sport = new Sport { Id = Convert.ToInt32(columns[4]) };
-            //     /////////// 9
-            //     subscription.LastCheck = Convert.ToDateTime(columns[9]);
-            //     /////////// 5
-            //     if (columns[5] != "NULL")
+            //         /////////// 0
+            //         int sId = Convert.ToInt32(columns[0]);
+            //         /////////// 4
+            //         subscription.Sport = new Sport { Id = Convert.ToInt32(columns[4]) };
+            //         /////////// 9
+            //         subscription.LastCheck = Convert.ToDateTime(columns[9]);
+            //         /////////// 5
+            //         if (columns[5] != "NULL")
             //         subscription.Trainer = new Employee { Id = Convert.ToInt32(columns[5]) };
-            //     //subscription.Trainer = Convert.ToInt32(columns[5]);
-            //     /////////// 19
-            //     subscription.PrevTrainer_Id = Convert.ToInt32(columns[19]);
-            //     /////////// 3
-            //     subscription.Player = new Player { Id = Convert.ToInt32(columns[3]) };
-            //     /////////// 1
-            //     subscription.RollDate = Convert.ToDateTime(columns[1]);
-            //     /////////// 2
-            //     subscription.Price = Convert.ToInt32(columns[2]);
-            //     /////////// 22
-            //     subscription.OfferValue = Convert.ToInt32(columns[22]);
-            //     /////////// 21
-            //     subscription.OfferDes = columns[21];
-            //     /////////// 6
-            //     subscription.PriceAfterOffer = Convert.ToInt32(columns[6]);
-            //     /////////// 7
-            //     subscription.MonthCount = Convert.ToInt32(columns[7]);
-            //     /////////// 10
-            //     subscription.IsPrivate = Convert.ToBoolean(Convert.ToInt32(columns[10]));
-            //     /////////// 11
-            //     subscription.IsPlayerPay = Convert.ToBoolean(Convert.ToInt32(columns[11]));
-            //     /////////// 17
-            //     subscription.IsStopped = Convert.ToBoolean(Convert.ToInt32(columns[17]));
-            //     /////////// 18
-            //     subscription.IsMoved = Convert.ToBoolean(Convert.ToInt32(columns[18]));
-            //     /////////// 12
-            //     subscription.PrivatePrice = Convert.ToInt32(columns[12]);
-            //     /////////// 13
-            //     subscription.IsPaid = Convert.ToBoolean(Convert.ToInt32(columns[13]));
-            //     /////////// 14
-            //     subscription.PaidValue = Convert.ToInt32(columns[14]);
-            //     /////////// 20
-            //     subscription.RestValue = Convert.ToInt32(columns[20]);
-            //     /////////// 15
-            //     subscription.EndDate = Convert.ToDateTime(columns[15]);
-            //     /////////// 16
-            //     subscription.LastPaid = Convert.ToDateTime(columns[16]);
+            //         //subscription.Trainer = Convert.ToInt32(columns[5]);
+            //         /////////// 19
+            //         subscription.PrevTrainer_Id = Convert.ToInt32(columns[19]);
+            //         /////////// 3
+            //         subscription.Player = new Player { Id = Convert.ToInt32(columns[3]) };
+            //         /////////// 1
+            //         subscription.RollDate = Convert.ToDateTime(columns[1]);
+            //         /////////// 2
+            //         subscription.Price = Convert.ToInt32(columns[2]);
+            //         /////////// 22
+            //         subscription.OfferValue = Convert.ToInt32(columns[22]);
+            //         /////////// 21
+            //         subscription.OfferDes = columns[21];
+            //         /////////// 6
+            //         subscription.PriceAfterOffer = Convert.ToInt32(columns[6]);
+            //         /////////// 7
+            //         subscription.MonthCount = Convert.ToInt32(columns[7]);
+            //         /////////// 10
+            //         subscription.IsPrivate = Convert.ToBoolean(Convert.ToInt32(columns[10]));
+            //         /////////// 11
+            //         subscription.IsPlayerPay = Convert.ToBoolean(Convert.ToInt32(columns[11]));
+            //         /////////// 17
+            //         subscription.IsStopped = Convert.ToBoolean(Convert.ToInt32(columns[17]));
+            //         /////////// 18
+            //         subscription.IsMoved = Convert.ToBoolean(Convert.ToInt32(columns[18]));
+            //         /////////// 12
+            //         subscription.PrivatePrice = Convert.ToInt32(columns[12]);
+            //         /////////// 13
+            //         subscription.IsPaid = Convert.ToBoolean(Convert.ToInt32(columns[13]));
+            //         /////////// 14
+            //         subscription.PaidValue = Convert.ToInt32(columns[14]);
+            //         /////////// 20
+            //         subscription.RestValue = Convert.ToInt32(columns[20]);
+            //         /////////// 15
+            //         subscription.EndDate = Convert.ToDateTime(columns[15]);
+            //         /////////// 16
+            //         subscription.LastPaid = Convert.ToDateTime(columns[16]);
 
             //     subscription.DaysCount = Convert.ToInt32(subscription.EndDate.Subtract(subscription.RollDate).TotalDays);
 
-            //     var pays = payments.Where(s =>s.Subscription!=null && s.Subscription!.Id == sId && s.PaymentValue>0);
-            //     foreach(var pay in pays)
+            //     var pays = payments.Where(s => s.Subscription != null && s.Subscription!.Id == sId && s.PaymentValue > 0);
+            //     foreach (var pay in pays)
             //     {
             //         subscription.Payments!.Add(pay);
             //     }
@@ -256,7 +259,7 @@ namespace PlatinumGymPro
             //      var columns = line.Split(',');
             //      Sport sport = new Sport();
             //      sport.Id = Convert.ToInt32(columns[0]);
-            //      sport.Name = columns[1];
+            //      sport.Name = columns[1].Replace("\"", "").Trim();
             //      sport.Price = Convert.ToDouble(columns[2]);
             //      sport.IsActive = Convert.ToBoolean(Convert.ToInt32(columns[3]));
             //      sport.DaysInWeek = Convert.ToInt32(columns[4]);
@@ -284,8 +287,8 @@ namespace PlatinumGymPro
             //    employee.Balance = 0;
             //    employee.IsActive = Convert.ToBoolean(Convert.ToInt32(columns[10]));
             //    employee.IsTrainer = true;
-            //    employee.FullName = columns[6];
-            //    employee.Phone = columns[7];
+            //    employee.FullName = columns[6].Replace("\"", "").Trim();
+            //    employee.Phone = columns[7].Replace("\"","").Trim();
             //    employee.BirthDate = Convert.ToDateTime(columns[5]).Year;
             //    employee.GenderMale = Convert.ToBoolean(Convert.ToInt32(columns[9]));
 
@@ -400,7 +403,7 @@ namespace PlatinumGymPro
 
             //        }
             //        DateTime lastpaid = s.RollDate;
-            //        foreach(var p in s.Payments!.OrderBy(x=>x.PayDate))
+            //        foreach (var p in s.Payments!.OrderBy(x => x.PayDate))
             //        {
             //            p.Player = s.Player;
             //            p.Subscription = s;
@@ -409,6 +412,7 @@ namespace PlatinumGymPro
             //            double dayPrice = s.PriceAfterOffer / sportDays;
             //            int daysCount = Convert.ToInt32(p.PaymentValue / dayPrice);
             //            lastpaid = lastpaid.AddDays(daysCount);
+            //            p.CoverDays = daysCount;
             //            p.To = lastpaid;
             //        }
             //        platinumGymDbContext.Subscriptions!.Add(s);
@@ -425,6 +429,8 @@ namespace PlatinumGymPro
             //auth.Show();
             MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
             auth.Show();
+            //CameraReader cameraReader = new CameraReader();
+            //cameraReader.Show();
             //MessageBox.Show(System.Environment.CurrentDirectory) ;
             base.OnStartup(e);
         }
