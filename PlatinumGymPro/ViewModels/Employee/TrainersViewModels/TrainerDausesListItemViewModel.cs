@@ -19,7 +19,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
         public string? PlayerName => _subscription.Player!.FullName;
         public string? SportName => _subscription.Sport!.Name;
         public double Price => _subscription.PriceAfterOffer;
-        public string rollAndEndDate => _subscription.RollDate.ToString() + "-" + _subscription.EndDate.ToString();
+        public string rollAndEndDate => _subscription.RollDate.ToShortDateString() + "-" + _subscription.EndDate.ToShortDateString();
         public double Paid => _subscription.PaidValue;
         public double OfferVal => _subscription.OfferValue;
         //public string FromTo => trainerDueses.From.ToString() + "-" + trainerDueses.To.ToString();

@@ -20,7 +20,7 @@ namespace PlatinumGymPro.ViewModels.Employee.CreditViewModels
         public Credit credit;
         public int Id => credit.Id;
         public double CreditValue => credit.CreditValue;
-        public DateTime Date => credit.Date;
+        public string? Date => credit.Date.ToShortDateString();
         public string? Description => credit.Description;
         public CreditListItemViewModel(Credit credit, EmployeeStore employeeStore, CreditsDataStore creditsDataStore, NavigationStore navigationStore, CreditListViewModel creditListViewModel)
         {

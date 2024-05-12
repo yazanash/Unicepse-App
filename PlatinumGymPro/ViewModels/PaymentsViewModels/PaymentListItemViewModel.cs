@@ -25,7 +25,7 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
         public int SubscriptionId => payment.Subscription!.Id;
         public string? Description => payment.Des;
         public double Value => payment.PaymentValue;
-        public string? Date => payment.PayDate.ToString("ddd,MMM dd,yyy");
+        public string? Date => payment.PayDate.ToShortDateString();
         public PaymentListItemViewModel(PlayerPayment payment, PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore, PaymentListViewModel paymentListViewModel)
         {
             this.payment = payment;

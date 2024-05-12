@@ -39,8 +39,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public bool GenderMale => Player.GenderMale;
         public double Weight => Player.Weight;
         public double Hieght => Player.Hieght;
-        public string? SubscribeDate => Player.SubscribeDate.ToString("ddd,MMM dd,yyy");
-        public string? SubscribeEndDate => Player.SubscribeEndDate.ToString("ddd,MMM dd,yyy");
+        public string? SubscribeDate => Player.SubscribeDate.ToShortDateString();
+        public string? SubscribeEndDate => Player.SubscribeEndDate.ToShortDateString();
         public bool IsTakenContainer => Player.IsTakenContainer;
         public int DayLeft => (int)Player.SubscribeEndDate.Subtract(DateTime.Now).TotalDays;
         public Brush IsSubscribed => Player.IsSubscribed ? Brushes.Green : Brushes.Red;

@@ -36,7 +36,7 @@ namespace PlatinumGymPro.ViewModels.Metrics
         public double Waist => ((int)Metric.Waist);
         public double Chest => ((int)Metric.Chest);
         public double Hips => ((int)Metric.Hips);
-        public string? CheckDate => Metric.CheckDate.ToString("ddd,MMM dd,yyy");
+        public string? CheckDate => Metric.CheckDate.ToShortDateString();
         public MetricListItemViewModel(Metric metric, MetricDataStore metricDataStore, NavigationStore navigationStore, MetricReportViewModel metricReportViewModel, PlayersDataStore playerDataStore)
         {
             _metricDataStore = metricDataStore;

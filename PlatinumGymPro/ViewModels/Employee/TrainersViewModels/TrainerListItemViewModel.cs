@@ -32,7 +32,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         public int BirthDate => Trainer.BirthDate;
         public string? Position => Trainer.Position;
         public string? Gendertext => Trainer.GenderMale ? "ذكر" : "انثى";
-        public string? SubscribeDate => Trainer.StartDate.ToString("ddd,MMM dd,yyy");
+        public string? SubscribeDate => Trainer.StartDate.ToShortDateString();
         public Brush IsSubscribed => Trainer.IsActive ? Brushes.Green : Brushes.Red;
         public ICommand? EditCommand { get; }
         public ICommand? OpenAccountCommand { get; }

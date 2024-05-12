@@ -39,7 +39,7 @@ namespace PlatinumGymPro.ViewModels.Expenses
         public int Id => Expenses.Id;
         public string? Description => Expenses.Description;
         public double? Value => Expenses.Value;
-        public string date => Expenses.date.ToLongDateString();
+        public string date => Expenses.date.ToShortDateString();
 
         public ICommand EditExpensesCommand { get; }
         public ICommand DeleteExpensesCommand { get; }
