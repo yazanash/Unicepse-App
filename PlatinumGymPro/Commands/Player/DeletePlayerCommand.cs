@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Services;
+﻿using PlatinumGym.Core.Exceptions;
+using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.PlayersViewModels;
 using System;
@@ -22,11 +23,18 @@ namespace PlatinumGymPro.Commands.Player
        
         public override async Task ExecuteAsync(object? parameter)
         {
-            PlatinumGym.Core.Models.Player.Player player = _playerStore.SelectedPlayer!.Player;
-            player.IsSubscribed = false;
-            await _playerStore.DeletePlayer(player);
-            MessageBox.Show(player.FullName + "deleted successfully");
-            navigationService.Navigate();
+            try
+            {
+                PlatinumGym.Core.Models.Player.Player player = _playerStore.SelectedPlayer!.Player;
+                player.IsSubscribed = false;
+                await _playerStore.DeletePlayer(player);
+                navigationService.Navigate();
+            }
+            catch(NotExistException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        
         }
     }
 }

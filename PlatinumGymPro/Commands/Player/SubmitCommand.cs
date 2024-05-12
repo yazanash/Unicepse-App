@@ -54,7 +54,7 @@ namespace PlatinumGymPro.Commands
         public override bool CanExecute(object? parameter)
         {
 
-            return _addPlayerViewModel.CanSubmit && base.CanExecute(null);
+            return _addPlayerViewModel.CanSubmit && !string.IsNullOrEmpty(_addPlayerViewModel.FullName) && _addPlayerViewModel.Phone!.Trim().Length > 9 && base.CanExecute(null);
         }
         public override async Task ExecuteAsync(object? parameter)
         {
