@@ -1,4 +1,5 @@
-﻿using PlatinumGym.Core.Models.Sport;
+﻿using PlatinumGym.Core.Models;
+using PlatinumGym.Core.Models.Sport;
 using PlatinumGymPro.Commands;
 using PlatinumGymPro.Commands.Employee;
 using PlatinumGymPro.Commands.SubscriptionCommand;
@@ -18,7 +19,7 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
 {
-    public class EditTrainerViewModel : ViewModelBase
+    public class EditTrainerViewModel : ErrorNotifyViewModelBase
     {
         private readonly ObservableCollection<SportTrainerListItemViewModel> _sportListItemViewModels;
         private readonly SportDataStore _sportDataStore;
@@ -26,8 +27,15 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
         private readonly TrainersListViewModel _trinersListViewModel;
         private readonly EmployeeStore _employeeStore;
         public IEnumerable<SportTrainerListItemViewModel> SportList => _sportListItemViewModels;
+        public ObservableCollection<Year> years;
+
+        public IEnumerable<Year> Years => years;
         public EditTrainerViewModel(NavigationStore navigationStore, TrainersListViewModel trinersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
+            years = new ObservableCollection<Year>();
+            for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
+                years.Add(new Year() { year = i });
+            Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
             _sportDataStore = sportDataStore;
             _navigationStore = navigationStore;
             _trinersListViewModel = trinersListViewModel;
@@ -36,11 +44,10 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             _sportDataStore.Loaded += _sportDataStore_Loaded;
             CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
             SubmitCommand = new EditTrainerCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), this, _employeeStore);
-            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
             FullName = _employeeStore.SelectedEmployee!.FullName;
             Phone = _employeeStore.SelectedEmployee!.Phone;
-            BirthDate = _employeeStore.SelectedEmployee!.BirthDate;
+            Year = years.SingleOrDefault(x => x.year == _employeeStore.SelectedEmployee!.BirthDate);
             GenderMale = _employeeStore.SelectedEmployee!.GenderMale;
             SalaryValue = _employeeStore.SelectedEmployee!.SalaryValue;
             ParcentValue = _employeeStore.SelectedEmployee!.ParcentValue;
@@ -77,6 +84,12 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             {
                 _fullName = value;
                 OnPropertyChanged(nameof(FullName));
+                ClearError(nameof(FullName));
+                if (string.IsNullOrEmpty(FullName?.Trim()))
+                {
+                    AddError("هذا الحقل مطلوب", nameof(FullName));
+                    OnErrorChanged(nameof(FullName));
+                }
             }
         }
 
@@ -88,17 +101,23 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             {
                 _phone = value;
                 OnPropertyChanged(nameof(Phone));
+                ClearError(nameof(Phone));
+                if (Phone?.Trim().Length < 10)
+                {
+                    AddError("هذا الحقل مطلوب", nameof(Phone));
+                    OnErrorChanged(nameof(Phone));
+                }
             }
         }
 
-        private int _birthDate;
-        public int BirthDate
+        private Year? _year;
+        public Year? Year
         {
-            get { return _birthDate; }
+            get { return _year; }
             set
             {
-                _birthDate = value;
-                OnPropertyChanged(nameof(BirthDate));
+                _year = value;
+                OnPropertyChanged(nameof(Year));
             }
         }
 
@@ -157,48 +176,10 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             }
         }
 
-      
-
-
-
-
-
-        private void AddError(string? ErrorMsg, string? propertyName)
-        {
-            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
-            {
-                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
-
-            }
-            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void ClearError(string? propertyName)
-        {
-            PropertyNameToErrorsDictionary.Remove(propertyName!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void OnErrorChanged(string? PropertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
-        }
-
-
-
-
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
         public ICommand LoadSportsCommand { get; }
-        public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
-        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-        public bool HasErrors => PropertyNameToErrorsDictionary.Any();
-
-        public IEnumerable? GetErrors(string? propertyName)
-        {
-            return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
-        }
+      
         public static EditTrainerViewModel LoadViewModel(NavigationStore navigatorStore, TrainersListViewModel trainersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
             EditTrainerViewModel viewModel = new EditTrainerViewModel(navigatorStore, trainersListViewModel, sportDataStore, employeeStore);

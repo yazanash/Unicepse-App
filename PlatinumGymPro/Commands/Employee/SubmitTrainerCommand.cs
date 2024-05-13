@@ -23,36 +23,53 @@ namespace PlatinumGymPro.Commands.TrainersCommands
             this.navigationService = navigationService;
             _employeeStore = employeeStore;
             _addTrainerViewModel = addTrainerViewModel;
+            _addTrainerViewModel.PropertyChanged += _addTrainerViewModel_PropertyChanged;
+        }
+
+        private void _addTrainerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_addTrainerViewModel.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
         }
 
         public override bool CanExecute(object? parameter)
         {
-            return base.CanExecute(parameter);
+            return _addTrainerViewModel.CanSubmit && !string.IsNullOrEmpty(_addTrainerViewModel.FullName) && _addTrainerViewModel.Phone!.Trim().Length > 9 && base.CanExecute(null);
+
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            emp.Employee employee = new emp.Employee()
+            try
             {
-                FullName = _addTrainerViewModel.FullName,
-                Balance = _addTrainerViewModel.Balance,
-                BirthDate = _addTrainerViewModel.BirthDate,
-                GenderMale = _addTrainerViewModel.GenderMale,
-                IsActive = true,
-                IsTrainer = true,
-                IsSecrtaria = false,
-                ParcentValue = _addTrainerViewModel.ParcentValue,
-                SalaryValue = _addTrainerViewModel.SalaryValue,
-                Phone = _addTrainerViewModel.Phone,
-                StartDate = _addTrainerViewModel.StartDate,
-                Position = _addTrainerViewModel.Position,
-            };
-            foreach (var SportListItem in _addTrainerViewModel.SportList)
-            {
-                if (SportListItem.IsSelected)
-                    employee.Sports!.Add(SportListItem.sport);
+                emp.Employee employee = new emp.Employee()
+                {
+                    FullName = _addTrainerViewModel.FullName,
+                    Balance = _addTrainerViewModel.Balance,
+                    BirthDate = _addTrainerViewModel.Year!.year,
+                    GenderMale = _addTrainerViewModel.GenderMale,
+                    IsActive = true,
+                    IsTrainer = true,
+                    IsSecrtaria = false,
+                    ParcentValue = _addTrainerViewModel.ParcentValue,
+                    SalaryValue = _addTrainerViewModel.SalaryValue,
+                    Phone = _addTrainerViewModel.Phone,
+                    StartDate = _addTrainerViewModel.StartDate,
+                    Position = _addTrainerViewModel.Position,
+                };
+                foreach (var SportListItem in _addTrainerViewModel.SportList)
+                {
+                    if (SportListItem.IsSelected)
+                        employee.Sports!.Add(SportListItem.sport);
+                }
+                await _employeeStore.Add(employee);
+                navigationService.ReNavigate();
             }
-            await _employeeStore.Add(employee);
-            navigationService.ReNavigate();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
     }
