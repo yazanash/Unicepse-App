@@ -72,7 +72,7 @@ namespace PlatinumGym.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Employee>? entities = await context.Set<Employee>().AsNoTracking().Include(x=>x.Sports).AsNoTracking().ToListAsync();
+                IEnumerable<Employee>? entities = await context.Set<Employee>().AsNoTracking().Include(x=>x.Sports).AsNoTracking().Where(x=>x.IsActive==true).ToListAsync();
                 return entities;
             }
         }

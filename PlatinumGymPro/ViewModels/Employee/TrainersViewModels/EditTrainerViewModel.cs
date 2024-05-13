@@ -93,7 +93,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             }
         }
 
-        private string? _phone;
+        private string? _phone = "0";
         public string? Phone
         {
             get { return _phone; }
@@ -104,7 +104,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
                 ClearError(nameof(Phone));
                 if (Phone?.Trim().Length < 10)
                 {
-                    AddError("هذا الحقل مطلوب", nameof(Phone));
+                    AddError("يجب ان يكون رقم الهاتف 10 ارقام", nameof(Phone));
                     OnErrorChanged(nameof(Phone));
                 }
             }
@@ -165,7 +165,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             }
         }
 
-        private DateTime _startDate;
+        private DateTime _startDate=DateTime.Now;
         public DateTime StartDate
         {
             get { return _startDate; }

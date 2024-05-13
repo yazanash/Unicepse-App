@@ -94,6 +94,9 @@
     <Compile Update="utlis\Controls\InfoCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Controls\InfoEmpCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Controls\NavBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -289,6 +292,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Controls\InfoCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Controls\InfoEmpCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Controls\NavBar.xaml">
