@@ -29,7 +29,7 @@ namespace PlatinumGymPro.Commands.SportsCommands
             }
             catch (Exception)
             {
-                _addSportViewModel.ErrorMessage = "Failed to load YouTube viewers. Please restart the application.";
+                _addSportViewModel.ErrorMessage = "Failed to load trainers . Please restart the application.";
             }
             finally
             {

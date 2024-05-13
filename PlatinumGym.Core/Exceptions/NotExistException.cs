@@ -8,5 +8,15 @@ namespace PlatinumGym.Core.Exceptions
 {
     public class NotExistException : Exception
     {
+        public NotExistException() 
+        {
+            
+
+        }
+        public NotExistException(string? message) : base(message)
+        {
+           
+          
+        }
     }
 }
