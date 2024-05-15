@@ -31,6 +31,9 @@
         <DataTemplate DataType="{x:Type vms:IncomeReportViewModel}">
             <views:IncomeReportView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:ExpensesReportViewModel}">
+            <views:ExpensesReport/>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>

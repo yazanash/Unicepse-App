@@ -20,7 +20,7 @@ namespace PlatinumGymPro.ViewModels.Accountant
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public ICommand ExpensesCommand { get; }
         public ICommand IncomeReportCommand { get; }
-        //public ICommand ExpensesReportCommand;
+        public ICommand ExpensesReportCommand { get; }
         //public ICommand PaymentReportCommand;
         //public ICommand IncomeReportCommand;
         public AccountingViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore, PaymentDataStore paymentDataStore)
@@ -32,6 +32,8 @@ namespace PlatinumGymPro.ViewModels.Accountant
             ExpensesCommand = new NavaigateCommand<ExpensesListViewModel>(new NavigationService<ExpensesListViewModel>(_navigatorStore, () => CreateExpenses(_navigatorStore, _expensesStore)));
             _paymentDataStore = paymentDataStore;
             IncomeReportCommand = new NavaigateCommand<IncomeReportViewModel>(new NavigationService<IncomeReportViewModel>(_navigatorStore, () => new IncomeReportViewModel(_paymentDataStore,_navigatorStore)));
+            ExpensesReportCommand = new NavaigateCommand<ExpensesReportViewModel>(new NavigationService<ExpensesReportViewModel>(_navigatorStore, () => new ExpensesReportViewModel(_expensesStore,_navigatorStore)));
+
         }
 
         private void NavigatorStore_CurrentViewModelChanged()
