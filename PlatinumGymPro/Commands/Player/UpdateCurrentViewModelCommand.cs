@@ -75,7 +75,7 @@ namespace PlatinumGymPro.Commands
                         _navigator.CurrentViewModel = new UsersViewModel(navigator, _usersDataStore,_employeeStore);
                         break;
                     case ViewType.Accounting:
-                        _navigator.CurrentViewModel = new AccountingViewModel(navigator, _expensesStore);
+                        _navigator.CurrentViewModel = new AccountingViewModel(navigator, _expensesStore,_paymentDataStore);
                         break;
                     case ViewType.About:
                         _navigator.CurrentViewModel = new AppInfoViewModel();

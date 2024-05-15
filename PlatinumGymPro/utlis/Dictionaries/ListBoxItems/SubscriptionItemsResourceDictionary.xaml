@@ -27,12 +27,14 @@
                                     <Separator Width="10" Margin="10 0" Background="#787878"/>
                                     <TextBlock Text="{Binding EndDate}" Foreground="#787878" FontSize="14"/>
                                 </StackPanel>
-
+                                
                                 <DockPanel >
                                     <TextBlock HorizontalAlignment="Center" Text="{Binding PriceAfterOffer}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
                                     <TextBlock Text="الاجمالي" VerticalAlignment="Center"  FontSize="15" DockPanel.Dock="Left"/>
-
                                 </DockPanel>
+                                <TextBlock Text="{Binding PaidValue}" FontSize="15" FontWeight="SemiBold" Margin="0 5" />
+                                <TextBlock Text="{Binding RestVal}" FontSize="14"/>
+
                             </StackPanel>
 
                         </DockPanel>
