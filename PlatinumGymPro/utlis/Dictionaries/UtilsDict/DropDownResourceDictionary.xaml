@@ -292,7 +292,6 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Foreground="Red" Text="{Binding ErrorContent}"/>
-
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

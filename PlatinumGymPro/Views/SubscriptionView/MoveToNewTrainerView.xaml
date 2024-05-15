@@ -54,7 +54,7 @@
                                    FontSize="16"/>
                             <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
                                             ItemsSource="{Binding TrainerList}"
-                                      SelectedItem="{Binding SelectedTrainer,UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedItem="{Binding SelectedTrainer, ValidatesOnDataErrors=True,NotifyOnValidationError=True,UpdateSourceTrigger=PropertyChanged}"
                                       ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
@@ -72,7 +72,7 @@
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
                             <DatePicker Style="{DynamicResource DatePickerStyle1}"
-                                    SelectedDate="{Binding MoveDate, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedDate="{Binding MoveDate,NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
                                     CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />
                         </StackPanel>

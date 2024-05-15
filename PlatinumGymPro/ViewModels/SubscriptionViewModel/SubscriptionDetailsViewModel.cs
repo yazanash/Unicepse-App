@@ -15,7 +15,7 @@ using System.Windows.Input;
 using emp = PlatinumGym.Core.Models.Employee;
 namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
 {
-    public class SubscriptionDetailsViewModel : ViewModelBase
+    public class SubscriptionDetailsViewModel : ErrorNotifyViewModelBase
     {
         //private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly SportDataStore _sportDataStore;
@@ -39,11 +39,21 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
                 _subscriptionStore.SelectedSport = value?.Sport;
                
                 OnPropertyChanged(nameof(SelectedSport));
-                if (DaysCounter)
-                    SubscribeDays = SelectedSport!.DaysCount;
+                ClearError(nameof(SelectedSport));
+                if(SelectedSport == null)
+                {
+                    AddError(nameof(SelectedSport), "");
+                    OnErrorChanged(nameof(SelectedSport));
+                }
                 else
-                    SubscribeDays = 1;
-                OnPropertyChanged(nameof(Total));
+                {
+                    if (DaysCounter)
+                        SubscribeDays = SelectedSport!.DaysCount;
+                    else
+                        SubscribeDays = 1;
+                    OnPropertyChanged(nameof(Total));
+                }
+              
             }
         }
 

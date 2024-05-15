@@ -24,14 +24,32 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
             _playerDataStore = playerDataStore;
             _navigationService = navigationService;
             _stopSubscription = stopSubscription;
+            _stopSubscription.PropertyChanged += _stopSubscription_PropertyChanged;
         }
 
+        private void _stopSubscription_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_stopSubscription.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
+        }
+        public override bool CanExecute(object? parameter)
+        {
+
+            return _stopSubscription.CanSubmit && base.CanExecute(null);
+        }
         public async override Task ExecuteAsync(object? parameter)
         {
-            await _subscriptionDataStore.Stop(_subscriptionDataStore.SelectedSubscription!, _stopSubscription.SubscribeStopDate);
-            MessageBox.Show(_subscriptionDataStore.SelectedSubscription!.Sport!.Name + " Stopped successfully");
-
-            _navigationService.ReNavigate();
+            try
+            {
+                await _subscriptionDataStore.Stop(_subscriptionDataStore.SelectedSubscription!, _stopSubscription.SubscribeStopDate);
+                _navigationService.ReNavigate();
+            }
+           catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
