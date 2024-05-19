@@ -185,7 +185,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();
 
-        public bool CanSubmit => !HasErrors;
+        public bool CanSubmit => !HasErrors ;
         private bool? _submited = false;
         public bool? Submited
         {

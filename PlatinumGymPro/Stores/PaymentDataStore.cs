@@ -83,6 +83,14 @@ namespace PlatinumGymPro.Stores
             Loaded?.Invoke();
             SumUpdated?.Invoke();
         }
+        public async Task GetAll(DateTime dateFrom,DateTime dateTo)
+        {
+            IEnumerable<PlayerPayment> subscriptions = await _paymentDataService.GetAll(dateFrom, dateTo);
+            _payments.Clear();
+            _payments.AddRange(subscriptions);
+            Loaded?.Invoke();
+            SumUpdated?.Invoke();
+        }
         public Task Initialize()
         {
             throw new NotImplementedException();

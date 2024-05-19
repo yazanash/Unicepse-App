@@ -19,22 +19,29 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
         private readonly EmployeeStore  _employeeStore;
         private readonly DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
-        public TrainerListItemViewModel? Employee => new(_employeeStore.SelectedEmployee!) ;
+        private readonly SportDataStore  _sportDataStore;
+        public TrainerListItemViewModel? Employee { get; set; }
+        private readonly TrainersListViewModel _trainersListViewModel;
         public ViewModelBase? CurrentEmployeeViewModel => _navigatorStore.CurrentViewModel;
 
-        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
+        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, TrainerListItemViewModel? employee)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
+            _sportDataStore = sportDataStore;
+            _trainersListViewModel = trainersListViewModel;
+
+            Employee = employee;
+
             IsTrainer = _employeeStore.SelectedEmployee!.IsTrainer;
-            if(_employeeStore.SelectedEmployee!.IsTrainer)
-            navigatorStore.CurrentViewModel = LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore,_navigatorStore);
+            if (_employeeStore.SelectedEmployee!.IsTrainer)
+                navigatorStore.CurrentViewModel = LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _navigatorStore);
             else
-                navigatorStore.CurrentViewModel = LoadEmployeeCredit(_navigatorStore,_employeeStore, _creditsDataStore);
+                navigatorStore.CurrentViewModel = LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
-            EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => LoadEmployeeCredit(_navigatorStore, _employeeStore,_creditsDataStore)));
+            EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore)));
             //SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => LoadSubscriptionViewModel(_navigatorStore, _sportDataStore, _subscriptionStore, _playersDataStore, _paymentDataStore)));
             //PaymentCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => LoadPaymentsViewModel(_paymentDataStore, _playersDataStore, _navigatorStore, _subscriptionStore)));
             //MetricsCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigatorStore, () => LoadMetricsViewModel(_metricDataStore, _playersDataStore, _navigatorStore)));

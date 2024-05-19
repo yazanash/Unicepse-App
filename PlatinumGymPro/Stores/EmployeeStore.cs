@@ -74,14 +74,21 @@ namespace PlatinumGymPro.Stores
             Created?.Invoke(entity);
         }
 
-        public async Task Delete(int entity_id)
+        public async Task Delete(Employee employee)
         {
-            bool deleted = await _employeeDataService.Delete(entity_id);
-            int currentIndex = _employee.FindIndex(y => y.Id == entity_id);
+            employee.IsActive = false;
+            await _employeeDataService.Update(employee);
+            int currentIndex = _employee.FindIndex(y => y.Id == employee.Id);
             _employee.RemoveAt(currentIndex);
-            Deleted?.Invoke(entity_id);
+            Deleted?.Invoke(employee.Id);
         }
-
+        public async Task Delete(int id)
+        {
+            await _employeeDataService.Delete(id);
+            int currentIndex = _employee.FindIndex(y => y.Id == id);
+            _employee.RemoveAt(currentIndex);
+            Deleted?.Invoke(id);
+        }
         public async Task GetAll()
         {
           await _initializeLazy.Value;

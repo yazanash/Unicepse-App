@@ -68,7 +68,7 @@ namespace PlatinumGym.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Sport? entity = await context.Set<Sport>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذه الرياضة غير موجودة");
             context.Set<Sport>().Remove(entity!);
             await context.SaveChangesAsync();
             return true;
@@ -78,7 +78,7 @@ namespace PlatinumGym.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Sport? entity = await context.Set<Sport>().AsNoTracking().Include(x=>x.Trainers).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذه الرياضة غير موجودة");
             entity.Trainers!.Clear();
             context.Set<Sport>().Update(entity!);
             await context.SaveChangesAsync();
@@ -89,7 +89,7 @@ namespace PlatinumGym.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Sport? entity = await context.Set<Sport>().AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذه الرياضة غير موجودة");
             return entity!;
         }
 
@@ -107,7 +107,7 @@ namespace PlatinumGym.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Sport existed_sport = await Get(entity.Id);
             if (existed_sport == null)
-                throw new NotExistException();
+                throw new NotExistException("هذه الرياضة غير موجودة");
             context.Set<Sport>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

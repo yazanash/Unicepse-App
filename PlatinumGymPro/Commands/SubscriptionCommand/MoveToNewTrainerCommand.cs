@@ -22,14 +22,33 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
             _subscriptionDataStore = subscriptionDataStore;
             _navigationService = navigationService;
             _moveToNewTrainerViewModel = moveToNewTrainerViewModel;
+            _moveToNewTrainerViewModel.PropertyChanged += _moveToNewTrainerViewModel_PropertyChanged;
         }
 
+        private void _moveToNewTrainerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_moveToNewTrainerViewModel.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
+        }
+        public override bool CanExecute(object? parameter)
+        {
+
+            return _moveToNewTrainerViewModel.CanSubmit && _moveToNewTrainerViewModel.SelectedTrainer != null && base.CanExecute(null);
+        }
         public async override Task ExecuteAsync(object? parameter)
         {
-            await _subscriptionDataStore.MoveToNewTrainer(_subscriptionDataStore.SelectedSubscription!,_subscriptionDataStore.SelectedTrainer!, _moveToNewTrainerViewModel.MoveDate);
-            MessageBox.Show(_subscriptionDataStore.SelectedSubscription!.Sport!.Name + " moved successfully");
+            try
+            {
+                await _subscriptionDataStore.MoveToNewTrainer(_subscriptionDataStore.SelectedSubscription!, _subscriptionDataStore.SelectedTrainer!, _moveToNewTrainerViewModel.MoveDate);
 
-            _navigationService.ReNavigate();
+                _navigationService.ReNavigate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

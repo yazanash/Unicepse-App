@@ -46,6 +46,9 @@
     <Compile Update="utlis\Components\MetricItemRL.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\MonthlyEarnReportViewModel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\MuscleDayGroupCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,6 +97,9 @@
     <Compile Update="utlis\Controls\InfoCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Controls\InfoEmpCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Controls\NavBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -113,6 +119,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\AccountingViews\AccountingState.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\NetIncomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ApplicationAboutView.xaml.cs">
@@ -243,6 +252,9 @@
     <Page Update="utlis\Components\MetricItemRL.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="utlis\Components\MonthlyEarnReportViewModel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="utlis\Components\MuscleDayGroupCard.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -289,6 +301,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Controls\InfoCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Controls\InfoEmpCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Controls\NavBar.xaml">
@@ -364,6 +379,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AccountingViews\AccountingState.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\NetIncomeView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ApplicationAboutView.xaml">

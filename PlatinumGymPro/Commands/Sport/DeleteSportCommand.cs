@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Stores;
+﻿using PlatinumGym.Core.Exceptions;
+using PlatinumGymPro.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,18 @@ namespace PlatinumGymPro.Commands.Sport
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            await _sportStore.DeleteConnectedTrainers(_sportStore.SelectedSport!.Id);
-            await _sportStore.Delete(_sportStore.SelectedSport!);
+            try
+            {
+                await _sportStore.DeleteConnectedTrainers(_sportStore.SelectedSport!.Id);
+                await _sportStore.Delete(_sportStore.SelectedSport!);
 
-            MessageBox.Show("Sport deleted successfully");
+                MessageBox.Show("Sport deleted successfully");
+            }
+            catch (NotExistException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
         }
 
     }

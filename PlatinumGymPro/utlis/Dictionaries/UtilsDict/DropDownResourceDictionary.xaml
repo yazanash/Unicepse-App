@@ -124,10 +124,11 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="PART"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="#993300" Duration="0:0:0.2"/>
+                                                        To="{StaticResource ResourceKey=colors.color.primary}" Duration="0:0:0.2"/>
                                         <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
                                                             Storyboard.TargetProperty="Margin"
                                                         To="15 0 0 0" Duration="0:0:0.2" />
+                                      
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -142,6 +143,7 @@
                                         <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
                                                             Storyboard.TargetProperty="Margin"
                                                         To="0 0 0 0" Duration="0:0:0.2" />
+                                      
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -151,10 +153,12 @@
                                 <Storyboard>
                                     <ColorAnimation Storyboard.TargetName="PART"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="#993300" Duration="0:0:0.2"/>
+                                                        To="{StaticResource ResourceKey=colors.color.primary}" Duration="0:0:0.2"/>
                                     <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
                                                             Storyboard.TargetProperty="Margin"
                                                         To="15 0 0 0" Duration="0:0:0.2" />
+                                  
+                                 
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
@@ -168,6 +172,7 @@
                                     <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
                                                             Storyboard.TargetProperty="Margin"
                                                         To="0 0 0 0" Duration="0:0:0.2" />
+                                    
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
@@ -292,7 +297,6 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Foreground="Red" Text="{Binding ErrorContent}"/>
-
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

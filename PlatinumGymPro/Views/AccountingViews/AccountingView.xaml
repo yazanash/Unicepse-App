@@ -28,6 +28,15 @@
         <DataTemplate DataType="{x:Type expvms:EditExpenseViewModel}">
             <expviews:EditExpansesDetailView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:IncomeReportViewModel}">
+            <views:IncomeReportView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:ExpensesReportViewModel}">
+            <views:ExpensesReport/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:MounthlyReportViewModel}">
+            <views:NetIncomeView/>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -64,7 +73,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
-                            Command="{Binding PaymentReportCommand}"
+                            Command="{Binding IncomeReportCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal" >
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
@@ -73,7 +82,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
-                            Command="{Binding IncomeReportCommand}"
+                            Command="{Binding MonthlyIncomeReportCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple" />

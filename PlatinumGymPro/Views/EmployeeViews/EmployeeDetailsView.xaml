@@ -74,13 +74,15 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
-                                <ComboBox Style="{DynamicResource ComboBoxStyle1}"  ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
-                                    <ComboBoxItem Content="1999" Selector.IsSelected="True"/>
-                                    <ComboBoxItem Content="2000"/>
-                                    <ComboBoxItem Content="2001"/>
-                                    <ComboBoxItem Content="2002"/>
-                                    <ComboBoxItem Content="2003"/>
-                                    <ComboBoxItem Content="2004"/>
+                                <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+                                          ItemsSource="{Binding Years,UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedItem="{Binding Year,UpdateSourceTrigger=PropertyChanged}"
+                                          ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <ComboBoxItem Content="{Binding year}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
 

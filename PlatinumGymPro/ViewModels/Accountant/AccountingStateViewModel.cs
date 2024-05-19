@@ -16,13 +16,13 @@ namespace PlatinumGymPro.ViewModels.Accountant
     {
         private readonly NavigationStore _navigationStore;
         private readonly ExpensesDataStore _expensesStore;
-        private readonly ObservableCollection<ExpensesListItemViewModel> expensesListItemViewModels;
-        public IEnumerable<ExpensesListItemViewModel> ExpenseList => expensesListItemViewModels;
+        private readonly ObservableCollection<Expenses.ExpensesListItemViewModel> expensesListItemViewModels;
+        public IEnumerable<Expenses.ExpensesListItemViewModel> ExpenseList => expensesListItemViewModels;
         public AccountingStateViewModel(NavigationStore navigationStore,ExpensesDataStore expensesStore)
         {
             _navigationStore = navigationStore;
             _expensesStore = expensesStore;
-            expensesListItemViewModels = new ObservableCollection<ExpensesListItemViewModel>();
+            expensesListItemViewModels = new ObservableCollection<Expenses.ExpensesListItemViewModel>();
             LoadStateCommand = new LoadStatesCommand(this, _expensesStore);
             _expensesStore.Loaded += _expensesStore_Loaded;
         }
@@ -37,8 +37,8 @@ namespace PlatinumGymPro.ViewModels.Accountant
         }
         private void AddExpenses(Exp.Expenses expenses)
         {
-            ExpensesListItemViewModel itemViewModel =
-                new ExpensesListItemViewModel(expenses, _navigationStore);
+           Expenses.ExpensesListItemViewModel itemViewModel =
+                new Expenses.ExpensesListItemViewModel(expenses, _navigationStore);
             expensesListItemViewModels.Add(itemViewModel);
         }
         public ICommand LoadStateCommand;

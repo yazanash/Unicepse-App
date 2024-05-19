@@ -17,7 +17,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         public int DaysCount => Subscription.DaysCount;
         public DateTime LastCheck => Subscription.LastCheck;
         public string? Trainer => Subscription.Trainer!=null?  Subscription.Trainer!.FullName : "بدون مدرب";
-        public string RollDate => Subscription.RollDate.ToString("ddd,MMM dd,yyy");
+        public string RollDate => Subscription.RollDate.ToShortDateString();
         public double Price => Subscription.Price;
         public double OfferValue => Subscription.OfferValue;
         public string? OfferDes => Subscription.OfferDes;
@@ -27,7 +27,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         public string IsPaid => Subscription.IsPaid ? "مدفوع" : "غير مدفوع";
         public Brush IsPaidColor => Subscription.IsPaid ? Brushes.Green : Brushes.Red;
         public double PaidValue => Subscription.PaidValue;
-        public string EndDate => Subscription.EndDate.ToString("ddd,MMM dd,yyy");
+        public string EndDate => Subscription.EndDate.ToShortDateString();
 
 
         private bool _infoOpen;

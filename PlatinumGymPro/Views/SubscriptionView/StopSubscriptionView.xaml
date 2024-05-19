@@ -59,7 +59,7 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
-                            <DatePicker Style="{DynamicResource DatePickerStyle1}"
+                            <DatePicker Style="{StaticResource DatePickerStyle1}"
                                     SelectedDate="{Binding SubscribeStopDate, UpdateSourceTrigger=PropertyChanged}"
                                     CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />

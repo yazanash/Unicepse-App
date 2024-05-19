@@ -13,7 +13,7 @@ using System.Windows.Input;
 using emp = PlatinumGym.Core.Models.Employee;
 namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
 {
-    public class MoveToNewTrainerViewModel : ViewModelBase
+    public class MoveToNewTrainerViewModel : ErrorNotifyViewModelBase
     {
         private NavigationStore _navigatorStore;
         private readonly SubscriptionDataStore _subscriptionStore;
@@ -31,7 +31,14 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             set
             {
                 _subscriptionStore.SelectedTrainer = value?.trainer;
-
+                OnPropertyChanged(nameof(SelectedTrainer));
+                ClearError(nameof(SelectedTrainer));
+                if (SelectedTrainer == null)
+                {
+                    AddError(nameof(SelectedTrainer), "يجب اختيار مدرب");
+                    OnErrorChanged(nameof(SelectedTrainer));
+                }
+                OnPropertyChanged(nameof(SelectedTrainer));
             }
         }
         public MoveToNewTrainerViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayerMainPageViewModel playerMainPageView)
@@ -62,7 +69,14 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             {
                 _moveDate = value;
                 OnPropertyChanged(nameof(MoveDate));
-
+                ClearError(nameof(MoveDate));
+                if (MoveDate < _subscriptionStore.SelectedSubscription!.RollDate)
+                {
+                    AddError(nameof(MoveDate), "لا يمكن ان يكون تاريخ نقل الاشتراك اصغر من تاريخ الاشتراك");
+                    OnErrorChanged(nameof(MoveDate));
+                }
+               
+                OnPropertyChanged(nameof(MoveDate));
             }
         }
         #endregion
