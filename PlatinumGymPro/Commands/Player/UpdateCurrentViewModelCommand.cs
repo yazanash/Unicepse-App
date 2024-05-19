@@ -31,10 +31,12 @@ namespace PlatinumGymPro.Commands
         private readonly UsersDataStore _usersDataStore;
         private readonly DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
+        private readonly GymStore _gymStore;
+
         public UpdateCurrentViewModelCommand(INavigator navigator, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore,
             SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
-            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
+            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore)
         {
             _navigator = navigator;
             _playersStore = playersStore;
@@ -49,6 +51,7 @@ namespace PlatinumGymPro.Commands
             _usersDataStore = usersDataStore;
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
+            _gymStore = gymStore;
         }
 
         public override void Execute(object? parameter)
@@ -75,7 +78,7 @@ namespace PlatinumGymPro.Commands
                         _navigator.CurrentViewModel = new UsersViewModel(navigator, _usersDataStore,_employeeStore);
                         break;
                     case ViewType.Accounting:
-                        _navigator.CurrentViewModel = new AccountingViewModel(navigator, _expensesStore,_paymentDataStore);
+                        _navigator.CurrentViewModel = new AccountingViewModel(navigator,_expensesStore,_paymentDataStore, _gymStore);
                         break;
                     case ViewType.About:
                         _navigator.CurrentViewModel = new AppInfoViewModel();

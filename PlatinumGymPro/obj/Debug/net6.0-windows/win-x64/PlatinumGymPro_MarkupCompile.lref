@@ -16,6 +16,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\ExercisesItemsCard.xaml;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricItem.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MetricItemRL.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MonthlyEarnReportViewModel.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MuscleDayGroupCard.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\MuscleGroupItem.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\utlis\Components\PayCard.xaml;;
@@ -44,6 +45,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\AccountingState.xam
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\AccountingView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\ExpensesReport.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\IncomeReportView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\NetIncomeView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AccountingViews\SalariesReportView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\ApplicationAboutView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\AuthView\AddUserView.xaml;;

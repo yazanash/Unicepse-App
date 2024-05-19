@@ -86,16 +86,25 @@ namespace PlatinumGym.Entityframework.Services
             if (entity.PayDate.Month == date.Month - 1)
             {
                 DateTime firstDayInMonth = new DateTime(date.Year,date.Month,1);
+                
                 if (entity.To <= date)
                 {
-                    int days = (int)entity.To.Subtract(firstDayInMonth).TotalDays+1;
+                    int days = 0;
+                    if (entity.From > firstDayInMonth)
+                        days=(int)entity.To.Subtract(entity.From).TotalDays + 1;
+                    else
+                        days=(int)entity.To.Subtract(firstDayInMonth).TotalDays;
                     double dayprice = entity.PaymentValue / entity.CoverDays;
                     double total = (days * dayprice);
                     return total ;
                 }
                 else if (entity.To > date)
                 {
-                    int days = (int)date.Subtract(firstDayInMonth).TotalDays ;
+                    int days = 0;
+                    if (entity.From > firstDayInMonth)
+                        days = (int)date.Subtract(entity.From).TotalDays ;
+                    else
+                        days = (int)date.Subtract(firstDayInMonth).TotalDays +1;
                     double dayprice = entity.PaymentValue / entity.CoverDays;
                     double total = (days * dayprice);
                     return total;

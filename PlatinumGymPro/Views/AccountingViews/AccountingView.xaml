@@ -34,6 +34,9 @@
         <DataTemplate DataType="{x:Type vms:ExpensesReportViewModel}">
             <views:ExpensesReport/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:MounthlyReportViewModel}">
+            <views:NetIncomeView/>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -79,7 +82,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
-                            Command="{Binding IncomeReportCommand}"
+                            Command="{Binding MonthlyIncomeReportCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple" />

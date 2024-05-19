@@ -48,7 +48,9 @@ namespace PlatinumGymPro.Commands.Payments
             int sportDays = _subscriptionDataStore.SelectedSubscription!.DaysCount;
             double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / sportDays;
             int daysCount = Convert.ToInt32(payment.PaymentValue / dayPrice);
+            payment.From = _subscriptionDataStore.SelectedSubscription!.LastPaid;
             _subscriptionDataStore.SelectedSubscription!.LastPaid = _subscriptionDataStore.SelectedSubscription!.LastPaid.AddDays(daysCount);
+            payment.To = _subscriptionDataStore.SelectedSubscription!.LastPaid;
             if (_subscriptionDataStore.SelectedSubscription!.PaidValue == _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer)
                 _subscriptionDataStore.SelectedSubscription.IsPaid= true;
 

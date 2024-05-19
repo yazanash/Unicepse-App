@@ -30,9 +30,11 @@ namespace PlatinumGymPro.ViewModels
         private readonly UsersDataStore _usersDataStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly DausesDataStore _dausesDataStore;
-        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
+        private readonly GymStore _gymStore;
+        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore)
         {
             _navigatorStore = navigatorStore;
+            _gymStore = gymStore;
             _playerStore = playerStore;
             _sportStore = sportStore;
             _employeeStore = employeeStore;
@@ -46,7 +48,7 @@ namespace PlatinumGymPro.ViewModels
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
 
-            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore,_creditsDataStore);
+            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore,_gymStore);
             Navigator.CurrentViewModel = CreateHomeViewModel(_playerStore, _playersAttendenceStore, _employeeStore);
 
 
