@@ -35,7 +35,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
                 ClearError(nameof(SelectedTrainer));
                 if (SelectedTrainer == null)
                 {
-                    AddError(nameof(SelectedTrainer), "يجب اختيار مدرب");
+                    AddError("يجب اختيار مدرب", nameof(SelectedTrainer));
                     OnErrorChanged(nameof(SelectedTrainer));
                 }
                 OnPropertyChanged(nameof(SelectedTrainer));
@@ -72,7 +72,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
                 ClearError(nameof(MoveDate));
                 if (MoveDate < _subscriptionStore.SelectedSubscription!.RollDate)
                 {
-                    AddError(nameof(MoveDate), "لا يمكن ان يكون تاريخ نقل الاشتراك اصغر من تاريخ الاشتراك");
+                    AddError("لا يمكن ان يكون تاريخ نقل الاشتراك اصغر من تاريخ الاشتراك",nameof(MoveDate));
                     OnErrorChanged(nameof(MoveDate));
                 }
                

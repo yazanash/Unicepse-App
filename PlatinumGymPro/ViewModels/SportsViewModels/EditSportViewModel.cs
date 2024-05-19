@@ -135,13 +135,33 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         public int WeeklyTrainingDays
         {
             get { return _weeklyTrainingDays; }
-            set { _weeklyTrainingDays = value; OnPropertyChanged(nameof(WeeklyTrainingDays)); }
+            set 
+            {
+                _weeklyTrainingDays = value; 
+                OnPropertyChanged(nameof(WeeklyTrainingDays));
+                ClearError(nameof(WeeklyTrainingDays));
+                if (WeeklyTrainingDays == 0)
+                {
+                    AddError("لا يمكن ان يكون هذا الرقم اقل من 1", nameof(WeeklyTrainingDays));
+                    OnErrorChanged(nameof(WeeklyTrainingDays));
+                }
+            }
         }
         private int _subscribeLength;
         public int SubscribeLength
         {
             get { return _subscribeLength; }
-            set { _subscribeLength = value; OnPropertyChanged(nameof(SubscribeLength)); }
+            set
+            {
+                _subscribeLength = value;
+                OnPropertyChanged(nameof(SubscribeLength));
+                ClearError(nameof(SubscribeLength));
+                if (SubscribeLength == 0)
+                {
+                    AddError("لا يمكن ان يكون هذا الرقم اقل من 1", nameof(SubscribeLength));
+                    OnErrorChanged(nameof(SubscribeLength));
+                }
+            }
         }
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
@@ -151,7 +171,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();
 
-        public IEnumerable? GetErrors(string? propertyName)
+        public IEnumerable GetErrors(string? propertyName)
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }

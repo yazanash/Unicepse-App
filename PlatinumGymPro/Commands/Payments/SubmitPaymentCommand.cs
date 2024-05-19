@@ -26,11 +26,23 @@ namespace PlatinumGymPro.Commands.Payments
             _paymentDataStore = paymentDataStore;
             _playersDataStore = playersDataStore;
             _addPaymentViewModel = addPaymentViewModel;
+            _addPaymentViewModel.PropertyChanged += _addPaymentViewModel_PropertyChanged;
             _subscriptionDataStore = subscriptionDataStore;
         }
+
+        private void _addPaymentViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_addPaymentViewModel.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
+        }
+
+       
+
         public override bool CanExecute(object? parameter)
         {
-            return base.CanExecute(parameter);
+            return _addPaymentViewModel.CanSubmit && _addPaymentViewModel.SelectedSubscription!=null && base.CanExecute(null);
         }
         public override async Task ExecuteAsync(object? parameter)
         {

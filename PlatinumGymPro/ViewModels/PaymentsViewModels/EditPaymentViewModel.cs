@@ -5,8 +5,10 @@ using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.SubscriptionViewModel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.PaymentsViewModels
 {
-    public class EditPaymentViewModel : ListingViewModelBase
+    public class EditPaymentViewModel : ListingViewModelBase, INotifyDataErrorInfo
     {
         private readonly PaymentDataStore _paymentDataStore;
         private readonly NavigationStore _navigatorStore;
@@ -31,6 +33,8 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             _navigatorStore = navigatorStore;
             _paymentListViewModel = paymentListViewModel;
             _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
+            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
+
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore.SelectedPlayer!);
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
             SubmitCommand = new EditPaymentsCommand(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel), _paymentDataStore, this, _playersDataStore, _subscriptionDataStore);
@@ -66,7 +70,26 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
         public double PaymentValue
         {
             get { return _paymentValue; }
-            set { _paymentValue = value; OnPropertyChanged(nameof(PaymentValue)); }
+            set 
+            {
+                _paymentValue = value;
+                OnPropertyChanged(nameof(PaymentValue));
+                ClearError(nameof(PaymentValue));
+                if (SelectedSubscription != null)
+                {
+                    if (PaymentValue > SelectedSubscription!.PriceAfterOffer - SelectedSubscription!.PaidValue)
+                    {
+                        AddError("لا يمكن ان يكون المبلغ المدفوع اكبر من المستحق", nameof(PaymentValue));
+                        OnErrorChanged(nameof(PaymentValue));
+                    }
+                }
+
+                else
+                {
+                    AddError("يجب اختيار الاشتراك اولا", nameof(PaymentValue));
+                    OnErrorChanged(nameof(PaymentValue));
+                }
+            }
         }
         private string? _descriptiones;
         public string? Descriptiones
@@ -78,7 +101,19 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
         public DateTime PayDate
         {
             get { return _payDate; }
-            set { _payDate = value; OnPropertyChanged(nameof(PayDate)); }
+            set 
+            {
+                _payDate = value;
+                OnPropertyChanged(nameof(PayDate));
+                if (SelectedSubscription != null)
+                {
+                    if (PayDate < Convert.ToDateTime(SelectedSubscription!.RollDate))
+                    {
+                        AddError("لا يمكن ان يكون تاريخ الدفعة اصغر من تاريخ الاشتراك", nameof(PayDate));
+                        OnErrorChanged(nameof(PaymentValue));
+                    }
+                }
+            }
         }
         #endregion
         public SubscriptionCardViewModel? SelectedSubscription
@@ -92,6 +127,20 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             {
                 _subscriptionDataStore.SelectedSubscription = value?.Subscription;
                 OnPropertyChanged(nameof(SelectedSubscription));
+                if (SelectedSubscription != null)
+                {
+                    if (PaymentValue > SelectedSubscription!.PriceAfterOffer - SelectedSubscription!.PaidValue)
+                    {
+                        AddError("لا يمكن ان يكون المبلغ المدفوع اكبر من المستحق", nameof(PaymentValue));
+                        OnErrorChanged(nameof(PaymentValue));
+                    }
+                }
+
+                else
+                {
+                    AddError("يجب اختيار الاشتراك اولا", nameof(PaymentValue));
+                    OnErrorChanged(nameof(PaymentValue));
+                }
             }
         }
         private void AddSubscriptiont(Subscription subscription)
@@ -108,5 +157,40 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
 
             return viewModel;
         }
+        #region errors
+        private void AddError(string? ErrorMsg, string? propertyName)
+        {
+            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
+            {
+                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
+
+            }
+            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
+            OnErrorChanged(propertyName);
+        }
+
+        private void ClearError(string? propertyName)
+        {
+            PropertyNameToErrorsDictionary.Remove(propertyName!);
+            OnErrorChanged(propertyName);
+        }
+
+        private void OnErrorChanged(string? PropertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
+            OnPropertyChanged(nameof(CanSubmit));
+        }
+        public bool CanSubmit => !HasErrors;
+        public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
+        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+        public bool HasErrors => PropertyNameToErrorsDictionary.Any();
+
+        public IEnumerable GetErrors(string? propertyName)
+        {
+            return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
+        }
+
+
+        #endregion
     }
 }

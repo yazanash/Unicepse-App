@@ -12,7 +12,7 @@ using System.Windows.Input;
 using Exp = PlatinumGym.Core.Models.Expenses;
 namespace PlatinumGymPro.ViewModels.Accountant
 {
-    public class AccountingStateViewModel : ViewModelBase
+    public class AccountingStateViewModel : ListingViewModelBase
     {
         private readonly NavigationStore _navigationStore;
         private readonly ExpensesDataStore _expensesStore;

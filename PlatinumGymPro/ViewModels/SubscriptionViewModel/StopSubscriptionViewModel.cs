@@ -62,7 +62,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
                 ClearError(nameof(SubscribeStopDate));
                 if(SubscribeStopDate < _subscriptionStore.SelectedSubscription!.RollDate)
                 {
-                    AddError(nameof(SubscribeStopDate), "لا يمكن ان يكون تاريخ ايقاف الاشتراك اصغر من تاريخ الاشتراك");
+                    AddError( "لا يمكن ان يكون تاريخ ايقاف الاشتراك اصغر من تاريخ الاشتراك", nameof(SubscribeStopDate));
                     OnErrorChanged(nameof(SubscribeStopDate));
                 }
                 else

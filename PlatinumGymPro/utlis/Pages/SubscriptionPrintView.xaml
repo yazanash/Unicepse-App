@@ -197,14 +197,13 @@
                     </StackPanel>
 
 
-                    <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="10">
+                    <StackPanel Width="500" Grid.Row="3" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="10">
                         <!--<TextBlock Foreground="#C14E00" Text="معلومات الدفع"  FontSize="22" FontWeight="Bold"/>-->
 
 
                         <TextBlock Foreground="{StaticResource colors.secondry}" Text="الدفعات" FontSize="18" Margin="5" DockPanel.Dock="Top"/>
-                        <Grid  Grid.Row="4">
+                        <Grid  Grid.Row="4" >
                             <DataGrid  
-                                GridLinesVisibility="All"
                                     FlowDirection="RightToLeft" ItemsSource="{Binding PaymentsList}" 
                                     CanUserReorderColumns="True"
                                         SelectedItem="{Binding SelectedPayment,UpdateSourceTrigger=PropertyChanged}"
