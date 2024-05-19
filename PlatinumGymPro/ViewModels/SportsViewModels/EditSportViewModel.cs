@@ -17,7 +17,7 @@ using emp = PlatinumGym.Core.Models.Employee;
 
 namespace PlatinumGymPro.ViewModels.SportsViewModels
 {
-    public class EditSportViewModel : ListingViewModelBase
+    public class EditSportViewModel : ListingViewModelBase , INotifyDataErrorInfo
     {
         private readonly NavigationStore _navigationStore;
         private readonly SportDataStore _sportStore;
@@ -83,6 +83,12 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
             {
                 _sportName = value;
                 OnPropertyChanged(nameof(SportName));
+                ClearError(nameof(SportName));
+                if (string.IsNullOrEmpty(SportName?.Trim()))
+                {
+                    AddError("هذا الحقل مطلوب", nameof(SportName));
+                    OnErrorChanged(nameof(SportName));
+                }
             }
         }
         private double _monthlyPrice;
@@ -112,10 +118,11 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
             PropertyNameToErrorsDictionary.Remove(propertyName!);
             OnErrorChanged(propertyName);
         }
-
+        public bool CanSubmit => !HasErrors;
         private void OnErrorChanged(string? PropertyName)
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
+            OnPropertyChanged(nameof(CanSubmit));
         }
 
         private double _dailyPrice;

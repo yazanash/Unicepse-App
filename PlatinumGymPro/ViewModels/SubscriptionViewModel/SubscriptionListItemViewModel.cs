@@ -41,6 +41,8 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         public Brush IsPaidColor => Subscription.IsPaid ? Brushes.Green : Brushes.Red;
         //public Brush IsPaidTextColor => !Subscription.IsPaid ? new BrushConverter().ConvertFromString("#80A894") as SolidColorBrush : new BrushConverter().ConvertFromString("#BE99C3") as SolidColorBrush;
         public double PaidValue => Subscription.PaidValue;
+
+        public double RestVal => Subscription.PriceAfterOffer - Subscription.PaidValue;
         //public double RestValue { get; set; }
         public string EndDate => Subscription.EndDate.ToShortDateString();
         //public DateTime LastPaid => Subscription

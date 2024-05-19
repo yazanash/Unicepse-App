@@ -24,7 +24,7 @@
             <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
+                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                         <TextBlock Text="الرياضات / تعديل رياضة" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                     </StackPanel>
 
@@ -115,7 +115,7 @@
 
                 <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="1"  Padding="5"  Margin="5">
                     <DockPanel>
-                        <TextBlock Foreground="{StaticResource colors.secondry}" Text="المدربين" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
+                        <TextBlock Foreground="{StaticResource colors.primary}" Text="المدربين" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
                         <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource TrainersItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding TrainerList}" >
 
 

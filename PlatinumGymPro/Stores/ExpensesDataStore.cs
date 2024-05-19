@@ -63,6 +63,13 @@ namespace PlatinumGymPro.Stores
             await _initializeLazy.Value;
             Loaded?.Invoke();
         }
+        public async Task GetPeriodExpenses(DateTime dateFrom,DateTime dateTo)
+        {
+            IEnumerable<Expenses> expenses = await _expensesDataService.GetPeriodExpenses(dateFrom,dateTo);
+            _expenses.Clear();
+            _expenses.AddRange(expenses);
+            Loaded?.Invoke();
+        }
 
         public async Task Initialize()
         {
@@ -85,6 +92,11 @@ namespace PlatinumGymPro.Stores
                 _expenses.Add(entity);
             }
             Updated?.Invoke(entity);
+        }
+        public double GetSum()
+        {
+            double sum = Expenses.Sum(x => x.Value);
+            return sum;
         }
     }
 }

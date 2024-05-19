@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
 {
-    public class StopSubscriptionViewModel : ViewModelBase
+    public class StopSubscriptionViewModel : ErrorNotifyViewModelBase
     {
         private NavigationStore _navigatorStore;
         private readonly SubscriptionDataStore _subscriptionStore;
@@ -59,8 +59,17 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             {
                 _subscribeStopDate = value;
                 OnPropertyChanged(nameof(SubscribeStopDate));
-                CountCoast();
-
+                ClearError(nameof(SubscribeStopDate));
+                if(SubscribeStopDate < _subscriptionStore.SelectedSubscription!.RollDate)
+                {
+                    AddError(nameof(SubscribeStopDate), "لا يمكن ان يكون تاريخ ايقاف الاشتراك اصغر من تاريخ الاشتراك");
+                    OnErrorChanged(nameof(SubscribeStopDate));
+                }
+                else
+                {
+                    CountCoast();
+                }
+                OnPropertyChanged(nameof(SubscribeStopDate));
             }
         }
 

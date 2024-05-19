@@ -14,6 +14,7 @@ namespace PlatinumGymPro.Stores
     {
         private readonly PaymentDataService _paymentDataService;
         private readonly DausesDataService _dausesDataService;
+        private readonly EmployeeDataService _employeeDataService;
         private readonly EmployeeCreditsDataService _employeeCreditsDataService;
         public List<TrainerDueses> _dauses;
         public List<PlayerPayment> _payments;
@@ -24,20 +25,22 @@ namespace PlatinumGymPro.Stores
         public event Action? Loaded;
         public event Action<TrainerDueses>? Updated;
         public event Action<int>? Deleted;
-
-        public DausesDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService)
+        private readonly Lazy<Task> _initializeLazy;
+        public DausesDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService, EmployeeDataService employeeDataService)
         {
             _paymentDataService = paymentDataService;
             _dausesDataService = dausesDataService;
             _dauses = new List<TrainerDueses>();
             _payments = new List<PlayerPayment>();
             _employeeCreditsDataService = employeeCreditsDataService;
-            //_initializeLazy = new Lazy<Task>(Initialize);
+            _employeeDataService = employeeDataService;
+
+            _initializeLazy = new Lazy<Task>(Initialize);
         }
         public async Task GetMonthlyReport(Employee trainer, DateTime date)
         {
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetTrainerPayments(trainer, date);
-            IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(trainer,date);
+            IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(trainer, date);
             MonthlyTrainerDause = new TrainerDueses();
             MonthlyTrainerDause.TotalSubscriptions = 0;
             foreach (PlayerPayment pay in payments)
@@ -45,7 +48,7 @@ namespace PlatinumGymPro.Stores
                 MonthlyTrainerDause.TotalSubscriptions += _dausesDataService.GetParcent(pay, date);
             }
             MonthlyTrainerDause.CountSubscription = payments.GroupBy(x => x.Subscription).Count();
-            MonthlyTrainerDause.Parcent =(double)trainer.ParcentValue / 100;
+            MonthlyTrainerDause.Parcent = (double)trainer.ParcentValue / 100;
             MonthlyTrainerDause.IssueDate = date;
             MonthlyTrainerDause.Trainer = trainer;
             MonthlyTrainerDause.Salary = trainer.SalaryValue;
@@ -109,9 +112,48 @@ namespace PlatinumGymPro.Stores
             Deleted?.Invoke(entity_id);
         }
 
-        public Task Initialize()
+        public async Task Initialize()
         {
-            throw new NotImplementedException();
+            IEnumerable<Employee> employees = await _employeeDataService.GetAllParcentTrainers();
+            DateTime date = DateTime.Now;
+            foreach (Employee employee in employees)
+            {
+                var trainerDuse = _dauses.Where(x => x.IssueDate.Month == date.Month && x.IssueDate.Year == date.Year&&x.IssueDate.Day==date.Day).Any();
+                if (!trainerDuse)
+                {
+                    IEnumerable<PlayerPayment> payments = await _paymentDataService.GetTrainerPayments(employee, date);
+                    IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(employee, date);
+                    TrainerDueses MonthlyTrainerDause = new TrainerDueses();
+                    MonthlyTrainerDause.TotalSubscriptions = 0;
+                    foreach (PlayerPayment pay in payments)
+                    {
+                        MonthlyTrainerDause.TotalSubscriptions += _dausesDataService.GetParcent(pay, date);
+                    }
+                    MonthlyTrainerDause.CountSubscription = payments.GroupBy(x => x.Subscription).Count();
+                    MonthlyTrainerDause.Parcent = (double)employee.ParcentValue / 100;
+                    MonthlyTrainerDause.IssueDate = date;
+                    MonthlyTrainerDause.Trainer = employee;
+                    MonthlyTrainerDause.Salary = employee.SalaryValue;
+                    MonthlyTrainerDause.CreditsCount = Credits.Count();
+                    if (MonthlyTrainerDause.CreditsCount > 0)
+                        MonthlyTrainerDause.Credits = Credits.Sum(x => x.CreditValue);
+                    else
+                        MonthlyTrainerDause.Credits = 0;
+                    StateChanged?.Invoke(MonthlyTrainerDause);
+                    var td = _dauses.Where(x => x.IssueDate.Month == MonthlyTrainerDause.IssueDate.Month && x.IssueDate.Year == MonthlyTrainerDause.IssueDate.Year).SingleOrDefault();
+                    if (td != null)
+                    {
+                        if (MonthlyTrainerDause.IssueDate > td.IssueDate)
+                        {
+                            MonthlyTrainerDause.Id = td.Id;
+                            await Update(MonthlyTrainerDause);
+                        }
+                    }
+                    else
+                        await Add(MonthlyTrainerDause);
+                }
+            }
+
         }
     }
 }

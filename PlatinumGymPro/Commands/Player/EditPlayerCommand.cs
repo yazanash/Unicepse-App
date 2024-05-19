@@ -41,29 +41,34 @@ namespace PlatinumGymPro.Commands.Player
         public override bool CanExecute(object? parameter)
         {
 
-            return _editPlayerViewModel.CanSubmit && base.CanExecute(null);
+            return _editPlayerViewModel.CanSubmit && !string.IsNullOrEmpty(_editPlayerViewModel.FullName) &&_editPlayerViewModel.Phone!.Trim().Length > 9 && base.CanExecute(null);
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            _editPlayerViewModel.Submited = false;
-            PlatinumGym.Core.Models.Player.Player player = _playerStore.SelectedPlayer!.Player;
+            try
+            {
+                _editPlayerViewModel.Submited = false;
+                PlatinumGym.Core.Models.Player.Player player = _playerStore.SelectedPlayer!.Player;
 
-            player.FullName = _editPlayerViewModel.FullName;
-            player.BirthDate = _editPlayerViewModel.Year!.year;
-            player.GenderMale = _editPlayerViewModel.GenderMale;
-            player.Hieght = _editPlayerViewModel.Hieght;
-            player.Phone = _editPlayerViewModel.Phone;
-            player.SubscribeDate = _editPlayerViewModel.SubscribeDate;
-            player.SubscribeEndDate = _editPlayerViewModel.SubscribeDate.AddDays(30);
-            player.Weight = _editPlayerViewModel.Weight;
+                player.FullName = _editPlayerViewModel.FullName;
+                player.BirthDate = _editPlayerViewModel.Year!.year;
+                player.GenderMale = _editPlayerViewModel.GenderMale;
+                player.Hieght = _editPlayerViewModel.Hieght;
+                player.Phone = _editPlayerViewModel.Phone;
+                player.SubscribeDate = _editPlayerViewModel.SubscribeDate;
+                player.SubscribeEndDate = _editPlayerViewModel.SubscribeDate.AddDays(30);
+                player.Weight = _editPlayerViewModel.Weight;
+
+                await _playerStore.UpdatePlayer(player);
+                MessageBox.Show(player.FullName + " edited successfully");
+                navigationService.Navigate();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+          
            
-            await _playerStore.UpdatePlayer(player);
-            MessageBox.Show(player.FullName + " edited successfully");
-            //_addPlayerViewModel.Submited = true;
-            //_addPlayerViewModel.SubmitMessage = player.FullName + " added successfully";
-            //_playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore);
-            //await Task.Delay(5000);
-            navigationService.Navigate();
         }
 
     }

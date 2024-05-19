@@ -21,11 +21,21 @@ namespace PlatinumGymPro.Commands.Employee
             this.navigationService = navigationService;
             _employeeStore = employeeStore;
             _editEmployeeViewModel = editEmployeeViewModel;
+            _editEmployeeViewModel.PropertyChanged += _editEmployeeViewModel_PropertyChanged;
+        }
+
+        private void _editEmployeeViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_editEmployeeViewModel.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
         }
 
         public override bool CanExecute(object? parameter)
         {
-            return base.CanExecute(parameter);
+            return _editEmployeeViewModel.CanSubmit && !string.IsNullOrEmpty(_editEmployeeViewModel.FullName) && _editEmployeeViewModel.Phone!.Trim().Length > 9 && base.CanExecute(null);
+
         }
         public override async Task ExecuteAsync(object? parameter)
         {
@@ -33,7 +43,7 @@ namespace PlatinumGymPro.Commands.Employee
             {
                 Id = _employeeStore.SelectedEmployee!.Id,
                 FullName = _editEmployeeViewModel.FullName,
-                BirthDate = _editEmployeeViewModel.BirthDate,
+                BirthDate = _editEmployeeViewModel.Year!.year,
                 GenderMale = _editEmployeeViewModel.GenderMale,
                 IsActive = true,
                 IsTrainer = false,

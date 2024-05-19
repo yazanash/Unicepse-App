@@ -23,32 +23,49 @@ namespace PlatinumGymPro.Commands.SportsCommands
             this.navigationService = navigationService;
             _sportStore = sportStore;
             _addSportViewModel = addSportViewModel;
+            _addSportViewModel.PropertyChanged += _addSportViewModel_PropertyChanged;
         }
+
+        private void _addSportViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_addSportViewModel.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
+        }
+
         public override bool CanExecute(object? parameter)
         {
-            return base.CanExecute(parameter);
+            return _addSportViewModel.CanSubmit && !string.IsNullOrEmpty(_addSportViewModel.SportName?.Trim()) && base.CanExecute(null);
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            sp.Sport sport = new sp.Sport()
+            try
             {
-                Name = _addSportViewModel.SportName,
-                DailyPrice = _addSportViewModel.DailyPrice,
-                DaysCount = _addSportViewModel.SubscribeLength,
-                DaysInWeek = _addSportViewModel.WeeklyTrainingDays,
-                Price = _addSportViewModel.MonthlyPrice,
-                IsActive = true
+                sp.Sport sport = new sp.Sport()
+                {
+                    Name = _addSportViewModel.SportName,
+                    DailyPrice = _addSportViewModel.DailyPrice,
+                    DaysCount = _addSportViewModel.SubscribeLength,
+                    DaysInWeek = _addSportViewModel.WeeklyTrainingDays,
+                    Price = _addSportViewModel.MonthlyPrice,
+                    IsActive = true
 
-            };
-            foreach(var TrainerListItem in _addSportViewModel.TrainerList)
-            {
-                if(TrainerListItem.IsSelected)
-                sport.Trainers!.Add(TrainerListItem.trainer);
+                };
+                foreach (var TrainerListItem in _addSportViewModel.TrainerList)
+                {
+                    if (TrainerListItem.IsSelected)
+                        sport.Trainers!.Add(TrainerListItem.trainer);
+                }
+                await _sportStore.Add(sport);
+
+                MessageBox.Show("Sport add successfully");
+                navigationService.Navigate();
             }
-            await _sportStore.Add(sport);
-
-            MessageBox.Show("Sport edit successfully");
-            navigationService.Navigate();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
        
     }

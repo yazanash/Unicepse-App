@@ -12,6 +12,7 @@ namespace PlatinumGymPro.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         public NavigationStore _navigatorStore;
+        private readonly GymStore _gymStore;
         private readonly PlayersDataStore _playerStore;
         private readonly SportDataStore _sportStore;
         private readonly EmployeeStore _employeeStore;
@@ -30,7 +31,8 @@ namespace PlatinumGymPro.ViewModels
             PlayersDataStore playerStore, SportDataStore sportStore,
             EmployeeStore employeeStore, ExpensesDataStore expensesStore,
             SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
-            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
+            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,
+            UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore)
         {
 
             _navigatorStore = navigatorStore;
@@ -46,7 +48,9 @@ namespace PlatinumGymPro.ViewModels
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
             _usersDataStore = usersDataStore;
-            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore);
+            _gymStore = gymStore;
+
+            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore,_gymStore);
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
         }
 
