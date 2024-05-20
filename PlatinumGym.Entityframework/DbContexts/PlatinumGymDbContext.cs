@@ -84,9 +84,8 @@ namespace PlatinumGym.Entityframework.DbContexts
              .HasOne(c => c.Trainer)
              .WithMany(c => c.PlayerTrainings).HasForeignKey(x => x.TrainerId);
 
-           
 
-            
+           
 
             base.OnModelCreating(modelBuilder);
         }

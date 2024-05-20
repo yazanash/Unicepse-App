@@ -38,7 +38,7 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
         public ICommand EditCommand { get; }
         public int Id => playerRoutine.Id;
         public int RoutineNo => playerRoutine.RoutineNo;
-        public string? routineDate => playerRoutine.RoutineData.ToString("ddd,MMM dd,yyy");
+        public string? routineDate => playerRoutine.RoutineData.ToShortDateString();
 
         public void Update(PlayerRoutine obj)
         {

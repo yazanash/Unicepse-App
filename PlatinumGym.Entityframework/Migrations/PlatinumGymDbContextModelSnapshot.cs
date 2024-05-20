@@ -34,7 +34,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("TrainersId");
 
-                    b.ToTable("EmployeeSport");
+                    b.ToTable("EmployeeSport", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Authentication.User", b =>
@@ -64,7 +64,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.DailyActivity.DailyPlayerReport", b =>
@@ -97,7 +97,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("DailyPlayerReport");
+                    b.ToTable("DailyPlayerReport", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Employee.Credit", b =>
@@ -124,7 +124,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("EmpPersonId");
 
-                    b.ToTable("Credit");
+                    b.ToTable("Credit", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Employee.Employee", b =>
@@ -179,7 +179,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Employee.TrainerDueses", b =>
@@ -218,7 +218,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("TrainerDueses");
+                    b.ToTable("TrainerDueses", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Expenses.Expenses", b =>
@@ -248,7 +248,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("RecipientId");
 
-                    b.ToTable("Expenses");
+                    b.ToTable("Expenses", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Metric.Metric", b =>
@@ -314,7 +314,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("Metrics");
+                    b.ToTable("Metrics", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Payment.PayReferance", b =>
@@ -343,7 +343,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("PlayerTrainingId");
 
-                    b.ToTable("PayReferance");
+                    b.ToTable("PayReferance", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Payment.PlayerPayment", b =>
@@ -389,7 +389,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("SubscriptionId");
 
-                    b.ToTable("PlayerPayments");
+                    b.ToTable("PlayerPayments", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Player.Player", b =>
@@ -435,7 +435,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Sport.Sport", b =>
@@ -466,7 +466,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sports");
+                    b.ToTable("Sports", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.Subscription.Subscription", b =>
@@ -551,7 +551,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.Exercises", b =>
@@ -579,7 +579,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercises", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", b =>
@@ -607,7 +607,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("PlayerRoutine");
+                    b.ToTable("PlayerRoutine", (string)null);
                 });
 
             modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.RoutineItems", b =>
@@ -639,7 +639,7 @@ namespace PlatinumGymPro.Migrations
 
                     b.HasIndex("PlayerRoutineId");
 
-                    b.ToTable("RoutineItems");
+                    b.ToTable("RoutineItems", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeSport", b =>

@@ -1,7 +1,9 @@
-﻿using PlatinumGymPro.Commands.RoutinesCommand;
+﻿using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.RoutinesCommand;
 using PlatinumGymPro.Enums;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
+using PlatinumGymPro.ViewModels.PrintViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -68,6 +70,8 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             }
 
             SubmitCommand = new UpdateRoutineCommand(_routineDataStore, _playersDataStore, _navigationService, this);
+            PrintCommand = new PrintCommand(new PrintWindowViewModel(new EditRoutinePrintViewModel(_routineDataStore, _playersDataStore, this), new NavigationStore()));
+
         }
 
         private DateTime _date = DateTime.Now;
@@ -84,6 +88,6 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             set { _number = value; OnPropertyChanged(nameof(Number)); }
         }
         public ICommand SubmitCommand { get; }
-
+        public ICommand PrintCommand { get; }
     }
 }

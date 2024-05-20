@@ -47,20 +47,20 @@ namespace PlatinumGymPro.Commands.RoutinesCommand
            
             await _routineDataStore.Add(playerRoutine);
             MessageBox.Show("Player Routine Added Successfully");
-            string jsonString = ExportToJsonTemplate(playerRoutine);
+            //string jsonString = ExportToJsonTemplate(playerRoutine);
 
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.FileName = "player_routine"; // Default file name
-            dlg.DefaultExt = ".json"; // Default file extension
-            dlg.Filter = "JSON files (.json)|*.json"; // Filter files by extension
+            //SaveFileDialog dlg = new SaveFileDialog();
+            //dlg.FileName = "player_routine"; // Default file name
+            //dlg.DefaultExt = ".json"; // Default file extension
+            //dlg.Filter = "JSON files (.json)|*.json"; // Filter files by extension
 
-            bool? result = dlg.ShowDialog();
+            //bool? result = dlg.ShowDialog();
 
-            if (result == true)
-            {
-                string filename = dlg.FileName;
-                File.WriteAllText(filename, jsonString);
-            }
+            //if (result == true)
+            //{
+            //    string filename = dlg.FileName;
+            //    File.WriteAllText(filename, jsonString);
+            //}
             _navigationService.ReNavigate();
         }
 

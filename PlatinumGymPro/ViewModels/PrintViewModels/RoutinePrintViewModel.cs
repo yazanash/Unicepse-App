@@ -30,6 +30,7 @@ namespace PlatinumGymPro.ViewModels.PrintViewModels
         }
 
         private readonly ObservableCollection<RoutineExercisesItemsViewModel> _routineExercisesItemsViewModels;
+        
         public IEnumerable<RoutineExercisesItemsViewModel> LegsExercisesList
             => _routineExercisesItemsViewModels.Where(x => x.GroupId == (int)EMuscleGroup.Legs);
         public IEnumerable<RoutineExercisesItemsViewModel> ChestExercisesList

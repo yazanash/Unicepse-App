@@ -207,16 +207,36 @@
     <Content Include="Resources\Assets\Exercises\2\9.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\1.png" />
-    <Content Include="Resources\Assets\Exercises\3\10.png" />
-    <Content Include="Resources\Assets\Exercises\3\2.png" />
-    <Content Include="Resources\Assets\Exercises\3\3.png" />
-    <Content Include="Resources\Assets\Exercises\3\4.png" />
-    <Content Include="Resources\Assets\Exercises\3\5.png" />
-    <Content Include="Resources\Assets\Exercises\3\6.png" />
-    <Content Include="Resources\Assets\Exercises\3\7.png" />
-    <Content Include="Resources\Assets\Exercises\3\8.png" />
-    <Content Include="Resources\Assets\Exercises\3\9.png" />
+    <Content Include="Resources\Assets\Exercises\3\1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\3\10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\3\2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\3\3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\3\4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\3\5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\3\6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\3\7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\3\8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\3\9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Assets\Exercises\4\1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
