@@ -60,6 +60,14 @@ namespace PlatinumGym.Entityframework.Services
                 return entities;
             }
         }
+        public async Task<IEnumerable<Credit>> GetAll( DateTime date)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Where(x => x.Date.Year == date.Year && x.Date.Month == date.Month && x.Date.Day == date.Day).ToListAsync();
+                return entities;
+            }
+        }
         public async Task<Credit> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

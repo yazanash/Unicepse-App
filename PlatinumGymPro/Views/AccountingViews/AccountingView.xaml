@@ -49,7 +49,7 @@
                 <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                     <RadioButton
                          IsChecked="True"   
-                           
+                           Command="{Binding StatesReportCommand}"
                             Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="StackExchange"/>

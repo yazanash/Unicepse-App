@@ -12,16 +12,18 @@ namespace PlatinumGymPro.Commands.AccountantCommand
     {
         private readonly AccountingStateViewModel _accountingStateViewModel;
         private readonly ExpensesDataStore _expensesDataStore;
-
-        public LoadStatesCommand(AccountingStateViewModel accountingStateViewModel, ExpensesDataStore expensesDataStore)
+        private readonly GymStore _gymStore;
+        public LoadStatesCommand(AccountingStateViewModel accountingStateViewModel, ExpensesDataStore expensesDataStore, GymStore gymStore)
         {
             _accountingStateViewModel = accountingStateViewModel;
             _expensesDataStore = expensesDataStore;
+            _gymStore = gymStore;
         }
 
         public  override async Task ExecuteAsync(object? parameter)
         {
-            await _expensesDataStore.GetAll(); 
+            await _expensesDataStore.GetAll();
+            await _gymStore.GetStates(DateTime.Now);
         }
     }
 }

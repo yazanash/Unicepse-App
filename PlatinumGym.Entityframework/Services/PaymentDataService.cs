@@ -78,6 +78,17 @@ namespace PlatinumGym.Entityframework.Services
                 return entities;
             }
         }
+        public async Task<IEnumerable<PlayerPayment>> GetAll( DateTime dateTo)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
+                    .Include(x => x.Subscription).Include(x => x.Subscription!.Sport).Include(x => x.Subscription!.Trainer).AsNoTracking()
+                    .Where(x => x.PayDate.Month == dateTo.Month && x.PayDate.Year == dateTo.Year&& x.PayDate.Day== dateTo.Day)
+                    .ToListAsync();
+                return entities;
+            }
+        }
         public async Task<IEnumerable<PlayerPayment>> GetPlayerPayments(Player player)
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())

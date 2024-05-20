@@ -35,10 +35,10 @@ namespace PlatinumGymPro.Commands.Employee.CreditsCommands
             {
                 CreditValue = _creditDetailsViewModel.CreditValue,
                  Date = _creditDetailsViewModel.CreditDate,
-                  EmpPerson = _employeeStore.SelectedEmployee!,
                 Description = _creditDetailsViewModel.Description,
             };
-
+            credit.EmpPerson = new PlatinumGym.Core.Models.Employee.Employee() { Id = _employeeStore.SelectedEmployee!.Id };
+            
             await _creditsDataStore.Add(credit);
             navigationService.ReNavigate();
         }

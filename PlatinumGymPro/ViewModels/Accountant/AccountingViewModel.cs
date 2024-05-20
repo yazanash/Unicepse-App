@@ -22,6 +22,7 @@ namespace PlatinumGymPro.ViewModels.Accountant
         public ICommand ExpensesCommand { get; }
         public ICommand IncomeReportCommand { get; }
         public ICommand ExpensesReportCommand { get; }
+        public ICommand StatesReportCommand { get; }
         //public ICommand PaymentReportCommand;
         public ICommand MonthlyIncomeReportCommand { get; }
         public AccountingViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore, PaymentDataStore paymentDataStore, GymStore gymStore)
@@ -30,12 +31,13 @@ namespace PlatinumGymPro.ViewModels.Accountant
             _expensesStore = expensesStore;
             _gymStore = gymStore;
             _paymentDataStore = paymentDataStore;
-            navigatorStore.CurrentViewModel = CreateStatesViewModel(_navigatorStore, _expensesStore);
+            navigatorStore.CurrentViewModel = CreateStatesViewModel(_navigatorStore, _expensesStore,_gymStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
             ExpensesCommand = new NavaigateCommand<ExpensesListViewModel>(new NavigationService<ExpensesListViewModel>(_navigatorStore, () => CreateExpenses(_navigatorStore, _expensesStore)));
             IncomeReportCommand = new NavaigateCommand<IncomeReportViewModel>(new NavigationService<IncomeReportViewModel>(_navigatorStore, () => new IncomeReportViewModel(_paymentDataStore, _navigatorStore)));
             ExpensesReportCommand = new NavaigateCommand<ExpensesReportViewModel>(new NavigationService<ExpensesReportViewModel>(_navigatorStore, () => new ExpensesReportViewModel(_expensesStore, _navigatorStore)));
             MonthlyIncomeReportCommand = new NavaigateCommand<MounthlyReportViewModel>(new NavigationService<MounthlyReportViewModel>(_navigatorStore, () => new MounthlyReportViewModel(_gymStore)));
+            StatesReportCommand = new NavaigateCommand<AccountingStateViewModel>(new NavigationService<AccountingStateViewModel>(_navigatorStore, () => CreateStatesViewModel(_navigatorStore, _expensesStore, _gymStore)));
 
         }
 
@@ -43,9 +45,9 @@ namespace PlatinumGymPro.ViewModels.Accountant
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-        private AccountingStateViewModel CreateStatesViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore)
+        private AccountingStateViewModel CreateStatesViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore,GymStore gymStore )
         {
-            return AccountingStateViewModel.LoadViewModel(navigatorStore, expensesStore);
+            return AccountingStateViewModel.LoadViewModel(navigatorStore, expensesStore, gymStore);
         }
         private ExpensesListViewModel CreateExpenses(NavigationStore navigatorStore, ExpensesDataStore expensesStore)
         {
