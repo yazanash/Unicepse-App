@@ -30,6 +30,7 @@ namespace PlatinumGymPro.ViewModels.Expenses
             EditExpensesCommand = new NavaigateCommand<EditExpenseViewModel>(new NavigationService<EditExpenseViewModel>(_navigatorStore, () => new EditExpenseViewModel(_expensesDataStore, _navigatorStore, _expensesListViewModel)));
             DeleteExpensesCommand = new DeleteExpaensesCommand(expensesDataStore);
         }
+
         public ExpensesListItemViewModel(Exp.Expenses expenses, NavigationStore navigatorStore)
         {
             Expenses = expenses;

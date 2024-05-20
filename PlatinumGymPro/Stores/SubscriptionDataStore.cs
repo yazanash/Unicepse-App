@@ -111,6 +111,13 @@ namespace PlatinumGymPro.Stores
             _subscriptions.AddRange(subscriptions);
             Loaded?.Invoke();
         }
+        public async Task GetAll(Employee trainer,DateTime date)
+        {
+            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(trainer, date);
+            _subscriptions.Clear();
+            _subscriptions.AddRange(subscriptions);
+            Loaded?.Invoke();
+        }
 
         public async Task GetAll()
         {

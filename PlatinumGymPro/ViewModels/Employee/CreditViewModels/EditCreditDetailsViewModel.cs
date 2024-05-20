@@ -1,4 +1,5 @@
-﻿using PlatinumGymPro.Commands.Employee.CreditsCommands;
+﻿using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.Employee.CreditsCommands;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using System;
@@ -26,6 +27,7 @@ namespace PlatinumGymPro.ViewModels.Employee.CreditViewModels
             CreditValue = _creditDataStore.SelectedCredit!.CreditValue;
             Description = _creditDataStore.SelectedCredit!.Description;
             SubmitCommand = new EditCreditCommand(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel), _employeeStore, _creditDataStore, this);
+            CancelCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel));
         }
         private double _creditValue;
         public double CreditValue
@@ -46,5 +48,6 @@ namespace PlatinumGymPro.ViewModels.Employee.CreditViewModels
             set { _description = value; OnPropertyChanged(nameof(Description)); }
         }
         public ICommand SubmitCommand { get; }
+        public ICommand CancelCommand { get; }
     }
 }

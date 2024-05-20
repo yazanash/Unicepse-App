@@ -40,7 +40,7 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore.SelectedPlayer!);
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
             SubmitCommand = new SubmitPaymentCommand(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel), _paymentDataStore, this, _playersDataStore, _subscriptionDataStore);
-            //CancelCommand = new NavaigateCommand()
+            CancelCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel));
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
         }
 
@@ -57,6 +57,7 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
         ICommand LoadSubscriptionCommand;
 
         public ICommand SubmitCommand { get; }
+        public ICommand CancelCommand { get; }
         //ICommand CancelCommand;
         #region Properties
         private double _paymentValue;

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style x:Key="CalendarStyle1" TargetType="{x:Type Calendar}">
+    <!--<Style x:Key="CalendarStyle1" TargetType="{x:Type Calendar}">
         <Setter Property="Foreground" Value="#F9F9F9"/>
         <Setter Property="Background" Value="#FFF"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -401,5 +401,5 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 </ResourceDictionary>

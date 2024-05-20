@@ -23,11 +23,18 @@ namespace PlatinumGymPro
     /// </summary>
     public partial class PrintWindowDialog : Window
     {
+        string fileName = "file_name";
         public PrintWindowDialog()
         {
             InitializeComponent();
 
           
+        }
+        public PrintWindowDialog(string fileName)
+        {
+            InitializeComponent();
+            this.fileName = fileName;
+
         }
         private void preview()
         {
@@ -56,7 +63,7 @@ namespace PlatinumGymPro
             PrintDialog printDialog = new PrintDialog();
             if (printDialog.ShowDialog() == true)
             {
-                printDialog.PrintVisual(print, "invoice");
+                printDialog.PrintVisual(print, fileName);
             }
         }
     }

@@ -154,6 +154,9 @@
     <Compile Update="Views\EmployeeViews\TrainerDuesesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\EmployeeViews\TrainerSubscriptionView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Expenses\ExpensesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -415,6 +418,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EmployeeViews\TrainerDuesesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\TrainerSubscriptionView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Expenses\ExpensesView.xaml">

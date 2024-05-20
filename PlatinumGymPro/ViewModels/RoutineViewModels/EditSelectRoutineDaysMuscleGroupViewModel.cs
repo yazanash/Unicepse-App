@@ -70,7 +70,8 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             }
 
             SubmitCommand = new UpdateRoutineCommand(_routineDataStore, _playersDataStore, _navigationService, this);
-            PrintCommand = new PrintCommand(new PrintWindowViewModel(new EditRoutinePrintViewModel(_routineDataStore, _playersDataStore, this), new NavigationStore()));
+            string filename = _playersDataStore.SelectedPlayer!.FullName +"_" + Date.ToShortDateString() + "_Routine";
+            PrintCommand = new PrintCommand(new PrintWindowViewModel(new EditRoutinePrintViewModel(_routineDataStore, _playersDataStore, this), new NavigationStore()), filename);
 
         }
 

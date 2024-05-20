@@ -25,6 +25,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         private readonly PlayerMainPageViewModel _playerMainPageViewModel;
         //private readonly PlayerListViewModel playerListingViewModel;
         public int Id => Subscription.Id;
+        public string? PlayerName => Subscription.Player!.FullName;
         public string? SportName => Subscription.Sport!.Name;
         public DateTime LastCheck => Subscription.LastCheck;
         public string? Trainer =>  Subscription.Trainer != null ? Subscription.Trainer!.FullName:"بدون مدرب";
@@ -70,7 +71,8 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             EditCommand = new NavaigateCommand<EditSubscriptionViewModel>(new NavigationService<EditSubscriptionViewModel>(_navigationStore, () => EditSubscription(_sportDataStore, _navigationStore, _subscriptionDataStore, _playersDataStore, _playerMainPageViewModel)));
             StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _playerMainPageViewModel)));
             MoveToNewTrainerCommand = new NavaigateCommand<MoveToNewTrainerViewModel>(new NavigationService<MoveToNewTrainerViewModel>(_navigationStore, () => new MoveToNewTrainerViewModel(_navigationStore, _subscriptionDataStore, _playerMainPageViewModel)));
-            PrintCommand = new PrintCommand(new PrintWindowViewModel(new SubscriptionPrintViewModel(this.Subscription), new NavigationStore()));
+            string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + RollDate+ "_"+SportName;
+            PrintCommand = new PrintCommand(new PrintWindowViewModel(new SubscriptionPrintViewModel(this.Subscription), new NavigationStore()), filename);
         }
         public SubscriptionListItemViewModel(Subscription subscription)
         {

@@ -43,19 +43,6 @@
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
                             <TextBlock Text="المصاريف"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.secondry}" FontSize="18" DockPanel.Dock="Left"/>
                          
-                            <Button Grid.Column="0" Margin="5 0"  Command="{Binding AddPaymentsCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
-
-                                <StackPanel Orientation="Horizontal">
-
-                                    <TextBlock Text="أضافة مصروف" />
-                                    <Icon:PackIconMaterial Kind="Plus"
-                                       Width="11"
-                                       Height="11"
-                                       Margin="8 0 0 1"
-                                       VerticalAlignment="Center"/>
-                                </StackPanel>
-
-                            </Button>
                         </StackPanel>
                         <Grid >
                             <custom:LoadingSpinner
@@ -98,21 +85,7 @@
 
 
 
-                                        <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Button Command="{Binding EditCommand}" Style="{StaticResource GridremoveBtn}">
-                                                            <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                                        </Button>
-                                                        <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
-                                                            <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
-                                                        </Button>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
+                                      
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>

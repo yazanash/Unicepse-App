@@ -10,15 +10,19 @@ namespace PlatinumGymPro.Commands
     public class PrintCommand : CommandBase
     {
         private readonly ViewModelBase _viewModelBase;
-
+        string FileName = "file_name";
         public PrintCommand(ViewModelBase viewModelBase)
         {
             _viewModelBase = viewModelBase;
         }
-
+        public PrintCommand(ViewModelBase viewModelBase,string FileName)
+        {
+            _viewModelBase = viewModelBase;
+            this.FileName = FileName;
+        }
         public override void Execute(object? parameter)
         {
-            PrintWindowDialog printWindowDialog = new PrintWindowDialog();
+            PrintWindowDialog printWindowDialog = new PrintWindowDialog(FileName);
             printWindowDialog.DataContext = _viewModelBase;
             printWindowDialog.ShowDialog();
         }

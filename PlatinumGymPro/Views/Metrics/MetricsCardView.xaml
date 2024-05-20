@@ -7,6 +7,9 @@
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:comp="clr-namespace:PlatinumGymPro.Components"
              mc:Ignorable="d" >
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="bolToVs"/>
+    </UserControl.Resources>
     <Border Background="#eee"  Padding="5">
 
             <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Padding="5">

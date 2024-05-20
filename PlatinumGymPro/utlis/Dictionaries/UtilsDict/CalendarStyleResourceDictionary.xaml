@@ -276,7 +276,7 @@
                                 </VisualState>
                                 <VisualState x:Name="Inactive">
                                     <Storyboard>
-                                        <ColorAnimation Duration="0" Storyboard.TargetName="NormalText" To="#fff" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"/>
+                                        <ColorAnimation Duration="0" Storyboard.TargetName="NormalText" To="{StaticResource colors.color.secondry}" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -289,8 +289,8 @@
                                 </VisualState>
                                 <VisualState x:Name="Today">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" Storyboard.TargetName="TodayBackground" To="1" Storyboard.TargetProperty="Opacity"/>
-                                        <ColorAnimation Duration="0" Storyboard.TargetName="NormalText" To="{StaticResource colors.color.background.white}" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"/>
+                                        <DoubleAnimation Duration="0" Storyboard.TargetName="TodayBackground" To="0.2" Storyboard.TargetProperty="Opacity"/>
+                                        <ColorAnimation Duration="0" Storyboard.TargetName="NormalText" To="{StaticResource colors.color.secondry}" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -457,7 +457,7 @@
     <Style x:Key="DatePickerStyle1" TargetType="{x:Type DatePicker}">
         <Setter Property="Foreground" Value="#384756"/>
         <Setter Property="IsTodayHighlighted" Value="True"/>
-        <Setter Property="SelectedDateFormat" Value="Long"/>
+        <Setter Property="SelectedDateFormat" Value="Short"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="10 8"/>
         <Setter Property="BorderBrush" Value="#999"/>

@@ -1,4 +1,5 @@
 ﻿using PlatinumGym.Core.Models.Subscription;
+using PlatinumGymPro.Commands;
 using PlatinumGymPro.Commands.Payments;
 using PlatinumGymPro.Commands.SubscriptionCommand;
 using PlatinumGymPro.Services;
@@ -38,6 +39,7 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore.SelectedPlayer!);
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
             SubmitCommand = new EditPaymentsCommand(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel), _paymentDataStore, this, _playersDataStore, _subscriptionDataStore);
+            CancelCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel));
 
             PaymentValue = _paymentDataStore.SelectedPayment!.PaymentValue;
             Descriptiones = _paymentDataStore.SelectedPayment!.Des;
@@ -64,7 +66,7 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
         ICommand LoadSubscriptionCommand;
 
         public ICommand SubmitCommand { get; }
-        //ICommand CancelCommand;
+        public ICommand CancelCommand { get; }
         #region Properties
         private double _paymentValue;
         public double PaymentValue
@@ -141,6 +143,7 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
                     AddError("يجب اختيار الاشتراك اولا", nameof(PaymentValue));
                     OnErrorChanged(nameof(PaymentValue));
                 }
+                OnPropertyChanged(nameof(SelectedSubscription));
             }
         }
         private void AddSubscriptiont(Subscription subscription)

@@ -86,8 +86,9 @@ namespace PlatinumGymPro.ViewModels.Metrics
 
             }
             SelectedMetric = Metrics.FirstOrDefault();
+          
         }
-
+        public bool IsSelected => SelectedMetric != null;
         private void AddMetric(Metric metric)
         {
             MetricListItemViewModel viewmodel = new (metric,_metricDataStore,_navigationStore,this,_playerDataStore);

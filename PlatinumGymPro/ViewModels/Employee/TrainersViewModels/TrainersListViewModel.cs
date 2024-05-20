@@ -188,7 +188,7 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
         private void AddTrainer(emp.Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this,_dausesDataStore, _creditsDataStore);
+                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this,_dausesDataStore, _creditsDataStore, _subscriptionDataStore);
             trainerListItemViewModels.Add(itemViewModel);
         }
         public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore,SubscriptionDataStore subscriptionDataStore,DausesDataStore dausesDataStore,CreditsDataStore creditsDataStore)

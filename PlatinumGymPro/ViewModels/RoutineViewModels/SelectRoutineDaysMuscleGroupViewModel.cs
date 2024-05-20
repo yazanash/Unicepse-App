@@ -34,7 +34,8 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             _navigationService = navigationService;
             _playersDataStore = playersDataStore;
             SubmitCommand = new SubmitRoutineCommand(_routineDataStore, _playersDataStore, _navigationService,this);
-            PrintCommand = new PrintCommand(new PrintWindowViewModel(new RoutinePrintViewModel(_routineDataStore,_playersDataStore,this), new NavigationStore()));
+            string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + Date.ToShortDateString() + "_Routine";
+            PrintCommand = new PrintCommand(new PrintWindowViewModel(new RoutinePrintViewModel(_routineDataStore,_playersDataStore,this), new NavigationStore()),filename);
         }
         private DateTime _date = DateTime.Now;
         public DateTime Date

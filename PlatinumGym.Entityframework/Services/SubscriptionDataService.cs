@@ -91,7 +91,19 @@ namespace PlatinumGym.Entityframework.Services
             {
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.Trainer!.Id == trainer.Id).Include(x => x.Trainer).AsNoTracking()
                     .Include(x => x.Player).AsNoTracking().Include(x => x.Sport!.Trainers).AsNoTracking()
-                    .Include(x => x.Sport).AsNoTracking().Include(x => x.Payments).ToListAsync();
+                    .Include(x => x.Sport).ToListAsync();
+                return entities;
+            }
+        }
+        public async Task<IEnumerable<Subscription>> GetAll(Employee trainer,DateTime date)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.Trainer!.Id == trainer.Id
+                &&((x.RollDate.Month == date.Month && x.RollDate.Year== date.Year)
+                || (x.EndDate.Month == date.Month && x.EndDate.Year == date.Year))).Include(x => x.Trainer).AsNoTracking()
+                    .Include(x => x.Player).AsNoTracking().Include(x => x.Sport!.Trainers).AsNoTracking()
+                    .Include(x => x.Sport).ToListAsync();
                 return entities;
             }
         }

@@ -74,7 +74,7 @@
 
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                        <comp:MonthlyEarnReportViewModel DataContext="{Binding MounthlyReportItemViewModel,UpdateSourceTrigger=PropertyChanged}"  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft"  Grid.ColumnSpan="3"/>
+                        <comp:MonthlyEarnReportViewModel DataContext="{Binding MounthlyReportItemViewModel,UpdateSourceTrigger=PropertyChanged}"   FlowDirection="RightToLeft"  Grid.ColumnSpan="3"/>
 
 
                     </Grid>

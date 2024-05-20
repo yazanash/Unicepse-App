@@ -20,11 +20,12 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
         private readonly DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly SportDataStore  _sportDataStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         public TrainerListItemViewModel? Employee { get; set; }
         private readonly TrainersListViewModel _trainersListViewModel;
         public ViewModelBase? CurrentEmployeeViewModel => _navigatorStore.CurrentViewModel;
 
-        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, TrainerListItemViewModel? employee)
+        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, TrainerListItemViewModel? employee, SubscriptionDataStore subscriptionDataStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
@@ -42,7 +43,8 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
                 navigatorStore.CurrentViewModel = LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
             EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore)));
-            //SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => LoadSubscriptionViewModel(_navigatorStore, _sportDataStore, _subscriptionStore, _playersDataStore, _paymentDataStore)));
+            _subscriptionDataStore = subscriptionDataStore;
+            TrainerPlayersCommand = new NavaigateCommand<TrainerSubscriptionViewModel>(new NavigationService<TrainerSubscriptionViewModel>(_navigatorStore, () => LoadTrainerSubscriptions(_employeeStore,_subscriptionDataStore)));
             //PaymentCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => LoadPaymentsViewModel(_paymentDataStore, _playersDataStore, _navigatorStore, _subscriptionStore)));
             //MetricsCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigatorStore, () => LoadMetricsViewModel(_metricDataStore, _playersDataStore, _navigatorStore)));
             //TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigatorStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigatorStore)));
@@ -57,7 +59,10 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
         {
            return CreditListViewModel.LoadViewModel(employeeStore, creditsDataStore, navigatorStore);
         }
-
+        private TrainerSubscriptionViewModel LoadTrainerSubscriptions( EmployeeStore employeeStore, SubscriptionDataStore subscriptionDataStore)
+        {
+            return TrainerSubscriptionViewModel.LoadViewModel(employeeStore, subscriptionDataStore);
+        }
         private DauseListViewModel LoadEmployeeAccountantPageViewModel( EmployeeStore employeeStore,DausesDataStore dausesDataStore,NavigationStore navigationStore)
         {
             return DauseListViewModel.LoadViewModel(employeeStore, dausesDataStore, navigationStore);
@@ -70,7 +75,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
        
        
         public ICommand? EmployeeCreditsCommand { get; }
-        public ICommand? SubscriptionCommand { get; }
+        public ICommand? TrainerPlayersCommand { get; }
         public ICommand? PaymentCommand { get; }
         public ICommand? MetricsCommand { get; }
         public ICommand? TrainingProgramCommand { get; }
