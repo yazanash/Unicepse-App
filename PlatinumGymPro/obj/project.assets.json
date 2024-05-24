@@ -1451,7 +1451,7 @@
           "lib/net6.0/ZXing.Windows.Compatibility.dll": {}
         }
       },
-      "PlatinumGym.Core/1.0.0": {
+      "Unicepse.Core/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -1459,13 +1459,13 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
-          "bin/placeholder/PlatinumGym.Core.dll": {}
+          "bin/placeholder/Unicepse.Core.dll": {}
         },
         "runtime": {
-          "bin/placeholder/PlatinumGym.Core.dll": {}
+          "bin/placeholder/Unicepse.Core.dll": {}
         }
       },
-      "PlatinumGym.Entityframework/1.0.0": {
+      "Unicepse.Entityframework/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -1477,13 +1477,13 @@
           "Microsoft.EntityFrameworkCore.Sqlite": "7.0.3",
           "Microsoft.Extensions.Logging": "8.0.0",
           "Newtonsoft.Json": "13.0.3",
-          "PlatinumGym.Core": "1.0.0"
+          "Unicepse.Core": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/PlatinumGym.Entityframework.dll": {}
+          "bin/placeholder/Unicepse.Entityframework.dll": {}
         },
         "runtime": {
-          "bin/placeholder/PlatinumGym.Entityframework.dll": {}
+          "bin/placeholder/Unicepse.Entityframework.dll": {}
         }
       }
     },
@@ -2787,7 +2787,7 @@
           "lib/net6.0/ZXing.Windows.Compatibility.dll": {}
         }
       },
-      "PlatinumGym.Core/1.0.0": {
+      "Unicepse.Core/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -2795,13 +2795,13 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
-          "bin/placeholder/PlatinumGym.Core.dll": {}
+          "bin/placeholder/Unicepse.Core.dll": {}
         },
         "runtime": {
-          "bin/placeholder/PlatinumGym.Core.dll": {}
+          "bin/placeholder/Unicepse.Core.dll": {}
         }
       },
-      "PlatinumGym.Entityframework/1.0.0": {
+      "Unicepse.Entityframework/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -2813,13 +2813,13 @@
           "Microsoft.EntityFrameworkCore.Sqlite": "7.0.3",
           "Microsoft.Extensions.Logging": "8.0.0",
           "Newtonsoft.Json": "13.0.3",
-          "PlatinumGym.Core": "1.0.0"
+          "Unicepse.Core": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/PlatinumGym.Entityframework.dll": {}
+          "bin/placeholder/Unicepse.Entityframework.dll": {}
         },
         "runtime": {
-          "bin/placeholder/PlatinumGym.Entityframework.dll": {}
+          "bin/placeholder/Unicepse.Entityframework.dll": {}
         }
       }
     }
@@ -5595,15 +5595,15 @@
         "zxing.net.bindings.windows.compatibility.nuspec"
       ]
     },
-    "PlatinumGym.Core/1.0.0": {
+    "Unicepse.Core/1.0.0": {
       "type": "project",
-      "path": "../PlatinumGym.Core/PlatinumGym.Core.csproj",
-      "msbuildProject": "../PlatinumGym.Core/PlatinumGym.Core.csproj"
+      "path": "../PlatinumGym.Core/Unicepse.Core.csproj",
+      "msbuildProject": "../PlatinumGym.Core/Unicepse.Core.csproj"
     },
-    "PlatinumGym.Entityframework/1.0.0": {
+    "Unicepse.Entityframework/1.0.0": {
       "type": "project",
-      "path": "../PlatinumGym.Entityframework/PlatinumGym.Entityframework.csproj",
-      "msbuildProject": "../PlatinumGym.Entityframework/PlatinumGym.Entityframework.csproj"
+      "path": "../PlatinumGym.Entityframework/Unicepse.Entityframework.csproj",
+      "msbuildProject": "../PlatinumGym.Entityframework/Unicepse.Entityframework.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -5616,10 +5616,10 @@
       "Microsoft.Extensions.Hosting >= 7.0.0",
       "Microsoft.Extensions.Logging >= 8.0.0",
       "Newtonsoft.Json >= 13.0.3",
-      "PlatinumGym.Core >= 1.0.0",
-      "PlatinumGym.Entityframework >= 1.0.0",
       "SimpleModal.WPF >= 1.0.0",
       "System.Drawing.Common >= 8.0.4",
+      "Unicepse.Core >= 1.0.0",
+      "Unicepse.Entityframework >= 1.0.0",
       "ZXing.Net >= 0.16.9",
       "ZXing.Net.Bindings.Windows.Compatibility >= 0.16.12"
     ]
@@ -5631,9 +5631,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\PlatinumGymPro\\PlatinumGymPro.csproj",
-      "projectName": "PlatinumGymPro",
-      "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGymPro\\PlatinumGymPro.csproj",
+      "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\PlatinumGymPro\\Unicepse.WPF.csproj",
+      "projectName": "Unicepse.WPF",
+      "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGymPro\\Unicepse.WPF.csproj",
       "packagesPath": "C:\\Users\\anaconda\\.nuget\\packages\\",
       "outputPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGymPro\\obj\\",
       "projectStyle": "PackageReference",
@@ -5656,11 +5656,11 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "projectReferences": {
-            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj": {
-              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj"
+            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj": {
+              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj"
             },
-            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj": {
-              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj"
+            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj": {
+              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj"
             }
           }
         }

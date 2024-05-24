@@ -1,4 +1,4 @@
-﻿using PlatinumGym.Core.Models.Player;
+﻿using Unicepse.Core.Models.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGym.Core.Exceptions
+namespace Unicepse.Core.Exceptions
 {
 
     public class PlayerConflictException : Exception

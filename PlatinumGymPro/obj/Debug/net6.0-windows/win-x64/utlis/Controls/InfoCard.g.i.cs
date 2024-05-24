@@ -55,7 +55,7 @@ namespace PlatinumGymPro.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/utlis/controls/infocard.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Unicepse.WPF;component/utlis/controls/infocard.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\utlis\Controls\InfoCard.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

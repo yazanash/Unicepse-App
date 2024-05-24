@@ -56,7 +56,7 @@ namespace PlatinumGymPro.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/utlis/controls/navbar.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Unicepse.WPF;component/utlis/controls/navbar.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\utlis\Controls\NavBar.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

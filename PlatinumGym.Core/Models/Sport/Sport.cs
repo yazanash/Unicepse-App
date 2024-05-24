@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatinumGym.Core.Models.Employee;
-using PlatinumGym.Core.Models.Subscription;
+using Unicepse.Core.Models.Employee;
+using Unicepse.Core.Models.Subscription;
 
-namespace PlatinumGym.Core.Models.Sport
+namespace Unicepse.Core.Models.Sport
 {
     public class Sport : DomainObject
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatinumGym.Core.Models;
+using Unicepse.Core.Models;
 
-namespace PlatinumGym.Core.Models.Player
+namespace Unicepse.Core.Models.Player
 {
     public class Player:Person
     {

@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatinumGym.Core.Models.Employee;
+using Unicepse.Core.Models.Employee;
 
-namespace PlatinumGym.Core.Models.Expenses
+namespace Unicepse.Core.Models.Expenses
 {
     public class Expenses : DomainObject
     {

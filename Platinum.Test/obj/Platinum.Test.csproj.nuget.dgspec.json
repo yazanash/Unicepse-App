@@ -32,14 +32,14 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\PlatinumGym.API.csproj": {
-                "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\PlatinumGym.API.csproj"
+              "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\Unicepse.API.csproj": {
+                "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\Unicepse.API.csproj"
               },
-              "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj": {
-                "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj"
+              "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj": {
+                "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj"
               },
-              "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj": {
-                "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj"
+              "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj": {
+                "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj"
               }
             }
           }
@@ -106,12 +106,12 @@
         }
       }
     },
-    "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\PlatinumGym.API.csproj": {
+    "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\Unicepse.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\PlatinumGym.API.csproj",
-        "projectName": "PlatinumGym.API",
-        "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\PlatinumGym.API.csproj",
+        "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\Unicepse.API.csproj",
+        "projectName": "Unicepse.API",
+        "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\Unicepse.API.csproj",
         "packagesPath": "C:\\Users\\anaconda\\.nuget\\packages\\",
         "outputPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\obj\\",
         "projectStyle": "PackageReference",
@@ -174,12 +174,12 @@
         }
       }
     },
-    "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj": {
+    "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj",
-        "projectName": "PlatinumGym.Core",
-        "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj",
+        "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj",
+        "projectName": "Unicepse.Core",
+        "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj",
         "packagesPath": "C:\\Users\\anaconda\\.nuget\\packages\\",
         "outputPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\obj\\",
         "projectStyle": "PackageReference",
@@ -242,12 +242,12 @@
         }
       }
     },
-    "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj": {
+    "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj",
-        "projectName": "PlatinumGym.Entityframework",
-        "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj",
+        "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj",
+        "projectName": "Unicepse.Entityframework",
+        "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj",
         "packagesPath": "C:\\Users\\anaconda\\.nuget\\packages\\",
         "outputPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\obj\\",
         "projectStyle": "PackageReference",
@@ -270,8 +270,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj": {
-                "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj"
+              "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj": {
+                "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj"
               }
             }
           }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGym.Core.Models.TrainingProgram
+namespace Unicepse.Core.Models.TrainingProgram
 {
     public class RoutineItems
     {

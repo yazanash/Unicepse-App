@@ -1,14 +1,14 @@
-﻿using PlatinumGym.Core.Models;
+﻿using Unicepse.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatinumGym.Core.Models.Sport;
+using Unicepse.Core.Models.Sport;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PlatinumGym.Core.Models.Employee
+namespace Unicepse.Core.Models.Employee
 {
     public class Employee:Person
     {

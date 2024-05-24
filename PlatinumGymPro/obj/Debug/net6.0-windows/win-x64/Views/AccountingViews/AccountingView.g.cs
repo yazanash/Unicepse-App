@@ -62,7 +62,7 @@ namespace PlatinumGymPro.Views.AccountingViews {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/views/accountingviews/accountingview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Unicepse.WPF;component/views/accountingviews/accountingview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Views\AccountingViews\AccountingView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

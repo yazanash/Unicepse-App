@@ -55,7 +55,7 @@ namespace PlatinumGymPro.Components {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/utlis/components/trainercard.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Unicepse.WPF;component/utlis/components/trainercard.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\utlis\Components\TrainerCard.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

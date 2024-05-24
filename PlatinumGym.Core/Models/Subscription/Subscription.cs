@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatinumGym.Core.Models.Payment;
-using PlatinumGym.Core.Models.Sport;
+using Unicepse.Core.Models.Payment;
+using Unicepse.Core.Models.Sport;
 
-namespace PlatinumGym.Core.Models.Subscription
+namespace Unicepse.Core.Models.Subscription
 {
     public class Subscription : DomainObject
     {

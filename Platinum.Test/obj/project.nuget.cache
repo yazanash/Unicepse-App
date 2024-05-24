@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "caSifnHjm1kFTA3+huev/QcGubWnoMj+hFEopp2aPCGFlw/+TFVkfFPZz/HTPbvkp1Rqwh0KKA/Gz1rZr6Ee8w==",
+  "dgSpecHash": "aRDL3BU1mh/bZHoxAe+/mekMvqZJuxeK/1sLKQsw5F8TUUD30L70iu3xfcu751gDUQekKo0huBRYr8RKO9syng==",
   "success": true,
-  "projectFilePath": "D:\\Repo\\PlatinumGymPro\\Platinum.Test\\Platinum.Test.csproj",
+  "projectFilePath": "D:\\Repo\\PlatinumGymPro\\Platinum.Test\\Unicepse.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\anaconda\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\anaconda\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

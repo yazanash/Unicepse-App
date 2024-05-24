@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TM5k1nyq1QbZESpsRmilRLAC6kuTRv5ShpvRsUPtmmiQiWDdCeHj6iBKP10OAicwiI4bmA6hDY8/q/bF2KWjuw==",
+  "dgSpecHash": "gEw+fV0i1ayVLHGB8L+rbTc2ynk3F5+Y/i6F/sWF1YamQhWd70J0MVhbOSVvlGZoNOhUOOuxyzDISAK652us2g==",
   "success": true,
-  "projectFilePath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj",
+  "projectFilePath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\anaconda\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\anaconda\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

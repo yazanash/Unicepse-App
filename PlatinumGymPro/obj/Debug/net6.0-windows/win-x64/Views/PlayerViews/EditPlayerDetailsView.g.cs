@@ -57,7 +57,7 @@ namespace PlatinumGymPro.Views.PlayerViews {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/views/playerviews/editplayerdetailsview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Unicepse.WPF;component/views/playerviews/editplayerdetailsview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Views\PlayerViews\EditPlayerDetailsView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

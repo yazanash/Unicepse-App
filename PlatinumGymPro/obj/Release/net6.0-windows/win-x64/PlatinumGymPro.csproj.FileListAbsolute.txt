@@ -661,8 +661,6 @@ D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Release\net6.0-windows\win-x64\Platinu
 D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Release\net6.0-windows\win-x64\PlatinumGym.Entityframework.dll
 D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Release\net6.0-windows\win-x64\PlatinumGym.Core.pdb
 D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Release\net6.0-windows\win-x64\PlatinumGym.Entityframework.pdb
-D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Release\net6.0-windows\win-x64\Interop.Microsoft.Office.Interop.Excel.dll
-D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Release\net6.0-windows\win-x64\PlatinumGymPro.csproj.ResolveComReference.cache
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Release\net6.0-windows\win-x64\Resources\CustomStyles.baml
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Release\net6.0-windows\win-x64\Resources\Theme\LightThemeResourceDictionary.baml
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Release\net6.0-windows\win-x64\utlis\Dictionaries\CalendarStyle.baml

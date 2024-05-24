@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatinumGym.Core.Models.Player;
-using PlatinumGym.Core.Models.Subscription;
-namespace PlatinumGym.Core.Models.Payment
+using Unicepse.Core.Models.Player;
+using Unicepse.Core.Models.Subscription;
+namespace Unicepse.Core.Models.Payment
 {
     public class PlayerPayment : DomainObject
     {

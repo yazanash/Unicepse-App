@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IZcjACoIPzy7+UCeyR0rmsOHXEfJGY5WPp/DI3yz/TulqS3HfWiN91dDtSLV3a4zHDOls1ELE/6aOsRcWKdOCg==",
+  "dgSpecHash": "22mIjvfcxhhuKxJqqZcFfO1pWySpqcOi7k7VpqZ2kusQbnD1CbSUO3LH1pEnjA5zwT4FASJ3YLT84/dpRjkdbQ==",
   "success": true,
-  "projectFilePath": "D:\\Repo\\PlatinumGymPro\\PlatinumGymPro\\PlatinumGymPro.csproj",
+  "projectFilePath": "D:\\Repo\\PlatinumGymPro\\PlatinumGymPro\\Unicepse.WPF.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\anaconda\\.nuget\\packages\\aforge\\2.2.5\\aforge.2.2.5.nupkg.sha512",
     "C:\\Users\\anaconda\\.nuget\\packages\\aforge.video\\2.2.5\\aforge.video.2.2.5.nupkg.sha512",

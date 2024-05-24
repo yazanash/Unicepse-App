@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGym.Core.Exceptions
+namespace Unicepse.Core.Exceptions
 {
     public class MovedBeforeException : Exception
     {

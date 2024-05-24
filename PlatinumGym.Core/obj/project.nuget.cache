@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HqFhq15wBamqQkgDG2UhP457LRfoBhCQJ1QgbrVCy3GvPJVnDl8/V4LvgsX79RkjE1Z9hUUi+g3IxBo9akjy3g==",
+  "dgSpecHash": "51OIJahjcP1gTZq5ENWIvA84gmN4NXANgUBRVdP4dM9vDyH9TaXhKrgyOQKAICbWWiV9F4oXxaeb9qvxTlbvIw==",
   "success": true,
-  "projectFilePath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj",
+  "projectFilePath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\anaconda\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.0\\microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
     "C:\\Users\\anaconda\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",

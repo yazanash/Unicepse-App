@@ -1405,7 +1405,7 @@
           }
         }
       },
-      "PlatinumGym.API/1.0.0": {
+      "Unicepse.API/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -1413,13 +1413,13 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
-          "bin/placeholder/PlatinumGym.API.dll": {}
+          "bin/placeholder/Unicepse.API.dll": {}
         },
         "runtime": {
-          "bin/placeholder/PlatinumGym.API.dll": {}
+          "bin/placeholder/Unicepse.API.dll": {}
         }
       },
-      "PlatinumGym.Core/1.0.0": {
+      "Unicepse.Core/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -1427,13 +1427,13 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
-          "bin/placeholder/PlatinumGym.Core.dll": {}
+          "bin/placeholder/Unicepse.Core.dll": {}
         },
         "runtime": {
-          "bin/placeholder/PlatinumGym.Core.dll": {}
+          "bin/placeholder/Unicepse.Core.dll": {}
         }
       },
-      "PlatinumGym.Entityframework/1.0.0": {
+      "Unicepse.Entityframework/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -1445,13 +1445,13 @@
           "Microsoft.EntityFrameworkCore.Sqlite": "7.0.3",
           "Microsoft.Extensions.Logging": "8.0.0",
           "Newtonsoft.Json": "13.0.3",
-          "PlatinumGym.Core": "1.0.0"
+          "Unicepse.Core": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/PlatinumGym.Entityframework.dll": {}
+          "bin/placeholder/Unicepse.Entityframework.dll": {}
         },
         "runtime": {
-          "bin/placeholder/PlatinumGym.Entityframework.dll": {}
+          "bin/placeholder/Unicepse.Entityframework.dll": {}
         }
       }
     }
@@ -4322,20 +4322,20 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "PlatinumGym.API/1.0.0": {
+    "Unicepse.API/1.0.0": {
       "type": "project",
-      "path": "../PlatinumGym.API/PlatinumGym.API.csproj",
-      "msbuildProject": "../PlatinumGym.API/PlatinumGym.API.csproj"
+      "path": "../PlatinumGym.API/Unicepse.API.csproj",
+      "msbuildProject": "../PlatinumGym.API/Unicepse.API.csproj"
     },
-    "PlatinumGym.Core/1.0.0": {
+    "Unicepse.Core/1.0.0": {
       "type": "project",
-      "path": "../PlatinumGym.Core/PlatinumGym.Core.csproj",
-      "msbuildProject": "../PlatinumGym.Core/PlatinumGym.Core.csproj"
+      "path": "../PlatinumGym.Core/Unicepse.Core.csproj",
+      "msbuildProject": "../PlatinumGym.Core/Unicepse.Core.csproj"
     },
-    "PlatinumGym.Entityframework/1.0.0": {
+    "Unicepse.Entityframework/1.0.0": {
       "type": "project",
-      "path": "../PlatinumGym.Entityframework/PlatinumGym.Entityframework.csproj",
-      "msbuildProject": "../PlatinumGym.Entityframework/PlatinumGym.Entityframework.csproj"
+      "path": "../PlatinumGym.Entityframework/Unicepse.Entityframework.csproj",
+      "msbuildProject": "../PlatinumGym.Entityframework/Unicepse.Entityframework.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4347,30 +4347,30 @@
       "NUnit >= 3.13.2",
       "NUnit3TestAdapter >= 4.0.0",
       "Newtonsoft.Json >= 13.0.3",
-      "PlatinumGym.API >= 1.0.0",
-      "PlatinumGym.Core >= 1.0.0",
-      "PlatinumGym.Entityframework >= 1.0.0",
+      "Unicepse.API >= 1.0.0",
+      "Unicepse.Core >= 1.0.0",
+      "Unicepse.Entityframework >= 1.0.0",
       "coverlet.collector >= 3.1.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ANACONDA\\.nuget\\packages\\": {},
+    "C:\\Users\\anaconda\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\Platinum.Test\\Platinum.Test.csproj",
-      "projectName": "Platinum.Test",
-      "projectPath": "D:\\Repo\\PlatinumGymPro\\Platinum.Test\\Platinum.Test.csproj",
-      "packagesPath": "C:\\Users\\ANACONDA\\.nuget\\packages\\",
+      "projectUniqueName": "D:\\Repo\\PlatinumGymPro\\Platinum.Test\\Unicepse.Test.csproj",
+      "projectName": "Unicepse.Test",
+      "projectPath": "D:\\Repo\\PlatinumGymPro\\Platinum.Test\\Unicepse.Test.csproj",
+      "packagesPath": "C:\\Users\\anaconda\\.nuget\\packages\\",
       "outputPath": "D:\\Repo\\PlatinumGymPro\\Platinum.Test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\ANACONDA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\anaconda\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4385,14 +4385,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\PlatinumGym.API.csproj": {
-              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\PlatinumGym.API.csproj"
+            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\Unicepse.API.csproj": {
+              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.API\\Unicepse.API.csproj"
             },
-            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj": {
-              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\PlatinumGym.Core.csproj"
+            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj": {
+              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Core\\Unicepse.Core.csproj"
             },
-            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj": {
-              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\PlatinumGym.Entityframework.csproj"
+            "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj": {
+              "projectPath": "D:\\Repo\\PlatinumGymPro\\PlatinumGym.Entityframework\\Unicepse.Entityframework.csproj"
             }
           }
         }

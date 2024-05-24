@@ -1,11 +1,11 @@
-﻿using PlatinumGym.Core.Models;
+﻿using Unicepse.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGym.Core.Services
+namespace Unicepse.Core.Services
 {
     internal interface IQueryService<T> where T : DomainObject
     {

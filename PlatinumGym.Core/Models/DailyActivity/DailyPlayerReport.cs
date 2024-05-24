@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatinumGym.Core.Models.Player;
+using Unicepse.Core.Models.Player;
 
-namespace PlatinumGym.Core.Models.DailyActivity
+namespace Unicepse.Core.Models.DailyActivity
 {
     public class DailyPlayerReport : DomainObject
     {

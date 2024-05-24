@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGym.Core.Models
+namespace Unicepse.Core.Models
 {
     public abstract class Person : DomainObject
     {

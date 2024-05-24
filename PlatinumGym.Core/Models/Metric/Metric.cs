@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatinumGym.Core.Models.Player;
-namespace PlatinumGym.Core.Models.Metric
+using Unicepse.Core.Models.Player;
+namespace Unicepse.Core.Models.Metric
 {
     public class Metric : DomainObject
     {

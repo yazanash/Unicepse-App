@@ -1,11 +1,11 @@
-﻿using PlatinumGym.Core.Models.Authentication;
+﻿using Unicepse.Core.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGym.Core.Services
+namespace Unicepse.Core.Services
 {
     public interface IAccountDataService<T>
     {

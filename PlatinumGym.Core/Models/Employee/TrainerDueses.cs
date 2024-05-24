@@ -1,13 +1,13 @@
-﻿using PlatinumGym.Core.Models.Employee;
-using PlatinumGym.Core.Models.Payment;
-using PlatinumGym.Core.Models.Subscription;
+﻿using Unicepse.Core.Models.Employee;
+using Unicepse.Core.Models.Payment;
+using Unicepse.Core.Models.Subscription;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlatinumGym.Core.Models.Employee
+namespace Unicepse.Core.Models.Employee
 {
     public class TrainerDueses : DomainObject
     {

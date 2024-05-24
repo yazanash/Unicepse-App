@@ -75,7 +75,7 @@ namespace PlatinumGymPro.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PlatinumGymPro;component/utlis/common/homeview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Unicepse.WPF;component/utlis/common/homeview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\utlis\common\HomeView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
