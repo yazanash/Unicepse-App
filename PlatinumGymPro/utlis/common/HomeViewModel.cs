@@ -55,7 +55,14 @@ namespace PlatinumGymPro.ViewModels
             LoadTrainersCommand = new LoadTrainersCommand(_employeeStore, this);
             _employeeStore.Loaded += _employeeStore_Loaded;
         }
+        public override void Dispose()
+        {
 
+            _playersAttendenceStore.Loaded -= _playersAttendenceStore_Loaded;
+            _playersAttendenceStore.LoggedIn -= _playersAttendenceStore_LoggedIn;
+            _playersAttendenceStore.LoggedOut -= _playersAttendenceStore_LoggedOut;
+            base.Dispose();
+        }
         private void _employeeStore_Loaded()
         {
             _trainerListItemViewModels.Clear();

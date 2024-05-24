@@ -78,6 +78,8 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\EditPaymentDetailView.
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\PaymentDetalView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PaymentViews\PaymentListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayersAttendenceViews\PlayerAttendenceView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayersAttendenceViews\PlayersAttendenceView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\EditPlayerDetailsView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerDetailView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerMainPage.xaml;;
@@ -88,6 +90,7 @@ FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\PlayerView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\PlayerViews\TrainerPlayerSubscriptionDausesListView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\AddRoutineView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\EditRoutineView.xaml;;
+FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\RoutineTemplateView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\RoutineView.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\RoutineViews\SelectRoutineDayMuscleGroup.xaml;;
 FD:\Repo\PlatinumGymPro\PlatinumGymPro\Views\SplashScreen.xaml;;

@@ -122,12 +122,22 @@ namespace PlatinumGym.Entityframework.Services
         public async Task<Subscription> Update(Subscription entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            //context.Attach(entity!);
+
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException();
-            context.Attach(entity.Sport!);
+            context.Entry(entity).State = EntityState.Detached;
+            context.Entry(entity.Player!).State = EntityState.Detached;
+            context.Entry(entity.Sport!).State = EntityState.Detached;
             context.Attach(entity.Player!);
+
+            context.Attach(entity.Sport!);
+
+            if (context.Entry(entity).State == EntityState.Detached)
+            {
+                // Attach the entity
+                context.Entry(entity).State = EntityState.Modified;
+            }
             //context.Entry(entity).Property("TrainerId").CurrentValue = null;
             if (entity.Trainer != null)
                 context.Attach(entity.Trainer);
@@ -170,12 +180,16 @@ namespace PlatinumGym.Entityframework.Services
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException();
+            Player? player =  context.Players!.Where(x => x.Id == entity.Player!.Id).SingleOrDefault();
+            player.Balance += entity.PriceAfterOffer;
             entity.EndDate = stop_date;
             entity.IsStopped = true;
             int days = Convert.ToInt32((stop_date - entity.RollDate).TotalDays);
             double dayPrice = entity.PriceAfterOffer / entity.Sport!.DaysCount;
             entity.PriceAfterOffer = dayPrice * days;
+            player.Balance -= entity.PriceAfterOffer;
             context.Set<Subscription>().Update(entity);
+            context.Set<Player>().Update(player);
             await context.SaveChangesAsync();
             return entity;
         }

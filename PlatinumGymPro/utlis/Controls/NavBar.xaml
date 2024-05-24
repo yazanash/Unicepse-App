@@ -108,7 +108,7 @@
                                 Style="{StaticResource MenuButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                         <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountGroup" />
-                            <TextBlock Text="المدربين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                            <TextBlock Text="العاملين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                           
                         </StackPanel>
                     </RadioButton>

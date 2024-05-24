@@ -94,8 +94,8 @@ namespace PlatinumGym.Entityframework.Services
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Subscription).AsNoTracking().Include(x=>x.Subscription!.Sport).AsNoTracking().Include(x => x.Subscription!.Trainer).AsNoTracking().Where(x => x.Player!.Id == player.Id).AsNoTracking()
-                    .ToListAsync();
+                    .Include(x => x.Subscription).AsNoTracking().AsNoTracking().Include(x=>x.Subscription!.Sport).AsNoTracking().Include(x => x.Subscription!.Trainer).AsNoTracking().Where(x => x.Player!.Id == player.Id).AsNoTracking()
+                   .AsNoTracking().ToListAsync();
                 return entities;
             }
         }
@@ -132,6 +132,13 @@ namespace PlatinumGym.Entityframework.Services
             PlayerPayment existed_payment = await Get(entity.Id);
             if (existed_payment == null)
                 throw new NotExistException();
+            context.Entry(entity).State = EntityState.Detached;
+            if (context.Entry(entity).State == EntityState.Detached)
+            {
+                // Attach the entity
+                context.Entry(entity).State = EntityState.Modified;
+            }
+            //context.Attach(entity);
             context.Set<PlayerPayment>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

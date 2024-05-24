@@ -126,6 +126,12 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             {
                 _salaryValue = value;
                 OnPropertyChanged(nameof(SalaryValue));
+                ClearError(nameof(SalaryValue));
+                if (SalaryValue < 0)
+                {
+                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(SalaryValue));
+                    OnErrorChanged(nameof(SalaryValue));
+                }
             }
         }
 
@@ -137,6 +143,17 @@ namespace PlatinumGymPro.ViewModels.TrainersViewModels
             {
                 _parcentValue = value;
                 OnPropertyChanged(nameof(ParcentValue));
+                ClearError(nameof(ParcentValue));
+                if (ParcentValue>100)
+                {
+                    AddError("لا يمكن ان تكون النسبة اكبر من 100%", nameof(ParcentValue));
+                    OnErrorChanged(nameof(ParcentValue));
+                }
+                else if (ParcentValue < 0)
+                {
+                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(ParcentValue));
+                    OnErrorChanged(nameof(ParcentValue));
+                }
             }
         }
 

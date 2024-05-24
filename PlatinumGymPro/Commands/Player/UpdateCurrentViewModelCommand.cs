@@ -66,7 +66,7 @@ namespace PlatinumGymPro.Commands
                         _navigator.CurrentViewModel = CreateHomeViewModel(_playersStore, _playersAttendenceStore1,_employeeStore);
                         break;
                     case ViewType.Players:
-                        _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore,_sportStore,_paymentDataStore,_metricDataStore, _routineDataStore);
+                        _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore,_sportStore,_paymentDataStore,_metricDataStore, _routineDataStore,_playersAttendenceStore1);
                         break;
                     case ViewType.Sport:
                         _navigator.CurrentViewModel = new SportsViewModel(navigator,_sportStore,_employeeStore);

@@ -45,6 +45,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore)));
             _subscriptionDataStore = subscriptionDataStore;
             TrainerPlayersCommand = new NavaigateCommand<TrainerSubscriptionViewModel>(new NavigationService<TrainerSubscriptionViewModel>(_navigatorStore, () => LoadTrainerSubscriptions(_employeeStore,_subscriptionDataStore)));
+            TrainerDusesCommand = new NavaigateCommand<EmployeeAccountantPageViewModel>(new NavigationService<EmployeeAccountantPageViewModel>(_navigatorStore, () => LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _navigatorStore)));
             //PaymentCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => LoadPaymentsViewModel(_paymentDataStore, _playersDataStore, _navigatorStore, _subscriptionStore)));
             //MetricsCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigatorStore, () => LoadMetricsViewModel(_metricDataStore, _playersDataStore, _navigatorStore)));
             //TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigatorStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigatorStore)));
@@ -55,6 +56,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             get { return _isTrainer; }
             set { _isTrainer = value;  OnPropertyChanged(nameof(IsTrainer)); }
         }
+
         private CreditListViewModel LoadEmployeeCredit(NavigationStore navigatorStore, EmployeeStore employeeStore, CreditsDataStore creditsDataStore)
         {
            return CreditListViewModel.LoadViewModel(employeeStore, creditsDataStore, navigatorStore);
@@ -63,9 +65,9 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
         {
             return TrainerSubscriptionViewModel.LoadViewModel(employeeStore, subscriptionDataStore);
         }
-        private DauseListViewModel LoadEmployeeAccountantPageViewModel( EmployeeStore employeeStore,DausesDataStore dausesDataStore,NavigationStore navigationStore)
+        private EmployeeAccountantPageViewModel LoadEmployeeAccountantPageViewModel( EmployeeStore employeeStore,DausesDataStore dausesDataStore,NavigationStore navigationStore)
         {
-            return DauseListViewModel.LoadViewModel(employeeStore, dausesDataStore, navigationStore);
+            return new EmployeeAccountantPageViewModel(employeeStore, dausesDataStore);
         }
 
         private void NavigatorStore_CurrentViewModelChanged()
@@ -76,7 +78,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
        
         public ICommand? EmployeeCreditsCommand { get; }
         public ICommand? TrainerPlayersCommand { get; }
-        public ICommand? PaymentCommand { get; }
+        public ICommand? TrainerDusesCommand { get; }
         public ICommand? MetricsCommand { get; }
         public ICommand? TrainingProgramCommand { get; }
     }

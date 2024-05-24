@@ -28,7 +28,7 @@ namespace PlatinumGymPro.ViewModels.Employee.DausesViewModels
             _navigatorStore = navigatorStore;
             _dauseListViewModel=dauseListViewModel;
             _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
-            LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, _employeeStore, this);
+            //LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, _employeeStore, this);
             TrainerMounthlyReportViewModel = new TrainerMounthlyReportViewModel(new TrainerDueses(),_employeeStore,_dausesDataStore);
             SaveMounthlyReport = new SubmitDauseCommand(_employeeStore, _dausesDataStore, this,new NavigationService<DauseListViewModel>(_navigatorStore,()=>_dauseListViewModel));
         }

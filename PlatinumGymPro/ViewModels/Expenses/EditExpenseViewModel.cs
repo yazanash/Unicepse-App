@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.Expenses
 {
-    public class EditExpenseViewModel : ViewModelBase
+    public class EditExpenseViewModel : ErrorNotifyViewModelBase
     {
         private readonly ExpensesDataStore _expensesDataStore;
         private readonly NavigationStore _navigationStore;
@@ -35,7 +35,17 @@ namespace PlatinumGymPro.ViewModels.Expenses
         public double ExpensesValue
         {
             get { return _expensesValue; }
-            set { _expensesValue = value; OnPropertyChanged(nameof(ExpensesValue)); }
+            set
+            {
+                _expensesValue = value;
+                OnPropertyChanged(nameof(ExpensesValue));
+                ClearError(nameof(ExpensesValue));
+                if (ExpensesValue < 0)
+                {
+                    AddError("لايمكن الدفع بقيمة اقل من 0", nameof(ExpensesValue));
+                    OnErrorChanged(nameof(ExpensesValue));
+                }
+            }
         }
         private string? _descriptiones;
         public string? Descriptiones

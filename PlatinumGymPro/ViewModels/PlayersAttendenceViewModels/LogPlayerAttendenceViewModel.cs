@@ -109,6 +109,7 @@ namespace PlatinumGymPro.ViewModels.PlayersAttendenceViewModels
 
             return viewModel;
         }
+
     }
 
 }

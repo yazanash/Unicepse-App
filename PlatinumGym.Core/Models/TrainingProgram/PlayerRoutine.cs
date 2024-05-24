@@ -15,8 +15,9 @@ namespace PlatinumGym.Core.Models.TrainingProgram
             DaysGroupMap = new Dictionary<int, List<int>>();
         }
         public int Id { get; set; }
-        public int RoutineNo{ get; set;}
+        public string? RoutineNo{ get; set;}
         public DateTime RoutineData { get; set; }
+        public bool IsTemplate { get; set; }
         public Player.Player? Player { get; set; }
         public List<RoutineItems> RoutineSchedule { get; set; }
         public Dictionary<int, List<int>> DaysGroupMap { get; set; }

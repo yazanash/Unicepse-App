@@ -27,17 +27,18 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             _navigationStore = navigationStore;
             _routinePlayerViewModels = routinePlayerViewModels;
 
-            EditCommand = new NavaigateCommand<EditRoutineViewModel>(new NavigationService<EditRoutineViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore,()=> _routinePlayerViewModels),_navigationStore)));
+            EditCommand = new NavaigateCommand<EditRoutineViewModel>(new NavigationService<EditRoutineViewModel>(_navigationStore, () => LoadEditRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore)));
+
         }
 
-        private EditRoutineViewModel LoadAddRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService,NavigationStore navigationStore)
+      
+        private EditRoutineViewModel LoadEditRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore)
         {
-            return EditRoutineViewModel.LoadViewModel(playersDataStore, routineDataStore, navigationService,navigationStore);
+            return EditRoutineViewModel.LoadViewModel(playersDataStore, routineDataStore, navigationService, navigationStore);
         }
-
         public ICommand EditCommand { get; }
         public int Id => playerRoutine.Id;
-        public int RoutineNo => playerRoutine.RoutineNo;
+        public string? RoutineNo => playerRoutine.RoutineNo;
         public string? routineDate => playerRoutine.RoutineData.ToShortDateString();
 
         public void Update(PlayerRoutine obj)

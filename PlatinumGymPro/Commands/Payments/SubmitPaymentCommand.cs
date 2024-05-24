@@ -57,6 +57,7 @@ namespace PlatinumGymPro.Commands.Payments
                 
             };
             _subscriptionDataStore.SelectedSubscription!.PaidValue += payment.PaymentValue;
+            _playersDataStore.SelectedPlayer!.Player.Balance += payment.PaymentValue;
             int sportDays = _subscriptionDataStore.SelectedSubscription!.DaysCount;
             double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / sportDays;
             int daysCount = Convert.ToInt32(payment.PaymentValue / dayPrice);
@@ -68,7 +69,7 @@ namespace PlatinumGymPro.Commands.Payments
 
             await _paymentDataStore.Add(payment);
             await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription);
-            MessageBox.Show("payment added successfully");
+            await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!.Player);
             _navigationService.ReNavigate();
         }
     }

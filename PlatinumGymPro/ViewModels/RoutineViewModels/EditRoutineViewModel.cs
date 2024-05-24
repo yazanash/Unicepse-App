@@ -185,6 +185,18 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             }
               
         }
+
+
+
+
+
+
+
+
+
+
+
+
         public static EditRoutineViewModel LoadViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore,NavigationService<RoutinePlayerViewModels> navigationService,NavigationStore navigationStore)
         {
             EditRoutineViewModel viewModel = new(playersDataStore, routineDataStore, navigationService, navigationStore);

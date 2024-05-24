@@ -23,12 +23,13 @@ namespace PlatinumGymPro.ViewModels.PlayersAttendenceViewModels
             LogoutCommand = new LogoutPlayerCommand(_playersAttendenceStore);
         }
         public ICommand LogoutCommand { get; }
-        public DateTime Date => dailyPlayerReport.Date;
-        public DateTime loginTime=> dailyPlayerReport.loginTime;
-        public DateTime logoutTime=> dailyPlayerReport.logoutTime;
+        public string? Date => dailyPlayerReport.Date.ToShortDateString();
+        public string? loginTime => dailyPlayerReport.loginTime.ToShortTimeString();
+        public string? logoutTime => dailyPlayerReport.logoutTime.ToShortTimeString();
         public string? PlayerName=> dailyPlayerReport.Player!.FullName;
-        public string? SubscribeEndDate => dailyPlayerReport.Player!.FullName;
+        public string? SubscribeEndDate => dailyPlayerReport.Player!.SubscribeEndDate.ToShortDateString();
         public bool IsLogged=> dailyPlayerReport.IsLogged;
+        public Brush IsLoggedBrush => dailyPlayerReport.IsLogged ? Brushes.Green : Brushes.Red;
         public Brush IsSubscribed => dailyPlayerReport.Player!.IsSubscribed ? Brushes.Green : Brushes.Red;
         public int Id => dailyPlayerReport.Player!.Id;
     }

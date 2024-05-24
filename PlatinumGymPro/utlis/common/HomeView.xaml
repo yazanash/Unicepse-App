@@ -45,14 +45,14 @@
                 <Border Background="#fff" CornerRadius="10" Padding="15 5" Margin="5"  Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="300"/>
+                            <!--<ColumnDefinition Width="300"/>-->
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="0"  VerticalAlignment="Top">
+                        <!--<Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="0"  VerticalAlignment="Top">
                             <uc:CustomTextBox Hint="ادخل كود اللاعب"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
-                        </Border>
-                        <Button Grid.Column="1" Margin="5 0"  Command="{Binding LogPlayerCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+                        </Border>-->
+                        <Button Grid.Column="0" Margin="5 0"  Command="{Binding OpenSearchListCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
                             <StackPanel Orientation="Horizontal">
 
@@ -65,11 +65,12 @@
                             </StackPanel>
 
                         </Button>
-                        <Button Grid.Column="2" Margin="5 0"  Width="50" Command="{Binding OpenSearchListCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+                        <Button Grid.Column="1" Margin="5 0"   Command="{Binding OpenSearchListCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Kind="TableSearch"
-                                      
+                            <StackPanel  Orientation="Horizontal">
+                                <TextBlock  FlowDirection="RightToLeft" Text="مسح QR Code" />
+                                <Icon:PackIconMaterial Kind="QrcodeScan"
+                                       Margin="8 0 0 1"
                                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                             </StackPanel>
@@ -122,6 +123,10 @@
                                     Width="*"
                                     />
 
+                                        <DataGridTextColumn Header="التاريخ" IsReadOnly="True"
+                                     Binding="{Binding Date}"
+                                    Width="*"
+                                    />
                                         <DataGridTextColumn Header="وقت الدخول" IsReadOnly="True"
                                      Binding="{Binding loginTime}"
                                     Width="*"

@@ -13,9 +13,9 @@ namespace PlatinumGymPro.Commands.Employee
     {
         private readonly DausesDataStore _dausesDataStore;
         private readonly EmployeeStore _employeeStore;
-        private readonly DausesDetailsViewModel _trainerDausesListViewModel;
+        private readonly EmployeeAccountantPageViewModel _trainerDausesListViewModel;
 
-        public LoadTrainerMonthlyReport(DausesDataStore dausesDataStore, EmployeeStore employeeStore, DausesDetailsViewModel trainerDausesListViewModel)
+        public LoadTrainerMonthlyReport(DausesDataStore dausesDataStore, EmployeeStore employeeStore, EmployeeAccountantPageViewModel trainerDausesListViewModel)
         {
             _dausesDataStore = dausesDataStore;
             _trainerDausesListViewModel = trainerDausesListViewModel;

@@ -7,8 +7,8 @@
                 xmlns:converters="clr-namespace:PlatinumGymPro.Converters"
                 xmlns:ctrl="clr-namespace:PlatinumGymPro.Controls"
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.Employee.DausesViewModels"
-             xmlns:vs="clr-namespace:PlatinumGymPro.Views.EmployeeViews.DausesViews"
+             xmlns:vms="clr-namespace:PlatinumGymPro.ViewModels.Employee.TrainersViewModels"
+             xmlns:vs="clr-namespace:PlatinumGymPro.Views.TrainerViews"
               xmlns:pvms="clr-namespace:PlatinumGymPro.ViewModels.Employee.TrainersViewModels"
              xmlns:pvs="clr-namespace:PlatinumGymPro.Views.EmployeeViews"
               xmlns:dvs="clr-namespace:PlatinumGymPro.Views.TrainerViews"
@@ -20,12 +20,12 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-        <DataTemplate DataType="{x:Type vms:DauseListViewModel}">
-            <vs:YearlyDausesListView/>
+        <DataTemplate DataType="{x:Type vms:EmployeeAccountantPageViewModel}">
+            <vs:TrainerDues/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vms:DausesDetailsViewModel}">
+        <!--<DataTemplate DataType="{x:Type vms:DausesDetailsViewModel}">
             <dvs:TrainerDues/>
-        </DataTemplate>
+        </DataTemplate>-->
         <DataTemplate DataType="{x:Type pvms:TrainerSubscriptionViewModel}">
             <pvs:TrainerSubscriptionView/>
         </DataTemplate>
@@ -50,8 +50,9 @@
                 <DockPanel>
                     <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                         <RadioButton
+                            IsChecked="{Binding IsTrainer,NotifyOnTargetUpdated=False,Mode=OneWay}"
                             Visibility="{Binding IsTrainer,Converter={StaticResource BoolToVis}}"
-                            Command="{Binding EmployeeCreditsCommand}"
+                            Command="{Binding TrainerDusesCommand}"
                             Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple"/>

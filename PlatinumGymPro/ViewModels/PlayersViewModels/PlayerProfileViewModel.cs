@@ -6,6 +6,7 @@ using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using PlatinumGymPro.ViewModels.Metrics;
 using PlatinumGymPro.ViewModels.PaymentsViewModels;
+using PlatinumGymPro.ViewModels.PlayersAttendenceViewModels;
 using PlatinumGymPro.ViewModels.RoutineViewModels;
 using PlatinumGymPro.ViewModels.SubscriptionViewModel;
 using System;
@@ -27,11 +28,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly SportDataStore _sportDataStore;
         private readonly MetricDataStore _metricDataStore;
         private readonly RoutineDataStore _routineDataStore;
+        private readonly PlayersAttendenceStore _playersAttendenceStore;
         public PlayerListItemViewModel? Player => _playersDataStore.SelectedPlayer;
         public ViewModelBase? CurrentPlayerViewModel => _navigatorStore.CurrentViewModel;
 
         public PlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore,
-            PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore)
+            PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
         {
             _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
@@ -40,14 +42,17 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _paymentDataStore = paymentDataStore;
             _routineDataStore = routineDataStore;
             _metricDataStore = metricDataStore;
-            navigatorStore.CurrentViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore,_sportDataStore);
+            _playersAttendenceStore = playersAttendenceStore;
+
+            navigatorStore.CurrentViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
             _playersDataStore.PlayerChanged += _playersDataStore_PlayerChanged;
             PlayerHomeCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore)));
             SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => LoadSubscriptionViewModel(_navigatorStore, _sportDataStore, _subscriptionStore, _playersDataStore, _paymentDataStore)));
-            PaymentCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => LoadPaymentsViewModel(_paymentDataStore, _playersDataStore, _navigatorStore,_subscriptionStore)));
+            PaymentCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => LoadPaymentsViewModel(_paymentDataStore, _playersDataStore, _navigatorStore, _subscriptionStore)));
             MetricsCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigatorStore, () => LoadMetricsViewModel(_metricDataStore, _playersDataStore, _navigatorStore)));
-            TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigatorStore, () => LoadRoutineViewModel(_routineDataStore,_playersDataStore,_navigatorStore)));
+            TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigatorStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigatorStore)));
+            PlayerAttendenceCommand = new NavaigateCommand<PlayerAttendenceViewModel>(new NavigationService<PlayerAttendenceViewModel>(_navigatorStore, () => LoadPlayerAttendenceViewModel(_playersAttendenceStore, _playersDataStore)));
         }
 
         private PaymentListViewModel LoadPaymentsViewModel(PaymentDataStore paymentDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore,SubscriptionDataStore subscriptionDataStore)
@@ -85,10 +90,15 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         {
             return RoutinePlayerViewModels.LoadViewModel(routineDataStore, playerDataStore, navigationStore);
         }
+        private PlayerAttendenceViewModel LoadPlayerAttendenceViewModel(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playerDataStore)
+        {
+            return PlayerAttendenceViewModel.LoadViewModel(playersAttendenceStore,playerDataStore);
+        }
         public ICommand? PlayerHomeCommand { get; }
         public ICommand? SubscriptionCommand { get; }
         public ICommand? PaymentCommand { get; }
         public ICommand? MetricsCommand { get; }
         public ICommand? TrainingProgramCommand { get; }
+        public ICommand? PlayerAttendenceCommand { get; }
     }
 }

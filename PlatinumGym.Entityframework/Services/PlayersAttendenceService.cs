@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PlatinumGym.Core.Exceptions;
 using PlatinumGym.Core.Models;
 using PlatinumGym.Core.Models.DailyActivity;
 using PlatinumGym.Core.Services;
@@ -26,6 +27,16 @@ namespace PlatinumGym.Entityframework.Services
             {
 
                 EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
+                DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x => 
+                x.Player!.Id == entity.Player!.Id &&
+                x.Date.Month==entity.Date.Month && 
+                x.Date.Year ==entity.Date.Year && 
+                x.Date.Day ==entity.Date.Day
+                ).SingleOrDefault();
+                if (dailyPlayerReport != null)
+                {
+                    throw new PlayerConflictException("هذا اللاعب تم تسجيل دخوله اليوم بالفعل");
+                }
                 context.Attach(entity.Player!);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
@@ -61,7 +72,7 @@ namespace PlatinumGym.Entityframework.Services
 
             IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(
                 x => x.Player!.Id==id
-                ).ToListAsync();
+                ).Include(x=>x.Player).ToListAsync();
             return entities;
         }
       

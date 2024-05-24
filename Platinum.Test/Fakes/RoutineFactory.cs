@@ -24,7 +24,7 @@ namespace Platinum.Test.Fakes
               .StrictMode(false)
               .Rules((fake, routine) =>
               {
-                  routine.RoutineNo =fake.Random.Int();
+                  routine.RoutineNo =fake.Company.CompanyName();
                   routine.RoutineData = DateTime.Now;
                   for (int i = 0; i < 15; i++)
                   {

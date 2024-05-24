@@ -372,6 +372,33 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="DeleteBtn" TargetType="Button">
+        <Setter Property="Background" Value="#DB0033"/>
+        <Setter Property="Foreground" Value="#fff"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <!--<Setter Property="Width" Value="150"/>-->
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Grid.Row" Value="0"/>
+        <Setter Property="Template" >
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" Padding="5"  CornerRadius="7">
+                        <ContentPresenter HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="0.6"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="TabBtn" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="#121518"/>

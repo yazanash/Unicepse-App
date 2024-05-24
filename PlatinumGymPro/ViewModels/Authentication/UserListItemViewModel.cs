@@ -44,6 +44,6 @@ namespace PlatinumGymPro.ViewModels.Authentication
             this.user = user;
         }
         public ICommand EditUserCommand { get; }
-        public ICommand DeleteUserCommand { get; }
+        public ICommand? DeleteUserCommand { get; }
     }
 }

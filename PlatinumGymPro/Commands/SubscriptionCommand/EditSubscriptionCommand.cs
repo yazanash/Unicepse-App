@@ -46,31 +46,35 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
         {
             try
             {
-                Subscription subscription = new()
-                {
-                    /// subscription info
-                    Id = _subscriptionDataStore.SelectedSubscription!.Id,
-                    Sport = _subscriptionDataStore.SelectedSport,
-                    DaysCount = _editSubscriptionViewModel.SubscribeDays,
-                    LastCheck = _editSubscriptionViewModel.SubscribeDate,
-                    Trainer = _subscriptionDataStore.SelectedTrainer,
-                    TrainerId = _subscriptionDataStore.SelectedTrainer != null ? _subscriptionDataStore.SelectedTrainer.Id : null,
-                    Player = _playerDataStore.SelectedPlayer!.Player,
-                    RollDate = _editSubscriptionViewModel.SubscribeDate,
-                    Price = _subscriptionDataStore.SelectedSport!.Price,
-                    /// offer info
-                    OfferValue = _editSubscriptionViewModel.OfferValue,
-                    OfferDes = _editSubscriptionViewModel.Offer,
-                    PriceAfterOffer = _subscriptionDataStore.SelectedSport.Price - _editSubscriptionViewModel.OfferValue,
-                    /// private info
-                    IsPrivate = _editSubscriptionViewModel.PrivatePrice > 0,
-                    PrivatePrice = _editSubscriptionViewModel.PrivatePrice,
-                    IsPlayerPay = _editSubscriptionViewModel.PrivateProvider,
-                    EndDate = _editSubscriptionViewModel.SubscribeDate.AddDays(_editSubscriptionViewModel.SubscribeDays),
-                };
+                _playerDataStore.SelectedPlayer!.Player.Balance += _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
+                /// subscription info
+                _subscriptionDataStore.SelectedSubscription!.Id = _subscriptionDataStore.SelectedSubscription!.Id;
+                _subscriptionDataStore.SelectedSubscription!.Sport = _subscriptionDataStore.SelectedSport;
+                _subscriptionDataStore.SelectedSubscription!.DaysCount = _editSubscriptionViewModel.SubscribeDays;
+                _subscriptionDataStore.SelectedSubscription!.LastCheck = _editSubscriptionViewModel.SubscribeDate;
+                _subscriptionDataStore.SelectedSubscription!.Trainer = _subscriptionDataStore.SelectedTrainer;
+                _subscriptionDataStore.SelectedSubscription!.TrainerId = _subscriptionDataStore.SelectedTrainer != null ? _subscriptionDataStore.SelectedTrainer.Id : null;
+                _subscriptionDataStore.SelectedSubscription!.Player = _playerDataStore.SelectedPlayer!.Player;
+                _subscriptionDataStore.SelectedSubscription!.RollDate = _editSubscriptionViewModel.SubscribeDate;
+                _subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.Price;
+                /// offer info
+                _subscriptionDataStore.SelectedSubscription!.OfferValue = _editSubscriptionViewModel.OfferValue;
+                _subscriptionDataStore.SelectedSubscription!.OfferDes = _editSubscriptionViewModel.Offer;
+                _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _subscriptionDataStore.SelectedSport.Price - _editSubscriptionViewModel.OfferValue;
+                /// private info
+                _subscriptionDataStore.SelectedSubscription!.IsPrivate = _editSubscriptionViewModel.PrivatePrice > 0;
+                _subscriptionDataStore.SelectedSubscription!.PrivatePrice = _editSubscriptionViewModel.PrivatePrice;
+                _subscriptionDataStore.SelectedSubscription!.IsPlayerPay = _editSubscriptionViewModel.PrivateProvider;
+                _subscriptionDataStore.SelectedSubscription!.EndDate = _editSubscriptionViewModel.SubscribeDate.AddDays(_editSubscriptionViewModel.SubscribeDays);
 
-                await _subscriptionDataStore.Update(subscription);
-
+                _subscriptionDataStore.SelectedSubscription!.PaidValue = _subscriptionDataStore.SelectedSubscription!.PaidValue;
+                if (_subscriptionDataStore.SelectedSubscription!.PaidValue == _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer)
+                    _subscriptionDataStore.SelectedSubscription!.IsPaid = true;
+                else
+                    _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
+                _playerDataStore.SelectedPlayer!.Player.Balance -= _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
+                await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription!);
+                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!.Player);
                 _navigationService.Navigate();
             }
             catch (Exception ex)

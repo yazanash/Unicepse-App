@@ -33,13 +33,27 @@ namespace PlatinumGymPro.ViewModels.Employee.CreditViewModels
         public double CreditValue
         {
             get { return _creditValue; }
-            set { _creditValue = value; OnPropertyChanged(nameof(CreditValue)); }
+            set
+            {
+                _creditValue = value; OnPropertyChanged(nameof(CreditValue));
+                ClearError(nameof(CreditValue));
+                if (CreditValue < 0)
+                {
+                    AddError("لايمكن الدفع بقيمة اقل من 0", nameof(CreditValue));
+                    OnErrorChanged(nameof(CreditValue));
+                }
+            }
         }
         private DateTime _creditDate = DateTime.Now;
         public DateTime CreditDate
         {
             get { return _creditDate; }
-            set { _creditDate = value; OnPropertyChanged(nameof(CreditDate)); }
+            set
+            {
+                _creditDate = value;
+                OnPropertyChanged(nameof(CreditDate));
+
+            }
         }
         private string? _description;
         public string? Description

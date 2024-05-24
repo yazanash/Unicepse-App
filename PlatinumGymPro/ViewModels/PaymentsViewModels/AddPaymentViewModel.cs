@@ -76,6 +76,11 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
                         AddError("لا يمكن ان يكون المبلغ المدفوع اكبر من المستحق", nameof(PaymentValue));
                         OnErrorChanged(nameof(PaymentValue));
                     }
+                    else if (PaymentValue < 0)
+                    {
+                        AddError("لايمكن الدفع بقيمة اقل من 0", nameof(PaymentValue));
+                        OnErrorChanged(nameof(PaymentValue));
+                    }
                 }
 
                 else
@@ -99,6 +104,7 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             {
                 _payDate = value;
                 OnPropertyChanged(nameof(PayDate));
+                ClearError(nameof(PayDate));
                 if (SelectedSubscription != null)
                 {
                     if (PayDate < Convert.ToDateTime(SelectedSubscription!.RollDate)) 
@@ -121,6 +127,7 @@ namespace PlatinumGymPro.ViewModels.PaymentsViewModels
             {
                 _subscriptionDataStore.SelectedSubscription = value?.Subscription;
                 OnPropertyChanged(nameof(SelectedSubscription));
+                ClearError(nameof(PaymentValue));
                 if (SelectedSubscription != null)
                 {
                     if (PaymentValue > SelectedSubscription!.PriceAfterOffer - SelectedSubscription!.PaidValue)

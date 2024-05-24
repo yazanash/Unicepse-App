@@ -100,7 +100,8 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
         }
         private void _subscriptionStore_StateChanged(Sport? sport)
         {
-            foreach(var trainer in sport!.Trainers!)
+            _trainerListItemViewModels.Clear();
+            foreach (var trainer in sport!.Trainers!)
             {
                 AddTrainer(trainer);
             }

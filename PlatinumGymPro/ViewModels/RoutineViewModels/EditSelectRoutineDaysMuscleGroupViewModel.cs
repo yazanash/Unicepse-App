@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace PlatinumGymPro.ViewModels.RoutineViewModels
 {
-    public class EditSelectRoutineDaysMuscleGroupViewModel : ViewModelBase
+    public class EditSelectRoutineDaysMuscleGroupViewModel : ErrorNotifyViewModelBase
     {
         private readonly ObservableCollection<DayGroupListItemViewModel> _dayGroupListItemViewModels;
         public IEnumerable<DayGroupListItemViewModel> DayGroupList => _dayGroupListItemViewModels;
@@ -32,9 +32,9 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(4, "اليوم الرابع"));
             _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(5, "اليوم الخامس"));
             _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(6, "اليوم السادس"));
+            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(7, "اليوم السابع"));
             _navigationService = navigationService;
             _playersDataStore = playersDataStore;
-
             foreach (var key in _routineDataStore.SelectedRoutine!.DaysGroupMap!)
             {
 
@@ -68,9 +68,11 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
                     }
                 }
             }
-
+            Number = _routineDataStore.SelectedRoutine.RoutineNo;
+            IsTemplate = _routineDataStore.SelectedRoutine.IsTemplate;
+            Date = _routineDataStore.SelectedRoutine.RoutineData;
             SubmitCommand = new UpdateRoutineCommand(_routineDataStore, _playersDataStore, _navigationService, this);
-            string filename = _playersDataStore.SelectedPlayer!.FullName +"_" + Date.ToShortDateString() + "_Routine";
+            string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + Date.ToShortDateString() + "_Routine";
             PrintCommand = new PrintCommand(new PrintWindowViewModel(new EditRoutinePrintViewModel(_routineDataStore, _playersDataStore, this), new NavigationStore()), filename);
 
         }
@@ -82,11 +84,30 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             set { _date = value; OnPropertyChanged(nameof(Date)); }
         }
 
-        private int _number;
-        public int Number
+        private string? _number;
+        public string? Number
         {
             get { return _number; }
-            set { _number = value; OnPropertyChanged(nameof(Number)); }
+            set
+            {
+                _number = value; OnPropertyChanged(nameof(Number)); ClearError(nameof(Number));
+                if (string.IsNullOrEmpty(Number))
+                {
+                    AddError("هذا الحقل مطلوب", nameof(Number));
+                    OnErrorChanged(nameof(Number));
+                }
+            }
+        }
+        private bool _isTemplate;
+        public bool IsTemplate
+        {
+            get { return _isTemplate; }
+            set
+            {
+                _isTemplate = value;
+                OnPropertyChanged(nameof(IsTemplate));
+
+            }
         }
         public ICommand SubmitCommand { get; }
         public ICommand PrintCommand { get; }

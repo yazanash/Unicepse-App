@@ -40,6 +40,7 @@ namespace PlatinumGym.Entityframework.Services
                     throw new ConflictException();
                foreach(Sport sport in entity.Sports!)
                 {
+                    context.Entry(sport).State = EntityState.Detached;
                     context.Attach(sport);
                 }
                 EntityEntry<Employee> CreatedResult = await context.Set<Employee>().AddAsync(entity);
@@ -93,6 +94,7 @@ namespace PlatinumGym.Entityframework.Services
             //context.Attach(entity);
             foreach (Sport sport in entity.Sports!)
             {
+                context.Entry(sport).State = EntityState.Detached;
                 context.Attach(sport);
             }
             context.Set<Employee>().Update(entity);

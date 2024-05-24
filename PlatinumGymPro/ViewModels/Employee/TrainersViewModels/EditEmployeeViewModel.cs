@@ -43,6 +43,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             ParcentValue = _employeeStore.SelectedEmployee!.ParcentValue;
             Position = _employeeStore.SelectedEmployee!.Position;
             StartDate = _employeeStore.SelectedEmployee!.StartDate;
+            IsSecertary = _employeeStore.SelectedEmployee!.IsSecrtaria;
 
         }
 
@@ -124,6 +125,12 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             {
                 _salaryValue = value;
                 OnPropertyChanged(nameof(SalaryValue));
+                ClearError(nameof(SalaryValue));
+                if (SalaryValue < 0)
+                {
+                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(SalaryValue));
+                    OnErrorChanged(nameof(SalaryValue));
+                }
             }
         }
 

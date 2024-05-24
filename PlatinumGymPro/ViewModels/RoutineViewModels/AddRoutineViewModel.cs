@@ -117,7 +117,86 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             SubmitCommand = new NavaigateCommand<SelectRoutineDaysMuscleGroupViewModel>(new NavigationService<SelectRoutineDaysMuscleGroupViewModel>(_navigationStore,() => new SelectRoutineDaysMuscleGroupViewModel(_routineDataStore,_navigationService,_playersDataStore)));
             //ReorderCommand = new ReorderCommand(this);
         }
-
+        public AddRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore,bool FromTemp)
+        {
+            _playersDataStore = playersDataStore;
+            _routineDataStore = routineDataStore;
+            _navigationService = navigationService;
+            _navigationStore = navigationStore;
+            _exercisesListItemViewModel = new ObservableCollection<ExercisesListItemViewModel>();
+            _groupMuscleListItemViewModels = new ObservableCollection<GroupMuscleListItemViewModel>();
+            _routineExercisesItemsViewModels = new ObservableCollection<RoutineItemFillViewModel>();
+            loadRoutineItems();
+            _routineDataStore.ExercisesLoaded += _routineDataStore_ExercisesLoaded;
+            LoadExercisesItems = new LoadExercisesCommand(_routineDataStore, this);
+            _routineDataStore.MuscleChanged += _routineDataStore_MuscleChanged;
+            _routineDataStore.RoutineItemCreated += _routineDataStore_RoutineItemCreated;
+            _routineDataStore.RoutineItemDeleted += _routineDataStore_RoutineItemDeleted;
+            _groupMuscleListItemViewModels.Add(new GroupMuscleListItemViewModel(new MuscleGroup()
+            {
+                Image = "pack://application:,,,/Resources/Assets/metric/Waist.png",
+                FolderName = "Abs",
+                Name = "معدة",
+                Id = ((int)EMuscleGroup.Abs)
+            }));
+            _groupMuscleListItemViewModels.Add(new GroupMuscleListItemViewModel(new MuscleGroup()
+            {
+                Image = "pack://application:,,,/Resources/Assets/metric/Waist.png",
+                FolderName = "Back",
+                Name = "ظهر",
+                Id = ((int)EMuscleGroup.Back)
+            }));
+            _groupMuscleListItemViewModels.Add(new GroupMuscleListItemViewModel(new MuscleGroup()
+            {
+                Image = "pack://application:,,,/Resources/Assets/metric/ForeArm.png",
+                FolderName = "Triceps",
+                Name = "ترايسبس",
+                Id = ((int)EMuscleGroup.Triceps)
+            }));
+            _groupMuscleListItemViewModels.Add(new GroupMuscleListItemViewModel(new MuscleGroup()
+            {
+                Image = "pack://application:,,,/Resources/Assets/metric/ForeArm.png",
+                FolderName = "Biceps",
+                Name = "بايسيبس",
+                Id = ((int)EMuscleGroup.Biceps)
+            }));
+            _groupMuscleListItemViewModels.Add(new GroupMuscleListItemViewModel(new MuscleGroup()
+            {
+                Image = "pack://application:,,,/Resources/Assets/metric/Shoulder.png",
+                FolderName = "Shoulders",
+                Name = "الأكتاف",
+                Id = ((int)EMuscleGroup.Shoulders)
+            }));
+            _groupMuscleListItemViewModels.Add(new GroupMuscleListItemViewModel(new MuscleGroup()
+            {
+                Image = "pack://application:,,,/Resources/Assets/metric/Thigh.png",
+                FolderName = "Legs",
+                Name = "الارجل",
+                Id = ((int)EMuscleGroup.Legs)
+            }));
+            _groupMuscleListItemViewModels.Add(new GroupMuscleListItemViewModel(new MuscleGroup()
+            {
+                Image = "pack://application:,,,/Resources/Assets/metric/Leg.png",
+                FolderName = "Calves",
+                Name = "بطات الارجل",
+                Id = ((int)EMuscleGroup.Calves)
+            }));
+            _groupMuscleListItemViewModels.Add(new GroupMuscleListItemViewModel(new MuscleGroup()
+            {
+                Image = "pack://application:,,,/Resources/Assets/metric/Chest.png",
+                FolderName = "Chest",
+                Name = "الصدر",
+                Id = ((int)EMuscleGroup.Chest)
+            }));
+            SubmitCommand = new NavaigateCommand<SelectRoutineDaysMuscleGroupViewModel>(new NavigationService<SelectRoutineDaysMuscleGroupViewModel>(_navigationStore, () => new SelectRoutineDaysMuscleGroupViewModel(_routineDataStore, _navigationService, _playersDataStore)));
+        }
+        private void loadRoutineItems()
+        {
+            foreach (var item in _routineDataStore.SelectedRoutine!.RoutineSchedule)
+            {
+                _routineDataStore.AddRoutineItem(item);
+            }
+        }
 
         private void _routineDataStore_RoutineItemDeleted(RoutineItems obj)
         {
@@ -139,7 +218,6 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             _exercisesListItemViewModel.Remove(_exercisesListItemViewModel.Where(x => x.Id == obj.Exercises!.Id).SingleOrDefault()!);
         }
 
-     
         private void _routineDataStore_MuscleChanged(MuscleGroup? muscle)
         {
             _exercisesListItemViewModel.Clear();
@@ -157,23 +235,48 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
         }
         private void _routineDataStore_ExercisesLoaded()
         {
-            _exercisesListItemViewModel.Clear();
-            if(SelectedMuscle==null)
-                SelectedMuscle = MuscleGroup.FirstOrDefault();
-            foreach (var exercise in _routineDataStore.Exercises.Where(x => x.GroupId == SelectedMuscle!.MuscleGroup!.Id))
+            if (SelectedMuscle != null)
             {
-                AddExercise(exercise);
+                _exercisesListItemViewModel.Clear();
+                foreach (var exercise in _routineDataStore.Exercises.Where(x => x.GroupId == SelectedMuscle!.MuscleGroup!.Id))
+                {
+
+                    AddExercise(exercise);
+                }
+
             }
+            SelectedMuscle = MuscleGroup!.FirstOrDefault();
         }
 
         private void AddExercise(Exercises exercise)
         {
-            ExercisesListItemViewModel exercisesListItemViewModel = new ExercisesListItemViewModel(exercise,_routineDataStore,_playersDataStore);
-            _exercisesListItemViewModel.Add(exercisesListItemViewModel);
+            if (!_exercisesListItemViewModel.Where(x => x.Id == exercise.Id).Any())
+            {
+                ExercisesListItemViewModel exercisesListItemViewModel = new ExercisesListItemViewModel(exercise, _routineDataStore, _playersDataStore);
+                _exercisesListItemViewModel.Add(exercisesListItemViewModel);
+            }
         }
+
+
+
+
+
+
+
+
+
+
         public static AddRoutineViewModel LoadViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService,NavigationStore navigationStore)
         {
             AddRoutineViewModel viewModel = new(playersDataStore, routineDataStore, navigationService, navigationStore);
+
+            viewModel.LoadExercisesItems.Execute(null);
+
+            return viewModel;
+        }
+        public static AddRoutineViewModel LoadViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore,bool FromTemp)
+        {
+            AddRoutineViewModel viewModel = new(playersDataStore, routineDataStore, navigationService, navigationStore, FromTemp);
 
             viewModel.LoadExercisesItems.Execute(null);
 

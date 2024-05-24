@@ -24,6 +24,10 @@ namespace PlatinumGym.Core.Exceptions
             ExistingPlayer = existingPlayer;
             IncomingPlayer = incomingPlayer;
         }
+        public PlayerConflictException( string? message) : base(message)
+        {
+            
+        }
 
         public PlayerConflictException(Player existingPlayer, Player incomingPlayer,string? message, Exception? innerException) : base(message, innerException)
         {

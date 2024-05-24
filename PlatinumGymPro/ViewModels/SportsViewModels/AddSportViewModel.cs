@@ -16,7 +16,7 @@ using emp = PlatinumGym.Core.Models.Employee;
 
 namespace PlatinumGymPro.ViewModels.SportsViewModels
 {
-    public class AddSportViewModel : ListingViewModelBase , INotifyDataErrorInfo 
+    public class AddSportViewModel : ListingViewModelBase, INotifyDataErrorInfo
     {
         private readonly NavigationStore _navigationStore;
         private readonly SportDataStore _sportStore;
@@ -29,7 +29,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
             _sportStore = sportStore;
             _trainerStore = trainerStore;
             CancelCommand = new NavaigateCommand<SportListViewModel>(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel));
-            this.SubmitCommand = new SubmitSportCommand(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel), this,_sportStore);
+            this.SubmitCommand = new SubmitSportCommand(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel), this, _sportStore);
             LoadTrainersCommand = new LoadTrainersForSportCommand(_trainerStore, this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             trainerListItemViewModels = new ObservableCollection<TrainersListItemViewModel>();
@@ -46,7 +46,7 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         {
             trainerListItemViewModels.Clear();
 
-            foreach (emp.Employee trainer in _trainerStore.Employees.Where(x=>x.IsTrainer))
+            foreach (emp.Employee trainer in _trainerStore.Employees.Where(x => x.IsTrainer))
             {
                 AddTrainer(trainer);
             }
@@ -57,11 +57,11 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
                 new TrainersListItemViewModel(trainer);
             trainerListItemViewModels.Add(itemViewModel);
         }
-       
 
-       
 
-     
+
+
+
         public int Id { get; }
 
         private string? _sportName;
@@ -87,12 +87,12 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
             set
             {
                 _monthlyPrice = value; OnPropertyChanged(nameof(MonthlyPrice));
-                //ClearError(nameof(Phone));
-                //if (Phone?.Trim().Length < 10)
-                //{
-                //    AddError("يجب ان يكون رقم الهاتف 10 ارقام", nameof(Phone));
-                //    OnErrorChanged(nameof(Phone));
-                //}
+                ClearError(nameof(MonthlyPrice));
+                if (MonthlyPrice < 0)
+                {
+                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(MonthlyPrice));
+                    OnErrorChanged(nameof(MonthlyPrice));
+                }
 
             }
         }
@@ -124,18 +124,27 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         public int DailyPrice
         {
             get { return _dailyPrice; }
-            set { _dailyPrice = value; OnPropertyChanged(nameof(DailyPrice)); }
+            set
+            {
+                _dailyPrice = value; OnPropertyChanged(nameof(DailyPrice));
+                ClearError(nameof(DailyPrice));
+                if (MonthlyPrice < 0)
+                {
+                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(DailyPrice));
+                    OnErrorChanged(nameof(DailyPrice));
+                }
+            }
         }
         private int _weeklyTrainingDays;
         public int WeeklyTrainingDays
         {
             get { return _weeklyTrainingDays; }
-            set 
-            { 
-                _weeklyTrainingDays = value; 
+            set
+            {
+                _weeklyTrainingDays = value;
                 OnPropertyChanged(nameof(WeeklyTrainingDays));
                 ClearError(nameof(WeeklyTrainingDays));
-                if (WeeklyTrainingDays==0)
+                if (WeeklyTrainingDays == 0)
                 {
                     AddError("لا يمكن ان يكون هذا الرقم اقل من 1", nameof(WeeklyTrainingDays));
                     OnErrorChanged(nameof(WeeklyTrainingDays));
@@ -146,9 +155,9 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         public int SubscribeLength
         {
             get { return _subscribeLength; }
-            set 
+            set
             {
-                _subscribeLength = value; 
+                _subscribeLength = value;
                 OnPropertyChanged(nameof(SubscribeLength));
                 ClearError(nameof(SubscribeLength));
                 if (SubscribeLength == 0)
@@ -170,9 +179,9 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
-        public static AddSportViewModel LoadViewModel( NavigationStore navigatorStore, SportListViewModel sportListViewModel ,SportDataStore sportDataStore,EmployeeStore employeeStore)
+        public static AddSportViewModel LoadViewModel(NavigationStore navigatorStore, SportListViewModel sportListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
-            AddSportViewModel viewModel = new AddSportViewModel(navigatorStore, sportListViewModel,sportDataStore,employeeStore);
+            AddSportViewModel viewModel = new AddSportViewModel(navigatorStore, sportListViewModel, sportDataStore, employeeStore);
 
             viewModel.LoadTrainersCommand.Execute(null);
 

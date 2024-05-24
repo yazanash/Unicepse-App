@@ -58,18 +58,21 @@ namespace PlatinumGymPro.Stores
             IEnumerable<Credit> employees = await _employeeCreditsDataService.GetAll();
             _credits.Clear();
             _credits.AddRange(employees);
+            Loaded?.Invoke();
         }
         public async Task GetAll(Employee employee)
         {
             IEnumerable<Credit> employees = await _employeeCreditsDataService.GetAll(employee);
             _credits.Clear();
             _credits.AddRange(employees);
+            Loaded?.Invoke();
         }
         public async Task GetAll(Employee employee,DateTime date)
         {
             IEnumerable<Credit> employees = await _employeeCreditsDataService.GetAll(employee,date);
             _credits.Clear();
             _credits.AddRange(employees);
+            Loaded?.Invoke();
         }
         public Task Initialize()
         {

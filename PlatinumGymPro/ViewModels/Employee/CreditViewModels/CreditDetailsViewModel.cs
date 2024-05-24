@@ -23,14 +23,24 @@ namespace PlatinumGymPro.ViewModels.Employee.CreditViewModels
             _creditDataStore = creditDataStore;
             _navigatorStore = navigatorStore;
             _creditListViewModel = creditListViewModel;
-            SubmitCommand = new SubmitCreditCommand(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel), _employeeStore, _creditDataStore,this);
+            SubmitCommand = new SubmitCreditCommand(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel), _employeeStore, _creditDataStore, this);
             CancelCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel));
         }
         private double _creditValue;
         public double CreditValue
         {
             get { return _creditValue; }
-            set { _creditValue = value; OnPropertyChanged(nameof(CreditValue)); }
+            set
+            {
+                _creditValue = value;
+                OnPropertyChanged(nameof(CreditValue));
+                ClearError(nameof(CreditValue));
+                if (CreditValue < 0)
+                {
+                    AddError("لايمكن الدفع بقيمة اقل من 0", nameof(CreditValue));
+                    OnErrorChanged(nameof(CreditValue));
+                }
+            }
         }
         private DateTime _creditDate = DateTime.Now;
         public DateTime CreditDate

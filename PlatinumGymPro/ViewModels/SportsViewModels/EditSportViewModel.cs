@@ -17,7 +17,7 @@ using emp = PlatinumGym.Core.Models.Employee;
 
 namespace PlatinumGymPro.ViewModels.SportsViewModels
 {
-    public class EditSportViewModel : ListingViewModelBase , INotifyDataErrorInfo
+    public class EditSportViewModel : ListingViewModelBase, INotifyDataErrorInfo
     {
         private readonly NavigationStore _navigationStore;
         private readonly SportDataStore _sportStore;
@@ -39,10 +39,10 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
             _trainerStore.Loaded += _trainerStore_TrainersLoaded;
 
             SportName = _sportStore.SelectedSport!.Name;
-            DailyPrice=_sportStore.SelectedSport!.DailyPrice;
-            SubscribeLength=_sportStore.SelectedSport!.DaysCount;
-            WeeklyTrainingDays=_sportStore.SelectedSport!.DaysInWeek;
-            MonthlyPrice=_sportStore.SelectedSport!.Price;
+            DailyPrice = _sportStore.SelectedSport!.DailyPrice;
+            SubscribeLength = _sportStore.SelectedSport!.DaysCount;
+            WeeklyTrainingDays = _sportStore.SelectedSport!.DaysInWeek;
+            MonthlyPrice = _sportStore.SelectedSport!.Price;
         }
 
 
@@ -53,26 +53,30 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
 
             foreach (emp.Employee trainer in _trainerStore.Employees.Where(x => x.IsTrainer))
             {
-               
-                    AddTrainer(trainer);
-               
-                 
+
+                AddTrainer(trainer);
+
+
             }
-            foreach(var t in _sportStore.SelectedSport!.Trainers!)
+            foreach (var t in _sportStore.SelectedSport!.Trainers!)
             {
-                TrainerList.SingleOrDefault(x=>x.trainer.Id==t.Id)!.IsSelected= true;
+                TrainerList.SingleOrDefault(x => x.trainer.Id == t.Id)!.IsSelected = true;
             }
         }
         private void AddTrainer(emp.Employee trainer)
         {
-            
+
             TrainersListItemViewModel itemViewModel =
                 new TrainersListItemViewModel(trainer);
-            if (_sportStore.SelectedSport!.Trainers!.Where(x => x.Id == trainer.Id).Any())
-                itemViewModel.IsSelected = true;
-                trainerListItemViewModels.Add(itemViewModel);
+            if (_sportStore.SelectedSport != null)
+            {
+                if (_sportStore.SelectedSport!.Trainers!.Where(x => x.Id == trainer.Id).Any())
+                    itemViewModel.IsSelected = true;
+
+            }
+            trainerListItemViewModels.Add(itemViewModel);
         }
-        
+
         public int Id { get; }
 
         private string? _sportName;
@@ -98,7 +102,12 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
             set
             {
                 _monthlyPrice = value; OnPropertyChanged(nameof(MonthlyPrice));
-
+                ClearError(nameof(MonthlyPrice));
+                if (MonthlyPrice < 0)
+                {
+                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(MonthlyPrice));
+                    OnErrorChanged(nameof(MonthlyPrice));
+                }
             }
         }
 
@@ -129,15 +138,24 @@ namespace PlatinumGymPro.ViewModels.SportsViewModels
         public double DailyPrice
         {
             get { return _dailyPrice; }
-            set { _dailyPrice = value; OnPropertyChanged(nameof(DailyPrice)); }
+            set
+            {
+                _dailyPrice = value; OnPropertyChanged(nameof(DailyPrice));
+                ClearError(nameof(DailyPrice));
+                if (MonthlyPrice < 0)
+                {
+                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(DailyPrice));
+                    OnErrorChanged(nameof(DailyPrice));
+                }
+            }
         }
         private int _weeklyTrainingDays;
         public int WeeklyTrainingDays
         {
             get { return _weeklyTrainingDays; }
-            set 
+            set
             {
-                _weeklyTrainingDays = value; 
+                _weeklyTrainingDays = value;
                 OnPropertyChanged(nameof(WeeklyTrainingDays));
                 ClearError(nameof(WeeklyTrainingDays));
                 if (WeeklyTrainingDays == 0)

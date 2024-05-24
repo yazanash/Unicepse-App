@@ -26,10 +26,11 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PlayerListViewModel _playerListViewModel;
         private readonly RoutineDataStore _routineDataStore;
+        private readonly PlayersAttendenceStore _playersAttendenceStore;
         public ObservableCollection<Year> years;
 
         public IEnumerable<Year> Years => years;
-        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore)
+        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
         {
             years = new ObservableCollection<Year>();
             for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
@@ -43,17 +44,18 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _playerListViewModel = playerListViewModel;
             _routineDataStore = routineDataStore;
             _metricStore = metricStore;
-            
+            _playersAttendenceStore = playersAttendenceStore;
+
             CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
-            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricStore, _routineDataStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore,_metricStore,_routineDataStore,_paymentDataStore);
+            this.SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricStore, _routineDataStore, _playersAttendenceStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore, _metricStore, _routineDataStore, _paymentDataStore, _playersAttendenceStore);
         }
 
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,SportDataStore sportDataStore,PaymentDataStore paymentDataStore, MetricDataStore metricStore,RoutineDataStore routineDataStore)
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
         {
-            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore,metricStore,routineDataStore);
+            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, metricStore, routineDataStore, playersAttendenceStore);
         }
-      
+
         #region Properties
         public int Id { get; }
 
@@ -73,7 +75,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
                 }
             }
         }
-        private string? _phone="0";
+        private string? _phone = "0";
         public string? Phone
         {
             get { return _phone; }
@@ -111,7 +113,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public double Weight
         {
             get { return _weight; }
-            set { _weight = value; OnPropertyChanged(nameof(Weight));
+            set
+            {
+                _weight = value; OnPropertyChanged(nameof(Weight));
                 ClearError(nameof(Weight));
                 if (string.IsNullOrEmpty(Weight.ToString()))
                 {
@@ -124,7 +128,9 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public double Hieght
         {
             get { return _hieght; }
-            set { _hieght = value; OnPropertyChanged(nameof(Hieght));
+            set
+            {
+                _hieght = value; OnPropertyChanged(nameof(Hieght));
                 ClearError(nameof(Hieght));
                 if (string.IsNullOrEmpty(Hieght.ToString()))
                 {
@@ -139,8 +145,8 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             get { return _subscribeDate; }
             set { _subscribeDate = value; OnPropertyChanged(nameof(SubscribeDate)); }
         }
-       
-        
+
+
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
         #endregion

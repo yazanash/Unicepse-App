@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PlatinumGymPro.Commands.PlayerAttendenceCommands
 {
@@ -21,16 +22,24 @@ namespace PlatinumGymPro.Commands.PlayerAttendenceCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+            try
             {
-                loginTime = DateTime.Now,
-                logoutTime = DateTime.Now,
-                Date = DateTime.Now,
-                IsLogged = true,
-                Player = _playersDataStore.SelectedPlayer!.Player,
-                
-            };
-            await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
+                DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+                {
+                    loginTime = DateTime.Now,
+                    logoutTime = DateTime.Now,
+                    Date = DateTime.Now,
+                    IsLogged = true,
+                    Player = _playersDataStore.SelectedPlayer!.Player,
+
+                };
+                await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
         }
     }
 }

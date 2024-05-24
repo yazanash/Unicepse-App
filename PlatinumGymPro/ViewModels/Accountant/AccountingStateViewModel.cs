@@ -44,15 +44,15 @@ namespace PlatinumGymPro.ViewModels.Accountant
             _gymStore = gymStore;
             expensesListItemViewModels = new ObservableCollection<Expenses.ExpensesListItemViewModel>();
             LoadStateCommand = new LoadStatesCommand(this, _expensesStore,_gymStore);
-            _expensesStore.Loaded += _expensesStore_Loaded;
             _gymStore.DailyPaymentsSumLoaded += _gymStore_PaymentsLoaded;
             _gymStore.DailyExpensesSumLoaded += _gymStore_ExpensesLoaded;
             _gymStore.DailyCreditsSumLoaded += _gymStore_CreditsLoaded;
+            _gymStore.ExpensesLoaded += _expensesStore_Loaded;
         }
 
         private void _gymStore_CreditsLoaded(double obj)
         {
-            PaymentsCard = obj;
+            CreditsCard = obj;
         }
 
         private void _gymStore_ExpensesLoaded(double obj)
@@ -62,13 +62,13 @@ namespace PlatinumGymPro.ViewModels.Accountant
 
         private void _gymStore_PaymentsLoaded(double obj)
         {
-            CreditsCard = obj;
+            PaymentsCard = obj;
         }
 
         private void _expensesStore_Loaded()
         {
             expensesListItemViewModels.Clear();
-            foreach (Exp.Expenses player in _expensesStore.Expenses)
+            foreach (Exp.Expenses player in _gymStore.Expenses)
             {
                 AddExpenses(player);
             }

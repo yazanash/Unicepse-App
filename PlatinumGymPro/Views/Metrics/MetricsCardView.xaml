@@ -53,8 +53,10 @@
 
                         </DockPanel>
                     </Border>
-
-                    <comp:MetricCard DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"/>
+                    <Border  Visibility="{Binding IsSelected,Converter={StaticResource bolToVs}}" Grid.Column="1">
+                         <comp:MetricCard DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" />
+                    </Border>
+                   
                 </Grid>
 
             </DockPanel>

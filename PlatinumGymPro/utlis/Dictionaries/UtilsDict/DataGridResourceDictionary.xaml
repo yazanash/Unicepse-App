@@ -35,8 +35,8 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#dcdcdc"/>
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
+                <Setter Property="Background" Value="{StaticResource colors.primary}"/>
+                <Setter Property="Opacity" Value="0.6"/>
             </Trigger>
         </Style.Triggers>
     </Style>

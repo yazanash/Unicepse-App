@@ -23,6 +23,8 @@ namespace PlatinumGymPro.Commands.Player
        
         public override async Task ExecuteAsync(object? parameter)
         {
+            if(MessageBox.Show("سيتم حذف هذا اللاعب , هل انت متاكد","تنبيه", MessageBoxButton.YesNo,
+                                          MessageBoxImage.Warning) == MessageBoxResult.Yes)
             try
             {
                 PlatinumGym.Core.Models.Player.Player player = _playerStore.SelectedPlayer!.Player;

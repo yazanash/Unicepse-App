@@ -137,7 +137,7 @@
                 <Grid  Grid.Row="4">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="#C14E00" />
+                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="13*"/>
@@ -197,7 +197,7 @@
                                      Binding="{Binding Balance}"
                                     Width="auto"
                                     />
-                                <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">
+                                <DataGridTemplateColumn  Width="*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" x:Name="menu">
@@ -208,7 +208,7 @@
                                                     <Icon:PackIconMaterial Kind="Dumbbell"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>-->
                                                 <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
-                                                    <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
+                                                    <TextBlock Text="عرض الصفحة الشخصية" FontSize="12"/>
                                                 </Button>
                                             </StackPanel>
                                         </DataTemplate>

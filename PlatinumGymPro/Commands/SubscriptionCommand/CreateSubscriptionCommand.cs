@@ -65,8 +65,9 @@ namespace PlatinumGymPro.Commands.SubscriptionCommand
                     PrivatePrice = _addSubscriptionViewModel.PrivatePrice,
                     EndDate = _addSubscriptionViewModel.SubscribeDate.AddDays(_addSubscriptionViewModel.SubscribeDays),
                 };
+                _playerDataStore.SelectedPlayer!.Player.Balance -= subscription.PriceAfterOffer;
                 await _subscriptionDataStore.Add(subscription);
-
+                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!.Player);
                 _navigationService.ReNavigate();
             }
            catch(Exception ex)

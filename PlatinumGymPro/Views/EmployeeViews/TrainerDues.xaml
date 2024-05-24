@@ -46,20 +46,7 @@
                             </StackPanel>
 
                         </Button>
-                        <Button Grid.Column="0" Margin="10 0"  Command="{Binding SaveMounthlyReport}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Stretch">
-
-                            <StackPanel Orientation="Horizontal">
-
-                                <TextBlock Text="حفظ التقرير" />
-                                <Icon:PackIconMaterial Kind="ContentSave"
-                                       Width="11"
-                                       Height="11"
-                                       Margin="8 0 0 1"
-                                       VerticalAlignment="Center"/>
-                            </StackPanel>
-
-                        </Button>
-
+                        
                     </StackPanel>
                 </Grid>
             </Border>

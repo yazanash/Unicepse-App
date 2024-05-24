@@ -884,3 +884,9 @@ D:\Repo\PlatinumGymPro\PlatinumGymPro\bin\Debug\net6.0-windows\win-x64\Resources
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\utlis\Dictionaries\ListBoxItems\RoutineListResource.baml
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\EmployeeViews\TrainerSubscriptionView.g.cs
 D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\EmployeeViews\TrainerSubscriptionView.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\PlayersAttendenceViews\PlayerAttendenceView.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\PlayersAttendenceViews\PlayersAttendenceView.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\PlayersAttendenceViews\PlayerAttendenceView.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\PlayersAttendenceViews\PlayersAttendenceView.baml
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\RoutineViews\RoutineTemplateView.g.cs
+D:\Repo\PlatinumGymPro\PlatinumGymPro\obj\Debug\net6.0-windows\win-x64\Views\RoutineViews\RoutineTemplateView.baml

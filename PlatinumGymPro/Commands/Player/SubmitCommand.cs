@@ -27,7 +27,8 @@ namespace PlatinumGymPro.Commands
         private readonly MetricDataStore _metricDataStore;
         private readonly RoutineDataStore _routineDataStore;
         private readonly PaymentDataStore _paymentDataStore;
-        public SubmitCommand(NavigationService<PlayerProfileViewModel> navigationService, AddPlayerViewModel addPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, PlayerListViewModel playerListViewModel, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PaymentDataStore paymentDataStore)
+        private readonly PlayersAttendenceStore _playersAttendenceStore;
+        public SubmitCommand(NavigationService<PlayerProfileViewModel> navigationService, AddPlayerViewModel addPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, PlayerListViewModel playerListViewModel, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PaymentDataStore paymentDataStore, PlayersAttendenceStore playersAttendenceStore)
         {
 
             this.navigationService = navigationService;
@@ -41,6 +42,7 @@ namespace PlatinumGymPro.Commands
             _metricDataStore = metricDataStore;
             _routineDataStore = routineDataStore;
             _paymentDataStore = paymentDataStore;
+            _playersAttendenceStore = playersAttendenceStore;
         }
 
         private void AddPlayerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -76,7 +78,7 @@ namespace PlatinumGymPro.Commands
                     IsSubscribed = true
                 };
                 await _playerStore.AddPlayer(player);
-                _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _PlayerListViewModel);
+                _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _PlayerListViewModel, _playersAttendenceStore);
                 _addPlayerViewModel.Submited = true;
                 _playerStore.SelectedPlayer!.OpenProfileCommand!.Execute(null);
                 //navigationService.ReNavigate();

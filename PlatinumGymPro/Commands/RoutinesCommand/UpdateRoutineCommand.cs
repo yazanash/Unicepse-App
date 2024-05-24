@@ -40,6 +40,7 @@ namespace PlatinumGymPro.Commands.RoutinesCommand
 
             playerRoutine.RoutineData = _editSelectRoutineDaysMuscleGroupViewModel.Date;
             playerRoutine.RoutineNo = _editSelectRoutineDaysMuscleGroupViewModel.Number;
+            playerRoutine.IsTemplate = _editSelectRoutineDaysMuscleGroupViewModel.IsTemplate;
             await _routineDataStore.Update(playerRoutine);
 
             MessageBox.Show("Player Routine Updated Successfully");

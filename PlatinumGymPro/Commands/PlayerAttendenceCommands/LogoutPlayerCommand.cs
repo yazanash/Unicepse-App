@@ -19,13 +19,9 @@ namespace PlatinumGymPro.Commands.PlayerAttendenceCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
-            {
-                Id=_playersAttendenceStore.SelectedDailyPlayerReport!.Id,
-                logoutTime = DateTime.Now,
-                IsLogged = false,
-            };
-            await _playersAttendenceStore.LogOutPlayer(dailyPlayerReport);
+            _playersAttendenceStore.SelectedDailyPlayerReport!.logoutTime = DateTime.Now;
+            _playersAttendenceStore.SelectedDailyPlayerReport!.IsLogged = false;
+            await _playersAttendenceStore.LogOutPlayer(_playersAttendenceStore.SelectedDailyPlayerReport!);
         }
     }
 }

@@ -103,7 +103,6 @@ namespace PlatinumGymPro.ViewModels.Metrics
             {
                 _lThigh = value;
                 OnPropertyChanged(nameof(L_Thigh));
-                    R_Thigh = L_Thigh;
             }
         }
         public double _rThigh;
@@ -114,6 +113,8 @@ namespace PlatinumGymPro.ViewModels.Metrics
             {
                 _rThigh = value;
                 OnPropertyChanged(nameof(R_Thigh));
+                L_Thigh = R_Thigh;
+
             }
         }
         /// Leg
@@ -125,7 +126,6 @@ namespace PlatinumGymPro.ViewModels.Metrics
             {
                 _lLeg = value;
                 OnPropertyChanged(nameof(L_Leg));
-                    R_Leg = L_Leg;
             }
         }
         public double _rLeg;
@@ -136,6 +136,8 @@ namespace PlatinumGymPro.ViewModels.Metrics
             {
                 _rLeg = value;
                 OnPropertyChanged(nameof(R_Leg));
+                L_Leg = R_Leg;
+
             }
         }
         /// Neck

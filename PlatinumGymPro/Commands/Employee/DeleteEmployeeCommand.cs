@@ -22,7 +22,9 @@ namespace PlatinumGymPro.Commands.Employee
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            try
+            if (MessageBox.Show("سيتم حذف هذا اللاعب , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                try
             {
                 await _employeeStore.Delete(_employeeStore.SelectedEmployee!);
                 _navigationService.ReNavigate();

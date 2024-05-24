@@ -88,6 +88,10 @@
                     <TextBlock Text="اليوم السادس :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                     <TextBlock Text="{Binding day6}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="2" Grid.Row="5">
+                    <TextBlock Text="اليوم السابع :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
+                    <TextBlock Text="{Binding day7}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
+                </StackPanel>
             </Grid>
                 <!--#endregion-->
 

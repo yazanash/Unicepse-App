@@ -130,7 +130,7 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             }));
             SelectedMuscle = MuscleGroup.FirstOrDefault();
 
-            AddRoutineCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadAddRoutineViewModel( _playersDataStore,  _routineDataStore,new NavigationService<RoutinePlayerViewModels>(_navigationStore,()=>this),_navigationStore)));
+            AddRoutineCommand = new NavaigateCommand<RoutineTemplatesViewModel>(new NavigationService<RoutineTemplatesViewModel>(_navigationStore, () => LoadAddRoutineViewModel( _playersDataStore,  _routineDataStore,_navigationStore,this)));
 
         }
 
@@ -153,13 +153,14 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
             _selectedRoutineItemsViewModels.Add(routineExercisesItemsViewModel);
         }
 
-        private AddRoutineViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore,NavigationService<RoutinePlayerViewModels> navigationService,NavigationStore navigationStore)
+        private RoutineTemplatesViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore,NavigationStore navigationStore,RoutinePlayerViewModels routinePlayerViewModels)
         {
-            return AddRoutineViewModel.LoadViewModel( playerStore, routineDataStore, navigationService, navigationStore);
+            return RoutineTemplatesViewModel.LoadViewModel(routineDataStore, playerStore,  navigationStore, routinePlayerViewModels);
         }
         private void _routineDataStore_StateChanged(PlayerRoutine? obj)
         {
             _selectedRoutineItemsViewModels.Clear();
+            if(obj != null)
             foreach (var routineItem in obj!.RoutineSchedule.Where(x => x.Exercises!.GroupId == _routineDataStore.SelectedMuscle!.Id).OrderBy(x => x.ItemOrder))
             {
                 AddRoutineItem(routineItem);
@@ -184,7 +185,7 @@ namespace PlatinumGymPro.ViewModels.RoutineViewModels
                 AddRoutine(routine);
 
             }
-           
+            SelectedRoutine = _routineItemViewModels.SingleOrDefault();
         }
 
         private void _routineDataStore_Deleted(int id)

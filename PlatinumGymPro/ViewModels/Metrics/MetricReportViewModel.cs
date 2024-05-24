@@ -80,7 +80,7 @@ namespace PlatinumGymPro.ViewModels.Metrics
         private void _metricDataStore_Loaded()
         {
             _metricListItemViewModels.Clear();
-            foreach(var metric in _metricDataStore.Metrics)
+            foreach(var metric in _metricDataStore.Metrics.OrderByDescending(x=>x.CheckDate))
             {
                 AddMetric(metric);
 

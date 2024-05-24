@@ -117,6 +117,12 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             {
                 _salaryValue = value;
                 OnPropertyChanged(nameof(SalaryValue));
+                ClearError(nameof(SalaryValue));
+                if (SalaryValue < 0)
+                {
+                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(SalaryValue));
+                    OnErrorChanged(nameof(SalaryValue));
+                }
             }
         }
 
@@ -128,6 +134,7 @@ namespace PlatinumGymPro.ViewModels.Employee.TrainersViewModels
             {
                 _parcentValue = value;
                 OnPropertyChanged(nameof(ParcentValue));
+
             }
         }
 

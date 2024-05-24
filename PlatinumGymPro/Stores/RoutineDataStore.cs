@@ -61,6 +61,7 @@ namespace PlatinumGymPro.Stores
             set
             {
                 _selectedRoutine = value;
+                _routineItems.Clear();
                 StateChanged?.Invoke(SelectedRoutine);
             }
         }
@@ -115,6 +116,14 @@ namespace PlatinumGymPro.Stores
         {
 
             IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetAll(player);
+            _playerRoutines.Clear();
+            _playerRoutines.AddRange(routines);
+            Loaded?.Invoke();
+        }
+        public async Task GetAllTemp()
+        {
+
+            IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetAllTemp();
             _playerRoutines.Clear();
             _playerRoutines.AddRange(routines);
             Loaded?.Invoke();

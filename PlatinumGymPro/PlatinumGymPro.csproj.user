@@ -169,6 +169,12 @@
     <Compile Update="Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PlayersAttendenceViews\PlayerAttendenceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayersAttendenceViews\PlayersAttendenceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -179,6 +185,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\RoutineViews\EditRoutineView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineViews\RoutineTemplateView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\RoutineViews\RoutineView.xaml.cs">
@@ -435,6 +444,12 @@
     <Page Update="Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\PlayersAttendenceViews\PlayerAttendenceView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayersAttendenceViews\PlayersAttendenceView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\PlayerViews\PlayerMainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -445,6 +460,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineViews\EditRoutineView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineViews\RoutineTemplateView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineViews\RoutineView.xaml">

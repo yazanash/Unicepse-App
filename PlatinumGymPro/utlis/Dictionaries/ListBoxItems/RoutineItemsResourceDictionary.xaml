@@ -276,7 +276,7 @@
 
                                 <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
                                     <TextBlock Text="العد والجولات" 
-                                       Foreground="#993300"
+                                       Foreground="{StaticResource colors.primary}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                     <TextBox 
@@ -284,7 +284,7 @@
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
                                     <TextBlock Text="ملاحظات" 
-                                       Foreground="#993300"
+                                       Foreground="{StaticResource colors.primary}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                     <TextBox 

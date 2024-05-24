@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace PlatinumGymPro.Commands.Payments
 {
-    public class EditPaymentsCommand :AsyncCommandBase
+    public class EditPaymentsCommand : AsyncCommandBase
     {
         private readonly NavigationService<PaymentListViewModel> _navigationService;
         private readonly PlayersDataStore _playersDataStore;
@@ -32,26 +32,27 @@ namespace PlatinumGymPro.Commands.Payments
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            _paymentDataStore.SelectedPayment!.Subscription!.IsPaid = false;
-            _paymentDataStore.SelectedPayment.Subscription.PaidValue -= _paymentDataStore.SelectedPayment.PaymentValue;
-            await _subscriptionDataStore.Update(_paymentDataStore.SelectedPayment.Subscription);
-            PlayerPayment payment = new PlayerPayment()
-            {
-                Id = _paymentDataStore.SelectedPayment!.Id,
-                PayDate = _editPaymentViewModel.PayDate,
-                PaymentValue = _editPaymentViewModel.PaymentValue,
-                Des = _editPaymentViewModel.Descriptiones,
-                Subscription = _editPaymentViewModel.SelectedSubscription!.Subscription,
-                Player = _editPaymentViewModel.SelectedSubscription!.Subscription.Player,
+            _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
+            _subscriptionDataStore.SelectedSubscription!.PaidValue -= _paymentDataStore.SelectedPayment!.PaymentValue;
+            _playersDataStore.SelectedPlayer!.Player.Balance -= _paymentDataStore.SelectedPayment.PaymentValue;
 
-            };
-            _subscriptionDataStore.SelectedSubscription!.PaidValue += payment.PaymentValue;
+
+            _paymentDataStore.SelectedPayment.Id = _paymentDataStore.SelectedPayment!.Id;
+            _paymentDataStore.SelectedPayment.PayDate = _editPaymentViewModel.PayDate;
+            _paymentDataStore.SelectedPayment.PaymentValue = _editPaymentViewModel.PaymentValue;
+            _paymentDataStore.SelectedPayment.Des = _editPaymentViewModel.Descriptiones;
+            _paymentDataStore.SelectedPayment.Subscription = _subscriptionDataStore.SelectedSubscription!;
+            _paymentDataStore.SelectedPayment.Player = _playersDataStore.SelectedPlayer!.Player;
+
+
+            _subscriptionDataStore.SelectedSubscription!.PaidValue += _paymentDataStore.SelectedPayment.PaymentValue;
+            _playersDataStore.SelectedPlayer!.Player.Balance += _paymentDataStore.SelectedPayment.PaymentValue;
             if (_subscriptionDataStore.SelectedSubscription!.PaidValue == _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer)
                 _subscriptionDataStore.SelectedSubscription.IsPaid = true;
 
-            await _paymentDataStore.Update(payment);
+            await _paymentDataStore.Update(_paymentDataStore.SelectedPayment!);
             await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription);
-            MessageBox.Show("payment updated successfully");
+            await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!.Player);
             _navigationService.ReNavigate();
         }
     }

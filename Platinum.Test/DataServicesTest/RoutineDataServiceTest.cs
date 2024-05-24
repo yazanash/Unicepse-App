@@ -149,7 +149,7 @@ namespace Platinum.Test.DataServicesTest
             //Act
             PlayerRoutine test_routine = await routineDataService!.Create(expected_routine);
             PlayerRoutine actual_routine = await routineDataService.Get(test_routine.Id);
-            actual_routine.RoutineNo = 1;
+            actual_routine.RoutineNo = "1";
             PlayerRoutine updated_routine = await routineDataService.Update(actual_routine);
             //Assert
             Assert.AreEqual(actual_routine.RoutineNo, updated_routine.RoutineNo);
@@ -162,7 +162,7 @@ namespace Platinum.Test.DataServicesTest
             //Arrange
             PlayerRoutine expected_routine = routineFactory!.FakeRoutine();
             //Act
-            expected_routine.RoutineNo = 4;
+            expected_routine.RoutineNo = "4";
             //Assert
             Assert.ThrowsAsync<NotExistException>(
                async () => await routineDataService!.Update(expected_routine));

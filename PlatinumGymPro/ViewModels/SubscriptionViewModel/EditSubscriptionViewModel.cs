@@ -93,7 +93,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             OfferValue = _subscriptionStore.SelectedSubscription!.OfferValue;
             PrivatePrice = _subscriptionStore.SelectedSubscription!.PrivatePrice;
             SubscribeDate = _subscriptionStore.SelectedSubscription!.RollDate;
-            DaysCounter = _subscriptionStore.SelectedSubscription.DaysCount==_subscriptionStore.SelectedSubscription.Sport!.DaysCount;
+            DaysCounter = _subscriptionStore.SelectedSubscription.DaysCount == _subscriptionStore.SelectedSubscription.Sport!.DaysCount;
             SubscribeDays = _subscriptionStore.SelectedSubscription.DaysCount;
             PrivateProvider = _subscriptionStore.SelectedSubscription.IsPlayerPay;
 
@@ -106,12 +106,14 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
 
         private void _subscriptionStore_StateChanged(Sport? sport)
         {
+            _trainerListItemViewModels.Clear();
             foreach (var trainer in sport!.Trainers!)
             {
                 AddTrainer(trainer);
             }
-            if(_subscriptionStore.SelectedSubscription!.Sport!.Id==sport.Id)
-            SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.Trainer!.Id);
+            if (_subscriptionStore.SelectedSubscription!.Sport!.Id == sport.Id)
+                if (_subscriptionStore.SelectedSubscription!.Trainer != null)
+                    SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.Trainer!.Id);
         }
         private void CountTotal()
         {
@@ -126,7 +128,7 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
             }
 
         }
-       
+
         #region Properties
         private double SportPrice { get; set; }
         private int _subscribeDays;
@@ -243,9 +245,9 @@ namespace PlatinumGymPro.ViewModels.SubscriptionViewModel
                 new SubscriptionTrainerListItem(trainer);
             _trainerListItemViewModels.Add(itemViewModel);
         }
-        public static EditSubscriptionViewModel LoadViewModel(SportDataStore sportDataStore, NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore,PlayersDataStore playersDataStore,PlayerMainPageViewModel playerMainPageViewModel)
+        public static EditSubscriptionViewModel LoadViewModel(SportDataStore sportDataStore, NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel)
         {
-            EditSubscriptionViewModel viewModel = new(sportDataStore, navigatorStore, subscriptionDataStore,playersDataStore, playerMainPageViewModel);
+            EditSubscriptionViewModel viewModel = new(sportDataStore, navigatorStore, subscriptionDataStore, playersDataStore, playerMainPageViewModel);
 
             viewModel.LoadSportsCommand.Execute(null);
 

@@ -54,7 +54,7 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
         public ICommand? LogInCommand { get; }
         public PlayerListItemViewModel(Player player, NavigationStore navigationStore,
             SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,
-            SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayerListViewModel playerList)
+            SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayerListViewModel playerList,PlayersAttendenceStore playersAttendenceStore)
         {
             Player = player;
             _playersDataStore = playersDataStore;
@@ -64,11 +64,12 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
             _paymentDataStore = paymentDataStore;
             _metricDataStore = metricDataStore;
             _routineDataStore = routineDataStore;
+            _playersAttendenceStore = playersAttendenceStore;
 
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
             EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(PlayerMainPageNavigation, () => new EditPlayerViewModel(PlayerMainPageNavigation, _playersDataStore, _subscriptionDataStore, CreatePlayerMainPageViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _sportDataStore), _sportDataStore, _paymentDataStore)));
             DeleteCommand = new DeletePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList), _playersDataStore);
-            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore)));
+            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore,_playersAttendenceStore)));
             TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigationStore)));
         }
 
@@ -85,10 +86,10 @@ namespace PlatinumGymPro.ViewModels.PlayersViewModels
 
             OnPropertyChanged(nameof(FullName));
         }
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore)
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore,   PlayersAttendenceStore playersAttendenceStore)
         {
             //playersDataStore.SelectedPlayer = this;
-            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, _metricDataStore, routineDataStore);
+            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore);
         }
         private static PlayerMainPageViewModel CreatePlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore)
         {

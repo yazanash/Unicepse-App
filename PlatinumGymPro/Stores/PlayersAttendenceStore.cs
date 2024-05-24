@@ -60,7 +60,9 @@ namespace PlatinumGymPro.Stores
 
         public async Task GetLoggedPlayers()
         {
-            await _initializeLazy.Value;
+            IEnumerable<DailyPlayerReport> LoggedPlayers = await _playersAttendenceService.GetLoggedPlayers();
+            _playersAttendence.Clear();
+            _playersAttendence.AddRange(LoggedPlayers);
             Loaded?.Invoke();
         }
         public async Task GetPlayerLogging(int playerid)
@@ -72,9 +74,7 @@ namespace PlatinumGymPro.Stores
         }
         public async Task Initialize()
         {
-            IEnumerable<DailyPlayerReport> LoggedPlayers = await _playersAttendenceService.GetLoggedPlayers();
-            _playersAttendence.Clear();
-            _playersAttendence.AddRange(LoggedPlayers);
+          throw new NotImplementedException();
           
         }
       

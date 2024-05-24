@@ -28,7 +28,19 @@ namespace PlatinumGymPro.Commands.RoutinesCommand
             _navigationService = navigationService;
             this.selectRoutineDaysMuscleGroupViewModel = selectRoutineDaysMuscleGroupViewModel;
         }
+        private void AddPlayerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(selectRoutineDaysMuscleGroupViewModel.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
+        }
 
+        public override bool CanExecute(object? parameter)
+        {
+
+            return selectRoutineDaysMuscleGroupViewModel.CanSubmit && !string.IsNullOrEmpty(selectRoutineDaysMuscleGroupViewModel.Number) && base.CanExecute(null);
+        }
         public override async Task ExecuteAsync(object? parameter)
         {
             PlayerRoutine playerRoutine = new()
@@ -36,7 +48,7 @@ namespace PlatinumGymPro.Commands.RoutinesCommand
                 RoutineNo = selectRoutineDaysMuscleGroupViewModel.Number,
                 RoutineData =selectRoutineDaysMuscleGroupViewModel.Date,
                 Player=_playersDataStore.SelectedPlayer!.Player,
-                
+                IsTemplate = selectRoutineDaysMuscleGroupViewModel.IsTemplate
             };
             
             playerRoutine.RoutineSchedule.AddRange(_routineDataStore.RoutineItems);

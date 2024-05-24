@@ -1,5 +1,6 @@
 ﻿using PlatinumGym.Core.Models.Employee;
 using PlatinumGymPro.Commands;
+using PlatinumGymPro.Commands.Employee.CreditsCommands;
 using PlatinumGymPro.Services;
 using PlatinumGymPro.Stores;
 using System;
@@ -30,9 +31,10 @@ namespace PlatinumGymPro.ViewModels.Employee.CreditViewModels
             _navigationStore = navigationStore;
             _creditListViewModel = creditListViewModel;
             EditCommand = new NavaigateCommand<EditCreditDetailsViewModel>(new NavigationService<EditCreditDetailsViewModel>(_navigationStore, () => new EditCreditDetailsViewModel(_employeeStore, _creditsDataStore, _navigationStore, _creditListViewModel)));
-
+            DeleteCommand = new DeleteCreditsCommand(_creditsDataStore);
         }
         public ICommand EditCommand { get; }
+        public ICommand DeleteCommand { get; }
         public void Update(Credit obj)
         {
             this.credit = obj;

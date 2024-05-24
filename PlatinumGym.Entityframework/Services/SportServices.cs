@@ -57,7 +57,11 @@ namespace PlatinumGym.Entityframework.Services
                 //if (existed_sport != null)
                 //    throw new SportConflictException();
                 foreach (var trainer in entity.Trainers!)
+                {
+                    context.Entry(trainer).State = EntityState.Detached;
                     context.Attach(trainer);
+
+                }
                 EntityEntry<Sport> CreatedResult = await context.Set<Sport>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
@@ -108,6 +112,11 @@ namespace PlatinumGym.Entityframework.Services
             Sport existed_sport = await Get(entity.Id);
             if (existed_sport == null)
                 throw new NotExistException("هذه الرياضة غير موجودة");
+            foreach (var trainer in entity.Trainers!)
+            {
+                context.Entry(trainer).State = EntityState.Detached;
+                context.Attach(trainer);
+            }
             context.Set<Sport>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

@@ -164,11 +164,9 @@
 
                                             <StackPanel Orientation="Horizontal">
                                                 <Button Command="{Binding OpenAccountCommand}" Style="{StaticResource GridremoveBtn}">
-                                                    <Icon:PackIconMaterial Kind="OpenInNew" Style="{StaticResource GridBtnIcon}"/>
+                                                    <TextBlock Text="عرض الصفحة الشخصية" FontSize="12"/>
                                                 </Button>
-                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
-                                                    <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
+                                             
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
