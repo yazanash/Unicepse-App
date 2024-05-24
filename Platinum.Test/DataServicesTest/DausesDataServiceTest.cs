@@ -1,21 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using Platinum.Test.Fakes;
-using PlatinumGym.Core.Models.Employee;
-using PlatinumGym.Core.Models.Payment;
-using PlatinumGym.Core.Models.Player;
-using PlatinumGym.Core.Models.Sport;
-using PlatinumGym.Core.Models.Subscription;
-using PlatinumGym.Entityframework.DbContexts;
-using PlatinumGym.Entityframework.Services;
-using PlatinumGym.Entityframework.Services.PlayerQueries;
+using Unicepse.Test.Fakes;
+using Unicepse.Core.Models.Employee;
+using Unicepse.Core.Models.Payment;
+using Unicepse.Core.Models.Player;
+using Unicepse.Core.Models.Sport;
+using Unicepse.Core.Models.Subscription;
+using Unicepse.Entityframework.DbContexts;
+using Unicepse.Entityframework.Services;
+using Unicepse.Entityframework.Services.PlayerQueries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Platinum.Test.DataServicesTest
+namespace Unicepse.Test.DataServicesTest
 {
     [TestFixture]
     public class DausesDataServiceTest
@@ -224,7 +224,7 @@ namespace Platinum.Test.DataServicesTest
 
 
 
-            Subscription subscription9 = await create_subscription(triner,80000, new DateTime(2024, 4, 25));
+            Subscription subscription9 = await create_subscription(triner, 80000, new DateTime(2024, 4, 25));
             await create_paymentforsubscription(subscription9, new DateTime(2024, 5, 30), 80000, new DateTime(2024, 4, 25));
 
             subscriptions.Add(subscription1);
@@ -238,7 +238,7 @@ namespace Platinum.Test.DataServicesTest
             subscriptions.Add(subscription9);
             return subscriptions;
         }
-        private async Task<PlayerPayment> create_paymentforsubscription(Subscription subscription, DateTime paydate,double pay,DateTime from)
+        private async Task<PlayerPayment> create_paymentforsubscription(Subscription subscription, DateTime paydate, double pay, DateTime from)
         {
 
             PlayerPayment payment = new()
@@ -302,7 +302,7 @@ namespace Platinum.Test.DataServicesTest
             DateTime date1 = new DateTime(2024, 4, 30);
             DateTime date2 = new DateTime(2024, 5, 31);
             Employee triner = await create_trainer();
-           List<Subscription> subscriptions = await GenerateData(triner);
+            List<Subscription> subscriptions = await GenerateData(triner);
 
 
 
@@ -314,11 +314,11 @@ namespace Platinum.Test.DataServicesTest
                 date1TD += dausesDataService!.GetParcent(pay, date1);
             }
 
-           
 
 
 
-           
+
+
 
 
             IEnumerable<PlayerPayment> playerPayments2 = await paymentDataService!.GetTrainerPayments(triner, date2);
@@ -331,10 +331,10 @@ namespace Platinum.Test.DataServicesTest
 
             double total = date1TD + date2TD;
             double allTotal = subscriptions.Sum(x => x.PriceAfterOffer);
-            double allDauses = (allTotal * triner.ParcentValue)/100;
+            double allDauses = allTotal * triner.ParcentValue / 100;
             //Assert.AreEqual(37000, (int)date1TD);
             //Assert.AreEqual(58916, (int) date2TD);
-            Assert.AreEqual(allDauses, (int)((date1TD+date2TD)*triner.ParcentValue)/100);
+            Assert.AreEqual(allDauses, (int)((date1TD + date2TD) * triner.ParcentValue) / 100);
 
         }
 

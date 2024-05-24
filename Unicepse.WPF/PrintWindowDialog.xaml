@@ -1,0 +1,51 @@
+﻿<Window x:Class="Unicepse.WPF.PrintWindowDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Unicepse.WPF"
+        mc:Ignorable="d"
+        xmlns:subprintvms="clr-namespace:Unicepse.WPF.ViewModels.PrintViewModels"
+        xmlns:subprintvs="clr-namespace:Unicepse.WPF.utlis.Pages"
+        WindowState="Normal"
+         Icon="Resources/icons/Logo.ico"
+        Title="PrintWindowDialog"   >
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type subprintvms:SubscriptionPrintViewModel }">
+            <subprintvs:SubscriptionPrintView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type subprintvms:RoutinePrintViewModel }">
+            <subprintvs:PlayerRoutinePrintView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type subprintvms:EditRoutinePrintViewModel }">
+            <subprintvs:PlayerRoutinePrintView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type subprintvms:TrainerDetiledReportViewModel }">
+            <subprintvs:TrainerDetailedReport />
+        </DataTemplate>
+    </Window.Resources>
+        <Border Background="#fff"
+            Padding="5 10" 
+            CornerRadius="10">
+        <!--<views:HomeView/>-->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Style="{StaticResource AddBtn}" Content="Print" Click="Button_Click" Height="50"   />
+
+            </StackPanel>
+           
+                <ScrollViewer CanContentScroll="True" Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+               
+                    <ContentControl Grid.Row="1" x:Name="print" Content="{Binding CurrentPrint}" />
+             
+            </ScrollViewer>
+
+            
+        </Grid>
+      
+    </Border>
+</Window>
