@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatinumGym.Core.Models.Subscription;
-using PlatinumGym.Entityframework.Services;
-using PlatinumGym.Entityframework.DbContexts;
-using Platinum.Test.Fakes;
+using Unicepse.Core.Models.Subscription;
+using Unicepse.Entityframework.Services;
+using Unicepse.Entityframework.DbContexts;
+using Unicepse.Test.Fakes;
 using Microsoft.EntityFrameworkCore;
-using PlatinumGym.Core.Models.Player;
-using PlatinumGym.Entityframework.Services.PlayerQueries;
-using PlatinumGym.Core.Models.Sport;
-using PlatinumGym.Core.Models.Employee;
-using PlatinumGym.Core.Exceptions;
+using Unicepse.Core.Models.Player;
+using Unicepse.Entityframework.Services.PlayerQueries;
+using Unicepse.Core.Models.Sport;
+using Unicepse.Core.Models.Employee;
+using Unicepse.Core.Exceptions;
 
-namespace Platinum.Test.DataServicesTest
+namespace Unicepse.Test.DataServicesTest
 {
     [TestFixture]
     public class SubscriptionDataServiceTest
@@ -120,7 +120,7 @@ namespace Platinum.Test.DataServicesTest
             Assert.AreEqual(expected_subscription.Player!.FullName, actual_subscription.Player!.FullName);
             Assert.AreEqual(expected_subscription.Sport!.Name, actual_subscription.Sport!.Name);
         }
-    
+
         [Test]
         //it should try to create existed subscription and throw conflict exception
         public async Task CreateExisteingSubscription()
@@ -175,7 +175,7 @@ namespace Platinum.Test.DataServicesTest
             Player player = await create_player();
             Sport sport = await create_sport();
             Employee trainer = await create_trainer();
-            Subscription expected_subscription = subscriptionFactory!.FakeSubscription(sport,player,trainer);
+            Subscription expected_subscription = subscriptionFactory!.FakeSubscription(sport, player, trainer);
             //Act
             Subscription test_subscription = await subscriptionDataService!.Create(expected_subscription);
             Subscription actual_subscription = await subscriptionDataService.Get(test_subscription.Id);
@@ -186,7 +186,7 @@ namespace Platinum.Test.DataServicesTest
             //Assert
             Assert.AreEqual(updated_subscription.Trainer, null);
         }
-      
+
         [Test]
         /// it should try update not exist subscription and throw not exist exception
         public async Task UpdateNotExistSubsciption()
@@ -195,7 +195,7 @@ namespace Platinum.Test.DataServicesTest
             Player player = await create_player();
             Sport sport = await create_sport();
             Employee trainer = await create_trainer();
-            Subscription expected_subscription = subscriptionFactory!.FakeSubscription(sport , player,trainer);
+            Subscription expected_subscription = subscriptionFactory!.FakeSubscription(sport, player, trainer);
             //Act
             expected_subscription.Price = 75000;
             //Assert

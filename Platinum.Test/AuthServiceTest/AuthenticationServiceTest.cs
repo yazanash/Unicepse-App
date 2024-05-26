@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNet.Identity;
 using Moq;
 using NUnit.Framework;
-using Platinum.Test.Fakes;
-using PlatinumGym.Core.Exceptions;
-using PlatinumGym.Core.Models.Authentication;
-using PlatinumGym.Core.Services;
-using PlatinumGym.Entityframework.Services.AuthService;
+using Unicepse.Test.Fakes;
+using Unicepse.Core.Exceptions;
+using Unicepse.Core.Models.Authentication;
+using Unicepse.Core.Services;
+using Unicepse.Entityframework.Services.AuthService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Platinum.Test.AuthServiceTest
+namespace Unicepse.Test.AuthServiceTest
 {
     [TestFixture]
     public class AuthenticationServiceTest
@@ -20,9 +20,9 @@ namespace Platinum.Test.AuthServiceTest
         Mock<IAccountDataService<User>>? mockAccountDataService;
         Mock<IPasswordHasher>? mockPasswordhasher;
         AuthenticationService? authenticationService;
-        UserFactory ? userFactory;
+        UserFactory? userFactory;
 
-     [SetUp]
+        [SetUp]
         public void SetUp()
         {
             mockAccountDataService = new Mock<IAccountDataService<User>>();
@@ -35,9 +35,9 @@ namespace Platinum.Test.AuthServiceTest
         {
             string userName = "testuser";
             string password = "password";
-            mockAccountDataService!.Setup(s=>s.GetByUsername(userName)).ReturnsAsync(new User { UserName = userName,Password=password});
+            mockAccountDataService!.Setup(s => s.GetByUsername(userName)).ReturnsAsync(new User { UserName = userName, Password = password });
             mockPasswordhasher!.Setup(s => s.VerifyHashedPassword(It.IsAny<string>(), password)).Returns(PasswordVerificationResult.Success);
-            User user = await authenticationService!.Login(userName,password);
+            User user = await authenticationService!.Login(userName, password);
 
             Assert.AreEqual(userName, user.UserName);
         }

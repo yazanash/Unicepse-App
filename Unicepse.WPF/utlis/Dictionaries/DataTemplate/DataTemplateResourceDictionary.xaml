@@ -1,0 +1,60 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    
+                      xmlns:viewmodels="clr-namespace:Unicepse.WPF.utlis.common"
+             xmlns:vms="clr-namespace:Unicepse.WPF.ViewModels"
+                      xmlns:vsa="clr-namespace:Unicepse.WPF.Views"
+                    
+                       xmlns:pvmodels="clr-namespace:Unicepse.WPF.ViewModels.PlayersViewModels.vm"
+             xmlns:pviews="clr-namespace:Unicepse.WPF.Views.PlayerViews"
+                    
+                    xmlns:svmodels="clr-namespace:Unicepse.WPF.ViewModels.SportsViewModels"
+             xmlns:sviews="clr-namespace:Unicepse.WPF.Views.SportViews"
+                    
+                      xmlns:authvmodels="clr-namespace:Unicepse.WPF.ViewModels.Authentication"
+                    
+                      xmlns:tvmodels="clr-namespace:Unicepse.WPF.ViewModels.Employee.TrainersViewModels"
+             xmlns:tviews="clr-namespace:Unicepse.WPF.Views.EmployeeViews"
+                    
+             xmlns:vmodels="clr-namespace:Unicepse.WPF.ViewModels.Accountant"
+             xmlns:views="clr-namespace:Unicepse.WPF.Views"
+             xmlns:vs="clr-namespace:Unicepse.WPF.Views.AccountingViews"
+             xmlns:playervs="clr-namespace:Unicepse.WPF.Views.PlayerViews"
+             xmlns:vi="clr-namespace:Unicepse.WPF.Views.PlayerViews"
+             xmlns:login="clr-namespace:Unicepse.WPF.Views.AuthView"
+                       xmlns:uservms="clr-namespace:Unicepse.WPF.ViewModels.Authentication"
+             xmlns:userview="clr-namespace:Unicepse.WPF.Views.AuthView"
+                    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DataTemplate DataType="{x:Type viewmodels:MainViewModel}">
+        <views:MainView />
+
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewmodels:HomeViewModel }">
+        <views:HomeView />
+
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type authvmodels:AuthViewModel }">
+        <!--<views:HomeView />-->
+        <login:LoginView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type svmodels:SportsViewModel }">
+        <views:SportsView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type tvmodels:TrainersViewModel}">
+        <views:TrainersView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type uservms:UsersViewModel}">
+        <userview:UsersView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vmodels:AccountingViewModel }">
+        <vs:AccountnigView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type pvmodels:PlayersPageViewModel }">
+        <views:PlayersView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vms:AppInfoViewModel }">
+        <vsa:ApplicationAboutView/>
+    </DataTemplate>
+
+</ResourceDictionary>
