@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Unicepse.Views.TrainersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Unicepse.Views"
+                Background="#ffffff"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:vms="clr-namespace:Unicepse.ViewModels.Employee.TrainersViewModels"
+              xmlns:evms="clr-namespace:Unicepse.ViewModels.Employee.TrainersViewModels"
+             xmlns:views="clr-namespace:Unicepse.Views.TrainerViews"
+              xmlns:eviews="clr-namespace:Unicepse.Views.EmployeeViews"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type vms:AddTrainerViewModel }">
+            <views:TrainerDetailView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:TrainersListViewModel }">
+            <eviews:EmployeesListView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type evms:EditTrainerViewModel }">
+            <views:EditTrainerDetailView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type evms:AddEmployeeViewModel}">
+            <eviews:EmployeeDetailsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type evms:EditEmployeeViewModel}">
+            <eviews:EmployeeDetailsView/>
+        </DataTemplate>
+        <!--<DataTemplate DataType="{x:Type evms:TrainerDausesListViewModel }">
+            <eviews:TrainerDuesesView/>
+        </DataTemplate>-->
+        <DataTemplate DataType="{x:Type evms:EmployeeAccountViewModel }">
+            <eviews:TrainerDuesesView/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <ContentControl Content="{Binding CurrentViewModel}"/>
+    </Grid>
+</UserControl>

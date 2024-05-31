@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="Unicepse.Views.TrainerViews.TrainerDues"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Unicepse.Views.TrainerViews"
+            xmlns:ctrl="clr-namespace:Unicepse.Controls"
+             xmlns:cdr="clr-namespace:Unicepse.utlis.Components"
+             mc:Ignorable="d" 
+             FlowDirection="RightToLeft"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks" 
+             d:DesignWidth="800">
+    <Border CornerRadius="10" Background="#EEE" Padding="5" >
+       
+            <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Background="#fff" CornerRadius="10" Grid.Column="0"   Grid.Row="0"  Padding="10"  Margin="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="تاريخ التقرير " Foreground="{StaticResource colors.secondry}" Margin="0 0 20 0" FontSize="20" VerticalAlignment="Center" DockPanel.Dock="Top"/>
+                        <DatePicker Style="{DynamicResource DatePickerStyle1}"
+                                    SelectedDate="{Binding ReportDate, UpdateSourceTrigger=PropertyChanged}"
+                                    
+                                    CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
+                                   />
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal"  >
+                       <Button Grid.Column="0" Margin="10 0"  Command="{Binding LoadMounthlyReport}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Stretch">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="تحضير التقرير" />
+                                <Icon:PackIconMaterial Kind="Refresh"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                        </Button>
+                        
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border Background="#fff" CornerRadius="10" Grid.Column="1"   Grid.Row="1"  Padding="5"  Margin="5">
+                <DockPanel>
+                    <cdr:EmployeeAccountantCard DockPanel.Dock="Top" DataContext="{Binding TrainerMounthlyReportViewModel,UpdateSourceTrigger=PropertyChanged}"/>
+                   
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>
