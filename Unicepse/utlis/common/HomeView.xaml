@@ -83,71 +83,75 @@
                         <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
                     </Border.Effect>
                     <DockPanel>
-                      
+
                         <Grid >
-                        <custom:LoadingSpinner
+                            <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
                 Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
-                        <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="13*"/>
-                                <ColumnDefinition Width="20*"/>
-                                <ColumnDefinition Width="7*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="13*"/>
+                                    <ColumnDefinition Width="20*"/>
+                                    <ColumnDefinition Width="7*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
+                                <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                                <DataGrid Background="White" SelectedItem="{Binding SelectedDailyPlayerReport}"  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding PlayerAttendence}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="#" IsReadOnly="True"
+                                <DataGrid Background="White" SelectedItem="{Binding SelectedDailyPlayerReport,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding PlayerAttendence,UpdateSourceTrigger=PropertyChanged}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3" Margin="0,16,0,-6">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
                                     Binding="{Binding Id}"
                                     CanUserResize="False"/>
 
-                                    <DataGridTemplateColumn Header="الاسم" Width="*" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                        <Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
-                                                    </Border>
-                                                        <TextBlock Margin="10 0 0 0" Text="{Binding PlayerName}" VerticalAlignment="Center"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="الاسم" Width="*" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsLoggedBrush,UpdateSourceTrigger=PropertyChanged}" CornerRadius="50">
+                                                        </Border>
+                                                        <TextBlock Margin="10 0 0 0" Text="{Binding PlayerName,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
 
 
 
-                                    <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding SubscribeEndDate}"
+                                        <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
+                                     Binding="{Binding SubscribeEndDate,UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"
                                     />
 
                                         <DataGridTextColumn Header="التاريخ" IsReadOnly="True"
-                                     Binding="{Binding Date}"
+                                     Binding="{Binding Date,UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"
                                     />
                                         <DataGridTextColumn Header="وقت الدخول" IsReadOnly="True"
-                                     Binding="{Binding loginTime}"
+                                     Binding="{Binding loginTime,UpdateSourceTrigger=PropertyChanged}"
+                                    Width="*"
+                                    />
+                                        <DataGridTextColumn Header="وقت الخروج" IsReadOnly="True"
+                                     Binding="{Binding logoutTime,UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"
                                     />
                                         <DataGridTemplateColumn Header="عمليات" Width="100" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
 
-                                                <StackPanel Orientation="Horizontal">
-                                                   
-                                                    <Button Command="{Binding LogoutCommand}" Style="{StaticResource GridremoveBtn}">
-                                                        <Icon:PackIconMaterial Kind="Logout"  Style="{StaticResource GridBtnIcon}"/>
-                                                    </Button>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                                                    <StackPanel Orientation="Horizontal">
+
+                                                        <Button Visibility="{Binding IsLogged,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}" Command="{Binding LogoutCommand}" Style="{StaticResource GridremoveBtn}">
+                                                            <Icon:PackIconMaterial Kind="Logout"  Style="{StaticResource GridBtnIcon}"/>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
                         </Grid>
-                    </Grid>
                     </DockPanel>
 
                 </Border>
@@ -193,25 +197,11 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="عمليات" Width="auto" IsReadOnly="True">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
-                                                    <Icon:PackIconMaterial Kind="Openid" Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
-                                                
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                 </Grid>
             </Border>
-
         </Grid>
     </Border>
 </UserControl>

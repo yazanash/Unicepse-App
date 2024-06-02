@@ -15,7 +15,7 @@ namespace Unicepse.Stores
         public event Action? Loaded;
         public event Action? PlayerLoggingLoaded;
         public event Action<DailyPlayerReport>? Updated;
-        public event Action<int>? LoggedOut;
+        public event Action<DailyPlayerReport>? LoggedOut;
         private readonly Lazy<Task> _initializeLazy;
         public PlayersAttendenceStore(PlayersAttendenceService playersAttendenceService)
         {
@@ -54,8 +54,16 @@ namespace Unicepse.Stores
         {
             bool loggedOut = await _playersAttendenceService.LogOutPlayer(entity);
             int currentIndex = _playersAttendence.FindIndex(y => y.Id == entity.Id);
-            _playersAttendence.RemoveAt(currentIndex);
-            LoggedOut?.Invoke(entity.Id);
+
+            if (currentIndex != -1)
+            {
+                _playersAttendence[currentIndex] = entity;
+            }
+            else
+            {
+                _playersAttendence.Add(entity);
+            }
+            LoggedOut?.Invoke(entity);
         }
 
         public async Task GetLoggedPlayers()

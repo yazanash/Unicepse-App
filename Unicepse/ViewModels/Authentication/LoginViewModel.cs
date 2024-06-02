@@ -26,6 +26,7 @@ namespace Unicepse.ViewModels.Authentication
             _authenticationStore = authenticationStore;
             RegisterCommand = new NavaigateCommand<RegisterViewModel>(new NavigationService<RegisterViewModel>(navigationStore, () => new RegisterViewModel(_authViewModel, navigationStore, _authenticationStore)));
             LoginCommand = new LoginCommand(_authViewModel, _authenticationStore, this);
+            
         }
         private bool _isLoading;
         public bool IsLoading

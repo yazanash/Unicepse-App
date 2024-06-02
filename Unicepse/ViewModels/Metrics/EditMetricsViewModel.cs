@@ -9,6 +9,7 @@ using Unicepse.navigation;
 using Unicepse.Stores;
 using Unicepse.utlis.common;
 using Unicepse.navigation.Stores;
+using Unicepse.Commands.Player;
 
 namespace Unicepse.ViewModels.Metrics
 {
@@ -25,6 +26,7 @@ namespace Unicepse.ViewModels.Metrics
             _metricReportViewModel = metricReportViewModel;
             _playerDataStore = playerDataStore;
             SubmitCommand = new EditMetricsCommand(_metricDataStore, this, _playerDataStore, new NavigationService<MetricReportViewModel>(_navigationStore, () => _metricReportViewModel));
+            CancelCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigationStore, () => _metricReportViewModel));
 
             CheckDate = _metricDataStore.SelectedMetric!.CheckDate;
             Wieght = _metricDataStore.SelectedMetric.Wieght;
@@ -50,6 +52,7 @@ namespace Unicepse.ViewModels.Metrics
 
         }
         public ICommand SubmitCommand { get; }
+        public ICommand CancelCommand { get; }
 
         #region Properties
 

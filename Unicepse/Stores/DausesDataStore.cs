@@ -25,7 +25,7 @@ namespace Unicepse.Stores
         public event Action? Loaded;
         public event Action<TrainerDueses>? Updated;
         public event Action<int>? Deleted;
-        private readonly Lazy<Task> _initializeLazy;
+        //private readonly Lazy<Task> _initializeLazy;
         public DausesDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService, EmployeeDataService employeeDataService)
         {
             _paymentDataService = paymentDataService;
@@ -35,12 +35,14 @@ namespace Unicepse.Stores
             _employeeCreditsDataService = employeeCreditsDataService;
             _employeeDataService = employeeDataService;
 
-            _initializeLazy = new Lazy<Task>(Initialize);
+            //_initializeLazy = new Lazy<Task>(Initialize);
         }
         public async Task GetMonthlyReport(Employee trainer, DateTime date)
         {
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetTrainerPayments(trainer, date);
             IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(trainer, date);
+            _payments.Clear();
+            _payments.AddRange(payments);
             MonthlyTrainerDause = new TrainerDueses();
             MonthlyTrainerDause.TotalSubscriptions = 0;
             foreach (PlayerPayment pay in payments)

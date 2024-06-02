@@ -27,7 +27,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
 
         private void _dausesDataStore_StateChanged(TrainerDueses? obj)
         {
-            TrainerMounthlyReportViewModel = new(obj!, _employeeStore, _dausesDataStore);
+            TrainerMounthlyReportViewModel = new(obj!, _employeeStore, _dausesDataStore,this);
             OnPropertyChanged(nameof(TrainerMounthlyReportViewModel));
         }
 

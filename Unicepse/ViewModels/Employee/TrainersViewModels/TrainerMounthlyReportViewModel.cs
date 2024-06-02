@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Unicepse.ViewModels.PrintViewModels;
 using Unicepse.Stores;
 using Unicepse.utlis.common;
+using Unicepse.navigation.Stores;
 
 namespace Unicepse.ViewModels.Employee.TrainersViewModels
 {
@@ -30,14 +31,15 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         public double CreditsCount => trainerDueses.CreditsCount;
         public double FinalAmount => TotalDause - trainerDueses.Credits;
         public double Salary => trainerDueses.Salary;
-        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses, EmployeeStore employeeStore, DausesDataStore dausesDataStore)
+        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses, EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel? employeeAccountantPageViewModel)
         {
             this.trainerDueses = trainerDueses;
             _employeeStore = employeeStore;
             _dausesDataStore = dausesDataStore;
+            _employeeAccountantPageViewModel = employeeAccountantPageViewModel;
 
 
-            //PrintCommand = new PrintCommand(new PrintWindowViewModel(CreateTrainerReport(_employeeStore, _dausesDataStore, _employeeAccountantPageViewModel), new NavigationStore()));
+            //PrintCommand = new PrintCommand(new PrintWindowViewModel(CreateTrainerReport(_employeeStore, _dausesDataStore, employeeAccountantPageViewModel), new NavigationStore()));
         }
 
         internal void Update(TrainerDueses obj)
@@ -48,8 +50,8 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
 
         private static TrainerDetiledReportViewModel CreateTrainerReport(EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel employeeAccountantPageViewModel)
         {
-            //return TrainerDetiledReportViewModel.LoadViewModel(employeeStore, dausesDataStore, employeeAccountantPageViewModel);
-            return new TrainerDetiledReportViewModel();
+            return TrainerDetiledReportViewModel.LoadViewModel(employeeStore, dausesDataStore, employeeAccountantPageViewModel);
+            //return new TrainerDetiledReportViewModel(employeeStore, dausesDataStore, trainerMounthlyReportViewModel);
         }
     }
 }

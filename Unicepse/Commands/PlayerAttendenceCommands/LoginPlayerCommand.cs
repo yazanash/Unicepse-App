@@ -25,6 +25,7 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
         {
             try
             {
+                //DailyPlayerReport ExistdailyPlayerReport = _playersAttendenceStore.get
                 DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
                 {
                     loginTime = DateTime.Now,

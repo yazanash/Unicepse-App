@@ -59,7 +59,6 @@ namespace Unicepse.Commands.Sport
                 }
                 await _sportStore.Add(sport);
 
-                MessageBox.Show("Sport add successfully");
                 navigationService.Navigate();
             }
             catch (Exception ex)

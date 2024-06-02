@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.Stores;
 using Unicepse.ViewModels.Authentication;
+using Unicepse.navigation;
+using System.Windows;
 
 namespace Unicepse.Commands.AuthCommands
 {
@@ -14,21 +16,52 @@ namespace Unicepse.Commands.AuthCommands
         private readonly AuthViewModel _authViewModel;
         private readonly AuthenticationStore _authenticationStore;
         private readonly RegisterViewModel _registerViewModel;
+        NavigationService<LoginViewModel> _navigationService;
 
-        public RegisterCommand(AuthViewModel authViewModel, AuthenticationStore authenticationStore, RegisterViewModel registerViewModel)
+        public RegisterCommand(AuthViewModel authViewModel, AuthenticationStore authenticationStore, RegisterViewModel registerViewModel, NavigationService<LoginViewModel> navigationService)
         {
             _authViewModel = authViewModel;
             _authenticationStore = authenticationStore;
             _registerViewModel = registerViewModel;
+            _navigationService = navigationService;
+            _registerViewModel.PropertyChanged += _registerViewModel_PropertyChanged;
         }
 
-        public async override Task ExecuteAsync(object? parameter)
+        private void _registerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_registerViewModel.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
+        }
+
+
+        public override bool CanExecute(object? parameter)
         {
 
-            RegistrationResult result = await _authenticationStore.Register(_registerViewModel.UserName!,
-                 _registerViewModel.Password!, _registerViewModel.PasswordConfirm!);
-            if (result == RegistrationResult.Success)
-                _authViewModel.OnLoginAction();
+            return _registerViewModel.CanSubmit && base.CanExecute(null);
+        }
+        public async override Task ExecuteAsync(object? parameter)
+        {
+            try
+            {
+                RegistrationResult result = await _authenticationStore.Register(_registerViewModel.UserName!,
+               _registerViewModel.Password!, _registerViewModel.PasswordConfirm!);
+                if (result == RegistrationResult.Success)
+                {
+                    _navigationService.Navigate();
+                }
+                else if(result == RegistrationResult.UsernameAlreadyExists)
+                    MessageBox.Show("هذا الحساب موجود بالفعل");
+                else if (result == RegistrationResult.PasswordsDoNotMatch)
+                    MessageBox.Show("كلمة المرور غير متطابقة");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+          
         }
     }
 }

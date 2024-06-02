@@ -26,9 +26,11 @@ namespace Unicepse.ViewModels.Metrics
             _metricReportViewModel = metricReportViewModel;
             _playerDataStore = playerDataStore;
             SubmitCommand = new AddMetricsCommand(_metricDataStore, this, _playerDataStore, new NavigationService<MetricReportViewModel>(_navigationStore, () => _metricReportViewModel));
+            CancelCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigationStore, () => _metricReportViewModel));
+
         }
         public ICommand SubmitCommand { get; }
-
+        public ICommand CancelCommand { get; }
         #region Properties
 
         /// Hieght and Wieght 
@@ -62,7 +64,6 @@ namespace Unicepse.ViewModels.Metrics
             {
                 _lArm = value;
                 OnPropertyChanged(nameof(L_Arm));
-                R_Arm = L_Arm;
             }
         }
         public double _rArm;
@@ -73,6 +74,8 @@ namespace Unicepse.ViewModels.Metrics
             {
                 _rArm = value;
                 OnPropertyChanged(nameof(R_Arm));
+                L_Arm = R_Arm;
+
             }
         }
         /// Hummerus

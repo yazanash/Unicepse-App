@@ -89,9 +89,8 @@ namespace Unicepse.ViewModels.Metrics
 
             }
             SelectedMetric = Metrics.FirstOrDefault();
-
         }
-        public bool IsSelected => SelectedMetric != null;
+        public bool IsSelected = true;
         private void AddMetric(Metric metric)
         {
             MetricListItemViewModel viewmodel = new(metric, _metricDataStore, _navigationStore, this, _playerDataStore);

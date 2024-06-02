@@ -46,7 +46,7 @@ namespace Unicepse.Commands.Payments
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-
+            DateTime payd = Convert.ToDateTime(_addPaymentViewModel.PayDate.ToShortDateString());
             PlayerPayment payment = new PlayerPayment()
             {
                 PayDate = _addPaymentViewModel.PayDate,

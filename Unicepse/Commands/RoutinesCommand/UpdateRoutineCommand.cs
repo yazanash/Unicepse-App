@@ -43,7 +43,6 @@ namespace Unicepse.Commands.RoutinesCommand
             playerRoutine.IsTemplate = _editSelectRoutineDaysMuscleGroupViewModel.IsTemplate;
             await _routineDataStore.Update(playerRoutine);
 
-            MessageBox.Show("Player Routine Updated Successfully");
             _navigationService.ReNavigate();
         }
     }

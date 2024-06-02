@@ -84,29 +84,33 @@ namespace Unicepse.utlis.common
                 OnPropertyChanged(nameof(SelectedDailyPlayerReport));
             }
         }
-        private void _playersAttendenceStore_LoggedOut(int obj)
+        private void _playersAttendenceStore_LoggedOut(DailyPlayerReport obj)
         {
-            PlayerAttendenceListItemViewModel? itemViewModel = _playerAttendenceListItemViewModels.FirstOrDefault(y => y.dailyPlayerReport?.Id == obj);
-
+            PlayerAttendenceListItemViewModel? itemViewModel = _playerAttendenceListItemViewModels.FirstOrDefault(y => y.dailyPlayerReport?.Id == obj.Id);
+        
             if (itemViewModel != null)
             {
-                _playerAttendenceListItemViewModels.Remove(itemViewModel);
+                itemViewModel.Update(obj);
+            }
+            //loadData();
+        }
+        private void loadData()
+        {
+            _playerAttendenceListItemViewModels.Clear();
+            foreach (var i in _playersAttendenceStore.PlayersAttendence.OrderByDescending(x => x.loginTime).ThenByDescending(x => x.IsLogged))
+            {
+                AddDailyPlayerLog(i);
             }
         }
-
         private void _playersAttendenceStore_LoggedIn(DailyPlayerReport dailyPlayerReport)
         {
-            AddDailyPlayerLog(dailyPlayerReport);
+            //AddDailyPlayerLog(dailyPlayerReport);
+            loadData();
         }
 
         private void _playersAttendenceStore_Loaded()
         {
-            _playerAttendenceListItemViewModels.Clear();
-
-            foreach (DailyPlayerReport dailyPlayerReport in _playersAttendenceStore.PlayersAttendence)
-            {
-                AddDailyPlayerLog(dailyPlayerReport);
-            }
+            loadData();
         }
         private void AddDailyPlayerLog(DailyPlayerReport dailyPlayerReport)
         {

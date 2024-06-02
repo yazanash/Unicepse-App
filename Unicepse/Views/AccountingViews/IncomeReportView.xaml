@@ -126,7 +126,7 @@
                                      Binding="{Binding TrainerName}"
                                     Width="*"
                                     />
-                                <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
+                                <DataGridTextColumn Header="سعر الاشتراك" IsReadOnly="True"
                                      Binding="{Binding SubscriptionPrice}"
                                     Width="*"
                                     />

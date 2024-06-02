@@ -8,6 +8,7 @@ using System.Windows;
 using Unicepse.Stores;
 using Unicepse.ViewModels.Authentication;
 using Unicepse.Commands;
+using Unicepse.Core.Exceptions;
 
 namespace Unicepse.Commands.AuthCommands
 {
@@ -24,11 +25,21 @@ namespace Unicepse.Commands.AuthCommands
         }
         public async override Task ExecuteAsync(object? parameter)
         {
-
-            await _authenticationStore!.Login(_loginViewModel!.UserName!, _loginViewModel.Password!);
-            if (_authenticationStore.CurrentAccount != null)
+            try
             {
-                _authViewModel!.OnLoginAction();
+                await _authenticationStore!.Login(_loginViewModel!.UserName!, _loginViewModel.Password!);
+                if (_authenticationStore.CurrentAccount != null)
+                {
+                    _authViewModel!.OnLoginAction();
+                }
+            }
+         catch (InvalidPasswordException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (UserNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

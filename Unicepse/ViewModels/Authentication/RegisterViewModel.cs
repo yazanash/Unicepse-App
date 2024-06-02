@@ -14,7 +14,7 @@ using Unicepse.navigation.Stores;
 
 namespace Unicepse.ViewModels.Authentication
 {
-    public class RegisterViewModel : ViewModelBase
+    public class RegisterViewModel : ErrorNotifyViewModelBase
     {
         private readonly AuthViewModel _authViewModel;
         private readonly NavigationStore? _navigationStore;
@@ -25,7 +25,7 @@ namespace Unicepse.ViewModels.Authentication
             _navigationStore = navigationStore;
             _authenticationStore = authenticationStore;
             LoginCommand = new NavaigateCommand<LoginViewModel>(new NavigationService<LoginViewModel>(_navigationStore!, () => new LoginViewModel(_authViewModel, _navigationStore!, _authenticationStore)));
-            RegisterCommand = new RegisterCommand(_authViewModel, authenticationStore, this);
+            RegisterCommand = new RegisterCommand(_authViewModel, authenticationStore, this, new NavigationService<LoginViewModel>(_navigationStore!, () => new LoginViewModel(_authViewModel, _navigationStore!, _authenticationStore)));
 
         }
         private string? _userName;
@@ -51,7 +51,7 @@ namespace Unicepse.ViewModels.Authentication
             set
             {
                 _password = value;
-                OnPropertyChanged(nameof(Password));
+              
             }
         }
         private string? _passwordConfirm;
@@ -64,7 +64,7 @@ namespace Unicepse.ViewModels.Authentication
             set
             {
                 _passwordConfirm = value;
-                OnPropertyChanged(nameof(PasswordConfirm));
+              
             }
         }
         private bool _isLoading;

@@ -29,6 +29,7 @@ namespace Unicepse.Entityframework.Services.AuthService
             User existed_user = await GetByUsername(entity.UserName!);
             if (existed_user != null)
                 throw new ConflictException();
+            if(entity.Employee!=null)
             context.Attach(entity.Employee!);
             string pass =  _passwordHasher.HashPassword(entity.Password);
             entity.Password = pass;
@@ -63,6 +64,13 @@ namespace Unicepse.Entityframework.Services.AuthService
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
             IEnumerable<User>? entities = await context.Set<User>().Include(x=>x.Employee).ToListAsync();
+            return entities;
+        }
+        public  bool HasUsers()
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+
+            bool entities =  context.Set<User>().Any();
             return entities;
         }
 

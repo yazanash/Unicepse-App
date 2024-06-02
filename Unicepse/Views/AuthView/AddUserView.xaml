@@ -19,8 +19,7 @@
             <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="#C14E00"/>
-                        <TextBlock Text="المستخدمين / تسجيل مستخدم" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                        <TextBlock Text="المستخدمين / اضافة مستخدم" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                     </StackPanel>
 
                 </DockPanel>
@@ -97,7 +96,7 @@
                           
 
                             <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Margin="0 20 0 0" HorizontalAlignment="Right">
-                                <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4" Height="30"  Content="حفظ"  HorizontalAlignment="Right">
+                                <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4"  Content="حفظ"  HorizontalAlignment="Right">
                                 </Button>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Margin="0 20 0 0" HorizontalAlignment="Left">

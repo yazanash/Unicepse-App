@@ -64,12 +64,6 @@ namespace Unicepse
                    services.AddSingleton<EmployeeDataService>();
                    services.AddSingleton<EmployeeStore>();
 
-
-
-
-
-
-
                    services.AddSingleton<GymStore>();
 
                    services.AddSingleton<DausesDataService>();
@@ -133,24 +127,30 @@ namespace Unicepse
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _host.Start();
-            PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
-            using (PlatinumGymDbContext platinumGymDbContext = platinumGymDbContextFactory.CreateDbContext())
+            try
             {
-                platinumGymDbContext.Database.Migrate();
-                #region dataConverter
+
+
+                _host.Start();
+                PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
+                using (PlatinumGymDbContext platinumGymDbContext = platinumGymDbContextFactory.CreateDbContext())
+                {
+                    platinumGymDbContext.Database.Migrate();
+                    #region dataConverter
                 //    platinumGymDbContext.Database.EnsureCreated();
-                //    string fileName = "ffffffffffffff.csv";
-                //    string subsFileName = "subscriptions.csv";
-                //    string sportFileName = "sports.csv";
-                //    string trainerFileName = "trainers.csv";
-                //    string paymetsFileName = "payments.csv";
+                //    string fileName = "DBFILES/Players.csv";
+                //    string subsFileName = "DBFILES/Subscriptions.csv";
+                //    string sportFileName = "DBFILES/Sports.csv";
+                //    string trainerFileName = "DBFILES/trainers.csv";
+                //    string paymetsFileName = "DBFILES/payments.csv";
+                //    string trainersCreditsFileName = "DBFILES/trainersCredits.csv";
                 //    //string jsonString = File.ReadAllText(fileName);
                 //    //List<Exercises> exercises = JsonConvert.DeserializeObject<List<Exercises>>(jsonString)!;
 
-                //    List<Player> players = File.ReadAllLines(fileName)
+                //    List<Player> players = File.ReadAllLines(fileName).Skip(1)
                 //    .Select(line =>
                 //   {
+
                 //       var columns = line.Split(',');
                 //       Player player = new Player();
 
@@ -182,7 +182,7 @@ namespace Unicepse
                 //   }).ToList();
 
 
-                //    List<PlayerPayment> payments = File.ReadAllLines(paymetsFileName)
+                //    List<PlayerPayment> payments = File.ReadAllLines(paymetsFileName).Skip(1)
                 //   .Select(line =>
                 //   {
                 //       var columns = line.Split(',');
@@ -197,8 +197,21 @@ namespace Unicepse
 
                 //   }).ToList();
 
+                //    List<Credit> credits = File.ReadAllLines(trainersCreditsFileName).Skip(1)
+                // .Select(line =>
+                // {
+                //     var columns = line.Split(',');
+                //     Credit credits = new Credit();
+                //     credits.CreditValue = Convert.ToDouble(columns[1]);
+                //     credits.Description = "";
+                //     credits.EmpPerson = new Employee() { Id = Convert.ToInt32(columns[3]) };
+                //     credits.Date = Convert.ToDateTime(columns[2]);
 
-                //    List<Subscription> subscriptions = File.ReadAllLines(subsFileName)
+                //     return credits;
+
+                // }).ToList();
+
+                //    List<Subscription> subscriptions = File.ReadAllLines(subsFileName).Skip(1)
                 //    .Select(line =>
                 // {
                 //     var columns = line.Split(',');
@@ -262,7 +275,7 @@ namespace Unicepse
                 // }).ToList();
 
 
-                //    List<Sport> sports = File.ReadAllLines(sportFileName)
+                //    List<Sport> sports = File.ReadAllLines(sportFileName).Skip(1)
                 //  .Select(line =>
                 //  {
                 //      var columns = line.Split(',');
@@ -270,7 +283,7 @@ namespace Unicepse
                 //      sport.Id = Convert.ToInt32(columns[0]);
                 //      sport.Name = columns[1].Replace("\"", "").Trim();
                 //      sport.Price = Convert.ToDouble(columns[2]);
-                //      sport.IsActive = Convert.ToBoolean(Convert.ToInt32(columns[3]));
+                //      sport.IsActive = true;
                 //      sport.DaysInWeek = Convert.ToInt32(columns[4]);
                 //      sport.DailyPrice = Convert.ToInt32(columns[5]);
                 //      sport.DaysCount = Convert.ToInt32(columns[6]);
@@ -279,7 +292,7 @@ namespace Unicepse
 
                 //  }).ToList();
 
-                //    List<Employee> employees = File.ReadAllLines(trainerFileName)
+                //    List<Employee> employees = File.ReadAllLines(trainerFileName).Skip(1)
                 //.Select(line =>
                 //{
                 //    var columns = line.Split(',');
@@ -297,7 +310,7 @@ namespace Unicepse
                 //    employee.IsActive = Convert.ToBoolean(Convert.ToInt32(columns[10]));
                 //    employee.IsTrainer = true;
                 //    employee.FullName = columns[6].Replace("\"", "").Trim();
-                //    employee.Phone = columns[7].Replace("\"","").Trim();
+                //    employee.Phone = columns[7].Replace("\"", "").Trim();
                 //    employee.BirthDate = Convert.ToDateTime(columns[5]).Year;
                 //    employee.GenderMale = Convert.ToBoolean(Convert.ToInt32(columns[9]));
 
@@ -363,7 +376,7 @@ namespace Unicepse
                 //    foreach (var p in employees)
                 //    {
                 //        var subs = subscriptions.Where(x => x.Trainer != null && x.Trainer.Id == p.Id);
-
+                //        var cred = credits.Where(x => x.EmpPerson != null && x.EmpPerson.Id == p.Id);
                 //        var prevsubs = subscriptions.Where(x => x.PrevTrainer_Id == p.Id);
 
                 //        #region CopyTrainer
@@ -392,7 +405,19 @@ namespace Unicepse
                 //        {
                 //            s.PrevTrainer_Id = employee.Id;
                 //        }
+                //        foreach (var s in credits)
+                //        {
+                //            s.EmpPerson = employee;
+                //        }
                 //    }
+                //    platinumGymDbContext.SaveChanges();
+                //    platinumGymDbContext.ChangeTracker.Clear();
+
+                //    foreach (var s in credits)
+                //    {
+                //        platinumGymDbContext.Attach(s.EmpPerson!);
+                //    }
+                //    platinumGymDbContext.Credit!.AddRange(credits);
                 //    platinumGymDbContext.SaveChanges();
                 //    platinumGymDbContext.ChangeTracker.Clear();
                 //    // Add more instances as needed
@@ -426,36 +451,41 @@ namespace Unicepse
                 //        }
                 //        platinumGymDbContext.Subscriptions!.Add(s);
                 //    }
-                #endregion
-                
-                if (!platinumGymDbContext.Exercises!.Any())
-                {
-                    string f_name = "Training.json";
-                    using (StreamReader r = new StreamReader(f_name))
+                    #endregion
+
+                    if (!platinumGymDbContext.Exercises!.Any())
                     {
-                        string json = r.ReadToEnd();
-                        List<Exercises>? data = JsonConvert.DeserializeObject<List<Exercises>>(json);
-                        foreach (Exercises ex in data!)
-                            ex.Id = 0;
-                        platinumGymDbContext.Exercises!.AddRangeAsync(data!);
-                        
+                        string f_name = "Training.json";
+                        using (StreamReader r = new StreamReader(f_name))
+                        {
+                            string json = r.ReadToEnd();
+                            List<Exercises>? data = JsonConvert.DeserializeObject<List<Exercises>>(json);
+                            foreach (Exercises ex in data!)
+                                ex.Id = 0;
+                            platinumGymDbContext.Exercises!.AddRangeAsync(data!);
+
+                        }
+
+                        platinumGymDbContext.SaveChanges();
                     }
 
-                    platinumGymDbContext.SaveChanges();
+
                 }
-               
 
+                _host.Services.GetRequiredService<AuthViewModel>().openLog();
+                AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
+                auth.Show();
+                //MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
+                //auth.Show();
+                //CameraReader cameraReader = new CameraReader();
+                //cameraReader.Show();
+                //MessageBox.Show(System.Environment.CurrentDirectory) ;
+                base.OnStartup(e);
             }
-
-
-            //AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
-            //auth.Show();
-            MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
-            auth.Show();
-            //CameraReader cameraReader = new CameraReader();
-            //cameraReader.Show();
-            //MessageBox.Show(System.Environment.CurrentDirectory) ;
-            base.OnStartup(e);
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private IServiceProvider CreateServiceProvider()

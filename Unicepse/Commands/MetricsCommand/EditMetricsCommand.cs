@@ -62,7 +62,6 @@ namespace Unicepse.Commands.MetricsCommand
 
             };
             await _metricDataStore.Update(metric);
-            MessageBox.Show("Metric Updated successfully");
             _navigationService.ReNavigate();
         }
     }

@@ -33,7 +33,11 @@ namespace Unicepse.Stores
         }
 
         public bool IsLoggedIn => CurrentAccount != null;
-
+        public bool HasUser()
+        {
+            bool data = _authenticationService.HasUsers();
+            return data;
+        }
 
         public event Action? StateChanged;
 

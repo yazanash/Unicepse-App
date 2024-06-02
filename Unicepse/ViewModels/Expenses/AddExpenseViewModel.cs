@@ -24,9 +24,11 @@ namespace Unicepse.ViewModels.Expenses
             _expensesListViewModel = expensesListViewModel;
             _navigationStore = navigationStore;
             SubmitCommand = new SubmitExpensesCommand(_expensesDataStore, new NavigationService<ExpensesListViewModel>(_navigationStore, () => _expensesListViewModel), this);
+            CancelCommand = new NavaigateCommand<ExpensesListViewModel>(new NavigationService<ExpensesListViewModel>(_navigationStore, () => _expensesListViewModel));
+
         }
         public ICommand SubmitCommand { get; }
-
+        public ICommand CancelCommand { get; }
         #region Properties
         private double _expensesValue;
         public double ExpensesValue

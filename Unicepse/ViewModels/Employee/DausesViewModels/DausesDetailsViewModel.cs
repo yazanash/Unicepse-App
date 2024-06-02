@@ -32,13 +32,15 @@ namespace Unicepse.ViewModels.Employee.DausesViewModels
             _dauseListViewModel = dauseListViewModel;
             _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
             //LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, _employeeStore, this);
-            TrainerMounthlyReportViewModel = new TrainerMounthlyReportViewModel(new TrainerDueses(), _employeeStore, _dausesDataStore);
+            //TrainerMounthlyReportViewModel = new TrainerMounthlyReportViewModel(new TrainerDueses(), _employeeStore, _dausesDataStore);
             SaveMounthlyReport = new SubmitDauseCommand(_employeeStore, _dausesDataStore, this, new NavigationService<DauseListViewModel>(_navigatorStore, () => _dauseListViewModel));
-        }
+            CancelCommand = new NavaigateCommand<DauseListViewModel>(new NavigationService<DauseListViewModel>(_navigatorStore, () => _dauseListViewModel));
 
+        }
+        public ICommand CancelCommand { get; }
         private void _dausesDataStore_StateChanged(TrainerDueses? obj)
         {
-            TrainerMounthlyReportViewModel = new(obj!, _employeeStore, _dausesDataStore);
+            //TrainerMounthlyReportViewModel = new(obj!, _employeeStore, _dausesDataStore);
             OnPropertyChanged(nameof(TrainerMounthlyReportViewModel));
         }
 
@@ -53,7 +55,7 @@ namespace Unicepse.ViewModels.Employee.DausesViewModels
 
             }
         }
-        public ICommand LoadMounthlyReport { get; }
+        public ICommand? LoadMounthlyReport { get; }
         public ICommand SaveMounthlyReport { get; }
     }
 }

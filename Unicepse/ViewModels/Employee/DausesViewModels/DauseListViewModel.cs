@@ -66,8 +66,8 @@ namespace Unicepse.ViewModels.Employee.DausesViewModels
         }
         private void addTrainerDauses(TrainerDueses trainerDueses)
         {
-            TrainerMounthlyReportViewModel trainerDause = new TrainerMounthlyReportViewModel(trainerDueses, _employeeStore, _dausesDataStore);
-            _trainerDausesViewModels.Add(trainerDause);
+            //TrainerMounthlyReportViewModel trainerDause = new TrainerMounthlyReportViewModel(trainerDueses, _employeeStore, _dausesDataStore);
+            //_trainerDausesViewModels.Add(trainerDause);
         }
         public static DauseListViewModel LoadViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, NavigationStore navigatorStore)
         {

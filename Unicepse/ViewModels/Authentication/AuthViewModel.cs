@@ -22,11 +22,19 @@ namespace Unicepse.ViewModels.Authentication
         {
             _navigatorStore = navigatorStore;
             _authenticationStore = authenticationStore;
-            _navigatorStore.CurrentViewModel = new LoginViewModel(this, navigatorStore, _authenticationStore);
+           
+                _navigatorStore.CurrentViewModel = new LoginViewModel(this, navigatorStore, _authenticationStore);
+           
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
 
         }
-
+        public void openLog()
+        {
+            if(_authenticationStore.HasUser())
+            _navigatorStore.CurrentViewModel = new LoginViewModel(this, _navigatorStore, _authenticationStore);
+            else
+            _navigatorStore.CurrentViewModel = new RegisterViewModel(this, _navigatorStore, _authenticationStore);
+        }
         private void _navigatorStore_CurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));

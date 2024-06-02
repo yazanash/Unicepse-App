@@ -26,8 +26,8 @@
             <Border CornerRadius="10 0 0 10">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="{StaticResource colors.color.primary}" Offset="0"/>
-                        <GradientStop Color="{StaticResource colors.color.secondry}" Offset="1"/>
+                        <GradientStop Color="{StaticResource colors.color.background.white}" Offset="0"/>
+                        <GradientStop Color="{StaticResource colors.color.background.white}" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
                 <Grid>
@@ -38,9 +38,10 @@
                         <Ellipse Margin="50 350 0 0" Height="20" Width="20" Fill="{StaticResource colors.primary}" />
                     </Canvas>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Login" Style="{StaticResource textTitle}"/>
-                        <TextBlock Text="Do you have an account ? login now" Style="{StaticResource normalText}"/>
-                        <Button Margin="10" Command="{Binding LoginCommand}" Content="Signin" Style="{StaticResource signupBtn}"/>
+                        <TextBlock Text="SignUp" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.secondry}"/>
+                        <TextBlock Text="Join us Now!" Style="{StaticResource normalText}" Foreground="{StaticResource colors.secondry}"/>
+                        <TextBlock Text="Welcome To Our Verse" Style="{StaticResource normalText}" Foreground="{StaticResource colors.secondry}"/>
+
                     </StackPanel>
                 </Grid>
             </Border>
@@ -88,7 +89,7 @@
                             <TextBlock x:Name="lbl_password" Text="Enter password" Style="{StaticResource hintText}"
                                       MouseDown="password_MouseDown" />
                             <PasswordBox x:Name="password_txt"
-                                         PasswordChanged="password_txt_PasswordChanged" Style="{StaticResource loginTextbox}" />
+                                         PasswordChanged="password_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
                         </Grid>
                     </Border>
                     <Border BorderThickness="1" BorderBrush="#acb8af" Margin=" 70 7">
@@ -100,7 +101,7 @@
                             <icons:PackIconMaterial Kind="LockOutline" Foreground="#787878" Width="20" Height="20"/>
                             <TextBlock x:Name="lbl_password_confirm" Text="Confirm password" Style="{StaticResource hintText}"
                                       MouseDown="lbl_password_confirm_MouseDown" />
-                            <PasswordBox x:Name="password_confirm_txt" PasswordChanged="password_confirm_txt_PasswordChanged" Style="{StaticResource loginTextbox}" />
+                            <PasswordBox x:Name="password_confirm_txt" PasswordChanged="password_confirm_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
                         </Grid>
                     </Border>
                     <Button Content="SignUp" Command="{Binding RegisterCommand}" Style="{StaticResource signinBtn}"/>

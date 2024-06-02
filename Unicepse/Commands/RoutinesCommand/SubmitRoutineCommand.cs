@@ -61,7 +61,6 @@ namespace Unicepse.Commands.RoutinesCommand
             }
 
             await _routineDataStore.Add(playerRoutine);
-            MessageBox.Show("Player Routine Added Successfully");
             //string jsonString = ExportToJsonTemplate(playerRoutine);
 
             //SaveFileDialog dlg = new SaveFileDialog();

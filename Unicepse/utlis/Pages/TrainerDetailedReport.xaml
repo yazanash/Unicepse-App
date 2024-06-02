@@ -56,11 +56,10 @@
                 <!--#endregion-->
 
                 <!--#region DataList-->
-                <Grid  Grid.Row="2">
+                <Grid  Grid.Row="2" Width="1000">
                     <DataGrid  
-                                    FlowDirection="RightToLeft" ItemsSource="{Binding Subscriptions}" 
+                                    FlowDirection="RightToLeft" ItemsSource="{Binding Subscriptions,UpdateSourceTrigger=PropertyChanged}" 
                                     CanUserReorderColumns="True"
-                                SelectedItem="{Binding SelectedSubscription}"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
