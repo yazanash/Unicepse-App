@@ -140,7 +140,7 @@ namespace Unicepse.ViewModels.PaymentsViewModels
                 ClearError(nameof(PaymentValue));
                 if (SelectedSubscription != null)
                 {
-                    if (PaymentValue > SelectedSubscription!.PriceAfterOffer - SelectedSubscription!.PaidValue)
+                    if (PaymentValue > SelectedSubscription!.PriceAfterOffer - SelectedSubscription!.PaidValue + _paymentDataStore.SelectedPayment!.PaymentValue)
                     {
                         AddError("لا يمكن ان يكون المبلغ المدفوع اكبر من المستحق", nameof(PaymentValue));
                         OnErrorChanged(nameof(PaymentValue));

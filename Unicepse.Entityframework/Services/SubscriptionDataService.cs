@@ -39,11 +39,11 @@ namespace Unicepse.Entityframework.Services
                 Subscription existed_subscription = await CheckIfSubscriptionExist(entity);
                 if (existed_subscription != null)
                     throw new ConflictException();
-              
+
                 context.Attach<Sport>(entity.Sport!);
                 context.Attach<Player>(entity.Player!);
-                if(entity.Trainer!=null)
-                context.Attach<Employee>(entity.Trainer!);
+                if (entity.Trainer != null)
+                    context.Attach<Employee>(entity.Trainer!);
                 EntityEntry<Subscription> CreatedResult = await context.Set<Subscription>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
@@ -80,8 +80,8 @@ namespace Unicepse.Entityframework.Services
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.Player!.Id == player.Id).Include(x => x.Trainer)
-                    .Include(x => x.Player).AsNoTracking().Include(x=>x.Sport!.Trainers).AsNoTracking()
-                    .Include(x => x.Sport).AsNoTracking().Include(x=>x.Payments).AsNoTracking().ToListAsync();
+                    .Include(x => x.Player).AsNoTracking().Include(x => x.Sport!.Trainers).AsNoTracking()
+                    .Include(x => x.Sport).AsNoTracking().Include(x => x.Payments).AsNoTracking().ToListAsync();
                 return entities;
             }
         }
@@ -95,12 +95,12 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
-        public async Task<IEnumerable<Subscription>> GetAll(Employee trainer,DateTime date)
+        public async Task<IEnumerable<Subscription>> GetAll(Employee trainer, DateTime date)
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.Trainer!.Id == trainer.Id
-                &&((x.RollDate.Month == date.Month && x.RollDate.Year== date.Year)
+                && ((x.RollDate.Month == date.Month && x.RollDate.Year == date.Year)
                 || (x.EndDate.Month == date.Month && x.EndDate.Year == date.Year))).Include(x => x.Trainer).AsNoTracking()
                     .Include(x => x.Player).AsNoTracking().Include(x => x.Sport!.Trainers).AsNoTracking()
                     .Include(x => x.Sport).ToListAsync();
@@ -131,16 +131,27 @@ namespace Unicepse.Entityframework.Services
             context.Entry(entity.Sport!).State = EntityState.Detached;
             context.Attach(entity.Player!);
 
-            context.Attach(entity.Sport!);
+            //context.Attach(entity.Sport!);
 
             if (context.Entry(entity).State == EntityState.Detached)
             {
                 // Attach the entity
                 context.Entry(entity).State = EntityState.Modified;
             }
-            //context.Entry(entity).Property("TrainerId").CurrentValue = null;
             if (entity.Trainer != null)
-                context.Attach(entity.Trainer);
+                context.Entry(entity.Trainer!).State = EntityState.Detached;
+
+            if (context.Entry(entity.Sport!).State == EntityState.Detached)
+            {
+                // Attach the entity
+                context.Entry(entity.Sport!).State = EntityState.Unchanged;
+            }
+            if (entity.Trainer != null)
+                if (context.Entry(entity.Trainer).State == EntityState.Detached)
+                {
+                    // Attach the entity
+                    context.Entry(entity.Trainer).State = EntityState.Unchanged;
+                }
             context.Set<Subscription>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
@@ -158,15 +169,15 @@ namespace Unicepse.Entityframework.Services
                 context.Entry(t).State = EntityState.Detached;
 
             }
-           
+
             context.Entry(entity.Sport!).State = EntityState.Unchanged;
             context.Entry(trainer).State = EntityState.Unchanged;
             context.Attach(entity.Sport!);
             context.Attach(entity.Player!);
             context.Attach(trainer);
-           
+
             if (entity.Trainer != null)
-            entity.PrevTrainer_Id = entity.Trainer!.Id;
+                entity.PrevTrainer_Id = entity.Trainer!.Id;
             entity.Trainer = trainer;
             entity.IsMoved = true;
             entity.LastCheck = movedate;
@@ -180,16 +191,24 @@ namespace Unicepse.Entityframework.Services
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException();
-            Player? player =  context.Players!.Where(x => x.Id == entity.Player!.Id).SingleOrDefault();
-            player.Balance += entity.PriceAfterOffer;
+            //Player? player = entity.Player;
             entity.EndDate = stop_date;
             entity.IsStopped = true;
             int days = Convert.ToInt32((stop_date - entity.RollDate).TotalDays);
             double dayPrice = entity.PriceAfterOffer / entity.Sport!.DaysCount;
             entity.PriceAfterOffer = dayPrice * days;
-            player.Balance -= entity.PriceAfterOffer;
             context.Set<Subscription>().Update(entity);
-            context.Set<Player>().Update(player);
+            context.Entry(entity.Player!).State = EntityState.Detached;
+            if (context.Entry(entity.Player!).State == EntityState.Detached)
+                context.Entry(entity.Player!).State = EntityState.Unchanged;
+
+            context.Entry(entity.Sport).State = EntityState.Detached;
+            if (entity.Trainer != null)
+                context.Entry(entity.Trainer!).State = EntityState.Detached;
+
+            context.Entry(entity.Sport).State = EntityState.Unchanged;
+            if (entity.Trainer != null)
+                context.Entry(entity.Trainer!).State = EntityState.Unchanged;
             await context.SaveChangesAsync();
             return entity;
         }

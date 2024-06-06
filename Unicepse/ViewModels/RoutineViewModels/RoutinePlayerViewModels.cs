@@ -132,11 +132,8 @@ namespace Unicepse.ViewModels.RoutineViewModels
                 Id = (int)EMuscleGroup.Chest
             }));
             SelectedMuscle = MuscleGroup.FirstOrDefault();
-            if (_routineDataStore.Routines.Any())
                 AddRoutineCommand = new NavaigateCommand<RoutineTemplatesViewModel>(new NavigationService<RoutineTemplatesViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, _navigationStore, this)));
-            else
-                AddRoutineCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => AddRoutineIViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => this), _navigationStore)));
-
+            
         }
 
         private void _routineDataStore_MuscleChanged(MuscleGroup? muscle)
@@ -189,12 +186,16 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private void _routineDataStore_Loaded()
         {
             _routineItemViewModels.Clear();
-            foreach (var routine in _routineDataStore.Routines.OrderByDescending(x => x.RoutineData))
+            if (_playersDataStore.SelectedPlayer != null)
             {
-                AddRoutine(routine);
+                foreach (var routine in _routineDataStore.Routines.OrderByDescending(x => x.RoutineData))
+                {
+                    AddRoutine(routine);
 
+                }
+                SelectedRoutine = _routineItemViewModels.FirstOrDefault();
             }
-            SelectedRoutine = _routineItemViewModels.SingleOrDefault();
+           
         }
 
         private void _routineDataStore_Deleted(int id)
@@ -218,7 +219,16 @@ namespace Unicepse.ViewModels.RoutineViewModels
             RoutinItemViewModel viewmodel = new(routine, _playersDataStore, _routineDataStore, _navigationStore, this);
             _routineItemViewModels.Add(viewmodel);
         }
-
+        public override void Dispose()
+        {
+            _routineDataStore.Created -= _routineDataStore_Created;
+            _routineDataStore.Deleted -= _routineDataStore_Deleted;
+            _routineDataStore.Loaded -= _routineDataStore_Loaded;
+            _routineDataStore.Updated -= _routineDataStore_Updated;
+            _routineDataStore.StateChanged -= _routineDataStore_StateChanged;
+            _routineDataStore.MuscleChanged -= _routineDataStore_MuscleChanged;
+            base.Dispose();
+        }
         public static RoutinePlayerViewModels LoadViewModel(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore)
         {
             RoutinePlayerViewModels viewModel = new(routineDataStore, playersDataStore, navigationStore);

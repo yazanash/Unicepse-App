@@ -37,6 +37,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         {
             SubscriptionListItemViewModel subscriptionListItemViewModel = new(subscription);
             _subscriptionListItemViewModels.Add(subscriptionListItemViewModel);
+            subscriptionListItemViewModel.Order = _subscriptionListItemViewModels.Count();
         }
         public ICommand LoadSubscriptionsForTrainer { get; }
         public static TrainerSubscriptionViewModel LoadViewModel(EmployeeStore employeeStore, SubscriptionDataStore subscriptionDataStore)

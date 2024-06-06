@@ -38,24 +38,24 @@ namespace Unicepse
         }
         private void preview()
         {
-            if (File.Exists("print_preview.xps") == true) File.Delete("print_preview.xps");
+            //if (File.Exists("print_preview.xps") == true) File.Delete("print_preview.xps");
 
-            XpsDocument xpsDocument = new XpsDocument("print_preview.xps", FileAccess.ReadWrite);
-            XpsDocumentWriter xpsDocumentWriter = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
-            SerializerWriterCollator serializerWriterCollator =xpsDocumentWriter.CreateVisualsCollator();
-            serializerWriterCollator.BeginBatchWrite();
-            serializerWriterCollator.WriteAsync(print);
-            serializerWriterCollator.EndBatchWrite();
+            //XpsDocument xpsDocument = new XpsDocument("print_preview.xps", FileAccess.ReadWrite);
+            //XpsDocumentWriter xpsDocumentWriter = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+            //SerializerWriterCollator serializerWriterCollator =xpsDocumentWriter.CreateVisualsCollator();
+            //serializerWriterCollator.BeginBatchWrite();
+            //serializerWriterCollator.WriteAsync(print);
+            //serializerWriterCollator.EndBatchWrite();
 
-            FixedDocumentSequence fixedDocumentSequence = xpsDocument.GetFixedDocumentSequence();
-            xpsDocument.Close();
-            var window = new Window();
-            window.Content=new DocumentViewer { Document = fixedDocumentSequence };
-            window.ShowDialog();
+            //FixedDocumentSequence fixedDocumentSequence = xpsDocument.GetFixedDocumentSequence();
+            //xpsDocument.Close();
+            //var window = new Window();
+            //window.Content=new DocumentViewer { Document = fixedDocumentSequence };
+            //window.ShowDialog();
 
-            xpsDocumentWriter = null;
-            serializerWriterCollator=null;
-            xpsDocument = null;
+            //xpsDocumentWriter = null;
+            //serializerWriterCollator=null;
+            //xpsDocument = null;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -63,7 +63,11 @@ namespace Unicepse
             PrintDialog printDialog = new PrintDialog();
             if (printDialog.ShowDialog() == true)
             {
+                myscroll.ScrollToTop();
+
+
                 printDialog.PrintVisual(print, fileName);
+                this.Close();
             }
         }
     }

@@ -10,6 +10,8 @@ using System.Windows.Input;
 using Unicepse.Commands.Player;
 using Unicepse.Stores;
 using Unicepse.ViewModels.PlayersViewModels;
+using Unicepse.navigation.Stores;
+using Unicepse.utlis.common;
 
 namespace Unicepse.ViewModels.PlayersAttendenceViewModels
 {
@@ -19,7 +21,8 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
         private readonly ObservableCollection<PlayerListItemViewModel> playerListItemViewModels;
         private readonly PlayersDataStore _playerStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-
+        private readonly NavigationStore _navigationStore;
+        private readonly HomeViewModel  _homeViewModel;
         public SearchBoxViewModel SearchBox { get; set; }
 
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
@@ -37,7 +40,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             }
         }
         public ICommand LoadPlayersCommand { get; }
-        public LogPlayerAttendenceViewModel(PlayersDataStore playerStore, PlayersAttendenceStore playersAttendenceStore)
+        public LogPlayerAttendenceViewModel(PlayersDataStore playerStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, HomeViewModel homeViewModel)
         {
             _playerStore = playerStore;
             LoadPlayersCommand = new LoadPlayersCommand(this, _playerStore);
@@ -47,6 +50,8 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
             _playersAttendenceStore = playersAttendenceStore;
+            _navigationStore = navigationStore;
+            _homeViewModel = homeViewModel;
         }
 
         private void SearchBox_SearchedText(string? obj)
@@ -72,7 +77,12 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
 
         private void PlayerStore_PlayersLoaded()
         {
-            LoadPlayers(_playerStore.Players);
+            playerListItemViewModels.Clear();
+
+            foreach (Player player in _playerStore.Players)
+            {
+                AddPlayer(player);
+            }
         }
         void LoadPlayers(IEnumerable<Player> players, string query)
         {
@@ -87,24 +97,19 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
         }
         void LoadPlayers(IEnumerable<Player> players)
         {
-            playerListItemViewModels.Clear();
-
-            foreach (Player player in players)
-            {
-                AddPlayer(player);
-            }
+           
 
 
         }
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new(player, _playerStore, _playersAttendenceStore);
+                new(player, _playerStore, _playersAttendenceStore,_navigationStore,_homeViewModel);
             playerListItemViewModels.Add(itemViewModel);
         }
-        public static LogPlayerAttendenceViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore)
+        public static LogPlayerAttendenceViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore , HomeViewModel homeViewModel)
         {
-            LogPlayerAttendenceViewModel viewModel = new(playersStore, playersAttendenceStore);
+            LogPlayerAttendenceViewModel viewModel = new(playersStore, playersAttendenceStore, navigationStore,homeViewModel);
 
             viewModel.LoadPlayersCommand.Execute(null);
 

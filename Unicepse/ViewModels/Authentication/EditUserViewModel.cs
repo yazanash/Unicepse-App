@@ -50,6 +50,7 @@ namespace Unicepse.ViewModels.Authentication
                 EmployeeListItemViewModel employeeListItemViewModel = new EmployeeListItemViewModel(emp);
                 _employeeListItemViewModels.Add(employeeListItemViewModel);
             }
+            if(_usersDataStore.SelectedUser!.Employee!=null)
             SelectedEmployee = EmployeeList.FirstOrDefault(x => x.trainer.Id == _usersDataStore.SelectedUser!.Employee!.Id);
         }
 

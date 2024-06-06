@@ -191,7 +191,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
                 Name = "الصدر",
                 Id = (int)EMuscleGroup.Chest
             }));
-            SubmitCommand = new NavaigateCommand<SelectRoutineDaysMuscleGroupViewModel>(new NavigationService<SelectRoutineDaysMuscleGroupViewModel>(_navigationStore, () => new SelectRoutineDaysMuscleGroupViewModel(_routineDataStore, _navigationService, _playersDataStore)));
+            SubmitCommand = new NavaigateCommand<SelectRoutineDaysMuscleGroupViewModel>(new NavigationService<SelectRoutineDaysMuscleGroupViewModel>(_navigationStore, () => new SelectRoutineDaysMuscleGroupViewModel(_routineDataStore, _navigationService, _playersDataStore,FromTemp)));
         }
         private void loadRoutineItems()
         {

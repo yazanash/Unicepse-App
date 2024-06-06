@@ -53,7 +53,10 @@ namespace Unicepse.Commands.RoutinesCommand
                 Player = _playersDataStore.SelectedPlayer!.Player,
                 IsTemplate = selectRoutineDaysMuscleGroupViewModel.IsTemplate
             };
-
+            foreach(var item in _routineDataStore.RoutineItems)
+            {
+                item.Id = 0;
+            }
             playerRoutine.RoutineSchedule.AddRange(_routineDataStore.RoutineItems);
             foreach (var item in selectRoutineDaysMuscleGroupViewModel.DayGroupList)
             {

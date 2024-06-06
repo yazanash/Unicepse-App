@@ -26,6 +26,10 @@ namespace Unicepse.Commands.Payments
         public override async Task ExecuteAsync(object? parameter)
         {
             _subscriptionDataStore.SelectedSubscription = _paymentDataStore.SelectedPayment!.Subscription;
+            if (_subscriptionDataStore.SelectedSubscription!.Player == null)
+            {
+                _subscriptionDataStore.SelectedSubscription!.Player = new Core.Models.Player.Player() { Id = _playersDataStore.SelectedPlayer!.Id };
+            }
             _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
             _subscriptionDataStore.SelectedSubscription.PaidValue -= _paymentDataStore.SelectedPayment!.PaymentValue;
             await _paymentDataStore.Delete(_paymentDataStore.SelectedPayment!.Id);

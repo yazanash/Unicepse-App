@@ -87,6 +87,8 @@ namespace Unicepse.Stores
             await _subscriptionDataService.Create(entity);
             _subscriptions.Add(entity);
             Created?.Invoke(entity);
+            SelectedTrainer = null;
+            SelectedSport = null;
         }
 
         public async Task Delete(int entity_id)
@@ -147,6 +149,8 @@ namespace Unicepse.Stores
                 _subscriptions.Add(entity);
             }
             Updated?.Invoke(entity);
+            SelectedTrainer = null;
+            SelectedSport = null;
         }
         public async Task Stop(Subscription entity, DateTime stopDate)
         {
@@ -177,6 +181,8 @@ namespace Unicepse.Stores
                 _subscriptions.Add(entity);
             }
             Updated?.Invoke(entity);
+            SelectedTrainer = null;
+            SelectedSport = null;
         }
     }
 }

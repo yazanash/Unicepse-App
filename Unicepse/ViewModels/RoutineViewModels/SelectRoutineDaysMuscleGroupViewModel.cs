@@ -36,6 +36,61 @@ namespace Unicepse.ViewModels.RoutineViewModels
             _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(7, "اليوم السابع"));
             _navigationService = navigationService;
             _playersDataStore = playersDataStore;
+            //if (_routineDataStore.SelectedRoutine != null)
+            //{
+            //    foreach (var key in _routineDataStore.SelectedRoutine!.DaysGroupMap!)
+            //    {
+
+            //        DayGroupListItemViewModel? dayGroupListItemViewModel = _dayGroupListItemViewModels.Where(x => x.SelectedDay == key.Key).FirstOrDefault();
+            //        foreach (var value in key.Value)
+            //        {
+            //            int inval = value;
+            //            switch (inval)
+            //            {
+            //                case (int)EMuscleGroup.Chest:
+            //                    dayGroupListItemViewModel!.Chest = true;
+            //                    break;
+            //                case (int)EMuscleGroup.Shoulders:
+            //                    dayGroupListItemViewModel!.Shoulders = true;
+            //                    break;
+            //                case (int)EMuscleGroup.Back:
+            //                    dayGroupListItemViewModel!.Back = true;
+            //                    break;
+            //                case (int)EMuscleGroup.Legs:
+            //                    dayGroupListItemViewModel!.Legs = true;
+            //                    break;
+            //                case (int)EMuscleGroup.Biceps:
+            //                    dayGroupListItemViewModel!.Biceps = true;
+            //                    break;
+            //                case (int)EMuscleGroup.Triceps:
+            //                    dayGroupListItemViewModel!.Triceps = true;
+            //                    break;
+            //                case (int)EMuscleGroup.Abs:
+            //                    dayGroupListItemViewModel!.Abs = true;
+            //                    break;
+            //            }
+            //        }
+            //    }
+            //    Number = _routineDataStore.SelectedRoutine.RoutineNo;
+            //}
+
+            SubmitCommand = new SubmitRoutineCommand(_routineDataStore, _playersDataStore, _navigationService, this);
+            string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + Date.ToShortDateString() + "_Routine";
+            PrintCommand = new PrintCommand(new PrintWindowViewModel(new RoutinePrintViewModel(_routineDataStore, _playersDataStore, this), new NavigationStore()), filename);
+        }
+        public SelectRoutineDaysMuscleGroupViewModel(RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, PlayersDataStore playersDataStore,bool isTemp)
+        {
+            _routineDataStore = routineDataStore;
+            _dayGroupListItemViewModels = new ObservableCollection<DayGroupListItemViewModel>();
+            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(1, "اليوم الاول"));
+            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(2, "اليوم الثاني"));
+            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(3, "اليوم الثالث"));
+            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(4, "اليوم الرابع"));
+            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(5, "اليوم الخامس"));
+            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(6, "اليوم السادس"));
+            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(7, "اليوم السابع"));
+            _navigationService = navigationService;
+            _playersDataStore = playersDataStore;
             if (_routineDataStore.SelectedRoutine != null)
             {
                 foreach (var key in _routineDataStore.SelectedRoutine!.DaysGroupMap!)

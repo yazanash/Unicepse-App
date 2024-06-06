@@ -135,19 +135,23 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
         private void _subscriptionStore_Created(Subscription subscription)
         {
-            AddSubscription(subscription);
+            LoadData();
             UpdateSubscriptionStatet();
         }
 
         private void _subscriptionStore_Loaded()
         {
+            LoadData();
+            UpdateSubscriptionStatet();
+        }
+        void LoadData()
+        {
             subscriptionListItemViewModels.Clear();
 
-            foreach (Subscription subscription in _subscriptionStore.Subscriptions)
+            foreach (Subscription subscription in _subscriptionStore.Subscriptions.OrderByDescending(x => x.RollDate))
             {
                 AddSubscription(subscription);
             }
-            UpdateSubscriptionStatet();
         }
         private void UpdateSubscriptionStatet()
         {

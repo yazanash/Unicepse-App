@@ -10,6 +10,7 @@ using Unicepse.Commands.Player;
 using Unicepse.navigation;
 using Unicepse.Stores;
 using Unicepse.navigation.Stores;
+using Unicepse.Commands.AuthCommands;
 
 namespace Unicepse.ViewModels.Authentication
 {
@@ -33,7 +34,7 @@ namespace Unicepse.ViewModels.Authentication
             _usersListViewModel = usersListViewModel;
             _employeeStore = employeeStore;
             EditUserCommand = new NavaigateCommand<EditUserViewModel>(new NavigationService<EditUserViewModel>(_navigationStore, () => CreateEditPlayerViewModel(_usersDataStore, _navigationStore, _usersListViewModel, _employeeStore)));
-
+            DeleteUserCommand = new DeleteUserCommand(_usersDataStore);
         }
 
         private EditUserViewModel CreateEditPlayerViewModel(UsersDataStore usersDataStore, NavigationStore navigatorStore, UsersListViewModel usersListViewModel, EmployeeStore employeeStore)

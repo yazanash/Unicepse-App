@@ -19,6 +19,7 @@ namespace Unicepse.Stores
         public event Action<int>? Deleted;
         private readonly PlayerRoutineDataService _playerRoutineDataService;
         private readonly List<PlayerRoutine> _playerRoutines;
+        private readonly List<PlayerRoutine> _tempRoutines;
         private readonly List<Exercises> _exercises;
 
         private readonly List<RoutineItems> _routineItems;
@@ -26,6 +27,7 @@ namespace Unicepse.Stores
         public event Action<RoutineItems>? RoutineItemDeleted;
 
         public IEnumerable<PlayerRoutine> Routines => _playerRoutines;
+        public IEnumerable<PlayerRoutine> TempRoutines => _tempRoutines;
         public IEnumerable<Exercises> Exercises => _exercises;
 
         public IEnumerable<RoutineItems> RoutineItems => _routineItems;
@@ -35,6 +37,7 @@ namespace Unicepse.Stores
             _playerRoutines = new List<PlayerRoutine>();
             _exercises = new List<Exercises>();
             _routineItems = new List<RoutineItems>();
+            _tempRoutines = new List<PlayerRoutine>();
         }
         private MuscleGroup? _selectedMuscleGroup;
         public MuscleGroup? SelectedMuscle
@@ -124,8 +127,8 @@ namespace Unicepse.Stores
         {
 
             IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetAllTemp();
-            _playerRoutines.Clear();
-            _playerRoutines.AddRange(routines);
+            _tempRoutines.Clear();
+            _tempRoutines.AddRange(routines);
             Loaded?.Invoke();
         }
 

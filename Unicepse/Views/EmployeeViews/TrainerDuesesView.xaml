@@ -69,6 +69,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
+                            Visibility="{Binding IsTrainer,Converter={StaticResource BoolToVis}}"
                             Command="{Binding TrainerPlayersCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal" >

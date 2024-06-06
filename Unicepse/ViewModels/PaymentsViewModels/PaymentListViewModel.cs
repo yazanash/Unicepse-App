@@ -87,7 +87,7 @@ namespace Unicepse.ViewModels.PaymentsViewModels
 
         private void _paymentDataStore_Created(PlayerPayment payment)
         {
-            AddPayment(payment);
+            LoadData();
         }
 
         private void AddPayment(PlayerPayment payment)
@@ -98,9 +98,13 @@ namespace Unicepse.ViewModels.PaymentsViewModels
         }
         private void _paymentDataStore_Loaded()
         {
+            LoadData();
+        }
+        void LoadData()
+        {
             _paymentListItemViewModels.Clear();
 
-            foreach (PlayerPayment payment in _paymentDataStore.Payments)
+            foreach (PlayerPayment payment in _paymentDataStore.Payments.OrderByDescending(x => x.PayDate))
             {
                 AddPayment(payment);
             }

@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              FlowDirection="LeftToRight"
-               
+               PreviewKeyDown="UserControl_PreviewKeyDown"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -151,7 +151,7 @@
                             <PasswordBox x:Name="password_txt" PasswordChanged="password_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
                         </Grid>
                     </Border>
-                    <Button Content="Signin" Command="{Binding LoginCommand}" Style="{StaticResource signinBtn}"/>
+                    <Button x:Name="login_btn" Content="Signin" Command="{Binding LoginCommand}" Style="{StaticResource signinBtn}"/>
                 </StackPanel>
             </Border>
         </Grid>

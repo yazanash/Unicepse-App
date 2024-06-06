@@ -86,7 +86,7 @@
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple" />
-                            <TextBlock Text="الدخل"  />
+                            <TextBlock Text="ملخص الدخل الشهري"  />
 
                         </StackPanel>
                     </RadioButton>

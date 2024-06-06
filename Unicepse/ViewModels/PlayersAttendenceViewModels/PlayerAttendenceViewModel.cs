@@ -34,7 +34,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
         {
             _playerAttendenceListItemViewModels.Clear();
 
-            foreach (DailyPlayerReport dailyPlayerReport in _playersAttendenceStore.PlayersAttendence)
+            foreach (DailyPlayerReport dailyPlayerReport in _playersAttendenceStore.PlayersAttendence.OrderByDescending(x=>x.Date).ThenByDescending(x=>x.loginTime))
             {
                 AddDailyPlayerLog(dailyPlayerReport);
             }
@@ -44,6 +44,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             PlayerAttendenceListItemViewModel itemViewModel =
              new PlayerAttendenceListItemViewModel(dailyPlayerReport, _playersAttendenceStore);
             _playerAttendenceListItemViewModels.Add(itemViewModel);
+            itemViewModel.IdSort = _playerAttendenceListItemViewModels.Count();
         }
         public static PlayerAttendenceViewModel LoadViewModel(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore)
         {

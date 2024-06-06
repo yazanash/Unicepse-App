@@ -47,7 +47,7 @@ namespace Unicepse.ViewModels.PrintViewModels
          => _routineExercisesItemsViewModels.Where(x => x.GroupId == (int)EMuscleGroup.Calves).OrderBy(x => x.ItemOrder);
         public IEnumerable<RoutineExercisesItemsViewModel> AbsExercisesList
          => _routineExercisesItemsViewModels.Where(x => x.GroupId == (int)EMuscleGroup.Abs).OrderBy(x => x.ItemOrder);
-        public DateTime Date => _selectRoutineDaysMuscleGroupViewModel.Date;
+        public string? Date => _selectRoutineDaysMuscleGroupViewModel.Date.ToShortDateString();
         public string? Id => _selectRoutineDaysMuscleGroupViewModel.Number;
         public string? FullName => _playersDataStore.SelectedPlayer!.FullName;
 

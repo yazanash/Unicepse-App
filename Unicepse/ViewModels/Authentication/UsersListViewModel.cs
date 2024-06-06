@@ -114,6 +114,14 @@ namespace Unicepse.ViewModels.Authentication
         {
             AddUser(obj);
         }
+        public override void Dispose()
+        {
+            _usersDataStore.Created -= _usersDataStore_Created;
+            _usersDataStore.Deleted -= _usersDataStore_Deleted;
+            _usersDataStore.Updated -= _usersDataStore_Updated;
+            _usersDataStore.Loaded -= _usersDataStore_Loaded;
+            base.Dispose();
+        }
         private void AddUser(User user)
         {
             UserListItemViewModel userListItemViewModel = new UserListItemViewModel(user, _navigatorStore, _usersDataStore, this, _employeeStore);

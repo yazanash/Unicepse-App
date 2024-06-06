@@ -32,6 +32,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private readonly RoutineDataStore? _routineDataStore;
 
         private readonly PlayersAttendenceStore? _playersAttendenceStore;
+        private readonly HomeViewModel? _homeViewModel;
         public int Id => Player.Id;
         public string? FullName => Player.FullName;
         public string? Phone => Player.Phone;
@@ -74,12 +75,14 @@ namespace Unicepse.ViewModels.PlayersViewModels
             TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigationStore)));
         }
 
-        public PlayerListItemViewModel(Player player, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore)
+        public PlayerListItemViewModel(Player player, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore,HomeViewModel homeViewModel)
         {
             Player = player;
             _playersDataStore = playersDataStore;
             _playersAttendenceStore = playersAttendenceStore;
-            LogInCommand = new LoginPlayerCommand(_playersAttendenceStore, _playersDataStore);
+            _navigationStore = navigationStore;
+            _homeViewModel = homeViewModel;
+            LogInCommand = new LoginPlayerCommand(_playersAttendenceStore, _playersDataStore, new NavigationService<HomeViewModel>(_navigationStore, () => _homeViewModel));
         }
         public void Update(Player player)
         {

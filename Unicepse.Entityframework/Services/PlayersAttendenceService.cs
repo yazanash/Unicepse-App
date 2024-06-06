@@ -27,16 +27,17 @@ namespace Unicepse.Entityframework.Services
             {
 
                 EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
-                //DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x => 
-                //x.Player!.Id == entity.Player!.Id &&
-                //x.Date.Month==entity.Date.Month && 
-                //x.Date.Year ==entity.Date.Year && 
-                //x.Date.Day ==entity.Date.Day
-                //).SingleOrDefault();
-                //if (dailyPlayerReport != null)
-                //{
-                //    throw new PlayerConflictException("هذا اللاعب تم تسجيل دخوله اليوم بالفعل");
-                //}
+                DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x =>
+                x.Player!.Id == entity.Player!.Id &&
+                x.Date.Month == entity.Date.Month &&
+                x.Date.Year == entity.Date.Year &&
+                x.Date.Day == entity.Date.Day&&
+                x.IsLogged
+                ).SingleOrDefault();
+                if (dailyPlayerReport != null)
+                {
+                    throw new PlayerConflictException("هذا اللاعب تم تسجيل دخوله بالفعل ولم يسجل خروجه بعد");
+                }
                 context.Attach(entity.Player!);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;

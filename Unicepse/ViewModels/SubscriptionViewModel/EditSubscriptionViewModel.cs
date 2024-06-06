@@ -101,7 +101,8 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
 
             _sportDataStore.Loaded += _sportDataStore_Loaded;
             _subscriptionStore.StateChanged += _subscriptionStore_StateChanged;
-            //SelectedTrainer = TrainerList.SingleOrDefault(x=>x.tr);
+            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
+
             SubmitCommand = new EditSubscriptionCommand(_subscriptionStore, this, _playerDataStore, new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
         }
 
@@ -109,13 +110,17 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         private void _subscriptionStore_StateChanged(Sport? sport)
         {
             _trainerListItemViewModels.Clear();
-            foreach (var trainer in sport!.Trainers!)
+            if (sport != null)
             {
-                AddTrainer(trainer);
+                foreach (var trainer in sport!.Trainers!)
+                {
+                    AddTrainer(trainer);
+                }
+                if (_subscriptionStore.SelectedSubscription!.Sport!.Id == sport.Id)
+                    if (_subscriptionStore.SelectedSubscription!.Trainer != null)
+                        SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.Trainer!.Id);
             }
-            if (_subscriptionStore.SelectedSubscription!.Sport!.Id == sport.Id)
-                if (_subscriptionStore.SelectedSubscription!.Trainer != null)
-                    SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.Trainer!.Id);
+          
         }
         private void CountTotal()
         {
@@ -231,7 +236,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             {
                 AddSport(sport);
             }
-
+            if(_subscriptionStore.SelectedSubscription!=null &&_subscriptionStore.SelectedSubscription!.Sport!=null)
             SelectedSport = SportList.FirstOrDefault(x => x.Sport.Id == _subscriptionStore.SelectedSubscription!.Sport!.Id);
         }
         private void AddSport(Sport sport)

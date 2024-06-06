@@ -53,6 +53,8 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             _trainerListItemViewModels = new ObservableCollection<SubscriptionTrainerListItem>();
             Subscription = new SubscriptionCardViewModel(_subscriptionStore.SelectedSubscription!);
             ListTrainers();
+            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
+
             SubmitCommand = new MoveToNewTrainerCommand(_subscriptionStore, new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView), this);
         }
 
@@ -62,6 +64,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             {
                 AddTrainer(trainer);
             }
+            if(_subscriptionStore.SelectedSubscription.Trainer!!=null)
             SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.Trainer!.Id);
         }
         #region Properties
@@ -79,7 +82,11 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
                     AddError("لا يمكن ان يكون تاريخ نقل الاشتراك اصغر من تاريخ الاشتراك", nameof(MoveDate));
                     OnErrorChanged(nameof(MoveDate));
                 }
-
+                else if (MoveDate >= _subscriptionStore.SelectedSubscription!.EndDate)
+                {
+                    AddError("لا يمكن ان يكون تاريخ نقل الاشتراك اكبر من تاريخ نهاية الاشتراك", nameof(MoveDate));
+                    OnErrorChanged(nameof(MoveDate));
+                }
                 OnPropertyChanged(nameof(MoveDate));
             }
         }

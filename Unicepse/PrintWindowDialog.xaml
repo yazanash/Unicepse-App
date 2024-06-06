@@ -34,17 +34,27 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button Style="{StaticResource AddBtn}" Content="Print" Click="Button_Click" Height="50"   />
+                <Button IsDefault="True" Style="{StaticResource AddBtn}" Content="Print" Click="Button_Click" Height="50"   />
 
             </StackPanel>
-           
-                <ScrollViewer CanContentScroll="True" Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-               
-                    <ContentControl Grid.Row="1" x:Name="print" Content="{Binding CurrentPrint}" />
+
+            <ScrollViewer  CanContentScroll="True" x:Name="myscroll" Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+
+                <ContentControl Grid.Row="1" x:Name="print" Content="{Binding CurrentPrint}" />
              
             </ScrollViewer>
+            <!--<FlowDocumentScrollViewer  Grid.Row="1">
+                <FlowDocument x:Name="print">
+                    
+                    <Section >
+                        <BlockUIContainer>
+                             Your user control here 
+                            <ContentControl Grid.Row="1"  Content="{Binding CurrentPrint}" />
+                        </BlockUIContainer>
+                    </Section>
+                </FlowDocument>
+            </FlowDocumentScrollViewer>-->
 
-            
         </Grid>
       
     </Border>

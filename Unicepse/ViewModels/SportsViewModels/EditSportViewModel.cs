@@ -60,6 +60,7 @@ namespace Unicepse.ViewModels.SportsViewModels
 
 
             }
+            if(_sportStore.SelectedSport!=null)
             foreach (var t in _sportStore.SelectedSport!.Trainers!)
             {
                 TrainerList.SingleOrDefault(x => x.trainer.Id == t.Id)!.IsSelected = true;
@@ -190,7 +191,11 @@ namespace Unicepse.ViewModels.SportsViewModels
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();
-
+        public override void Dispose()
+        {
+            _trainerStore.Loaded -= _trainerStore_TrainersLoaded;
+            base.Dispose();
+        }
         public IEnumerable GetErrors(string? propertyName)
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());

@@ -55,7 +55,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
-                                    Binding="{Binding Id}"
+                                    Binding="{Binding IdSort}"
                                     CanUserResize="False"/>
 
                                 <DataGridTemplateColumn Header="التاريخ" Width="1.5*" IsReadOnly="True">

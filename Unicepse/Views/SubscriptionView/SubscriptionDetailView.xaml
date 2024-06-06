@@ -116,7 +116,7 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
-                                <TextBox Text="{Binding Total, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                <TextBox IsReadOnly="True" Text="{Binding Total, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                             <!--<DockPanel  Grid.Row="2">
                             <DockPanel DockPanel.Dock="Top" >

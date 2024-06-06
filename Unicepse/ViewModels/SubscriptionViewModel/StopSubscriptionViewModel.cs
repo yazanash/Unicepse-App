@@ -31,15 +31,22 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             _playerMainPageView = playerMainPageView;
 
             Subscription = new SubscriptionCardViewModel(_subscriptionStore.SelectedSubscription!);
+            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
 
             SubmitCommand = new StopSubscriptionCommand(_subscriptionStore, _playerDataStore, new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView), this);
         }
 
         private void CountCoast()
         {
-            SubscribeDays = Convert.ToInt32((SubscribeStopDate - Convert.ToDateTime(Subscription!.RollDate)).TotalDays);
-            DuesCash = Subscription.PriceAfterOffer / Subscription.DaysCount * SubscribeDays;
-            ReturnCash = Subscription.PaidValue - DuesCash;
+            //SubscribeDays = Convert.ToInt32((SubscribeStopDate - Convert.ToDateTime(_subscriptionStore.SelectedSubscription!.RollDate)).TotalDays);
+            DuesCash = _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount * SubscribeDays;
+            ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
+        }
+        private void CountCoastFromDays()
+        {
+           SubscribeStopDate=_subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
+            DuesCash = _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount * SubscribeDays;
+            ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
         }
 
         #region Properties 
@@ -51,7 +58,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             {
                 _subscribeDays = value;
                 OnPropertyChanged(nameof(SubscribeDays));
-
+                CountCoastFromDays();
             }
         }
         private DateTime _subscribeStopDate = DateTime.Now;
@@ -66,6 +73,11 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
                 if (SubscribeStopDate < _subscriptionStore.SelectedSubscription!.RollDate)
                 {
                     AddError("لا يمكن ان يكون تاريخ ايقاف الاشتراك اصغر من تاريخ الاشتراك", nameof(SubscribeStopDate));
+                    OnErrorChanged(nameof(SubscribeStopDate));
+                }
+                else if (SubscribeStopDate >= _subscriptionStore.SelectedSubscription!.EndDate)
+                {
+                    AddError("لا يمكن ان يكون تاريخ ايقاف الاشتراك اكبر من تاريخ نهاية الاشتراك", nameof(SubscribeStopDate));
                     OnErrorChanged(nameof(SubscribeStopDate));
                 }
                 else

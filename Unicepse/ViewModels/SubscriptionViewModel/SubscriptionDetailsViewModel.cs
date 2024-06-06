@@ -16,6 +16,7 @@ using Unicepse.ViewModels;
 using Unicepse.ViewModels.PaymentsViewModels;
 using Unicepse.ViewModels.SportsViewModels;
 using Unicepse.navigation.Stores;
+using Unicepse.ViewModels.PlayersViewModels;
 
 namespace Unicepse.ViewModels.SubscriptionViewModel
 {
@@ -30,6 +31,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         private readonly SubscriptionDataStore _subscriptionStore;
         private readonly PlayersDataStore _playerDataStore;
         private readonly PaymentDataStore _paymentDataStore;
+        private readonly PlayerMainPageViewModel _playerMainPageView;
 
         public SportListItemViewModel? SelectedSport
         {
@@ -78,14 +80,16 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         public IEnumerable<SportListItemViewModel> SportList => _sportListItemViewModels;
         public IEnumerable<SubscriptionTrainerListItem> TrainerList => _trainerListItemViewModels;
         public ICommand LoadSportsCommand { get; }
-        public SubscriptionDetailsViewModel(SportDataStore sportDataStore, NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore)
+        public SubscriptionDetailsViewModel(SportDataStore sportDataStore, NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore, PlayerMainPageViewModel playerMainPageView)
         {
             _navigatorStore = navigatorStore;
             _sportDataStore = sportDataStore;
             _subscriptionStore = subscriptionStore;
             _playerDataStore = playerDataStore;
             _paymentDataStore = paymentDataStore;
+            _playerMainPageView = playerMainPageView;
 
+            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
             _sportListItemViewModels = new ObservableCollection<SportListItemViewModel>();
             _trainerListItemViewModels = new ObservableCollection<SubscriptionTrainerListItem>();
             _sportDataStore.Loaded += _sportDataStore_Loaded;
@@ -105,6 +109,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         private void _subscriptionStore_StateChanged(Sport? sport)
         {
             _trainerListItemViewModels.Clear();
+            if(_subscriptionStore.SelectedSport!=null)
             foreach (var trainer in sport!.Trainers!)
             {
                 AddTrainer(trainer);
@@ -232,15 +237,21 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             _sportListItemViewModels.Add(itemViewModel);
         }
 
+        public override void Dispose()
+        {
+            _sportDataStore.Loaded -= _sportDataStore_Loaded;
+            _subscriptionStore.StateChanged -= _subscriptionStore_StateChanged;
+            base.Dispose();
+        }
         private void AddTrainer(emp.Employee trainer)
         {
             SubscriptionTrainerListItem itemViewModel =
                 new SubscriptionTrainerListItem(trainer);
             _trainerListItemViewModels.Add(itemViewModel);
         }
-        public static SubscriptionDetailsViewModel LoadViewModel(SportDataStore sportDataStore, NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore)
+        public static SubscriptionDetailsViewModel LoadViewModel(SportDataStore sportDataStore, NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore ,PlayerMainPageViewModel playerMainPageViewModel)
         {
-            SubscriptionDetailsViewModel viewModel = new(sportDataStore, navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore);
+            SubscriptionDetailsViewModel viewModel = new(sportDataStore, navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, playerMainPageViewModel);
 
             viewModel.LoadSportsCommand.Execute(null);
 

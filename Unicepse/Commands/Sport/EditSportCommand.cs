@@ -39,8 +39,8 @@ namespace Unicepse.Commands.Sport
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            try
-            {
+            //try
+            //{
                 sp.Sport sport = new sp.Sport()
                 {
                     Id = _sportStore.SelectedSport!.Id,
@@ -62,11 +62,11 @@ namespace Unicepse.Commands.Sport
 
                 //MessageBox.Show("Sport edited successfully");
                 navigationService.Navigate();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
 
         }
 

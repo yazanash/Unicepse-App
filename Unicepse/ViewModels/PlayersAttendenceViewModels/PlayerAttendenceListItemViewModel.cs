@@ -26,6 +26,14 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             this.IsLoggedBrush = this.IsLogged ? Brushes.Green : Brushes.Red;
             LogoutCommand = new LogoutPlayerCommand(_playersAttendenceStore);
         }
+
+        private int _idSort;
+        public int IdSort
+        {
+            get { return _idSort; }
+            set { _idSort = value; OnPropertyChanged(nameof(IdSort)); }
+        }
+
         public ICommand LogoutCommand { get; }
         public string? Date => dailyPlayerReport.Date.ToShortDateString();
         public string? loginTime => dailyPlayerReport.loginTime.ToShortTimeString();
@@ -59,7 +67,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             }
         }
         public Brush IsSubscribed => dailyPlayerReport.Player!.IsSubscribed ? Brushes.Green : Brushes.Red;
-        public int Id => dailyPlayerReport.Player!.Id;
+        public int Id => dailyPlayerReport.Id;
 
         public void Update(DailyPlayerReport obj)
         {

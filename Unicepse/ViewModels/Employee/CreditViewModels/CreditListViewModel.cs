@@ -62,14 +62,17 @@ namespace Unicepse.ViewModels.Employee.CreditViewModels
 
         private void _creditDataStore_Loaded()
         {
+            loadData();
+        }
+        void loadData()
+        {
             _creditListItemViewModels.Clear();
 
-            foreach (Credit credit in _creditDataStore.Credits)
+            foreach (Credit credit in _creditDataStore.Credits.OrderByDescending(x => x.Date))
             {
                 AddCredit(credit);
             }
         }
-
         private void _creditDataStore_Updated(Credit obj)
         {
             CreditListItemViewModel? creditViewModel =
@@ -83,7 +86,7 @@ namespace Unicepse.ViewModels.Employee.CreditViewModels
 
         private void _creditDataStore_Created(Credit obj)
         {
-            AddCredit(obj);
+            loadData();
         }
         private void AddCredit(Credit credit)
         {

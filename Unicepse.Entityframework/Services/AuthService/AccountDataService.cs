@@ -29,11 +29,11 @@ namespace Unicepse.Entityframework.Services.AuthService
             User existed_user = await GetByUsername(entity.UserName!);
             if (existed_user != null)
                 throw new ConflictException();
-            if(entity.Employee!=null)
-            context.Attach(entity.Employee!);
-            string pass =  _passwordHasher.HashPassword(entity.Password);
+            if (entity.Employee != null)
+                context.Attach(entity.Employee!);
+            string pass = _passwordHasher.HashPassword(entity.Password);
             entity.Password = pass;
-            EntityEntry <User> CreatedResult = await context.Set<User>().AddAsync(entity);
+            EntityEntry<User> CreatedResult = await context.Set<User>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;
         }
@@ -44,6 +44,11 @@ namespace Unicepse.Entityframework.Services.AuthService
             User entityToDelete = await Get(id);
             if (entityToDelete == null)
                 throw new NotExistException();
+            if (context.Users!.Count() < 2)
+            {
+                throw new Exception("لا يمكن حذف مستخدم في حال عدم وجود مستخدمين اخرين");
+
+            }
             User? entity = await context.Set<User>().FirstOrDefaultAsync((e) => e.Id == id);
             context.Set<User>().Remove(entity!);
             await context.SaveChangesAsync();
@@ -63,14 +68,14 @@ namespace Unicepse.Entityframework.Services.AuthService
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
-            IEnumerable<User>? entities = await context.Set<User>().Include(x=>x.Employee).ToListAsync();
+            IEnumerable<User>? entities = await context.Set<User>().Include(x => x.Employee).ToListAsync();
             return entities;
         }
-        public  bool HasUsers()
+        public bool HasUsers()
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
-            bool entities =  context.Set<User>().Any();
+            bool entities = context.Set<User>().Any();
             return entities;
         }
 
@@ -82,6 +87,14 @@ namespace Unicepse.Entityframework.Services.AuthService
                 throw new NotExistException();
             string pass = _passwordHasher.HashPassword(entity.Password);
             entity.Password = pass;
+            if (entity.Employee != null)
+            {
+                context.Entry(entity.Employee).State = EntityState.Detached;
+
+                if (context.Entry(entity.Employee).State == EntityState.Detached)
+                    context.Entry(entity.Employee).State = EntityState.Unchanged;
+
+            }
             context.Set<User>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

@@ -14,9 +14,11 @@
                     
                       xmlns:tvmodels="clr-namespace:Unicepse.ViewModels.Employee.TrainersViewModels"
              xmlns:tviews="clr-namespace:Unicepse.Views.EmployeeViews"
-                    
+                    xmlns:logvms="clr-namespace:Unicepse.ViewModels.PlayersAttendenceViewModels"
+        xmlns:logvs="clr-namespace:Unicepse.Views.PlayersAttendenceViews"
              xmlns:vmodels="clr-namespace:Unicepse.ViewModels.Accountant"
-             xmlns:views="clr-namespace:Unicepse.Views"
+             xmlns:views="clr-namespace:Unicepse.utlis.common"
+                     xmlns:vis="clr-namespace:Unicepse.Views"
              xmlns:vs="clr-namespace:Unicepse.Views.AccountingViews"
              xmlns:playervs="clr-namespace:Unicepse.Views.PlayerViews"
              xmlns:vi="clr-namespace:Unicepse.Views.PlayerViews"
@@ -25,12 +27,15 @@
              xmlns:userview="clr-namespace:Unicepse.Views.AuthView"
                     
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DataTemplate DataType="{x:Type logvms:LogPlayerAttendenceViewModel }">
+        <logvs:LogPlayerAttendenceView/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodels:MainViewModel}">
-        <views:MainView />
+        <vis:MainView />
 
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:HomeViewModel }">
-        <views:HomeView />
+    <DataTemplate DataType="{x:Type viewmodels:HomeNavViewModel }">
+        <views:HomeNavView />
 
     </DataTemplate>
     <DataTemplate DataType="{x:Type authvmodels:AuthViewModel }">
@@ -38,11 +43,11 @@
         <login:LoginView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type svmodels:SportsViewModel }">
-        <views:SportsView/>
+        <vis:SportsView/>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type tvmodels:TrainersViewModel}">
-        <views:TrainersView/>
+        <vis:TrainersView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type uservms:UsersViewModel}">
         <userview:UsersView/>
@@ -51,7 +56,7 @@
         <vs:AccountnigView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type pvmodels:PlayersPageViewModel }">
-        <views:PlayersView/>
+        <vis:PlayersView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type vms:AppInfoViewModel }">
         <vsa:ApplicationAboutView/>

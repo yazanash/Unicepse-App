@@ -26,19 +26,19 @@ namespace Unicepse.Commands.RoutinesCommand
             _routineListing.ErrorMessage = null;
             _routineListing.IsLoading = true;
 
-            //try
-            //{
+            try
+            {
 
-            await _routineDataStore.GetAllTemp();
-            //}
-            //catch (Exception)
-            //{
-            //    _routineListing.ErrorMessage = "Failed to load Players. Please restart the application.";
-            //}
-            //finally
-            //{
-            //    _routineListing.IsLoading = false;
-            //}
+                await _routineDataStore.GetAllTemp();
+            }
+            catch (Exception)
+            {
+                _routineListing.ErrorMessage = "Failed to load Players. Please restart the application.";
+            }
+            finally
+            {
+                _routineListing.IsLoading = false;
+            }
         }
     }
 }

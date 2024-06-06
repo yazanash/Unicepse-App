@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using Unicepse.Stores;
 using Unicepse.Commands;
+using System.Windows.Navigation;
+using Unicepse.utlis.common;
+using Unicepse.navigation;
 
 namespace Unicepse.Commands.PlayerAttendenceCommands
 {
@@ -14,11 +17,12 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
     {
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly PlayersDataStore _playersDataStore;
-
-        public LoginPlayerCommand(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore)
+        private NavigationService<HomeViewModel> _navigationService;
+        public LoginPlayerCommand(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore,NavigationService<HomeViewModel> navigationService)
         {
             _playersAttendenceStore = playersAttendenceStore;
             _playersDataStore = playersDataStore;
+            _navigationService = navigationService;
         }
 
         public override async Task ExecuteAsync(object? parameter)
@@ -36,6 +40,7 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
 
                 };
                 await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
+                _navigationService.ReNavigate();
             }
             catch (Exception ex)
             {

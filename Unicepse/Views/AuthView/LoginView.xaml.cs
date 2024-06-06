@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -71,6 +72,21 @@ namespace Unicepse.Views.AuthView
 
 
 
+        }
+
+        private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                // Simulate button click
+                login_btn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+                // Optionally, make the button look pressed (visual effect)
+                typeof(Button).GetMethod("set_IsPressed", BindingFlags.Instance | BindingFlags.NonPublic)?
+                    .Invoke(login_btn, new object[] { true });
+
+                e.Handled = true; // Suppress the Enter key
+            }
         }
     }
 }

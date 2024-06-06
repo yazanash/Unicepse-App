@@ -38,10 +38,10 @@
                         <StackPanel Margin="10" Grid.Column="2">
                             <StackPanel Orientation="Horizontal" Margin="5" >
                                 <TextBlock Text="اسم اللاعب :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
-                                <TextBlock Text="{Binding FulName}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
+                                <TextBlock Text="{Binding FullName}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="2">
-                                <TextBlock Text="رقم البرنامج :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
+                                <TextBlock Text="اسم البرنامج :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                                 <TextBlock Text="{Binding Id}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="2">
@@ -57,6 +57,7 @@
             <Grid Grid.Row="1">
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
@@ -88,7 +89,7 @@
                     <TextBlock Text="اليوم السادس :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                     <TextBlock Text="{Binding day6}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="2" Grid.Row="5">
+                <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="2" Grid.Row="6">
                     <TextBlock Text="اليوم السابع :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                     <TextBlock Text="{Binding day7}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
                 </StackPanel>
@@ -263,7 +264,7 @@
                         <TextBlock Text="Uniceps" FontSize="25" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10" Grid.Column="1">
-                        <TextBlock Text="تمت طباعة هذا الوصل بواسطة برنامج يونيسيبس لادارة الاندية الرياضية " FontSize="14" VerticalAlignment="Center"  Foreground="#787878"/>
+                        <TextBlock Text="تمت طباعة هذا النظام التدريبي بواسطة برنامج يونيسيبس لادارة الاندية الرياضية " FontSize="14" VerticalAlignment="Center"  Foreground="#787878"/>
                         <TextBlock Text="UNICEPS جميع الحقوق محفوظة" FontSize="14" VerticalAlignment="Center"  Foreground="#787878"/>
                     </StackPanel>
                 </Grid>

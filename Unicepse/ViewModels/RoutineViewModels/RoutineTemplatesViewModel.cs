@@ -52,7 +52,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
             _routineDataStore.Loaded += _routineDataStore_Loaded;
             LoadAllRoutines = new LoadAllTempRoutineCommand(_routineDataStore, this, _playersDataStore);
             //SelectedRoutine = RoutineList.FirstOrDefault();
-
+          
             AddRoutineCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore)));
             ChooseCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadChoosedAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore, true)));
 
@@ -73,17 +73,21 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private void _routineDataStore_Loaded()
         {
             _routineItemViewModels.Clear();
-            foreach (var routine in _routineDataStore.Routines.OrderByDescending(x => x.RoutineData))
+            foreach (var routine in _routineDataStore.TempRoutines.OrderByDescending(x => x.RoutineData))
             {
                 AddRoutine(routine);
 
             }
-            SelectedRoutine = _routineItemViewModels.SingleOrDefault();
+            SelectedRoutine = _routineItemViewModels.FirstOrDefault();
         }
 
 
 
-
+        public override void Dispose()
+        {
+            _routineDataStore.Loaded -= _routineDataStore_Loaded;
+            base.Dispose();
+        }
         private void AddRoutine(PlayerRoutine routine)
         {
             RoutinItemViewModel viewmodel = new(routine, _playersDataStore, _routineDataStore, _navigationStore, _routinePlayerViewModels);
@@ -95,6 +99,9 @@ namespace Unicepse.ViewModels.RoutineViewModels
             RoutineTemplatesViewModel viewModel = new(routineDataStore, playersDataStore, navigationStore, routinePlayerViewModels);
 
             viewModel.LoadAllRoutines.Execute(null);
+
+            if (!routineDataStore.TempRoutines.Any())
+            viewModel.AddRoutineCommand.Execute(null);
 
             return viewModel;
         }

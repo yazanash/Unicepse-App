@@ -28,6 +28,12 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         private readonly PlayerMainPageViewModel _playerMainPageViewModel;
         //private readonly PlayerListViewModel playerListingViewModel;
         public int Id => Subscription.Id;
+        private int _order;
+        public int Order
+        {
+            get { return _order; }
+            set { _order = value; OnPropertyChanged(nameof(Order)); }
+        }
         public string? PlayerName => Subscription.Player!.FullName;
         public string? SportName => Subscription.Sport!.Name;
         public DateTime LastCheck => Subscription.LastCheck;

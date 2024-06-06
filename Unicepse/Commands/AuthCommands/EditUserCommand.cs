@@ -32,7 +32,7 @@ namespace Unicepse.Commands.AuthCommands
                 Password = _editUserViewModel.Password,
 
             };
-            await _usersDataStore.Add(user);
+            await _usersDataStore.Update(user);
             _navigationService.ReNavigate();
         }
     }

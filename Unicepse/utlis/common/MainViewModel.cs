@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Unicepse.navigation.Navigator;
 using Unicepse.Stores;
-using Unicepse.navigation.Navigator;
 using Unicepse.navigation.Stores;
 
 namespace Unicepse.utlis.common
@@ -49,15 +48,16 @@ namespace Unicepse.utlis.common
             _creditsDataStore = creditsDataStore;
 
             Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore);
-            Navigator.CurrentViewModel = CreateHomeViewModel(_playerStore, _playersAttendenceStore, _employeeStore);
+            
+            Navigator.CurrentViewModel = new HomeNavViewModel(new NavigationStore(), _playerStore, _playersAttendenceStore, _employeeStore);
 
 
 
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
-        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore)
+        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore)
         {
-            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore);
+            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore);
         }
         //private void NavigationStore_CurrentViewModelChanged()
         //{

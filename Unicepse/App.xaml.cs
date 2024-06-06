@@ -30,6 +30,8 @@ using Unicepse.Stores;
 using Unicepse.HostBuilders;
 using Unicepse.ViewModels.Authentication;
 using Unicepse.utlis.common;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse
 {
@@ -129,8 +131,7 @@ namespace Unicepse
         {
             try
             {
-
-
+              
                 _host.Start();
                 PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
                 using (PlatinumGymDbContext platinumGymDbContext = platinumGymDbContextFactory.CreateDbContext())

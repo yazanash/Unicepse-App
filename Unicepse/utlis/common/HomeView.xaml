@@ -101,7 +101,7 @@
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
-                                    Binding="{Binding Id}"
+                                    Binding="{Binding IdSort}"
                                     CanUserResize="False"/>
 
                                         <DataGridTemplateColumn Header="الاسم" Width="*" IsReadOnly="True">
