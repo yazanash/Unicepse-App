@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="Unicepse.Views.RoutineViews.RoutineTemplateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Unicepse.Views.RoutineViews"
+             mc:Ignorable="d" 
+                 FlowDirection="RightToLeft"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border CornerRadius="10" Background="#fff" Padding="5" Margin="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="AUTO"/>
+            </Grid.RowDefinitions>
+            <DockPanel >
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" DockPanel.Dock="Top" 
+                           VerticalAlignment="Center" Text="القوالب المعدة مسبقا" />
+
+                    <Button Grid.Column="2"  Margin="5 0"  Command="{Binding AddRoutineCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                        <StackPanel Orientation="Horizontal" >
+
+                            <TextBlock Text="جديد" />
+                            <Icon:PackIconMaterial Kind="Plus"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                    </Button>
+
+
+
+
+                </Grid>
+                <Separator Margin="10" Background="#aaa" DockPanel.Dock="Top"/>
+                <Grid DockPanel.Dock="Top">
+                    <DockPanel Grid.Column="1" Grid.Row="1" Width="500" HorizontalAlignment="Left">
+
+                        <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0" Grid.Row="1"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Visible" BorderBrush="#fff"
+                             VirtualizingPanel.ScrollUnit="Pixel"
+                             SelectedItem="{Binding  SelectedRoutine }"
+                              ItemsSource="{Binding   RoutineList}"
+                             ItemContainerStyle="{StaticResource RoutineTempListBoxItemContainerStyle1}" >
+
+                        </ListBox>
+                    </DockPanel>
+
+                </Grid>
+            </DockPanel>
+
+            <Border Background="Transparent" Grid.Row="3" HorizontalAlignment="Right">
+                <Button Grid.Column="2" Margin="5 0"  Command="{Binding ChooseCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Text="التالي" />
+
+                    </StackPanel>
+
+                </Button>
+            </Border>
+        </Grid>
+       
+    </Border>
+</UserControl>

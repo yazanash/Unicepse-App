@@ -20,6 +20,11 @@ namespace Unicepse.Entityframework.Services.AuthService
             _accountService = accountService;
             _passwordHasher = passwordHasher;
         }
+        public  bool HasUsers()
+        {
+           bool hasUsers =  _accountService.HasUsers();
+            return hasUsers;
+        }
 
         public async Task<User> Login(string username, string password)
         {
@@ -27,14 +32,14 @@ namespace Unicepse.Entityframework.Services.AuthService
 
             if (storedAccount == null)
             {
-                throw new UserNotFoundException(username);
+                throw new UserNotFoundException("خطأ في اسم المستخدم او كلمة المرور",username);
             }
 
             PasswordVerificationResult passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.Password, password);
 
             if (passwordResult != PasswordVerificationResult.Success)
             {
-                throw new InvalidPasswordException(username,password);
+                throw new InvalidPasswordException("خطأ في اسم المستخدم او كلمة المرور",username, password);
             }
 
             return storedAccount;
@@ -49,12 +54,6 @@ namespace Unicepse.Entityframework.Services.AuthService
                 result = RegistrationResult.PasswordsDoNotMatch;
             }
 
-            User emailAccount = await _accountService.GetByUsername(username);
-            if (emailAccount != null)
-            {
-                result = RegistrationResult.EmailAlreadyExists;
-            }
-
             User usernameAccount = await _accountService.GetByUsername(username);
             if (usernameAccount != null)
             {
@@ -63,21 +62,20 @@ namespace Unicepse.Entityframework.Services.AuthService
 
             if (result == RegistrationResult.Success)
             {
-                string hashedPassword = _passwordHasher.HashPassword(password);
-
+                
                 User user = new User()
                 {
                     UserName = username,
-                    Password = hashedPassword,
+                    Password = password,
                     IsAdmin = false
                 };
 
-                
+
                 await _accountService.Create(user);
             }
 
             return result;
         }
-       
+
     }
 }

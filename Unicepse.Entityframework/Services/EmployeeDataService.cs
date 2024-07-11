@@ -95,8 +95,13 @@ namespace Unicepse.Entityframework.Services
             foreach (Sport sport in entity.Sports!)
             {
                 context.Entry(sport).State = EntityState.Detached;
-                context.Attach(sport);
+                if (context.Entry(sport).State == EntityState.Detached)
+                    context.Entry(sport).State = EntityState.Modified;
             }
+
+            context.Entry(entity).State = EntityState.Detached;
+            if (context.Entry(entity).State == EntityState.Detached)
+                context.Entry(entity).State = EntityState.Modified;
             context.Set<Employee>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
@@ -107,7 +112,11 @@ namespace Unicepse.Entityframework.Services
             Employee? entity = await context.Set<Employee>().AsNoTracking().Include(x => x.Sports).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
-            entity.Sports!.Clear();
+            foreach (var sport in entity.Sports!)
+            {
+                context.Attach(sport);
+                entity.Sports!.Remove(sport);
+            }
             context.Set<Employee>().Update(entity!);
             await context.SaveChangesAsync();
             return true;

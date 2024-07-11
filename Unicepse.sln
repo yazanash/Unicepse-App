@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unicepse.WPF", "Unicepse.WPF\Unicepse.WPF.csproj", "{71E824B8-C813-4BD6-A4FA-E4DCBA3C2471}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unicepse", "Unicepse\Unicepse.csproj", "{71E824B8-C813-4BD6-A4FA-E4DCBA3C2471}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unicepse.Test", "Unicepse.Test\Unicepse.Test.csproj", "{43D56DAA-F86E-4888-B271-0F146B33278A}"
 EndProject

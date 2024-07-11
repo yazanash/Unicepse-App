@@ -14,6 +14,7 @@ namespace Unicepse.Core.Services
         Task<T> Create(T entity);
         Task<T> Update(T entity);
         Task<bool> Delete(int id);
+        bool HasUsers();
         public Task<T> GetByUsername(string username);
     }
 }

@@ -59,7 +59,8 @@ namespace Unicepse.Entityframework.Services
                 foreach (var trainer in entity.Trainers!)
                 {
                     context.Entry(trainer).State = EntityState.Detached;
-                    context.Attach(trainer);
+                    if(context.Entry(trainer).State == EntityState.Detached)
+                    context.Entry(trainer).State = EntityState.Unchanged;
 
                 }
                 EntityEntry<Sport> CreatedResult = await context.Set<Sport>().AddAsync(entity);
@@ -83,7 +84,12 @@ namespace Unicepse.Entityframework.Services
             Sport? entity = await context.Set<Sport>().AsNoTracking().Include(x=>x.Trainers).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException("هذه الرياضة غير موجودة");
-            entity.Trainers!.Clear();
+            foreach(var trainer in entity.Trainers!)
+            {
+                context.Attach(trainer);
+                entity.Trainers!.Remove(trainer);
+            }
+           
             context.Set<Sport>().Update(entity!);
             await context.SaveChangesAsync();
             return true;
@@ -101,7 +107,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Sport>? entities = await context.Set<Sport>().AsNoTracking().Include(x => x.Trainers).AsNoTracking().Where(x=>x.IsActive).ToListAsync();
+                IEnumerable<Sport>? entities = await context.Set<Sport>().AsNoTracking().Include(x => x.Trainers).AsNoTracking().Where(x=>x.IsActive).AsNoTracking().ToListAsync();
                 return entities;
             }
         }
@@ -115,8 +121,12 @@ namespace Unicepse.Entityframework.Services
             foreach (var trainer in entity.Trainers!)
             {
                 context.Entry(trainer).State = EntityState.Detached;
-                context.Attach(trainer);
+                if (context.Entry(trainer).State == EntityState.Detached)
+                    context.Entry(trainer).State = EntityState.Modified;
             }
+            context.Entry(entity).State = EntityState.Detached;
+            if (context.Entry(entity).State == EntityState.Detached)
+            context.Entry(entity).State = EntityState.Modified;
             context.Set<Sport>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

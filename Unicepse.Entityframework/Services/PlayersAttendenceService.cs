@@ -27,15 +27,16 @@ namespace Unicepse.Entityframework.Services
             {
 
                 EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
-                DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x => 
+                DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x =>
                 x.Player!.Id == entity.Player!.Id &&
-                x.Date.Month==entity.Date.Month && 
-                x.Date.Year ==entity.Date.Year && 
-                x.Date.Day ==entity.Date.Day
+                x.Date.Month == entity.Date.Month &&
+                x.Date.Year == entity.Date.Year &&
+                x.Date.Day == entity.Date.Day&&
+                x.IsLogged
                 ).SingleOrDefault();
                 if (dailyPlayerReport != null)
                 {
-                    throw new PlayerConflictException("هذا اللاعب تم تسجيل دخوله اليوم بالفعل");
+                    throw new PlayerConflictException("هذا اللاعب تم تسجيل دخوله بالفعل ولم يسجل خروجه بعد");
                 }
                 context.Attach(entity.Player!);
                 await context.SaveChangesAsync();
@@ -63,7 +64,9 @@ namespace Unicepse.Entityframework.Services
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
-            IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(x=>x.IsLogged).Include(x=>x.Player).AsNoTracking().ToListAsync();
+            IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(x=>x.Date.Month==DateTime.Now.Month&&
+            x.Date.Year == DateTime.Now.Year&&
+            x.Date.Day == DateTime.Now.Day).Include(x=>x.Player).AsNoTracking().ToListAsync();
             return entities;
         }
         public async Task<IEnumerable<DailyPlayerReport>> GetPlayerLogging(int id)
