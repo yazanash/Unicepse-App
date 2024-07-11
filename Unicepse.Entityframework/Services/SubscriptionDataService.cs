@@ -95,6 +95,18 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
+        public async Task<IEnumerable<Subscription>> GetAll(Sport sport, DateTime date)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.Sport!.Id == sport.Id
+                && ((x.RollDate.Month == date.Month && x.RollDate.Year == date.Year)
+                || (x.EndDate.Month == date.Month && x.EndDate.Year == date.Year))).Include(x => x.Trainer).AsNoTracking()
+                    .Include(x => x.Player).AsNoTracking()
+                    .Include(x => x.Sport).ToListAsync();
+                return entities;
+            }
+        }
         public async Task<IEnumerable<Subscription>> GetAll(Employee trainer, DateTime date)
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())

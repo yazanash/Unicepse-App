@@ -32,6 +32,7 @@ using Unicepse.ViewModels.Authentication;
 using Unicepse.utlis.common;
 using Serilog;
 using Microsoft.Extensions.Logging;
+using Unicepse.BackgroundServices;
 
 namespace Unicepse
 {
@@ -51,6 +52,7 @@ namespace Unicepse
                 .AddViewModels()
                 .ConfigureServices((hostContext, services) =>
                {
+                   services.AddHostedService<DataSyncService>();
                    string? CONNECTION_STRING = hostContext.Configuration.GetConnectionString("default"); ;
                    services.AddSingleton(new PlatinumGymDbContextFactory(CONNECTION_STRING));
                    services.AddSingleton(new NavigationStore());
@@ -65,6 +67,7 @@ namespace Unicepse
                    services.AddSingleton<SportServices>();
                    services.AddSingleton<EmployeeDataService>();
                    services.AddSingleton<EmployeeStore>();
+                   services.AddSingleton<BackgroundServiceStore>();
 
                    services.AddSingleton<GymStore>();
 

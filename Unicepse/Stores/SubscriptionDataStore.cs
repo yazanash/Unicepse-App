@@ -113,6 +113,16 @@ namespace Unicepse.Stores
             _subscriptions.AddRange(subscriptions);
             Loaded?.Invoke();
         }
+     
+        public async Task GetAll(Sport sport, DateTime date)
+        {
+            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(sport, date);
+            _subscriptions.Clear();
+            _subscriptions.AddRange(subscriptions);
+            Loaded?.Invoke();
+        }
+
+
         public async Task GetAll(Employee trainer, DateTime date)
         {
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(trainer, date);

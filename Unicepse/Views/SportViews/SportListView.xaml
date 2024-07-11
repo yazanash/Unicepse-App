@@ -130,6 +130,9 @@
                                                 <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
+                                                <Button Command="{Binding SubscriptionsCommand}" Style="{StaticResource GridremoveBtn}">
+                                                    <Icon:PackIconMaterial Kind="AccountGroupOutline"  Style="{StaticResource GridBtnIcon}"/>
+                                                </Button>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

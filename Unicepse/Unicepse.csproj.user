@@ -76,6 +76,9 @@
     <Compile Update="utlis\Components\SportCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\StatusBar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\SubscriptionCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -205,6 +208,9 @@
     <Compile Update="Views\SplashScreen.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\SportViews\SportSubscriptionsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\SubscriptionView\EditSubscriptionDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -298,6 +304,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\SportCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\StatusBar.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\SubscriptionCard.xaml">
@@ -484,6 +493,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SplashScreen.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SportViews\SportSubscriptionsView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SubscriptionView\EditSubscriptionDetailsView.xaml">

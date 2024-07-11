@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Unicepse.navigation.Navigator;
 using Unicepse.Stores;
 using Unicepse.navigation.Stores;
+using System.Windows.Media;
 
 namespace Unicepse.utlis.common
 {
@@ -30,7 +31,9 @@ namespace Unicepse.utlis.common
         private readonly CreditsDataStore _creditsDataStore;
         private readonly DausesDataStore _dausesDataStore;
         private readonly GymStore _gymStore;
-        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore)
+        private readonly BackgroundServiceStore _backgroundServiceStore;
+        private readonly AuthenticationStore _authenticationStore;
+        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore)
         {
             _navigatorStore = navigatorStore;
             _gymStore = gymStore;
@@ -46,12 +49,15 @@ namespace Unicepse.utlis.common
             _usersDataStore = usersDataStore;
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
+            _authenticationStore = authenticationStore;
 
+            _backgroundServiceStore = backgroundServiceStore;
+            _backgroundServiceStore.StateChanged += _backgroundServiceStore_StateChanged;
             Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore);
-            
+
             Navigator.CurrentViewModel = new HomeNavViewModel(new NavigationStore(), _playerStore, _playersAttendenceStore, _employeeStore);
 
-
+            StatusBarViewModel = new StatusBarViewModel(_authenticationStore.CurrentAccount.UserName);
 
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
@@ -59,6 +65,12 @@ namespace Unicepse.utlis.common
         {
             return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore);
         }
+        private void _backgroundServiceStore_StateChanged(string? obj,bool connectionStatus)
+        {
+            StatusBarViewModel.BackMessage = obj;
+            StatusBarViewModel.Connection=connectionStatus ? Brushes.Green : Brushes.Red;
+        }
+        public StatusBarViewModel StatusBarViewModel { get; set; }
         //private void NavigationStore_CurrentViewModelChanged()
         //{
         //    OnPropertyChanged(nameof(CurrentViewModel));

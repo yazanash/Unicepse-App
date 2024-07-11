@@ -24,6 +24,7 @@ namespace Unicepse.ViewModels.SportsViewModels
         private readonly EmployeeStore? _employeeStore;
         private readonly SportListViewModel? _sportListViewModel;
         private readonly NavigationStore _navigationStore;
+        private SubscriptionDataStore _subscriptionDataStore;
         public int Id => Sport.Id;
         public string? SportName => Sport.Name;
         public double Price => Sport.Price;
@@ -35,18 +36,25 @@ namespace Unicepse.ViewModels.SportsViewModels
 
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
+        public ICommand? SubscriptionsCommand { get; }
 
-        public SportListItemViewModel(Sport sport, SportDataStore sportStore, NavigationStore navigationStore, EmployeeStore employeeStore, SportListViewModel sportListViewModel)
+        public SportListItemViewModel(Sport sport, SportDataStore sportStore, NavigationStore navigationStore, EmployeeStore employeeStore, SportListViewModel sportListViewModel, SubscriptionDataStore subscriptionDataStore)
         {
             Sport = sport;
             _sportStore = sportStore;
             _navigationStore = navigationStore;
             _employeeStore = employeeStore;
             _sportListViewModel = sportListViewModel;
+            _subscriptionDataStore = subscriptionDataStore;
+
             EditCommand = new NavaigateCommand<EditSportViewModel>(new NavigationService<EditSportViewModel>(_navigationStore, () => CreateEditSportViewModel(_navigationStore, _sportListViewModel, _sportStore, _employeeStore)));
             DeleteCommand = new DeleteSportCommand(_sportStore);
+            SubscriptionsCommand = new NavaigateCommand<SportSubscriptionsViewModel>(new NavigationService<SportSubscriptionsViewModel>(_navigationStore, () => SupscrtionSportViewModel(_sportStore,_subscriptionDataStore)));
         }
-
+        private SportSubscriptionsViewModel SupscrtionSportViewModel(SportDataStore sportStore, SubscriptionDataStore subscriptionDataStore)
+        {
+            return SportSubscriptionsViewModel.LoadViewModel(sportStore, subscriptionDataStore);
+        }
         private EditSportViewModel CreateEditSportViewModel(NavigationStore navigationStore, SportListViewModel sportListViewModel, SportDataStore sportStore, EmployeeStore employeeStore)
         {
             return EditSportViewModel.LoadViewModel(navigationStore, sportListViewModel, sportStore, employeeStore);

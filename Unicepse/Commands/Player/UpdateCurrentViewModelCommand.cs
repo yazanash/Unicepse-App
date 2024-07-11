@@ -72,7 +72,7 @@ namespace Unicepse.Commands.Player
                         _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore1);
                         break;
                     case ViewType.Sport:
-                        _navigator.CurrentViewModel = new SportsViewModel(navigator, _sportStore, _employeeStore);
+                        _navigator.CurrentViewModel = new SportsViewModel(navigator, _sportStore, _employeeStore,_subscriptionDataStore);
                         break;
                     case ViewType.Trainer:
                         _navigator.CurrentViewModel = new TrainersViewModel(navigator, _employeeStore, _sportStore, _subscriptionDataStore, _dausesDataStore, _creditsDataStore);

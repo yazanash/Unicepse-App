@@ -24,6 +24,8 @@ namespace Unicepse.utlis.common
         private readonly UsersDataStore _usersDataStore;
         private readonly DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
+        private readonly BackgroundServiceStore _backgroundServiceStore;
+        private readonly AuthenticationStore _authenticationStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
 
         public MainWindowViewModel(NavigationStore navigatorStore,
@@ -31,7 +33,7 @@ namespace Unicepse.utlis.common
             EmployeeStore employeeStore, ExpensesDataStore expensesStore,
             SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
             MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,
-            UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore)
+            UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore)
         {
 
             _navigatorStore = navigatorStore;
@@ -48,10 +50,17 @@ namespace Unicepse.utlis.common
             _creditsDataStore = creditsDataStore;
             _usersDataStore = usersDataStore;
             _gymStore = gymStore;
+            _backgroundServiceStore = backgroundServiceStore;
+            _authenticationStore = authenticationStore;
 
-            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore);
+            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore,
+                _employeeStore, _expensesStore, _subscriptionDataStore,
+                _paymentDataStore, _metricDataStore, _routineDataStore,
+                _playersAttendenceStore, _usersDataStore,
+                _dausesDataStore, _creditsDataStore, _gymStore, _backgroundServiceStore, _authenticationStore);
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
         }
+
 
         private void _navigatorStore_CurrentViewModelChanged()
         {

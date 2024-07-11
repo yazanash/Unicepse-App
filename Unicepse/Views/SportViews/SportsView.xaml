@@ -20,6 +20,9 @@
         <DataTemplate DataType="{x:Type vms:EditSportViewModel }">
             <views:EditSportDetailView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:SportSubscriptionsViewModel }">
+            <views:SportSubscriptionsView/>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}"/>
