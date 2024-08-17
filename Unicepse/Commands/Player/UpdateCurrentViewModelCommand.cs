@@ -66,7 +66,7 @@ namespace Unicepse.Commands.Player
                 switch (viewType)
                 {
                     case ViewType.Home:
-                        _navigator.CurrentViewModel = new HomeNavViewModel(navigator,_playersStore, _playersAttendenceStore1, _employeeStore);
+                        _navigator.CurrentViewModel = new HomeNavViewModel(navigator,_playersStore, _playersAttendenceStore1, _employeeStore,_subscriptionDataStore);
                         break;
                     case ViewType.Players:
                         _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore1);
@@ -92,9 +92,9 @@ namespace Unicepse.Commands.Player
 
             }
         }
-        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore)
+        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore,SubscriptionDataStore _subscriptionDataStore)
         {
-            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore);
+            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore, _subscriptionDataStore);
         }
 
     }

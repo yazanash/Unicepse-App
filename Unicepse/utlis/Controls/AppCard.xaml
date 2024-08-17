@@ -12,6 +12,12 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
             <StackPanel Orientation="Vertical" Margin="10" Grid.Row="0">
                 <Image Source="pack://application:,,,/Resources/Assets/Logo.png"
                            RenderOptions.BitmapScalingMode="HighQuality"
@@ -24,6 +30,74 @@
                
                 <TextBlock Margin="0 10" Text="UNICEPS جميع الحقوق محفوظة" FontSize="14" VerticalAlignment="Center"  Foreground="#787878"/>
             </StackPanel>
+
+            <Border Grid.Row="1" Grid.ColumnSpan="2">
+                <FlowDocumentReader FlowDirection="RightToLeft">
+                    <FlowDocument>
+                        <Paragraph FontWeight="Bold" FontSize="16">حول التطبيق</Paragraph>
+                        <Paragraph>
+                            <Bold>اسم التطبيق:</Bold> إدارة الأندية الرياضية
+                        </Paragraph>
+                        <Paragraph>
+                            <Bold>وصف مختصر:</Bold> إدارة الأندية الرياضية هو تطبيق شامل لإدارة الأندية الرياضية المختصة في رياضات كمال الأجسام والزومبا وغيرها. يتيح لك التطبيق إدارة اللاعبين، اشتراكاتهم، مدفوعاتهم، والحسابات المالية بكل سهولة.
+                        </Paragraph>
+                        <Paragraph FontWeight="Bold">الميزات الرئيسية:</Paragraph>
+                        <List>
+                            <ListItem>
+                                <Paragraph>إدارة اللاعبين واشتراكاتهم.</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>تتبع المدفوعات والمصاريف.</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>إدارة الرواتب ونسب المدربين.</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>تقديم تقارير شاملة عن المصاريف، الإيرادات، والمدفوعات.</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>ملخص الدخل.</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>تطبيق أندرويد مرفق للاعبين للوصول إلى برامجهم الرياضية، قياساتهم، واشتراكاتهم.</Paragraph>
+                            </ListItem>
+                        </List>
+                        <Paragraph FontWeight="Bold">معلومات الإصدار:</Paragraph>
+                        <List>
+                            <ListItem>
+                                <Paragraph>الإصدار الحالي: 1.0.0</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>تاريخ الإصدار: 11 أغسطس 2024</Paragraph>
+                            </ListItem>
+                        </List>
+                        <Paragraph FontWeight="Bold">المطورون:</Paragraph>
+                        <Paragraph>فريق تطوير إدارة الأندية الرياضية</Paragraph>
+                        <Paragraph FontWeight="Bold">حقوق النشر:</Paragraph>
+                        <Paragraph>© 2024 إدارة الأندية الرياضية. جميع الحقوق محفوظة.</Paragraph>
+                        <Paragraph FontWeight="Bold">روابط الدعم:</Paragraph>
+                        <List>
+                            <ListItem>
+                                <Paragraph>صفحة الدعم الفني</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>الأسئلة الشائعة</Paragraph>
+                            </ListItem>
+                        </List>
+                        <Paragraph FontWeight="Bold">سياسة الخصوصية:</Paragraph>
+                        <Paragraph>سياسة الخصوصية</Paragraph>
+                        <Paragraph FontWeight="Bold">جهات الاتصال:</Paragraph>
+                        <List>
+                            <ListItem>
+                                <Paragraph>البريد الإلكتروني: support@sportsclubmanagement.com</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>الهاتف: +123 456 7890</Paragraph>
+                            </ListItem>
+                        </List>
+                    </FlowDocument>
+                </FlowDocumentReader>
+            </Border>
         </Grid>
     </Border>
 </UserControl>

@@ -22,7 +22,7 @@ namespace Unicepse.Commands.Employee
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            if (MessageBox.Show("سيتم حذف هذا اللاعب , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
+            if (MessageBox.Show("سيتم حذف هذا المدرب , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
                                          MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 try
                 {

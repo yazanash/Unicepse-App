@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using Unicepse.Core.Models;
 
 namespace Unicepse.Entityframework.DbContexts
 {
@@ -45,6 +46,9 @@ namespace Unicepse.Entityframework.DbContexts
         public DbSet<PlayerRoutine>? PlayerRoutine { get; set; }
         public DbSet<User>? Users { get; set; }
         public DbSet<Metric>? Metrics { get; set; }
+        public DbSet<License>?  Licenses { get; set; }
+        public DbSet<GymProfile>? GymProfile { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

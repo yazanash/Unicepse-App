@@ -25,9 +25,11 @@ namespace Unicepse.ViewModels.RoutineViewModels
             _orders = routineItems.Orders;
             _itemOrder = RoutineItems.ItemOrder;
             RemoveItemCommand = new RemoveRoutineItemCommand(_playerStore, _routineDataStore, RoutineItems);
+            RepeateItemCommand = new RepeateItemCommand(_playerStore, _routineDataStore, RoutineItems);
 
         }
         public ICommand RemoveItemCommand { get; }
+        public ICommand RepeateItemCommand { get; }
         public int _itemOrder;
         public int ItemOrder
         {

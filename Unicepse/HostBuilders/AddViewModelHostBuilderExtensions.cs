@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.utlis.common;
 using Unicepse.ViewModels.Authentication;
+using Unicepse.ViewModels._ِAppViewModels;
 
 namespace Unicepse.HostBuilders
 {
@@ -29,6 +30,7 @@ namespace Unicepse.HostBuilders
                 services.AddSingleton<MainViewModel>();
                 services.AddSingleton<MainWindowViewModel>();
                 services.AddSingleton<AuthViewModel>();
+                services.AddSingleton<LicenseViewModel>();
             });
             return _hostBuilder;
         }

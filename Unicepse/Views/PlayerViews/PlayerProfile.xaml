@@ -92,7 +92,7 @@
         <DataTemplate DataType="{x:Type routinevms:EditSelectRoutineDaysMuscleGroupViewModel}">
             <routineview:SelectRoutineDayMuscleGroup />
         </DataTemplate>
-
+        
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>

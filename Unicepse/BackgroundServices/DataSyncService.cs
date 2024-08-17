@@ -9,6 +9,7 @@ using System.Windows;
 using Unicepse.Stores;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using Unicepse.API;
 
 namespace Unicepse.BackgroundServices
 {
@@ -26,9 +27,11 @@ namespace Unicepse.BackgroundServices
     public class DataSyncService : BackgroundService
     {
         private readonly BackgroundServiceStore _backgroundServiceStore;
-        public DataSyncService(BackgroundServiceStore backgroundServiceStore)
+        private readonly UnicepseApiPrepHttpClient unicepseApiPrepHttpClient;
+        public DataSyncService(BackgroundServiceStore backgroundServiceStore, UnicepseApiPrepHttpClient unicepseApiPrepHttpClient)
         {
             _backgroundServiceStore = backgroundServiceStore;
+            this.unicepseApiPrepHttpClient = unicepseApiPrepHttpClient;
         }
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)

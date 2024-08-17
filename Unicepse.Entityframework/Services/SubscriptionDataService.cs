@@ -130,7 +130,16 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
-
+        public async Task<IEnumerable<Subscription>> GetAllActive()
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x=>x.EndDate>=DateTime.Now).Include(x => x.Trainer).AsNoTracking()
+                    .Include(x => x.Player).AsNoTracking()
+                    .Include(x => x.Sport).AsNoTracking().ToListAsync();
+                return entities;
+            }
+        }
         public async Task<Subscription> Update(Subscription entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

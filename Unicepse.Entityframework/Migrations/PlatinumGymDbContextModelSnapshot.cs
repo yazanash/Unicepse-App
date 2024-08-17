@@ -37,7 +37,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("EmployeeSport");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Authentication.User", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Authentication.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +67,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.DailyActivity.DailyPlayerReport", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.DailyActivity.DailyPlayerReport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,6 +87,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SubscriptionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("loginTime")
                         .HasColumnType("datetime2");
 
@@ -97,10 +100,12 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.HasIndex("PlayerId");
 
+                    b.HasIndex("SubscriptionId");
+
                     b.ToTable("DailyPlayerReport");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Employee.Credit", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Employee.Credit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,7 +132,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Credit");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Employee.Employee", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Employee.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -182,7 +187,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Employee.TrainerDueses", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Employee.TrainerDueses", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -221,7 +226,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("TrainerDueses");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Expenses.Expenses", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Expenses.Expenses", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -251,7 +256,69 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Expenses");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Metric.Metric", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.GymProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GymId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GymName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telephone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GymProfile");
+                });
+
+            modelBuilder.Entity("Unicepse.Core.Models.License", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("GymId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Plan")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SubscribeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SubscribeEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Licenses");
+                });
+
+            modelBuilder.Entity("Unicepse.Core.Models.Metric.Metric", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -317,7 +384,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Metrics");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Payment.PayReferance", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Payment.PayReferance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -346,7 +413,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("PayReferance");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Payment.PlayerPayment", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Payment.PlayerPayment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -392,7 +459,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("PlayerPayments");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Player.Player", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Player.Player", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -438,7 +505,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Sport.Sport", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Sport.Sport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -469,7 +536,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Sports");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Subscription.Subscription", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Subscription.Subscription", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -554,7 +621,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Subscriptions");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.Exercises", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.TrainingProgram.Exercises", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -582,7 +649,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Exercises");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.TrainingProgram.PlayerRoutine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -613,7 +680,7 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("PlayerRoutine");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.RoutineItems", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.TrainingProgram.RoutineItems", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -647,80 +714,86 @@ namespace Unicepse.Entityframework.Migrations
 
             modelBuilder.Entity("EmployeeSport", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Sport.Sport", null)
+                    b.HasOne("Unicepse.Core.Models.Sport.Sport", null)
                         .WithMany()
                         .HasForeignKey("SportsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PlatinumGym.Core.Models.Employee.Employee", null)
+                    b.HasOne("Unicepse.Core.Models.Employee.Employee", null)
                         .WithMany()
                         .HasForeignKey("TrainersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Authentication.User", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Authentication.User", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Employee.Employee", "Employee")
+                    b.HasOne("Unicepse.Core.Models.Employee.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
 
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.DailyActivity.DailyPlayerReport", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.DailyActivity.DailyPlayerReport", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Player.Player", "Player")
+                    b.HasOne("Unicepse.Core.Models.Player.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");
 
+                    b.HasOne("Unicepse.Core.Models.Subscription.Subscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId");
+
                     b.Navigation("Player");
+
+                    b.Navigation("Subscription");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Employee.Credit", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Employee.Credit", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Employee.Employee", "EmpPerson")
+                    b.HasOne("Unicepse.Core.Models.Employee.Employee", "EmpPerson")
                         .WithMany()
                         .HasForeignKey("EmpPersonId");
 
                     b.Navigation("EmpPerson");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Employee.TrainerDueses", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Employee.TrainerDueses", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Employee.Employee", "Trainer")
+                    b.HasOne("Unicepse.Core.Models.Employee.Employee", "Trainer")
                         .WithMany()
                         .HasForeignKey("TrainerId");
 
                     b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Expenses.Expenses", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Expenses.Expenses", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Employee.Employee", "Recipient")
+                    b.HasOne("Unicepse.Core.Models.Employee.Employee", "Recipient")
                         .WithMany()
                         .HasForeignKey("RecipientId");
 
                     b.Navigation("Recipient");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Metric.Metric", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Metric.Metric", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Player.Player", "Player")
+                    b.HasOne("Unicepse.Core.Models.Player.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");
 
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Payment.PayReferance", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Payment.PayReferance", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Player.Player", "Player")
+                    b.HasOne("Unicepse.Core.Models.Player.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");
 
-                    b.HasOne("PlatinumGym.Core.Models.Subscription.Subscription", "PlayerTraining")
+                    b.HasOne("Unicepse.Core.Models.Subscription.Subscription", "PlayerTraining")
                         .WithMany()
                         .HasForeignKey("PlayerTrainingId");
 
@@ -729,17 +802,17 @@ namespace Unicepse.Entityframework.Migrations
                     b.Navigation("PlayerTraining");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Payment.PlayerPayment", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Payment.PlayerPayment", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Player.Player", "Player")
+                    b.HasOne("Unicepse.Core.Models.Player.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");
 
-                    b.HasOne("PlatinumGym.Core.Models.Employee.Employee", "Recipient")
+                    b.HasOne("Unicepse.Core.Models.Employee.Employee", "Recipient")
                         .WithMany()
                         .HasForeignKey("RecipientId");
 
-                    b.HasOne("PlatinumGym.Core.Models.Subscription.Subscription", "Subscription")
+                    b.HasOne("Unicepse.Core.Models.Subscription.Subscription", "Subscription")
                         .WithMany("Payments")
                         .HasForeignKey("SubscriptionId");
 
@@ -750,17 +823,17 @@ namespace Unicepse.Entityframework.Migrations
                     b.Navigation("Subscription");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Subscription.Subscription", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Subscription.Subscription", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Player.Player", "Player")
+                    b.HasOne("Unicepse.Core.Models.Player.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");
 
-                    b.HasOne("PlatinumGym.Core.Models.Sport.Sport", "Sport")
+                    b.HasOne("Unicepse.Core.Models.Sport.Sport", "Sport")
                         .WithMany("PlayerTrainings")
                         .HasForeignKey("SportId");
 
-                    b.HasOne("PlatinumGym.Core.Models.Employee.Employee", "Trainer")
+                    b.HasOne("Unicepse.Core.Models.Employee.Employee", "Trainer")
                         .WithMany("PlayerTrainings")
                         .HasForeignKey("TrainerId");
 
@@ -771,22 +844,22 @@ namespace Unicepse.Entityframework.Migrations
                     b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.TrainingProgram.PlayerRoutine", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.Player.Player", "Player")
+                    b.HasOne("Unicepse.Core.Models.Player.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");
 
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.RoutineItems", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.TrainingProgram.RoutineItems", b =>
                 {
-                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.Exercises", "Exercises")
+                    b.HasOne("Unicepse.Core.Models.TrainingProgram.Exercises", "Exercises")
                         .WithMany()
                         .HasForeignKey("ExercisesId");
 
-                    b.HasOne("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", "PlayerRoutine")
+                    b.HasOne("Unicepse.Core.Models.TrainingProgram.PlayerRoutine", "PlayerRoutine")
                         .WithMany("RoutineSchedule")
                         .HasForeignKey("PlayerRoutineId");
 
@@ -795,22 +868,22 @@ namespace Unicepse.Entityframework.Migrations
                     b.Navigation("PlayerRoutine");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Employee.Employee", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Employee.Employee", b =>
                 {
                     b.Navigation("PlayerTrainings");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Sport.Sport", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Sport.Sport", b =>
                 {
                     b.Navigation("PlayerTrainings");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.Subscription.Subscription", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Subscription.Subscription", b =>
                 {
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("PlatinumGym.Core.Models.TrainingProgram.PlayerRoutine", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.TrainingProgram.PlayerRoutine", b =>
                 {
                     b.Navigation("RoutineSchedule");
                 });

@@ -8,7 +8,6 @@
              xmlns:cs="clr-namespace:Unicepse.utlis.Controls"
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
-                d:DesignHeight="450" d:DesignWidth="800"
             >
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>
@@ -33,7 +32,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Border Background="#fff" CornerRadius="10" HorizontalAlignment="Left" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
+                    <!--<Border Background="#fff" CornerRadius="10" HorizontalAlignment="Left" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
                         <DockPanel HorizontalAlignment="Center" Width="800" >
                             <DockPanel DockPanel.Dock="Top" >
                                 <TextBlock Text="معلومات الاشتراك" Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
@@ -41,17 +40,21 @@
                             <cs:GymSubscriptionCard />
 
                         </DockPanel>
-                    </Border>
-
+                    </Border>-->
+                 
+                        
                     <Border Background="#fff" CornerRadius="10" Grid.Column="0" HorizontalAlignment="Left"  Grid.Row="1"  Padding="5"  Margin="5">
                         <DockPanel HorizontalAlignment="Center" Width="800" >
                             <DockPanel DockPanel.Dock="Top" >
                                 <TextBlock Text="معلومات التطبيق" Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
                             </DockPanel>
-                            <cs:AppCard/>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <cs:AppCard/>
+                            </ScrollViewer>
 
                         </DockPanel>
                     </Border>
+
                 </Grid>
             </Border>
         </Grid>

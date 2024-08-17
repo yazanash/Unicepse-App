@@ -28,6 +28,7 @@ namespace Unicepse.utlis.common
         private readonly ObservableCollection<TrainerListItemViewModel> _trainerListItemViewModels;
 
         private readonly PlayersDataStore _playerStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly EmployeeStore _employeeStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly NavigationStore _navigationStore;
@@ -39,17 +40,19 @@ namespace Unicepse.utlis.common
         public ICommand LoadDailyReport { get; }
         public ICommand LoadTrainersCommand { get; }
         public SearchBoxViewModel SearchBox { get; set; }
-        public HomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore)
+        public HomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
         {
             _playerStore = playersDataStore;
             _employeeStore = employeeStore;
             _navigationStore = navigationStore;
             _playersAttendenceStore = playersAttendenceStore;
+            _subscriptionDataStore = subscriptionDataStore;
+
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
             _playersAttendenceStore.LoggedIn += _playersAttendenceStore_LoggedIn;
             _playersAttendenceStore.LoggedOut += _playersAttendenceStore_LoggedOut;
             //OpenSearchListCommand = new OpenSearchCommand(new SearchPlayerWindowViewModel(_playerStore,_playersAttendenceStore, new NavigationStore()));
-            OpenSearchListCommand = new NavaigateCommand<LogPlayerAttendenceViewModel>(new NavigationService<LogPlayerAttendenceViewModel>(_navigationStore, () => CreatePlayerSearchViewModel(_playerStore, _playersAttendenceStore,_navigationStore,this)));
+            OpenSearchListCommand = new NavaigateCommand<LogPlayerAttendenceViewModel>(new NavigationService<LogPlayerAttendenceViewModel>(_navigationStore, () => CreatePlayerSearchViewModel(_playerStore, _playersAttendenceStore, _navigationStore, this, _subscriptionDataStore)));
 
             _playerAttendenceListItemViewModels = new ObservableCollection<PlayerAttendenceListItemViewModel>();
             _trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
@@ -124,15 +127,15 @@ namespace Unicepse.utlis.common
             _playerAttendenceListItemViewModels.Add(itemViewModel);
             itemViewModel.IdSort = _playerAttendenceListItemViewModels.Count();
         }
-        private static LogPlayerAttendenceViewModel CreatePlayerSearchViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore,NavigationStore navigationStore,HomeViewModel homeViewModel)
+        private static LogPlayerAttendenceViewModel CreatePlayerSearchViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore,NavigationStore navigationStore,HomeViewModel homeViewModel,SubscriptionDataStore subscriptionDataStore)
         {
 
-            return LogPlayerAttendenceViewModel.LoadViewModel(playersDataStore, playersAttendenceStore,navigationStore,homeViewModel);
+            return LogPlayerAttendenceViewModel.LoadViewModel(playersDataStore, playersAttendenceStore,navigationStore,homeViewModel, subscriptionDataStore);
         }
 
-        public static HomeViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore)
+        public static HomeViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
         {
-            HomeViewModel viewModel = new(playersStore, playersAttendenceStore, employeeStore, navigationStore);
+            HomeViewModel viewModel = new(playersStore, playersAttendenceStore, employeeStore, navigationStore, subscriptionDataStore);
 
             viewModel.LoadDailyReport.Execute(null);
             viewModel.LoadTrainersCommand.Execute(null);

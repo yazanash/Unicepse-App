@@ -7,7 +7,7 @@ using Unicepse.Core.Models;
 
 namespace Unicepse.Core.Models.Player
 {
-    public class Player:Person
+    public class Player : Person
     {
         public double Weight { get; set; }
         public double Hieght { get; set; }
@@ -19,11 +19,12 @@ namespace Unicepse.Core.Models.Player
 
         public bool Conflicts(Player player)
         {
-           if(player.FullName == this.FullName)
+            if (player.FullName == this.FullName)
             {
                 return true;
             }
             return false;
         }
+        
     }
 }

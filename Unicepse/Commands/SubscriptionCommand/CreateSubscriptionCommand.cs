@@ -66,6 +66,7 @@ namespace Unicepse.Commands.SubscriptionCommand
                     EndDate = _addSubscriptionViewModel.SubscribeDate.AddDays(_addSubscriptionViewModel.SubscribeDays),
                 };
                 _playerDataStore.SelectedPlayer!.Player.Balance -= subscription.PriceAfterOffer;
+                _playerDataStore.SelectedPlayer!.Player.SubscribeEndDate = subscription.EndDate; 
                 await _subscriptionDataStore.Add(subscription);
                 await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!.Player);
                 _navigationService.ReNavigate();

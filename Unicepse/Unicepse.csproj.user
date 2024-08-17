@@ -10,6 +10,9 @@
     <Compile Update="CameraReader.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="LicenseWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="PrintWindowDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -136,6 +139,12 @@
     <Compile Update="Views\ApplicationAboutView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AppViews\AboutApp.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AppViews\GymView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\AuthView\AuthWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -232,6 +241,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="CameraReader.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="LicenseWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="PrintWindowDialog.xaml">
@@ -421,6 +433,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ApplicationAboutView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AppViews\AboutApp.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AppViews\GymView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\AuthWindow.xaml">
