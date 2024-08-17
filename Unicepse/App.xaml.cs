@@ -521,14 +521,12 @@ namespace Unicepse
             LicenseDataStore licenseDataStore = _host.Services.GetRequiredService<LicenseDataStore>();
             if (licenseDataStore.CurrentLicense!=null)
             {
-                MessageBox.Show("user has license with plan : " + licenseDataStore.CurrentLicense.Plan);
                 _host.Services.GetRequiredService<AuthViewModel>().openLog();
                 AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
                 auth.Show();
             }
             else
             {
-                MessageBox.Show("no license for this user, License window will open now");
                 LicenseWindow auth = _host.Services.GetRequiredService<LicenseWindow>();
                 auth.Show();
             }
