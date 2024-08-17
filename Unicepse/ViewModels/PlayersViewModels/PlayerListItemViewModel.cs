@@ -75,15 +75,15 @@ namespace Unicepse.ViewModels.PlayersViewModels
             TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigationStore)));
         }
 
-        public PlayerListItemViewModel(Player player, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore,HomeViewModel homeViewModel)
-        {
-            Player = player;
-            _playersDataStore = playersDataStore;
-            _playersAttendenceStore = playersAttendenceStore;
-            _navigationStore = navigationStore;
-            _homeViewModel = homeViewModel;
-            LogInCommand = new LoginPlayerCommand(_playersAttendenceStore, _playersDataStore, new NavigationService<HomeViewModel>(_navigationStore, () => _homeViewModel));
-        }
+        //public PlayerListItemViewModel(Player player, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore,HomeViewModel homeViewModel)
+        //{
+        //    Player = player;
+        //    _playersDataStore = playersDataStore;
+        //    _playersAttendenceStore = playersAttendenceStore;
+        //    _navigationStore = navigationStore;
+        //    _homeViewModel = homeViewModel;
+        //    LogInCommand = new LoginPlayerCommand(_playersAttendenceStore, _subscriptionDataStore, new NavigationService<HomeViewModel>(_navigationStore, () => _homeViewModel));
+        //}
         public void Update(Player player)
         {
             Player = player;

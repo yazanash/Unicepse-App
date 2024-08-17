@@ -14,6 +14,7 @@ using Unicepse.Stores;
 using Unicepse.ViewModels.PlayersViewModels;
 using Unicepse.utlis.common;
 using Unicepse.navigation.Stores;
+using Unicepse.Commands.PlayerAttendenceCommands;
 
 namespace Unicepse.ViewModels.SubscriptionViewModel
 {
@@ -86,6 +87,19 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         public SubscriptionListItemViewModel(Subscription subscription)
         {
             Subscription = subscription;
+        }
+        public ICommand? LogInCommand { get; }
+
+        private readonly PlayersAttendenceStore? _playersAttendenceStore;
+        private readonly HomeViewModel? _homeViewModel;
+        public SubscriptionListItemViewModel(Subscription subscription, SubscriptionDataStore subscriptionDataStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, HomeViewModel homeViewModel)
+        {
+            Subscription = subscription;
+            _subscriptionDataStore = subscriptionDataStore;
+            _playersAttendenceStore = playersAttendenceStore;
+            _navigationStore = navigationStore;
+            _homeViewModel = homeViewModel;
+            LogInCommand = new LoginPlayerCommand(_playersAttendenceStore, _subscriptionDataStore, new NavigationService<HomeViewModel>(_navigationStore, () => _homeViewModel));
         }
         public void Update(Subscription subscription)
         {

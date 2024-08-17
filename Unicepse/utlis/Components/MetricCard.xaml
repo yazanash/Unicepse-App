@@ -58,12 +58,26 @@
                              Title="الصدر" 
                              MetricValue="{Binding Chest,UpdateSourceTrigger=PropertyChanged}"
                              Grid.Row="1"/>
+                
                 <comp:MetricItem Grid.Column="1" 
                              Icon="pack://application:,,,/Resources/Assets/Metric/Waist.png" 
-                             Title="الوسط" 
+                             Title="الخصر" 
                              MetricValue="{Binding Waist,UpdateSourceTrigger=PropertyChanged}"
                              Grid.Row="1"/>
             </Grid>
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <comp:MetricItem Grid.Column="0" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Waist.png" 
+                             Title="الورك" 
+                             MetricValue="{Binding Hips,UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Row="1"/>
+
+            </Grid>
+
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

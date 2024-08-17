@@ -55,15 +55,15 @@ namespace Unicepse.utlis.common
             _backgroundServiceStore.StateChanged += _backgroundServiceStore_StateChanged;
             Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore);
 
-            Navigator.CurrentViewModel = new HomeNavViewModel(new NavigationStore(), _playerStore, _playersAttendenceStore, _employeeStore);
+            Navigator.CurrentViewModel = new HomeNavViewModel(new NavigationStore(), _playerStore, _playersAttendenceStore, _employeeStore,_subscriptionDataStore);
 
             StatusBarViewModel = new StatusBarViewModel(_authenticationStore.CurrentAccount.UserName);
 
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
-        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore)
+        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore,SubscriptionDataStore subscriptionDataStore)
         {
-            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore);
+            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore,subscriptionDataStore);
         }
         private void _backgroundServiceStore_StateChanged(string? obj,bool connectionStatus)
         {

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Http;
 using Newtonsoft.Json;
 using Unicepse.Core.Models.Authentication;
 using Unicepse.Core.Models.Employee;
@@ -33,6 +34,10 @@ using Unicepse.utlis.common;
 using Serilog;
 using Microsoft.Extensions.Logging;
 using Unicepse.BackgroundServices;
+using Unicepse.API.Models;
+using Unicepse.API;
+using Unicepse.API.Services;
+using Unicepse.ViewModels._ِAppViewModels;
 
 namespace Unicepse
 {
@@ -93,6 +98,13 @@ namespace Unicepse
                    services.AddSingleton<PlayerRoutineDataService>();
                    services.AddSingleton<RoutineDataStore>();
 
+                   services.AddSingleton<PlayerApiDataService>();
+
+                   services.AddSingleton<LicenseApiDataService>();
+                   services.AddSingleton<LicenseDataService>();
+                   services.AddSingleton<LicenseDataStore>();
+
+
                    services.AddSingleton<AuthenticationStore>();
                    services.AddSingleton(s => new MainWindow()
                    {
@@ -102,10 +114,25 @@ namespace Unicepse
                    {
                        DataContext = s.GetRequiredService<AuthViewModel>(),
                    });
+                   services.AddSingleton(s => new LicenseWindow()
+                   {
+                       DataContext = s.GetRequiredService<LicenseViewModel>(),
+                   });
+                   //string? apiKey = hostContext.Configuration.GetValue<string>("PUBLIC_API_KEY");
+                   services.AddSingleton(new UnicepsePrepAPIKey(""));
+
+                   services.AddHttpClient<UnicepseApiPrepHttpClient>(c =>
+                   {
+                       c.BaseAddress = new Uri("https://uniapi-ui65lw0m.b4a.run/api/v1/");
+                       //c.DefaultRequestHeaders.Add("CustomHeaderName", "CustomHeaderValue");
+                   });
+
                }).Build();
             AuthViewModel auth = _host.Services.GetRequiredService<AuthViewModel>();
             auth.LoginAction += Auth_LoginAction;
 
+            LicenseViewModel license = _host.Services.GetRequiredService<LicenseViewModel>();
+            license.LicenseAction += License_VerifiedAction;
 
 
 
@@ -130,17 +157,35 @@ namespace Unicepse
 
         }
 
+        private void License_VerifiedAction()
+        {
+            if (_host.Services.GetRequiredService<LicenseDataStore>().CurrentLicense != null)
+            {
+                AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
+                Application.Current.MainWindow.Close();
+
+                auth.Show();
+            }
+            else
+            {
+                LicenseWindow auth = _host.Services.GetRequiredService<LicenseWindow>();
+                auth.Show();
+
+            }
+
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            try
+            //try
+            //{
+
+            _host.Start();
+            PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
+            using (PlatinumGymDbContext platinumGymDbContext = platinumGymDbContextFactory.CreateDbContext())
             {
-              
-                _host.Start();
-                PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
-                using (PlatinumGymDbContext platinumGymDbContext = platinumGymDbContextFactory.CreateDbContext())
-                {
-                    platinumGymDbContext.Database.Migrate();
-                    #region dataConverter
+                platinumGymDbContext.Database.Migrate();
+                #region dataConverter
                 //    platinumGymDbContext.Database.EnsureCreated();
                 //    string fileName = "DBFILES/Players.csv";
                 //    string subsFileName = "DBFILES/Subscriptions.csv";
@@ -455,41 +500,47 @@ namespace Unicepse
                 //        }
                 //        platinumGymDbContext.Subscriptions!.Add(s);
                 //    }
-                    #endregion
+                #endregion
 
-                    if (!platinumGymDbContext.Exercises!.Any())
+                if (!platinumGymDbContext.Exercises!.Any())
+                {
+                    string f_name = "Training.json";
+                    using (StreamReader r = new StreamReader(f_name))
                     {
-                        string f_name = "Training.json";
-                        using (StreamReader r = new StreamReader(f_name))
-                        {
-                            string json = r.ReadToEnd();
-                            List<Exercises>? data = JsonConvert.DeserializeObject<List<Exercises>>(json);
-                            foreach (Exercises ex in data!)
-                                ex.Id = 0;
-                            platinumGymDbContext.Exercises!.AddRangeAsync(data!);
+                        string json = r.ReadToEnd();
+                        List<Exercises>? data = JsonConvert.DeserializeObject<List<Exercises>>(json);
+                        foreach (Exercises ex in data!)
+                            ex.Id = 0;
+                        platinumGymDbContext.Exercises!.AddRangeAsync(data!);
 
-                        }
-
-                        platinumGymDbContext.SaveChanges();
                     }
-
-
+                    
+                    platinumGymDbContext.SaveChanges();
                 }
-
+            }
+            LicenseDataStore licenseDataStore = _host.Services.GetRequiredService<LicenseDataStore>();
+            if (licenseDataStore.CurrentLicense!=null)
+            {
                 _host.Services.GetRequiredService<AuthViewModel>().openLog();
                 AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
                 auth.Show();
-                //MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
-                //auth.Show();
-                //CameraReader cameraReader = new CameraReader();
-                //cameraReader.Show();
-                //MessageBox.Show(System.Environment.CurrentDirectory) ;
-                base.OnStartup(e);
             }
-            catch(Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                LicenseWindow auth = _host.Services.GetRequiredService<LicenseWindow>();
+                auth.Show();
             }
+
+
+            //CameraReader cameraReader = new CameraReader();
+            //cameraReader.Show();
+            //MessageBox.Show(System.Environment.CurrentDirectory) ;
+            base.OnStartup(e);
+            //}
+            //catch(Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
         }
 
         private IServiceProvider CreateServiceProvider()

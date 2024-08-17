@@ -14,28 +14,28 @@ namespace Unicepse.utlis.common
         private readonly PlayersDataStore _playersDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly EmployeeStore _employeeStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
 
-      public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
-        public HomeNavViewModel(NavigationStore navigatorStore, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore)
+        public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
+        public HomeNavViewModel(NavigationStore navigatorStore, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, SubscriptionDataStore subscriptionDataStore)
         {
             _navigatorStore = navigatorStore;
             _playersDataStore = playersDataStore;
             _playersAttendenceStore = playersAttendenceStore;
             _employeeStore = employeeStore;
-            _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
-            _navigatorStore.CurrentViewModel = CreateHomeViewModel(playersDataStore, _playersAttendenceStore, _employeeStore, _navigatorStore);
+            _subscriptionDataStore = subscriptionDataStore;
 
-            
-          
+            _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
+            _navigatorStore.CurrentViewModel = CreateHomeViewModel(playersDataStore, _playersAttendenceStore, _employeeStore, _navigatorStore, _subscriptionDataStore);
         }
 
         private void NavigatorStore_CurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore)
+        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore,SubscriptionDataStore subscriptionDataStore)
         {
-            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore);
+            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore, subscriptionDataStore);
         }
     }
 }

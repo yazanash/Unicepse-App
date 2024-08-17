@@ -189,6 +189,28 @@
                         </Grid>
 
                         <!--#endregion-->
+                        <!--#region 4 Row Chest and Waist -->
+
+                        <!--TextBox Neck-->
+                        <Grid Grid.Row="4" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Waist.png" 
+                     RenderOptions.BitmapScalingMode="HighQuality"
+           RenderOptions.EdgeMode="Aliased"
+                       Height="60" Width="80"/>
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
+                                <TextBlock Text="ورك" 
+                                       Foreground="{StaticResource colors.secondry}"
+                                       Margin="0 0 0 5"
+                                       FontSize="13"/>
+                                <TextBox 
+                                    Text="{Binding Hips, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                        <!--#endregion-->
 
 
                         <!--#region 1 Row 2 -3 Col Arm LR -->

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.utlis.common;
 using Unicepse.ViewModels.PlayersViewModels;
+using Unicepse.API.Services;
 
 namespace Unicepse.Stores
 {
@@ -14,6 +15,7 @@ namespace Unicepse.Stores
     public class PlayersDataStore
     {
         private readonly PlayerDataService _playerDataService;
+        private readonly PlayerApiDataService _playerApiDataService;
         private readonly List<Player> _players;
         private readonly Lazy<Task> _initializeLazy;
 
@@ -26,11 +28,12 @@ namespace Unicepse.Stores
 
         public event Action<Filter?>? FilterChanged;
         public event Action<PlayerListItemViewModel?>? PlayerChanged;
-        public PlayersDataStore(PlayerDataService playerDataService)
+        public PlayersDataStore(PlayerDataService playerDataService, PlayerApiDataService playerApiDataService)
         {
             _playerDataService = playerDataService;
             _players = new List<Player>();
             _initializeLazy = new Lazy<Task>(Initialize);
+            _playerApiDataService = playerApiDataService;
         }
 
         private PlayerListItemViewModel? _selectedPlayer;
@@ -128,6 +131,12 @@ namespace Unicepse.Stores
 
 
         private async Task Initialize()
+        {
+            IEnumerable<Player> players = await _playerDataService.GetByStatus(true);
+            RearrengeList(players);
+        }
+
+        private async Task GetPlayersToCreate()
         {
             IEnumerable<Player> players = await _playerDataService.GetByStatus(true);
             RearrengeList(players);

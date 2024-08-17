@@ -16,12 +16,12 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
     public class LoginPlayerCommand : AsyncCommandBase
     {
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly PlayersDataStore _playersDataStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         private NavigationService<HomeViewModel> _navigationService;
-        public LoginPlayerCommand(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore,NavigationService<HomeViewModel> navigationService)
+        public LoginPlayerCommand(PlayersAttendenceStore playersAttendenceStore, SubscriptionDataStore subscriptionDataStore, NavigationService<HomeViewModel> navigationService)
         {
             _playersAttendenceStore = playersAttendenceStore;
-            _playersDataStore = playersDataStore;
+            _subscriptionDataStore = subscriptionDataStore;
             _navigationService = navigationService;
         }
 
@@ -36,7 +36,7 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
                     logoutTime = DateTime.Now,
                     Date = DateTime.Now,
                     IsLogged = true,
-                    Player = _playersDataStore.SelectedPlayer!.Player,
+                    Player = _subscriptionDataStore.SelectedSubscription!.Player,
 
                 };
                 await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);

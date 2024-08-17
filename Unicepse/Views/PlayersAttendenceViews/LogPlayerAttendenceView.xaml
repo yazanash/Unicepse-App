@@ -74,9 +74,9 @@
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
                         <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
-                                    FlowDirection="RightToLeft" ItemsSource="{Binding PlayerList}" 
+                                    FlowDirection="RightToLeft" ItemsSource="{Binding SubscriptionList}" 
                                     CanUserReorderColumns="True"
-                                    SelectedItem="{Binding SelectedPlayer}"
+                                    SelectedItem="{Binding SelectedSubscription}"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
@@ -93,34 +93,34 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
                                                 </Border>
-                                                <TextBlock Margin="10 0 0 0" Text="{Binding FullName}" VerticalAlignment="Center"/>
+                                                <TextBlock Margin="10 0 0 0" Text="{Binding PlayerName}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="تاريخ الميلاد" IsReadOnly="True"
-                                     Binding="{Binding BirthDate}"
+                                <DataGridTextColumn Header="الرياضة" IsReadOnly="True"
+                                     Binding="{Binding SportName}"
                                     Width="auto"
                                     />
-                                <DataGridTextColumn Header="الجنس" IsReadOnly="True"
-                                     Binding="{Binding Gendertext}"
+                                <DataGridTextColumn Header="المدرب" IsReadOnly="True"
+                                     Binding="{Binding Trainer}"
                                     Width="auto"
                                     />
 
                                 <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding SubscribeDate}"
+                                     Binding="{Binding RollDate}"
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding SubscribeEndDate}"
+                                     Binding="{Binding EndDate}"
                                     Width="*"
                                     />
-                                <DataGridTextColumn Header="الايام المتبقية" IsReadOnly="True"
-                                     Binding="{Binding DayLeft}"
+                                <DataGridTextColumn Header="قيمة الاشتراك" IsReadOnly="True"
+                                     Binding="{Binding PriceAfterOffer}"
                                     Width="auto"
                                     />
-                                <DataGridTextColumn Header="رصيد الحساب" IsReadOnly="True"
-                                     Binding="{Binding Balance}"
+                                <DataGridTextColumn Header="المدفوع" IsReadOnly="True"
+                                     Binding="{Binding PaidValue}"
                                     Width="auto"
                                     />
                                 <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">

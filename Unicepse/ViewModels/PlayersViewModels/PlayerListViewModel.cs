@@ -246,10 +246,10 @@ namespace Unicepse.ViewModels.PlayersViewModels
                     LoadPlayers(_playerStore.Players.Where(x => x.GenderMale == true), order);
                     break;
                 case utlis.common.Filter.Active:
-                    LoadPlayers(_playerStore.Players.Where(x => x.IsSubscribed == true), order);
+                    LoadPlayers(_playerStore.Players.Where(x => x.SubscribeEndDate > DateTime.Now), order);
                     break;
                 case utlis.common.Filter.InActive:
-                    LoadPlayers(_playerStore.Players.Where(x => x.IsSubscribed == false), order);
+                    LoadPlayers(_playerStore.Players.Where(x => x.SubscribeEndDate < DateTime.Now), order);
                     break;
                 case utlis.common.Filter.GenderFemale:
                     LoadPlayers(_playerStore.Players.Where(x => x.GenderMale == false), order);

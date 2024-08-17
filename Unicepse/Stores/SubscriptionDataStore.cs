@@ -138,6 +138,13 @@ namespace Unicepse.Stores
             _subscriptions.AddRange(subscriptions);
             Loaded?.Invoke();
         }
+        public async Task GetAllActive()
+        {
+            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAllActive();
+            _subscriptions.Clear();
+            _subscriptions.AddRange(subscriptions);
+            Loaded?.Invoke();
+        }
         public async Task Initialize()
         {
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll();

@@ -12,41 +12,47 @@ using Unicepse.Stores;
 using Unicepse.ViewModels.PlayersViewModels;
 using Unicepse.navigation.Stores;
 using Unicepse.utlis.common;
+using Unicepse.ViewModels.SubscriptionViewModel;
+using Unicepse.Core.Models.Subscription;
+using Unicepse.Commands.SubscriptionCommand;
 
 namespace Unicepse.ViewModels.PlayersAttendenceViewModels
 {
     public class LogPlayerAttendenceViewModel : ListingViewModelBase
 
     {
-        private readonly ObservableCollection<PlayerListItemViewModel> playerListItemViewModels;
+        private readonly ObservableCollection<SubscriptionListItemViewModel> _subscriptionListItemViewModels;
         private readonly PlayersDataStore _playerStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly NavigationStore _navigationStore;
         private readonly HomeViewModel  _homeViewModel;
         public SearchBoxViewModel SearchBox { get; set; }
 
-        public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
+        public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => _subscriptionListItemViewModels;
 
-        public PlayerListItemViewModel? SelectedPlayer
+        public SubscriptionListItemViewModel? SelectedSubscription
         {
             get
             {
-                return _playerStore.SelectedPlayer;
+                return SubscriptionList
+                    .FirstOrDefault(y => y?.Subscription == _subscriptionDataStore.SelectedSubscription);
             }
             set
             {
-                _playerStore.SelectedPlayer = value;
+                _subscriptionDataStore.SelectedSubscription = value?.Subscription;
 
             }
         }
         public ICommand LoadPlayersCommand { get; }
-        public LogPlayerAttendenceViewModel(PlayersDataStore playerStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, HomeViewModel homeViewModel)
+        public LogPlayerAttendenceViewModel(PlayersDataStore playerStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, HomeViewModel homeViewModel, SubscriptionDataStore subscriptionDataStore)
         {
             _playerStore = playerStore;
-            LoadPlayersCommand = new LoadPlayersCommand(this, _playerStore);
-            playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
-            _playerStore.Players_loaded += PlayerStore_PlayersLoaded;
-
+            _subscriptionDataStore = subscriptionDataStore;
+            LoadPlayersCommand = new LoadActiveSubscriptionCommand( _subscriptionDataStore, this);
+            _subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
+            //_playerStore.Players_loaded += PlayerStore_PlayersLoaded;
+            _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
             _playersAttendenceStore = playersAttendenceStore;
@@ -54,15 +60,25 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             _homeViewModel = homeViewModel;
         }
 
+        private void _subscriptionDataStore_Loaded()
+        {
+            _subscriptionListItemViewModels.Clear();
+
+            foreach (Subscription  subscription in _subscriptionDataStore.Subscriptions)
+            {
+                AddSubscription(subscription);
+            }
+        }
+
         private void SearchBox_SearchedText(string? obj)
         {
-            playerListItemViewModels.Clear();
+            _subscriptionListItemViewModels.Clear();
             if (!string.IsNullOrEmpty(obj))
             {
-                LoadPlayers(_playerStore.Players, obj);
+                LoadSubscription(_subscriptionDataStore.Subscriptions, obj);
             }
             else
-                LoadPlayers(_playerStore.Players);
+                LoadSubscription(_subscriptionDataStore.Subscriptions);
         }
 
 
@@ -77,39 +93,44 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
 
         private void PlayerStore_PlayersLoaded()
         {
-            playerListItemViewModels.Clear();
+            //playerListItemViewModels.Clear();
 
-            foreach (Player player in _playerStore.Players)
+            //foreach (Player player in _playerStore.Players)
+            //{
+            //    AddPlayer(player);
+            //}
+        }
+        void LoadSubscription(IEnumerable<Subscription> subscriptions, string query)
+        {
+            _subscriptionListItemViewModels.Clear();
+
+            foreach (Subscription subscription in subscriptions.Where(x => x.Player!.FullName!.ToLower().Contains(query.ToLower())))
             {
-                AddPlayer(player);
+                AddSubscription(subscription);
             }
-        }
-        void LoadPlayers(IEnumerable<Player> players, string query)
-        {
-            playerListItemViewModels.Clear();
 
-            foreach (Player player in players.Where(x => x.FullName!.ToLower().Contains(query.ToLower())))
+
+        }
+        void LoadSubscription(IEnumerable<Subscription> subscriptions)
+        {
+
+            _subscriptionListItemViewModels.Clear();
+
+            foreach (Subscription subscription in subscriptions)
             {
-                AddPlayer(player);
+                AddSubscription(subscription);
             }
 
-
         }
-        void LoadPlayers(IEnumerable<Player> players)
+        private void AddSubscription(Subscription subscription)
         {
-           
-
-
+            SubscriptionListItemViewModel itemViewModel =
+                new(subscription,_subscriptionDataStore,_playersAttendenceStore,_navigationStore,_homeViewModel);
+            _subscriptionListItemViewModels.Add(itemViewModel);
         }
-        private void AddPlayer(Player player)
+        public static LogPlayerAttendenceViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore , HomeViewModel homeViewModel,SubscriptionDataStore subscriptionDataStore)
         {
-            PlayerListItemViewModel itemViewModel =
-                new(player, _playerStore, _playersAttendenceStore,_navigationStore,_homeViewModel);
-            playerListItemViewModels.Add(itemViewModel);
-        }
-        public static LogPlayerAttendenceViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore , HomeViewModel homeViewModel)
-        {
-            LogPlayerAttendenceViewModel viewModel = new(playersStore, playersAttendenceStore, navigationStore,homeViewModel);
+            LogPlayerAttendenceViewModel viewModel = new(playersStore, playersAttendenceStore, navigationStore,homeViewModel, subscriptionDataStore);
 
             viewModel.LoadPlayersCommand.Execute(null);
 

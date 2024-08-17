@@ -33,7 +33,6 @@
     <None Remove="Resources\Assets\Exercises\1\9.png" />
     <None Remove="Resources\Assets\Exercises\2\1.png" />
     <None Remove="Resources\Assets\Exercises\2\10.png" />
-    <None Remove="Resources\Assets\Exercises\2\11.png" />
     <None Remove="Resources\Assets\Exercises\2\2.png" />
     <None Remove="Resources\Assets\Exercises\2\3.png" />
     <None Remove="Resources\Assets\Exercises\2\4.png" />
@@ -45,6 +44,7 @@
     <None Remove="Resources\Assets\Exercises\3\1.png" />
     <None Remove="Resources\Assets\Exercises\3\10.png" />
     <None Remove="Resources\Assets\Exercises\3\11.png" />
+    <None Remove="Resources\Assets\Exercises\3\12.png" />
     <None Remove="Resources\Assets\Exercises\3\2.png" />
     <None Remove="Resources\Assets\Exercises\3\3.png" />
     <None Remove="Resources\Assets\Exercises\3\4.png" />
@@ -55,6 +55,8 @@
     <None Remove="Resources\Assets\Exercises\3\9.png" />
     <None Remove="Resources\Assets\Exercises\4\1.png" />
     <None Remove="Resources\Assets\Exercises\4\10.png" />
+    <None Remove="Resources\Assets\Exercises\4\11.png" />
+    <None Remove="Resources\Assets\Exercises\4\12.png" />
     <None Remove="Resources\Assets\Exercises\4\2.png" />
     <None Remove="Resources\Assets\Exercises\4\3.png" />
     <None Remove="Resources\Assets\Exercises\4\4.png" />
@@ -171,9 +173,7 @@
     <Content Include="Resources\Assets\Exercises\2\10.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\11.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+   
     <Content Include="Resources\Assets\Exercises\2\2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -207,6 +207,9 @@
     <Content Include="Resources\Assets\Exercises\3\11.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Assets\Exercises\3\12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Assets\Exercises\3\2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -235,6 +238,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Assets\Exercises\4\10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\4\11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\4\12.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Assets\Exercises\4\2.png">
@@ -362,6 +371,7 @@
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -372,6 +382,7 @@
     <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Unicepse.API\Unicepse.API.csproj" />
     <ProjectReference Include="..\Unicepse.Core\Unicepse.Core.csproj" />
     <ProjectReference Include="..\Unicepse.Entityframework\Unicepse.Entityframework.csproj" />
   </ItemGroup>

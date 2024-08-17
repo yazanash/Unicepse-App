@@ -150,7 +150,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private void _routineDataStore_MuscleChanged(MuscleGroup? muscle)
         {
             _exercisesListItemViewModel.Clear();
-            foreach (var exercise in _routineDataStore.Exercises.Where(x => x.GroupId == muscle!.Id))
+            foreach (var exercise in _routineDataStore.Exercises.Where(x => x.GroupId == muscle!.Id).OrderBy(x => x.Tid))
             {
                 AddExercise(exercise);
             }
@@ -167,7 +167,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
             if (SelectedMuscle != null)
             {
                 _exercisesListItemViewModel.Clear();
-                foreach (var exercise in _routineDataStore.Exercises.Where(x => x.GroupId == SelectedMuscle!.MuscleGroup!.Id))
+                foreach (var exercise in _routineDataStore.Exercises.Where(x => x.GroupId == SelectedMuscle!.MuscleGroup!.Id).OrderBy(x => x.Tid))
                 {
 
                     AddExercise(exercise);
