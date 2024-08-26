@@ -6,12 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
+using Unicepse.API.Services;
+using Unicepse.BackgroundServices;
 
 namespace Unicepse.Stores
 {
     public class MetricDataStore : IDataStore<Metric>
     {
         private readonly MetricDataService _metricDataService;
+        private readonly MetricApiDataService _metricApiDataService;
         private readonly List<Metric> _metrics;
         public IEnumerable<Metric> Metrics => _metrics;
 
@@ -19,10 +23,11 @@ namespace Unicepse.Stores
         public event Action? Loaded;
         public event Action<Metric>? Updated;
         public event Action<int>? Deleted;
-        public MetricDataStore(MetricDataService metricDataService)
+        public MetricDataStore(MetricDataService metricDataService, MetricApiDataService metricApiDataService)
         {
             _metricDataService = metricDataService;
             _metrics = new List<Metric>();
+            _metricApiDataService = metricApiDataService;
         }
         private Metric? _selectedMetric;
         public Metric? SelectedMetric
@@ -40,7 +45,23 @@ namespace Unicepse.Stores
         public event Action<Metric?>? StateChanged;
         public async Task Add(Metric entity)
         {
+
+            entity.DataStatus = DataStatus.ToCreate;
             await _metricDataService.Create(entity);
+
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _metricApiDataService.Create(entity);
+                if (status)
+                {
+                    entity.DataStatus = DataStatus.Synced;
+                    await _metricDataService.Update(entity);
+                }
+
+            }
+
+
             _metrics.Add(entity);
             Created?.Invoke(entity);
         }
@@ -75,7 +96,21 @@ namespace Unicepse.Stores
 
         public async Task Update(Metric entity)
         {
+            if (entity.DataStatus != DataStatus.ToCreate)
+                entity.DataStatus = DataStatus.ToUpdate;
+           
             await _metricDataService.Update(entity);
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _metricApiDataService.Update(entity);
+                if (status)
+                {
+                    entity.DataStatus = DataStatus.Synced;
+                    await _metricDataService.Update(entity);
+                }
+
+            }
             int currentIndex = _metrics.FindIndex(y => y.Id == entity.Id);
 
             if (currentIndex != -1)
@@ -87,6 +122,37 @@ namespace Unicepse.Stores
                 _metrics.Add(entity);
             }
             Updated?.Invoke(entity);
+        }
+        public async Task SyncMetricsToCreate()
+        {
+            IEnumerable<Metric> metrics = await _metricDataService.GetByDataStatus(DataStatus.ToCreate);
+            foreach (Metric metric in metrics)
+            {
+                bool status = await _metricApiDataService.Create(metric);
+                if (status)
+                {
+                    metric.DataStatus = DataStatus.Synced;
+                    await _metricDataService.Update(metric);
+                }
+
+
+            }
+        }
+
+        public async Task SyncMetricsToUpdate()
+        {
+            IEnumerable<Metric> metrics = await _metricDataService.GetByDataStatus(DataStatus.ToUpdate);
+            foreach (Metric metric in metrics)
+            {
+                bool status = await _metricApiDataService.Update(metric);
+                if (status)
+                {
+                    metric.DataStatus = DataStatus.Synced;
+                    await _metricDataService.Update(metric);
+                }
+
+
+            }
         }
     }
 }

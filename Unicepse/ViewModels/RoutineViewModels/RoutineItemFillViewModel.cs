@@ -42,7 +42,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
             }
         }
         public string? ExerciseName => RoutineItems.Exercises!.Name;
-        public string? imageId => "pack://application:,,,/Resources/Assets/Exercises/" + RoutineItems.Exercises!.GroupId + "/" + RoutineItems.Exercises!.ImageId + ".png";
+        public string? imageId => "pack://application:,,,/Resources/Assets/Exercises/" + RoutineItems.Exercises!.GroupId + "/" + RoutineItems.Exercises!.ImageId + ".jpg";
         public int GroupId => RoutineItems.Exercises!.GroupId;
 
         private string? _notes;

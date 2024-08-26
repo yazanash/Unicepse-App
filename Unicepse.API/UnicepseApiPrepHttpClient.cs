@@ -13,12 +13,12 @@ namespace Unicepse.API
     public class UnicepseApiPrepHttpClient
     {
         private readonly HttpClient _client;
-        private readonly string _apiKey;
+        private readonly UnicepsePrepAPIKey _apiKey;
 
         public UnicepseApiPrepHttpClient(HttpClient client, UnicepsePrepAPIKey apiKey)
         {
             _client = client;
-            _apiKey = apiKey.Key;
+            _apiKey = apiKey;
             //RunAsync();
         }
         //public async Task RunAsync()
@@ -44,9 +44,16 @@ namespace Unicepse.API
         public async Task<T> GetAsync<T>(string uri)
         {
             HttpResponseMessage response = await _client.GetAsync($"{uri}");
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                throw new Exception("هذه النسخة غير مفعلة");
             string jsonResponse = await response.Content.ReadAsStringAsync();
-
             return JsonConvert.DeserializeObject<T>(jsonResponse)!;
+        }
+        public async Task<bool> GetCodeAsync<T>(string uri)
+        {
+            _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
+            HttpResponseMessage response = await _client.GetAsync($"{uri}");
+            return response.StatusCode == HttpStatusCode.Accepted;
         }
         public async Task<bool> PostAsync<T>(string uri, T entity)
         {
@@ -61,6 +68,12 @@ namespace Unicepse.API
             HttpContent content = new StringContent(JsonConvert.SerializeObject(entity));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await _client.PutAsync($"{uri}", content);
+            return response.StatusCode == HttpStatusCode.OK;
+
+        }
+        public async Task<bool> DeleteAsync<T>(string uri)
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"{uri}");
             return response.StatusCode == HttpStatusCode.OK;
 
         }

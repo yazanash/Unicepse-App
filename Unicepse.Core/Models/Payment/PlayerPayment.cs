@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 using Unicepse.Core.Models.Player;
 using Unicepse.Core.Models.Subscription;
 namespace Unicepse.Core.Models.Payment
@@ -18,5 +19,6 @@ namespace Unicepse.Core.Models.Payment
         public DateTime To { get; set; }
         public int CoverDays { get; set; }
         public Subscription.Subscription? Subscription { get; set; }
+        public DataStatus DataStatus { get; set; }
     }
 }

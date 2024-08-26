@@ -41,9 +41,12 @@ namespace Unicepse.Stores
         {
             _licenseApiDataService = licenseApiDataService;
             _licenseDataService = licenseDataService;
-            _currentLicense = _licenseDataService.ActiveLicenses();
         }
+        public void ActiveLicense()
+        {
+            _currentLicense = _licenseDataService.ActiveLicenses();
 
+        }
         public Task Add(License entity)
         {
             throw new NotImplementedException();
@@ -76,5 +79,19 @@ namespace Unicepse.Stores
             CurrentLicense = created_license;
             Created?.Invoke(created_license);
         }
+        public async Task CheckLicenseValidation()
+        {
+            bool verificaion = await _licenseApiDataService.VerifyLicense();
+            if (!verificaion)
+            {
+                if (CurrentLicense != null)
+                {
+                    await _licenseDataService.Delete(CurrentLicense.Id);
+
+                    CurrentLicense = null;
+                }
+            }
+        }
+
     }
 }

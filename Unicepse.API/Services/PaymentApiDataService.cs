@@ -38,5 +38,12 @@ namespace Unicepse.API.Services
             paymentDto.gym_id = 18;
             return await _client.PutAsync("payments", paymentDto);
         }
+        public async Task<bool> Delete(PlayerPayment entity)
+        {
+            PaymentDto paymentDto = new PaymentDto();
+            paymentDto.FromPayment(entity);
+            paymentDto.gym_id = 18;
+            return await _client.DeleteAsync<bool>($"payments/{paymentDto.gym_id}/{paymentDto.pid}/{paymentDto.sid}/{paymentDto.id}");
+        }
     }
 }

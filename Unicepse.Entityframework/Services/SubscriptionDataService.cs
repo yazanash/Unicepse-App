@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
@@ -232,6 +233,16 @@ namespace Unicepse.Entityframework.Services
                 context.Entry(entity.Trainer!).State = EntityState.Unchanged;
             await context.SaveChangesAsync();
             return entity;
+        }
+        public async Task<IEnumerable<Subscription>> GetByDataStatus(DataStatus status)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.DataStatus == status).Include(x => x.Trainer)
+                    .Include(x => x.Player).AsNoTracking().Include(x => x.Sport!.Trainers).AsNoTracking()
+                    .Include(x => x.Sport).AsNoTracking().ToListAsync();
+                return entities;
+            }
         }
     }
 }

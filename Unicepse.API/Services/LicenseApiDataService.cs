@@ -22,6 +22,12 @@ namespace Unicepse.API.Services
             return licenseDto.ToLicense();
         }
 
+        public async Task<bool> VerifyLicense()
+        {
+            bool IsValid = await _client.GetCodeAsync<bool>($"licenses/verify");
+            return IsValid;
+        }
+
         public async Task<GymProfile> GetGymProfile(string GymId)
         {
             GymDto gymDto = await _client.GetAsync<GymDto>($"gyms/{GymId}");

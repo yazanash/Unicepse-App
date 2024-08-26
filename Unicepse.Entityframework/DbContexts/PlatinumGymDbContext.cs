@@ -46,7 +46,7 @@ namespace Unicepse.Entityframework.DbContexts
         public DbSet<PlayerRoutine>? PlayerRoutine { get; set; }
         public DbSet<User>? Users { get; set; }
         public DbSet<Metric>? Metrics { get; set; }
-        public DbSet<License>?  Licenses { get; set; }
+        public DbSet<License>? Licenses { get; set; }
         public DbSet<GymProfile>? GymProfile { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -88,8 +88,24 @@ namespace Unicepse.Entityframework.DbContexts
              .HasOne(c => c.Trainer)
              .WithMany(c => c.PlayerTrainings).HasForeignKey(x => x.TrainerId);
 
-
-           
+            modelBuilder.Entity<Player>()
+            .Property(c => c.DataStatus)
+            .HasConversion<int>();
+            modelBuilder.Entity<Subscription>()
+           .Property(c => c.DataStatus)
+           .HasConversion<int>();
+            modelBuilder.Entity<PlayerRoutine>()
+           .Property(c => c.DataStatus)
+           .HasConversion<int>();
+            modelBuilder.Entity<DailyPlayerReport>()
+           .Property(c => c.DataStatus)
+           .HasConversion<int>();
+            modelBuilder.Entity<Metric>()
+           .Property(c => c.DataStatus)
+           .HasConversion<int>();
+            modelBuilder.Entity<PlayerPayment>()
+           .Property(c => c.DataStatus)
+           .HasConversion<int>();
 
             base.OnModelCreating(modelBuilder);
         }

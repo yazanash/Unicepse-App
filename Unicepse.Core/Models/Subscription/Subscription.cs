@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 using Unicepse.Core.Models.Payment;
 using Unicepse.Core.Models.Sport;
 
@@ -38,5 +39,6 @@ namespace Unicepse.Core.Models.Subscription
         public DateTime EndDate { get; set; }
         public DateTime LastPaid { get; set; }
         public ICollection<PlayerPayment>? Payments { get; set; }
+        public DataStatus DataStatus { get; set; }
     }
 }

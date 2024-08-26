@@ -75,6 +75,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -332,6 +335,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<double>("Chest")
                         .HasColumnType("float");
 
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<double>("Hieght")
                         .HasColumnType("float");
 
@@ -424,6 +430,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<int>("CoverDays")
                         .HasColumnType("int");
 
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<string>("Des")
                         .HasColumnType("nvarchar(4000)");
 
@@ -471,6 +480,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("float");
 
                     b.Property<int>("BirthDate")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("FullName")
@@ -543,6 +555,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
 
                     b.Property<int>("DaysCount")
                         .HasColumnType("int");
@@ -656,6 +671,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("DaysGroupMap")
                         .IsRequired()

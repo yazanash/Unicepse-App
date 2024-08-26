@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 using Unicepse.Core.Models;
 
 namespace Unicepse.Core.Models.Player
@@ -16,7 +17,7 @@ namespace Unicepse.Core.Models.Player
         public bool IsTakenContainer { get; set; }
         public bool IsSubscribed { get; set; }
         public double Balance { get; set; }
-
+        public DataStatus DataStatus { get; set; }
         public bool Conflicts(Player player)
         {
             if (player.FullName == this.FullName)
