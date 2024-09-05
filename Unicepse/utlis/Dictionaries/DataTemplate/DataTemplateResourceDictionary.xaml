@@ -3,7 +3,7 @@
                       xmlns:viewmodels="clr-namespace:Unicepse.utlis.common"
              xmlns:vms="clr-namespace:Unicepse.ViewModels"
                       xmlns:vsa="clr-namespace:Unicepse.Views"
-                    
+                     xmlns:viewapp="clr-namespace:Unicepse.Views.AppViews"
                        xmlns:pvmodels="clr-namespace:Unicepse.ViewModels.PlayersViewModels.vm"
              xmlns:pviews="clr-namespace:Unicepse.Views.PlayerViews"
                     
@@ -59,7 +59,7 @@
         <vis:PlayersView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type vms:AppInfoViewModel }">
-        <vsa:ApplicationAboutView/>
+        <viewapp:GymView/>
     </DataTemplate>
 
 </ResourceDictionary>

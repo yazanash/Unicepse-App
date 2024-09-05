@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services.PlayerQueries
 {
@@ -70,6 +71,16 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
                 return entities;
             }
         }
+
+        public async Task<IEnumerable<Player>> GetByDataStatus(DataStatus status)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Player>? entities = await context.Set<Player>().Where(x => x.DataStatus== status).ToListAsync();
+                return entities;
+            }
+        }
+
         public async Task<Player> Update(Player entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

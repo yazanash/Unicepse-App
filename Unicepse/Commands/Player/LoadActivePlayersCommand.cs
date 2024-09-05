@@ -20,24 +20,24 @@ namespace Unicepse.Commands.Player
             _homeViewModel = homeViewModel;
 
         }
-        public override async Task ExecuteAsync(object? parameter)
+        public override Task ExecuteAsync(object? parameter)
         {
             _homeViewModel.ErrorMessage = null;
             //_homeViewModel.IsLoading = true;
 
-            try
-            {
+            //try
+            //{
                 throw new NotImplementedException();
                 //await _playersDailyStore.LoadActivePlayerReport();
-            }
-            catch (Exception)
-            {
-                _homeViewModel.ErrorMessage = "Failed to load Players. Please restart the application.";
-            }
-            finally
-            {
-                //_homeViewModel.IsLoading = false;
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    _homeViewModel.ErrorMessage = "Failed to load Players. Please restart the application.";
+            //}
+            //finally
+            //{
+            //    //_homeViewModel.IsLoading = false;
+            //}
         }
     }
 }

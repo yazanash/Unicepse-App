@@ -32,7 +32,6 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private readonly RoutineDataStore? _routineDataStore;
 
         private readonly PlayersAttendenceStore? _playersAttendenceStore;
-        private readonly HomeViewModel? _homeViewModel;
         public int Id => Player.Id;
         public string? FullName => Player.FullName;
         public string? Phone => Player.Phone;
@@ -54,6 +53,9 @@ namespace Unicepse.ViewModels.PlayersViewModels
         public ICommand? TrainingProgramCommand { get; }
         public ICommand? OpenProfileCommand { get; }
         public ICommand? LogInCommand { get; }
+
+        public ICommand? VerifyAccountCommand { get; }
+
         public PlayerListItemViewModel(Player player, NavigationStore navigationStore,
             SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,
             SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayerListViewModel playerList, PlayersAttendenceStore playersAttendenceStore)
@@ -67,7 +69,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             _metricDataStore = metricDataStore;
             _routineDataStore = routineDataStore;
             _playersAttendenceStore = playersAttendenceStore;
-
+            VerifyAccountCommand = new VerifyAccountCommand(new ReadPlayerQrCodeViewModel(),_playersDataStore);
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
             EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(PlayerMainPageNavigation, () => new EditPlayerViewModel(PlayerMainPageNavigation, _playersDataStore, _subscriptionDataStore, CreatePlayerMainPageViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _sportDataStore), _sportDataStore, _paymentDataStore)));
             DeleteCommand = new DeletePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList), _playersDataStore);

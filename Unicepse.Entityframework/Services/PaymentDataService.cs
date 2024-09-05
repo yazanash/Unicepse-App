@@ -11,6 +11,7 @@ using Unicepse.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Unicepse.Core.Models.Player;
 using Unicepse.Core.Models.Employee;
+using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
@@ -125,6 +126,15 @@ namespace Unicepse.Entityframework.Services
             if (entity == null)
                 throw new NotExistException();
             return entity!;
+        }
+        public async Task<IEnumerable<PlayerPayment>> GetByDataStatus(DataStatus status)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Where(x => x.DataStatus == status).Include(x => x.Player).AsNoTracking()
+                    .Include(x => x.Subscription).AsNoTracking().ToListAsync();
+                return entities;
+            }
         }
         public async Task<PlayerPayment> Update(PlayerPayment entity)
         {

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Unicepse.utlis.common;
 using Unicepse.ViewModels.PlayersViewModels;
 using Unicepse.API.Services;
+using Unicepse.Core.Common;
+using Unicepse.BackgroundServices;
 
 namespace Unicepse.Stores
 {
@@ -24,6 +26,8 @@ namespace Unicepse.Stores
         public event Action? Players_loaded;
         public event Action<Player>? Player_update;
         public event Action<int>? Player_deleted;
+
+        public event Action<Profile>? profile_loaded;
 
 
         public event Action<Filter?>? FilterChanged;
@@ -92,15 +96,82 @@ namespace Unicepse.Stores
             _players.AddRange(players!);
             Players_loaded?.Invoke();
         }
+        public async Task HandShakePlayer(Player player,string uid)
+        {
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _playerApiDataService.CreateHandShake(player,uid);
+                if (status)
+                {
+                    player.UID = uid;
+                    await _playerDataService.Update(player);
+                    int currentIndex = _players.FindIndex(y => y.Id == player.Id);
+
+                    if (currentIndex != -1)
+                    {
+                        _players[currentIndex] = player;
+                    }
+                    else
+                    {
+                        _players.Add(player);
+                    }
+                    Player_update?.Invoke(player);
+                }
+
+            }
+            _players.Add(player);
+            Player_created?.Invoke(player);
+        }
+        public async Task GetPlayerProfile(string uid)
+        {
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                Profile profile = await _playerApiDataService.GetProfile(uid);
+                if (profile!=null)
+                {
+                    profile_loaded?.Invoke(profile);
+                }
+            }
+        }
         public async Task AddPlayer(Player player)
         {
+            player.DataStatus = DataStatus.ToCreate;
             await _playerDataService.Create(player);
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _playerApiDataService.Create(player);
+                if (status)
+                {
+                    player.DataStatus = DataStatus.Synced;
+                    await _playerDataService.Update(player);
+                }
+
+            }
             _players.Add(player);
             Player_created?.Invoke(player);
         }
         public async Task UpdatePlayer(Player player)
         {
+            if (player.DataStatus != DataStatus.ToCreate)
+                player.DataStatus = DataStatus.ToUpdate;
             await _playerDataService.Update(player);
+
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _playerApiDataService.Update(player);
+                if (status)
+                {
+                    player.DataStatus = DataStatus.Synced;
+                    await _playerDataService.Update(player);
+                }
+
+            }
+
+
             int currentIndex = _players.FindIndex(y => y.Id == player.Id);
 
             if (currentIndex != -1)
@@ -136,10 +207,36 @@ namespace Unicepse.Stores
             RearrengeList(players);
         }
 
-        private async Task GetPlayersToCreate()
+        public async Task SyncPlayersToCreate()
         {
-            IEnumerable<Player> players = await _playerDataService.GetByStatus(true);
-            RearrengeList(players);
+            IEnumerable<Player> players = await _playerDataService.GetByDataStatus(DataStatus.ToCreate);
+            foreach (Player player in players)
+            {
+                bool status = await _playerApiDataService.Create(player);
+                if (status)
+                {
+                    player.DataStatus = DataStatus.Synced;
+                    await _playerDataService.Update(player);
+                }
+
+
+            }
+        }
+
+        public async Task SyncPlayersToUpdate()
+        {
+            IEnumerable<Player> players = await _playerDataService.GetByDataStatus(DataStatus.ToUpdate);
+            foreach (Player player in players)
+            {
+                bool status = await _playerApiDataService.Update(player);
+                if (status)
+                {
+                    player.DataStatus = DataStatus.Synced;
+                    await _playerDataService.Update(player);
+                }
+
+
+            }
         }
     }
 }

@@ -31,14 +31,14 @@ namespace Unicepse
     public partial class CameraReader : Window
     {
         FilterInfoCollection videoDevices;
-        VideoCaptureDevice videoSource;
+        VideoCaptureDevice? videoSource;
         public CameraReader()
         {
             InitializeComponent();
             videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
             videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-
+            videoSource.Start();
         }
 
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
@@ -58,7 +58,6 @@ namespace Unicepse
                    
 
                 }), DispatcherPriority.Render);
-
             }
             // Read QR code
             //Bitmap bitmapimg = (Bitmap)eventArgs.Frame.Clone();
@@ -71,11 +70,21 @@ namespace Unicepse
                 // Do something with the QR code data
                 string qrData = result.Text;
                 // Invoke on UI thread if necessary
-                this.Dispatcher.Invoke(() =>
+                this.Dispatcher.InvokeAsync(() =>
                 {
                     // Update UI with QR code data
                     txt_toview.Text = qrData;
+
+
+                    CloseWindow();
+
+
+
                 });
+                // Shutdown the dispatcher
+                //Dispatcher.InvokeShutdown();
+
+               
             }
 
 
@@ -95,10 +104,10 @@ namespace Unicepse
                 return bitmapImage;
             }
         }
-
+        
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            videoSource.Start();
+            videoSource!.Start();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -117,6 +126,17 @@ namespace Unicepse
                 videoSource.WaitForStop();
             }
             base.OnClosing(e);
+        }
+        private void CloseWindow()
+        {
+            if (videoSource != null && videoSource.IsRunning)
+            {
+                videoSource.SignalToStop();
+                videoSource.WaitForStop();
+                videoSource.NewFrame -= video_NewFrame;
+                videoSource = null;
+            }
+            this.Close();
         }
     }
 }

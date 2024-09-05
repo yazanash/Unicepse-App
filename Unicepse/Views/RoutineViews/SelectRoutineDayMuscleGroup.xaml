@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Unicepse.Views.RoutineViews"
              mc:Ignorable="d" 
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10" Background="#fff" Padding="5" Margin="5">
@@ -21,8 +22,15 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <DockPanel Grid.Column="0">
+                    <Button Margin="5" DockPanel.Dock="Top" HorizontalAlignment="Left"  Command="{Binding AddDaysCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource IconBtn}">
 
-                    <ListBox ScrollViewer.CanContentScroll="True"
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="اضافة يوم" Foreground="{StaticResource colors.primary}" />
+                            <Icon:PackIconMaterial Kind="Plus" Panel.ZIndex="2" Width="15" Margin="5" Height="15" Foreground="{StaticResource colors.primary}"/>
+
+                        </StackPanel>
+                    </Button>
+                    <ListBox ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" 
                             VirtualizingPanel.ScrollUnit="Pixel"
                              ItemsSource="{Binding DayGroupList}" ItemContainerStyle="{StaticResource GroupDaysSelectionListViewContainerStyle1 }" >

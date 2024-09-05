@@ -28,6 +28,11 @@ namespace Unicepse.utlis.common
             get { return _connection; }
             set { _connection = value; OnPropertyChanged(nameof(Connection)); }
         }
-
+        private bool _syncState;
+        public bool SyncState
+        {
+            get { return _syncState; }
+            set { _syncState = value; OnPropertyChanged(nameof(SyncState)); }
+        }
     }
 }

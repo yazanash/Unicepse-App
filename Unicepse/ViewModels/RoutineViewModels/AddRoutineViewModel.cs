@@ -22,7 +22,6 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private readonly ObservableCollection<ExercisesListItemViewModel> _exercisesListItemViewModel;
 
         private readonly ObservableCollection<GroupMuscleListItemViewModel> _groupMuscleListItemViewModels;
-        private readonly ObservableCollection<DaysListItemViewModel> _daysListItemViewModels;
         private readonly ObservableCollection<RoutineItemFillViewModel> _routineExercisesItemsViewModels;
 
         private readonly PlayersDataStore _playersDataStore;
@@ -46,7 +45,6 @@ namespace Unicepse.ViewModels.RoutineViewModels
         public IEnumerable<ExercisesListItemViewModel> ExercisesList => _exercisesListItemViewModel;
         public IEnumerable<GroupMuscleListItemViewModel> MuscleGroup => _groupMuscleListItemViewModels;
         public IEnumerable<RoutineItemFillViewModel> RoutineItems => _routineExercisesItemsViewModels;
-        public IEnumerable<DaysListItemViewModel> DaysGroup => _daysListItemViewModels;
         public AddRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore)
         {
             _playersDataStore = playersDataStore;
@@ -57,7 +55,6 @@ namespace Unicepse.ViewModels.RoutineViewModels
             _exercisesListItemViewModel = new ObservableCollection<ExercisesListItemViewModel>();
             _groupMuscleListItemViewModels = new ObservableCollection<GroupMuscleListItemViewModel>();
             _routineExercisesItemsViewModels = new ObservableCollection<RoutineItemFillViewModel>();
-            _daysListItemViewModels = new ObservableCollection<DaysListItemViewModel>();
             _routineDataStore.ExercisesLoaded += _routineDataStore_ExercisesLoaded;
             LoadExercisesItems = new LoadExercisesCommand(_routineDataStore, this);
             _routineDataStore.MuscleChanged += _routineDataStore_MuscleChanged;
@@ -121,13 +118,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
             }));
 
 
-            _daysListItemViewModels.Add(new DaysListItemViewModel(1,"اليوم الاول"));
-            _daysListItemViewModels.Add(new DaysListItemViewModel(2, "اليوم الثاني"));
-            _daysListItemViewModels.Add(new DaysListItemViewModel(3, "اليوم الثالث"));
-            _daysListItemViewModels.Add(new DaysListItemViewModel(4, "اليوم الرابع"));
-            _daysListItemViewModels.Add(new DaysListItemViewModel(5, "اليوم الخامس"));
-            _daysListItemViewModels.Add(new DaysListItemViewModel(6, "اليوم السادس"));
-            _daysListItemViewModels.Add(new DaysListItemViewModel(7, "اليوم السابع"));
+           
 
             SelectedMuscle = MuscleGroup.FirstOrDefault();
             SubmitCommand = new NavaigateCommand<SelectRoutineDaysMuscleGroupViewModel>(new NavigationService<SelectRoutineDaysMuscleGroupViewModel>(_navigationStore, () => new SelectRoutineDaysMuscleGroupViewModel(_routineDataStore, _navigationService, _playersDataStore)));
@@ -272,12 +263,19 @@ namespace Unicepse.ViewModels.RoutineViewModels
                 _exercisesListItemViewModel.Add(exercisesListItemViewModel);
             }
         }
+        
 
 
 
 
-
-
+        public override void Dispose()
+        {
+            _routineDataStore.ExercisesLoaded -= _routineDataStore_ExercisesLoaded;
+            _routineDataStore.MuscleChanged -= _routineDataStore_MuscleChanged;
+            _routineDataStore.RoutineItemCreated -= _routineDataStore_RoutineItemCreated;
+            _routineDataStore.RoutineItemDeleted -= _routineDataStore_RoutineItemDeleted;
+            base.Dispose();
+        }
 
 
 

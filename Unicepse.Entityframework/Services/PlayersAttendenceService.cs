@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
@@ -43,7 +44,25 @@ namespace Unicepse.Entityframework.Services
                 return CreatedResult.Entity;
             }
         }
+        public async Task<IEnumerable<DailyPlayerReport>> GetByDataStatus(DataStatus status)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(x => x.DataStatus == status).ToListAsync();
+                return entities;
+            }
+        }
+        public async Task<DailyPlayerReport> Update(DailyPlayerReport entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            DailyPlayerReport existedPlayer = await Get(entity.Id);
+            if (existedPlayer == null)
+                throw new NotExistException("this record is not exist");
+            context.Set<DailyPlayerReport>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
 
+        }
         public async Task<bool> LogOutPlayer(DailyPlayerReport entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

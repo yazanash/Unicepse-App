@@ -47,7 +47,7 @@ namespace Unicepse.ViewModels.PrintViewModels
         {
             TrainerMounthlyReportViewModel = new(obj!);
             OnPropertyChanged(nameof(TrainerMounthlyReportViewModel));
-            ReportDate = obj.IssueDate.ToShortDateString();
+            ReportDate = obj!.IssueDate.ToShortDateString();
             _subscriptionListItemViewModels.Clear();
             foreach (var item in _dausesDataStore._payments.GroupBy(x => x.Subscription))
             {

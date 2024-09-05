@@ -22,8 +22,10 @@ namespace Unicepse.Commands.RoutinesCommand
 
         public override void Execute(object? parameter)
         {
-
-            _routineDataStore.AddRoutineItem(_routineItems);
+            RoutineItems routineItems = new RoutineItems();
+            routineItems.Exercises = _routineItems.Exercises;
+            routineItems.ItemOrder = _routineDataStore.RoutineItems.Where(x => x.Exercises!.GroupId == _routineDataStore.SelectedMuscle!.Id).Count() + 1;
+            _routineDataStore.AddRoutineItem(routineItems);
         }
     }
 }

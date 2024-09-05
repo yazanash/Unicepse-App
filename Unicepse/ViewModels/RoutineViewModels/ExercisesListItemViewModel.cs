@@ -16,7 +16,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         Exercises Exercises;
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersDataStore _playersDataStore;
-        public string ExerciseImage => "pack://application:,,,/Resources/Assets/Exercises/" + Exercises.GroupId + "/" + Exercises.ImageId + ".png";
+        public string ExerciseImage => "pack://application:,,,/Resources/Assets/Exercises/" + Exercises.GroupId + "/" + Exercises.ImageId + ".jpg";
         public string? ExerciseName => Exercises.Name;
         public int Id => Exercises.Id;
         public ExercisesListItemViewModel(Exercises exercises, RoutineDataStore routineDataStore, PlayersDataStore playersDataStore)

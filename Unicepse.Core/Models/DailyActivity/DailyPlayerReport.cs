@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 using Unicepse.Core.Models.Player;
 
 namespace Unicepse.Core.Models.DailyActivity
@@ -17,5 +18,6 @@ namespace Unicepse.Core.Models.DailyActivity
         public virtual Subscription.Subscription? Subscription { get; set; }
         public bool IsTakenKey { get; set; }
         public bool IsLogged { get; set; }
+        public DataStatus DataStatus { get; set; }
     }
 }

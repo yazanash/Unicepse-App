@@ -38,6 +38,8 @@ namespace Unicepse.ViewModels.PlayersViewModels
             for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
                 years.Add(new Year() { year = i });
             Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
+
+
             _navigationStore = navigationStore;
             _playerStore = playerStore;
             _subscriptionDataStore = subscriptionDataStore;
@@ -47,10 +49,21 @@ namespace Unicepse.ViewModels.PlayersViewModels
             _routineDataStore = routineDataStore;
             _metricStore = metricStore;
             _playersAttendenceStore = playersAttendenceStore;
+            _playerStore.profile_loaded += _playerStore_profile_loaded;
 
+            OpenScanCommand = new GetProfileScanCommand(new ReadPlayerQrCodeViewModel(), _playerStore);
             CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
             SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricStore, _routineDataStore, _playersAttendenceStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore, _metricStore, _routineDataStore, _paymentDataStore, _playersAttendenceStore);
+        }
+
+        private void _playerStore_profile_loaded(Profile obj)
+        {
+            FullName = obj.FullName;
+            Phone = obj.Phone;
+            GenderMale = obj.GenderMale;
+            Year = years.FirstOrDefault(x=>x.year== obj.BirthDate) ;
+            UID = obj.UID;
         }
 
         private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
@@ -75,6 +88,16 @@ namespace Unicepse.ViewModels.PlayersViewModels
                     AddError("هذا الحقل مطلوب", nameof(FullName));
                     OnErrorChanged(nameof(FullName));
                 }
+            }
+        }
+        private string? _uid;
+        public string? UID
+        {
+            get { return _uid; }
+            set
+            {
+                _uid= value;
+                OnPropertyChanged(nameof(UID));
             }
         }
         private string? _phone = "0";
@@ -148,6 +171,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             set { _subscribeDate = value; OnPropertyChanged(nameof(SubscribeDate)); }
         }
 
+        public ICommand? OpenScanCommand { get; }
 
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }

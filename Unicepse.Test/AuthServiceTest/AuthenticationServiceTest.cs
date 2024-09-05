@@ -96,7 +96,7 @@ namespace Platinum.Test.AuthServiceTest
             User user = userFactory!.FakeUser();
             //mockAccountDataService!.Setup(s => s.Create(user)).ReturnsAsync(user);
             RegistrationResult expected = RegistrationResult.Success;
-            RegistrationResult actual = await authenticationService!.Register(user.UserName, user.Password, user.Password);
+            RegistrationResult actual = await authenticationService!.Register(user!.UserName!, user!.Password!, user!.Password!);
 
             Assert.AreEqual(expected, actual);
         }

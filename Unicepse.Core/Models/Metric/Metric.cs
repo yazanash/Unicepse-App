@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 using Unicepse.Core.Models.Player;
 namespace Unicepse.Core.Models.Metric
 {
     public class Metric : DomainObject
     {
         public Player.Player? Player { get; set; }
-        
+        public DataStatus DataStatus { get; set; }
         public double Hieght { get; set; }
         public double Wieght { get; set; }
         public double L_Arm { get; set; }

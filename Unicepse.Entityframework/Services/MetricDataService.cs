@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
@@ -67,6 +68,14 @@ namespace Unicepse.Entityframework.Services
             {
                 IEnumerable<Metric>? entities = await context.Set<Metric>().Where(x=>x.Player!.Id==player.Id).Include(x => x.Player)
                     .ToListAsync();
+                return entities;
+            }
+        }
+        public async Task<IEnumerable<Metric>> GetByDataStatus(DataStatus status)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Metric>? entities = await context.Set<Metric>().Where(x => x.DataStatus == status).Include(x => x.Player).AsNoTracking().ToListAsync();
                 return entities;
             }
         }

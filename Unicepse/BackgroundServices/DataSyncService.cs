@@ -41,7 +41,15 @@ namespace Unicepse.BackgroundServices
                 // Your background logic here
                 bool internetAvailable = InternetAvailability.IsInternetAvailable();
                 if (internetAvailable)
+                {
                     _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                    _backgroundServiceStore.SyncState(true);
+                    await _backgroundServiceStore.SyncPlayers();
+                    await _backgroundServiceStore.SyncSubscribtions();
+                    await _backgroundServiceStore.SyncPayments();
+                    await _backgroundServiceStore.SyncMetrics();
+                    _backgroundServiceStore.SyncState(false);
+                }
                 else
                     _backgroundServiceStore.ChangeState($"غير متصل", internetAvailable);
 

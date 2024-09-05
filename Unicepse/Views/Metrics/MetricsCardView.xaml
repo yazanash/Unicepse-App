@@ -36,27 +36,61 @@
                     <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
 
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Border Grid.Row="0" Grid.Column="0" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
                         <DockPanel>
                             <!--<ScrollViewer DockPanel.Dock="Top" >-->
-                            <ListView ScrollViewer.CanContentScroll="True"
+                            <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+                                            ItemsSource="{Binding Metrics}"
+                                      SelectedItem="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}"
+                                      ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding CheckDate}" FontSize="14" FontWeight="SemiBold"  />
+                                                    <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                        <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
+                                                    </Button>
+                                                </StackPanel>
+
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <!--<ListView ScrollViewer.CanContentScroll="True"
                                     SelectedItem="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" 
                               ItemsSource="{Binding Metrics}" ItemContainerStyle="{DynamicResource MetricListBoxItemContainerStyle1}" >
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel  Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
                             </ListView>
-                            <!--</ScrollViewer>-->
+                            --><!--</ScrollViewer>-->
 
                         </DockPanel>
                     </Border>
-                    <Border  Visibility="{Binding IsSelected,Converter={StaticResource bolToVs}}" Grid.Column="1">
+                   
+                    <Border Grid.Row="1"  Visibility="{Binding IsSelected,Converter={StaticResource bolToVs}}" Grid.Column="0">
                          <comp:MetricCard DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" />
                     </Border>
-                   
+                    <Border Grid.Row="1"   Grid.Column="1">
+                        <Image Stretch="Uniform" Source="pack://application:,,,/Resources/Assets/Metric/body_front.jpeg" 
+                                    RenderOptions.BitmapScalingMode="HighQuality"
+                                                        RenderOptions.EdgeMode="Aliased"/>
+                    </Border>
+                    <Border Grid.Row="1"  Visibility="{Binding IsSelected,Converter={StaticResource bolToVs}}" Grid.Column="2">
+                        <comp:MetricCard DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" />
+                    </Border>
                 </Grid>
 
             </DockPanel>

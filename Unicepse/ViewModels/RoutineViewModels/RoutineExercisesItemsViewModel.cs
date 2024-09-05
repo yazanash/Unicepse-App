@@ -19,7 +19,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         public string? ExerciseName => routineItem.Exercises!.Name;
         public int GroupId => routineItem.Exercises!.GroupId;
         public int ItemOrder => routineItem.ItemOrder;
-        public string? imageId => "pack://application:,,,/Resources/Assets/Exercises/" + routineItem.Exercises!.GroupId + "/" + routineItem.Exercises!.ImageId + ".png";
+        public string? imageId => "pack://application:,,,/Resources/Assets/Exercises/" + routineItem.Exercises!.GroupId + "/" + routineItem.Exercises!.ImageId + ".jpg";
         public string? Notes => routineItem.Notes;
         public string? Orders => routineItem.Orders;
     }

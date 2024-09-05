@@ -39,6 +39,7 @@ namespace Unicepse.utlis.common
         public ICommand? LogPlayerCommand { get; }
         public ICommand LoadDailyReport { get; }
         public ICommand LoadTrainersCommand { get; }
+        public ICommand OpenScanCommand { get; }
         public SearchBoxViewModel SearchBox { get; set; }
         public HomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
         {
@@ -53,7 +54,7 @@ namespace Unicepse.utlis.common
             _playersAttendenceStore.LoggedOut += _playersAttendenceStore_LoggedOut;
             //OpenSearchListCommand = new OpenSearchCommand(new SearchPlayerWindowViewModel(_playerStore,_playersAttendenceStore, new NavigationStore()));
             OpenSearchListCommand = new NavaigateCommand<LogPlayerAttendenceViewModel>(new NavigationService<LogPlayerAttendenceViewModel>(_navigationStore, () => CreatePlayerSearchViewModel(_playerStore, _playersAttendenceStore, _navigationStore, this, _subscriptionDataStore)));
-
+            OpenScanCommand = new LoginPlayerScanCommand(new ReadPlayerQrCodeViewModel(), _playersAttendenceStore, _playerStore);
             _playerAttendenceListItemViewModels = new ObservableCollection<PlayerAttendenceListItemViewModel>();
             _trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
             LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore);

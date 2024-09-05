@@ -20,99 +20,102 @@
 
   <ItemGroup>
     <None Remove="Resources\Assets\backimage.png" />
-    <None Remove="Resources\Assets\Exercises\1\1.png" />
-    <None Remove="Resources\Assets\Exercises\1\10.png" />
-    <None Remove="Resources\Assets\Exercises\1\11.png" />
-    <None Remove="Resources\Assets\Exercises\1\2.png" />
-    <None Remove="Resources\Assets\Exercises\1\3.png" />
-    <None Remove="Resources\Assets\Exercises\1\4.png" />
-    <None Remove="Resources\Assets\Exercises\1\5.png" />
-    <None Remove="Resources\Assets\Exercises\1\6.png" />
-    <None Remove="Resources\Assets\Exercises\1\7.png" />
-    <None Remove="Resources\Assets\Exercises\1\8.png" />
-    <None Remove="Resources\Assets\Exercises\1\9.png" />
-    <None Remove="Resources\Assets\Exercises\2\1.png" />
-    <None Remove="Resources\Assets\Exercises\2\10.png" />
-    <None Remove="Resources\Assets\Exercises\2\2.png" />
-    <None Remove="Resources\Assets\Exercises\2\3.png" />
-    <None Remove="Resources\Assets\Exercises\2\4.png" />
-    <None Remove="Resources\Assets\Exercises\2\5.png" />
-    <None Remove="Resources\Assets\Exercises\2\6.png" />
-    <None Remove="Resources\Assets\Exercises\2\7.png" />
-    <None Remove="Resources\Assets\Exercises\2\8.png" />
-    <None Remove="Resources\Assets\Exercises\2\9.png" />
-    <None Remove="Resources\Assets\Exercises\3\1.png" />
-    <None Remove="Resources\Assets\Exercises\3\10.png" />
-    <None Remove="Resources\Assets\Exercises\3\11.png" />
-    <None Remove="Resources\Assets\Exercises\3\12.png" />
-    <None Remove="Resources\Assets\Exercises\3\2.png" />
-    <None Remove="Resources\Assets\Exercises\3\3.png" />
-    <None Remove="Resources\Assets\Exercises\3\4.png" />
-    <None Remove="Resources\Assets\Exercises\3\5.png" />
-    <None Remove="Resources\Assets\Exercises\3\6.png" />
-    <None Remove="Resources\Assets\Exercises\3\7.png" />
-    <None Remove="Resources\Assets\Exercises\3\8.png" />
-    <None Remove="Resources\Assets\Exercises\3\9.png" />
-    <None Remove="Resources\Assets\Exercises\4\1.png" />
-    <None Remove="Resources\Assets\Exercises\4\10.png" />
-    <None Remove="Resources\Assets\Exercises\4\11.png" />
-    <None Remove="Resources\Assets\Exercises\4\12.png" />
-    <None Remove="Resources\Assets\Exercises\4\2.png" />
-    <None Remove="Resources\Assets\Exercises\4\3.png" />
-    <None Remove="Resources\Assets\Exercises\4\4.png" />
-    <None Remove="Resources\Assets\Exercises\4\5.png" />
-    <None Remove="Resources\Assets\Exercises\4\6.png" />
-    <None Remove="Resources\Assets\Exercises\4\7.png" />
-    <None Remove="Resources\Assets\Exercises\4\8.png" />
-    <None Remove="Resources\Assets\Exercises\4\9.png" />
-    <None Remove="Resources\Assets\Exercises\5\1.png" />
-    <None Remove="Resources\Assets\Exercises\5\2.png" />
-    <None Remove="Resources\Assets\Exercises\5\3.png" />
-    <None Remove="Resources\Assets\Exercises\5\4.png" />
-    <None Remove="Resources\Assets\Exercises\5\5.png" />
-    <None Remove="Resources\Assets\Exercises\5\6.png" />
-    <None Remove="Resources\Assets\Exercises\5\7.png" />
-    <None Remove="Resources\Assets\Exercises\5\8.png" />
-    <None Remove="Resources\Assets\Exercises\6\1.png" />
-    <None Remove="Resources\Assets\Exercises\6\2.png" />
-    <None Remove="Resources\Assets\Exercises\6\3.png" />
-    <None Remove="Resources\Assets\Exercises\6\4.png" />
-    <None Remove="Resources\Assets\Exercises\6\5.png" />
-    <None Remove="Resources\Assets\Exercises\6\6.png" />
-    <None Remove="Resources\Assets\Exercises\6\7.png" />
-    <None Remove="Resources\Assets\Exercises\6\8.png" />
-    <None Remove="Resources\Assets\Exercises\6\9.png" />
-    <None Remove="Resources\Assets\Exercises\7\1.png" />
-    <None Remove="Resources\Assets\Exercises\7\2.png" />
-    <None Remove="Resources\Assets\Exercises\7\3.png" />
-    <None Remove="Resources\Assets\Exercises\7\4.png" />
-    <None Remove="Resources\Assets\Exercises\7\5.png" />
-    <None Remove="Resources\Assets\Exercises\8\1.png" />
-    <None Remove="Resources\Assets\Exercises\8\2.png" />
-    <None Remove="Resources\Assets\Exercises\8\3.png" />
-    <None Remove="Resources\Assets\Exercises\8\4.png" />
-    <None Remove="Resources\Assets\Exercises\8\5.png" />
-    <None Remove="Resources\Assets\Exercises\8\6.png" />
-    <None Remove="Resources\Assets\Exercises\8\7.png" />
-    <None Remove="Resources\Assets\Exercises\8\8.png" />
+    <None Remove="Resources\Assets\Exercises\1\1.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\10.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\11.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\2.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\3.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\4.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\5.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\6.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\7.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\8.jpg" />
+    <None Remove="Resources\Assets\Exercises\1\9.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\1.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\10.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\2.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\3.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\4.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\5.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\6.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\7.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\8.jpg" />
+    <None Remove="Resources\Assets\Exercises\2\9.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\1.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\10.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\11.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\12.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\2.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\3.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\4.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\5.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\6.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\7.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\8.jpg" />
+    <None Remove="Resources\Assets\Exercises\3\9.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\1.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\10.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\11.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\12.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\2.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\3.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\4.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\5.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\6.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\7.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\8.jpg" />
+    <None Remove="Resources\Assets\Exercises\4\9.jpg" />
+    <None Remove="Resources\Assets\Exercises\5\1.jpg" />
+    <None Remove="Resources\Assets\Exercises\5\2.jpg" />
+    <None Remove="Resources\Assets\Exercises\5\3.jpg" />
+    <None Remove="Resources\Assets\Exercises\5\4.jpg" />
+    <None Remove="Resources\Assets\Exercises\5\5.jpg" />
+    <None Remove="Resources\Assets\Exercises\5\6.jpg" />
+    <None Remove="Resources\Assets\Exercises\5\7.jpg" />
+    <None Remove="Resources\Assets\Exercises\5\8.jpg" />
+    <None Remove="Resources\Assets\Exercises\6\1.jpg" />
+    <None Remove="Resources\Assets\Exercises\6\2.jpg" />
+    <None Remove="Resources\Assets\Exercises\6\3.jpg" />
+    <None Remove="Resources\Assets\Exercises\6\4.jpg" />
+    <None Remove="Resources\Assets\Exercises\6\5.jpg" />
+    <None Remove="Resources\Assets\Exercises\6\6.jpg" />
+    <None Remove="Resources\Assets\Exercises\6\7.jpg" />
+    <None Remove="Resources\Assets\Exercises\6\8.jpg" />
+    <None Remove="Resources\Assets\Exercises\6\9.jpg" />
+    <None Remove="Resources\Assets\Exercises\7\1.jpg" />
+    <None Remove="Resources\Assets\Exercises\7\2.jpg" />
+    <None Remove="Resources\Assets\Exercises\7\3.jpg" />
+    <None Remove="Resources\Assets\Exercises\7\4.jpg" />
+    <None Remove="Resources\Assets\Exercises\7\5.jpg" />
+    <None Remove="Resources\Assets\Exercises\8\1.jpg" />
+    <None Remove="Resources\Assets\Exercises\8\2.jpg" />
+    <None Remove="Resources\Assets\Exercises\8\3.jpg" />
+    <None Remove="Resources\Assets\Exercises\8\4.jpg" />
+    <None Remove="Resources\Assets\Exercises\8\5.jpg" />
+    <None Remove="Resources\Assets\Exercises\8\6.jpg" />
+    <None Remove="Resources\Assets\Exercises\8\7.jpg" />
+    <None Remove="Resources\Assets\Exercises\8\8.jpg" />
     <None Remove="Resources\Assets\gym_backgroud.jpg" />
     <None Remove="Resources\Assets\logo.png" />
     <None Remove="Resources\Assets\logo_black.png" />
     <None Remove="Resources\Assets\logo_dark.png" />
     <None Remove="Resources\Assets\logo_p.png" />
     <None Remove="Resources\Assets\logo_white.png" />
-    <None Remove="Resources\Assets\Metric\Chest.png" />
-    <None Remove="Resources\Assets\Metric\ForeArm.png" />
+    <None Remove="Resources\Assets\Metric\body.jpeg" />
+    <None Remove="Resources\Assets\Metric\body_front.jpeg" />
+    <None Remove="Resources\Assets\Metric\Chest.jpeg" />
+    <None Remove="Resources\Assets\Metric\ForeArm.jpeg" />
     <None Remove="Resources\Assets\Metric\Height.png" />
-    <None Remove="Resources\Assets\Metric\Leg.png" />
+    <None Remove="Resources\Assets\Metric\hips.jpeg" />
+    <None Remove="Resources\Assets\Metric\Leg.jpeg" />
     <None Remove="Resources\Assets\Metric\Legs.png" />
-    <None Remove="Resources\Assets\Metric\Neck.png" />
-    <None Remove="Resources\Assets\Metric\Shoulder.png" />
-    <None Remove="Resources\Assets\Metric\Thigh.png" />
-    <None Remove="Resources\Assets\Metric\Waist.png" />
+    <None Remove="Resources\Assets\Metric\Neck.jpeg" />
+    <None Remove="Resources\Assets\Metric\Shoulder.jpeg" />
+    <None Remove="Resources\Assets\Metric\Thigh.jpeg" />
     <None Remove="Resources\Assets\Metric\Weight.png" />
     <None Remove="Resources\Assets\p1.jpg" />
     <None Remove="Resources\Assets\p3.jpg" />
+    <None Remove="Resources\Assets\trioverse.png" />
     <None Remove="Resources\Fonts\Cairo\Cairo-Black.ttf" />
     <None Remove="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
     <None Remove="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
@@ -134,230 +137,199 @@
 
   <ItemGroup>
     <Content Include="logo.ico" />
-    <Content Include="Resources\Assets\Exercises\1\1.png">
+    <Content Include="Resources\Assets\Exercises\1\1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\10.png">
+    <Content Include="Resources\Assets\Exercises\1\10.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\11.png">
+    <Content Include="Resources\Assets\Exercises\1\11.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\2.png">
+    <Content Include="Resources\Assets\Exercises\1\2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\3.png">
+    <Content Include="Resources\Assets\Exercises\1\3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\4.png">
+    <Content Include="Resources\Assets\Exercises\1\4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\5.png">
+    <Content Include="Resources\Assets\Exercises\1\5.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\6.png">
+    <Content Include="Resources\Assets\Exercises\1\6.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\7.png">
+    <Content Include="Resources\Assets\Exercises\1\7.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\8.png">
+    <Content Include="Resources\Assets\Exercises\1\8.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\1\9.png">
+    <Content Include="Resources\Assets\Exercises\1\9.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\1.png">
+    <Content Include="Resources\Assets\Exercises\3\1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\10.png">
+    <Content Include="Resources\Assets\Exercises\3\10.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-   
-    <Content Include="Resources\Assets\Exercises\2\2.png">
+    <Content Include="Resources\Assets\Exercises\3\11.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\3.png">
+    <Content Include="Resources\Assets\Exercises\3\12.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\4.png">
+    <Content Include="Resources\Assets\Exercises\3\2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\5.png">
+    <Content Include="Resources\Assets\Exercises\3\3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\6.png">
+    <Content Include="Resources\Assets\Exercises\3\4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\7.png">
+    <Content Include="Resources\Assets\Exercises\3\5.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\8.png">
+    <Content Include="Resources\Assets\Exercises\3\6.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\2\9.png">
+    <Content Include="Resources\Assets\Exercises\3\7.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\1.png">
+    <Content Include="Resources\Assets\Exercises\3\8.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\10.png">
+    <Content Include="Resources\Assets\Exercises\3\9.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\11.png">
+    <Content Include="Resources\Assets\Exercises\4\1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\12.png">
+    <Content Include="Resources\Assets\Exercises\4\10.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\2.png">
+    <Content Include="Resources\Assets\Exercises\4\11.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\3.png">
+    <Content Include="Resources\Assets\Exercises\4\12.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\4.png">
+    <Content Include="Resources\Assets\Exercises\4\2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\5.png">
+    <Content Include="Resources\Assets\Exercises\4\3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\6.png">
+    <Content Include="Resources\Assets\Exercises\4\4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\7.png">
+    <Content Include="Resources\Assets\Exercises\4\5.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\8.png">
+    <Content Include="Resources\Assets\Exercises\4\6.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\3\9.png">
+    <Content Include="Resources\Assets\Exercises\4\7.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\1.png">
+    <Content Include="Resources\Assets\Exercises\4\8.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\10.png">
+    <Content Include="Resources\Assets\Exercises\4\9.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\11.png">
+    <Content Include="Resources\Assets\Exercises\5\1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\12.png">
+    <Content Include="Resources\Assets\Exercises\5\2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\2.png">
+    <Content Include="Resources\Assets\Exercises\5\3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\3.png">
+    <Content Include="Resources\Assets\Exercises\5\4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\4.png">
+    <Content Include="Resources\Assets\Exercises\5\5.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\5.png">
+    <Content Include="Resources\Assets\Exercises\5\6.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\6.png">
+    <Content Include="Resources\Assets\Exercises\5\7.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\7.png">
+    <Content Include="Resources\Assets\Exercises\5\8.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\8.png">
+    <Content Include="Resources\Assets\Exercises\6\1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\4\9.png">
+    <Content Include="Resources\Assets\Exercises\6\2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\5\1.png">
+    <Content Include="Resources\Assets\Exercises\6\3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\5\2.png">
+    <Content Include="Resources\Assets\Exercises\6\4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\5\3.png">
+    <Content Include="Resources\Assets\Exercises\6\5.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\5\4.png">
+    <Content Include="Resources\Assets\Exercises\6\6.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\5\5.png">
+    <Content Include="Resources\Assets\Exercises\6\7.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\5\6.png">
+    <Content Include="Resources\Assets\Exercises\6\8.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\5\7.png">
+    <Content Include="Resources\Assets\Exercises\6\9.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\5\8.png">
+    <Content Include="Resources\Assets\Exercises\7\1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\6\1.png">
+    <Content Include="Resources\Assets\Exercises\7\2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\6\2.png">
+    <Content Include="Resources\Assets\Exercises\7\3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\6\3.png">
+    <Content Include="Resources\Assets\Exercises\7\4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\6\4.png">
+    <Content Include="Resources\Assets\Exercises\7\5.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\6\5.png">
+    <Content Include="Resources\Assets\Exercises\8\1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\6\6.png">
+    <Content Include="Resources\Assets\Exercises\8\2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\6\7.png">
+    <Content Include="Resources\Assets\Exercises\8\3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\6\8.png">
+    <Content Include="Resources\Assets\Exercises\8\4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\6\9.png">
+    <Content Include="Resources\Assets\Exercises\8\5.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\7\1.png">
+    <Content Include="Resources\Assets\Exercises\8\6.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\7\2.png">
+    <Content Include="Resources\Assets\Exercises\8\7.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Assets\Exercises\7\3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\7\4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\7\5.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\8\1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\8\2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\8\3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\8\4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\8\5.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\8\6.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\8\7.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Exercises\8\8.png">
+    <Content Include="Resources\Assets\Exercises\8\8.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -392,15 +364,8 @@
     <Resource Include="Resources\Assets\logo_black.png" />
     <Resource Include="Resources\Assets\logo_dark.png" />
     <Resource Include="Resources\Assets\logo_white.png" />
-    <Resource Include="Resources\Assets\Metric\Chest.png" />
-    <Resource Include="Resources\Assets\Metric\ForeArm.png" />
-    <Resource Include="Resources\Assets\Metric\Height.png" />
-    <Resource Include="Resources\Assets\Metric\Leg.png" />
-    <Resource Include="Resources\Assets\Metric\Neck.png" />
-    <Resource Include="Resources\Assets\Metric\Shoulder.png" />
-    <Resource Include="Resources\Assets\Metric\Thigh.png" />
-    <Resource Include="Resources\Assets\Metric\Waist.png" />
-    <Resource Include="Resources\Assets\Metric\Weight.png" />
+    <Resource Include="Resources\Assets\Metric\body_front.jpeg" />
+    <Resource Include="Resources\Assets\trioverse.png" />
     <Resource Include="Resources\Fonts\Cairo\Cairo-Black.ttf" />
     <Resource Include="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
     <Resource Include="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
@@ -418,6 +383,72 @@
     <Resource Include="Resources\Icons\logo_dark.ico" />
     <Resource Include="Resources\Icons\logo_light.ico" />
     <Resource Include="Resources\Icons\logo_white.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Assets\Exercises\2\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\2\10.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\2\2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\2\3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\2\4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\2\5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\2\6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\2\7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\2\8.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Exercises\2\9.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Assets\Metric\body.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Chest.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\ForeArm.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Height.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\hips.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Leg.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Neck.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Shoulder.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Thigh.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Weight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

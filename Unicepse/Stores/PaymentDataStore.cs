@@ -8,24 +8,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Unicepse.API.Services;
+using Unicepse.Core.Common;
+using Unicepse.BackgroundServices;
 
 namespace Unicepse.Stores
 {
-    public class PaymentDataStore : IDataStore<PlayerPayment>
+    public class PaymentDataStore
     {
         public event Action<PlayerPayment>? Created;
         public event Action? Loaded;
         public event Action<PlayerPayment>? Updated;
         public event Action<int>? Deleted;
         public event Action? SumUpdated;
-        public PaymentDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService)
+        public PaymentDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, PaymentApiDataService paymentApiDataService)
         {
             _paymentDataService = paymentDataService;
             _payments = new List<PlayerPayment>();
             _dausesDataService = dausesDataService;
+            _paymentApiDataService = paymentApiDataService;
         }
 
         private readonly PaymentDataService _paymentDataService;
+        private readonly PaymentApiDataService _paymentApiDataService;
         private readonly DausesDataService _dausesDataService;
         private readonly List<PlayerPayment> _payments;
         public IEnumerable<PlayerPayment> Payments => _payments;
@@ -51,14 +56,41 @@ namespace Unicepse.Stores
 
         public async Task Add(PlayerPayment entity)
         {
+            entity.DataStatus = DataStatus.ToCreate;
             await _paymentDataService.Create(entity);
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _paymentApiDataService.Create(entity);
+                if (status)
+                {
+                    entity.DataStatus = DataStatus.Synced;
+                    await _paymentDataService.Update(entity);
+                }
+
+            }
             _payments.Add(entity);
             Created?.Invoke(entity);
             SumUpdated?.Invoke();
         }
 
 
-        public async Task Delete(int entity_id)
+        public async Task Delete(PlayerPayment entity)
+        {
+            if (entity.DataStatus == DataStatus.ToCreate)
+                await DeleteForce(entity.Id);
+            else
+            {
+                entity.DataStatus = DataStatus.ToDelete;
+                await _paymentDataService.Update(entity);
+            }
+            int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
+            _payments.RemoveAt(currentIndex);
+            Deleted?.Invoke(entity.Id);
+            SumUpdated?.Invoke();
+        }
+
+        public async Task DeleteForce(int entity_id)
         {
             bool deleted = await _paymentDataService.Delete(entity_id);
             int currentIndex = _payments.FindIndex(y => y.Id == entity_id);
@@ -102,7 +134,21 @@ namespace Unicepse.Stores
         }
         public async Task Update(PlayerPayment entity)
         {
+            if (entity.DataStatus != DataStatus.ToCreate)
+                entity.DataStatus = DataStatus.ToUpdate;
+
             await _paymentDataService.Update(entity);
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _paymentApiDataService.Update(entity);
+                if (status)
+                {
+                    entity.DataStatus = DataStatus.Synced;
+                    await _paymentDataService.Update(entity);
+                }
+
+            }
             int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
 
             if (currentIndex != -1)
@@ -115,6 +161,49 @@ namespace Unicepse.Stores
             }
             Updated?.Invoke(entity);
             SumUpdated?.Invoke();
+        }
+
+        public async Task SyncPaymentsToCreate()
+        {
+            IEnumerable<PlayerPayment> payments = await _paymentDataService.GetByDataStatus(DataStatus.ToCreate);
+            foreach (PlayerPayment payment in payments)
+            {
+                bool status = await _paymentApiDataService.Create(payment);
+                if (status)
+                {
+                    payment.DataStatus = DataStatus.Synced;
+                    await _paymentDataService.Update(payment);
+                }
+            }
+        }
+
+        public async Task SyncPaymentsToUpdate()
+        {
+            IEnumerable<PlayerPayment> payments = await _paymentDataService.GetByDataStatus(DataStatus.ToUpdate);
+            foreach (PlayerPayment payment in payments)
+            {
+                bool status = await _paymentApiDataService.Update(payment);
+                if (status)
+                {
+                    payment.DataStatus = DataStatus.Synced;
+                    await _paymentDataService.Update(payment);
+                }
+            }
+        }
+        public async Task SyncPaymentsToDelete()
+        {
+            IEnumerable<PlayerPayment> payments = await _paymentDataService.GetByDataStatus(DataStatus.ToDelete);
+            foreach (PlayerPayment payment in payments)
+            {
+                bool status = await _paymentApiDataService.Update(payment);
+                if (status)
+                {
+                    payment.DataStatus = DataStatus.Synced;
+                    await _paymentDataService.Update(payment);
+                }
+
+
+            }
         }
     }
 }

@@ -20,11 +20,11 @@ namespace Unicepse.ViewModels.SportsViewModels
     public class SportListItemViewModel : ViewModelBase
     {
         public Sport Sport;
-        private readonly SportDataStore _sportStore;
+        private readonly SportDataStore? _sportStore;
         private readonly EmployeeStore? _employeeStore;
         private readonly SportListViewModel? _sportListViewModel;
-        private readonly NavigationStore _navigationStore;
-        private SubscriptionDataStore _subscriptionDataStore;
+        private readonly NavigationStore? _navigationStore;
+        private SubscriptionDataStore? _subscriptionDataStore;
         public int Id => Sport.Id;
         public string? SportName => Sport.Name;
         public double Price => Sport.Price;

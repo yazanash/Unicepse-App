@@ -109,7 +109,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Neck.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Neck.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -129,7 +129,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Shoulder.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Shoulder.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -153,7 +153,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Chest.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Chest.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -173,7 +173,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Waist.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/hips.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -198,7 +198,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Waist.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/hips.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -222,7 +222,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ForeArm.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ForeArm.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -242,7 +242,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ForeArm.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ForeArm.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -266,7 +266,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Thigh.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Thigh.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -286,7 +286,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Thigh.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Thigh.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -310,7 +310,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Leg.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Leg.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
@@ -330,7 +330,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Leg.png" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Leg.jpeg" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>

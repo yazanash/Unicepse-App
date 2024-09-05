@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Unicepse.BackgroundServices;
 using Unicepse.Stores;
 using Unicepse.ViewModels._ِAppViewModels;
 
@@ -24,11 +25,19 @@ namespace Unicepse.Commands.LicenseCommand
         {
             try
             {
-                await _licenseDataStore.VerifyLicense(_licenseViewModel.LicenseKey!);
-                MessageBox.Show("Licenses getted successfully");
-                _licenseViewModel.OnLicenseAction();
+                bool internetAvailable = InternetAvailability.IsInternetAvailable();
+                if (internetAvailable)
+                {
+                    await _licenseDataStore.VerifyLicense(_licenseViewModel.LicenseKey!);
+                    MessageBox.Show("Licenses got successfully");
+                    _licenseViewModel.OnLicenseAction();
+                }
+                else
+                {
+                    MessageBox.Show("لا يوجد اتصال بالانترنت يرجى الاتصال والمحاولة لاحقا");
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error in license validation " + ex.Message);
             }

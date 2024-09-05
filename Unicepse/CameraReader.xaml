@@ -5,13 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Unicepse"
         mc:Ignorable="d"
-        Title="CameraReader" Height="450" Width="800">
-    <Border Padding="10">
-        <StackPanel >
-            <Image x:Name="camera_img" Width="200" Height="200"/>
-            <TextBlock Text="qr text ill show here" x:Name="txt_toview"/>
-            <Button Content="Start" Click="Button_Click"/>
-            <Button Content="stop" Click="Button_Click_1"/>
-        </StackPanel>
+        Title="CameraReader" Height="350" Width="350">
+    <Border Padding="10" Background="#fff">
+        <Grid>
+            <Border Margin="10"  Grid.Row="0" ClipToBounds="True" CornerRadius="20" BorderThickness="1" BorderBrush="#aaa">
+                <Border.Background>
+                    <VisualBrush Stretch="Fill">
+                        <VisualBrush.Visual>
+                            <Image Stretch="Fill" x:Name="camera_img" RenderTransformOrigin="0.5,0.5"  >
+                                <Image.RenderTransform>
+                                    <ScaleTransform ScaleX="-1" />
+                                </Image.RenderTransform>
+                            </Image>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.Background>
+               
+            </Border>
+            
+            <StackPanel Visibility="Hidden"  Margin="5" Orientation="Vertical" VerticalAlignment="Top"  Grid.Row="1" HorizontalAlignment="Stretch" >
+                <TextBox Visibility="Visible" Text="{Binding UID,UpdateSourceTrigger=PropertyChanged}" x:Name="txt_toview"/>
+                <Button Content="Start" HorizontalAlignment="Stretch" Click="Button_Click" Margin="5" Style="{StaticResource FormButton}"/>
+                <Button Content="Stop" HorizontalAlignment="Stretch" Click="Button_Click_1" Margin="5" Style="{StaticResource FormButton}"/>
+            </StackPanel>
+        </Grid>
+
     </Border>
 </Window>
