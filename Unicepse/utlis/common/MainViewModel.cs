@@ -33,7 +33,8 @@ namespace Unicepse.utlis.common
         private readonly GymStore _gymStore;
         private readonly BackgroundServiceStore _backgroundServiceStore;
         private readonly AuthenticationStore _authenticationStore;
-        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore)
+        private readonly LicenseDataStore _licenseDataStore;
+        public MainViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, LicenseDataStore licenseDataStore)
         {
             _navigatorStore = navigatorStore;
             _gymStore = gymStore;
@@ -50,17 +51,25 @@ namespace Unicepse.utlis.common
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
             _authenticationStore = authenticationStore;
+            _licenseDataStore = licenseDataStore;
 
             _backgroundServiceStore = backgroundServiceStore;
             _backgroundServiceStore.StateChanged += _backgroundServiceStore_StateChanged;
-            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore);
+            _backgroundServiceStore.SyncStatus += _backgroundServiceStore_SyncStatus;
+            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore, _licenseDataStore);
 
-            Navigator.CurrentViewModel = new HomeNavViewModel(new NavigationStore(), _playerStore, _playersAttendenceStore, _employeeStore,_subscriptionDataStore);
+            Navigator.CurrentViewModel = new HomeNavViewModel(new NavigationStore(), _playerStore, _playersAttendenceStore, _employeeStore, _subscriptionDataStore);
 
-            StatusBarViewModel = new StatusBarViewModel(_authenticationStore.CurrentAccount.UserName);
+            StatusBarViewModel = new StatusBarViewModel(_authenticationStore.CurrentAccount!.UserName);
 
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
+
+        private void _backgroundServiceStore_SyncStatus(bool obj)
+        {
+            StatusBarViewModel.SyncState = obj;
+        }
+
         private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore,SubscriptionDataStore subscriptionDataStore)
         {
             return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore,subscriptionDataStore);

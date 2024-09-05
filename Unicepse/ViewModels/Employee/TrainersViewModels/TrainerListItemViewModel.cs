@@ -26,7 +26,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         private readonly TrainersListViewModel? _trainersListViewModel;
         private readonly NavigationStore? _navigationStore;
         private readonly CreditsDataStore? _creditsDataStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly SubscriptionDataStore? _subscriptionDataStore;
         public int Id => Trainer.Id;
         public string? FullName => Trainer.FullName;
         public double SalaryValue => Trainer.SalaryValue;

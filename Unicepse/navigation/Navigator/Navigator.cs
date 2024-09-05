@@ -30,11 +30,12 @@ namespace Unicepse.navigation.Navigator
         private readonly DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly GymStore _gymStore;
+        private readonly LicenseDataStore _licenseDataStore;
 
         public Navigator(NavigationStore navigatorStore, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore,
             ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore,
-            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore)
+            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, LicenseDataStore licenseDataStore)
         {
             _navigatorStore = navigatorStore;
             _playersStore = playersStore;
@@ -50,6 +51,7 @@ namespace Unicepse.navigation.Navigator
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
             _gymStore = gymStore;
+            _licenseDataStore = licenseDataStore;
             //LogoutCommand = new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore)));
 
         }
@@ -70,7 +72,7 @@ namespace Unicepse.navigation.Navigator
             set { _isOpen = value; OnPropertChanged(nameof(IsOpen)); }
 
         }
-        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore);
+        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore, _licenseDataStore);
         //public ICommand LogoutCommand { get; }
 
     }

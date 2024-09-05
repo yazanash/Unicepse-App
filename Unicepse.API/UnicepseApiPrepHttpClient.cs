@@ -49,6 +49,12 @@ namespace Unicepse.API
             string jsonResponse = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(jsonResponse)!;
         }
+
+        public async Task<byte[]> GetByteArrayAsync(string uri)
+        {
+            byte[] logo = await _client.GetByteArrayAsync($"{uri}");
+            return logo;
+        }
         public async Task<bool> GetCodeAsync<T>(string uri)
         {
             _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);

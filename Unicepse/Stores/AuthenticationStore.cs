@@ -19,7 +19,7 @@ namespace Unicepse.Stores
             _accountStore = accountStore;
         }
 
-        public User CurrentAccount
+        public User? CurrentAccount
         {
             get
             {

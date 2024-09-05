@@ -17,6 +17,7 @@ namespace Unicepse.Core.Models.Player
         public bool IsTakenContainer { get; set; }
         public bool IsSubscribed { get; set; }
         public double Balance { get; set; }
+        public string? UID { get; set; }
         public DataStatus DataStatus { get; set; }
         public bool Conflicts(Player player)
         {

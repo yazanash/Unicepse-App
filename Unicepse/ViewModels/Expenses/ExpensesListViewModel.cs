@@ -64,7 +64,7 @@ namespace Unicepse.ViewModels.Expenses
         private void _expensesStore_Updated(Exp.Expenses obj)
         {
             ExpensesListItemViewModel? expensesViewModel =
-                    expensesListItemViewModels.FirstOrDefault(y => y.Expenses.Id == obj.Id);
+                    expensesListItemViewModels.FirstOrDefault(y => y.Expenses!.Id == obj.Id);
 
             if (expensesViewModel != null)
             {

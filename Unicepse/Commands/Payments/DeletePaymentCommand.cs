@@ -32,7 +32,7 @@ namespace Unicepse.Commands.Payments
             }
             _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
             _subscriptionDataStore.SelectedSubscription.PaidValue -= _paymentDataStore.SelectedPayment!.PaymentValue;
-            await _paymentDataStore.Delete(_paymentDataStore.SelectedPayment!.Id);
+            await _paymentDataStore.Delete(_paymentDataStore.SelectedPayment!);
             await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription!);
             MessageBox.Show("payment deleted successfully");
         }

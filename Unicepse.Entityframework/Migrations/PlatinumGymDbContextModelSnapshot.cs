@@ -509,6 +509,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<DateTime>("SubscribeEndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UID")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Weight")
                         .HasColumnType("float");
 

@@ -40,7 +40,6 @@
 
                 <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff"
-                             SelectedItem="{Binding SelectedExercises}"
                          VirtualizingPanel.ScrollUnit="Pixel"
                          
                               ItemsSource="{Binding ExercisesList}" ItemContainerStyle="{StaticResource ExercisesListBoxItemContainerStyle1}" >

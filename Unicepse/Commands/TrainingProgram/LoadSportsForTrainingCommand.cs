@@ -20,23 +20,22 @@ namespace Unicepse.Commands.TrainingProgram
             _addTrainingViewModel = addTrainingViewModel;
         }
 
-        public override async Task ExecuteAsync(object? parameter)
+        public override Task ExecuteAsync(object? parameter)
         {
             _addTrainingViewModel.ErrorMessage = null;
             _addTrainingViewModel.IsLoading = true;
 
-            try
-            {
-                //await _sportStore.Load();
-            }
-            catch (Exception)
-            {
-                _addTrainingViewModel.ErrorMessage = "Failed to load YouTube viewers. Please restart the application.";
-            }
-            finally
-            {
-                _addTrainingViewModel.IsLoading = false;
-            }
+           
+                throw new NotImplementedException();
+            //}
+            //catch (Exception)
+            //{
+            //    _addTrainingViewModel.ErrorMessage = "Failed to load YouTube viewers. Please restart the application.";
+            //}
+            //finally
+            //{
+            //    _addTrainingViewModel.IsLoading = false;
+            //}
         }
     }
 }

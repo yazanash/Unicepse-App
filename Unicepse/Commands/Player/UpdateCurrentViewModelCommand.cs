@@ -35,11 +35,12 @@ namespace Unicepse.Commands.Player
         private readonly DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly GymStore _gymStore;
+        private readonly LicenseDataStore _licenseDataStore;
 
         public UpdateCurrentViewModelCommand(INavigator navigator, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore,
             SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
-            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore)
+            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, LicenseDataStore licenseDataStore)
         {
             _navigator = navigator;
             _playersStore = playersStore;
@@ -55,6 +56,7 @@ namespace Unicepse.Commands.Player
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
             _gymStore = gymStore;
+            _licenseDataStore = licenseDataStore;
         }
 
         public override void Execute(object? parameter)
@@ -84,7 +86,7 @@ namespace Unicepse.Commands.Player
                         _navigator.CurrentViewModel = new AccountingViewModel(navigator, _expensesStore, _paymentDataStore, _gymStore);
                         break;
                     case ViewType.About:
-                        _navigator.CurrentViewModel = new AppInfoViewModel();
+                        _navigator.CurrentViewModel = new AppInfoViewModel(_licenseDataStore);
                         break;
                     default:
                         break;

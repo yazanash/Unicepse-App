@@ -101,18 +101,21 @@
     <None Remove="Resources\Assets\logo_dark.png" />
     <None Remove="Resources\Assets\logo_p.png" />
     <None Remove="Resources\Assets\logo_white.png" />
-    <None Remove="Resources\Assets\Metric\Chest.png" />
-    <None Remove="Resources\Assets\Metric\ForeArm.png" />
+    <None Remove="Resources\Assets\Metric\body.jpeg" />
+    <None Remove="Resources\Assets\Metric\body_front.jpeg" />
+    <None Remove="Resources\Assets\Metric\Chest.jpeg" />
+    <None Remove="Resources\Assets\Metric\ForeArm.jpeg" />
     <None Remove="Resources\Assets\Metric\Height.png" />
-    <None Remove="Resources\Assets\Metric\Leg.png" />
+    <None Remove="Resources\Assets\Metric\hips.jpeg" />
+    <None Remove="Resources\Assets\Metric\Leg.jpeg" />
     <None Remove="Resources\Assets\Metric\Legs.png" />
-    <None Remove="Resources\Assets\Metric\Neck.png" />
-    <None Remove="Resources\Assets\Metric\Shoulder.png" />
-    <None Remove="Resources\Assets\Metric\Thigh.png" />
-    <None Remove="Resources\Assets\Metric\Waist.png" />
+    <None Remove="Resources\Assets\Metric\Neck.jpeg" />
+    <None Remove="Resources\Assets\Metric\Shoulder.jpeg" />
+    <None Remove="Resources\Assets\Metric\Thigh.jpeg" />
     <None Remove="Resources\Assets\Metric\Weight.png" />
     <None Remove="Resources\Assets\p1.jpg" />
     <None Remove="Resources\Assets\p3.jpg" />
+    <None Remove="Resources\Assets\trioverse.png" />
     <None Remove="Resources\Fonts\Cairo\Cairo-Black.ttf" />
     <None Remove="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
     <None Remove="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
@@ -361,15 +364,8 @@
     <Resource Include="Resources\Assets\logo_black.png" />
     <Resource Include="Resources\Assets\logo_dark.png" />
     <Resource Include="Resources\Assets\logo_white.png" />
-    <Resource Include="Resources\Assets\Metric\Chest.png" />
-    <Resource Include="Resources\Assets\Metric\ForeArm.png" />
-    <Resource Include="Resources\Assets\Metric\Height.png" />
-    <Resource Include="Resources\Assets\Metric\Leg.png" />
-    <Resource Include="Resources\Assets\Metric\Neck.png" />
-    <Resource Include="Resources\Assets\Metric\Shoulder.png" />
-    <Resource Include="Resources\Assets\Metric\Thigh.png" />
-    <Resource Include="Resources\Assets\Metric\Waist.png" />
-    <Resource Include="Resources\Assets\Metric\Weight.png" />
+    <Resource Include="Resources\Assets\Metric\body_front.jpeg" />
+    <Resource Include="Resources\Assets\trioverse.png" />
     <Resource Include="Resources\Fonts\Cairo\Cairo-Black.ttf" />
     <Resource Include="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
     <Resource Include="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
@@ -420,6 +416,39 @@
     <Content Include="Resources\Assets\Exercises\2\9.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Assets\Metric\body.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Chest.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\ForeArm.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Height.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\hips.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Leg.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Neck.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Shoulder.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Thigh.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\Metric\Weight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

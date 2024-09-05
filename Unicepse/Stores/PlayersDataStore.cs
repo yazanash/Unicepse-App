@@ -27,6 +27,8 @@ namespace Unicepse.Stores
         public event Action<Player>? Player_update;
         public event Action<int>? Player_deleted;
 
+        public event Action<Profile>? profile_loaded;
+
 
         public event Action<Filter?>? FilterChanged;
         public event Action<PlayerListItemViewModel?>? PlayerChanged;
@@ -93,6 +95,45 @@ namespace Unicepse.Stores
             _players.Clear();
             _players.AddRange(players!);
             Players_loaded?.Invoke();
+        }
+        public async Task HandShakePlayer(Player player,string uid)
+        {
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _playerApiDataService.CreateHandShake(player,uid);
+                if (status)
+                {
+                    player.UID = uid;
+                    await _playerDataService.Update(player);
+                    int currentIndex = _players.FindIndex(y => y.Id == player.Id);
+
+                    if (currentIndex != -1)
+                    {
+                        _players[currentIndex] = player;
+                    }
+                    else
+                    {
+                        _players.Add(player);
+                    }
+                    Player_update?.Invoke(player);
+                }
+
+            }
+            _players.Add(player);
+            Player_created?.Invoke(player);
+        }
+        public async Task GetPlayerProfile(string uid)
+        {
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                Profile profile = await _playerApiDataService.GetProfile(uid);
+                if (profile!=null)
+                {
+                    profile_loaded?.Invoke(profile);
+                }
+            }
         }
         public async Task AddPlayer(Player player)
         {

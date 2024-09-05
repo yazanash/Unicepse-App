@@ -43,10 +43,12 @@ namespace Unicepse.BackgroundServices
                 if (internetAvailable)
                 {
                     _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                    _backgroundServiceStore.SyncState(true);
                     await _backgroundServiceStore.SyncPlayers();
                     await _backgroundServiceStore.SyncSubscribtions();
                     await _backgroundServiceStore.SyncPayments();
                     await _backgroundServiceStore.SyncMetrics();
+                    _backgroundServiceStore.SyncState(false);
                 }
                 else
                     _backgroundServiceStore.ChangeState($"غير متصل", internetAvailable);

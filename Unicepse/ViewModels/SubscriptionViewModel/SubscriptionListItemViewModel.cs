@@ -21,12 +21,12 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
     public class SubscriptionListItemViewModel : ViewModelBase
     {
         public Subscription Subscription;
-        private readonly NavigationStore _navigationStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
-        private readonly SportDataStore _sportDataStore;
-        private readonly PlayersDataStore _playersDataStore;
-        private readonly PaymentDataStore _paymentDataStore;
-        private readonly PlayerMainPageViewModel _playerMainPageViewModel;
+        private readonly NavigationStore? _navigationStore;
+        private readonly SubscriptionDataStore? _subscriptionDataStore;
+        private readonly SportDataStore? _sportDataStore;
+        private readonly PlayersDataStore? _playersDataStore;
+        private readonly PaymentDataStore? _paymentDataStore;
+        private readonly PlayerMainPageViewModel? _playerMainPageViewModel;
         //private readonly PlayerListViewModel playerListingViewModel;
         public int Id => Subscription.Id;
         private int _order;

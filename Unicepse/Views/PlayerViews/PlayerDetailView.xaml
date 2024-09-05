@@ -38,7 +38,19 @@
                     <DockPanel HorizontalAlignment="Left" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
                             <TextBlock Text="معلومات اللاعب" Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
-                        </DockPanel>
+                                <Button Grid.Column="1" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                                    <StackPanel  Orientation="Horizontal">
+                                        <TextBlock  FlowDirection="RightToLeft" Text="مسح QR Code" />
+                                        <Icon:PackIconMaterial Kind="QrcodeScan"
+                                       Margin="8 0 0 1"
+                                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                </Button>
+
+                            </DockPanel>
                         <Grid >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>

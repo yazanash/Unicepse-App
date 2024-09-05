@@ -193,7 +193,14 @@ namespace Unicepse.ViewModels.RoutineViewModels
 
 
 
-
+        public override void Dispose()
+        {
+            _routineDataStore.ExercisesLoaded -= _routineDataStore_ExercisesLoaded;
+            _routineDataStore.MuscleChanged -= _routineDataStore_MuscleChanged;
+            _routineDataStore.RoutineItemCreated -= _routineDataStore_RoutineItemCreated;
+            _routineDataStore.RoutineItemDeleted -= _routineDataStore_RoutineItemDeleted;
+            base.Dispose();
+        }
 
 
 

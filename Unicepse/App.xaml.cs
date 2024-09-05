@@ -102,9 +102,12 @@ namespace Unicepse
                    services.AddSingleton<PaymentApiDataService>();
                    services.AddSingleton<MetricApiDataService>();
                    services.AddSingleton<SubscriptionApiDataService>();
+                   services.AddSingleton<RoutineApiDataService>();
+                   services.AddSingleton<AttendanceApiDataService>();
 
                    services.AddSingleton<LicenseApiDataService>();
                    services.AddSingleton<LicenseDataService>();
+                   services.AddSingleton<GymProfileDataService>();
                    services.AddSingleton<LicenseDataStore>();
 
 
@@ -164,10 +167,8 @@ namespace Unicepse
         {
             if (_host.Services.GetRequiredService<LicenseDataStore>().CurrentLicense != null)
             {
-                AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
+               
                 Application.Current.MainWindow.Close();
-
-                auth.Show();
             }
             else
             {
@@ -180,8 +181,8 @@ namespace Unicepse
 
         protected async override void OnStartup(StartupEventArgs e)
         {
-            try
-            {
+            //try
+            //{
 
                 _host.Start();
                 PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
@@ -521,6 +522,8 @@ namespace Unicepse
                         platinumGymDbContext.SaveChanges();
                     }
                 }
+                //CameraReader cameraReader = new CameraReader();
+                //cameraReader.Show();
                 LicenseDataStore licenseDataStore = _host.Services.GetRequiredService<LicenseDataStore>();
                 licenseDataStore.ActiveLicense();
                 if (licenseDataStore.CurrentLicense != null)
@@ -557,15 +560,14 @@ namespace Unicepse
                 }
 
 
-                //CameraReader cameraReader = new CameraReader();
-                //cameraReader.Show();
+              
                 //MessageBox.Show(System.Environment.CurrentDirectory) ;
                 base.OnStartup(e);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
         }
 
         private IServiceProvider CreateServiceProvider()

@@ -28,55 +28,35 @@ namespace Unicepse.ViewModels.RoutineViewModels
         {
             _routineDataStore = routineDataStore;
             _dayGroupListItemViewModels = new ObservableCollection<DayGroupListItemViewModel>();
-            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(1, "اليوم الاول"));
-            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(2, "اليوم الثاني"));
-            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(3, "اليوم الثالث"));
-            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(4, "اليوم الرابع"));
-            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(5, "اليوم الخامس"));
-            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(6, "اليوم السادس"));
-            _dayGroupListItemViewModels.Add(new DayGroupListItemViewModel(7, "اليوم السابع"));
+            _routineDataStore.daysItemCreated += _routineDataStore_daysItemCreated;
+            _routineDataStore.daysItemDeleted += _routineDataStore_daysItemDeleted;
             _navigationService = navigationService;
             _playersDataStore = playersDataStore;
             foreach (var key in _routineDataStore.SelectedRoutine!.DaysGroupMap!)
             {
-
-                DayGroupListItemViewModel? dayGroupListItemViewModel = _dayGroupListItemViewModels.Where(x => x.SelectedDay == key.Key).FirstOrDefault();
-                foreach (var value in key.Value)
+                DayGroupListItemViewModel? dayGroupListItemViewModel = new(key.Key, _routineDataStore);
+                if (dayGroupListItemViewModel != null)
                 {
-                    int inval = value;
-                    switch (inval)
-                    {
-                        case (int)EMuscleGroup.Chest:
-                            dayGroupListItemViewModel!.Chest = true;
-                            break;
-                        case (int)EMuscleGroup.Shoulders:
-                            dayGroupListItemViewModel!.Shoulders = true;
-                            break;
-                        case (int)EMuscleGroup.Back:
-                            dayGroupListItemViewModel!.Back = true;
-                            break;
-                        case (int)EMuscleGroup.Legs:
-                            dayGroupListItemViewModel!.Legs = true;
-                            break;
-                        case (int)EMuscleGroup.Biceps:
-                            dayGroupListItemViewModel!.Biceps = true;
-                            break;
-                        case (int)EMuscleGroup.Triceps:
-                            dayGroupListItemViewModel!.Triceps = true;
-                            break;
-                        case (int)EMuscleGroup.Abs:
-                            dayGroupListItemViewModel!.Abs = true;
-                            break;
-                    }
+                    dayGroupListItemViewModel.Groups = key.Value;
+                    _routineDataStore.AddDaysItem(dayGroupListItemViewModel);
                 }
             }
             Number = _routineDataStore.SelectedRoutine.RoutineNo;
-            IsTemplate = _routineDataStore.SelectedRoutine.IsTemplate;
             Date = _routineDataStore.SelectedRoutine.RoutineData;
             SubmitCommand = new UpdateRoutineCommand(_routineDataStore, _playersDataStore, _navigationService, this);
             string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + Date.ToShortDateString() + "_Routine";
             PrintCommand = new PrintCommand(new PrintWindowViewModel(new EditRoutinePrintViewModel(_routineDataStore, _playersDataStore, this), new NavigationStore()), filename);
+            AddDaysCommand = new AddDaysCommand(_routineDataStore);
+        }
 
+        private void _routineDataStore_daysItemDeleted(DayGroupListItemViewModel obj)
+        {
+            _dayGroupListItemViewModels.Remove(obj);
+        }
+
+        private void _routineDataStore_daysItemCreated(DayGroupListItemViewModel obj)
+        {
+            _dayGroupListItemViewModels.Add(obj);
         }
 
         private DateTime _date = DateTime.Now;
@@ -111,7 +91,15 @@ namespace Unicepse.ViewModels.RoutineViewModels
 
             }
         }
+
+        public override void Dispose()
+        {
+            _routineDataStore.daysItemCreated -= _routineDataStore_daysItemCreated;
+            _routineDataStore.daysItemDeleted -= _routineDataStore_daysItemDeleted;
+            base.Dispose();
+        }
         public ICommand SubmitCommand { get; }
         public ICommand PrintCommand { get; }
+        public ICommand AddDaysCommand { get; }
     }
 }

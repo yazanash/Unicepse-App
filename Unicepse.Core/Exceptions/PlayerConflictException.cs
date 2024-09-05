@@ -11,8 +11,8 @@ namespace Unicepse.Core.Exceptions
 
     public class PlayerConflictException : Exception
     {
-        public Player ExistingPlayer { get; }
-        public Player IncomingPlayer { get; }
+        public Player? ExistingPlayer { get; }
+        public Player? IncomingPlayer { get; }
         public PlayerConflictException(Player existingPlayer, Player incomingPlayer)
         {
             ExistingPlayer = existingPlayer;

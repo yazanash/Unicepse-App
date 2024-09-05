@@ -19,18 +19,35 @@ namespace Unicepse.ViewModels.PrintViewModels
         {
             _routineDataStore = routineDataStore;
             _playersDataStore = playersDataStore;
+            _routineDataStore.daysItemCreated += _routineDataStore_daysItemCreated;
+            _routineDataStore.daysItemDeleted += _routineDataStore_daysItemDeleted;
             _selectRoutineDaysMuscleGroupViewModel = selectRoutineDaysMuscleGroupViewModel;
             _routineExercisesItemsViewModels = new ObservableCollection<RoutineExercisesItemsViewModel>();
+            _dayGroupListItemViewModels = new ObservableCollection<DayGroupListItemViewModel>();
             foreach (var routine in _routineDataStore.RoutineItems)
             {
                 RoutineExercisesItemsViewModel routineExercisesItemsViewModel = new(routine);
                 _routineExercisesItemsViewModels.Add(routineExercisesItemsViewModel);
             }
+            foreach (var day in selectRoutineDaysMuscleGroupViewModel.DayGroupList)
+            {
+                _dayGroupListItemViewModels.Add(day);
+            }
+        }
+        private void _routineDataStore_daysItemDeleted(DayGroupListItemViewModel obj)
+        {
+            _dayGroupListItemViewModels.Remove(obj);
+        }
 
+        private void _routineDataStore_daysItemCreated(DayGroupListItemViewModel obj)
+        {
+            _dayGroupListItemViewModels.Add(obj);
         }
 
         private readonly ObservableCollection<RoutineExercisesItemsViewModel> _routineExercisesItemsViewModels;
 
+        private readonly ObservableCollection<DayGroupListItemViewModel> _dayGroupListItemViewModels;
+        public IEnumerable<DayGroupListItemViewModel> DaysGroup => _dayGroupListItemViewModels;
         public IEnumerable<RoutineExercisesItemsViewModel> LegsExercisesList
             => _routineExercisesItemsViewModels.Where(x => x.GroupId == (int)EMuscleGroup.Legs).OrderBy(x => x.ItemOrder);
         public IEnumerable<RoutineExercisesItemsViewModel> ChestExercisesList
@@ -51,12 +68,11 @@ namespace Unicepse.ViewModels.PrintViewModels
         public string? Id => _selectRoutineDaysMuscleGroupViewModel.Number;
         public string? FullName => _playersDataStore.SelectedPlayer!.FullName;
 
-        public string day1 => _selectRoutineDaysMuscleGroupViewModel.DayGroupList.SingleOrDefault(x => x.SelectedDay == 1)!.GetGroups();
-        public string day2 => _selectRoutineDaysMuscleGroupViewModel.DayGroupList.SingleOrDefault(x => x.SelectedDay == 2)!.GetGroups();
-        public string day3 => _selectRoutineDaysMuscleGroupViewModel.DayGroupList.SingleOrDefault(x => x.SelectedDay == 3)!.GetGroups();
-        public string day4 => _selectRoutineDaysMuscleGroupViewModel.DayGroupList.SingleOrDefault(x => x.SelectedDay == 4)!.GetGroups();
-        public string day5 => _selectRoutineDaysMuscleGroupViewModel.DayGroupList.SingleOrDefault(x => x.SelectedDay == 5)!.GetGroups();
-        public string day6 => _selectRoutineDaysMuscleGroupViewModel.DayGroupList.SingleOrDefault(x => x.SelectedDay == 6)!.GetGroups();
-        public string day7 => _selectRoutineDaysMuscleGroupViewModel.DayGroupList.SingleOrDefault(x => x.SelectedDay == 7)!.GetGroups();
+        public override void Dispose()
+        {
+            _routineDataStore.daysItemCreated -= _routineDataStore_daysItemCreated;
+            _routineDataStore.daysItemDeleted -= _routineDataStore_daysItemDeleted;
+            base.Dispose();
+        }
     }
 }

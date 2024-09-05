@@ -7,7 +7,7 @@
               xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
           FlowDirection="RightToLeft"   mc:Ignorable="d" Background="#fff" >
     <UserControl.Resources>
-       
+        <BooleanToVisibilityConverter x:Key="boolToVis"/>
     </UserControl.Resources>
     <Border Padding="10 0" >
     <Grid >
@@ -31,9 +31,9 @@
                 <TextBlock Text="{Binding BackMessage,UpdateSourceTrigger=PropertyChanged}" FontSize="12" VerticalAlignment="Center" Margin="0 0 5 0"/>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="3">
+            <StackPanel Visibility="{Binding SyncState ,Converter={StaticResource boolToVis}}" Orientation="Horizontal" Margin="5 0" Grid.Column="3">
                 <TextBlock Text="جار المزامنة" FontSize="12" VerticalAlignment="Center" Margin="0 0 5 0"/>
-                <ProgressBar IsIndeterminate="True" Height="3" Width="100" Foreground="{StaticResource colors.primary}" Background="#fff"/>
+                <ProgressBar IsIndeterminate="{Binding SyncState}" Height="3" Width="100" Foreground="{StaticResource colors.primary}" Background="#fff"/>
             </StackPanel>
 
         </Grid>

@@ -65,7 +65,7 @@
                             </StackPanel>
 
                         </Button>
-                        <Button Grid.Column="1" Margin="5 0"   Command="{Binding OpenSearchListCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+                        <Button Grid.Column="1" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
                             <StackPanel  Orientation="Horizontal">
                                 <TextBlock  FlowDirection="RightToLeft" Text="مسح QR Code" />

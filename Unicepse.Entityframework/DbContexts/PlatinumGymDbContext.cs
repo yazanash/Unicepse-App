@@ -72,7 +72,7 @@ namespace Unicepse.Entityframework.DbContexts
          .Property(c => c.DaysGroupMap)
          .HasConversion(
              v => JsonConvert.SerializeObject(v),
-             v => JsonConvert.DeserializeObject<Dictionary<int, List<int>>>(v)!);
+             v => JsonConvert.DeserializeObject<Dictionary<int, string?>>(v)!);
 
             modelBuilder.Entity<Sport>()
               .HasMany(c => c.Trainers)

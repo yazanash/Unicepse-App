@@ -23,10 +23,15 @@ namespace Unicepse.Stores
         }
 
         public event Action<string?,bool>? StateChanged;
+        public event Action<bool>? SyncStatus;
 
         public void ChangeState(string message , bool connectionStatus)
         {
             StateChanged?.Invoke(message, connectionStatus);
+        }
+        public void SyncState(bool connectionStatus)
+        {
+            SyncStatus?.Invoke(connectionStatus);
         }
         public async Task SyncPlayers()
         {

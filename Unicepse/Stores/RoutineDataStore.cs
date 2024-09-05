@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.API.Services;
+using Unicepse.Core.Common;
+using Unicepse.BackgroundServices;
 
 namespace Unicepse.Stores
 {
@@ -18,26 +21,33 @@ namespace Unicepse.Stores
         public event Action<PlayerRoutine>? Updated;
         public event Action<int>? Deleted;
         private readonly PlayerRoutineDataService _playerRoutineDataService;
+        private readonly RoutineApiDataService _routineApiDataService;
+
         private readonly List<PlayerRoutine> _playerRoutines;
         private readonly List<PlayerRoutine> _tempRoutines;
         private readonly List<Exercises> _exercises;
 
         private readonly List<RoutineItems> _routineItems;
+        private readonly List<DayGroupListItemViewModel> _daysItems;
         public event Action<RoutineItems>? RoutineItemCreated;
         public event Action<RoutineItems>? RoutineItemDeleted;
-
+        public event Action<DayGroupListItemViewModel>? daysItemCreated;
+        public event Action<DayGroupListItemViewModel>? daysItemDeleted;
         public IEnumerable<PlayerRoutine> Routines => _playerRoutines;
         public IEnumerable<PlayerRoutine> TempRoutines => _tempRoutines;
         public IEnumerable<Exercises> Exercises => _exercises;
 
         public IEnumerable<RoutineItems> RoutineItems => _routineItems;
-        public RoutineDataStore(PlayerRoutineDataService playerRoutineDataService)
+        public IEnumerable<DayGroupListItemViewModel> DaysItems => _daysItems;
+        public RoutineDataStore(PlayerRoutineDataService playerRoutineDataService, RoutineApiDataService routineApiDataService)
         {
             _playerRoutineDataService = playerRoutineDataService;
             _playerRoutines = new List<PlayerRoutine>();
             _exercises = new List<Exercises>();
             _routineItems = new List<RoutineItems>();
+            _daysItems = new List<DayGroupListItemViewModel>();
             _tempRoutines = new List<PlayerRoutine>();
+            _routineApiDataService = routineApiDataService;
         }
         private MuscleGroup? _selectedMuscleGroup;
         public MuscleGroup? SelectedMuscle
@@ -72,7 +82,19 @@ namespace Unicepse.Stores
 
         public async Task Add(PlayerRoutine entity)
         {
+            entity.DataStatus = DataStatus.ToCreate;
             await _playerRoutineDataService.Create(entity);
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _routineApiDataService.Create(entity);
+                if (status)
+                {
+                    entity.DataStatus = DataStatus.Synced;
+                    await _playerRoutineDataService.Update(entity);
+                }
+
+            }
             _playerRoutines.Add(entity);
             Created?.Invoke(entity);
             _routineItems.Clear();
@@ -88,6 +110,18 @@ namespace Unicepse.Stores
             //await _playerRoutineDataService.Create(entity);
             _routineItems.Remove(entity);
             RoutineItemDeleted?.Invoke(entity);
+        }
+        public void AddDaysItem(DayGroupListItemViewModel entity)
+        {
+            //await _playerRoutineDataService.Create(entity);
+            _daysItems.Add(entity);
+            daysItemCreated?.Invoke(entity);
+        }
+        public void DeleteDaysItem(DayGroupListItemViewModel entity)
+        {
+            //await _playerRoutineDataService.Create(entity);
+            _daysItems.Remove(entity);
+            daysItemDeleted?.Invoke(entity);
         }
         public async Task Delete(int entity_id)
         {
@@ -139,8 +173,23 @@ namespace Unicepse.Stores
 
         public async Task Update(PlayerRoutine entity)
         {
-            //await _playerRoutineDataService.DeleteRoutineItems(entity.Id);
+            if (entity.DataStatus != DataStatus.ToCreate)
+                entity.DataStatus = DataStatus.ToUpdate;
             await _playerRoutineDataService.Update(entity);
+
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                bool status = await _routineApiDataService.Update(entity);
+                if (status)
+                {
+                    entity.DataStatus = DataStatus.Synced;
+                    await _playerRoutineDataService.Update(entity);
+                }
+
+            }
+
+
             int currentIndex = _playerRoutines.FindIndex(y => y.Id == entity.Id);
 
             if (currentIndex != -1)
@@ -153,6 +202,38 @@ namespace Unicepse.Stores
             }
             _routineItems.Clear();
             Updated?.Invoke(entity);
+        }
+
+        public async Task SyncRoutineToCreate()
+        {
+            IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetByDataStatus(DataStatus.ToCreate);
+            foreach (PlayerRoutine routine in routines)
+            {
+                bool status = await _routineApiDataService.Create(routine);
+                if (status)
+                {
+                    routine.DataStatus = DataStatus.Synced;
+                    await _playerRoutineDataService.Update(routine);
+                }
+
+
+            }
+        }
+
+        public async Task SyncRoutineToUpdate()
+        {
+            IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetByDataStatus(DataStatus.ToUpdate);
+            foreach (PlayerRoutine routine in routines)
+            {
+                bool status = await _routineApiDataService.Update(routine);
+                if (status)
+                {
+                    routine.DataStatus = DataStatus.Synced;
+                    await _playerRoutineDataService.Update(routine);
+                }
+
+
+            }
         }
     }
 }

@@ -23,9 +23,9 @@ namespace Unicepse.Commands.AuthCommands
         {
             return base.CanExecute(parameter);
         }
-        public override async Task ExecuteAsync(object? parameter)
+        public override Task ExecuteAsync(object? parameter)
         {
-
+            throw new NotImplementedException();
         }
 
 
