@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Models.Employee;
 
 namespace Unicepse.Stores
 {
@@ -14,17 +15,22 @@ namespace Unicepse.Stores
         public event Action? Loaded;
         public event Action<Sport>? Updated;
         public event Action<int>? Deleted;
-
+        public event Action<Employee?>? TrainerChanged;
         private readonly SportServices _sportDataService;
         private readonly List<Sport> _sports;
+        private readonly List<Employee> _trainers;
+
         private readonly Lazy<Task> _initializeLazy;
 
         public IEnumerable<Sport> Sports => _sports;
+
+        public IEnumerable<Employee> Trainers => _trainers;
 
         public SportDataStore(SportServices sportDataService)
         {
             _sportDataService = sportDataService;
             _sports = new List<Sport>();
+            _trainers = new List<Employee>();
             _initializeLazy = new Lazy<Task>(Initialize);
         }
         private Sport? _selectedSport;
@@ -37,10 +43,30 @@ namespace Unicepse.Stores
             set
             {
                 _selectedSport = value;
+                _trainers.Clear();
+                if (SelectedSport != null)
+                {
+                    _trainers.Add(new Employee() { Id = -1, FullName = "الكل"});
+                    _trainers.Add(new Employee() { Id = -2, FullName = "بدون مدرب" });
+                    _trainers.AddRange(SelectedSport.Trainers!);
+
+                }
                 StateChanged?.Invoke(SelectedSport);
             }
         }
-
+        private Employee? _selectedTrainer;
+        public Employee? SelectedTrainer
+        {
+            get
+            {
+                return _selectedTrainer;
+            }
+            set
+            {
+                _selectedTrainer = value;
+                TrainerChanged?.Invoke(SelectedTrainer);
+            }
+        }
         public event Action<Sport?>? StateChanged;
         public async Task Add(Sport entity)
         {

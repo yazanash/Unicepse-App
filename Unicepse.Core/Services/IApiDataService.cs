@@ -8,8 +8,8 @@ namespace Unicepse.Core.Services
 {
     public interface IApiDataService<T>
     {
-        Task<bool> Create(T entity);
-        Task<bool> Update(T entity);
+        Task<int> Create(T entity);
+        Task<int> Update(T entity);
         Task<T> Get(T entity);
     }
 }

@@ -11,18 +11,18 @@ namespace Unicepse.API.Models
     public class AttendanceDto
     {
 
-        public int aid { get; set; }
-        public int pid { get; set; }
-        public string sid { get; set; }
-        public int gym_id { get; set; }
+        public string? aid { get; set; }
+        public string? pid { get; set; }
+        public string? sid { get; set; }
+        public string? gym_id { get; set; }
         public string? logout_time { get; set; }
         public string? login_time { get; set; }
         public string? date { get; set; }
 
         internal void FromAttendance(DailyPlayerReport entity)
         {
-            aid = entity.Id;
-            pid = entity.Player!.Id;
+            aid = entity.Id.ToString();
+            pid = entity.Player!.Id.ToString();
             sid = "";
             login_time = entity.loginTime.ToString("m:H");
             logout_time = entity.logoutTime.ToString("m:H");
@@ -34,8 +34,8 @@ namespace Unicepse.API.Models
         {
             DailyPlayerReport attendance = new DailyPlayerReport()
             {
-                Id = aid,
-                Player = new Core.Models.Player.Player() { Id = pid },
+                Id = Convert.ToInt32(aid),
+                Player = new Core.Models.Player.Player() { Id = Convert.ToInt32( pid) },
                 loginTime = DateTime.ParseExact(login_time!, "m:H", CultureInfo.InvariantCulture),
                 logoutTime = DateTime.ParseExact(logout_time!, "m:H", CultureInfo.InvariantCulture),
                 //Subscription = new Core.Models.Subscription.Subscription() { Id = sid },

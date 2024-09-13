@@ -18,25 +18,25 @@ namespace Unicepse.API.Services
             _client = client;
         }
 
-        public async Task<bool> Create(PlayerRoutine entity)
+        public async Task<int> Create(PlayerRoutine entity)
         {
             RoutineDto routineDto = new RoutineDto();
             routineDto.FromRoutine(entity);
-            routineDto.gym_id = "18";
+            routineDto.gym_id = _client.id;
             return await _client.PostAsync("routines", routineDto);
         }
 
         public async Task<PlayerRoutine> Get(PlayerRoutine entity)
         {
-            RoutineDto routineDto = await _client.GetAsync<RoutineDto>($"routines/18/{entity.Player!.Id}/{entity.Id}");
+            RoutineDto routineDto = await _client.GetAsync<RoutineDto>($"routines/{_client.id}/{entity.Player!.Id}/{entity.Id}");
             return routineDto.ToRoutine();
         }
 
-        public async Task<bool> Update(PlayerRoutine entity)
+        public async Task<int> Update(PlayerRoutine entity)
         {
             RoutineDto routineDto = new RoutineDto();
             routineDto.FromRoutine(entity);
-            routineDto.gym_id = "18";
+            routineDto.gym_id = _client.id;
             return await _client.PutAsync("routines", routineDto);
         }
     }

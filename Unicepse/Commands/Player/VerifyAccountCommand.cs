@@ -23,10 +23,19 @@ namespace Unicepse.Commands.Player
 
         public async override Task ExecuteAsync(object? parameter)
         {
-            CameraReader cameraReader = new CameraReader();
-            cameraReader.DataContext = _viewModelBase;
-            cameraReader.ShowDialog();
-            await _playersDataStore.HandShakePlayer(_playersDataStore.SelectedPlayer!.Player!, _viewModelBase.UID!);
+            try
+            {
+                CameraReader cameraReader = new CameraReader();
+                cameraReader.DataContext = _viewModelBase;
+                cameraReader.ShowDialog();
+                if(!string.IsNullOrEmpty(_viewModelBase.UID))
+                    await _playersDataStore.HandShakePlayer(_playersDataStore.SelectedPlayer!.Player!, _viewModelBase.UID!);
+                _viewModelBase.UID = null;
+            }
+         catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
       
     }

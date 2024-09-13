@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Unicepse.utlis.common;
 using Unicepse.Core.Models.Employee;
+using System.Windows.Data;
 
 namespace Unicepse.ViewModels.PrintViewModels
 {
@@ -19,6 +20,7 @@ namespace Unicepse.ViewModels.PrintViewModels
         private readonly EmployeeStore _employeeStore;
         private readonly DausesDataStore _dausesDataStore;
         private readonly ObservableCollection<SubscriptionListItemViewModel> _subscriptionListItemViewModels;
+        public CollectionViewSource GroupedTasks { get; set; }
         public IEnumerable<SubscriptionListItemViewModel> Subscriptions => _subscriptionListItemViewModels;
         public EmployeeAccountantPageViewModel _employeeAccountantPageViewModel;
         public PrintedTrainerMounthlyReportViewModel? TrainerMounthlyReportViewModel { get; set; }
@@ -30,37 +32,23 @@ namespace Unicepse.ViewModels.PrintViewModels
             _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
             _employeeAccountantPageViewModel = employeeAccountantPageViewModel;
             _subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
+            GroupedTasks = new CollectionViewSource(); 
+            ReportDate = _employeeAccountantPageViewModel.ReportDate.ToShortDateString();
             FullName = _employeeStore.SelectedEmployee!.FullName;
-            foreach (var item in _dausesDataStore._payments.GroupBy(x => x.Subscription))
-            {
-                if (_subscriptionListItemViewModels.Where(x => x.Subscription.Id == item.Key!.Id).Count() > 0)
-                {
-                    SubscriptionListItemViewModel subscriptionListItemViewModel = new SubscriptionListItemViewModel(item.Key!);
-                    _subscriptionListItemViewModels.Add(subscriptionListItemViewModel);
-                }
-
-            }
-            LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, _employeeStore, _employeeAccountantPageViewModel);
         }
 
         private void _dausesDataStore_StateChanged(TrainerDueses? obj)
         {
             TrainerMounthlyReportViewModel = new(obj!);
-            OnPropertyChanged(nameof(TrainerMounthlyReportViewModel));
-            ReportDate = obj!.IssueDate.ToShortDateString();
             _subscriptionListItemViewModels.Clear();
-            foreach (var item in _dausesDataStore._payments.GroupBy(x => x.Subscription))
+            foreach (var item in _employeeAccountantPageViewModel.SubscriptionsList)
             {
-                if (_subscriptionListItemViewModels.Where(x => x.Subscription.Id == item.Key!.Id).Count() > 0)
-                {
-                    SubscriptionListItemViewModel subscriptionListItemViewModel = new SubscriptionListItemViewModel(item.Key!);
-                    _subscriptionListItemViewModels.Add(subscriptionListItemViewModel);
-                }
-
+                _subscriptionListItemViewModels.Add(item);
             }
+            GroupedTasks.Source = _subscriptionListItemViewModels;
+            GroupedTasks.GroupDescriptions.Add(new PropertyGroupDescription("SportName"));
         }
 
-        public ICommand LoadMounthlyReport { get; }
         private string? _fullName;
         public string? FullName
         {
@@ -73,11 +61,6 @@ namespace Unicepse.ViewModels.PrintViewModels
             get { return _reportDate; }
             set { _reportDate = value; OnPropertyChanged(nameof(ReportDate)); }
         }
-        public static TrainerDetiledReportViewModel LoadViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel employeeAccountantPageViewModel)
-        {
-            TrainerDetiledReportViewModel viewModel = new TrainerDetiledReportViewModel(employeeStore, dausesDataStore, employeeAccountantPageViewModel);
-            viewModel.LoadMounthlyReport.Execute(null);
-            return viewModel;
-        }
+        
     }
 }

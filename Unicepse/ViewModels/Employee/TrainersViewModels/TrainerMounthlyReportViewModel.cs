@@ -15,9 +15,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
 {
     public class TrainerMounthlyReportViewModel : ViewModelBase
     {
-        private readonly EmployeeStore _employeeStore;
-        private readonly DausesDataStore _dausesDataStore;
-        private readonly EmployeeAccountantPageViewModel? _employeeAccountantPageViewModel;
+       
         public TrainerDueses trainerDueses;
         public int Id => trainerDueses.Id;
         public double TotalSubscriptions => trainerDueses.TotalSubscriptions;
@@ -31,27 +29,17 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         public double CreditsCount => trainerDueses.CreditsCount;
         public double FinalAmount => TotalDause - trainerDueses.Credits;
         public double Salary => trainerDueses.Salary;
-        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses, EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel? employeeAccountantPageViewModel)
+        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses)
         {
             this.trainerDueses = trainerDueses;
-            _employeeStore = employeeStore;
-            _dausesDataStore = dausesDataStore;
-            _employeeAccountantPageViewModel = employeeAccountantPageViewModel;
 
-
-            //PrintCommand = new PrintCommand(new PrintWindowViewModel(CreateTrainerReport(_employeeStore, _dausesDataStore, employeeAccountantPageViewModel), new NavigationStore()));
         }
 
         internal void Update(TrainerDueses obj)
         {
             trainerDueses = obj;
         }
-        public ICommand? PrintCommand { get; }
 
-        private static TrainerDetiledReportViewModel CreateTrainerReport(EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel employeeAccountantPageViewModel)
-        {
-            return TrainerDetiledReportViewModel.LoadViewModel(employeeStore, dausesDataStore, employeeAccountantPageViewModel);
-            //return new TrainerDetiledReportViewModel(employeeStore, dausesDataStore, trainerMounthlyReportViewModel);
-        }
+
     }
 }

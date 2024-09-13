@@ -61,13 +61,17 @@ namespace Unicepse.utlis.common
             Navigator.CurrentViewModel = new HomeNavViewModel(new NavigationStore(), _playerStore, _playersAttendenceStore, _employeeStore, _subscriptionDataStore);
 
             StatusBarViewModel = new StatusBarViewModel(_authenticationStore.CurrentAccount!.UserName);
-
+            StatusBarViewModel.SyncState = _backgroundServiceStore.SyncStateProp;
+            StatusBarViewModel.SyncMessage = _backgroundServiceStore.SyncMessage;
+            StatusBarViewModel.BackMessage = _backgroundServiceStore.BackMessage;
+            StatusBarViewModel.Connection = _backgroundServiceStore.Connection ? Brushes.Green : Brushes.Red;
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
 
-        private void _backgroundServiceStore_SyncStatus(bool obj)
+        private void _backgroundServiceStore_SyncStatus(bool obj,string? message)
         {
             StatusBarViewModel.SyncState = obj;
+            StatusBarViewModel.SyncMessage = message;
         }
 
         private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore,SubscriptionDataStore subscriptionDataStore)

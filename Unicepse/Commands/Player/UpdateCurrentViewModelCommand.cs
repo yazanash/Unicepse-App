@@ -86,7 +86,7 @@ namespace Unicepse.Commands.Player
                         _navigator.CurrentViewModel = new AccountingViewModel(navigator, _expensesStore, _paymentDataStore, _gymStore);
                         break;
                     case ViewType.About:
-                        _navigator.CurrentViewModel = new AppInfoViewModel(_licenseDataStore);
+                        _navigator.CurrentViewModel = CreateAppInfo(_licenseDataStore);
                         break;
                     default:
                         break;
@@ -94,9 +94,9 @@ namespace Unicepse.Commands.Player
 
             }
         }
-        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore,SubscriptionDataStore _subscriptionDataStore)
+        private AppInfoViewModel CreateAppInfo(LicenseDataStore licenseDataStore)
         {
-            return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore, _subscriptionDataStore);
+            return AppInfoViewModel.LoadViewModel(licenseDataStore);
         }
 
     }

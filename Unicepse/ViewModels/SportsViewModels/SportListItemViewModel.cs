@@ -49,8 +49,14 @@ namespace Unicepse.ViewModels.SportsViewModels
 
             EditCommand = new NavaigateCommand<EditSportViewModel>(new NavigationService<EditSportViewModel>(_navigationStore, () => CreateEditSportViewModel(_navigationStore, _sportListViewModel, _sportStore, _employeeStore)));
             DeleteCommand = new DeleteSportCommand(_sportStore);
-            SubscriptionsCommand = new NavaigateCommand<SportSubscriptionsViewModel>(new NavigationService<SportSubscriptionsViewModel>(_navigationStore, () => SupscrtionSportViewModel(_sportStore,_subscriptionDataStore)));
+            SubscriptionsCommand = new NavaigateCommand<SportSubscriptionsViewModel>(new NavigationService<SportSubscriptionsViewModel>(_navigationStore, () => SupscrtionSportViewModel(_sportStore, _subscriptionDataStore)));
         }
+
+        public SportListItemViewModel(Sport sport)
+        {
+            Sport = sport;
+        }
+
         private SportSubscriptionsViewModel SupscrtionSportViewModel(SportDataStore sportStore, SubscriptionDataStore subscriptionDataStore)
         {
             return SportSubscriptionsViewModel.LoadViewModel(sportStore, subscriptionDataStore);

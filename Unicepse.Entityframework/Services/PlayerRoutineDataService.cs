@@ -121,7 +121,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Where(x => x.DataStatus == status).ToListAsync();
+                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.Player).Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).Where(x => x.DataStatus == status).ToListAsync();
                 return entities;
             }
         }

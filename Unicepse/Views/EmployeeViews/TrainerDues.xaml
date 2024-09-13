@@ -11,34 +11,52 @@
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks" 
              d:DesignWidth="800">
     <Border CornerRadius="10" Background="#EEE" Padding="5" >
-       
+
             <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Border Background="#fff" CornerRadius="10" Grid.Column="0"   Grid.Row="0"  Padding="10"  Margin="5">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="تاريخ التقرير " Foreground="{StaticResource colors.secondry}" Margin="0 0 20 0" FontSize="20" VerticalAlignment="Center" DockPanel.Dock="Top"/>
-                        <DatePicker Style="{DynamicResource DatePickerStyle1}"
+                </Grid.RowDefinitions>
+                <!--<Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>-->
+                <Border Background="#fff" CornerRadius="10" Grid.Column="0" Grid.ColumnSpan="2"  Grid.Row="0"  Padding="10"  Margin="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="تاريخ التقرير " Foreground="{StaticResource colors.secondry}" Margin="0 0 20 0" FontSize="20" VerticalAlignment="Center" DockPanel.Dock="Top"/>
+                            <DatePicker Style="{DynamicResource DatePickerStyle1}"
                                     SelectedDate="{Binding ReportDate, UpdateSourceTrigger=PropertyChanged}"
                                     
                                     CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />
 
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal"  >
-                       <Button Grid.Column="0" Margin="10 0"  Command="{Binding LoadMounthlyReport}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Stretch">
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"  >
+                            <Button Grid.Column="0" Margin="10 0"  Command="{Binding LoadMounthlyReport}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Stretch">
+
+                                <StackPanel Orientation="Horizontal">
+
+                                    <TextBlock Text="تحضير التقرير" />
+                                    <Icon:PackIconMaterial Kind="Refresh"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                            </Button>
+                        <Button Grid.Column="0" Margin="10 0"  Command="{Binding PrintCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Stretch">
 
                             <StackPanel Orientation="Horizontal">
 
-                                <TextBlock Text="تحضير التقرير" />
-                                <Icon:PackIconMaterial Kind="Refresh"
+                                <TextBlock Text="طباعة التقرير" />
+                                <Icon:PackIconMaterial Kind="Printer"
                                        Width="11"
                                        Height="11"
                                        Margin="8 0 0 1"
@@ -46,16 +64,110 @@
                             </StackPanel>
 
                         </Button>
-                        
+
                     </StackPanel>
-                </Grid>
+                    </Grid>
+                </Border>
+                <Border Background="#fff" CornerRadius="10" Grid.Column="0"   Grid.Row="1"  Padding="5"  Margin="5">
+                    <DockPanel>
+                        <cdr:EmployeeAccountantCard DockPanel.Dock="Top" DataContext="{Binding TrainerMounthlyReportViewModel,UpdateSourceTrigger=PropertyChanged}"/>
+                    </DockPanel>
+
             </Border>
-            <Border Background="#fff" CornerRadius="10" Grid.Column="1"   Grid.Row="1"  Padding="5"  Margin="5">
-                <DockPanel>
-                    <cdr:EmployeeAccountantCard DockPanel.Dock="Top" DataContext="{Binding TrainerMounthlyReportViewModel,UpdateSourceTrigger=PropertyChanged}"/>
-                   
-                </DockPanel>
-            </Border>
-        </Grid>
+
+                <!--#region DataList-->
+                <Border Background="#fff" CornerRadius="10" Grid.Column="1"   Grid.Row="2"  Padding="5"  Margin="5">
+                    <DockPanel DockPanel.Dock="Top" >
+                        <!--<TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
+                        <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>-->
+                        <Grid  Grid.Row="3" >
+
+                            <DataGrid  HorizontalAlignment="Stretch"
+                                    FlowDirection="RightToLeft" ItemsSource="{Binding  GroupedTasks.View,UpdateSourceTrigger=PropertyChanged}" 
+                                    CanUserReorderColumns="True" AutoGenerateColumns="False"
+                                    x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
+                                    CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                    ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" >
+                                <DataGrid.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.HeaderTemplate>
+                                            <DataTemplate>
+                                                <!--<Border CornerRadius="10" BorderBrush="#aaa" BorderThickness="0.5" HorizontalAlignment="Stretch">-->
+                                                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource colors.primary}" Margin="5" FontWeight="Bold" HorizontalAlignment="Left" FontSize="16"/>
+                                                <!--</Border>-->
+                                            </DataTemplate>
+                                        </GroupStyle.HeaderTemplate>
+                                    </GroupStyle>
+                                </DataGrid.GroupStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="#" IsReadOnly="True"
+                                    Width="auto"
+                                    Binding="{Binding Order}"
+                                    CanUserResize="False"/>
+
+                                <DataGridTemplateColumn Header="اسم اللاعب" Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <!--<Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
+                                                        </Border>-->
+                                                <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding PlayerName}" VerticalAlignment="Center"/>
+                                                <!--<TextBlock Margin="10 0 0 0" Text="{Binding SportName}"
+                                                                  Foreground="#888" FontSize="13" VerticalAlignment="Center"/>-->
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
+                                     Binding="{Binding RollDate}"
+                                    Width="auto"
+                                    />
+                                <DataGridTextColumn Header="السعر" IsReadOnly="True"
+                                     Binding="{Binding Price}"
+                                    Width="auto"
+                                    />
+                                <DataGridTextColumn Header="السعر بعد الحسم" IsReadOnly="True"
+                                     Binding="{Binding PriceAfterOffer}"
+                                    Width="auto"
+                                    />
+
+                                    <DataGridTemplateColumn Header="تدريب خاص" Width="auto" IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Vertical">
+                                                    <!--<TextBlock Text="{Binding IsPrivate}" FontSize="12"/>-->
+                                                    <TextBlock Text="{Binding PrivatePrice}" FontSize="12"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    
+                                    <DataGridTemplateColumn Header="الحالة" Width="100" IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border  Padding="5 3" Margin="0 0 0 0" BorderThickness="1" BorderBrush="{Binding IsPaidColor}" CornerRadius="10">
+                                                    <TextBlock HorizontalAlignment="Center" FontSize="12" Foreground="{Binding IsPaidColor}" Margin="0 0 0 0" Text="{Binding IsPaid}" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="المدفوع" IsReadOnly="True"
+                                     Binding="{Binding PaidValue}"
+                                    Width="*"
+                                    />
+                                    <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
+                                     Binding="{Binding EndDate}"
+                                    Width="auto"
+                                    />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                        </Grid>
+                    </DockPanel>
+                    <!--#endregion-->
+                </Border>
+
+            </Grid>
+
     </Border>
 </UserControl>

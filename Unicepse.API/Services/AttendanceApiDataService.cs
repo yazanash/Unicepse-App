@@ -17,25 +17,25 @@ namespace Unicepse.API.Services
         {
             _client = client;
         }
-        public async Task<bool> Create(DailyPlayerReport entity)
+        public async Task<int> Create(DailyPlayerReport entity)
         {
             AttendanceDto attendance = new AttendanceDto();
             attendance.FromAttendance(entity);
-            attendance.gym_id = 18;
+            attendance.gym_id = _client.id;
             return await _client.PostAsync("attendances", attendance);
         }
 
         public async Task<DailyPlayerReport> Get(DailyPlayerReport entity)
         {
-            AttendanceDto attendance = await _client.GetAsync<AttendanceDto>($"attendances/18/{entity.Player!.Id}/{entity.Id}");
+            AttendanceDto attendance = await _client.GetAsync<AttendanceDto>($"attendances/{_client.id}/{entity.Player!.Id}/{entity.Id}");
             return attendance.ToAttendance();
         }
 
-        public async Task<bool> Update(DailyPlayerReport entity)
+        public async Task<int> Update(DailyPlayerReport entity)
         {
             AttendanceDto attendance = new AttendanceDto();
             attendance.FromAttendance(entity);
-            attendance.gym_id = 18;
+            attendance.gym_id = _client.id;
             return await _client.PutAsync("attendances", attendance);
         }
     }

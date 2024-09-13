@@ -52,8 +52,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _metricApiDataService.Create(entity);
-                if (status)
+                int status = await _metricApiDataService.Create(entity);
+                if (status==201||status==409)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _metricDataService.Update(entity);
@@ -103,8 +103,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _metricApiDataService.Update(entity);
-                if (status)
+                int status = await _metricApiDataService.Update(entity);
+                if (status==200)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _metricDataService.Update(entity);
@@ -128,8 +128,8 @@ namespace Unicepse.Stores
             IEnumerable<Metric> metrics = await _metricDataService.GetByDataStatus(DataStatus.ToCreate);
             foreach (Metric metric in metrics)
             {
-                bool status = await _metricApiDataService.Create(metric);
-                if (status)
+                int status = await _metricApiDataService.Create(metric);
+                if (status==201||status==409)
                 {
                     metric.DataStatus = DataStatus.Synced;
                     await _metricDataService.Update(metric);
@@ -144,8 +144,8 @@ namespace Unicepse.Stores
             IEnumerable<Metric> metrics = await _metricDataService.GetByDataStatus(DataStatus.ToUpdate);
             foreach (Metric metric in metrics)
             {
-                bool status = await _metricApiDataService.Update(metric);
-                if (status)
+                int status = await _metricApiDataService.Update(metric);
+                if (status==200)
                 {
                     metric.DataStatus = DataStatus.Synced;
                     await _metricDataService.Update(metric);

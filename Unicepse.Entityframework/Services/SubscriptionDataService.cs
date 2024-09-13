@@ -40,9 +40,14 @@ namespace Unicepse.Entityframework.Services
                 Subscription existed_subscription = await CheckIfSubscriptionExist(entity);
                 if (existed_subscription != null)
                     throw new ConflictException();
+                context.Entry(entity.Sport!).State = EntityState.Detached;
+                if (context.Entry(entity.Sport!).State == EntityState.Detached)
+                    context.Entry(entity.Sport!).State = EntityState.Modified;
 
-                context.Attach<Sport>(entity.Sport!);
-                context.Attach<Player>(entity.Player!);
+                context.Entry(entity.Player!).State = EntityState.Detached;
+                if (context.Entry(entity.Player!).State == EntityState.Detached)
+                    context.Entry(entity.Player!).State = EntityState.Modified;
+
                 if (entity.Trainer != null)
                     context.Attach<Employee>(entity.Trainer!);
                 EntityEntry<Subscription> CreatedResult = await context.Set<Subscription>().AddAsync(entity);

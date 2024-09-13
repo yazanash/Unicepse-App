@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Unicepse.Views.EmployeeViews"
                 xmlns:converters="clr-namespace:Unicepse.utlis.Converters"
-                xmlns:ctrl="clr-namespace:Unicepse.Controls"
+                xmlns:ctrl="clr-namespace:Unicepse.utlis.Controls"
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:vms="clr-namespace:Unicepse.ViewModels.Employee.TrainersViewModels"
              xmlns:vs="clr-namespace:Unicepse.Views.TrainerViews"
@@ -110,7 +110,7 @@
 
                 <Border Background="#fff" CornerRadius="10" Grid.Column="1" Grid.RowSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
 
-                    <ctrl:InfoCard DockPanel.Dock="Top" DataContext="{Binding Employee,UpdateSourceTrigger=PropertyChanged}"/>
+                    <ctrl:InfoEmpCard DockPanel.Dock="Top" DataContext="{Binding Employee,UpdateSourceTrigger=PropertyChanged}"/>
                 </Border>
 
 

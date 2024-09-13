@@ -132,7 +132,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
                 Id = (int)EMuscleGroup.Chest
             }));
             SelectedMuscle = MuscleGroup.FirstOrDefault();
-                AddRoutineCommand = new NavaigateCommand<RoutineTemplatesViewModel>(new NavigationService<RoutineTemplatesViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, _navigationStore, this)));
+            AddRoutineCommand = new NavaigateCommand<RoutineTemplatesViewModel>(new NavigationService<RoutineTemplatesViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, _navigationStore, this)));
             
         }
 
@@ -159,10 +159,10 @@ namespace Unicepse.ViewModels.RoutineViewModels
         {
             return RoutineTemplatesViewModel.LoadViewModel(routineDataStore, playerStore, navigationStore, routinePlayerViewModels);
         }
-        private AddRoutineViewModel AddRoutineIViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore)
-        {
-            return AddRoutineViewModel.LoadViewModel(playerStore, routineDataStore, navigationService, navigationStore);
-        }
+        //private AddRoutineViewModel AddRoutineIViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore)
+        //{
+        //    return AddRoutineViewModel.LoadViewModel(playerStore, routineDataStore, navigationService, navigationStore);
+        //}
         private void _routineDataStore_StateChanged(PlayerRoutine? obj)
         {
             _selectedRoutineItemsViewModels.Clear();

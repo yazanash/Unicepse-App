@@ -13,6 +13,7 @@ using Unicepse.utlis.common;
 using Unicepse.Stores;
 using Unicepse.ViewModels;
 using Unicepse.navigation;
+using Unicepse.Commands.Player;
 
 namespace Unicepse.ViewModels.RoutineViewModels
 {
@@ -24,9 +25,11 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersDataStore _playersDataStore;
         private readonly NavigationService<RoutinePlayerViewModels> _navigationService;
-        public EditSelectRoutineDaysMuscleGroupViewModel(RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, PlayersDataStore playersDataStore)
+        private readonly NavigationStore _navigationStore;
+        public EditSelectRoutineDaysMuscleGroupViewModel(RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, PlayersDataStore playersDataStore, EditRoutineViewModel addRoutineViewModel, NavigationStore navigationStore)
         {
             _routineDataStore = routineDataStore;
+            _navigationStore = navigationStore;
             _dayGroupListItemViewModels = new ObservableCollection<DayGroupListItemViewModel>();
             _routineDataStore.daysItemCreated += _routineDataStore_daysItemCreated;
             _routineDataStore.daysItemDeleted += _routineDataStore_daysItemDeleted;
@@ -47,6 +50,8 @@ namespace Unicepse.ViewModels.RoutineViewModels
             string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + Date.ToShortDateString() + "_Routine";
             PrintCommand = new PrintCommand(new PrintWindowViewModel(new EditRoutinePrintViewModel(_routineDataStore, _playersDataStore, this), new NavigationStore()), filename);
             AddDaysCommand = new AddDaysCommand(_routineDataStore);
+            CancelCommand = new NavaigateCommand<EditRoutineViewModel>(new NavigationService<EditRoutineViewModel>(_navigationStore, () => addRoutineViewModel));
+
         }
 
         private void _routineDataStore_daysItemDeleted(DayGroupListItemViewModel obj)
@@ -101,5 +106,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         public ICommand SubmitCommand { get; }
         public ICommand PrintCommand { get; }
         public ICommand AddDaysCommand { get; }
+        public ICommand CancelCommand { get; }
+
     }
 }

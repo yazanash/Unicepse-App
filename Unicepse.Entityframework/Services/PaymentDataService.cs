@@ -106,6 +106,7 @@ namespace Unicepse.Entityframework.Services
             {
                 IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
                     .Include(x => x.Subscription).AsNoTracking()
+                    .Include(x => x.Subscription!.Player).AsNoTracking()
                     .Include(x => x.Subscription!.Sport).AsNoTracking()
                     .Include(x => x.Subscription!.Trainer).AsNoTracking()
                     .Where(x => x.Subscription!.Trainer!.Id == trainer.Id &&

@@ -10,6 +10,7 @@ using Unicepse.ViewModels.PlayersViewModels;
 using Unicepse.API.Services;
 using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
+using Unicepse.Core.Exceptions;
 
 namespace Unicepse.Stores
 {
@@ -38,6 +39,14 @@ namespace Unicepse.Stores
             _players = new List<Player>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _playerApiDataService = playerApiDataService;
+        }
+
+        internal async Task<Player?> GetPlayerByUID(string? uid)
+        {
+            Player? player = await _playerDataService.GetByUID(uid!);
+            if (player == null)
+                throw new NotExistException("هذا المستخدم لا يملك اي حساب مسجل");
+            return player;
         }
 
         private PlayerListItemViewModel? _selectedPlayer;
@@ -98,14 +107,18 @@ namespace Unicepse.Stores
         }
         public async Task HandShakePlayer(Player player,string uid)
         {
+            Player? handSakePlayer = await _playerDataService.GetByUID(uid);
+            if (handSakePlayer != null)
+                throw new ConflictException("هذا المستخدم لديه حساب اخر موثق بالفعل ");
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _playerApiDataService.CreateHandShake(player,uid);
-                if (status)
+                int status = await _playerApiDataService.CreateHandShake(player,uid);
+                if (status==201||status==409)
                 {
                     player.UID = uid;
                     await _playerDataService.Update(player);
+                    SelectedPlayer!.Player.UID = player.UID;
                     int currentIndex = _players.FindIndex(y => y.Id == player.Id);
 
                     if (currentIndex != -1)
@@ -118,13 +131,18 @@ namespace Unicepse.Stores
                     }
                     Player_update?.Invoke(player);
                 }
-
+                else
+                {
+                    throw new NotExistException("حساب هذه المستخدم غير متوفر لدينا يرجى التاكد من ان اللاعب قد قام بتحميل التطبيق الخاص بنا");
+                }
+                
             }
-            _players.Add(player);
-            Player_created?.Invoke(player);
         }
         public async Task GetPlayerProfile(string uid)
         {
+            Player? ExistedPlayer = await _playerDataService.GetByUID(uid);
+            if (ExistedPlayer != null)
+                throw new ConflictException("هذا المستخدم لديه حساب اخر موثق بالفعل ");
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
@@ -142,8 +160,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _playerApiDataService.Create(player);
-                if (status)
+                int status = await _playerApiDataService.Create(player);
+                if (status==201)
                 {
                     player.DataStatus = DataStatus.Synced;
                     await _playerDataService.Update(player);
@@ -162,8 +180,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _playerApiDataService.Update(player);
-                if (status)
+                int status = await _playerApiDataService.Update(player);
+                if (status==200)
                 {
                     player.DataStatus = DataStatus.Synced;
                     await _playerDataService.Update(player);
@@ -212,14 +230,12 @@ namespace Unicepse.Stores
             IEnumerable<Player> players = await _playerDataService.GetByDataStatus(DataStatus.ToCreate);
             foreach (Player player in players)
             {
-                bool status = await _playerApiDataService.Create(player);
-                if (status)
+                int status = await _playerApiDataService.Create(player);
+                if (status==201||status==409)
                 {
                     player.DataStatus = DataStatus.Synced;
                     await _playerDataService.Update(player);
                 }
-
-
             }
         }
 
@@ -228,8 +244,8 @@ namespace Unicepse.Stores
             IEnumerable<Player> players = await _playerDataService.GetByDataStatus(DataStatus.ToUpdate);
             foreach (Player player in players)
             {
-                bool status = await _playerApiDataService.Update(player);
-                if (status)
+                int status = await _playerApiDataService.Update(player);
+                if (status==200)
                 {
                     player.DataStatus = DataStatus.Synced;
                     await _playerDataService.Update(player);

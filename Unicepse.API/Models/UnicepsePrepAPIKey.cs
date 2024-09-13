@@ -9,14 +9,16 @@ namespace Unicepse.API.Models
     public class UnicepsePrepAPIKey
     {
         public string Key { get; set; }
+        public string GymId { get; set; }
 
         public UnicepsePrepAPIKey(string key)
         {
             Key = key;
         }
-        public void updateToken(string token)
+        public void updateToken(string token,string gymId)
         {
-            this.Key = token;
+            Key = token;
+            GymId = gymId;
         }
     }
 }

@@ -11,7 +11,8 @@ namespace Unicepse.Core.Models
         public string? GymId { get; set; }
         public string? Plan { get; set; }
         public DateTime SubscribeDate { get; set; }
-        public DateTime? SubscribeEndDate { get; set;}
+        public DateTime SubscribeEndDate { get; set;}
         public string? Token { get; set; }
+        public string? Price { get; set; }
     }
 }

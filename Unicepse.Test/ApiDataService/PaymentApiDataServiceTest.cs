@@ -63,9 +63,9 @@ namespace Unicepse.Test.ApiDataService
             Subscription subscription = subscriptionFactory!.FakeSubscriptionWithRandom(sport,trainer);
             PlayerPayment expected_payment= paymentFactory!.FakePayments(subscription);
             //Act
-            bool actual_payment = await paymentDataService!.Create(expected_payment);
+            int actual_payment = await paymentDataService!.Create(expected_payment);
             //Assert
-            Assert.IsTrue(actual_payment);
+            Assert.IsTrue(actual_payment==201);
             PlayerPayment created_payment = await paymentDataService!.Get(expected_payment);
             Assert.AreEqual(expected_payment.PaymentValue, created_payment.PaymentValue);
         }
@@ -80,13 +80,13 @@ namespace Unicepse.Test.ApiDataService
             Subscription subscription = subscriptionFactory!.FakeSubscriptionWithRandom(sport, trainer);
             PlayerPayment expected_payment = paymentFactory!.FakePayments(subscription);
             //Act
-            bool actual_player = await paymentDataService!.Create(expected_payment);
+            int actual_player = await paymentDataService!.Create(expected_payment);
             //Assert
-            Assert.IsTrue(actual_player);
+            Assert.IsTrue(actual_player==201);
             expected_payment.PaymentValue=180000;
-            bool updated_subscription = await paymentDataService!.Update(expected_payment);
+            int updated_subscription = await paymentDataService!.Update(expected_payment);
             //Assert
-            Assert.IsTrue(updated_subscription);
+            Assert.IsTrue(updated_subscription==200);
 
             PlayerPayment updated_payment_dto = await paymentDataService!.Get(expected_payment);
             Assert.AreEqual(expected_payment.PaymentValue, updated_payment_dto.PaymentValue);

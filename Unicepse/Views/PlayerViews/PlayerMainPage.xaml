@@ -185,13 +185,6 @@
                                                                 </StackPanel>
                                                             </Button>
 
-                                                            <Button HorizontalAlignment="Stretch" Command="{Binding MoveToNewTrainerCommand}" Style="{StaticResource GridEditBtn}">
-                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="AccountCog" Style="{StaticResource GridBtnIcon}"/>
-                                                                    <TextBlock Text="نقل الى مدرب " FontSize="12" Foreground="#787878"/>
-                                                                </StackPanel>
-                                                            </Button>
-
 
                                                             <Button  HorizontalAlignment="Stretch" Command="{Binding StopSubscriptionCommand}" Style="{StaticResource GridEditBtn}">
                                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">

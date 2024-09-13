@@ -33,6 +33,14 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
         private readonly PlayersAttendenceStore? _playersAttendenceStore;
         public int Id => Player.Id;
+
+        private int _order;
+        public int Order
+        {
+            get { return _order; }
+            set { _order = value; OnPropertyChanged(nameof(Order)); }
+        }
+
         public string? FullName => Player.FullName;
         public string? Phone => Player.Phone;
         public int BirthDate => Player.BirthDate;
@@ -46,6 +54,8 @@ namespace Unicepse.ViewModels.PlayersViewModels
         public int DayLeft => (int)Player.SubscribeEndDate.Subtract(DateTime.Now).TotalDays;
         public Brush IsSubscribed => Player.IsSubscribed ? Brushes.Green : Brushes.Red;
         public double Balance => Player.Balance;
+
+        public bool IsVerified => Player.UID!=null;
 
 
         public ICommand? EditCommand { get; }

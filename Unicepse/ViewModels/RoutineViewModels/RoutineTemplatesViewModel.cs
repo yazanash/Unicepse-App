@@ -53,32 +53,39 @@ namespace Unicepse.ViewModels.RoutineViewModels
             LoadAllRoutines = new LoadAllTempRoutineCommand(_routineDataStore, this, _playersDataStore);
             //SelectedRoutine = RoutineList.FirstOrDefault();
           
-            AddRoutineCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore)));
-            ChooseCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadChoosedAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore, true)));
-
+            AddRoutineCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore,this)));
+            ChooseCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadChoosedAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore, true, this)));
+            CancelCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => routinePlayerViewModels));
         }
         public ICommand ChooseCommand { get; }
-        private AddRoutineViewModel LoadChoosedAddRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, bool FromTemp)
+        public ICommand CancelCommand { get; }
+        private AddRoutineViewModel LoadChoosedAddRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, bool FromTemp, RoutineTemplatesViewModel routineTemplatesViewModel)
         {
-            return AddRoutineViewModel.LoadViewModel(playersDataStore, routineDataStore, navigationService, navigationStore, FromTemp);
+            return AddRoutineViewModel.LoadViewModel(playersDataStore, routineDataStore, navigationService, navigationStore, FromTemp, routineTemplatesViewModel);
         }
 
 
-        private AddRoutineViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore)
+        private AddRoutineViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, RoutineTemplatesViewModel routineTemplatesViewModel)
         {
-            return AddRoutineViewModel.LoadViewModel(playerStore, routineDataStore, navigationService, navigationStore);
+            return AddRoutineViewModel.LoadViewModel(playerStore, routineDataStore, navigationService, navigationStore,routineTemplatesViewModel);
         }
 
 
         private void _routineDataStore_Loaded()
         {
-            _routineItemViewModels.Clear();
-            foreach (var routine in _routineDataStore.TempRoutines.OrderByDescending(x => x.RoutineData))
+            if (!_routineDataStore.TempRoutines.Any())
+                AddRoutineCommand.Execute(null);
+            else
             {
-                AddRoutine(routine);
+                _routineItemViewModels.Clear();
+                foreach (var routine in _routineDataStore.TempRoutines.OrderByDescending(x => x.RoutineData))
+                {
+                    AddRoutine(routine);
 
+                }
+                SelectedRoutine = _routineItemViewModels.FirstOrDefault();
             }
-            SelectedRoutine = _routineItemViewModels.FirstOrDefault();
+            
         }
 
 
@@ -99,10 +106,6 @@ namespace Unicepse.ViewModels.RoutineViewModels
             RoutineTemplatesViewModel viewModel = new(routineDataStore, playersDataStore, navigationStore, routinePlayerViewModels);
 
             viewModel.LoadAllRoutines.Execute(null);
-
-            if (!routineDataStore.TempRoutines.Any())
-            viewModel.AddRoutineCommand.Execute(null);
-
             return viewModel;
         }
     }

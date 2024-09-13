@@ -24,5 +24,11 @@ namespace Unicepse.utlis.Pages
         {
             InitializeComponent();
         }
+
+        private void PlayerDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Clear the selection
+            PlayerDataGrid.SelectedItem = null;
+        }
     }
 }

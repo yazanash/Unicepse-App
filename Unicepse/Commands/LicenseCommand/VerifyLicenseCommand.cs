@@ -25,20 +25,24 @@ namespace Unicepse.Commands.LicenseCommand
         {
             try
             {
+                _licenseViewModel.IsLoading = true;
                 bool internetAvailable = InternetAvailability.IsInternetAvailable();
                 if (internetAvailable)
                 {
                     await _licenseDataStore.VerifyLicense(_licenseViewModel.LicenseKey!);
-                    MessageBox.Show("Licenses got successfully");
+                    _licenseViewModel.IsLoading = false;
+                    MessageBox.Show("تم تفعيل النسخة بنجاح");
                     _licenseViewModel.OnLicenseAction();
                 }
                 else
                 {
+                    _licenseViewModel.IsLoading = false;
                     MessageBox.Show("لا يوجد اتصال بالانترنت يرجى الاتصال والمحاولة لاحقا");
                 }
             }
             catch (Exception ex)
             {
+                _licenseViewModel.IsLoading = false;
                 MessageBox.Show("Error in license validation " + ex.Message);
             }
         }

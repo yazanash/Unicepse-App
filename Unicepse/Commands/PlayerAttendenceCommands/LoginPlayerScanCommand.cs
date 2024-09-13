@@ -30,23 +30,36 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
                 CameraReader cameraReader = new CameraReader();
                 cameraReader.DataContext = _viewModelBase;
                 cameraReader.ShowDialog();
-                string? uid = _viewModelBase.UID;
-                player.Player? player = _playersDataStore.Players.FirstOrDefault(x => x.UID == uid);
-                if (player != null)
+                if (!string.IsNullOrEmpty(_viewModelBase.UID))
                 {
-                    DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+                    string? uid = _viewModelBase.UID;
+                    player.Player? player = await _playersDataStore.GetPlayerByUID(uid);
+                    if (player != null)
                     {
-                        loginTime = DateTime.Now,
-                        logoutTime = DateTime.Now,
-                        Date = DateTime.Now,
-                        IsLogged = true,
-                        Player = player
 
-                    };
-                    await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
+                        DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+                        {
+                            loginTime = DateTime.Now,
+                            logoutTime = DateTime.Now,
+                            Date = DateTime.Now,
+                            IsLogged = true,
+                            Player = player
+
+                        };
+                        DailyPlayerReport? existed = await _playersAttendenceStore.GetLoggedPlayer(dailyPlayerReport);
+                        if (existed != null)
+                        {
+                            existed.logoutTime = DateTime.Now;
+                            existed.IsLogged = false;
+                            await _playersAttendenceStore.LogOutPlayer(existed);
+                        }
+                        else
+                            await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
+                    }
+                    _viewModelBase.UID = null;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
