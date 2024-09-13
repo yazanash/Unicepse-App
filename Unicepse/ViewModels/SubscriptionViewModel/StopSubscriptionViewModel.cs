@@ -29,7 +29,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             _playerDataStore = playerDataStore;
             _paymentDataStore = paymentDataStore;
             _playerMainPageView = playerMainPageView;
-
+            FromRef = true;
             Subscription = new SubscriptionCardViewModel(_subscriptionStore.SelectedSubscription!);
             CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
 
@@ -38,7 +38,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
 
         private void CountCoast()
         {
-            //SubscribeDays = Convert.ToInt32((SubscribeStopDate - Convert.ToDateTime(_subscriptionStore.SelectedSubscription!.RollDate)).TotalDays);
+            SubscribeDays = Convert.ToInt32((SubscribeStopDate - Convert.ToDateTime(_subscriptionStore.SelectedSubscription!.RollDate)).TotalDays);
             DuesCash = _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount * SubscribeDays;
             ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
         }
@@ -48,7 +48,14 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             DuesCash = _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount * SubscribeDays;
             ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
         }
-
+        private void CountCoastFromRef()
+        {
+            //SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
+            int Price = Convert.ToInt32( _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount);
+            SubscribeDays = Convert.ToInt32( ReturnCash / Price);
+            DuesCash = _subscriptionStore.SelectedSubscription!.PaidValue - ReturnCash;
+            SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
+        }
         #region Properties 
         private int _subscribeDays;
         public int SubscribeDays
@@ -58,7 +65,8 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             {
                 _subscribeDays = value;
                 OnPropertyChanged(nameof(SubscribeDays));
-                CountCoastFromDays();
+                if (FromDays)
+                    CountCoastFromDays();
             }
         }
         private DateTime _subscribeStopDate = DateTime.Now;
@@ -82,6 +90,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
                 }
                 else
                 {
+                    if(FromDate)
                     CountCoast();
                 }
                 OnPropertyChanged(nameof(SubscribeStopDate));
@@ -96,6 +105,8 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             {
                 _returnCash = value;
                 OnPropertyChanged(nameof(ReturnCash));
+                if (FromRef)
+                    CountCoastFromRef();
             }
         }
         private double _duesCash;
@@ -108,7 +119,36 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
                 OnPropertyChanged(nameof(DuesCash));
             }
         }
-
+        private bool _fromDays;
+        public bool FromDays
+        {
+            get { return _fromDays; }
+            set
+            {
+                _fromDays = value;
+                OnPropertyChanged(nameof(FromDays));
+            }
+        }
+        private bool _fromRef;
+        public bool FromRef
+        {
+            get { return _fromRef; }
+            set
+            {
+                _fromRef = value;
+                OnPropertyChanged(nameof(FromRef));
+            }
+        }
+        private bool _fromDate;
+        public bool FromDate
+        {
+            get { return _fromDate; }
+            set
+            {
+                _fromDate = value;
+                OnPropertyChanged(nameof(FromDate));
+            }
+        }
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
         #endregion

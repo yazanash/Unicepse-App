@@ -60,9 +60,9 @@ namespace Unicepse.Test.ApiDataService
             Employee trainer = new() { FullName = "yazan ash"};
             Subscription expected_subscription = subscriptionFactory!.FakeSubscriptionWithRandom(sport, trainer);
             //Act
-            bool actual_subscription = await subscriptionDataService!.Create(expected_subscription);
+            int actual_subscription = await subscriptionDataService!.Create(expected_subscription);
             //Assert
-            Assert.IsTrue(actual_subscription);
+            Assert.IsTrue(actual_subscription==201);
             Subscription created_subscription = await subscriptionDataService!.Get(expected_subscription);
             Assert.AreEqual(expected_subscription.Sport!.Name, created_subscription.Sport!.Name);
         }
@@ -76,13 +76,13 @@ namespace Unicepse.Test.ApiDataService
             Employee trainer = new() { FullName = "yazan ash" };
             Subscription expected_subscription = subscriptionFactory!.FakeSubscriptionWithRandom(sport, trainer);
             //Act
-            bool actual_player = await subscriptionDataService!.Create(expected_subscription);
+            int actual_player = await subscriptionDataService!.Create(expected_subscription);
             //Assert
-            Assert.IsTrue(actual_player);
+            Assert.IsTrue(actual_player==201);
             expected_subscription.Trainer!.FullName = "";
-            bool updated_subscription = await subscriptionDataService!.Update(expected_subscription);
+            int updated_subscription = await subscriptionDataService!.Update(expected_subscription);
             //Assert
-            Assert.IsTrue(updated_subscription);
+            Assert.IsTrue(updated_subscription==200);
 
             Subscription updated_subscription_dto = await subscriptionDataService!.Get(expected_subscription);
             Assert.AreEqual(expected_subscription.Trainer!.FullName, updated_subscription_dto.Trainer!.FullName);

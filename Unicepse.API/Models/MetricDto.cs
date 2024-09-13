@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ namespace Unicepse.API.Models
 {
     public class MetricDto
     {
-        public int id { get; set; }
-        public int pid { get; set; }
-        public int gym_id { get; set; }
+        public string? id { get; set; }
+        public string? pid { get; set; }
+        public string? gym_id { get; set; }
         public double height { get; set; }
         public double weight { get; set; }
         public double l_arm { get; set; }
@@ -33,8 +34,8 @@ namespace Unicepse.API.Models
         {
             Metric metric = new Metric()
             {
-                Id = id,
-                Player = new Core.Models.Player.Player() { Id = pid },
+                Id = Convert.ToInt32( id),
+                Player = new Core.Models.Player.Player() { Id = Convert.ToInt32( pid) },
                 Hieght = height,
                 Wieght = weight,
                 L_Arm = l_arm,
@@ -50,14 +51,14 @@ namespace Unicepse.API.Models
                 Waist = waist,
                 Chest = chest,
                 Hips = hips,
-                //CheckDate = Convert.ToDateTime(check_date),
-            };
+                CheckDate = DateTime.ParseExact(check_date!, "dd/MM/yyyy", CultureInfo.InvariantCulture)
+        };
             return metric;
         }
         internal void FromMetric(Metric entity)
         {
-            id = entity.Id;
-            pid = entity.Player!.Id;
+            id = entity.Id.ToString();
+            pid = entity.Player!.Id.ToString();
             height = entity.Hieght;
             weight = entity.Wieght;
             l_arm = entity.L_Arm;

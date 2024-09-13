@@ -19,8 +19,12 @@ namespace Unicepse.Stores
         public List<TrainerDueses> _dauses;
         public List<PlayerPayment> _payments;
         public IEnumerable<TrainerDueses> Dauses => _dauses;
+
+        public IEnumerable<PlayerPayment> Payments => _payments;
+
         public TrainerDueses? MonthlyTrainerDause { get; set; }
         public event Action<TrainerDueses?>? StateChanged;
+        public event Action<TrainerDueses?>? ReportLoaded;
         public event Action<TrainerDueses>? Created;
         public event Action? Loaded;
         public event Action<TrainerDueses>? Updated;
@@ -61,6 +65,31 @@ namespace Unicepse.Stores
                 MonthlyTrainerDause.Credits = 0;
             StateChanged?.Invoke(MonthlyTrainerDause);
         }
+        public async Task GetPrintedMonthlyReport(Employee trainer, DateTime date)
+        {
+            IEnumerable<PlayerPayment> payments = await _paymentDataService.GetTrainerPayments(trainer, date);
+            IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(trainer, date);
+            _payments.Clear();
+            _payments.AddRange(payments);
+            MonthlyTrainerDause = new TrainerDueses();
+            MonthlyTrainerDause.TotalSubscriptions = 0;
+            foreach (PlayerPayment pay in payments)
+            {
+                MonthlyTrainerDause.TotalSubscriptions += _dausesDataService.GetParcent(pay, date);
+            }
+            MonthlyTrainerDause.CountSubscription = payments.GroupBy(x => x.Subscription).Count();
+            MonthlyTrainerDause.Parcent = (double)trainer.ParcentValue / 100;
+            MonthlyTrainerDause.IssueDate = date;
+            MonthlyTrainerDause.Trainer = trainer;
+            MonthlyTrainerDause.Salary = trainer.SalaryValue;
+            MonthlyTrainerDause.CreditsCount = Credits.Count();
+            if (MonthlyTrainerDause.CreditsCount > 0)
+                MonthlyTrainerDause.Credits = Credits.Sum(x => x.CreditValue);
+            else
+                MonthlyTrainerDause.Credits = 0;
+            ReportLoaded?.Invoke(MonthlyTrainerDause);
+        }
+
 
         public async Task GetAll()
         {

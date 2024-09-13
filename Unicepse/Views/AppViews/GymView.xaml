@@ -110,12 +110,9 @@
 
                                 <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff"
-                            
+                                    ItemsSource="{Binding Licenses,UpdateSourceTrigger=PropertyChanged}"
                                     ItemContainerStyle="{StaticResource LicensesListBoxItemContainerStyle1}" >
-                                    <ListBoxItem/>
-                                    <ListBoxItem/>
-                                    <ListBoxItem/>
-                                    <ListBoxItem/>
+                                   
                                 </ListBox>
 
                             </Grid>

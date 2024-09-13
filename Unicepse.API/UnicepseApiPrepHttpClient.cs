@@ -14,7 +14,7 @@ namespace Unicepse.API
     {
         private readonly HttpClient _client;
         private readonly UnicepsePrepAPIKey _apiKey;
-
+        public string? id => _apiKey.GymId;
         public UnicepseApiPrepHttpClient(HttpClient client, UnicepsePrepAPIKey apiKey)
         {
             _client = client;
@@ -46,41 +46,50 @@ namespace Unicepse.API
             HttpResponseMessage response = await _client.GetAsync($"{uri}");
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 throw new Exception("هذه النسخة غير مفعلة");
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                throw new Exception("هذا المعرف غير متوفر لدينا");
             string jsonResponse = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(jsonResponse)!;
         }
 
-        public async Task<byte[]> GetByteArrayAsync(string uri)
+        public async Task<byte[]?> GetByteArrayAsync(string uri)
         {
-            byte[] logo = await _client.GetByteArrayAsync($"{uri}");
-            return logo;
+            try
+            {
+                byte[] logo = await _client.GetByteArrayAsync($"{uri}");
+                return logo;
+            }
+           catch
+            {
+                return null;
+            }
         }
-        public async Task<bool> GetCodeAsync<T>(string uri)
+        public async Task<int> GetCodeAsync<T>(string uri)
         {
             _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
             HttpResponseMessage response = await _client.GetAsync($"{uri}");
-            return response.StatusCode == HttpStatusCode.Accepted;
+            return ((int)response.StatusCode);
         }
-        public async Task<bool> PostAsync<T>(string uri, T entity)
+        public async Task<int> PostAsync<T>(string uri, T entity)
         {
             HttpContent content = new StringContent(JsonConvert.SerializeObject(entity));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await _client.PostAsync($"{uri}", content);
-            return response.StatusCode == HttpStatusCode.Created;
+            return ((int)response.StatusCode);
 
         }
-        public async Task<bool> PutAsync<T>(string uri, T entity)
+        public async Task<int> PutAsync<T>(string uri, T entity)
         {
             HttpContent content = new StringContent(JsonConvert.SerializeObject(entity));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await _client.PutAsync($"{uri}", content);
-            return response.StatusCode == HttpStatusCode.OK;
+            return ((int)response.StatusCode) ;
 
         }
-        public async Task<bool> DeleteAsync<T>(string uri)
+        public async Task<int> DeleteAsync<T>(string uri)
         {
             HttpResponseMessage response = await _client.DeleteAsync($"{uri}");
-            return response.StatusCode == HttpStatusCode.OK;
+            return ((int)response.StatusCode);
 
         }
     }

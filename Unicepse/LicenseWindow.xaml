@@ -12,6 +12,8 @@
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              FlowDirection="LeftToRight"
         mc:Ignorable="d"
+          xmlns:converters="clr-namespace:Unicepse.utlis.Converters"
+       PreviewKeyDown="UserControl_PreviewKeyDown"
         Background="Transparent"
         Title="LicenseWindow" Height="500" Width="650">
     <!--<Border CornerRadius="20" FlowDirection="RightToLeft">
@@ -71,7 +73,9 @@
         </Border>
 
     </Border>-->
-
+    <Window.Resources>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+    </Window.Resources>
     <Border  MouseDown="Border_MouseDown" Background="#fff" CornerRadius="10" BorderThickness="1" BorderBrush="#787878">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -155,7 +159,16 @@
                     <TextBlock  Text="Don't have license ? CONTACT OUR SALES TEAM NOW" HorizontalAlignment="Left" FontWeight="Bold" Style="{StaticResource normalText}" Margin="70 7" Foreground="#878787"/>
 
 
-                    <Button x:Name="login_btn" Content="Verify" Command="{Binding VerifyLicenseCommand}" Style="{StaticResource signinBtn}"/>
+                    <Button x:Name="verify_btn" Command="{Binding VerifyLicenseCommand}" Style="{StaticResource signinBtn}">
+                        <Grid>
+                            <custom:LoadingSpinner
+                IsLoading="{Binding IsLoading}"
+                Diameter="40" Thickness="2" Color="{StaticResource colors.background.white}" />
+                            <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+                                <TextBlock Text="Verify"/>
+                            </Grid>
+                        </Grid>
+                    </Button>
                 </StackPanel>
             </Border>
         </Grid>

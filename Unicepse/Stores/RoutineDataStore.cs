@@ -22,7 +22,7 @@ namespace Unicepse.Stores
         public event Action<int>? Deleted;
         private readonly PlayerRoutineDataService _playerRoutineDataService;
         private readonly RoutineApiDataService _routineApiDataService;
-
+        public event Action? Reorderd;
         private readonly List<PlayerRoutine> _playerRoutines;
         private readonly List<PlayerRoutine> _tempRoutines;
         private readonly List<Exercises> _exercises;
@@ -33,6 +33,9 @@ namespace Unicepse.Stores
         public event Action<RoutineItems>? RoutineItemDeleted;
         public event Action<DayGroupListItemViewModel>? daysItemCreated;
         public event Action<DayGroupListItemViewModel>? daysItemDeleted;
+
+        public event Action<List<Exercises>>? RoutineItemsCleared;
+
         public IEnumerable<PlayerRoutine> Routines => _playerRoutines;
         public IEnumerable<PlayerRoutine> TempRoutines => _tempRoutines;
         public IEnumerable<Exercises> Exercises => _exercises;
@@ -49,6 +52,17 @@ namespace Unicepse.Stores
             _tempRoutines = new List<PlayerRoutine>();
             _routineApiDataService = routineApiDataService;
         }
+
+        internal void ReloadDaysItems()
+        {
+            List<DayGroupListItemViewModel> daysListItemViewModels = _daysItems.ToList();
+            _daysItems.Clear();
+            foreach(var item in daysListItemViewModels)
+            {
+                AddDaysItem(item);
+            }
+        }
+
         private MuscleGroup? _selectedMuscleGroup;
         public MuscleGroup? SelectedMuscle
         {
@@ -87,8 +101,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _routineApiDataService.Create(entity);
-                if (status)
+                int status = await _routineApiDataService.Create(entity);
+                if (status==201||status==409)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _playerRoutineDataService.Update(entity);
@@ -101,10 +115,17 @@ namespace Unicepse.Stores
         }
         public void AddRoutineItem(RoutineItems entity)
         {
-            //await _playerRoutineDataService.Create(entity);
+            //int currentIndex = _playerRoutines.FindIndex(y => y.Id == entity.Id);
             _routineItems.Add(entity);
             RoutineItemCreated?.Invoke(entity);
+            Reorderd?.Invoke();
         }
+
+        public void Reorder()
+        {
+            Reorderd?.Invoke();
+        }
+
         public void DeleteRoutineItem(RoutineItems entity)
         {
             //await _playerRoutineDataService.Create(entity);
@@ -127,6 +148,7 @@ namespace Unicepse.Stores
         {
             bool deleted = await _playerRoutineDataService.Delete(entity_id);
             int currentIndex = _playerRoutines.FindIndex(y => y.Id == entity_id);
+            
             _playerRoutines.RemoveAt(currentIndex);
             Deleted?.Invoke(entity_id);
         }
@@ -180,8 +202,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _routineApiDataService.Update(entity);
-                if (status)
+                int status = await _routineApiDataService.Update(entity);
+                if (status ==200)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _playerRoutineDataService.Update(entity);
@@ -209,8 +231,8 @@ namespace Unicepse.Stores
             IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetByDataStatus(DataStatus.ToCreate);
             foreach (PlayerRoutine routine in routines)
             {
-                bool status = await _routineApiDataService.Create(routine);
-                if (status)
+                int status = await _routineApiDataService.Create(routine);
+                if (status==201||status==409)
                 {
                     routine.DataStatus = DataStatus.Synced;
                     await _playerRoutineDataService.Update(routine);
@@ -225,8 +247,8 @@ namespace Unicepse.Stores
             IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetByDataStatus(DataStatus.ToUpdate);
             foreach (PlayerRoutine routine in routines)
             {
-                bool status = await _routineApiDataService.Update(routine);
-                if (status)
+                int status = await _routineApiDataService.Update(routine);
+                if (status==200)
                 {
                     routine.DataStatus = DataStatus.Synced;
                     await _playerRoutineDataService.Update(routine);
@@ -234,6 +256,23 @@ namespace Unicepse.Stores
 
 
             }
+        }
+
+        internal void ClearRoutineItems()
+        {
+            List<Exercises> exercises = new List<Exercises>();
+            foreach(var item in _routineItems)
+            {
+                if(!exercises.Where(x=>x.Id == item.Exercises!.Id).Any())
+                exercises.Add(item.Exercises!);
+            }
+            _routineItems.Clear();
+            RoutineItemsCleared?.Invoke(exercises);
+        }
+
+        internal void ClearDaysItems()
+        {
+            _daysItems.Clear();
         }
     }
 }

@@ -61,8 +61,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _paymentApiDataService.Create(entity);
-                if (status)
+                int status = await _paymentApiDataService.Create(entity);
+                if (status == 201||status==409)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _paymentDataService.Update(entity);
@@ -141,8 +141,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _paymentApiDataService.Update(entity);
-                if (status)
+                int status = await _paymentApiDataService.Update(entity);
+                if (status==200)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _paymentDataService.Update(entity);
@@ -168,8 +168,8 @@ namespace Unicepse.Stores
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetByDataStatus(DataStatus.ToCreate);
             foreach (PlayerPayment payment in payments)
             {
-                bool status = await _paymentApiDataService.Create(payment);
-                if (status)
+                int status = await _paymentApiDataService.Create(payment);
+                if (status==201||status==409)
                 {
                     payment.DataStatus = DataStatus.Synced;
                     await _paymentDataService.Update(payment);
@@ -182,8 +182,8 @@ namespace Unicepse.Stores
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetByDataStatus(DataStatus.ToUpdate);
             foreach (PlayerPayment payment in payments)
             {
-                bool status = await _paymentApiDataService.Update(payment);
-                if (status)
+                int status = await _paymentApiDataService.Update(payment);
+                if (status==200)
                 {
                     payment.DataStatus = DataStatus.Synced;
                     await _paymentDataService.Update(payment);
@@ -195,11 +195,10 @@ namespace Unicepse.Stores
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetByDataStatus(DataStatus.ToDelete);
             foreach (PlayerPayment payment in payments)
             {
-                bool status = await _paymentApiDataService.Update(payment);
-                if (status)
+                int status = await _paymentApiDataService.Delete(payment);
+                if (status==200)
                 {
-                    payment.DataStatus = DataStatus.Synced;
-                    await _paymentDataService.Update(payment);
+                    await _paymentDataService.Delete(payment.Id);
                 }
 
 

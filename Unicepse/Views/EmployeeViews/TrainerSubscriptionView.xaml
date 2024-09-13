@@ -9,6 +9,8 @@
                 xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              FlowDirection="RightToLeft"
+               xmlns:cs="clr-namespace:Unicepse.Components"
+             
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -25,6 +27,77 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Border Grid.ColumnSpan="3" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="5" Background="#fff">
+
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="1" VerticalAlignment="Top">
+                    <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
+                </Border>
+
+                <ComboBox  SelectedItem="{Binding SelectedSport, UpdateSourceTrigger=PropertyChanged}" 
+                               VerticalAlignment="Center" ItemsSource="{Binding SportList}"
+                               ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" 
+                               Tag="حسب الرياضة" Grid.Row="1" Grid.Column="3" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding SportName}" FontSize="12"   />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <StackPanel  Margin="0 5" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="1" >
+
+                    <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5 0" Margin="5 0">
+                        <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
+                            <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanMale" Width="30" Height="30"/>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersMaleCount}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
+                        <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
+                            <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanFemale" Width="30" Height="30"/>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersFemaleCount}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
+                        <StackPanel Orientation="Horizontal" Margin="5 0"  Grid.Column="0">
+                            <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="AccountGroup" Width="30" Height="30"/>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersCount}"/>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+
+                <!--<Grid Grid.Column="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1" Grid.Row="1" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
+
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="FileExcel"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>-->
+
+
+
+            </Grid>
+
+        </Border>
 
 
         <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,8 @@ namespace Unicepse.API.Models
 {
     public class RoutineDto
     {
-        public int rid { get; set; }
-        public int pid { get; set; }
+        public string? rid { get; set; }
+        public string? pid { get; set; }
         public string? gym_id { get; set; }
         public string? routine_no { get; set; }
         public string? routine_date { get; set; }
@@ -26,11 +27,11 @@ namespace Unicepse.API.Models
         {
             PlayerRoutine routine = new PlayerRoutine()
             {
-                Id = rid,
-                Player = new Core.Models.Player.Player() { Id = pid },
+                Id = Convert.ToInt32( rid),
+                Player = new Core.Models.Player.Player() { Id = Convert.ToInt32(pid) },
                 RoutineNo = routine_no,
-                RoutineData = Convert.ToDateTime(routine_date),
-                DaysGroupMap = days_group_map!,
+                RoutineData = DateTime.ParseExact(routine_date!, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            DaysGroupMap = days_group_map!,
             };
             foreach (var item in routine_items)
             {
@@ -40,8 +41,8 @@ namespace Unicepse.API.Models
         }
         internal void FromRoutine(PlayerRoutine entity)
         {
-            rid = entity.Id;
-            pid = entity.Player!.Id;
+            rid = entity.Id.ToString();
+            pid = entity.Player!.Id.ToString();
             routine_no = entity.RoutineNo;
             routine_date = entity.RoutineData.ToString("dd/MM/yyyy");
             days_group_map = entity.DaysGroupMap;

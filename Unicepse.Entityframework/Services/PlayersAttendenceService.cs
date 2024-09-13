@@ -48,7 +48,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(x => x.DataStatus == status).ToListAsync();
+                IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Include(x => x.Player).Where(x => x.DataStatus == status).ToListAsync();
                 return entities;
             }
         }
@@ -75,8 +75,18 @@ namespace Unicepse.Entityframework.Services
         public async Task<DailyPlayerReport> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            DailyPlayerReport? entity = await context.Set<DailyPlayerReport>().FirstOrDefaultAsync((e) => e.Id == id);
+            DailyPlayerReport? entity = await context.Set<DailyPlayerReport>().Include(x => x.Player).FirstOrDefaultAsync((e) => e.Id == id);
             return entity!;
+        }
+        public async Task<DailyPlayerReport?> Get(DailyPlayerReport entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            DailyPlayerReport? Getentity = await context.Set<DailyPlayerReport>().Include(x => x.Player).FirstOrDefaultAsync(x => x.Player!.Id == entity.Player!.Id &&
+                                x.Date.Month == entity.Date.Month &&
+                                x.Date.Year == entity.Date.Year &&
+                                x.Date.Day == entity.Date.Day &&
+                                x.IsLogged);
+            return Getentity;
         }
 
         public async Task<IEnumerable<DailyPlayerReport>> GetLoggedPlayers()

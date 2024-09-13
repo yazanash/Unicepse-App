@@ -12,9 +12,10 @@ namespace Unicepse.Stores
     public class LicenseDataStore
     {
         public event Action<License>? Created;
-        //public event Action? Loaded;
+        public event Action? Loaded;
         //public event Action<License>? Updated;
         //public event Action<int>? Deleted;
+        private readonly Lazy<Task> _initializeLazy;
 
 
 
@@ -49,7 +50,9 @@ namespace Unicepse.Stores
 
         public event Action? StateChanged;
         public event Action? GymChanged;
+        private readonly List<License> _licenses;
 
+        public IEnumerable<License> Licenses => _licenses;
         private readonly LicenseApiDataService _licenseApiDataService;
         private readonly LicenseDataService _licenseDataService;
         private readonly GymProfileDataService _gymProfileDataService;
@@ -58,6 +61,21 @@ namespace Unicepse.Stores
             _licenseApiDataService = licenseApiDataService;
             _licenseDataService = licenseDataService;
             _gymProfileDataService = gymProfileDataService;
+            _licenses = new List<License>();
+            _initializeLazy = new Lazy<Task>(Initialize);
+        }
+
+
+        public async Task GetLicenses()
+        {
+            await _initializeLazy.Value;
+            Loaded?.Invoke();
+        }
+        private async Task Initialize()
+        {
+            IEnumerable<License> licenses = await _licenseDataService.GetAll();
+            _licenses.Clear();
+            _licenses.AddRange(licenses);
         }
         public async void ActiveLicense()
         {
@@ -88,18 +106,10 @@ namespace Unicepse.Stores
         }
         public async Task CheckLicenseValidation()
         {
-            bool verificaion = await _licenseApiDataService.VerifyLicense();
-            if (verificaion && _currentLicense != null)
+            int verificaion = await _licenseApiDataService.VerifyLicense();
+            if (verificaion==202&& _currentLicense != null)
                 await GetGymProfile(_currentLicense);
-            if (!verificaion)
-            {
-                if (CurrentLicense != null)
-                {
-                    await _licenseDataService.Delete(CurrentLicense.Id);
-
-                    CurrentLicense = null;
-                }
-            }
+            
         }
 
     }

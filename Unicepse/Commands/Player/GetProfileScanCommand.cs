@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Unicepse.Stores;
 using Unicepse.ViewModels.PlayersViewModels;
 
@@ -21,11 +22,22 @@ namespace Unicepse.Commands.Player
 
         public async override Task ExecuteAsync(object? parameter)
         {
-            CameraReader cameraReader = new CameraReader();
-            cameraReader.DataContext = _viewModelBase;
-            cameraReader.ShowDialog();
-            string? uid = _viewModelBase.UID;
-            await _playersDataStore.GetPlayerProfile(uid!);
+            try
+            {
+                CameraReader cameraReader = new CameraReader();
+                cameraReader.DataContext = _viewModelBase;
+                cameraReader.ShowDialog();
+                if (!string.IsNullOrEmpty(_viewModelBase.UID))
+                {
+                    string? uid = _viewModelBase.UID;
+                    await _playersDataStore.GetPlayerProfile(uid!);
+                }
+                _viewModelBase.UID = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

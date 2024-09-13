@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Unicepse.Views.Metrics"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:comp="clr-namespace:Unicepse.Components"
+              xmlns:compon="clr-namespace:Unicepse.utlis.Components"
              mc:Ignorable="d" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="bolToVs"/>
@@ -80,16 +81,17 @@
                         </DockPanel>
                     </Border>
                    
-                    <Border Grid.Row="1"  Visibility="{Binding IsSelected,Converter={StaticResource bolToVs}}" Grid.Column="0">
+                    <Border Grid.Row="1"   Grid.Column="0">
                          <comp:MetricCard DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" />
                     </Border>
                     <Border Grid.Row="1"   Grid.Column="1">
-                        <Image Stretch="Uniform" Source="pack://application:,,,/Resources/Assets/Metric/body_front.jpeg" 
+                        <Image Stretch="UniformToFill" Source="pack://application:,,,/Resources/Assets/Metric/body_front.jpg" 
                                     RenderOptions.BitmapScalingMode="HighQuality"
-                                                        RenderOptions.EdgeMode="Aliased"/>
+                               HorizontalAlignment="Center"
+                                                   RenderOptions.EdgeMode="Aliased"/>
                     </Border>
-                    <Border Grid.Row="1"  Visibility="{Binding IsSelected,Converter={StaticResource bolToVs}}" Grid.Column="2">
-                        <comp:MetricCard DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" />
+                    <Border Grid.Row="1"  Grid.Column="2">
+                        <compon:MetricCardArms DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" />
                     </Border>
                 </Grid>
 

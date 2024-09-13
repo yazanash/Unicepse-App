@@ -307,10 +307,13 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<string>("Plan")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Price")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("SubscribeDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("SubscribeEndDate")
+                    b.Property<DateTime>("SubscribeEndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Token")

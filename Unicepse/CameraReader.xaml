@@ -12,7 +12,7 @@
                 <Border.Background>
                     <VisualBrush Stretch="Fill">
                         <VisualBrush.Visual>
-                            <Image Stretch="Fill" x:Name="camera_img" RenderTransformOrigin="0.5,0.5"  >
+                            <Image Stretch="UniformToFill" x:Name="camera_img" RenderTransformOrigin="0.5,0.5"  >
                                 <Image.RenderTransform>
                                     <ScaleTransform ScaleX="-1" />
                                 </Image.RenderTransform>

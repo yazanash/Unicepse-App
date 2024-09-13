@@ -142,7 +142,7 @@
                                                     <StackPanel Orientation="Horizontal">
 
                                                         <Button Visibility="{Binding IsLogged,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}" Command="{Binding LogoutCommand}" Style="{StaticResource GridremoveBtn}">
-                                                            <Icon:PackIconMaterial Kind="Logout"  Style="{StaticResource GridBtnIcon}"/>
+                                                            <Icon:PackIconMaterial Kind="LogoutVariant"  Style="{StaticResource GridBtnIcon}"/>
                                                         </Button>
                                                     </StackPanel>
                                                 </DataTemplate>

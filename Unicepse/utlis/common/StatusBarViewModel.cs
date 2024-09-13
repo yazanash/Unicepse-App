@@ -34,5 +34,11 @@ namespace Unicepse.utlis.common
             get { return _syncState; }
             set { _syncState = value; OnPropertyChanged(nameof(SyncState)); }
         }
+        private string? _syncMessage;
+        public string? SyncMessage
+        {
+            get { return _syncMessage; }
+            set { _syncMessage = value; OnPropertyChanged(nameof(SyncMessage)); }
+        }
     }
 }

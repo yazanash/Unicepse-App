@@ -32,7 +32,7 @@
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
             <StackPanel Visibility="{Binding SyncState ,Converter={StaticResource boolToVis}}" Orientation="Horizontal" Margin="5 0" Grid.Column="3">
-                <TextBlock Text="جار المزامنة" FontSize="12" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                <TextBlock Text="{Binding SyncMessage, UpdateSourceTrigger=PropertyChanged}" FontSize="12" VerticalAlignment="Center" Margin="0 0 5 0"/>
                 <ProgressBar IsIndeterminate="{Binding SyncState}" Height="3" Width="100" Foreground="{StaticResource colors.primary}" Background="#fff"/>
             </StackPanel>
 

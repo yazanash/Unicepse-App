@@ -56,8 +56,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _playersAttendenceApiService.Create(entity);
-                if (status)
+                int status = await _playersAttendenceApiService.Create(entity);
+                if (status==201||status==409)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _playersAttendenceService.Update(entity);
@@ -78,8 +78,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _playersAttendenceApiService.Update(entity);
-                if (status)
+                int status = await _playersAttendenceApiService.Update(entity);
+                if (status==200)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _playersAttendenceService.Update(entity);
@@ -106,6 +106,10 @@ namespace Unicepse.Stores
             _playersAttendence.AddRange(LoggedPlayers);
             Loaded?.Invoke();
         }
+        public async Task<DailyPlayerReport?> GetLoggedPlayer(DailyPlayerReport entity)
+        {
+            return await _playersAttendenceService.Get(entity);
+        }
         public async Task GetPlayerLogging(int playerid)
         {
             IEnumerable<DailyPlayerReport> subscriptions = await _playersAttendenceService.GetPlayerLogging(playerid);
@@ -123,8 +127,8 @@ namespace Unicepse.Stores
             IEnumerable<DailyPlayerReport> attendances = await _playersAttendenceService.GetByDataStatus(DataStatus.ToCreate);
             foreach (DailyPlayerReport attendance in attendances)
             {
-                bool status = await _playersAttendenceApiService.Create(attendance);
-                if (status)
+                int status = await _playersAttendenceApiService.Create(attendance);
+                if (status==201||status==409)
                 {
                     attendance.DataStatus = DataStatus.Synced;
                     await _playersAttendenceService.Update(attendance);
@@ -139,8 +143,8 @@ namespace Unicepse.Stores
             IEnumerable<DailyPlayerReport> attendances = await _playersAttendenceService.GetByDataStatus(DataStatus.ToUpdate);
             foreach (DailyPlayerReport attendance in attendances)
             {
-                bool status = await _playersAttendenceApiService.Update(attendance);
-                if (status)
+                int status = await _playersAttendenceApiService.Update(attendance);
+                if (status==200)
                 {
                     attendance.DataStatus = DataStatus.Synced;
                     await _playersAttendenceService.Update(attendance);

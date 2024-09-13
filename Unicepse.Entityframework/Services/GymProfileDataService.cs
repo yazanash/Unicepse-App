@@ -75,6 +75,7 @@ namespace Unicepse.Entityframework.Services
             GymProfile? entityToUpdate = await GetByGymID(entity.GymId!);
             if (entityToUpdate == null)
                 throw new NotExistException();
+            entity.Id=entityToUpdate.Id;
             context.Set<GymProfile>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

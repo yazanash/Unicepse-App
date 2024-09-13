@@ -188,22 +188,22 @@
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                                     <TextBlock  Foreground="{StaticResource colors.primary}"  FontSize="16" FontWeight="Bold" Text="الخطة : "/>
-                                    <TextBlock  Foreground="{StaticResource colors.primary}"  FontSize="16" FontWeight="Bold" Text="شهرية"/>
+                                    <TextBlock  Foreground="{StaticResource colors.primary}"  FontSize="16" FontWeight="Bold" Text="{Binding Plan,UpdateSourceTrigger=PropertyChanged}"/>
 
                                 </StackPanel>
                              
                                 <TextBlock Grid.Row="1" Grid.Column="0" FontSize="14" FontWeight="Bold"  Text="تاريخ بداية الاشتراك :" Margin="5 0"/>
-                                <TextBlock Grid.Row="1" Grid.Column="1" FontSize="14" Text="30/08/2024"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" FontSize="14" Text="{Binding SubscribeDate,UpdateSourceTrigger=PropertyChanged}"/>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="تاريخ نهاية الاشتراك :" Margin="5 0"/>
-                                <TextBlock Grid.Row="2" Grid.Column="1" FontSize="14" Text="30/09/2024"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" FontSize="14" Text="{Binding SubscribeEndDate,UpdateSourceTrigger=PropertyChanged}"/>
 
                                 <TextBlock Grid.Row="3" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="السعر :" Margin="5 0" />
-                                <TextBlock Grid.Row="3" Grid.Column="1" FontSize="14" Text="300,000"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" FontSize="14" Text="{Binding Price,UpdateSourceTrigger=PropertyChanged}"/>
                             </Grid>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <Border BorderBrush="Green" BorderThickness="0.5" Padding="15 5" VerticalAlignment="Center" CornerRadius="10">
-                                    <TextBlock Text="Active" FontSize="14" Foreground="Green"/>
+                                <Border BorderBrush="{Binding IsActiveColor,UpdateSourceTrigger=PropertyChanged}" BorderThickness="0.5" Padding="15 5" VerticalAlignment="Center" CornerRadius="10">
+                                    <TextBlock Text="{Binding IsActiveText,UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="{Binding IsActiveColor,UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
                             </StackPanel>
                         </Grid>

@@ -21,7 +21,6 @@ namespace Unicepse.Commands.Player
         {
             _playerStore = playerStore;
             _playerListing = playerListing;
-            _playerStore = playerStore;
         }
 
         public override async Task ExecuteAsync(object? parameter)

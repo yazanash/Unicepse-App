@@ -62,7 +62,20 @@ namespace Unicepse
 
 
         }
+        private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
 
-       
+            if (e.Key == Key.Enter)
+            {
+
+                var command = ((Button)verify_btn).Command;
+                if (command != null && command.CanExecute(null))
+                {
+                    command.Execute(null);
+                }
+            }
+
+        }
+
     }
 }

@@ -54,6 +54,9 @@
     <Compile Update="utlis\Components\MetricCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="utlis\Components\MetricCardArms.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\MetricItem.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -294,6 +297,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\MetricCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\MetricCardArms.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\MetricItem.xaml">

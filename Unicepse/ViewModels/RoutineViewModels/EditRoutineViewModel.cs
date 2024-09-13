@@ -44,7 +44,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         public IEnumerable<ExercisesListItemViewModel> ExercisesList => _exercisesListItemViewModel;
         public IEnumerable<GroupMuscleListItemViewModel> MuscleGroup => _groupMuscleListItemViewModels;
         public IEnumerable<RoutineItemFillViewModel> RoutineItems => _routineExercisesItemsViewModels;
-        public EditRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore)
+        public EditRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, RoutinePlayerViewModels routinePlayerViewModels)
         {
             _playersDataStore = playersDataStore;
             _routineDataStore = routineDataStore;
@@ -118,7 +118,11 @@ namespace Unicepse.ViewModels.RoutineViewModels
                 Name = "الصدر",
                 Id = (int)EMuscleGroup.Chest
             }));
-            SubmitCommand = new NavaigateCommand<EditSelectRoutineDaysMuscleGroupViewModel>(new NavigationService<EditSelectRoutineDaysMuscleGroupViewModel>(_navigationStore, () => new EditSelectRoutineDaysMuscleGroupViewModel(_routineDataStore, _navigationService, _playersDataStore)));
+            _routineDataStore.Reorderd += _routineDataStore_Reorderd;
+            ReorderCommand = new ReorderCommand(_routineDataStore);
+            SubmitCommand = new NavaigateCommand<EditSelectRoutineDaysMuscleGroupViewModel>(new NavigationService<EditSelectRoutineDaysMuscleGroupViewModel>(_navigationStore, () => new EditSelectRoutineDaysMuscleGroupViewModel(_routineDataStore, _navigationService, _playersDataStore,this,_navigationStore)));
+            CancelCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => routinePlayerViewModels));
+
         }
 
         private void loadRoutineItems()
@@ -138,6 +142,14 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private void _routineDataStore_RoutineItemCreated(RoutineItems obj)
         {
             AddRoutineItem(obj);
+        }
+        private void _routineDataStore_Reorderd()
+        {
+            _routineExercisesItemsViewModels.Clear();
+            foreach (var routineItem in _routineDataStore.RoutineItems.Where(x => x.Exercises!.GroupId == SelectedMuscle!.MuscleGroup.Id).OrderBy(x => x.ItemOrder))
+            {
+                AddRoutineItem(routineItem);
+            }
         }
 
         private void AddRoutineItem(RoutineItems obj)
@@ -206,9 +218,9 @@ namespace Unicepse.ViewModels.RoutineViewModels
 
 
 
-        public static EditRoutineViewModel LoadViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore)
+        public static EditRoutineViewModel LoadViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore,RoutinePlayerViewModels routinePlayerViewModels)
         {
-            EditRoutineViewModel viewModel = new(playersDataStore, routineDataStore, navigationService, navigationStore);
+            EditRoutineViewModel viewModel = new(playersDataStore, routineDataStore, navigationService, navigationStore, routinePlayerViewModels);
 
             viewModel.LoadExercisesItems.Execute(null);
 
@@ -216,6 +228,9 @@ namespace Unicepse.ViewModels.RoutineViewModels
         }
         public ICommand LoadExercisesItems { get; }
         public ICommand SubmitCommand { get; }
+
+        public ICommand ReorderCommand { get; }
+        public ICommand CancelCommand { get; }
 
     }
 

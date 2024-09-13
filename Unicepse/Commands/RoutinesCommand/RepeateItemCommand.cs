@@ -22,9 +22,10 @@ namespace Unicepse.Commands.RoutinesCommand
 
         public override void Execute(object? parameter)
         {
+            //int currentIndex = _routineDataStore.RoutineItems.FindIndex(y => y.Id == entity_id);
             RoutineItems routineItems = new RoutineItems();
             routineItems.Exercises = _routineItems.Exercises;
-            routineItems.ItemOrder = _routineDataStore.RoutineItems.Where(x => x.Exercises!.GroupId == _routineDataStore.SelectedMuscle!.Id).Count() + 1;
+            routineItems.ItemOrder = _routineItems.ItemOrder;
             _routineDataStore.AddRoutineItem(routineItems);
         }
     }

@@ -55,9 +55,9 @@ namespace Unicepse.Test.ApiDataService
             //Arrange
             Player expected_player = playerFactory!.FakePlayerWithId();
             //Act
-            bool actual_player = await playerDataService!.Create(expected_player);
+            int actual_player = await playerDataService!.Create(expected_player);
             //Assert
-            Assert.IsTrue(actual_player);
+            Assert.IsTrue(actual_player==201);
             Player created_player = await playerDataService!.Get(expected_player);
             Assert.AreEqual(expected_player.FullName, created_player.FullName);
         }
@@ -68,13 +68,13 @@ namespace Unicepse.Test.ApiDataService
             //Arrange
             Player expected_player = playerFactory!.FakePlayerWithId();
             //Act
-            bool actual_player = await playerDataService!.Create(expected_player);
+            int actual_player = await playerDataService!.Create(expected_player);
             //Assert
-            Assert.IsTrue(actual_player);
+            Assert.IsTrue(actual_player==201);
             expected_player.FullName = "yazan ash";
-            bool updated_player = await playerDataService!.Update(expected_player);
+            int updated_player = await playerDataService!.Update(expected_player);
             //Assert
-            Assert.IsTrue(updated_player);
+            Assert.IsTrue(updated_player==201);
 
             Player updated_player_dto = await playerDataService!.Get(expected_player);
             Assert.AreEqual(expected_player.FullName, updated_player_dto.FullName);

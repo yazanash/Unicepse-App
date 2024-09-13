@@ -94,8 +94,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _subscriptionApiDataService.Create(entity);
-                if (status)
+                int status = await _subscriptionApiDataService.Create(entity);
+                if (status == 201||status==409)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _subscriptionDataService.Update(entity);
@@ -186,8 +186,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _subscriptionApiDataService.Update(entity);
-                if (status)
+                int status = await _subscriptionApiDataService.Update(entity);
+                if (status == 200)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _subscriptionDataService.Update(entity);
@@ -220,8 +220,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _subscriptionApiDataService.Update(entity);
-                if (status)
+                int status = await _subscriptionApiDataService.Update(entity);
+                if (status==200)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _subscriptionDataService.Update(entity);
@@ -253,8 +253,8 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                bool status = await _subscriptionApiDataService.Update(entity);
-                if (status)
+                int status = await _subscriptionApiDataService.Update(entity);
+                if (status == 200)
                 {
                     entity.DataStatus = DataStatus.Synced;
                     await _subscriptionDataService.Update(entity);
@@ -280,8 +280,8 @@ namespace Unicepse.Stores
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetByDataStatus(DataStatus.ToCreate);
             foreach (Subscription subscription in subscriptions)
             {
-                bool status = await _subscriptionApiDataService.Create(subscription);
-                if (status)
+                int status = await _subscriptionApiDataService.Create(subscription);
+                if (status == 201||status==409)
                 {
                     subscription.DataStatus = DataStatus.Synced;
                     await _subscriptionDataService.Update(subscription);
@@ -296,8 +296,8 @@ namespace Unicepse.Stores
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetByDataStatus(DataStatus.ToUpdate);
             foreach (Subscription subscription in subscriptions)
             {
-                bool status = await _subscriptionApiDataService.Update(subscription);
-                if (status)
+                int status = await _subscriptionApiDataService.Update(subscription);
+                if (status == 200)
                 {
                     subscription.DataStatus = DataStatus.Synced;
                     await _subscriptionDataService.Update(subscription);

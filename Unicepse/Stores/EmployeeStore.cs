@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unicepse.utlis.common;
+using Unicepse.Core.Models.Sport;
 
 namespace Unicepse.Stores
 {
@@ -23,16 +24,21 @@ namespace Unicepse.Stores
         public event Action<Employee>? Updated;
         public event Action<int>? Deleted;
         public event Action<Filter?>? FilterChanged;
+        public event Action<Sport?>? SportChanged;
 
         private readonly EmployeeDataService _employeeDataService;
         private readonly DausesDataService _dausesDataService;
         private readonly List<Employee> _employee;
         private readonly Lazy<Task> _initializeLazy;
         public IEnumerable<Employee> Employees => _employee;
+        private readonly List<Sport> _sports;
+        public IEnumerable<Sport> Sports => _sports;
+
         public EmployeeStore(EmployeeDataService employeeDataService, DausesDataService dausesDataService)
         {
             _employeeDataService = employeeDataService;
             _employee = new List<Employee>();
+            _sports=new List<Sport>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _dausesDataService = dausesDataService;
         }
@@ -48,9 +54,34 @@ namespace Unicepse.Stores
             set
             {
                 _selectedEmployee = value;
+                _sports.Clear();
+                if (SelectedEmployee != null)
+                {
+                    _sports.Add(new Sport() { Id = -1, Name = "الكل" });
+                    _sports.Add(new Sport() { Id = -2, Name  = "بدون مدرب" });
+                    _sports.AddRange(SelectedEmployee.Sports!);
+
+                }
                 StateChanged?.Invoke(SelectedEmployee);
             }
         }
+
+
+        private Sport? _selectedSport;
+        public Sport? SelectedSport
+        {
+            get
+            {
+                return _selectedSport;
+            }
+            set
+            {
+                _selectedSport = value;
+               
+            SportChanged?.Invoke(SelectedSport);
+            }
+        }
+
         public event Action<Employee?>? StateChanged;
 
         private Filter? _selectedFilter;

@@ -98,5 +98,12 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
             Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.FullName == name);
             return entity!;
         }
+
+        public async Task<Player?> GetByUID(string uid)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.UID == uid);
+            return entity!;
+        }
     }
 }

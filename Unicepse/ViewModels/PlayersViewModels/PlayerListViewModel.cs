@@ -305,6 +305,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             PlayerListItemViewModel itemViewModel =
                 new(player, _navigatorStore, _subscriptionStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, this, _playersAttendenceStore);
             playerListItemViewModels.Add(itemViewModel);
+            itemViewModel.Order = playerListItemViewModels.Count();
         }
         public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
         {

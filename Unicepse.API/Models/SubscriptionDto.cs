@@ -13,9 +13,9 @@ namespace Unicepse.API.Models
 {
     public class SubscriptionDto
     {
-        public int id { get; set; }
-        public int pid { get; set; }
-        public int gym_id { get; set; }
+        public string? id { get; set; }
+        public string? pid { get; set; }
+        public string? gym_id { get; set; }
         public string? sport_name { get; set; }
         public string? trainer_name { get; set; }
         public string? start_date { get; set; }
@@ -25,12 +25,11 @@ namespace Unicepse.API.Models
         public string? discount_des { get; set; }
         public string? is_paid { get; set; }
         public double paid_value { get; set; }
-        public Dictionary<string, string> payments = new Dictionary<string,string>();
 
         internal void FromSubscription(Subscription entity)
         {
-            id = entity.Id;
-            pid = entity.Player!.Id;
+            id = entity.Id.ToString();
+            pid = entity.Player!.Id.ToString();
             sport_name = entity.Sport!.Name;
             trainer_name = entity.Trainer != null ? entity.Trainer.FullName : "";
             start_date = entity.RollDate.ToString("dd/MM/yyyy");
@@ -40,7 +39,6 @@ namespace Unicepse.API.Models
             discount_des = entity.OfferDes;
             is_paid = entity.IsPaid.ToString();
             paid_value = entity.PaidValue;
-            payments.Add("test", "test");
         }
 
         internal Subscription ToSubscription()
@@ -48,24 +46,24 @@ namespace Unicepse.API.Models
             Subscription subscription = new Subscription()
             {
 
-                Id = id,
-                Player = new Player { Id = pid },
-                Sport = new Sport { Name = sport_name } ,
+                Id = Convert.ToInt32(id),
+                Player = new Player { Id = Convert.ToInt32(pid) },
+                Sport = new Sport { Name = sport_name },
                 Price = price,
                 OfferValue = discount_value,
                 OfferDes = discount_des,
-                IsPaid = Convert.ToBoolean( is_paid),
+                IsPaid = Convert.ToBoolean(is_paid),
                 PaidValue = paid_value,
 
             };
             //if (!string.IsNullOrEmpty(trainer_name))
-                subscription.Trainer = new Employee { FullName = trainer_name };
+            subscription.Trainer = new Employee { FullName = trainer_name };
             if (!string.IsNullOrEmpty(start_date) && !string.IsNullOrEmpty(end_date))
             {
                 subscription.RollDate = DateTime.ParseExact(start_date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 subscription.EndDate = DateTime.ParseExact(end_date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
-               
+
             return subscription;
         }
     }

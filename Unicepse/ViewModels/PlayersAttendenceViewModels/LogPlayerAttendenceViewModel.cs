@@ -15,6 +15,7 @@ using Unicepse.utlis.common;
 using Unicepse.ViewModels.SubscriptionViewModel;
 using Unicepse.Core.Models.Subscription;
 using Unicepse.Commands.SubscriptionCommand;
+using Unicepse.navigation;
 
 namespace Unicepse.ViewModels.PlayersAttendenceViewModels
 {
@@ -45,6 +46,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             }
         }
         public ICommand LoadPlayersCommand { get; }
+        public ICommand CancelCommand { get; }
         public LogPlayerAttendenceViewModel(PlayersDataStore playerStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, HomeViewModel homeViewModel, SubscriptionDataStore subscriptionDataStore)
         {
             _playerStore = playerStore;
@@ -58,6 +60,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             _playersAttendenceStore = playersAttendenceStore;
             _navigationStore = navigationStore;
             _homeViewModel = homeViewModel;
+            CancelCommand = new NavaigateCommand<HomeViewModel>(new NavigationService<HomeViewModel>(_navigationStore, () => homeViewModel));
         }
 
         private void _subscriptionDataStore_Loaded()

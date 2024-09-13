@@ -27,32 +27,43 @@ namespace Unicepse.BackgroundServices
     public class DataSyncService : BackgroundService
     {
         private readonly BackgroundServiceStore _backgroundServiceStore;
-        private readonly UnicepseApiPrepHttpClient unicepseApiPrepHttpClient;
+        private readonly UnicepseApiPrepHttpClient _unicepseApiPrepHttpClient;
         public DataSyncService(BackgroundServiceStore backgroundServiceStore, UnicepseApiPrepHttpClient unicepseApiPrepHttpClient)
         {
             _backgroundServiceStore = backgroundServiceStore;
-            this.unicepseApiPrepHttpClient = unicepseApiPrepHttpClient;
+            _unicepseApiPrepHttpClient = unicepseApiPrepHttpClient;
         }
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                // Your background logic here
                 bool internetAvailable = InternetAvailability.IsInternetAvailable();
                 if (internetAvailable)
                 {
                     _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
-                    _backgroundServiceStore.SyncState(true);
+                    _backgroundServiceStore.SyncState(true,"جار مزامنة اللاعبين");
+                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
                     await _backgroundServiceStore.SyncPlayers();
+                    _backgroundServiceStore.SyncState(true, "جار مزامنة الاشتراكات");
+                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
                     await _backgroundServiceStore.SyncSubscribtions();
+                    _backgroundServiceStore.SyncState(true, "جار مزامنة المدفوعات");
+                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
                     await _backgroundServiceStore.SyncPayments();
+                    _backgroundServiceStore.SyncState(true, "جار مزامنة القياسات");
+                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
                     await _backgroundServiceStore.SyncMetrics();
-                    _backgroundServiceStore.SyncState(false);
+                    _backgroundServiceStore.SyncState(true, "جار مزامنة البرامج الرياضية");
+                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                    await _backgroundServiceStore.SyncRoutines();
+                    _backgroundServiceStore.SyncState(true, "جار مزامنة الحضور");
+                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                    await _backgroundServiceStore.SyncAttendances();
+                    _backgroundServiceStore.SyncState(false,"");
                 }
                 else
                     _backgroundServiceStore.ChangeState($"غير متصل", internetAvailable);
-
                 await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
             }
         }

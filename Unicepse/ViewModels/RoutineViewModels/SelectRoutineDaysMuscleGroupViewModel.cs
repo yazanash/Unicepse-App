@@ -12,6 +12,7 @@ using Unicepse.navigation.Stores;
 using Unicepse.utlis.common;
 using Unicepse.Stores;
 using Unicepse.navigation;
+using Unicepse.Commands.Player;
 
 namespace Unicepse.ViewModels.RoutineViewModels
 {
@@ -23,25 +24,36 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersDataStore _playersDataStore;
         private readonly NavigationService<RoutinePlayerViewModels> _navigationService;
-        public SelectRoutineDaysMuscleGroupViewModel(RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, PlayersDataStore playersDataStore)
+        private readonly NavigationStore _navigationStore;
+        public SelectRoutineDaysMuscleGroupViewModel(RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, PlayersDataStore playersDataStore, AddRoutineViewModel addRoutineViewModel, NavigationStore navigationStore)
         {
             _routineDataStore = routineDataStore;
+            _navigationStore = navigationStore;
+
             _dayGroupListItemViewModels = new ObservableCollection<DayGroupListItemViewModel>();
             _routineDataStore.daysItemCreated += _routineDataStore_daysItemCreated;
             _routineDataStore.daysItemDeleted += _routineDataStore_daysItemDeleted;
             _navigationService = navigationService;
             _playersDataStore = playersDataStore;
+            if (_routineDataStore.DaysItems.Count() > 0)
+            {
+                _dayGroupListItemViewModels.Clear();
+                 _routineDataStore.ReloadDaysItems();
+            }
             AddDaysCommand = new AddDaysCommand(_routineDataStore);
             SubmitCommand = new SubmitRoutineCommand(_routineDataStore, _playersDataStore, _navigationService, this);
             string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + Date.ToShortDateString() + "_Routine";
             PrintCommand = new PrintCommand(new PrintWindowViewModel(new RoutinePrintViewModel(_routineDataStore, _playersDataStore, this), new NavigationStore()), filename);
+            CancelCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => addRoutineViewModel));
         }
-        public SelectRoutineDaysMuscleGroupViewModel(RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, PlayersDataStore playersDataStore,bool isTemp)
+        public SelectRoutineDaysMuscleGroupViewModel(RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, PlayersDataStore playersDataStore, bool isTemp, AddRoutineViewModel addRoutineViewModel, NavigationStore navigationStore)
         {
             _routineDataStore = routineDataStore;
             _dayGroupListItemViewModels = new ObservableCollection<DayGroupListItemViewModel>();
             _navigationService = navigationService;
             _playersDataStore = playersDataStore;
+            _navigationStore = navigationStore;
+
             _routineDataStore.daysItemCreated += _routineDataStore_daysItemCreated;
             _routineDataStore.daysItemDeleted += _routineDataStore_daysItemDeleted;
             if (_routineDataStore.SelectedRoutine != null)
@@ -58,10 +70,21 @@ namespace Unicepse.ViewModels.RoutineViewModels
                 }
                 Number = _routineDataStore.SelectedRoutine.RoutineNo;
             }
+            //if (_routineDataStore.DaysItems.Count()>0)
+            //{
+            //    foreach (var key in _routineDataStore.DaysItems)
+            //    {
+            //            _routineDataStore.AddDaysItem(key);
+            //    }
+            //}
+            //if(_routineDataStore.SelectedRoutine!=null)
+            //    Number = _routineDataStore.SelectedRoutine.RoutineNo;
+
             AddDaysCommand = new AddDaysCommand(_routineDataStore);
             SubmitCommand = new SubmitRoutineCommand(_routineDataStore, _playersDataStore, _navigationService, this);
             string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + Date.ToShortDateString() + "_Routine";
             PrintCommand = new PrintCommand(new PrintWindowViewModel(new RoutinePrintViewModel(_routineDataStore, _playersDataStore, this), new NavigationStore()), filename);
+            CancelCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => addRoutineViewModel));
         }
 
         private void _routineDataStore_daysItemDeleted(DayGroupListItemViewModel obj)
@@ -116,6 +139,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         public ICommand SubmitCommand { get; }
         public ICommand PrintCommand { get; }
         public ICommand AddDaysCommand { get; }
+        public ICommand CancelCommand { get; }
 
     }
 }

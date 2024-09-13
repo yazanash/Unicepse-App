@@ -18,24 +18,24 @@ namespace Unicepse.API.Services
             _client = client;
         }
 
-        public async Task<bool> Create(Subscription entity)
+        public async Task<int> Create(Subscription entity)
         {
             SubscriptionDto subscriptionDto = new SubscriptionDto();
             subscriptionDto.FromSubscription(entity);
-            subscriptionDto.gym_id = 18;
+            subscriptionDto.gym_id = _client.id;
             return await _client.PostAsync("subscription", subscriptionDto);
         }
 
         public async Task<Subscription> Get(Subscription entity)
         {
-            SubscriptionDto subscriptionDto = await _client.GetAsync<SubscriptionDto>($"subscription/18/{entity.Player!.Id}/{entity.Id}");
+            SubscriptionDto subscriptionDto = await _client.GetAsync<SubscriptionDto>($"subscription/{_client.id}/{entity.Player!.Id}/{entity.Id}");
             return subscriptionDto.ToSubscription();
         }
-        public async Task<bool> Update(Subscription entity)
+        public async Task<int> Update(Subscription entity)
         {
             SubscriptionDto subscriptionDto = new SubscriptionDto();
             subscriptionDto.FromSubscription(entity);
-            subscriptionDto.gym_id = 18;
+            subscriptionDto.gym_id = _client.id;
             return await _client.PutAsync("subscription", subscriptionDto);
         }
     }

@@ -57,9 +57,9 @@ namespace Unicepse.Test.ApiDataService
             //expected_metric.Player = new Core.Models.Player.Player() {Id=1852369 };
             //expected_metric.Id = 123456789;
             //Act
-            bool actual_metric = await metricDataService!.Create(expected_metric);
+            int actual_metric = await metricDataService!.Create(expected_metric);
             //Assert
-            Assert.IsTrue(actual_metric);
+            Assert.IsTrue(actual_metric==201);
             Metric created_metric = await metricDataService!.Get(expected_metric);
             Assert.AreEqual(expected_metric.Hieght, created_metric.Hieght);
         }
@@ -71,13 +71,13 @@ namespace Unicepse.Test.ApiDataService
             //Arrange
             Metric expected_metric = metricFactory!.FakeMetricWithId();
             //Act
-            bool actual_player = await metricDataService!.Create(expected_metric);
+            int actual_player = await metricDataService!.Create(expected_metric);
             //Assert
-            Assert.IsTrue(actual_player);
+            Assert.IsTrue(actual_player==201);
             expected_metric.Hieght = 180.0;
-            bool updated_metric = await metricDataService!.Update(expected_metric);
+            int updated_metric = await metricDataService!.Update(expected_metric);
             //Assert
-            Assert.IsTrue(updated_metric);
+            Assert.IsTrue(updated_metric==200);
 
             Metric updated_metric_dto = await metricDataService!.Get(expected_metric);
             Assert.AreEqual(expected_metric.Hieght, updated_metric_dto.Hieght);
