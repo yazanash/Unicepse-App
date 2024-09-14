@@ -113,28 +113,34 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _playerApiDataService.CreateHandShake(player,uid);
-                if (status==201||status==409)
+                try
                 {
-                    player.UID = uid;
-                    await _playerDataService.Update(player);
-                    SelectedPlayer!.Player.UID = player.UID;
-                    int currentIndex = _players.FindIndex(y => y.Id == player.Id);
 
-                    if (currentIndex != -1)
+
+                    int status = await _playerApiDataService.CreateHandShake(player, uid);
+                    if (status == 201 || status == 409)
                     {
-                        _players[currentIndex] = player;
+                        player.UID = uid;
+                        await _playerDataService.Update(player);
+                        SelectedPlayer!.Player.UID = player.UID;
+                        int currentIndex = _players.FindIndex(y => y.Id == player.Id);
+
+                        if (currentIndex != -1)
+                        {
+                            _players[currentIndex] = player;
+                        }
+                        else
+                        {
+                            _players.Add(player);
+                        }
+                        Player_update?.Invoke(player);
                     }
                     else
                     {
-                        _players.Add(player);
+                        throw new NotExistException("حساب هذه المستخدم غير متوفر لدينا يرجى التاكد من ان اللاعب قد قام بتحميل التطبيق الخاص بنا");
                     }
-                    Player_update?.Invoke(player);
                 }
-                else
-                {
-                    throw new NotExistException("حساب هذه المستخدم غير متوفر لدينا يرجى التاكد من ان اللاعب قد قام بتحميل التطبيق الخاص بنا");
-                }
+                catch { }
                 
             }
         }
@@ -146,10 +152,17 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                Profile profile = await _playerApiDataService.GetProfile(uid);
-                if (profile!=null)
+                try
                 {
-                    profile_loaded?.Invoke(profile);
+                    Profile profile = await _playerApiDataService.GetProfile(uid);
+                    if (profile != null)
+                    {
+                        profile_loaded?.Invoke(profile);
+                    }
+                }
+                catch 
+                {
+                    throw new Exception("خطا في التحقق من المستخدم");
                 }
             }
         }
@@ -160,13 +173,16 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _playerApiDataService.Create(player);
-                if (status==201)
+                try
                 {
-                    player.DataStatus = DataStatus.Synced;
-                    await _playerDataService.Update(player);
+                    int status = await _playerApiDataService.Create(player);
+                    if (status == 201)
+                    {
+                        player.DataStatus = DataStatus.Synced;
+                        await _playerDataService.Update(player);
+                    }
                 }
-
+                catch { }
             }
             _players.Add(player);
             Player_created?.Invoke(player);
@@ -180,13 +196,16 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _playerApiDataService.Update(player);
-                if (status==200)
+                try
                 {
-                    player.DataStatus = DataStatus.Synced;
-                    await _playerDataService.Update(player);
+                    int status = await _playerApiDataService.Update(player);
+                    if (status == 200)
+                    {
+                        player.DataStatus = DataStatus.Synced;
+                        await _playerDataService.Update(player);
+                    }
                 }
-
+                catch { }
             }
 
 

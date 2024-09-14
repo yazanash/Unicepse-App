@@ -94,12 +94,16 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _subscriptionApiDataService.Create(entity);
-                if (status == 201||status==409)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _subscriptionDataService.Update(entity);
+                    int status = await _subscriptionApiDataService.Create(entity);
+                    if (status == 201 || status == 409)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _subscriptionDataService.Update(entity);
+                    }
                 }
+                catch { }
 
             }
             _subscriptions.Add(entity);
@@ -176,7 +180,7 @@ namespace Unicepse.Stores
 
         public async Task Update(Subscription entity)
         {
-            
+
             if (entity.DataStatus != DataStatus.ToCreate)
                 entity.DataStatus = DataStatus.ToUpdate;
 
@@ -186,12 +190,16 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _subscriptionApiDataService.Update(entity);
-                if (status == 200)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _subscriptionDataService.Update(entity);
+                    int status = await _subscriptionApiDataService.Update(entity);
+                    if (status == 200)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _subscriptionDataService.Update(entity);
+                    }
                 }
+                catch { }
 
             }
 
@@ -220,13 +228,16 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _subscriptionApiDataService.Update(entity);
-                if (status==200)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _subscriptionDataService.Update(entity);
+                    int status = await _subscriptionApiDataService.Update(entity);
+                    if (status == 200)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _subscriptionDataService.Update(entity);
+                    }
                 }
-
+                catch { }
             }
 
 
@@ -253,12 +264,17 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _subscriptionApiDataService.Update(entity);
-                if (status == 200)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _subscriptionDataService.Update(entity);
+                    int status = await _subscriptionApiDataService.Update(entity);
+                    if (status == 200)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _subscriptionDataService.Update(entity);
+                    }
                 }
+                catch { }
+             
 
             }
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
@@ -281,7 +297,7 @@ namespace Unicepse.Stores
             foreach (Subscription subscription in subscriptions)
             {
                 int status = await _subscriptionApiDataService.Create(subscription);
-                if (status == 201||status==409)
+                if (status == 201 || status == 409)
                 {
                     subscription.DataStatus = DataStatus.Synced;
                     await _subscriptionDataService.Update(subscription);

@@ -61,12 +61,16 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _paymentApiDataService.Create(entity);
-                if (status == 201||status==409)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _paymentDataService.Update(entity);
+                    int status = await _paymentApiDataService.Create(entity);
+                    if (status == 201 || status == 409)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _paymentDataService.Update(entity);
+                    }
                 }
+                catch { }
 
             }
             _payments.Add(entity);
@@ -81,8 +85,30 @@ namespace Unicepse.Stores
                 await DeleteForce(entity.Id);
             else
             {
-                entity.DataStatus = DataStatus.ToDelete;
-                await _paymentDataService.Update(entity);
+                bool internetAvailable = InternetAvailability.IsInternetAvailable();
+                if (internetAvailable)
+                {
+                    try
+                    {
+                        int status = await _paymentApiDataService.Delete(entity);
+                        if (status == 200 )
+                        {
+                            await DeleteForce(entity.Id);
+                        }
+                        else
+                        {
+                            entity.DataStatus = DataStatus.ToDelete;
+                            await _paymentDataService.Update(entity);
+                        }
+                    }
+                    catch
+                    {
+                        entity.DataStatus = DataStatus.ToDelete;
+                        await _paymentDataService.Update(entity);
+                    }
+
+                }
+             
             }
             int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
             _payments.RemoveAt(currentIndex);
@@ -141,13 +167,18 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _paymentApiDataService.Update(entity);
-                if (status==200)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _paymentDataService.Update(entity);
-                }
 
+
+                    int status = await _paymentApiDataService.Update(entity);
+                    if (status == 200)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _paymentDataService.Update(entity);
+                    }
+                }
+                catch { }
             }
             int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
 

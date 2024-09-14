@@ -52,13 +52,16 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _metricApiDataService.Create(entity);
-                if (status==201||status==409)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _metricDataService.Update(entity);
+                    int status = await _metricApiDataService.Create(entity);
+                    if (status == 201 || status == 409)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _metricDataService.Update(entity);
+                    }
                 }
-
+                catch { }
             }
 
 
@@ -103,13 +106,18 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _metricApiDataService.Update(entity);
-                if (status==200)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _metricDataService.Update(entity);
-                }
 
+
+                    int status = await _metricApiDataService.Update(entity);
+                    if (status == 200)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _metricDataService.Update(entity);
+                    }
+                }
+                catch { }
             }
             int currentIndex = _metrics.FindIndex(y => y.Id == entity.Id);
 

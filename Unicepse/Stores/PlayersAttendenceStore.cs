@@ -56,12 +56,16 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _playersAttendenceApiService.Create(entity);
-                if (status==201||status==409)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _playersAttendenceService.Update(entity);
+                    int status = await _playersAttendenceApiService.Create(entity);
+                    if (status == 201 || status == 409)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _playersAttendenceService.Update(entity);
+                    }
                 }
+                catch { }
 
             }
 
@@ -78,13 +82,16 @@ namespace Unicepse.Stores
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
             if (internetAvailable)
             {
-                int status = await _playersAttendenceApiService.Update(entity);
-                if (status==200)
+                try
                 {
-                    entity.DataStatus = DataStatus.Synced;
-                    await _playersAttendenceService.Update(entity);
+                    int status = await _playersAttendenceApiService.Update(entity);
+                    if (status == 200)
+                    {
+                        entity.DataStatus = DataStatus.Synced;
+                        await _playersAttendenceService.Update(entity);
+                    }
                 }
-
+                catch { }
             }
             int currentIndex = _playersAttendence.FindIndex(y => y.Id == entity.Id);
 
