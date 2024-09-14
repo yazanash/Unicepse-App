@@ -41,26 +41,34 @@ namespace Unicepse.BackgroundServices
                 bool internetAvailable = InternetAvailability.IsInternetAvailable();
                 if (internetAvailable)
                 {
-                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
-                    _backgroundServiceStore.SyncState(true,"جار مزامنة اللاعبين");
-                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
-                    await _backgroundServiceStore.SyncPlayers();
-                    _backgroundServiceStore.SyncState(true, "جار مزامنة الاشتراكات");
-                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
-                    await _backgroundServiceStore.SyncSubscribtions();
-                    _backgroundServiceStore.SyncState(true, "جار مزامنة المدفوعات");
-                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
-                    await _backgroundServiceStore.SyncPayments();
-                    _backgroundServiceStore.SyncState(true, "جار مزامنة القياسات");
-                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
-                    await _backgroundServiceStore.SyncMetrics();
-                    _backgroundServiceStore.SyncState(true, "جار مزامنة البرامج الرياضية");
-                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
-                    await _backgroundServiceStore.SyncRoutines();
-                    _backgroundServiceStore.SyncState(true, "جار مزامنة الحضور");
-                    _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
-                    await _backgroundServiceStore.SyncAttendances();
-                    _backgroundServiceStore.SyncState(false,"");
+                    try
+                    {
+                        _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                        _backgroundServiceStore.SyncState(true, "جار مزامنة اللاعبين");
+                        _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                        await _backgroundServiceStore.SyncPlayers();
+                        _backgroundServiceStore.SyncState(true, "جار مزامنة الاشتراكات");
+                        _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                        await _backgroundServiceStore.SyncSubscribtions();
+                        _backgroundServiceStore.SyncState(true, "جار مزامنة المدفوعات");
+                        _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                        await _backgroundServiceStore.SyncPayments();
+                        _backgroundServiceStore.SyncState(true, "جار مزامنة القياسات");
+                        _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                        await _backgroundServiceStore.SyncMetrics();
+                        _backgroundServiceStore.SyncState(true, "جار مزامنة البرامج الرياضية");
+                        _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                        await _backgroundServiceStore.SyncRoutines();
+                        _backgroundServiceStore.SyncState(true, "جار مزامنة الحضور");
+                        _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
+                        await _backgroundServiceStore.SyncAttendances();
+                        _backgroundServiceStore.SyncState(false, "");
+                    }
+                   catch(Exception ex)
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                        _backgroundServiceStore.SyncState(true, "حدثت مشكلة اثناء المزامنة ستتم المحاولة خلال 10 ثوان");
+                    }
                 }
                 else
                     _backgroundServiceStore.ChangeState($"غير متصل", internetAvailable);

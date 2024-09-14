@@ -59,19 +59,22 @@ namespace Unicepse.API
                 byte[] logo = await _client.GetByteArrayAsync($"{uri}");
                 return logo;
             }
-           catch
+            catch
             {
                 return null;
             }
         }
         public async Task<int> GetCodeAsync<T>(string uri)
         {
-            _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
+            if (!_client.DefaultRequestHeaders.Where(x => x.Key == ("x-access-token")).Any())
+                _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
             HttpResponseMessage response = await _client.GetAsync($"{uri}");
             return ((int)response.StatusCode);
         }
         public async Task<int> PostAsync<T>(string uri, T entity)
         {
+            if (!_client.DefaultRequestHeaders.Where(x => x.Key == ("x-access-token")).Any())
+                _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
             HttpContent content = new StringContent(JsonConvert.SerializeObject(entity));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await _client.PostAsync($"{uri}", content);
@@ -80,14 +83,17 @@ namespace Unicepse.API
         }
         public async Task<int> PutAsync<T>(string uri, T entity)
         {
+            if (!_client.DefaultRequestHeaders.Where(x => x.Key == ("x-access-token")).Any())
+                _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
             HttpContent content = new StringContent(JsonConvert.SerializeObject(entity));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await _client.PutAsync($"{uri}", content);
-            return ((int)response.StatusCode) ;
+            return ((int)response.StatusCode);
 
         }
         public async Task<int> DeleteAsync<T>(string uri)
         {
+            _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
             HttpResponseMessage response = await _client.DeleteAsync($"{uri}");
             return ((int)response.StatusCode);
 
