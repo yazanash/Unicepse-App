@@ -14,23 +14,25 @@ namespace Unicepse.ViewModels.Authentication
         public NavigationStore _navigatorStore;
         private readonly UsersDataStore _usersDataStore;
         private readonly EmployeeStore _employeeStore;
+        private readonly AuthenticationStore _authenticationStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
-        public UsersViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore)
+        public UsersViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore, AuthenticationStore authenticationStore)
         {
             _navigatorStore = navigatorStore;
             _usersDataStore = usersDataStore;
             _employeeStore = employeeStore;
+            _authenticationStore = authenticationStore;
 
-            navigatorStore.CurrentViewModel = CreateUserListViewModel(_navigatorStore, _usersDataStore, _employeeStore);
+            navigatorStore.CurrentViewModel = CreateUserListViewModel(_navigatorStore, _usersDataStore, _employeeStore, _authenticationStore);
             navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
         }
         private void NavigatorStore_CurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-        private UsersListViewModel CreateUserListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore)
+        private UsersListViewModel CreateUserListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore,AuthenticationStore authenticationStore)
         {
-            return UsersListViewModel.LoadViewModel(navigatorStore, usersDataStore, employeeStore);
+            return UsersListViewModel.LoadViewModel(navigatorStore, usersDataStore, employeeStore, authenticationStore);
         }
     }
 }

@@ -62,6 +62,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
             _routineDataStore.RoutineItemDeleted += _routineDataStore_RoutineItemDeleted;
             _routineDataStore.RoutineItemsCleared += _routineDataStore_RoutineItemsCleared;
             _routineDataStore.Reorderd += _routineDataStore_Reorderd;
+            _routineDataStore.OrdersApplied += _routineDataStore_OrdersApplied; 
             AddMuscleGroups();
 
             SelectedMuscle = MuscleGroup.FirstOrDefault();
@@ -71,9 +72,18 @@ namespace Unicepse.ViewModels.RoutineViewModels
 
         }
 
+        private void _routineDataStore_OrdersApplied(RoutineItems obj)
+        {
+            foreach(var item in _routineExercisesItemsViewModels.Where(x=>x.GroupId == obj.Exercises!.GroupId))
+            {
+                item.Orders = obj.Orders;
+            }
+        }
+
         private void _routineDataStore_Reorderd()
         {
             _routineExercisesItemsViewModels.Clear();
+            if(SelectedMuscle!=null)
             foreach (var routineItem in _routineDataStore.RoutineItems.Where(x => x.Exercises!.GroupId == SelectedMuscle!.MuscleGroup.Id).OrderBy(x => x.ItemOrder))
             {
                 AddRoutineItem(routineItem);
@@ -156,6 +166,8 @@ namespace Unicepse.ViewModels.RoutineViewModels
             _routineDataStore.RoutineItemCreated += _routineDataStore_RoutineItemCreated;
             _routineDataStore.RoutineItemDeleted += _routineDataStore_RoutineItemDeleted;
             _routineDataStore.RoutineItemsCleared += _routineDataStore_RoutineItemsCleared;
+            _routineDataStore.OrdersApplied += _routineDataStore_OrdersApplied;
+
             AddMuscleGroups();
             SubmitCommand = new NavaigateCommand<SelectRoutineDaysMuscleGroupViewModel>(new NavigationService<SelectRoutineDaysMuscleGroupViewModel>(_navigationStore, () => new SelectRoutineDaysMuscleGroupViewModel(_routineDataStore, _navigationService, _playersDataStore, FromTemp, this, _navigationStore)));
             CancelCommand = new NavaigateCommand<RoutineTemplatesViewModel>(new NavigationService<RoutineTemplatesViewModel>(_navigationStore, () => routineTemplatesViewModel));

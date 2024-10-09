@@ -57,6 +57,17 @@
                                        VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
+                        <Button  Grid.Column="1" Margin="5 0" FlowDirection="LeftToRight"  Command="{Binding LoadUsersLogsCommand}" Style="{StaticResource AddBtn}">
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="حركة المستخدمين" />
+                                <Icon:PackIconMaterial Kind="TrafficCone"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 1"
+                                       VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
 
 
@@ -86,16 +97,17 @@
                             SelectedItem="{Binding SelectedUser}"
                             Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding UsersList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
                             <DataGrid.Columns>
+
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
-                                    Binding="{Binding Id}"
+                                    Binding="{Binding Order}"
                                     CanUserResize="False"/>
 
                                 <DataGridTemplateColumn Header="الاسم" Width="*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding EmployeeName}" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding OwnerName}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -105,7 +117,11 @@
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="المسمى الوظيفي" IsReadOnly="True"
-                                     Binding="{Binding Postion}"
+                                     Binding="{Binding Position}"
+                                    Width="*"
+                                    />
+                                <DataGridTextColumn Header="الدور" IsReadOnly="True"
+                                     Binding="{Binding Role}"
                                     Width="*"
                                     />
                                 <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">

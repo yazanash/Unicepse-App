@@ -106,9 +106,9 @@ namespace Unicepse.Stores
             LoggedOut?.Invoke(entity);
         }
 
-        public async Task GetLoggedPlayers()
+        public async Task GetLoggedPlayers(DateTime date)
         {
-            IEnumerable<DailyPlayerReport> LoggedPlayers = await _playersAttendenceService.GetLoggedPlayers();
+            IEnumerable<DailyPlayerReport> LoggedPlayers = await _playersAttendenceService.GetLoggedPlayers(date);
             _playersAttendence.Clear();
             _playersAttendence.AddRange(LoggedPlayers);
             Loaded?.Invoke();

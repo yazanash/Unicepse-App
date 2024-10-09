@@ -60,7 +60,17 @@ namespace Unicepse.Commands.MetricsCommand
                 Player = _playerDataStore.SelectedPlayer!.Player
 
             };
+            if(!_playerDataStore.SelectedPlayer!.Player.IsSubscribed)
+            {
+                _playerDataStore.SelectedPlayer!.Player.IsSubscribed = true;
+                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!.Player);
+                if (_playerDataStore.SelectedPlayer.Player != null)
+                {
+                    _playerDataStore.SelectedPlayer.IsActive = true;
+                }
+            }
             await _metricDataStore.Add(metric);
+            _metricDataStore.SelectedMetric = _metricDataStore.Metrics.FirstOrDefault(x=>x.Id==metric.Id);
             _navigationService.ReNavigate();
         }
     }

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_LastSelectedProfileId>D:\Repo\Unicepse\Unicepse\Properties\PublishProfiles\ClickOnceProfile.pubxml</_LastSelectedProfileId>
+    <_LastSelectedProfileId>D:\Repo\Unicepse\Unicepse\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
@@ -141,7 +141,16 @@
     <Compile Update="Views\AccountingViews\AccountingState.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AccountingViews\CreditsCardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\ExpensesCardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\AccountingViews\NetIncomeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\PaymentsCardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ApplicationAboutView.xaml.cs">
@@ -157,6 +166,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\AuthView\RegisterView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\UserLogReportView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\AuthView\UsersView.xaml.cs">
@@ -199,6 +211,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayersAttendenceViews\PlayersAttendenceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\ArchivedPlayersView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
@@ -443,7 +458,16 @@
     <Page Update="Views\AccountingViews\AccountingState.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\AccountingViews\CreditsCardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\ExpensesCardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\AccountingViews\NetIncomeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\PaymentsCardView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ApplicationAboutView.xaml">
@@ -459,6 +483,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\RegisterView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AuthView\UserLogReportView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\UsersView.xaml">
@@ -501,6 +528,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayersAttendenceViews\PlayersAttendenceView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerViews\ArchivedPlayersView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayerViews\PlayerMainPage.xaml">

@@ -35,7 +35,7 @@ namespace Unicepse.Commands.MetricsCommand
             }
             catch (Exception)
             {
-                _metricListing.ErrorMessage = "Failed to load Players. Please restart the application.";
+                _metricListing.ErrorMessage = "خطأ في تحميل قياسات اللاعب يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

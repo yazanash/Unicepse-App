@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:con="clr-namespace:Unicepse.utlis.Converters"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-
+    <con:BooleanNegationConverter x:Key="dataconv"/>
+    
     <Style x:Key="SubscriptionListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Padding" Value="5"/>
@@ -29,15 +31,15 @@
                                 </StackPanel>
                                 
                                 <DockPanel >
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding PriceAfterOffer}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding PriceAfterOffer,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
                                     <TextBlock Text="الاجمالي" VerticalAlignment="Center"  FontSize="15" DockPanel.Dock="Left"/>
                                 </DockPanel>
                                 <DockPanel >
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding PaidValue}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding PaidValue,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
                                     <TextBlock Text="المدفوع" VerticalAlignment="Center"  FontSize="15" DockPanel.Dock="Left"/>
                                 </DockPanel>
                                 <DockPanel >
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding RestVal}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding RestVal,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
                                     <TextBlock Text="الباقي" VerticalAlignment="Center"  FontSize="15" DockPanel.Dock="Left"/>
                                 </DockPanel>
                                 

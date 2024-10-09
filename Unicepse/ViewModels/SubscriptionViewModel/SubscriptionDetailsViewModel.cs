@@ -126,6 +126,12 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
                     SportPrice = SelectedSport!.DailyPrice * SubscribeDays;
 
                 Total = SportPrice - OfferValue;
+                ClearError(nameof(Total));
+                if (Total<0)
+                {
+                    AddError("لا يمكن ان يكون الاشتراك اقل من 0", nameof(Total));
+                    OnErrorChanged(nameof(Total));
+                }
             }
 
         }
@@ -229,6 +235,8 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             {
                 AddSport(sport);
             }
+            SelectedSport = _sportListItemViewModels.FirstOrDefault();
+
         }
         private void AddSport(Sport sport)
         {

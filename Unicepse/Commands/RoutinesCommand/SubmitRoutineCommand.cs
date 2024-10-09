@@ -56,6 +56,7 @@ namespace Unicepse.Commands.RoutinesCommand
             foreach(var item in _routineDataStore.RoutineItems)
             {
                 item.Id = 0;
+                item.PlayerRoutine = null;
             }
             playerRoutine.RoutineSchedule.AddRange(_routineDataStore.RoutineItems);
             foreach (var item in selectRoutineDaysMuscleGroupViewModel.DayGroupList)
@@ -64,6 +65,15 @@ namespace Unicepse.Commands.RoutinesCommand
             }
 
             await _routineDataStore.Add(playerRoutine);
+            if (!_playersDataStore.SelectedPlayer!.Player.IsSubscribed)
+            {
+                _playersDataStore.SelectedPlayer!.Player.IsSubscribed = true;
+                await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!.Player);
+                if (_playersDataStore.SelectedPlayer.Player != null)
+                {
+                    _playersDataStore.SelectedPlayer.IsActive = true;
+                }
+            }
             //string jsonString = ExportToJsonTemplate(playerRoutine);
 
             //SaveFileDialog dlg = new SaveFileDialog();

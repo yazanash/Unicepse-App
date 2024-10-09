@@ -11,22 +11,22 @@ namespace Unicepse.API.Models
     public class AttendanceDto
     {
 
-        public string? aid { get; set; }
+        public int aid { get; set; }
         public string? pid { get; set; }
         public string? sid { get; set; }
         public string? gym_id { get; set; }
-        public string? logout_time { get; set; }
-        public string? login_time { get; set; }
-        public string? date { get; set; }
+        public DateTime logout_time { get; set; }
+        public DateTime login_time { get; set; }
+        public DateTime date { get; set; }
 
         internal void FromAttendance(DailyPlayerReport entity)
         {
-            aid = entity.Id.ToString();
+            aid = entity.Id;
             pid = entity.Player!.Id.ToString();
             sid = "";
-            login_time = entity.loginTime.ToString("m:H");
-            logout_time = entity.logoutTime.ToString("m:H");
-            date = entity.Date.ToString("dd/MM/yyyy");
+            login_time = entity.loginTime;
+            logout_time = entity.logoutTime;
+            date = entity.Date;
 
         }
 
@@ -34,12 +34,12 @@ namespace Unicepse.API.Models
         {
             DailyPlayerReport attendance = new DailyPlayerReport()
             {
-                Id = Convert.ToInt32(aid),
+                Id =aid,
                 Player = new Core.Models.Player.Player() { Id = Convert.ToInt32( pid) },
-                loginTime = DateTime.ParseExact(login_time!, "m:H", CultureInfo.InvariantCulture),
-                logoutTime = DateTime.ParseExact(logout_time!, "m:H", CultureInfo.InvariantCulture),
+                loginTime = login_time,
+                logoutTime =logout_time,
                 //Subscription = new Core.Models.Subscription.Subscription() { Id = sid },
-                 Date = DateTime.ParseExact(date!, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                 Date =date,
 
 
         };

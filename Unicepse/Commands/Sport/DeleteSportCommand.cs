@@ -26,10 +26,15 @@ namespace Unicepse.Commands.Sport
         {
             try
             {
-                await _sportStore.DeleteConnectedTrainers(_sportStore.SelectedSport!.Id);
-                await _sportStore.Delete(_sportStore.SelectedSport!);
+                if (MessageBox.Show("سيتم حذف هذه الرياضة , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    await _sportStore.DeleteConnectedTrainers(_sportStore.SelectedSport!.Id);
+                    await _sportStore.Delete(_sportStore.SelectedSport!);
 
-                MessageBox.Show("Sport deleted successfully");
+                    MessageBox.Show("تم حذف الرياضة بنجاح");
+                }
+
             }
             catch (NotExistException ex)
             {

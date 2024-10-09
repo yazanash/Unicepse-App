@@ -24,5 +24,13 @@ namespace Unicepse.Views.RoutineViews
         {
             InitializeComponent();
         }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (it_list.Items.Count > 0)
+            {
+                it_list.ScrollIntoView(it_list.Items[0]);
+            }
+        }
     }
 }

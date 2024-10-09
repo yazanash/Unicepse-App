@@ -24,6 +24,13 @@ namespace Unicepse.ViewModels.PaymentsViewModels
         private readonly PaymentListViewModel? _paymentListViewModel;
 
         public PlayerPayment payment;
+
+        private int _order;
+        public int Order
+        {
+            get { return _order; }
+            set { _order = value; OnPropertyChanged(nameof(Order)); }
+        }
         public int Id => payment.Id;
         public int SubscriptionId => payment.Subscription!.Id;
         public string? Description => payment.Des;

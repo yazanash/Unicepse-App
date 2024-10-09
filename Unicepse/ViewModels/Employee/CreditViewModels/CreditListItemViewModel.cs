@@ -17,12 +17,19 @@ namespace Unicepse.ViewModels.Employee.CreditViewModels
 {
     public class CreditListItemViewModel : ViewModelBase
     {
-        private readonly EmployeeStore _employeeStore;
-        private readonly CreditsDataStore _creditsDataStore;
-        private readonly NavigationStore _navigationStore;
-        private readonly CreditListViewModel _creditListViewModel;
+        private readonly EmployeeStore? _employeeStore;
+        private readonly CreditsDataStore? _creditsDataStore;
+        private readonly NavigationStore? _navigationStore;
+        private readonly CreditListViewModel? _creditListViewModel;
         public Credit credit;
+        private int _order;
+        public int Order
+        {
+            get { return _order; }
+            set { _order = value; OnPropertyChanged(nameof(Order)); }
+        }
         public int Id => credit.Id;
+        public string? EmployeeName => credit.EmpPerson!.FullName;
         public double CreditValue => credit.CreditValue;
         public string? Date => credit.Date.ToShortDateString();
         public string? Description => credit.Description;
@@ -36,8 +43,13 @@ namespace Unicepse.ViewModels.Employee.CreditViewModels
             EditCommand = new NavaigateCommand<EditCreditDetailsViewModel>(new NavigationService<EditCreditDetailsViewModel>(_navigationStore, () => new EditCreditDetailsViewModel(_employeeStore, _creditsDataStore, _navigationStore, _creditListViewModel)));
             DeleteCommand = new DeleteCreditsCommand(_creditsDataStore);
         }
-        public ICommand EditCommand { get; }
-        public ICommand DeleteCommand { get; }
+        public CreditListItemViewModel(Credit credit)
+        {
+            this.credit = credit;
+           
+        }
+        public ICommand? EditCommand { get; }
+        public ICommand? DeleteCommand { get; }
         public void Update(Credit obj)
         {
             credit = obj;

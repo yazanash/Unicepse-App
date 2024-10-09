@@ -32,7 +32,7 @@ namespace Unicepse.Commands.LicenseCommand
             }
             catch (Exception)
             {
-                _licenseListing.ErrorMessage = "Failed to load Licenses. Please restart the application.";
+                _licenseListing.ErrorMessage = "خطأ في تحميل التراخيص يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

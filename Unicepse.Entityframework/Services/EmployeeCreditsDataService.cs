@@ -56,7 +56,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Where(x => x.EmpPerson!.Id == trainer.Id&& x.Date.Year==date.Year&&x.Date.Month==date.Month).ToListAsync();
+                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Include(x=>x.EmpPerson).AsNoTracking().Where(x => x.EmpPerson!.Id == trainer.Id&& x.Date.Year==date.Year&&x.Date.Month==date.Month).ToListAsync();
                 return entities;
             }
         }
@@ -64,7 +64,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Where(x => x.Date.Year == date.Year && x.Date.Month == date.Month && x.Date.Day == date.Day).ToListAsync();
+                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Include(x => x.EmpPerson).AsNoTracking().Where(x => x.Date.Year == date.Year && x.Date.Month == date.Month && x.Date.Day == date.Day).ToListAsync();
                 return entities;
             }
         }

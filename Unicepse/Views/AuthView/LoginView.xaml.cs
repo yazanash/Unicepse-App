@@ -24,6 +24,7 @@ namespace Unicepse.Views.AuthView
         public LoginView()
         {
             InitializeComponent();
+            email_txt.Focus();
         }
 
         private void email_MouseDown(object sender, MouseButtonEventArgs e)

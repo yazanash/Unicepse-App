@@ -30,7 +30,7 @@ namespace Unicepse.Commands.Player
             }
             catch (Exception)
             {
-                _playerListing.ErrorMessage = "Failed to load YouTube viewers. Please restart the application.";
+                _playerListing.ErrorMessage = "خطأ في تحميل اللاعبين يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

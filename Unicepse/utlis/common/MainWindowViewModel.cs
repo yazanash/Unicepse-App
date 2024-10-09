@@ -28,7 +28,11 @@ namespace Unicepse.utlis.common
         private readonly AuthenticationStore _authenticationStore;
         private readonly LicenseDataStore _licenseDataStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
-
+        public event Action? LogoutAction;
+        public void OnLogoutAction()
+        {
+            LogoutAction?.Invoke();
+        }
         public MainWindowViewModel(NavigationStore navigatorStore,
             PlayersDataStore playerStore, SportDataStore sportStore,
             EmployeeStore employeeStore, ExpensesDataStore expensesStore,
@@ -59,10 +63,19 @@ namespace Unicepse.utlis.common
                 _employeeStore, _expensesStore, _subscriptionDataStore,
                 _paymentDataStore, _metricDataStore, _routineDataStore,
                 _playersAttendenceStore, _usersDataStore,
-                _dausesDataStore, _creditsDataStore, _gymStore, _backgroundServiceStore, _authenticationStore, _licenseDataStore);
-            _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
+                _dausesDataStore, _creditsDataStore, _gymStore, _backgroundServiceStore, _authenticationStore, _licenseDataStore,this);
+            _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; 
         }
-
+        public void openLog()
+        {
+            _navigatorStore = new();
+            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore,
+               _employeeStore, _expensesStore, _subscriptionDataStore,
+               _paymentDataStore, _metricDataStore, _routineDataStore,
+               _playersAttendenceStore, _usersDataStore,
+               _dausesDataStore, _creditsDataStore, _gymStore, _backgroundServiceStore, _authenticationStore, _licenseDataStore, this);
+            _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged;
+        }
 
         private void _navigatorStore_CurrentViewModelChanged()
         {

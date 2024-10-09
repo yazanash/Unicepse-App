@@ -44,7 +44,7 @@
 
                                 </StackPanel>
                                 <StackPanel Grid.Row="1">
-                                    <TextBlock Text="{Binding Orders}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" FontSize="16" Foreground="#999"/>
+                                    <TextBlock Text="{Binding Orders}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" FontSize="16" />
                                     <TextBlock Text="{Binding Notes}" Grid.Row="1" Grid.Column="1" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="16" />
 
                                 </StackPanel>
@@ -348,6 +348,7 @@
                                        FontSize="13"/>
                                     <TextBox 
                                     Text="{Binding Orders, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                    
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
                                     <TextBlock Text="ملاحظات" 
@@ -356,6 +357,15 @@
                                        FontSize="13"/>
                                     <TextBox 
                                     Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="0" Margin="5" HorizontalAlignment="Left">
+                                    <Button Command="{Binding ApplyToAllCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource IconBtn}">
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="تطبيق للكل"  Foreground="{StaticResource colors.primary}"/>
+                                        </StackPanel>
+
+                                    </Button>
                                 </StackPanel>
                                 <StackPanel Grid.Row="2" Grid.Column="1" Margin="5" HorizontalAlignment="Right">
                                     <Button Command="{Binding RepeateItemCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource IconBtn}">
@@ -436,11 +446,11 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock  Width="150" Text="{Binding ExerciseName}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="18" />
+                                    <TextBlock  Width="100" Text="{Binding ExerciseName}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="18" />
                                 </StackPanel>
                                 <StackPanel Grid.Row="1">
-                                    <TextBlock Text="{Binding Orders}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" FontSize="16" Foreground="#999"/>
-                                    <TextBlock Text="{Binding Notes}" Grid.Row="1" Grid.Column="1" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="16" />
+                                    <TextBlock Text="{Binding Orders}" TextWrapping="Wrap" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" FontSize="16" Foreground="#999"/>
+                                    <TextBlock Text="{Binding Notes}" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" Margin="0 0 0 5" HorizontalAlignment="Left" FontSize="16" />
                                 </StackPanel>
                             </Grid>
                         </DockPanel>

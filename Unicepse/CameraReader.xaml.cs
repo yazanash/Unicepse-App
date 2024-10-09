@@ -22,23 +22,58 @@ using System.Drawing.Imaging;
 using System.Threading;
 using System.Windows.Threading;
 using System.ComponentModel;
+using Unicepse.utlis.common;
+using System.Reflection;
+using Unicepse.ViewModels.PlayersViewModels;
 
 namespace Unicepse
 {
     /// <summary>
     /// Interaction logic for CameraReader.xaml
     /// </summary>
+    class Camera : ViewModelBase
+    {
+        public string Name { get; set; }
+        public string MonikerString { get; set; }
+        public Camera(string name, string monikerString)
+        {
+            Name = name;
+            MonikerString = monikerString;
+        }
+    }
     public partial class CameraReader : Window
     {
         FilterInfoCollection videoDevices;
         VideoCaptureDevice? videoSource;
+        ReadPlayerQrCodeViewModel? _viewModelBase;
+        bool _stillOpen= false;
         public CameraReader()
         {
             InitializeComponent();
             videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
-            videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-            videoSource.Start();
+            for (int i = 0; i < videoDevices.Count; i++)
+            {
+                vidlist.Items.Add(new Camera(videoDevices[i].Name, videoDevices[i].MonikerString));
+            }
+            vidlist.SelectedIndex = 0;
+            //videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+            //videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+            //videoSource.Start();
+        }
+        public CameraReader(bool stillOpen, ReadPlayerQrCodeViewModel viewModelBase)
+        {
+            InitializeComponent();
+            _stillOpen=stillOpen;
+            _viewModelBase = viewModelBase;
+            videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            for (int i = 0; i < videoDevices.Count; i++)
+            {
+                vidlist.Items.Add(new Camera(videoDevices[i].Name, videoDevices[i].MonikerString));
+            }
+            vidlist.SelectedIndex = 0;
+            //videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+            //videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+            //videoSource.Start();
         }
 
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
@@ -55,7 +90,7 @@ namespace Unicepse
                 Dispatcher.BeginInvoke(new ThreadStart(delegate
                 {
                     camera_img.Source = bitmapSource;
-                   
+
 
                 }), DispatcherPriority.Render);
             }
@@ -73,10 +108,23 @@ namespace Unicepse
                 this.Dispatcher.InvokeAsync(() =>
                 {
                     // Update UI with QR code data
-                    txt_toview.Text = qrData;
+               
+                        txt_toview.Text = qrData;
+                        PlaySoundFromResources();
+                        if(_viewModelBase != null)
+                        {
+                       
+                            RestartCamera();
+                        _viewModelBase.OnCatchChanged();
+                            
+                        }
+                        else if (!_stillOpen)
+                        {
+                            this.Close();
+                        }
 
+                 
 
-                    CloseWindow();
 
 
 
@@ -84,10 +132,49 @@ namespace Unicepse
                 // Shutdown the dispatcher
                 //Dispatcher.InvokeShutdown();
 
-               
+
             }
 
 
+        }
+
+        private void RestartCamera()
+        {
+            if (videoSource != null && videoSource.IsRunning)
+            {
+                videoSource.SignalToStop();
+                videoSource.WaitForStop();
+                videoSource.NewFrame -= video_NewFrame;
+                videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+                videoSource.Start();
+            }
+        }
+
+        public void PlaySoundFromResources()
+        {
+            // Get the current assembly
+            //var assembly = Assembly.GetExecutingAssembly();
+            try
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+
+                // Get the stream for the embedded resource
+                Stream? soundStream = assembly.GetManifestResourceStream("Unicepse.Resources.sounds.beep.wav");
+
+                if (soundStream != null)
+                {
+                    // Create a SoundPlayer instance
+                    SoundPlayer player = new SoundPlayer(soundStream);
+
+                    // Play the sound
+                    player.Play();
+                }
+                else
+                {
+                    MessageBox.Show("Sound resource not found.");
+                }
+            }
+            catch { }
         }
         private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
         {
@@ -104,7 +191,7 @@ namespace Unicepse
                 return bitmapImage;
             }
         }
-        
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             videoSource!.Start();
@@ -137,6 +224,22 @@ namespace Unicepse
                 videoSource = null;
             }
             this.Close();
+        }
+
+        private void vidlist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (vidlist.SelectedItem is Camera cam)
+            {
+                if (videoSource != null && videoSource.IsRunning)
+                {
+                    videoSource.SignalToStop();
+                    videoSource.WaitForStop();
+                    videoSource.NewFrame -= video_NewFrame;
+                }
+                videoSource = new VideoCaptureDevice(cam.MonikerString);
+                videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+                videoSource.Start();
+            }
         }
     }
 }

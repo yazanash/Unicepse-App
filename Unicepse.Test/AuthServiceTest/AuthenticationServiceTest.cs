@@ -74,7 +74,7 @@ namespace Platinum.Test.AuthServiceTest
             string password = "password";
             string confirm_password = "notconfirmpassword";
             RegistrationResult expected = RegistrationResult.PasswordsDoNotMatch;
-            RegistrationResult actual = await authenticationService!.Register(userName, password, confirm_password);
+            RegistrationResult actual = await authenticationService!.Register(userName, password, confirm_password, Unicepse.Core.Common.Roles.Admin);
 
             Assert.AreEqual(expected, actual);
         }
@@ -84,9 +84,9 @@ namespace Platinum.Test.AuthServiceTest
             string userName = "testuser";
             string password = "password";
             string confirm_password = "notconfirmpassword";
-            mockAccountDataService!.Setup(s => s.GetByUsername(userName)).ReturnsAsync(new User { UserName = userName, Password = password });
+            mockAccountDataService!.Setup(s => s.GetByUsername(userName)).ReturnsAsync(new User { UserName = userName, Password = password , Role = Unicepse.Core.Common.Roles.Admin });
             RegistrationResult expected = RegistrationResult.UsernameAlreadyExists;
-            RegistrationResult actual = await authenticationService!.Register(userName, password, confirm_password);
+            RegistrationResult actual = await authenticationService!.Register(userName, password, confirm_password, Unicepse.Core.Common.Roles.Admin);
 
             Assert.AreEqual(expected, actual);
         }
@@ -96,7 +96,7 @@ namespace Platinum.Test.AuthServiceTest
             User user = userFactory!.FakeUser();
             //mockAccountDataService!.Setup(s => s.Create(user)).ReturnsAsync(user);
             RegistrationResult expected = RegistrationResult.Success;
-            RegistrationResult actual = await authenticationService!.Register(user!.UserName!, user!.Password!, user!.Password!);
+            RegistrationResult actual = await authenticationService!.Register(user!.UserName!, user!.Password!, user!.Password!,user.Role);
 
             Assert.AreEqual(expected, actual);
         }

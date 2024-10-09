@@ -50,5 +50,14 @@ namespace Unicepse.Components
         public static readonly DependencyProperty MoneyProperty = DependencyProperty.Register
             ("Money", typeof(string), typeof(DashboardCard));
 
+        public string IconPack
+        {
+            get { return (string)GetValue(IconPackProperty); }
+            set { SetValue(IconPackProperty, value); }
+        }
+
+        public static readonly DependencyProperty IconPackProperty = DependencyProperty.Register
+            ("IconPack", typeof(string), typeof(DashboardCard));
+
     }
 }

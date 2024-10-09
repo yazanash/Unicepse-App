@@ -11,6 +11,9 @@ using Exp = Unicepse.Core.Models.Expenses;
 using Unicepse.Stores;
 using Unicepse.ViewModels;
 using Unicepse.navigation.Stores;
+using Unicepse.Commands.Player;
+using Unicepse.navigation;
+using Unicepse.utlis.common;
 
 namespace Unicepse.ViewModels.Accountant
 {
@@ -19,7 +22,11 @@ namespace Unicepse.ViewModels.Accountant
         private readonly NavigationStore _navigationStore;
         private readonly ExpensesDataStore _expensesStore;
         private readonly GymStore _gymStore;
-        private readonly ObservableCollection<Expenses.ExpensesListItemViewModel> expensesListItemViewModels;
+        public ViewModelBase? CurrentViewModel => _navigationStore.CurrentViewModel;
+        public ICommand ExpensesCommand { get; }
+        public ICommand IncomeCommand { get; }
+        public ICommand CreditsCommand { get; }
+
         private double _expensesCard;
         public double ExpensesCard
         {
@@ -38,18 +45,26 @@ namespace Unicepse.ViewModels.Accountant
             get { return _paymentsCard; }
             set { _paymentsCard = value; OnPropertyChanged(nameof(PaymentsCard)); }
         }
-        public IEnumerable<Expenses.ExpensesListItemViewModel> ExpenseList => expensesListItemViewModels;
         public AccountingStateViewModel(NavigationStore navigationStore, ExpensesDataStore expensesStore, GymStore gymStore)
         {
             _navigationStore = navigationStore;
             _expensesStore = expensesStore;
             _gymStore = gymStore;
-            expensesListItemViewModels = new ObservableCollection<Expenses.ExpensesListItemViewModel>();
             LoadStateCommand = new LoadStatesCommand(this, _expensesStore, _gymStore);
             _gymStore.DailyPaymentsSumLoaded += _gymStore_PaymentsLoaded;
             _gymStore.DailyExpensesSumLoaded += _gymStore_ExpensesLoaded;
             _gymStore.DailyCreditsSumLoaded += _gymStore_CreditsLoaded;
-            _gymStore.ExpensesLoaded += _expensesStore_Loaded;
+            _navigationStore.CurrentViewModel = CreateCredits(_gymStore);
+            _navigationStore.CurrentViewModelChanged += _navigationStore_CurrentViewModelChanged;
+            ExpensesCommand = new NavaigateCommand<ExpensesCardViewModel>(new NavigationService<ExpensesCardViewModel>(_navigationStore, () => CreateExpenses(_gymStore)));
+            IncomeCommand = new NavaigateCommand<PaymentsCardViewModel>(new NavigationService<PaymentsCardViewModel>(_navigationStore, () => CreatePayments(_gymStore)));
+            CreditsCommand = new NavaigateCommand<CreditsCardViewModel>(new NavigationService<CreditsCardViewModel>(_navigationStore, () => CreateCredits(_gymStore)));
+
+        }
+
+        private void _navigationStore_CurrentViewModelChanged()
+        {
+            OnPropertyChanged(nameof(CurrentViewModel));
         }
 
         private void _gymStore_CreditsLoaded(double obj)
@@ -66,21 +81,6 @@ namespace Unicepse.ViewModels.Accountant
         {
             PaymentsCard = obj;
         }
-
-        private void _expensesStore_Loaded()
-        {
-            expensesListItemViewModels.Clear();
-            foreach (Exp.Expenses player in _gymStore.Expenses)
-            {
-                AddExpenses(player);
-            }
-        }
-        private void AddExpenses(Exp.Expenses expenses)
-        {
-            Expenses.ExpensesListItemViewModel itemViewModel =
-                 new Expenses.ExpensesListItemViewModel(expenses, _navigationStore);
-            expensesListItemViewModels.Add(itemViewModel);
-        }
         public ICommand LoadStateCommand;
         public static AccountingStateViewModel LoadViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore, GymStore gymStore)
         {
@@ -89,6 +89,19 @@ namespace Unicepse.ViewModels.Accountant
             viewModel.LoadStateCommand.Execute(null);
 
             return viewModel;
+        }
+
+        private ExpensesCardViewModel CreateExpenses(GymStore gymStore)
+        {
+            return ExpensesCardViewModel.LoadViewModel(gymStore);
+        }
+        private PaymentsCardViewModel CreatePayments(GymStore gymStore)
+        {
+            return PaymentsCardViewModel.LoadViewModel(gymStore);
+        }
+        private CreditsCardViewModel CreateCredits(GymStore gymStore)
+        {
+            return CreditsCardViewModel.LoadViewModel(gymStore);
         }
     }
 }

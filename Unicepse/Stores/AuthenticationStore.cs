@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 
 namespace Unicepse.Stores
 {
@@ -48,12 +49,19 @@ namespace Unicepse.Stores
 
         public void Logout()
         {
-            CurrentAccount = null;
+            if (CurrentAccount != null)
+            {
+                var acc = CurrentAccount;
+                CurrentAccount = null;
+                _authenticationService.Logout(acc!);
+                CurrentAccount = null;
+            }
+           
         }
 
-        public async Task<RegistrationResult> Register(string username, string password, string confirmPassword)
+        public async Task<RegistrationResult> Register(string username, string password, string confirmPassword,Roles role)
         {
-            return await _authenticationService.Register(username, password, confirmPassword);
+            return await _authenticationService.Register(username, password, confirmPassword, role);
         }
     }
 }

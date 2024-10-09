@@ -68,7 +68,12 @@ namespace Unicepse.Commands.SubscriptionCommand
                 _playerDataStore.SelectedPlayer!.Player.Balance -= subscription.PriceAfterOffer;
                 _playerDataStore.SelectedPlayer!.Player.SubscribeEndDate = subscription.EndDate; 
                 await _subscriptionDataStore.Add(subscription);
+                _playerDataStore.SelectedPlayer!.Player.IsSubscribed = true;
                 await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!.Player);
+                if (_playerDataStore.SelectedPlayer.Player != null )
+                {
+                    _playerDataStore.SelectedPlayer.IsActive= true;
+                }
                 _navigationService.ReNavigate();
             }
             catch (Exception ex)

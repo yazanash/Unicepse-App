@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services.AuthService
 {
@@ -25,7 +26,7 @@ namespace Unicepse.Entityframework.Services.AuthService
         /// <param name="confirmPassword">The user's confirmed password.</param>
         /// <returns>The result of the registration.</returns>
         /// <exception cref="Exception">Thrown if the registration fails.</exception>
-        Task<RegistrationResult> Register( string username, string password, string confirmPassword);
+        Task<RegistrationResult> Register( string username, string password, string confirmPassword,Roles role);
 
         /// <summary>
         /// Get an account for a user's credentials.

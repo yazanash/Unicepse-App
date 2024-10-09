@@ -51,19 +51,31 @@ namespace Unicepse.ViewModels.PlayersViewModels
         public string? SubscribeDate => Player.SubscribeDate.ToShortDateString();
         public string? SubscribeEndDate => Player.SubscribeEndDate.ToShortDateString();
         public bool IsTakenContainer => Player.IsTakenContainer;
-        public int DayLeft => (int)Player.SubscribeEndDate.Subtract(DateTime.Now).TotalDays;
-        public Brush IsSubscribed => Player.IsSubscribed ? Brushes.Green : Brushes.Red;
+        public int DayLeft => (int)Player.SubscribeEndDate.Subtract(DateTime.Now).TotalDays +1;
+        public Brush IsSubscribed => Player.IsSubscribed ? Brushes.Green : Brushes.Red; 
+
+        private bool _isActive;
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { _isActive = value; OnPropertyChanged(nameof(IsActive)); }
+        }
+
         public double Balance => Player.Balance;
 
-        public bool IsVerified => Player.UID!=null;
-
+        private bool _isVerified;
+        public bool IsVerified
+        {
+            get { return _isVerified; }
+            set { _isVerified = value; OnPropertyChanged(nameof(IsVerified)); }
+        }
 
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
         public ICommand? TrainingProgramCommand { get; }
         public ICommand? OpenProfileCommand { get; }
         public ICommand? LogInCommand { get; }
-
+        public ICommand?  ReactivePlayerCommand { get; }
         public ICommand? VerifyAccountCommand { get; }
 
         public PlayerListItemViewModel(Player player, NavigationStore navigationStore,
@@ -71,6 +83,8 @@ namespace Unicepse.ViewModels.PlayersViewModels
             SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayerListViewModel playerList, PlayersAttendenceStore playersAttendenceStore)
         {
             Player = player;
+            IsVerified = Player.UID != null;
+            IsActive = Player.IsSubscribed; 
             _playersDataStore = playersDataStore;
             _subscriptionDataStore = subscriptionDataStore;
             _navigationStore = navigationStore;
@@ -85,6 +99,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             DeleteCommand = new DeletePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList), _playersDataStore);
             OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore)));
             TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigationStore)));
+            ReactivePlayerCommand = new ReactivePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList), _playersDataStore);
         }
 
         //public PlayerListItemViewModel(Player player, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore,HomeViewModel homeViewModel)

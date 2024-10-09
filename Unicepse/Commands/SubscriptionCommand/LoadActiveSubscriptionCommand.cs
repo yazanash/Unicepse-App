@@ -32,7 +32,7 @@ namespace Unicepse.Commands.SubscriptionCommand
             }
             catch (Exception)
             {
-                _subscriptionListing.ErrorMessage = "Failed to load Subscriptions. Please restart the application.";
+                _subscriptionListing.ErrorMessage = "خطأ في تحميل الاشتراكات يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

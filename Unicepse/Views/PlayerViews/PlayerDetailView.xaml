@@ -38,7 +38,7 @@
                     <DockPanel HorizontalAlignment="Left" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
                             <TextBlock Text="معلومات اللاعب" Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
-                                <Button Grid.Column="1" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+                                <Button Grid.Column="1" Visibility="{Binding ScanAvailable, Converter={StaticResource BoolToVis}}" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
                                     <StackPanel  Orientation="Horizontal">
                                         <TextBlock  FlowDirection="RightToLeft" Text="مسح QR Code" />
@@ -94,8 +94,8 @@
                                           ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <ComboBoxItem Content="{Binding year}"/>
-                                        </DataTemplate>
+                                                <TextBlock Text="{Binding year}" FontSize="12"   />
+                                            </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>

@@ -29,7 +29,7 @@ namespace Unicepse.Commands.Sport
             }
             catch (Exception)
             {
-                _addSportViewModel.ErrorMessage = "Failed to load trainers . Please restart the application.";
+                _addSportViewModel.ErrorMessage = "خطأ في تحميل المدربين يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

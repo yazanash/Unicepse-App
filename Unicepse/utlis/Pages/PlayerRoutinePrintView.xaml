@@ -95,7 +95,7 @@
                         <StackPanel>
                             <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" DockPanel.Dock="Top" VerticalAlignment="Center" Text="الصدر" />
                             <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff"
+                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              VirtualizingPanel.ScrollUnit="Pixel"
                                   ItemsSource="{Binding ChestExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
 
@@ -112,8 +112,7 @@
                             <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold"
                                DockPanel.Dock="Top" VerticalAlignment="Center" Text="الظهر" />
                             <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff"
-                             VirtualizingPanel.ScrollUnit="Pixel"
+                             VirtualizingPanel.ScrollUnit="Pixel"  BorderBrush="#fff"  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                   ItemsSource="{Binding BackExercisesList}" 
                              ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
 
@@ -129,7 +128,7 @@
                             <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" 
                                DockPanel.Dock="Top" VerticalAlignment="Center" Text="الاكتاف" />
                             <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff"
+                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              VirtualizingPanel.ScrollUnit="Pixel"
                                   ItemsSource="{Binding ShouldersExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
 
@@ -145,7 +144,7 @@
                             <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold"
                                DockPanel.Dock="Top" VerticalAlignment="Center" Text="الارجل" />
                             <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff"
+                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              VirtualizingPanel.ScrollUnit="Pixel"
                                   ItemsSource="{Binding LegsExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
 
@@ -165,7 +164,7 @@
                             <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" 
                            DockPanel.Dock="Top" VerticalAlignment="Center" Text="بايسيبس" />
                             <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff"
+                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              VirtualizingPanel.ScrollUnit="Pixel"
                                   ItemsSource="{Binding BicepsExercisesList}" 
                          ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
@@ -183,7 +182,7 @@
                             <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" 
                            DockPanel.Dock="Top" VerticalAlignment="Center" Text="ترايسيبس" />
                             <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff"
+                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              VirtualizingPanel.ScrollUnit="Pixel"
                                   ItemsSource="{Binding TricepsExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
 
@@ -199,7 +198,7 @@
                             <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" 
                            DockPanel.Dock="Top" VerticalAlignment="Center" Text="المعدة" />
                             <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff"
+                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              VirtualizingPanel.ScrollUnit="Pixel"
                                   ItemsSource="{Binding AbsExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
 
@@ -216,7 +215,7 @@
                            VerticalAlignment="Center" Text="بطات الارجل" />
                             <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
                                       BorderBrush="#fff"
-                             VirtualizingPanel.ScrollUnit="Pixel"
+                             VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                   ItemsSource="{Binding CalvesExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
 
                             </ListBox>

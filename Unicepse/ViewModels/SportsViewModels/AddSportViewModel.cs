@@ -122,8 +122,8 @@ namespace Unicepse.ViewModels.SportsViewModels
             OnPropertyChanged(nameof(CanSubmit));
         }
         public bool CanSubmit => !HasErrors;
-        private int _dailyPrice;
-        public int DailyPrice
+        private double _dailyPrice;
+        public double DailyPrice
         {
             get { return _dailyPrice; }
             set
@@ -146,9 +146,9 @@ namespace Unicepse.ViewModels.SportsViewModels
                 _weeklyTrainingDays = value;
                 OnPropertyChanged(nameof(WeeklyTrainingDays));
                 ClearError(nameof(WeeklyTrainingDays));
-                if (WeeklyTrainingDays == 0)
+                if (WeeklyTrainingDays == 0 || WeeklyTrainingDays>7)
                 {
-                    AddError("لا يمكن ان يكون هذا الرقم اقل من 1", nameof(WeeklyTrainingDays));
+                    AddError("لا يمكن ان يكون هذا الرقم اقل من 1 او اكثر من 7", nameof(WeeklyTrainingDays));
                     OnErrorChanged(nameof(WeeklyTrainingDays));
                 }
             }

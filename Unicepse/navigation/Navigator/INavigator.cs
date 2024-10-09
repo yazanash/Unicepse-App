@@ -17,7 +17,8 @@ namespace Unicepse.navigation.Navigator
         Sport,
         Trainer,
         Users,
-        About
+        About,
+        Logout
     }
     public interface INavigator
     {

@@ -20,9 +20,13 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            _playersAttendenceStore.SelectedDailyPlayerReport!.logoutTime = DateTime.Now;
-            _playersAttendenceStore.SelectedDailyPlayerReport!.IsLogged = false;
-            await _playersAttendenceStore.LogOutPlayer(_playersAttendenceStore.SelectedDailyPlayerReport!);
+            if (_playersAttendenceStore.SelectedDailyPlayerReport != null)
+            {
+                _playersAttendenceStore.SelectedDailyPlayerReport!.logoutTime = DateTime.Now;
+                _playersAttendenceStore.SelectedDailyPlayerReport!.IsLogged = false;
+                await _playersAttendenceStore.LogOutPlayer(_playersAttendenceStore.SelectedDailyPlayerReport!);
+            }
+
         }
     }
 }

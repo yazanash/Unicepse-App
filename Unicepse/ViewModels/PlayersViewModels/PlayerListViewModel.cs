@@ -121,6 +121,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
         }
 
         public ICommand LoadPlayersCommand { get; }
+        public ICommand ArchivedPlayerCommand { get; }
         public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
         {
             _navigatorStore = navigatorStore;
@@ -136,6 +137,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
             AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this, _playerStore, _subscriptionStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore)));
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
+            ArchivedPlayerCommand = new NavaigateCommand<ArchivedPlayersListViewModel>(new NavigationService<ArchivedPlayersListViewModel>(_navigatorStore, () => ArchivedPlayersViewModel(navigatorStore, _playerStore, _subscriptionStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore,this)));
 
 
             _playerStore.Players_loaded += PlayerStore_PlayersLoaded;
@@ -170,7 +172,10 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
             SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Id == 6);
         }
-
+        private ArchivedPlayersListViewModel ArchivedPlayersViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,PlayerListViewModel playerListViewModel)
+        {
+            return ArchivedPlayersListViewModel.LoadViewModel(navigatorStore, playerStore, subscriptionDataStore, sportDataStore, paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore, playerListViewModel);
+        }
         private void SearchBox_SearchedText(string? obj)
         {
             playerListItemViewModels.Clear();

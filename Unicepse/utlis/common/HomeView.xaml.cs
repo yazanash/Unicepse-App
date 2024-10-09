@@ -29,5 +29,10 @@ namespace Unicepse.Views
         {
 
         }
+
+        private void Calendar_LostFocus(object sender, RoutedEventArgs e)
+        {
+            calender.SelectedDate = DateTime.Now;
+        }
     }
 }

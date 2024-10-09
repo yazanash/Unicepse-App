@@ -11,16 +11,21 @@ namespace Unicepse.Commands.AuthCommands
     public class DeleteUserCommand : AsyncCommandBase
     {
         private readonly UsersDataStore _usersDataStore;
-        public DeleteUserCommand(UsersDataStore usersDataStore)
+        private readonly AuthenticationStore _authenticationStore;
+        public DeleteUserCommand(UsersDataStore usersDataStore, AuthenticationStore authenticationStore)
         {
             _usersDataStore = usersDataStore;
+            _authenticationStore = authenticationStore;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
             try
             {
-                await _usersDataStore.Delete(_usersDataStore.SelectedUser!.Id);
+                if (_authenticationStore.CurrentAccount!.Id != _usersDataStore.SelectedUser!.Id)
+                    await _usersDataStore.Delete(_usersDataStore.SelectedUser!.Id);
+                else
+                    MessageBox.Show("لا يمكن حذف المستخدم الحالي");
 
             }
             catch (Exception ex)

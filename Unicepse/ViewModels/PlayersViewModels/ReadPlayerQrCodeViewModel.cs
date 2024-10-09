@@ -15,5 +15,10 @@ namespace Unicepse.ViewModels.PlayersViewModels
             get { return _uid; }
             set { _uid = value; OnPropertyChanged(nameof(UID)); }
         }
+        public event Action? onCatch;
+        public void OnCatchChanged()
+        {
+            onCatch?.Invoke();
+        }
     }
 }

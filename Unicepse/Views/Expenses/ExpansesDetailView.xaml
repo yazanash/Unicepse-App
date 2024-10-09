@@ -5,9 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Unicepse.Views.Expenses"
              mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:Unicepse.utlis.Converters"
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
             >
+    <UserControl.Resources>
+        <converters:NumberFormatConverter x:Key="convertNum"/>
+    </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>
             <Grid.RowDefinitions>
@@ -60,7 +64,7 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
-                                <TextBox Text="{Binding ExpensesValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                <TextBox Text="{Binding ExpensesValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum }}" Style="{StaticResource textBoxStyle}"/>
 
                             </StackPanel>
                             <StackPanel Grid.Row="1"  Grid.Column="1" Margin="5">

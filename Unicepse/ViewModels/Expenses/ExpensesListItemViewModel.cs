@@ -22,7 +22,12 @@ namespace Unicepse.ViewModels.Expenses
         private readonly ExpensesDataStore? _expensesDataStore;
         private readonly NavigationStore? _navigatorStore;
         private readonly ExpensesListViewModel? _expensesListViewModel;
-
+        private int _order;
+        public int Order
+        {
+            get { return _order; }
+            set { _order = value; OnPropertyChanged(nameof(Order)); }
+        }
         public ExpensesListItemViewModel(Exp.Expenses expenses, NavigationStore navigatorStore, ExpensesDataStore expensesDataStore, ExpensesListViewModel expensesListViewModel)
         {
             Expenses = expenses;
@@ -38,6 +43,11 @@ namespace Unicepse.ViewModels.Expenses
         {
             Expenses = expenses;
             _navigatorStore = navigatorStore;
+
+        }
+        public ExpensesListItemViewModel(Exp.Expenses expenses)
+        {
+            Expenses = expenses;
 
         }
         public int Id => Expenses!.Id;

@@ -43,7 +43,7 @@ namespace Unicepse.Commands.LicenseCommand
             catch (Exception ex)
             {
                 _licenseViewModel.IsLoading = false;
-                MessageBox.Show("Error in license validation " + ex.Message);
+                MessageBox.Show("خطأ في التحقق من النسخة " + ex.Message);
             }
         }
     }

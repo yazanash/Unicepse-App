@@ -15,85 +15,49 @@ using Unicepse.navigation;
 using Unicepse.Stores;
 using Unicepse.utlis.common;
 using Unicepse.navigation.Stores;
+using Unicepse.Core.Common;
 
 namespace Unicepse.ViewModels.Authentication
 {
-    public class AddUserViewModel : ViewModelBase
+    public class AddUserViewModel : ErrorNotifyViewModelBase
     {
         private readonly NavigationStore _navigationStore;
         private readonly UsersDataStore _usersDataStore;
         private UsersListViewModel _usersListViewModel;
         private readonly EmployeeStore _trainerStore;
-        private readonly ObservableCollection<EmployeeListItemViewModel> _employeeListItemViewModels;
-        public IEnumerable<EmployeeListItemViewModel> EmployeeList => _employeeListItemViewModels;
+        private readonly ObservableCollection<RolesListItemViewModel> _rolesListItemViewModels;
+        public IEnumerable<RolesListItemViewModel> RolesList => _rolesListItemViewModels;
         public AddUserViewModel(UsersDataStore usersDataStore, NavigationStore navigationStore, UsersListViewModel usersListViewModel, EmployeeStore trainerStore)
         {
             _usersDataStore = usersDataStore;
             _navigationStore = navigationStore;
             _usersListViewModel = usersListViewModel;
             _trainerStore = trainerStore;
-            _trainerStore.Loaded += _trainerStore_Loaded;
-            _employeeListItemViewModels = new ObservableCollection<EmployeeListItemViewModel>();
+            _rolesListItemViewModels = new ObservableCollection<RolesListItemViewModel>();
+            _rolesListItemViewModels.Add(new RolesListItemViewModel("مستخدم",Roles.User));
+            _rolesListItemViewModels.Add(new RolesListItemViewModel("مشرف", Roles.Supervisor));
+            _rolesListItemViewModels.Add(new RolesListItemViewModel("مسؤول", Roles.Admin));
+            _rolesListItemViewModels.Add(new RolesListItemViewModel("محاسب", Roles.Accountant));
             CancelCommand = new NavaigateCommand<UsersListViewModel>(new NavigationService<UsersListViewModel>(_navigationStore, () => _usersListViewModel));
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
             SubmitCommand = new SubmitUserCommand(_usersDataStore, new NavigationService<UsersListViewModel>(_navigationStore, () => _usersListViewModel), this);
-            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
-            LoadEmployeeCommand = new LoadEmployeeForUsersCommand(_trainerStore);
+            RoleItem = _rolesListItemViewModels.FirstOrDefault();
         }
-
-        private void _trainerStore_Loaded()
+        private RolesListItemViewModel? _roleItem;
+        public RolesListItemViewModel? RoleItem
         {
-            _employeeListItemViewModels.Clear();
-            foreach (var emp in _trainerStore.Employees)
-            {
-                EmployeeListItemViewModel employeeListItemViewModel = new EmployeeListItemViewModel(emp);
-                _employeeListItemViewModels.Add(employeeListItemViewModel);
-            }
-        }
-
-        public EmployeeListItemViewModel? SelectedEmployee
-        {
-            get
-            {
-                return EmployeeList
-                    .FirstOrDefault(y => y?.trainer == _usersDataStore.SelectedEmployee);
-            }
-            set
-            {
-                _usersDataStore.SelectedEmployee = value?.trainer;
-
-            }
+            get { return _roleItem; }
+            set { _roleItem = value; OnPropertyChanged(nameof(RoleItem)); }
         }
 
         internal static AddUserViewModel loadViewModel(UsersDataStore usersDataStore, NavigationStore navigatorStore, UsersListViewModel usersListViewModel, EmployeeStore employeeStore)
         {
-            AddUserViewModel addUserViewModel = new AddUserViewModel(usersDataStore, navigatorStore, usersListViewModel, employeeStore);
-            addUserViewModel.LoadEmployeeCommand.Execute(null);
+            AddUserViewModel addUserViewModel = new AddUserViewModel(usersDataStore, navigatorStore, usersListViewModel, employeeStore); 
             return addUserViewModel;
         }
 
-        private bool? _submited = false;
-        public bool? Submited
-        {
-            get { return _submited; }
-            set
-            {
-                _submited = value;
-                OnPropertyChanged(nameof(Submited));
-
-            }
-        }
-        private string? _submitMessage;
-        public string? SubmitMessage
-        {
-            get { return _submitMessage; }
-            set
-            {
-                _submitMessage = value;
-                OnPropertyChanged(nameof(SubmitMessage));
-
-            }
-        }
+       
+       
         #region Properties
         public int Id { get; }
 
@@ -105,6 +69,12 @@ namespace Unicepse.ViewModels.Authentication
             {
                 _userName = value;
                 OnPropertyChanged(nameof(UserName));
+                ClearError(nameof(UserName));
+                if (string.IsNullOrEmpty(UserName?.Trim()))
+                {
+                    AddError("هذا الحقل مطلوب", nameof(UserName));
+                    OnErrorChanged(nameof(UserName));
+                }
 
             }
         }
@@ -115,53 +85,53 @@ namespace Unicepse.ViewModels.Authentication
             set
             {
                 _password = value; OnPropertyChanged(nameof(Password));
-
+                ClearError(nameof(Password));
+                if (string.IsNullOrEmpty(Password?.Trim()))
+                {
+                    AddError("هذا الحقل مطلوب", nameof(Password));
+                    OnErrorChanged(nameof(Password));
+                }
             }
         }
 
+        private string? _postion;
+        public string? Position
+        {
+            get { return _postion; }
+            set
+            {
+                _postion = value; OnPropertyChanged(nameof(Position));
+                ClearError(nameof(Position));
+                if (string.IsNullOrEmpty(Position?.Trim()))
+                {
+                    AddError("هذا الحقل مطلوب", nameof(Position));
+                    OnErrorChanged(nameof(Position));
+                }
 
+            }
+        }
+        private string? _ownerName;
+        public string? OwnerName
+        {
+            get { return _ownerName; }
+            set
+            {
+                _ownerName = value; OnPropertyChanged(nameof(OwnerName));
+                ClearError(nameof(OwnerName));
+                if (string.IsNullOrEmpty(OwnerName?.Trim()))
+                {
+                    AddError("هذا الحقل مطلوب", nameof(OwnerName));
+                    OnErrorChanged(nameof(OwnerName));
+                }
+
+            }
+        }
 
 
 
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
         #endregion
-        public ICommand LoadEmployeeCommand { get; }
 
-        public bool CanSubmit => !HasErrors;
-
-        public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
-
-        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
-        private void AddError(string? ErrorMsg, string? propertyName)
-        {
-            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
-            {
-                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
-
-            }
-            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void ClearError(string? propertyName)
-        {
-            PropertyNameToErrorsDictionary.Remove(propertyName!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void OnErrorChanged(string? PropertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
-            OnPropertyChanged(nameof(CanSubmit));
-        }
-
-        public bool HasErrors => PropertyNameToErrorsDictionary.Any();
-
-        public IEnumerable GetErrors(string? propertyName)
-        {
-            return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
-        }
     }
 }

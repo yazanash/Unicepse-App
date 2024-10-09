@@ -31,7 +31,7 @@ namespace Unicepse.Commands.Employee
             }
             catch (Exception)
             {
-                _trainersListViewModel.ErrorMessage = "Failed to load Employees . Please restart the application.";
+                _trainersListViewModel.ErrorMessage = "خطأ في تحميل العاملين يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

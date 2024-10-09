@@ -52,8 +52,8 @@ namespace Unicepse.Entityframework.Services
         public async Task<PlayerPayment> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            PlayerPayment? entity = await context.Set<PlayerPayment>().Include(x=>x.Player).AsNoTracking()
-                .Include(x=>x.Subscription).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
+            PlayerPayment? entity = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
+                .Include(x => x.Subscription).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             return entity!;
@@ -64,7 +64,7 @@ namespace Unicepse.Entityframework.Services
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
-                    .Include(x=>x.Subscription).AsNoTracking()
+                    .Include(x => x.Subscription).AsNoTracking()
                     .ToListAsync();
                 return entities;
             }
@@ -74,18 +74,18 @@ namespace Unicepse.Entityframework.Services
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Subscription).Include(x=>x.Subscription!.Sport).Include(x=>x.Subscription!.Trainer).AsNoTracking().Where(x=>x.PayDate>=dateFrom&&x.PayDate<=dateTo)
+                    .Include(x => x.Subscription).Include(x => x.Subscription!.Sport).Include(x => x.Subscription!.Trainer).AsNoTracking().Where(x => x.PayDate >= dateFrom && x.PayDate <= dateTo && x.DataStatus != DataStatus.ToDelete)
                     .ToListAsync();
                 return entities;
             }
         }
-        public async Task<IEnumerable<PlayerPayment>> GetAll( DateTime dateTo)
+        public async Task<IEnumerable<PlayerPayment>> GetAll(DateTime dateTo)
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
                     .Include(x => x.Subscription).Include(x => x.Subscription!.Sport).Include(x => x.Subscription!.Trainer).AsNoTracking()
-                    .Where(x => x.PayDate.Month == dateTo.Month && x.PayDate.Year == dateTo.Year&& x.PayDate.Day== dateTo.Day)
+                    .Where(x => x.PayDate.Month == dateTo.Month && x.PayDate.Year == dateTo.Year && x.PayDate.Day == dateTo.Day && x.DataStatus != DataStatus.ToDelete)
                     .ToListAsync();
                 return entities;
             }
@@ -95,12 +95,12 @@ namespace Unicepse.Entityframework.Services
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Subscription).AsNoTracking().AsNoTracking().Include(x=>x.Subscription!.Sport).AsNoTracking().Include(x => x.Subscription!.Trainer).AsNoTracking().Where(x => x.Player!.Id == player.Id).AsNoTracking()
+                    .Include(x => x.Subscription).AsNoTracking().AsNoTracking().Include(x => x.Subscription!.Sport).AsNoTracking().Include(x => x.Subscription!.Trainer).AsNoTracking().Where(x => x.Player!.Id == player.Id && x.DataStatus != DataStatus.ToDelete).AsNoTracking()
                    .AsNoTracking().ToListAsync();
                 return entities;
             }
         }
-        public async Task<IEnumerable<PlayerPayment>> GetTrainerPayments(Employee trainer,DateTime date)
+        public async Task<IEnumerable<PlayerPayment>> GetTrainerPayments(Employee trainer, DateTime date)
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
@@ -110,9 +110,9 @@ namespace Unicepse.Entityframework.Services
                     .Include(x => x.Subscription!.Sport).AsNoTracking()
                     .Include(x => x.Subscription!.Trainer).AsNoTracking()
                     .Where(x => x.Subscription!.Trainer!.Id == trainer.Id &&
-                    ( 
-                    x.PayDate.Month==date.Month &&x.PayDate.Year==date.Year ||
-                    x.To.Month == date.Month && x.To.Year == date.Year
+                    (
+                   (x.PayDate.Month == date.Month && x.PayDate.Year == date.Year ||
+                    x.To.Month == date.Month && x.To.Year == date.Year) && x.DataStatus != DataStatus.ToDelete
                     )
                     ).AsNoTracking()
                     .ToListAsync();

@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-
+        <converters:NumberFormatConverter x:Key="numConv"/>
 
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10">
@@ -127,7 +127,7 @@
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="سعر الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding SubscriptionPrice}"
+                                     Binding="{Binding SubscriptionPrice,Converter={StaticResource numConv}}"
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="تاريخ الدفعة" IsReadOnly="True"
@@ -135,7 +135,7 @@
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="الدفعة" IsReadOnly="True"
-                                     Binding="{Binding PayVal}"
+                                     Binding="{Binding PayVal,Converter={StaticResource numConv}}"
                                     Width="*"
                                     />
                                 

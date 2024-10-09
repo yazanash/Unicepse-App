@@ -12,6 +12,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+        <converters:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
     <Border Background="White" CornerRadius="15" Width="220" Margin="5" Padding="10 5">
         <!--<Border.Effect>
@@ -69,45 +70,68 @@
             </Button>
           
             <StackPanel>
-                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 5">
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="رقم الهاتف" FontSize="12" Foreground="{StaticResource colors.primary}"/>
                         <TextBlock Text="{Binding Phone}"  FontSize="13" Foreground="#384756"/>
                     </StackPanel>
                 </Border>
-                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 5">
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="الجنس" FontSize="14" Foreground="{StaticResource colors.primary}"/>
                         <TextBlock Text="{Binding Gendertext}" FontSize="14" Foreground="#384756"/>
                     </StackPanel>
                 </Border>
-                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 5">
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="سنة الميلاد" FontSize="14" Foreground="{StaticResource colors.primary}"/>
                         <TextBlock Text="{Binding BirthDate}" FontSize="14" Foreground="#384756"/>
                     </StackPanel>
                 </Border>
-                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 5">
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="تاريخ الاشتراك" FontSize="14" Foreground="{StaticResource colors.primary}"/>
                         <TextBlock Text="{Binding SubscribeDate}" FontSize="14"  Foreground="#384756"/>
                     </StackPanel>
                 </Border>
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 5">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="رصيد الحساب" FontSize="14" Foreground="{StaticResource colors.primary}"/>
+                        <TextBlock Text="{Binding Balance,Converter={StaticResource convertNum}}" FontSize="14"  Foreground="#384756"/>
+                    </StackPanel>
+                </Border>
             </StackPanel>
-            <Button HorizontalAlignment="Center"  Command="{Binding DeleteCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource DeleteBtn}">
+            <Grid>
+                <Button HorizontalAlignment="Center" Visibility="{Binding IsActive,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}"  Command="{Binding DeleteCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource DeleteBtn}">
 
-                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
 
-                    <TextBlock Text="حذف الحساب"  VerticalAlignment="Center"/>
-                    <icon:PackIconMaterial Kind="TrashCan"
+                        <TextBlock Text="حذف الحساب"  VerticalAlignment="Center"/>
+                        <icon:PackIconMaterial Kind="TrashCan"
                                        Width="11"
                                        Height="11"
                                        Margin="8 0 0 0"
                                            Foreground="#fff"
                                        VerticalAlignment="Center"/>
-                </StackPanel>
+                    </StackPanel>
 
-            </Button>
-        </StackPanel>
+                </Button>
+                <Button HorizontalAlignment="Center" Visibility="{Binding IsActive,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  Command="{Binding ReactivePlayerCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Text="استرجاع الحساب"  VerticalAlignment="Center"/>
+                        <icon:PackIconMaterial Kind="TrashCan"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 0"
+                                           Foreground="#fff"
+                                       VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                </Button>
+
+            </Grid>
+            </StackPanel>
     </Border>
 </UserControl>

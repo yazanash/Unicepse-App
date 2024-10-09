@@ -16,6 +16,8 @@ using Unicepse.Stores;
 using Unicepse.navigation.Navigator;
 using Unicepse.utlis.common;
 using Unicepse.navigation.Stores;
+using Unicepse.Core.Common;
+using System.Windows;
 
 namespace Unicepse.Commands.Player
 {
@@ -36,11 +38,12 @@ namespace Unicepse.Commands.Player
         private readonly CreditsDataStore _creditsDataStore;
         private readonly GymStore _gymStore;
         private readonly LicenseDataStore _licenseDataStore;
-
+        private readonly AuthenticationStore? _authenticationStore;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         public UpdateCurrentViewModelCommand(INavigator navigator, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore, ExpensesDataStore expensesStore,
             SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
-            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, LicenseDataStore licenseDataStore)
+            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore1, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, LicenseDataStore licenseDataStore, AuthenticationStore? authenticationStore, MainWindowViewModel mainWindowViewModel)
         {
             _navigator = navigator;
             _playersStore = playersStore;
@@ -57,8 +60,56 @@ namespace Unicepse.Commands.Player
             _creditsDataStore = creditsDataStore;
             _gymStore = gymStore;
             _licenseDataStore = licenseDataStore;
+            _authenticationStore = authenticationStore;
+            _mainWindowViewModel = mainWindowViewModel;
         }
+        public override bool CanExecute(object? parameter)
+        {
+            bool isAble = false;
+            if (parameter is ViewType)
+            {
+               
+                ViewType viewType = (ViewType)parameter;
+                switch (viewType)
+                {
+                    case ViewType.Home:
+                        if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
+                            isAble = true;
+                        break;
+                    case ViewType.Players:
+                        if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
+                            isAble = true;
+                        break;
+                    case ViewType.Sport:
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor)
+                            isAble = true;
+                        break;
+                    case ViewType.Trainer:
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor || _authenticationStore!.CurrentAccount!.Role == Roles.Accountant)
+                            isAble = true;
+                        break;
+                    case ViewType.Users:
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin)
+                            isAble = true;
+                        break;
+                    case ViewType.Accounting:
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Accountant)
+                            isAble = true;
+                        break;
+                    case ViewType.About:
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin)
+                            isAble = true;
+                        break;
+                    case ViewType.Logout:
+                            isAble = true;
+                        break;
+                    default:
+                        break;
+                }
 
+            }
+            return base.CanExecute(parameter) && isAble;
+        }
         public override void Execute(object? parameter)
         {
             if (parameter is ViewType)
@@ -68,25 +119,40 @@ namespace Unicepse.Commands.Player
                 switch (viewType)
                 {
                     case ViewType.Home:
-                        _navigator.CurrentViewModel = new HomeNavViewModel(navigator,_playersStore, _playersAttendenceStore1, _employeeStore,_subscriptionDataStore);
+                        if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
+                            _navigator.CurrentViewModel = new HomeNavViewModel(navigator,_playersStore, _playersAttendenceStore1, _employeeStore,_subscriptionDataStore);
                         break;
                     case ViewType.Players:
-                        _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore1);
+                        if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
+                            _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore1);
                         break;
                     case ViewType.Sport:
+                        if(_authenticationStore!.CurrentAccount!.Role==Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor)
                         _navigator.CurrentViewModel = new SportsViewModel(navigator, _sportStore, _employeeStore,_subscriptionDataStore);
                         break;
                     case ViewType.Trainer:
-                        _navigator.CurrentViewModel = new TrainersViewModel(navigator, _employeeStore, _sportStore, _subscriptionDataStore, _dausesDataStore, _creditsDataStore);
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor || _authenticationStore!.CurrentAccount!.Role == Roles.Accountant)
+                            _navigator.CurrentViewModel = new TrainersViewModel(navigator, _employeeStore, _sportStore, _subscriptionDataStore, _dausesDataStore, _creditsDataStore);
                         break;
                     case ViewType.Users:
-                        _navigator.CurrentViewModel = new UsersViewModel(navigator, _usersDataStore, _employeeStore);
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin)
+                            _navigator.CurrentViewModel = new UsersViewModel(navigator, _usersDataStore, _employeeStore,_authenticationStore);
                         break;
                     case ViewType.Accounting:
-                        _navigator.CurrentViewModel = new AccountingViewModel(navigator, _expensesStore, _paymentDataStore, _gymStore);
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Accountant)
+                            _navigator.CurrentViewModel = new AccountingViewModel(navigator, _expensesStore, _paymentDataStore, _gymStore);
                         break;
                     case ViewType.About:
-                        _navigator.CurrentViewModel = CreateAppInfo(_licenseDataStore);
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin)
+                            _navigator.CurrentViewModel = CreateAppInfo(_licenseDataStore);
+                        break;
+                    case ViewType.Logout:
+                        if (MessageBox.Show("سيتم تسجيل خروجك , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                        {
+                            _authenticationStore!.Logout();
+                            _mainWindowViewModel.OnLogoutAction();
+                        }
                         break;
                     default:
                         break;

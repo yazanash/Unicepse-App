@@ -31,11 +31,12 @@ namespace Unicepse.navigation.Navigator
         private readonly CreditsDataStore _creditsDataStore;
         private readonly GymStore _gymStore;
         private readonly LicenseDataStore _licenseDataStore;
-
+        private readonly AuthenticationStore? _authenticationStore;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         public Navigator(NavigationStore navigatorStore, PlayersDataStore playersStore,
             SportDataStore sportStore, EmployeeStore employeeStore,
             ExpensesDataStore expensesStore, SubscriptionDataStore subscriptionDataStore,
-            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, LicenseDataStore licenseDataStore)
+            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, LicenseDataStore licenseDataStore, AuthenticationStore? authenticationStore, MainWindowViewModel mainWindowViewModel)
         {
             _navigatorStore = navigatorStore;
             _playersStore = playersStore;
@@ -52,6 +53,8 @@ namespace Unicepse.navigation.Navigator
             _creditsDataStore = creditsDataStore;
             _gymStore = gymStore;
             _licenseDataStore = licenseDataStore;
+            _authenticationStore = authenticationStore;
+            _mainWindowViewModel = mainWindowViewModel;
             //LogoutCommand = new NavaigateCommand<AuthViewModel>(new NavigationService<AuthViewModel>(_navigatorStore, () => new AuthViewModel(_navigatorStore)));
 
         }
@@ -72,7 +75,7 @@ namespace Unicepse.navigation.Navigator
             set { _isOpen = value; OnPropertChanged(nameof(IsOpen)); }
 
         }
-        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore, _licenseDataStore);
+        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this, _playersStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore, _licenseDataStore, _authenticationStore, _mainWindowViewModel);
         //public ICommand LogoutCommand { get; }
 
     }

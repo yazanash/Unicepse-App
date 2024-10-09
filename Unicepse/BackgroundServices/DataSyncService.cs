@@ -66,8 +66,10 @@ namespace Unicepse.BackgroundServices
                     }
                    catch(Exception ex)
                     {
-                        await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                        //MessageBox.Show(ex.Message);
                         _backgroundServiceStore.SyncState(true, "حدثت مشكلة اثناء المزامنة ستتم المحاولة خلال 10 ثوان");
+                        await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+
                     }
                 }
                 else
