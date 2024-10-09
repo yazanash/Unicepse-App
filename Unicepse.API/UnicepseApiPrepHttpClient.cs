@@ -78,6 +78,7 @@ namespace Unicepse.API
             HttpContent content = new StringContent(JsonConvert.SerializeObject(entity));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await _client.PostAsync($"{uri}", content);
+            string data = await response.Content.ReadAsStringAsync();
             return ((int)response.StatusCode);
 
         }

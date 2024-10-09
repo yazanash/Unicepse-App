@@ -17,7 +17,6 @@ namespace Unicepse.Test.Fakes
               {
                   user.UserName = fake.Person.UserName;
                   user.Password = fake.Internet.Password();
-                  user.IsAdmin = fake.Random.Bool();
               });
             return userFaker;
         }

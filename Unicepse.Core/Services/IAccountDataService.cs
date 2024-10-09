@@ -16,5 +16,7 @@ namespace Unicepse.Core.Services
         Task<bool> Delete(int id);
         bool HasUsers();
         public Task<T> GetByUsername(string username);
+        public Task<IEnumerable<AuthenticationLog>> GetAllAuthenticationLogging(DateTime date);
+        public void AuthenticationLogging(AuthenticationLog entity);
     }
 }

@@ -20,14 +20,16 @@ namespace Unicepse.Stores
         private readonly PlayerDataService _playerDataService;
         private readonly PlayerApiDataService _playerApiDataService;
         private readonly List<Player> _players;
+        private readonly List<Player> _archivedPlayers;
         private readonly Lazy<Task> _initializeLazy;
 
         public IEnumerable<Player> Players => _players;
+        public IEnumerable<Player> ArchivedPlayers => _archivedPlayers;
         public event Action<Player>? Player_created;
         public event Action? Players_loaded;
         public event Action<Player>? Player_update;
         public event Action<int>? Player_deleted;
-
+        public event Action? ArchivedPlayers_loaded;
         public event Action<Profile>? profile_loaded;
 
 
@@ -37,6 +39,7 @@ namespace Unicepse.Stores
         {
             _playerDataService = playerDataService;
             _players = new List<Player>();
+            _archivedPlayers = new List<Player>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _playerApiDataService = playerApiDataService;
         }
@@ -92,6 +95,8 @@ namespace Unicepse.Stores
             }
         }
 
+        public event Action<Player> ArchivedPlayer_created;
+
         public event Action<Order?>? OrderChanged;
         public async Task GetPlayers()
         {
@@ -104,6 +109,13 @@ namespace Unicepse.Stores
             _players.Clear();
             _players.AddRange(players!);
             Players_loaded?.Invoke();
+        }
+        public async Task GetArchivedPlayers()
+        {
+            IEnumerable<Player> players = await _playerDataService.GetByStatus(false);
+            _archivedPlayers.Clear();
+            _archivedPlayers.AddRange(players!);
+            ArchivedPlayers_loaded?.Invoke();
         }
         public async Task HandShakePlayer(Player player,string uid)
         {
@@ -133,7 +145,12 @@ namespace Unicepse.Stores
                         {
                             _players.Add(player);
                         }
+
                         Player_update?.Invoke(player);
+                        if(SelectedPlayer.Player!=null && SelectedPlayer.Player.Id == player.Id)
+                        {
+                            SelectedPlayer.IsVerified = true;
+                        }
                     }
                     else
                     {
@@ -227,8 +244,18 @@ namespace Unicepse.Stores
             int currentIndex = _players.FindIndex(y => y.Id == player.Id);
             _players.RemoveAt(currentIndex);
             Player_deleted?.Invoke(player.Id);
+            ArchivedPlayer_created?.Invoke(player);
         }
-
+        public async Task ReactivePlayer(Player player)
+        {
+            await _playerDataService.Update(player);
+            _players.Add(player);
+            if (SelectedPlayer != null && SelectedPlayer.Player.Id == player.Id)
+            {
+                SelectedPlayer.IsActive = true;
+            }
+            Player_created?.Invoke(player);
+        }
         public async Task ForceDeletePlayer(int player_id)
         {
             bool deleted = await _playerDataService.Delete(player_id);

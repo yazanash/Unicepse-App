@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
@@ -32,14 +33,20 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
+
+                foreach (var sc in entity.RoutineSchedule!)
+                {
+                    sc.Id = 0;
+                    sc.Exercises = context.Exercises!.Find(sc.Exercises!.Id);
+                    context.Entry(sc.Exercises!).State = EntityState.Detached;
+                    if (context.Entry(sc.Exercises!).State == EntityState.Detached)
+                        context.Entry(sc.Exercises!).State = EntityState.Unchanged;
+
+                }
+                context.Entry(entity.Player!).State = EntityState.Detached;
+                if (context.Entry(entity.Player!).State == EntityState.Detached)
+                    context.Entry(entity.Player!).State = EntityState.Unchanged;
                 EntityEntry<PlayerRoutine> CreatedResult = await context.Set<PlayerRoutine>().AddAsync(entity);
-                //PlayerRoutine existed_routine = await CheckIfRoutineExist(entity);
-                //if (existed_routine != null)
-                //    throw new ConflictException();
-                if (entity.Player != null)
-                    context.Attach(entity.Player!);
-                foreach (var ex in entity.RoutineSchedule)
-                    context.Attach(ex.Exercises!);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
             }
@@ -69,7 +76,7 @@ namespace Unicepse.Entityframework.Services
         public async Task<PlayerRoutine> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            PlayerRoutine? entity = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).FirstOrDefaultAsync((e) => e.Id == id);
+            PlayerRoutine? entity = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException();
             return entity!;
@@ -79,7 +86,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).ToListAsync();
+                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).AsNoTracking().ToListAsync();
                 return entities;
             }
         }
@@ -87,7 +94,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).Where(x => x.IsTemplate == true).ToListAsync();
+                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).AsNoTracking().Where(x => x.IsTemplate == true).ToListAsync();
                 return entities;
             }
         }
@@ -95,7 +102,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Exercises>? entities = await context.Set<Exercises>().ToListAsync();
+                IEnumerable<Exercises>? entities = await context.Set<Exercises>().AsNoTracking().ToListAsync();
                 return entities;
             }
         }
@@ -103,7 +110,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).Where(x => x.Player!.Id == player.Id).ToListAsync();
+                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).Include(x => x.Player).Where(x => x.Player!.Id == player.Id).ToListAsync();
                 return entities;
             }
         }
@@ -113,6 +120,19 @@ namespace Unicepse.Entityframework.Services
             PlayerRoutine existed_employee = await Get(entity.Id);
             if (existed_employee == null)
                 throw new NotExistException();
+
+            await DeleteRoutineItems(entity.Id);
+
+            foreach (var sc in entity.RoutineSchedule!)
+            {
+                sc.Id = 0;
+                sc.PlayerRoutine = entity;
+                sc.Exercises = context.Exercises!.Find(sc.Exercises!.Id);
+                context.Entry(sc).State = EntityState.Detached;
+                if (context.Entry(sc).State == EntityState.Detached)
+                    context.Entry(sc).State = EntityState.Added;
+
+            }
             context.Set<PlayerRoutine>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
@@ -121,7 +141,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.Player).Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).Where(x => x.DataStatus == status).ToListAsync();
+                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.Player).AsNoTracking().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).AsNoTracking().Where(x => x.DataStatus == status).ToListAsync();
                 return entities;
             }
         }

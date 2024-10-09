@@ -15,11 +15,16 @@ namespace Unicepse.Stores
         private readonly List<User> _users;
 
         public IEnumerable<User> Users => _users;
+
+
+        private readonly List<AuthenticationLog> _logs;
+
+        public IEnumerable<AuthenticationLog> Logs => _logs;
         public UsersDataStore(IAccountDataService<User> accountDataService)
         {
             _accountDataService = accountDataService;
             _users = new List<User>();
-
+            _logs = new();
         }
 
         private User? _selectedUser;
@@ -37,6 +42,7 @@ namespace Unicepse.Stores
         }
         public event Action<User>? Created;
         public event Action? Loaded;
+        public event Action? logs_Loaded;
         public event Action<User>? Updated;
         public event Action<int>? Deleted;
         private Employee? _selectedEmployee;
@@ -58,7 +64,17 @@ namespace Unicepse.Stores
             _users.Add(entity);
             Created?.Invoke(entity);
         }
-
+        public void AddAuthenticationLog(AuthenticationLog entity)
+        {
+             _accountDataService.AuthenticationLogging(entity);
+        }
+        public async Task GetAuthenticationLog(DateTime date)
+        {
+            IEnumerable<AuthenticationLog> logs = await _accountDataService.GetAllAuthenticationLogging(date);
+            _logs.Clear();
+            _logs.AddRange(logs);
+            logs_Loaded?.Invoke();
+        }
         public async Task Delete(int entity_id)
         {
             bool deleted = await _accountDataService.Delete(entity_id);

@@ -134,7 +134,7 @@
                                        MouseDown="email_MouseDown"/>
                             <TextBox x:Name="email_txt"
                                      Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"
-                                     TextChanged="email_txt_TextChanged"
+                                     TextChanged="email_txt_TextChanged" TabIndex="0"
                                      Style="{StaticResource loginTextbox}" />
                         </Grid>
                     </Border>
@@ -145,10 +145,10 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <icons:PackIconMaterial Kind="LockOutline" Foreground="#787878" Width="20" Height="20"/>
+                            <icons:PackIconMaterial Kind="LockOutline" Foreground="#787878" Width="20"/>
                             <TextBlock x:Name="lbl_password" Text="Enter password" Style="{StaticResource hintText}"
                                       MouseDown="password_MouseDown" />
-                            <PasswordBox x:Name="password_txt" PasswordChanged="password_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
+                            <PasswordBox x:Name="password_txt" TabIndex="1" PasswordChanged="password_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
                         </Grid>
                     </Border>
                     <Button x:Name="login_btn" Content="Signin" Command="{Binding LoginCommand}" Style="{StaticResource signinBtn}"/>

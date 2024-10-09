@@ -10,10 +10,14 @@ namespace Unicepse.utlis.common
     public class StatusBarViewModel : ViewModelBase
     {
         public string? UserName { get; set; }
-
-        public StatusBarViewModel(string? userName)
+        public string? Role { get; set; }
+        public string? Position { get; set; }
+        public string? OwnerName { get; set; }
+        public StatusBarViewModel(string? userName,  string? position, string? ownerName)
         {
             UserName = userName;
+            Position = position;
+            OwnerName = ownerName;
         }
 
         private string? _backMessage;

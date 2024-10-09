@@ -29,6 +29,16 @@ namespace Unicepse.ViewModels.Employee.CreditViewModels
             SubmitCommand = new SubmitCreditCommand(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel), _employeeStore, _creditDataStore, this);
             CancelCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel));
         }
+        public CreditDetailsViewModel(EmployeeStore employeeStore, CreditsDataStore creditDataStore, NavigationStore navigatorStore, CreditListViewModel creditListViewModel,double amount)
+        {
+            _employeeStore = employeeStore;
+            _creditDataStore = creditDataStore;
+            _navigatorStore = navigatorStore;
+            _creditListViewModel = creditListViewModel;
+            SubmitCommand = new SubmitCreditCommand(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel), _employeeStore, _creditDataStore, this);
+            CancelCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel));
+            CreditValue = amount;
+        }
         private double _creditValue;
         public double CreditValue
         {

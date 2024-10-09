@@ -17,6 +17,7 @@
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <con:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>
@@ -87,7 +88,7 @@
                                           ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <ComboBoxItem Content="{Binding year}"/>
+                                            <TextBlock Text="{Binding year}" FontSize="12"   />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
@@ -98,12 +99,12 @@
                                      Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
-                                <TextBox Text="{Binding SalaryValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                <TextBox Text="{Binding SalaryValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
                             </StackPanel>
                            
                             <StackPanel  Grid.Row="1" Grid.Column="0" Margin="5">
-                                <TextBlock Text="النسبة" 
+                                <TextBlock Text="النسبة %" 
                                     Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
@@ -121,7 +122,7 @@
                             </StackPanel>
 
                             <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
-                                <TextBlock Text="تاريخ الاشتراك" 
+                                <TextBlock Text="تاريخ بداية العمل" 
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>

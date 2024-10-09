@@ -15,49 +15,116 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
         private readonly ReadPlayerQrCodeViewModel _viewModelBase;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly PlayersDataStore _playersDataStore;
+        public string? OldUID;
 
         public LoginPlayerScanCommand(ReadPlayerQrCodeViewModel viewModelBase, PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore)
         {
             _viewModelBase = viewModelBase;
             _playersAttendenceStore = playersAttendenceStore;
             _playersDataStore = playersDataStore;
+            _viewModelBase.onCatch += _viewModelBase_onCatch;
         }
 
-        public async override Task ExecuteAsync(object? parameter)
+        private async void _viewModelBase_onCatch()
         {
             try
             {
-                CameraReader cameraReader = new CameraReader();
-                cameraReader.DataContext = _viewModelBase;
-                cameraReader.ShowDialog();
+                if (!string.IsNullOrEmpty(_viewModelBase.UID)&& _viewModelBase.UID!=OldUID)
+                {
+                    OldUID = _viewModelBase.UID;
+                    string? uid = _viewModelBase.UID;
+                    player.Player? player = await _playersDataStore.GetPlayerByUID(uid);
+                    if (player != null)
+                    {
+                        if (player.SubscribeEndDate > DateTime.Now)
+                        {
+                            DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+                            {
+                                loginTime = DateTime.Now,
+                                logoutTime = DateTime.Now,
+                                Date = DateTime.Now,
+                                IsLogged = true,
+                                Player = player
+
+                            };
+                            DailyPlayerReport? existed = await _playersAttendenceStore.GetLoggedPlayer(dailyPlayerReport);
+                            if (existed != null)
+                            {
+                                existed.logoutTime = DateTime.Now;
+                                existed.IsLogged = false;
+                                await _playersAttendenceStore.LogOutPlayer(existed);
+                            }
+                            else
+                                await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
+                        }
+                        else
+                        {
+                            MessageBox.Show("هذا اللاعب منتهي الاشتراك");
+                        }
+                    }
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private async void _viewModelBase_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            try
+            {
                 if (!string.IsNullOrEmpty(_viewModelBase.UID))
                 {
                     string? uid = _viewModelBase.UID;
                     player.Player? player = await _playersDataStore.GetPlayerByUID(uid);
                     if (player != null)
                     {
-
-                        DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+                        if(player.SubscribeEndDate > DateTime.Now)
                         {
-                            loginTime = DateTime.Now,
-                            logoutTime = DateTime.Now,
-                            Date = DateTime.Now,
-                            IsLogged = true,
-                            Player = player
+                            DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+                            {
+                                loginTime = DateTime.Now,
+                                logoutTime = DateTime.Now,
+                                Date = DateTime.Now,
+                                IsLogged = true,
+                                Player = player
 
-                        };
-                        DailyPlayerReport? existed = await _playersAttendenceStore.GetLoggedPlayer(dailyPlayerReport);
-                        if (existed != null)
-                        {
-                            existed.logoutTime = DateTime.Now;
-                            existed.IsLogged = false;
-                            await _playersAttendenceStore.LogOutPlayer(existed);
+                            };
+                            DailyPlayerReport? existed = await _playersAttendenceStore.GetLoggedPlayer(dailyPlayerReport);
+                            if (existed != null)
+                            {
+                                existed.logoutTime = DateTime.Now;
+                                existed.IsLogged = false;
+                                await _playersAttendenceStore.LogOutPlayer(existed);
+                            }
+                            else
+                                await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
                         }
                         else
-                            await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
+                        {
+                            MessageBox.Show("هذا اللاعب منتهي الاشتراك");
+                        }
                     }
                     _viewModelBase.UID = null;
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public async override Task ExecuteAsync(object? parameter)
+        {
+            try
+            {
+                CameraReader cameraReader = new CameraReader(true,_viewModelBase);
+                cameraReader.DataContext = _viewModelBase;
+                cameraReader.ShowDialog();
+                await Task.Delay(1);
+                _viewModelBase.UID = null;
             }
             catch (Exception ex)
             {

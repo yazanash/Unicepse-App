@@ -72,7 +72,7 @@
                 <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0" Grid.ColumnSpan="2"
                                   ScrollViewer.HorizontalScrollBarVisibility="Visible" BorderBrush="#fff"
                              SelectedItem="{Binding  SelectedMuscle }"
-                         
+                            SelectionChanged="ListBox_SelectionChanged"
                               ItemsSource="{Binding   MuscleGroup}" ItemContainerStyle="{StaticResource MuscelListBoxItemContainerStyle1}" >
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -83,14 +83,14 @@
                 <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0" Grid.Row="1"
                                   ScrollViewer.HorizontalScrollBarVisibility="Visible" BorderBrush="#fff"
                              SelectedItem="{Binding  SelectedRoutine }"
-                         
+                         SelectionChanged="ListBox_SelectionChanged"
                               ItemsSource="{Binding   RoutineList}" ItemContainerStyle="{StaticResource RoutineListBoxItemContainerStyle1}" >
                     
                 </ListBox>
                 <DockPanel Grid.Column="1" Grid.Row="1">
 
                     <ListBox ScrollViewer.CanContentScroll="True"
-                                    VirtualizingPanel.ScrollUnit="Pixel"  ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" 
+                                  x:Name="it_list"   VirtualizingPanel.ScrollUnit="Pixel"  ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" 
                               ItemsSource="{Binding SelectedRoutineItemsList}" ItemContainerStyle="{StaticResource RoutineItemsListBoxItemContainerStyle1}" >
 
                     </ListBox>

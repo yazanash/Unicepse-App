@@ -15,10 +15,7 @@
     <UserControl.Resources>
         <con:ErrorsConverter x:Key="conv"/>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-        <DataTemplate x:Key="ListViewItemTemplate1">
-            <comp:SportCard/>
-        </DataTemplate>
-
+        <con:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
         
     <Border CornerRadius="10"  Background="#EEE" Padding="0" >
@@ -72,7 +69,7 @@
                                       ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <ComboBoxItem Content="{Binding TrainerName}"/>
+                                            <TextBlock Text="{Binding TrainerName}" FontSize="12"   />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
 
@@ -116,7 +113,7 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
-                                <TextBox IsReadOnly="True" Text="{Binding Total, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                <TextBox IsReadOnly="True" Text="{Binding Total, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                             <!--<DockPanel  Grid.Row="2">
                             <DockPanel DockPanel.Dock="Top" >
@@ -189,7 +186,7 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
-                                            <TextBox Text="{Binding OfferValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                            <TextBox Text="{Binding OfferValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
                                         </StackPanel>
                                     </Grid>
@@ -222,7 +219,7 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
-                                            <TextBox Text="{Binding PrivatePrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                            <TextBox Text="{Binding PrivatePrice, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="5">

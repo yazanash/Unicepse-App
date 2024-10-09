@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Unicepse.utlis.common;
 using Unicepse.ViewModels.Authentication;
 using Unicepse.ViewModels._ِAppViewModels;
+using Unicepse.Views.AuthView;
 
 namespace Unicepse.HostBuilders
 {
@@ -19,26 +20,25 @@ namespace Unicepse.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
-                //services.AddTransient((s) => CreatePlayerListingViewModel(s)!);
-                //services.AddSingleton<Func<PlayerListingViewModel>>((s) => () => s.GetRequiredService<PlayerListingViewModel>());
-                //services.AddSingleton<NavigationService<PlayerListingViewModel>>();
-
-                //services.AddTransient<MakePlayerViewModel>();
-                //services.AddSingleton<Func<MakePlayerViewModel>>((s) => () => s.GetRequiredService<MakePlayerViewModel>());
-                //services.AddSingleton<NavigationService<MakePlayerViewModel>>();
-
                 services.AddSingleton<MainViewModel>();
                 services.AddSingleton<MainWindowViewModel>();
                 services.AddSingleton<AuthViewModel>();
                 services.AddSingleton<LicenseViewModel>();
+                services.AddSingleton(s => new MainWindow()
+                {
+                    DataContext = s.GetRequiredService<MainWindowViewModel>(),
+                });
+                services.AddSingleton(s => new AuthWindow()
+                {
+                    DataContext = s.GetRequiredService<AuthViewModel>(),
+                });
+                services.AddSingleton(s => new LicenseWindow()
+                {
+                    DataContext = s.GetRequiredService<LicenseViewModel>(),
+                });
             });
             return _hostBuilder;
         }
-        //private static PlayerListingViewModel? CreatePlayerListingViewModel(IServiceProvider s)
-        //{
-        //    return PlayerListingViewModel.LoadViewModel(
-        //        s.GetRequiredService<NavigationService<MakePlayerViewModel>>(), s.GetRequiredService<GymStore>());
-        //}
-
+      
     }
 }

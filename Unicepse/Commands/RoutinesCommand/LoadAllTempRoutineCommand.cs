@@ -33,7 +33,7 @@ namespace Unicepse.Commands.RoutinesCommand
             }
             catch (Exception)
             {
-                _routineListing.ErrorMessage = "Failed to load Players. Please restart the application.";
+                _routineListing.ErrorMessage = "خطأ في تحميل القوالب يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

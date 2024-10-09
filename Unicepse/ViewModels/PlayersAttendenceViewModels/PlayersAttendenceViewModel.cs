@@ -24,10 +24,10 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             _playersAttendenceStore = playersAttendenceStore;
             _playerAttendenceListItemViewModels = new ObservableCollection<PlayerAttendenceListItemViewModel>();
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
-            LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore);
+            //LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore);
 
         }
-        public ICommand LoadDailyReport { get; }
+        public ICommand? LoadDailyReport { get; }
         private void _playersAttendenceStore_Loaded()
         {
             _playerAttendenceListItemViewModels.Clear();

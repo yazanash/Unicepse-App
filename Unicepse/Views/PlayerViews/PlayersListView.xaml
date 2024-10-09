@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-
+        <converters:NumberFormatConverter x:Key="convertNum"/>
 
 
     </UserControl.Resources>
@@ -123,6 +123,12 @@
                                 <Icon:PackIconMaterial Kind="FileExcel"/>
                             </StackPanel>
                         </Button>
+                        <Button Grid.Column="2" Command="{Binding ArchivedPlayerCommand}" ToolTip="جدول اللاعبين المؤرشفين" Grid.Row="1"  Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
+
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="Archive"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
 
 
@@ -194,7 +200,7 @@
                                     Width="auto"
                                     />
                                 <DataGridTextColumn Header="رصيد الحساب" IsReadOnly="True"
-                                     Binding="{Binding Balance}"
+                                     Binding="{Binding Balance,Converter={StaticResource convertNum}}"
                                     Width="auto"
                                     />
                                 <DataGridTemplateColumn  Width="*" IsReadOnly="True">

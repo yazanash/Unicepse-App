@@ -69,7 +69,7 @@
                                           ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <ComboBoxItem Content="{Binding year}"/>
+                                        <TextBlock Text="{Binding year}" FontSize="12"   />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>

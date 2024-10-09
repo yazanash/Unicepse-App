@@ -63,6 +63,7 @@ namespace Unicepse.Entityframework.Services
                     context.Entry(trainer).State = EntityState.Unchanged;
 
                 }
+
                 EntityEntry<Sport> CreatedResult = await context.Set<Sport>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;

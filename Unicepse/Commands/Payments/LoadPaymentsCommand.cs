@@ -22,19 +22,19 @@ namespace Unicepse.Commands.Payments
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            //try
-            //{
+            try
+            {
 
-            await _paymentDataStore.GetPlayerPayments(_playersDataStore.SelectedPlayer!.Player);
-            //}
-            //catch (Exception)
-            //{
-            //    //_subscriptionListing.ErrorMessage = "Failed to load Players. Please restart the application.";
-            //}
-            //finally
-            //{
-            //    //_subscriptionListing.IsLoading = false;
-            //}
+                await _paymentDataStore.GetPlayerPayments(_playersDataStore.SelectedPlayer!.Player);
+            }
+            catch (Exception)
+            {
+                //_subscriptionListing.ErrorMessage = "Failed to load Players. Please restart the application.";
+            }
+            finally
+            {
+                //_subscriptionListing.IsLoading = false;
+            }
         }
     }
 }

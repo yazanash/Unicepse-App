@@ -71,11 +71,11 @@
                             </Grid.ColumnDefinitions>
                             <icons:PackIconMaterial Kind="AccountOutline" Foreground="#787878" Width="20" Height="20"/>
                             <TextBlock Text="Enter username" Style="{StaticResource hintText}"
-                                      x:Name="lbl_username"
+                                      x:Name="lbl_username" 
                                        MouseDown="email_MouseDown"/>
                             <TextBox x:Name="email_txt"
                                      Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"
-                                     TextChanged="email_txt_TextChanged"
+                                     TextChanged="email_txt_TextChanged" TabIndex="0"
                                      Style="{StaticResource loginTextbox}" />
                         </Grid>
                     </Border>
@@ -89,7 +89,7 @@
                             <icons:PackIconMaterial Kind="LockOutline" Foreground="#787878" Width="20" Height="20"/>
                             <TextBlock x:Name="lbl_password" Text="Enter password" Style="{StaticResource hintText}"
                                       MouseDown="password_MouseDown" />
-                            <PasswordBox x:Name="password_txt"
+                            <PasswordBox x:Name="password_txt" TabIndex="1"
                                          PasswordChanged="password_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
                         </Grid>
                     </Border>
@@ -102,7 +102,7 @@
                             <icons:PackIconMaterial Kind="LockOutline" Foreground="#787878" Width="20" Height="20"/>
                             <TextBlock x:Name="lbl_password_confirm" Text="Confirm password" Style="{StaticResource hintText}"
                                       MouseDown="lbl_password_confirm_MouseDown" />
-                            <PasswordBox x:Name="password_confirm_txt" PasswordChanged="password_confirm_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
+                            <PasswordBox x:Name="password_confirm_txt" TabIndex="2" PasswordChanged="password_confirm_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
                         </Grid>
                     </Border>
                     <Button x:Name="sing_btn" Content="SignUp" Command="{Binding RegisterCommand}" Style="{StaticResource signinBtn}"/>

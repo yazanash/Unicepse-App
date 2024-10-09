@@ -13,6 +13,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:NumberFormatConverter x:Key="convertNum"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
     </UserControl.Resources>
 
@@ -49,7 +50,7 @@
                                Tag="التصنيف حسب" Grid.Row="1" Grid.Column="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <ComboBoxItem Content="{Binding Content}"/>
+                                <TextBlock Text="{Binding Content}" FontSize="12"   />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -150,7 +151,7 @@
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="الراتب" IsReadOnly="True"
-                                     Binding="{Binding SalaryValue}"
+                                     Binding="{Binding SalaryValue,Converter={StaticResource convertNum}}"
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="النسبة" IsReadOnly="True"

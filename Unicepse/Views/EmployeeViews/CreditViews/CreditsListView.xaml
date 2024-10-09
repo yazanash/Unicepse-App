@@ -12,6 +12,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:NumberFormatConverter x:Key="convertNum"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#fff" Padding="5" Margin="5" x:Name="parent">
@@ -81,7 +82,7 @@
                                  
 
                                     <DataGridTextColumn Header="قيمة السحب" IsReadOnly="True"
-                                     Binding="{Binding CreditValue}"
+                                     Binding="{Binding CreditValue,Converter={StaticResource convertNum}}"
                                     Width="auto"
                                     />
 

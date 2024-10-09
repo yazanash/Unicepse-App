@@ -62,6 +62,8 @@ namespace Unicepse.ViewModels.RoutineViewModels
             _routineDataStore.MuscleChanged += _routineDataStore_MuscleChanged;
             _routineDataStore.RoutineItemCreated += _routineDataStore_RoutineItemCreated;
             _routineDataStore.RoutineItemDeleted += _routineDataStore_RoutineItemDeleted;
+            _routineDataStore.OrdersApplied += _routineDataStore_OrdersApplied;
+
             _groupMuscleListItemViewModels.Add(new GroupMuscleListItemViewModel(new MuscleGroup()
             {
                 Image = "pack://application:,,,/Resources/Assets/metric/Waist.png",
@@ -124,7 +126,13 @@ namespace Unicepse.ViewModels.RoutineViewModels
             CancelCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => routinePlayerViewModels));
 
         }
-
+        private void _routineDataStore_OrdersApplied(RoutineItems obj)
+        {
+            foreach (var item in _routineExercisesItemsViewModels.Where(x => x.GroupId == obj.Exercises!.GroupId))
+            {
+                item.Orders = obj.Orders;
+            }
+        }
         private void loadRoutineItems()
         {
             foreach (var item in _routineDataStore.SelectedRoutine!.RoutineSchedule)
@@ -146,6 +154,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private void _routineDataStore_Reorderd()
         {
             _routineExercisesItemsViewModels.Clear();
+            if(SelectedMuscle!=null)
             foreach (var routineItem in _routineDataStore.RoutineItems.Where(x => x.Exercises!.GroupId == SelectedMuscle!.MuscleGroup.Id).OrderBy(x => x.ItemOrder))
             {
                 AddRoutineItem(routineItem);

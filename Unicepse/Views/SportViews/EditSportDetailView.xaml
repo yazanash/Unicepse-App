@@ -12,6 +12,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <con:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>
@@ -67,7 +68,7 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
-                                <TextBox Text="{Binding MonthlyPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                <TextBox Text="{Binding MonthlyPrice, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
                             </StackPanel>
 
@@ -76,7 +77,7 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
-                                <TextBox Text="{Binding DailyPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                <TextBox Text="{Binding DailyPrice, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
                             </StackPanel>
 

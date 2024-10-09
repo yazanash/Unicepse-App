@@ -13,6 +13,7 @@
             <Grid.RowDefinitions >
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
@@ -20,6 +21,7 @@
             <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff"
                              SelectedItem="{Binding  SelectedMuscle }"
+                     SelectionChanged="ListBox_SelectionChanged"
                          VirtualizingPanel.ScrollUnit="Pixel"
                               ItemsSource="{Binding   MuscleGroup}" ItemContainerStyle="{StaticResource MuscelListBoxItemContainerStyle1}" >
                 <ListBox.ItemsPanel>
@@ -39,8 +41,8 @@
 
             </Button>
 
-            <Separator Margin="10" Grid.Row="1" Background="#aaa" DockPanel.Dock="Top"/>
-            <Grid DockPanel.Dock="Top" Grid.Row="2">
+            <Separator Margin="10" Grid.Row="2" Background="#aaa" DockPanel.Dock="Top"/>
+            <Grid DockPanel.Dock="Top" Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="*"/>
@@ -49,21 +51,21 @@
                 <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff"
                          VirtualizingPanel.ScrollUnit="Pixel"
-                         
+                         x:Name="ex_list"
                               ItemsSource="{Binding ExercisesList}" ItemContainerStyle="{StaticResource ExercisesListBoxItemContainerStyle1}" >
 
                 </ListBox>
                 <DockPanel Grid.Column="1">
                     <ListBox ScrollViewer.CanContentScroll="True"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" 
-                               VirtualizingPanel.ScrollUnit="Pixel"
+                               VirtualizingPanel.ScrollUnit="Pixel" x:Name="it_list"
                               ItemsSource="{Binding RoutineItems}" ItemContainerStyle="{StaticResource AddRoutineItemsListBoxItemContainerStyle1}" >
 
                     </ListBox>
                 </DockPanel>
 
             </Grid>
-            <Border Background="Transparent" Grid.Row="3" HorizontalAlignment="Right">
+            <Border Background="Transparent" Grid.Row="4" HorizontalAlignment="Right">
                 <Button Grid.Column="2" Margin="5 0"  Command="{Binding SubmitCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
                     <StackPanel Orientation="Horizontal">

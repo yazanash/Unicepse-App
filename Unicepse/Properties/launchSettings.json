@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Unicepse": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}

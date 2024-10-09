@@ -62,6 +62,7 @@ namespace Unicepse.Commands.MetricsCommand
 
             };
             await _metricDataStore.Update(metric);
+            _metricDataStore.SelectedMetric = _metricDataStore.Metrics.FirstOrDefault(x => x.Id == metric.Id);
             _navigationService.ReNavigate();
         }
     }

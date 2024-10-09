@@ -24,5 +24,13 @@ namespace Unicepse.Views.Metrics
         {
             InitializeComponent();
         }
+
+        private void TextBlock_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                textBox.SelectAll();
+            }
+        }
     }
 }

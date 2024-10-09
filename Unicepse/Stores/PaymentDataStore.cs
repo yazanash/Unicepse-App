@@ -99,19 +99,28 @@ namespace Unicepse.Stores
                         {
                             entity.DataStatus = DataStatus.ToDelete;
                             await _paymentDataService.Update(entity);
+                            int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
+                            _payments.RemoveAt(currentIndex);
                         }
                     }
                     catch
                     {
                         entity.DataStatus = DataStatus.ToDelete;
                         await _paymentDataService.Update(entity);
+                        int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
+                        _payments.RemoveAt(currentIndex);
                     }
 
                 }
+                else
+                {
+                    entity.DataStatus = DataStatus.ToDelete;
+                    await _paymentDataService.Update(entity);
+                    int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
+                    _payments.RemoveAt(currentIndex);
+                }
              
             }
-            int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
-            _payments.RemoveAt(currentIndex);
             Deleted?.Invoke(entity.Id);
             SumUpdated?.Invoke();
         }

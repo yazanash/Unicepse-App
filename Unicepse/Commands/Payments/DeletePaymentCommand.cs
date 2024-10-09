@@ -32,9 +32,12 @@ namespace Unicepse.Commands.Payments
             }
             _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
             _subscriptionDataStore.SelectedSubscription.PaidValue -= _paymentDataStore.SelectedPayment!.PaymentValue;
+            _playersDataStore.SelectedPlayer!.Player.Balance -= _paymentDataStore.SelectedPayment!.PaymentValue;
+            
+            await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!.Player);
             await _paymentDataStore.Delete(_paymentDataStore.SelectedPayment!);
             await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription!);
-            MessageBox.Show("payment deleted successfully");
+            MessageBox.Show("تم حذف الدفعة بنجاح");
         }
     }
 }

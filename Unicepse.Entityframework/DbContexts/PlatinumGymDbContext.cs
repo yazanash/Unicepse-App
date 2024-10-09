@@ -48,6 +48,7 @@ namespace Unicepse.Entityframework.DbContexts
         public DbSet<Metric>? Metrics { get; set; }
         public DbSet<License>? Licenses { get; set; }
         public DbSet<GymProfile>? GymProfile { get; set; }
+        public DbSet<AuthenticationLog>? authenticationLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -106,6 +107,9 @@ namespace Unicepse.Entityframework.DbContexts
             modelBuilder.Entity<PlayerPayment>()
            .Property(c => c.DataStatus)
            .HasConversion<int>();
+            modelBuilder.Entity<User>()
+          .Property(c => c.Role)
+          .HasConversion<int>();
 
             base.OnModelCreating(modelBuilder);
         }

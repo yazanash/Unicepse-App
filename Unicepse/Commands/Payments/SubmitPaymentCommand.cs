@@ -58,6 +58,12 @@ namespace Unicepse.Commands.Payments
             };
             _subscriptionDataStore.SelectedSubscription!.PaidValue += payment.PaymentValue;
             _playersDataStore.SelectedPlayer!.Player.Balance += payment.PaymentValue;
+            _playersDataStore.SelectedPlayer!.Player.IsSubscribed = true;
+            if (_playersDataStore.SelectedPlayer.Player != null)
+            {
+                _playersDataStore.SelectedPlayer.IsActive = true;
+            }
+
             int sportDays = _subscriptionDataStore.SelectedSubscription!.DaysCount;
             double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / sportDays;
             int daysCount = Convert.ToInt32(payment.PaymentValue / dayPrice);
@@ -69,7 +75,7 @@ namespace Unicepse.Commands.Payments
 
             await _paymentDataStore.Add(payment);
             await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription);
-            await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!.Player);
+            await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!.Player!);
             _navigationService.ReNavigate();
         }
     }

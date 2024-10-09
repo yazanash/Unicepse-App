@@ -118,7 +118,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
+                                <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
                                      Binding="{Binding RollDate}"
                                     Width="auto"
                                     />

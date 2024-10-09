@@ -48,7 +48,6 @@ namespace Unicepse.utlis.common
             _navigationStore = navigationStore;
             _playersAttendenceStore = playersAttendenceStore;
             _subscriptionDataStore = subscriptionDataStore;
-
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
             _playersAttendenceStore.LoggedIn += _playersAttendenceStore_LoggedIn;
             _playersAttendenceStore.LoggedOut += _playersAttendenceStore_LoggedOut;
@@ -57,10 +56,13 @@ namespace Unicepse.utlis.common
             OpenScanCommand = new LoginPlayerScanCommand(new ReadPlayerQrCodeViewModel(), _playersAttendenceStore, _playerStore);
             _playerAttendenceListItemViewModels = new ObservableCollection<PlayerAttendenceListItemViewModel>();
             _trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
-            LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore);
+            LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore,this);
             SearchBox = new SearchBoxViewModel();
             LoadTrainersCommand = new LoadTrainersCommand(_employeeStore, this);
+            SelectedDate = DateTime.Now;
+
             _employeeStore.Loaded += _employeeStore_Loaded;
+            
         }
         public override void Dispose()
         {
@@ -93,10 +95,20 @@ namespace Unicepse.utlis.common
                 OnPropertyChanged(nameof(SelectedDailyPlayerReport));
             }
         }
+        private DateTime _selectedDate;
+        public DateTime SelectedDate
+        {
+            get { return _selectedDate; }
+            set {
+                _selectedDate = value;
+                OnPropertyChanged(nameof(SelectedDate));
+                LoadDailyReport.Execute(null);
+            }
+        }
         private void _playersAttendenceStore_LoggedOut(DailyPlayerReport obj)
         {
             PlayerAttendenceListItemViewModel? itemViewModel = _playerAttendenceListItemViewModels.FirstOrDefault(y => y.dailyPlayerReport?.Id == obj.Id);
-        
+
             if (itemViewModel != null)
             {
                 itemViewModel.Update(obj);
@@ -128,13 +140,13 @@ namespace Unicepse.utlis.common
             _playerAttendenceListItemViewModels.Add(itemViewModel);
             itemViewModel.IdSort = _playerAttendenceListItemViewModels.Count();
         }
-        private static LogPlayerAttendenceViewModel CreatePlayerSearchViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore,NavigationStore navigationStore,HomeViewModel homeViewModel,SubscriptionDataStore subscriptionDataStore)
+        private static LogPlayerAttendenceViewModel CreatePlayerSearchViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, HomeViewModel homeViewModel, SubscriptionDataStore subscriptionDataStore)
         {
 
-            return LogPlayerAttendenceViewModel.LoadViewModel(playersDataStore, playersAttendenceStore,navigationStore,homeViewModel, subscriptionDataStore);
+            return LogPlayerAttendenceViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, navigationStore, homeViewModel, subscriptionDataStore);
         }
 
-        public static HomeViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore,NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
+        public static HomeViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
         {
             HomeViewModel viewModel = new(playersStore, playersAttendenceStore, employeeStore, navigationStore, subscriptionDataStore);
 

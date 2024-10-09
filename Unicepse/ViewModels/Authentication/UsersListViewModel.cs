@@ -22,15 +22,18 @@ namespace Unicepse.ViewModels.Authentication
         private NavigationStore _navigatorStore;
         private readonly UsersDataStore _usersDataStore;
         private readonly EmployeeStore _employeeStore;
+        private readonly AuthenticationStore _authenticationStore;
         public IEnumerable<UserListItemViewModel> UsersList => _userListItemViewModels;
         public ICommand AddUserCommand { get; }
         public ICommand LoadUsersCommand { get; }
+        public ICommand LoadUsersLogsCommand { get; }
         public SearchBoxViewModel SearchBox { get; set; }
-        public UsersListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore)
+        public UsersListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore, AuthenticationStore authenticationStore)
         {
             _navigatorStore = navigatorStore;
             _usersDataStore = usersDataStore;
             _employeeStore = employeeStore;
+            _authenticationStore = authenticationStore;
 
             _userListItemViewModels = new ObservableCollection<UserListItemViewModel>();
             _usersDataStore.Created += _usersDataStore_Created;
@@ -43,6 +46,9 @@ namespace Unicepse.ViewModels.Authentication
             LoadUsersCommand = new LoadUsersCommand(_usersDataStore);
             AddUserCommand = new NavaigateCommand<AddUserViewModel>(new NavigationService<AddUserViewModel>(_navigatorStore,
                 () => CreateUserViewModel(_usersDataStore, _navigatorStore, this, _employeeStore)));
+
+            LoadUsersLogsCommand = new NavaigateCommand<AuthenticationLoggingList>(new NavigationService<AuthenticationLoggingList>(_navigatorStore,
+               () => CreateLogsViewModel(_usersDataStore)));
         }
         public UserListItemViewModel? SelectedUser
         {
@@ -72,9 +78,9 @@ namespace Unicepse.ViewModels.Authentication
             return AddUserViewModel.loadViewModel(usersDataStore, navigatorStore, usersListViewModel, employeeStore);
         }
 
-        public static UsersListViewModel LoadViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore)
+        public static UsersListViewModel LoadViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore,AuthenticationStore authenticationStore)
         {
-            UsersListViewModel usersListViewModel = new UsersListViewModel(navigatorStore, usersDataStore, employeeStore);
+            UsersListViewModel usersListViewModel = new UsersListViewModel(navigatorStore, usersDataStore, employeeStore,authenticationStore);
             usersListViewModel.LoadUsersCommand.Execute(null);
             return usersListViewModel;
         }
@@ -124,9 +130,14 @@ namespace Unicepse.ViewModels.Authentication
         }
         private void AddUser(User user)
         {
-            UserListItemViewModel userListItemViewModel = new UserListItemViewModel(user, _navigatorStore, _usersDataStore, this, _employeeStore);
+            UserListItemViewModel userListItemViewModel = new UserListItemViewModel(user, _navigatorStore, _usersDataStore, this, _employeeStore, _authenticationStore);
             _userListItemViewModels.Add(userListItemViewModel);
+            userListItemViewModel.Order = _userListItemViewModels.Count();
 
+        }
+        private AuthenticationLoggingList CreateLogsViewModel(UsersDataStore usersDataStore)
+        {
+            return AuthenticationLoggingList.loadViewModel(usersDataStore);
         }
     }
 }

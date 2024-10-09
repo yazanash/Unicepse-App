@@ -50,7 +50,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             _metricStore = metricStore;
             _playersAttendenceStore = playersAttendenceStore;
             _playerStore.profile_loaded += _playerStore_profile_loaded;
-
+            ScanAvailable = true;
             OpenScanCommand = new GetProfileScanCommand(new ReadPlayerQrCodeViewModel(), _playerStore);
             CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
@@ -65,7 +65,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             Year = years.FirstOrDefault(x=>x.year== obj.BirthDate) ;
             UID = obj.UID;
         }
-
+        public bool ScanAvailable { get; set; }
         private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
         {
             return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, metricStore, routineDataStore, playersAttendenceStore);

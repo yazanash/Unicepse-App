@@ -6,12 +6,13 @@
              xmlns:local="clr-namespace:Unicepse.Views.PaymentViews"
              xmlns:comp="clr-namespace:Unicepse.utlis.Components"
              mc:Ignorable="d" 
+             xmlns:conv="clr-namespace:Unicepse.utlis.Converters"
              FlowDirection="RightToLeft"
              xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
 
-      
+        <conv:NumberFormatConverter x:Key="convertNum"/>
 
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE"   >
@@ -44,7 +45,7 @@
                                    Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
-                            <TextBox Text="{Binding PaymentValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                            <TextBox  Text="{Binding PaymentValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum }}" Style="{StaticResource textBoxStyle}"/>
 
                         </StackPanel>
                         <StackPanel  Grid.Row="0" Grid.Column="1" Margin="5">

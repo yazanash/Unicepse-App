@@ -11,6 +11,12 @@ namespace Unicepse.ViewModels.Accountant
     public class IncomeListItemViewModel : ViewModelBase
     {
         public PlayerPayment playerPayment;
+        private int _order;
+        public int Order
+        {
+            get { return _order; }
+            set { _order = value; OnPropertyChanged(nameof(Order)); }
+        }
         public int Id => playerPayment.Id;
         public string? PlayerName => playerPayment.Player!.FullName;
         public string? SportName => playerPayment.Subscription!.Sport!.Name;

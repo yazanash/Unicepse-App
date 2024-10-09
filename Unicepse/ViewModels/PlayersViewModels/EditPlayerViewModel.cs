@@ -175,7 +175,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             Hieght = _playerStore.SelectedPlayer!.Player.Hieght;
             SubscribeDate = _playerStore.SelectedPlayer!.Player.SubscribeDate;
             _sportStore = sportStore;
-
+            ScanAvailable = false;
             SubmitCommand = new EditPlayerCommand(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore, _paymentDataStore, _sportStore)), this, _playerStore, _navigationStore, _subscriptionDataStore, _sportStore);
             CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(_navigationStore, _subscriptionDataStore, _playerStore, _paymentDataStore, _sportStore)));
         }
@@ -188,6 +188,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
         public bool CanSubmit => !HasErrors;
         private bool? _submited = false;
+        public bool ScanAvailable { get; set; }
         public bool? Submited
         {
             get { return _submited; }

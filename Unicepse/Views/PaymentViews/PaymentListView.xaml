@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-
+        <converters:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#fff" Padding="5" Margin="5" x:Name="parent">
         <Grid Grid.Column="1">
@@ -75,7 +75,7 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
-                                    Binding="{Binding Id}"
+                                    Binding="{Binding Order}"
                                     CanUserResize="False"/>
 
 
@@ -85,7 +85,7 @@
                                     />
 
                                     <DataGridTextColumn Header="قيمة الدفعة" IsReadOnly="True"
-                                     Binding="{Binding Value}"
+                                     Binding="{Binding Value,Converter={StaticResource convertNum}}"
                                     Width="auto"
                                     />
 

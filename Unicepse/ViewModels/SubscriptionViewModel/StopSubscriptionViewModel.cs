@@ -52,8 +52,8 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         {
             //SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
             int Price = Convert.ToInt32( _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount);
-            SubscribeDays = Convert.ToInt32( ReturnCash / Price);
             DuesCash = _subscriptionStore.SelectedSubscription!.PaidValue - ReturnCash;
+            SubscribeDays = Convert.ToInt32(DuesCash / Price);
             SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
         }
         #region Properties 

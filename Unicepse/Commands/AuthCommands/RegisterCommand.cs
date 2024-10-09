@@ -8,6 +8,7 @@ using Unicepse.Stores;
 using Unicepse.ViewModels.Authentication;
 using Unicepse.navigation;
 using System.Windows;
+using Unicepse.Core.Common;
 
 namespace Unicepse.Commands.AuthCommands
 {
@@ -26,7 +27,6 @@ namespace Unicepse.Commands.AuthCommands
             _navigationService = navigationService;
             _registerViewModel.PropertyChanged += _registerViewModel_PropertyChanged;
         }
-
         private void _registerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(_registerViewModel.CanSubmit))
@@ -45,8 +45,9 @@ namespace Unicepse.Commands.AuthCommands
         {
             try
             {
+                
                 RegistrationResult result = await _authenticationStore.Register(_registerViewModel.UserName!,
-               _registerViewModel.Password!, _registerViewModel.PasswordConfirm!);
+               _registerViewModel.Password!, _registerViewModel.PasswordConfirm!, Roles.Admin);
                 if (result == RegistrationResult.Success)
                 {
                     _navigationService.Navigate();

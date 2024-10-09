@@ -109,6 +109,7 @@ namespace Unicepse.Stores
 
         #region Credits
         public event Action? CreditsLoaded;
+        public event Action? EmployeeCreditsLoaded;
         public event Action<double>? DailyCreditsSumLoaded;
 
         private readonly List<Employee> _credits;
@@ -128,6 +129,7 @@ namespace Unicepse.Stores
             IEnumerable<Credit> credits = await _employeeCreditsDataService.GetAll(date);
             _employeeCredits.Clear();
             _employeeCredits.AddRange(credits);
+            EmployeeCreditsLoaded?.Invoke();
         }
         #endregion
 

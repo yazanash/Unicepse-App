@@ -29,6 +29,9 @@
         <DataTemplate DataType="{x:Type vms:PlayerProfileViewModel }">
             <views:PlayerProfile/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:ArchivedPlayersListViewModel }">
+            <views:ArchivedPlayersView/>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}"/>

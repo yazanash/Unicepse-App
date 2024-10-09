@@ -31,7 +31,7 @@ namespace Unicepse.Commands.RoutinesCommand
             }
             catch (Exception)
             {
-                _routineListing.ErrorMessage = "Failed to load Players. Please restart the application.";
+                _routineListing.ErrorMessage = "خطأ في تحميل التمارين الرياضية يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

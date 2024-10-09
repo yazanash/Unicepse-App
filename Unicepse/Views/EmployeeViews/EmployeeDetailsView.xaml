@@ -11,6 +11,7 @@
             >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <con:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10" >
         <Grid>
@@ -79,7 +80,7 @@
                                           ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <ComboBoxItem Content="{Binding year}"/>
+                                            <TextBlock Text="{Binding year}" FontSize="12"   />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
@@ -90,7 +91,7 @@
                                      Foreground="{StaticResource colors.secondry}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
-                                <TextBox Text="{Binding SalaryValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                <TextBox Text="{Binding SalaryValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
                             </StackPanel>
 

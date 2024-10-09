@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-
+        <converters:NumberFormatConverter x:Key="numConv"/>
 
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#EEE" Padding="10">
@@ -98,7 +98,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="الدفعة" IsReadOnly="True"
-                                     Binding="{Binding Price}"
+                                     Binding="{Binding Price,Converter={StaticResource numConv}}"
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="الوظيفة" IsReadOnly="True"

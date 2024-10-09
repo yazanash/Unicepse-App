@@ -89,13 +89,13 @@ namespace Unicepse.Entityframework.Services
             return Getentity;
         }
 
-        public async Task<IEnumerable<DailyPlayerReport>> GetLoggedPlayers()
+        public async Task<IEnumerable<DailyPlayerReport>> GetLoggedPlayers(DateTime date)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
-            IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(x=>x.Date.Month==DateTime.Now.Month&&
-            x.Date.Year == DateTime.Now.Year&&
-            x.Date.Day == DateTime.Now.Day).Include(x=>x.Player).AsNoTracking().ToListAsync();
+            IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(x=>x.Date.Month== date.Month &&
+            x.Date.Year == date.Year&&
+            x.Date.Day == date.Day).Include(x=>x.Player).AsNoTracking().ToListAsync();
             return entities;
         }
         public async Task<IEnumerable<DailyPlayerReport>> GetPlayerLogging(int id)

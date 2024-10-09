@@ -18,7 +18,7 @@ namespace Unicepse.Entityframework.DbContexts
 
         public PlatinumGymDbContext CreateDbContext()
         {
-            DbContextOptions options = new DbContextOptionsBuilder().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking).UseSqlServer(_connectionString).Options;
+            DbContextOptions options = new DbContextOptionsBuilder().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution).UseSqlServer(_connectionString).Options;
             return new PlatinumGymDbContext(options);
         }
     }

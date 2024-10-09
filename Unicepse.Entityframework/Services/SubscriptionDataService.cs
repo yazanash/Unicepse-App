@@ -42,14 +42,19 @@ namespace Unicepse.Entityframework.Services
                     throw new ConflictException();
                 context.Entry(entity.Sport!).State = EntityState.Detached;
                 if (context.Entry(entity.Sport!).State == EntityState.Detached)
-                    context.Entry(entity.Sport!).State = EntityState.Modified;
+                    context.Entry(entity.Sport!).State = EntityState.Unchanged;
 
                 context.Entry(entity.Player!).State = EntityState.Detached;
                 if (context.Entry(entity.Player!).State == EntityState.Detached)
-                    context.Entry(entity.Player!).State = EntityState.Modified;
+                    context.Entry(entity.Player!).State = EntityState.Unchanged;
 
                 if (entity.Trainer != null)
-                    context.Attach<Employee>(entity.Trainer!);
+                {
+                    context.Entry(entity.Trainer).State = EntityState.Detached;
+                    if (context.Entry(entity.Trainer).State == EntityState.Detached)
+                        context.Entry(entity.Trainer).State = EntityState.Unchanged;
+                }
+
                 EntityEntry<Subscription> CreatedResult = await context.Set<Subscription>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
@@ -140,7 +145,7 @@ namespace Unicepse.Entityframework.Services
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x=>x.EndDate>=DateTime.Now).Include(x => x.Trainer).AsNoTracking()
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.EndDate >= DateTime.Now).Include(x => x.Trainer).AsNoTracking()
                     .Include(x => x.Player).AsNoTracking()
                     .Include(x => x.Sport).AsNoTracking().ToListAsync();
                 return entities;
@@ -161,24 +166,18 @@ namespace Unicepse.Entityframework.Services
             //context.Attach(entity.Sport!);
 
             if (context.Entry(entity).State == EntityState.Detached)
-            {
-                // Attach the entity
                 context.Entry(entity).State = EntityState.Modified;
-            }
-            if (entity.Trainer != null)
-                context.Entry(entity.Trainer!).State = EntityState.Detached;
 
             if (context.Entry(entity.Sport!).State == EntityState.Detached)
-            {
-                // Attach the entity
                 context.Entry(entity.Sport!).State = EntityState.Unchanged;
-            }
+
             if (entity.Trainer != null)
+            {
+                context.Entry(entity.Trainer!).State = EntityState.Detached;
                 if (context.Entry(entity.Trainer).State == EntityState.Detached)
-                {
-                    // Attach the entity
                     context.Entry(entity.Trainer).State = EntityState.Unchanged;
-                }
+            }
+
             context.Set<Subscription>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

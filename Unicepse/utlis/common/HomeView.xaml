@@ -160,7 +160,7 @@
             </Grid>
 
             <Viewbox Margin="5 0" VerticalAlignment="Top" Stretch="Uniform" Grid.Row="0" Grid.Column="1" >
-                <Calendar CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" Style="{DynamicResource CalendarStyle1}" />
+                <Calendar x:Name="calender" LostFocus="Calendar_LostFocus" SelectedDate="{Binding SelectedDate,UpdateSourceTrigger=PropertyChanged}" CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" Style="{DynamicResource CalendarStyle1}" />
             </Viewbox>
             <Border Background="#fff" CornerRadius="10" Padding="5" Margin="5 10"  Grid.Row="1" Grid.Column="1">
                 <Border.Effect>

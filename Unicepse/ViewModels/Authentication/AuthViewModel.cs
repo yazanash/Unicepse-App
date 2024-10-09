@@ -18,12 +18,12 @@ namespace Unicepse.ViewModels.Authentication
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public event Action? LoginAction;
         private readonly AuthenticationStore _authenticationStore;
-        public AuthViewModel(NavigationStore navigatorStore, AuthenticationStore authenticationStore)
+        public AuthViewModel( AuthenticationStore authenticationStore)
         {
-            _navigatorStore = navigatorStore;
+            _navigatorStore = new NavigationStore();
             _authenticationStore = authenticationStore;
            
-                _navigatorStore.CurrentViewModel = new LoginViewModel(this, navigatorStore, _authenticationStore);
+                _navigatorStore.CurrentViewModel = new LoginViewModel(this, _navigatorStore , _authenticationStore);
            
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
 

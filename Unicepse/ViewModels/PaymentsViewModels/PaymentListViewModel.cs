@@ -95,6 +95,8 @@ namespace Unicepse.ViewModels.PaymentsViewModels
             PaymentListItemViewModel itemViewModel =
              new PaymentListItemViewModel(payment, _paymentDataStore, _subscriptionDataStore, _playersDataStore, _navigationStore, this);
             _paymentListItemViewModels.Add(itemViewModel);
+            itemViewModel.Order = _paymentListItemViewModels.Count();
+
         }
         private void _paymentDataStore_Loaded()
         {

@@ -30,7 +30,7 @@ namespace Unicepse.Commands.Sport
             }
             catch (Exception)
             {
-                _sportListing.ErrorMessage = "Failed to load Sports . Please restart the application.";
+                _sportListing.ErrorMessage = "خطأ في تحميل الرياضات يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

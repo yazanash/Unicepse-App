@@ -23,11 +23,20 @@ namespace Unicepse.Commands.Employee.CreditsCommands
             _employeeStore = employeeStore;
             _creditsDataStore = creditsDataStore;
             _creditDetailsViewModel = creditDetailsViewModel;
+            _creditDetailsViewModel.PropertyChanged += _creditDetailsViewModel_PropertyChanged;
+        }
+
+        private void _creditDetailsViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_creditDetailsViewModel.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
         }
 
         public override bool CanExecute(object? parameter)
         {
-            return base.CanExecute(parameter);
+            return base.CanExecute(parameter) && _creditDetailsViewModel.CreditValue>0;
         }
         public override async Task ExecuteAsync(object? parameter)
         {

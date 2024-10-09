@@ -29,8 +29,7 @@ namespace Unicepse.Entityframework.Services.AuthService
             User existed_user = await GetByUsername(entity.UserName!);
             if (existed_user != null)
                 throw new ConflictException();
-            if (entity.Employee != null)
-                context.Attach(entity.Employee!);
+           
             string pass = _passwordHasher.HashPassword(entity.Password);
             entity.Password = pass;
             EntityEntry<User> CreatedResult = await context.Set<User>().AddAsync(entity);
@@ -49,6 +48,15 @@ namespace Unicepse.Entityframework.Services.AuthService
                 throw new Exception("لا يمكن حذف مستخدم في حال عدم وجود مستخدمين اخرين");
 
             }
+            if (entityToDelete.Role == Core.Common.Roles.Admin)
+            {
+                if (context.Users!.Where(x => x.Role == Core.Common.Roles.Admin).Count() < 2)
+                {
+                    throw new Exception("يجب ان يكون هناك على الاقل مدير واحد للنظام");
+
+                }
+            }
+           
             User? entity = await context.Set<User>().FirstOrDefaultAsync((e) => e.Id == id);
             context.Set<User>().Remove(entity!);
             await context.SaveChangesAsync();
@@ -68,7 +76,7 @@ namespace Unicepse.Entityframework.Services.AuthService
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
-            IEnumerable<User>? entities = await context.Set<User>().Include(x => x.Employee).ToListAsync();
+            IEnumerable<User>? entities = await context.Set<User>().ToListAsync();
             return entities;
         }
         public bool HasUsers()
@@ -85,16 +93,15 @@ namespace Unicepse.Entityframework.Services.AuthService
             User entityToUpdate = await Get(entity.Id);
             if (entityToUpdate == null)
                 throw new NotExistException();
-            string pass = _passwordHasher.HashPassword(entity.Password);
-            entity.Password = pass;
-            if (entity.Employee != null)
+            if(entity.Role != Core.Common.Roles.Admin)
+            if (context.Users!.Where(x => x.Role==Core.Common.Roles.Admin).Count() == 1 && entityToUpdate.Role==Core.Common.Roles.Admin)
             {
-                context.Entry(entity.Employee).State = EntityState.Detached;
-
-                if (context.Entry(entity.Employee).State == EntityState.Detached)
-                    context.Entry(entity.Employee).State = EntityState.Unchanged;
+                throw new Exception("يجب ان يكون هناك على الاقل مدير واحد للنظام");
 
             }
+            string pass = _passwordHasher.HashPassword(entity.Password);
+            entity.Password = pass;
+           
             context.Set<User>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
@@ -110,11 +117,32 @@ namespace Unicepse.Entityframework.Services.AuthService
             await context.SaveChangesAsync();
             return entity;
         }
+
+        public void AuthenticationLogging(AuthenticationLog entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            context.Entry(entity.User!).State = EntityState.Detached;
+            if (context.Entry(entity.User!).State == EntityState.Detached)
+                context.Entry(entity.User!).State = EntityState.Unchanged;
+            EntityEntry<AuthenticationLog> CreatedResult =  context.Set<AuthenticationLog>().Add(entity);
+            context.SaveChanges();
+        }
+        public async Task<IEnumerable<AuthenticationLog>> GetAllAuthenticationLogging(DateTime date)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+
+            IEnumerable<AuthenticationLog>? entities = await context.Set<AuthenticationLog>().Include(x=>x.User).AsNoTracking().Where(x=>
+            x.LoginDateTime.Day== date.Day &&
+             x.LoginDateTime.Year == date.Year && 
+             x.LoginDateTime.Month == date.Month).ToListAsync();
+            return entities;
+        }
         public async Task<User> GetByUsername(string username)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             User? entity = await context.Set<User>().FirstOrDefaultAsync((e) => e.UserName == username);
             return entity!;
         }
+
     }
 }

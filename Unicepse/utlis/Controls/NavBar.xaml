@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
-    <Border Grid.Row="1" Width="50" Background="{StaticResource ResourceKey=colors.background.white}" CornerRadius="15" Padding="5">
+    <Border Grid.Row="1" Width="50" Background="{StaticResource ResourceKey=colors.background.white}"  CornerRadius="15" Padding="5">
         <Border.Style>
             <Style>
                 <Style.Triggers>
@@ -38,7 +38,7 @@
                 </Style.Triggers>
             </Style>
         </Border.Style>
-            <DockPanel>
+            <DockPanel >
                 <!--Logo-->
 
             <StackPanel  DockPanel.Dock="Top" Orientation="Horizontal"  Grid.Column="0" >
@@ -72,7 +72,7 @@
                 <CheckBox Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
                     <Icon:PackIconMaterial Kind="Menu"/>
                 </CheckBox>
-                    <RadioButton
+                    <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Home}" 
                         IsChecked="True"
@@ -82,7 +82,7 @@
                             <TextBlock  Text="الرئيسية"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
                     </RadioButton>
-                <RadioButton
+                <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Players}" 
                                 Style="{StaticResource MenuButtonRD}" >
@@ -92,7 +92,7 @@
                            
                         </StackPanel>
                     </RadioButton>
-                <RadioButton
+                <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Sport}" 
                                 Style="{StaticResource MenuButtonRD}" >
@@ -102,7 +102,7 @@
                            
                         </StackPanel>
                     </RadioButton>
-                <RadioButton
+                <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Trainer}" 
                                 Style="{StaticResource MenuButtonRD}" >
@@ -112,7 +112,7 @@
                           
                         </StackPanel>
                     </RadioButton>
-                <RadioButton 
+                <RadioButton  GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Accounting}" 
                                 Style="{StaticResource MenuButtonRD}" >
@@ -122,8 +122,8 @@
                            
                         </StackPanel>
                     </RadioButton>
-             
-                <RadioButton
+
+                <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Users}" 
                                 Style="{StaticResource MenuButtonRD}" >
@@ -133,7 +133,7 @@
 
                     </StackPanel>
                 </RadioButton>
-                <RadioButton
+                <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.About}" 
                                 Style="{StaticResource MenuButtonRD}" >
@@ -144,18 +144,28 @@
                     </StackPanel>
                 </RadioButton>
             </StackPanel>
-            <!--<Button DockPanel.Dock="Bottom"
-                         Command="{Binding LogoutCommand}"
-                                VerticalAlignment="Bottom" 
-                                Style="{StaticResource MenuButton}" >
-                    <StackPanel Orientation="Horizontal">
-                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Logout"/>
-                        <TextBlock Text="تسجيل خروج"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
-                       
+            
+                
+                
+                
+                
+                <StackPanel VerticalAlignment="Stretch" DockPanel.Dock="Bottom">
 
-                    </StackPanel>
-                </Button>-->
-            </DockPanel>
+
+                <RadioButton GroupName="nav" VerticalAlignment="Bottom"
+                                Command="{Binding UpdateCurrentViewModelCommand}"
+                                CommandParameter="{x:Static nav:ViewType.Logout}" 
+                DockPanel.Dock="Bottom"
+                Margin="0"
+                                Style="{StaticResource MenuButtonRD}" >
+                <StackPanel Orientation="Horizontal">
+                    <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Logout" />
+                    <TextBlock Text="تسجيل خروج"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+
+                </StackPanel>
+            </RadioButton>
+            </StackPanel>
+        </DockPanel>
         </Border>
     
 

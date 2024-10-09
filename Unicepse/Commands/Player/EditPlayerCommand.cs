@@ -61,7 +61,6 @@ namespace Unicepse.Commands.Player
                 player.Weight = _editPlayerViewModel.Weight;
 
                 await _playerStore.UpdatePlayer(player);
-                MessageBox.Show(player.FullName + " edited successfully");
                 navigationService.Navigate();
             }
             catch (Exception ex)

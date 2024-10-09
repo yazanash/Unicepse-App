@@ -29,6 +29,7 @@ namespace Unicepse.Commands.RoutinesCommand
         public override async Task ExecuteAsync(object? parameter)
         {
             PlayerRoutine playerRoutine = _routineDataStore.SelectedRoutine!;
+            //await _routineDataStore.DeleteRoutineItems(playerRoutine.Id);
             playerRoutine.RoutineSchedule.Clear();
             playerRoutine.RoutineSchedule.AddRange(_routineDataStore.RoutineItems);
             playerRoutine.DaysGroupMap!.Clear();

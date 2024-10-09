@@ -30,7 +30,7 @@ namespace Unicepse.Commands.ExpensesCommands
             }
             catch (Exception)
             {
-                _expensesListing.ErrorMessage = "Failed to load Expenses. Please restart the application.";
+                _expensesListing.ErrorMessage = "خطأ في تحميل المصاريف يرجى اعادة تشغيل البرنامج";
             }
             finally
             {

@@ -16,6 +16,9 @@
         <DataTemplate DataType="{x:Type authvms:AddUserViewModel}">
             <authvs:AddUserView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type authvms:AuthenticationLoggingList}">
+            <authvs:UserLogReportView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type authvms:EditUserViewModel}">
             <authvs:EditUserView/>
         </DataTemplate>

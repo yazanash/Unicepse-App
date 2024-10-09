@@ -37,6 +37,30 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("EmployeeSport");
                 });
 
+            modelBuilder.Entity("Unicepse.Core.Models.Authentication.AuthenticationLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("LoginDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("authenticationLogs");
+                });
+
             modelBuilder.Entity("Unicepse.Core.Models.Authentication.User", b =>
                 {
                     b.Property<int>("Id")
@@ -48,21 +72,22 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<bool>("Disable")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
+                    b.Property<string>("OwnerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("Position")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(4000)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Users");
                 });
@@ -751,13 +776,13 @@ namespace Unicepse.Entityframework.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Unicepse.Core.Models.Authentication.User", b =>
+            modelBuilder.Entity("Unicepse.Core.Models.Authentication.AuthenticationLog", b =>
                 {
-                    b.HasOne("Unicepse.Core.Models.Employee.Employee", "Employee")
+                    b.HasOne("Unicepse.Core.Models.Authentication.User", "User")
                         .WithMany()
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Employee");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Unicepse.Core.Models.DailyActivity.DailyPlayerReport", b =>

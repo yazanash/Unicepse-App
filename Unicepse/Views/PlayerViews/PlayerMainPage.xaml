@@ -18,7 +18,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-
+        <converters:NumberFormatConverter x:Key="covNum"/>
     </UserControl.Resources>
     <Grid Grid.Column="1">
         <Grid.RowDefinitions>
@@ -110,7 +110,7 @@
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="السعر" IsReadOnly="True"
-                                     Binding="{Binding Price}"
+                                     Binding="{Binding PriceAfterOffer,Converter={StaticResource covNum}}"
                                     Width="auto"
                                     />
 
@@ -123,8 +123,8 @@
                                      Binding="{Binding OfferValue}"
                                     Width="auto"
                                     />-->
-                                <DataGridTextColumn Header="السعر بعد الحسم" IsReadOnly="True"
-                                     Binding="{Binding PriceAfterOffer}"
+                                <DataGridTextColumn Header="الباقي" IsReadOnly="True"
+                                     Binding="{Binding RestVal,Converter={StaticResource covNum}}"
                                     Width="auto"
                                     />
 

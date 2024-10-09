@@ -20,14 +20,19 @@ namespace Unicepse.Stores
         public event Action? ExercisesLoaded;
         public event Action<PlayerRoutine>? Updated;
         public event Action<int>? Deleted;
+        public event Action<RoutineItems>? OrdersApplied;
         private readonly PlayerRoutineDataService _playerRoutineDataService;
         private readonly RoutineApiDataService _routineApiDataService;
+
+      
+
         public event Action? Reorderd;
         private readonly List<PlayerRoutine> _playerRoutines;
         private readonly List<PlayerRoutine> _tempRoutines;
         private readonly List<Exercises> _exercises;
 
         private readonly List<RoutineItems> _routineItems;
+
         private readonly List<DayGroupListItemViewModel> _daysItems;
         public event Action<RoutineItems>? RoutineItemCreated;
         public event Action<RoutineItems>? RoutineItemDeleted;
@@ -62,7 +67,10 @@ namespace Unicepse.Stores
                 AddDaysItem(item);
             }
         }
-
+        internal void ApplyToAll(RoutineItems routineItems)
+        {
+            OrdersApplied?.Invoke(routineItems);
+        }
         private MuscleGroup? _selectedMuscleGroup;
         public MuscleGroup? SelectedMuscle
         {
@@ -134,6 +142,10 @@ namespace Unicepse.Stores
             //await _playerRoutineDataService.Create(entity);
             _routineItems.Remove(entity);
             RoutineItemDeleted?.Invoke(entity);
+        }
+        public async Task DeleteRoutineItems(int id)
+        {
+            await _playerRoutineDataService.DeleteRoutineItems(id);
         }
         public void AddDaysItem(DayGroupListItemViewModel entity)
         {

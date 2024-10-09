@@ -5,18 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Unicepse"
         mc:Ignorable="d"
+        FlowDirection="RightToLeft"
         Title="CameraReader" Height="350" Width="350">
     <Border Padding="10" Background="#fff">
         <Grid>
-            <Border Margin="10"  Grid.Row="0" ClipToBounds="True" CornerRadius="20" BorderThickness="1" BorderBrush="#aaa">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5">
+
+                <TextBlock Text="الكاميرا" 
+                                   Foreground="{StaticResource colors.secondry}"
+                                   Margin="0 0 8 8" VerticalAlignment="Center"
+                                   FontSize="16"/>
+                <ComboBox Style="{DynamicResource ComboBoxStyle1}" VerticalAlignment="Center"
+                              x:Name="vidlist"   SelectionChanged="vidlist_SelectionChanged"     ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" FontSize="12"   />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                </ComboBox>
+
+            </StackPanel>
+            <Border Margin="10"  Grid.Row="1" ClipToBounds="True" CornerRadius="20" BorderThickness="1" BorderBrush="#aaa">
                 <Border.Background>
                     <VisualBrush Stretch="Fill">
                         <VisualBrush.Visual>
-                            <Image Stretch="UniformToFill" x:Name="camera_img" RenderTransformOrigin="0.5,0.5"  >
-                                <Image.RenderTransform>
-                                    <ScaleTransform ScaleX="-1" />
-                                </Image.RenderTransform>
-                            </Image>
+                            <Image Stretch="UniformToFill" x:Name="camera_img" />
                         </VisualBrush.Visual>
                     </VisualBrush>
                 </Border.Background>

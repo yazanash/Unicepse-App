@@ -10,13 +10,20 @@ using Unicepse.ViewModels.PrintViewModels;
 using Unicepse.Stores;
 using Unicepse.utlis.common;
 using Unicepse.navigation.Stores;
+using Unicepse.Commands.Player;
+using Unicepse.ViewModels.Employee.CreditViewModels;
+using Unicepse.navigation;
 
 namespace Unicepse.ViewModels.Employee.TrainersViewModels
 {
     public class TrainerMounthlyReportViewModel : ViewModelBase
     {
-       
-        public TrainerDueses trainerDueses;
+        private readonly NavigationStore _navigatorStore;
+        private readonly EmployeeStore _employeeStore;
+        private readonly CreditsDataStore _creditsDataStore;
+        private readonly CreditListViewModel _creditListViewModel;
+
+    public TrainerDueses trainerDueses;
         public int Id => trainerDueses.Id;
         public double TotalSubscriptions => trainerDueses.TotalSubscriptions;
         public int CountSubscription => trainerDueses.CountSubscription;
@@ -29,12 +36,17 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         public double CreditsCount => trainerDueses.CreditsCount;
         public double FinalAmount => TotalDause - trainerDueses.Credits;
         public double Salary => trainerDueses.Salary;
-        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses)
+        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses, NavigationStore navigatorStore, EmployeeStore employeeStore, CreditsDataStore creditsDataStore, CreditListViewModel creditListViewModel)
         {
             this.trainerDueses = trainerDueses;
-
+            _employeeStore = employeeStore;
+            _navigatorStore = navigatorStore;
+            _creditsDataStore = creditsDataStore;
+            _creditListViewModel = creditListViewModel;
+            AddCreditCommand = new NavaigateCommand<CreditDetailsViewModel>(new NavigationService<CreditDetailsViewModel>(_navigatorStore, () => new CreditDetailsViewModel(_employeeStore, _creditsDataStore, _navigatorStore, _creditListViewModel,this.FinalAmount)));
+           
         }
-
+        public ICommand AddCreditCommand { get; }
         internal void Update(TrainerDueses obj)
         {
             trainerDueses = obj;

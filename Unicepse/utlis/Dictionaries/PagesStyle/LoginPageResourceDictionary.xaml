@@ -41,7 +41,7 @@
                     <StackPanel>
 
 
-                        <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}" 
+                        <Border x:Name="border" CornerRadius="5"  Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 SnapsToDevicePixels="True"
                                 BorderThickness="{TemplateBinding BorderThickness}">
