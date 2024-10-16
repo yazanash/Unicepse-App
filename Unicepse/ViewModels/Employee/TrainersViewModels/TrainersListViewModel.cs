@@ -29,6 +29,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         private DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly LicenseDataStore _licenseDataStore;
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public ICommand AddTrainerCommand { get; }
@@ -48,7 +49,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
             }
         }
         public SearchBoxViewModel SearchBox { get; set; }
-        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
+        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, LicenseDataStore licenseDataStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
@@ -56,7 +57,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
             _subscriptionDataStore = subscriptionDataStore;
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
-
+            _licenseDataStore = licenseDataStore;
             LoadTrainerCommand = new LoadTrainersCommand(_employeeStore, this);
             AddTrainerCommand = new NavaigateCommand<AddTrainerViewModel>(new NavigationService<AddTrainerViewModel>(_navigatorStore, () => CreateAddTrainerViewModel(navigatorStore, this, _sportDataStore, _employeeStore)));
             AddEmployeeCommand = new NavaigateCommand<AddEmployeeViewModel>(new NavigationService<AddEmployeeViewModel>(_navigatorStore, () => new AddEmployeeViewModel(navigatorStore, this, _employeeStore)));
@@ -80,6 +81,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(Filter.Employee, 3, "الموظفين"));
 
             _employeeStore.FilterChanged += _employeeStore_FilterChanged;
+            
         }
 
         private void _employeeStore_FilterChanged(Filter? filter)
@@ -190,12 +192,12 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         private void AddTrainer(emp.Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this, _dausesDataStore, _creditsDataStore, _subscriptionDataStore);
+                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this, _dausesDataStore, _creditsDataStore, _subscriptionDataStore,_licenseDataStore);
             trainerListItemViewModels.Add(itemViewModel);
         }
-        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
+        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore,LicenseDataStore licenseDataStore)
         {
-            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore, subscriptionDataStore, dausesDataStore, creditsDataStore);
+            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore, subscriptionDataStore, dausesDataStore, creditsDataStore,licenseDataStore);
 
             viewModel.LoadTrainerCommand.Execute(null);
 

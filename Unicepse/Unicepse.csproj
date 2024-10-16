@@ -6,9 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <RuntimeIdentifier>win-x86</RuntimeIdentifier>
-    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <ApplicationIcon>launcher.ico</ApplicationIcon>
     <PlatformTarget>x86</PlatformTarget>
     <SignAssembly>False</SignAssembly>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -141,7 +144,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="logo.ico" />
+    <Content Include="launcher.ico" />
     <Content Include="Resources\Assets\Exercises\1\1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -355,8 +358,10 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Serilog" Version="4.0.0" />
+    <PackageReference Include="Serilog" Version="4.0.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
+    <PackageReference Include="squirrel.windows" Version="2.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.4" />
     <PackageReference Include="ZXing.Net" Version="0.16.9" />
     <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />

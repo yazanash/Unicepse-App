@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Unicepse.API.Services;
 using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.Stores
 {
@@ -23,6 +24,8 @@ namespace Unicepse.Stores
         public event Action<Subscription>? Updated;
         public event Action<int>? Deleted;
 
+        string LogFlag = "[Subscriptions] ";
+        private readonly ILogger<SubscriptionDataStore> _logger;
 
         private readonly SubscriptionDataService _subscriptionDataService;
         private readonly SubscriptionApiDataService _subscriptionApiDataService;
@@ -79,31 +82,39 @@ namespace Unicepse.Stores
         }
 
         public event Action<Subscription?>? SubscriptionChanged;
-        public SubscriptionDataStore(SubscriptionDataService subscriptionDataService, SubscriptionApiDataService subscriptionApiDataService)
+        public SubscriptionDataStore(SubscriptionDataService subscriptionDataService, SubscriptionApiDataService subscriptionApiDataService, ILogger<SubscriptionDataStore> logger)
         {
             _subscriptionDataService = subscriptionDataService;
             _subscriptions = new List<Subscription>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _subscriptionApiDataService = subscriptionApiDataService;
+            _logger = logger;
         }
 
         public async Task Add(Subscription entity)
         {
+            _logger.LogInformation(LogFlag + "add subscription");
             entity.DataStatus = DataStatus.ToCreate;
             await _subscriptionDataService.Create(entity);
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
             if (internetAvailable)
             {
                 try
                 {
+                    _logger.LogInformation(LogFlag + "add attendance to api");
                     int status = await _subscriptionApiDataService.Create(entity);
                     if (status == 201 || status == 409)
                     {
+                        _logger.LogInformation(LogFlag + "subscription synced successfully with code {0}", status.ToString());
                         entity.DataStatus = DataStatus.Synced;
-                        await _subscriptionDataService.Update(entity);
+                        await _subscriptionDataService.UpdateDataStatus(entity);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    _logger.LogError(LogFlag + "subscription synced failed with error {0}", ex.Message);
+                }
 
             }
             _subscriptions.Add(entity);
@@ -114,11 +125,7 @@ namespace Unicepse.Stores
 
         public async Task Delete(int entity_id)
         {
-            //bool status = await _subscriptionApiDataService.Create(entity);
-            //if (status)
-            //    entity.DataStatus = DataStatus.Synced;
-            //else
-            //    entity.DataStatus = DataStatus.ToDelete;
+            _logger.LogInformation(LogFlag + "delete subscription");
             bool deleted = await _subscriptionDataService.Delete(entity_id);
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity_id);
             _subscriptions.RemoveAt(currentIndex);
@@ -127,6 +134,7 @@ namespace Unicepse.Stores
 
         public async Task GetAll(Player player)
         {
+            _logger.LogInformation(LogFlag + "get all subscription");
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(player);
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
@@ -134,6 +142,7 @@ namespace Unicepse.Stores
         }
         public async Task GetAll(Employee trainer)
         {
+            _logger.LogInformation(LogFlag + "get all trainer subscription");
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(trainer);
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
@@ -142,6 +151,7 @@ namespace Unicepse.Stores
 
         public async Task GetAll(Sport sport, DateTime date)
         {
+            _logger.LogInformation(LogFlag + "get all subscription for sport in date {0}", date);
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(sport, date);
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
@@ -151,6 +161,7 @@ namespace Unicepse.Stores
 
         public async Task GetAll(Employee trainer, DateTime date)
         {
+            _logger.LogInformation(LogFlag + "get all subscription for trainer in date {0}", date);
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(trainer, date);
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
@@ -159,6 +170,7 @@ namespace Unicepse.Stores
 
         public async Task GetAll()
         {
+            _logger.LogInformation(LogFlag + "get all subscription");
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll();
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
@@ -166,6 +178,7 @@ namespace Unicepse.Stores
         }
         public async Task GetAllActive()
         {
+            _logger.LogInformation(LogFlag + "get all active subscription");
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAllActive();
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
@@ -173,6 +186,7 @@ namespace Unicepse.Stores
         }
         public async Task Initialize()
         {
+            _logger.LogInformation(LogFlag + "get all subscription from init");
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll();
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
@@ -180,7 +194,7 @@ namespace Unicepse.Stores
 
         public async Task Update(Subscription entity)
         {
-
+            _logger.LogInformation(LogFlag + "update Subscription");
             if (entity.DataStatus != DataStatus.ToCreate)
                 entity.DataStatus = DataStatus.ToUpdate;
 
@@ -188,18 +202,24 @@ namespace Unicepse.Stores
 
 
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
             if (internetAvailable)
             {
                 try
                 {
+                    _logger.LogInformation(LogFlag + "add Subscription to api");
                     int status = await _subscriptionApiDataService.Update(entity);
                     if (status == 200)
                     {
+                        _logger.LogInformation(LogFlag + "Subscription synced successfully with code {0}", status.ToString());
                         entity.DataStatus = DataStatus.Synced;
-                        await _subscriptionDataService.Update(entity);
+                        await _subscriptionDataService.UpdateDataStatus(entity);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    _logger.LogError(LogFlag + "Subscription synced failed with error {0}", ex.Message);
+                }
 
             }
 
@@ -219,6 +239,7 @@ namespace Unicepse.Stores
         }
         public async Task Stop(Subscription entity, DateTime stopDate)
         {
+            _logger.LogInformation(LogFlag + "stop subscription");
             if (entity.DataStatus != DataStatus.ToCreate)
                 entity.DataStatus = DataStatus.ToUpdate;
 
@@ -226,18 +247,24 @@ namespace Unicepse.Stores
 
 
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
             if (internetAvailable)
             {
                 try
                 {
+                    _logger.LogInformation(LogFlag + "add subscription to api");
                     int status = await _subscriptionApiDataService.Update(entity);
                     if (status == 200)
                     {
+                        _logger.LogInformation(LogFlag + "subscription synced successfully with code {0}", status.ToString());
                         entity.DataStatus = DataStatus.Synced;
-                        await _subscriptionDataService.Update(entity);
+                        await _subscriptionDataService.UpdateDataStatus(entity);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    _logger.LogError(LogFlag + "subscription synced failed with error {0}", ex.Message);
+                }
             }
 
 
@@ -270,7 +297,7 @@ namespace Unicepse.Stores
                     if (status == 200)
                     {
                         entity.DataStatus = DataStatus.Synced;
-                        await _subscriptionDataService.Update(entity);
+                        await _subscriptionDataService.UpdateDataStatus(entity);
                     }
                 }
                 catch { }
@@ -296,13 +323,18 @@ namespace Unicepse.Stores
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetByDataStatus(DataStatus.ToCreate);
             foreach (Subscription subscription in subscriptions)
             {
+                _logger.LogInformation(LogFlag + "create subscription to api");
                 int status = await _subscriptionApiDataService.Create(subscription);
                 if (status == 201 || status == 409)
                 {
+                    _logger.LogInformation(LogFlag + "subscription synced successfully with code {0}", status.ToString());
                     subscription.DataStatus = DataStatus.Synced;
-                    await _subscriptionDataService.Update(subscription);
+                    await _subscriptionDataService.UpdateDataStatus(subscription);
                 }
-
+                else
+                {
+                    _logger.LogWarning(LogFlag + "subscription synced failed with code {0}", status.ToString());
+                }
 
             }
         }
@@ -312,11 +344,17 @@ namespace Unicepse.Stores
             IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetByDataStatus(DataStatus.ToUpdate);
             foreach (Subscription subscription in subscriptions)
             {
+                _logger.LogInformation(LogFlag + "update subscription to api");
                 int status = await _subscriptionApiDataService.Update(subscription);
                 if (status == 200)
                 {
+                    _logger.LogInformation(LogFlag + "subscription synced successfully with code {0}", status.ToString());
                     subscription.DataStatus = DataStatus.Synced;
-                    await _subscriptionDataService.Update(subscription);
+                    await _subscriptionDataService.UpdateDataStatus(subscription);
+                }
+                else
+                {
+                    _logger.LogWarning(LogFlag + "subscription synced failed with code {0}", status.ToString());
                 }
 
 

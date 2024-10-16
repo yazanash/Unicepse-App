@@ -248,5 +248,16 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
+        public async Task<Subscription> UpdateDataStatus(Subscription entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Subscription existedPlayer = await Get(entity.Id);
+            if (existedPlayer == null)
+                throw new ConflictException("this Subscription is not existed");
+            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            await context.SaveChangesAsync();
+            return entity;
+
+        }
     }
 }

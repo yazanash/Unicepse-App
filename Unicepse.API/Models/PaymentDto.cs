@@ -14,11 +14,11 @@ namespace Unicepse.API.Models
     {
         public string? id { get; set; }
         public string? pid { get; set; }
-        public string?  sid { get; set; }
+        public string? sid { get; set; }
         public string? gym_id { get; set; }
         public double value { get; set; }
         public string? description { get; set; }
-        public string? date { get; set; }
+        public DateTime date { get; set; }
 
         internal void FromPayment(PlayerPayment entity)
         {
@@ -27,7 +27,7 @@ namespace Unicepse.API.Models
             sid = entity.Subscription!.Id.ToString();
             value = entity.PaymentValue;
             description = entity.Des;
-            date = entity.PayDate.ToString("dd/MM/yyyy");
+            date = entity.PayDate;
 
         }
 
@@ -35,17 +35,15 @@ namespace Unicepse.API.Models
         {
             PlayerPayment playerPayment = new PlayerPayment()
             {
-                Id =Convert.ToInt32( id),
-                Player = new Player() { Id = Convert.ToInt32( pid) },
-                Subscription = new Subscription() { Id = Convert.ToInt32( sid) },
+                Id = Convert.ToInt32(id),
+                Player = new Player() { Id = Convert.ToInt32(pid) },
+                Subscription = new Subscription() { Id = Convert.ToInt32(sid) },
                 PaymentValue = value,
                 Des = description,
-
+                PayDate = date
 
             };
-            if (!string.IsNullOrEmpty(date))
-                playerPayment.PayDate = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            
+
             return playerPayment;
         }
     }

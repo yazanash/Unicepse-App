@@ -11,6 +11,7 @@ using System.Windows;
 using Unicepse.API.Services;
 using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.Stores
 {
@@ -21,12 +22,15 @@ namespace Unicepse.Stores
         public event Action<PlayerPayment>? Updated;
         public event Action<int>? Deleted;
         public event Action? SumUpdated;
-        public PaymentDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, PaymentApiDataService paymentApiDataService)
+        string LogFlag = "[Payments] ";
+        private readonly ILogger<PaymentDataStore> _logger;
+        public PaymentDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, PaymentApiDataService paymentApiDataService, ILogger<PaymentDataStore> logger)
         {
             _paymentDataService = paymentDataService;
             _payments = new List<PlayerPayment>();
             _dausesDataService = dausesDataService;
             _paymentApiDataService = paymentApiDataService;
+            _logger = logger;
         }
 
         private readonly PaymentDataService _paymentDataService;
@@ -48,6 +52,7 @@ namespace Unicepse.Stores
             set
             {
                 _selectedPayment = value;
+                _logger.LogInformation(LogFlag + "selected metrics changed");
             }
         }
 
@@ -56,21 +61,28 @@ namespace Unicepse.Stores
 
         public async Task Add(PlayerPayment entity)
         {
+            _logger.LogInformation(LogFlag + "add payment");
             entity.DataStatus = DataStatus.ToCreate;
             await _paymentDataService.Create(entity);
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
             if (internetAvailable)
             {
                 try
                 {
+                    _logger.LogInformation(LogFlag + "add payment to api");
                     int status = await _paymentApiDataService.Create(entity);
                     if (status == 201 || status == 409)
                     {
+                        _logger.LogInformation(LogFlag + "payment synced successfully with code {0}", status.ToString());
                         entity.DataStatus = DataStatus.Synced;
-                        await _paymentDataService.Update(entity);
+                        await _paymentDataService.UpdateDataStatus(entity);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    _logger.LogError(LogFlag + "payment synced failes with error {0}", ex.Message);
+                }
 
             }
             _payments.Add(entity);
@@ -81,6 +93,7 @@ namespace Unicepse.Stores
 
         public async Task Delete(PlayerPayment entity)
         {
+            _logger.LogInformation(LogFlag + "delete payment");
             if (entity.DataStatus == DataStatus.ToCreate)
                 await DeleteForce(entity.Id);
             else
@@ -90,23 +103,27 @@ namespace Unicepse.Stores
                 {
                     try
                     {
+                        _logger.LogInformation(LogFlag + "delete payment from api");
                         int status = await _paymentApiDataService.Delete(entity);
                         if (status == 200 )
                         {
+                            _logger.LogInformation(LogFlag + "payment synced successfully with code {0}", status.ToString());
                             await DeleteForce(entity.Id);
                         }
                         else
                         {
+                            _logger.LogInformation(LogFlag + "payment synced failed with code {0}", status.ToString());
                             entity.DataStatus = DataStatus.ToDelete;
-                            await _paymentDataService.Update(entity);
+                            await _paymentDataService.UpdateDataStatus(entity);
                             int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
                             _payments.RemoveAt(currentIndex);
                         }
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        _logger.LogError(LogFlag + "payment synced failed with error {0}", ex.Message);
                         entity.DataStatus = DataStatus.ToDelete;
-                        await _paymentDataService.Update(entity);
+                        await _paymentDataService.UpdateDataStatus(entity);
                         int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
                         _payments.RemoveAt(currentIndex);
                     }
@@ -114,6 +131,7 @@ namespace Unicepse.Stores
                 }
                 else
                 {
+                    _logger.LogError(LogFlag + "payment synced failed no internet available ");
                     entity.DataStatus = DataStatus.ToDelete;
                     await _paymentDataService.Update(entity);
                     int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
@@ -127,6 +145,7 @@ namespace Unicepse.Stores
 
         public async Task DeleteForce(int entity_id)
         {
+            _logger.LogInformation(LogFlag + "force delete payment");
             bool deleted = await _paymentDataService.Delete(entity_id);
             int currentIndex = _payments.FindIndex(y => y.Id == entity_id);
             _payments.RemoveAt(currentIndex);
@@ -136,6 +155,7 @@ namespace Unicepse.Stores
 
         public async Task GetPlayerPayments(Player player)
         {
+            _logger.LogInformation(LogFlag + "get player payments");
             IEnumerable<PlayerPayment> subscriptions = await _paymentDataService.GetPlayerPayments(player);
             _payments.Clear();
             _payments.AddRange(subscriptions);
@@ -144,6 +164,7 @@ namespace Unicepse.Stores
         }
         public async Task GetAll()
         {
+            _logger.LogInformation(LogFlag + "get all payments");
             IEnumerable<PlayerPayment> subscriptions = await _paymentDataService.GetAll();
             _payments.Clear();
             _payments.AddRange(subscriptions);
@@ -152,6 +173,7 @@ namespace Unicepse.Stores
         }
         public async Task GetAll(DateTime dateFrom, DateTime dateTo)
         {
+            _logger.LogInformation(LogFlag + "get all payment from {0} to {1}",dateFrom,dateTo);
             IEnumerable<PlayerPayment> subscriptions = await _paymentDataService.GetAll(dateFrom, dateTo);
             _payments.Clear();
             _payments.AddRange(subscriptions);
@@ -169,25 +191,30 @@ namespace Unicepse.Stores
         }
         public async Task Update(PlayerPayment entity)
         {
+            _logger.LogInformation(LogFlag + "update payment");
             if (entity.DataStatus != DataStatus.ToCreate)
                 entity.DataStatus = DataStatus.ToUpdate;
 
             await _paymentDataService.Update(entity);
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
             if (internetAvailable)
             {
                 try
                 {
 
-
+                    _logger.LogInformation(LogFlag + "update payment to api");
                     int status = await _paymentApiDataService.Update(entity);
                     if (status == 200)
                     {
+                        _logger.LogInformation(LogFlag + "payment synced successfully with code {0}", status.ToString());
                         entity.DataStatus = DataStatus.Synced;
-                        await _paymentDataService.Update(entity);
+                        await _paymentDataService.UpdateDataStatus(entity);
                     }
                 }
-                catch { }
+                catch(Exception ex) {
+                    _logger.LogError(LogFlag + "payment synced failes with error {0}", ex.Message);
+                }
             }
             int currentIndex = _payments.FindIndex(y => y.Id == entity.Id);
 
@@ -208,11 +235,17 @@ namespace Unicepse.Stores
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetByDataStatus(DataStatus.ToCreate);
             foreach (PlayerPayment payment in payments)
             {
+                _logger.LogInformation(LogFlag + "create payment to api");
                 int status = await _paymentApiDataService.Create(payment);
                 if (status==201||status==409)
                 {
+                    _logger.LogInformation(LogFlag + "payment synced successfully with code {0}", status.ToString());
                     payment.DataStatus = DataStatus.Synced;
-                    await _paymentDataService.Update(payment);
+                    await _paymentDataService.UpdateDataStatus(payment);
+                }
+                else
+                {
+                    _logger.LogWarning(LogFlag + "payment synced failed with code {0}", status.ToString());
                 }
             }
         }
@@ -222,11 +255,17 @@ namespace Unicepse.Stores
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetByDataStatus(DataStatus.ToUpdate);
             foreach (PlayerPayment payment in payments)
             {
+                _logger.LogInformation(LogFlag + "update payment to api");
                 int status = await _paymentApiDataService.Update(payment);
                 if (status==200)
                 {
+                    _logger.LogInformation(LogFlag + "payment synced successfully with code {0}", status.ToString());
                     payment.DataStatus = DataStatus.Synced;
-                    await _paymentDataService.Update(payment);
+                    await _paymentDataService.UpdateDataStatus(payment);
+                }
+                else
+                {
+                    _logger.LogWarning(LogFlag + "payment synced failed with code {0}", status.ToString());
                 }
             }
         }
@@ -235,10 +274,16 @@ namespace Unicepse.Stores
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetByDataStatus(DataStatus.ToDelete);
             foreach (PlayerPayment payment in payments)
             {
+                _logger.LogInformation(LogFlag + "delete payment from api");
                 int status = await _paymentApiDataService.Delete(payment);
-                if (status==200)
+                if (status == 200)
                 {
+                    _logger.LogInformation(LogFlag + "payment synced successfully with code {0}", status.ToString());
                     await _paymentDataService.Delete(payment.Id);
+                }
+                else
+                {
+                    _logger.LogWarning(LogFlag + "payment synced failed with code {0}", status.ToString());
                 }
 
 

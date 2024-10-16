@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.utlis.common;
 using Unicepse.Core.Models.Sport;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.Stores
 {
@@ -19,13 +20,14 @@ namespace Unicepse.Stores
     }
     public class EmployeeStore : IDataStore<Employee>
     {
+        string LogFlag = "[Employee] ";
         public event Action<Employee>? Created;
         public event Action? Loaded;
         public event Action<Employee>? Updated;
         public event Action<int>? Deleted;
         public event Action<Filter?>? FilterChanged;
         public event Action<Sport?>? SportChanged;
-
+        private readonly ILogger<EmployeeStore> _logger;
         private readonly EmployeeDataService _employeeDataService;
         private readonly DausesDataService _dausesDataService;
         private readonly List<Employee> _employee;
@@ -34,13 +36,14 @@ namespace Unicepse.Stores
         private readonly List<Sport> _sports;
         public IEnumerable<Sport> Sports => _sports;
 
-        public EmployeeStore(EmployeeDataService employeeDataService, DausesDataService dausesDataService)
+        public EmployeeStore(EmployeeDataService employeeDataService, DausesDataService dausesDataService, ILogger<EmployeeStore> logger)
         {
             _employeeDataService = employeeDataService;
             _employee = new List<Employee>();
-            _sports=new List<Sport>();
+            _sports = new List<Sport>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _dausesDataService = dausesDataService;
+            _logger = logger;
         }
 
 
@@ -100,6 +103,7 @@ namespace Unicepse.Stores
 
         public async Task Add(Employee entity)
         {
+            _logger.LogInformation(LogFlag + "Add employee");
             await _employeeDataService.Create(entity);
             _employee.Add(entity);
             Created?.Invoke(entity);
@@ -107,6 +111,7 @@ namespace Unicepse.Stores
 
         public async Task Delete(Employee employee)
         {
+            _logger.LogInformation(LogFlag+ "delete employee");
             employee.IsActive = false;
             await _employeeDataService.Update(employee);
             int currentIndex = _employee.FindIndex(y => y.Id == employee.Id);
@@ -115,6 +120,7 @@ namespace Unicepse.Stores
         }
         public async Task Delete(int id)
         {
+            _logger.LogInformation(LogFlag + "force delete employee started");
             await _employeeDataService.Delete(id);
             int currentIndex = _employee.FindIndex(y => y.Id == id);
             _employee.RemoveAt(currentIndex);
@@ -122,11 +128,13 @@ namespace Unicepse.Stores
         }
         public async Task GetAll()
         {
+            _logger.LogInformation(LogFlag + "get all employee started");
             await _initializeLazy.Value;
             Loaded?.Invoke();
         }
         public async Task Initialize()
         {
+            _logger.LogInformation(LogFlag + "get all employee init started");
             IEnumerable<Employee> employees = await _employeeDataService.GetAll();
             _employee.Clear();
             _employee.AddRange(employees);
@@ -134,6 +142,7 @@ namespace Unicepse.Stores
 
         public async Task Update(Employee entity)
         {
+            _logger.LogInformation(LogFlag + "update employee started");
             await _employeeDataService.Update(entity);
             int currentIndex = _employee.FindIndex(y => y.Id == entity.Id);
 
@@ -150,6 +159,7 @@ namespace Unicepse.Stores
 
         public async Task FilterEmployee(EmployeeRole employeeRole)
         {
+            _logger.LogInformation(LogFlag + "filter employees");
             IEnumerable<Employee> employees = await _employeeDataService.GetAll();
             _employee.Clear();
             switch (employeeRole)
@@ -174,6 +184,7 @@ namespace Unicepse.Stores
         }
         public async Task DeleteConnectedSports(int Id)
         {
+            _logger.LogInformation(LogFlag + "delete trainer sports connection started");
             await _employeeDataService.DeleteConnectedSports(Id);
 
         }

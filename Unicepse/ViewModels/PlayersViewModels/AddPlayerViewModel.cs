@@ -29,17 +29,18 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private readonly PlayerListViewModel _playerListViewModel;
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
+        private readonly LicenseDataStore _licenseDataStore;
         public ObservableCollection<Year> years;
 
         public IEnumerable<Year> Years => years;
-        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
+        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore)
         {
             years = new ObservableCollection<Year>();
             for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
                 years.Add(new Year() { year = i });
             Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
 
-
+            _licenseDataStore = licenseDataStore;
             _navigationStore = navigationStore;
             _playerStore = playerStore;
             _subscriptionDataStore = subscriptionDataStore;
@@ -54,7 +55,8 @@ namespace Unicepse.ViewModels.PlayersViewModels
             OpenScanCommand = new GetProfileScanCommand(new ReadPlayerQrCodeViewModel(), _playerStore);
             CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
-            SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricStore, _routineDataStore, _playersAttendenceStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore, _metricStore, _routineDataStore, _paymentDataStore, _playersAttendenceStore);
+            SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricStore, _routineDataStore, _playersAttendenceStore,_licenseDataStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore, _metricStore, _routineDataStore, _paymentDataStore, _playersAttendenceStore,_licenseDataStore);
+            
         }
 
         private void _playerStore_profile_loaded(Profile obj)
@@ -66,9 +68,9 @@ namespace Unicepse.ViewModels.PlayersViewModels
             UID = obj.UID;
         }
         public bool ScanAvailable { get; set; }
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,LicenseDataStore licenseDataStore)
         {
-            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, metricStore, routineDataStore, playersAttendenceStore);
+            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, metricStore, routineDataStore, playersAttendenceStore,licenseDataStore);
         }
 
         #region Properties

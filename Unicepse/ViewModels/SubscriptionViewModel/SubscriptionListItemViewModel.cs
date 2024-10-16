@@ -27,7 +27,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         private readonly PlayersDataStore? _playersDataStore;
         private readonly PaymentDataStore? _paymentDataStore;
         private readonly PlayerMainPageViewModel? _playerMainPageViewModel;
-        //private readonly PlayerListViewModel playerListingViewModel;
+        private readonly LicenseDataStore? _licenseDataStore;
         public int Id => Subscription.Id;
         private int _order;
         public int Order
@@ -69,7 +69,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         public ICommand? PrintCommand { get; }
         public ICommand? StopSubscriptionCommand { get; }
         public ICommand? MoveToNewTrainerCommand { get; }
-        public SubscriptionListItemViewModel(Subscription subscription, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel, PaymentDataStore paymentDataStore)
+        public SubscriptionListItemViewModel(Subscription subscription, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel, PaymentDataStore paymentDataStore, LicenseDataStore licenseDataStore)
         {
             Subscription = subscription;
             _sportDataStore = sportDataStore;
@@ -77,12 +77,14 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             _navigationStore = navigationStore;
             _paymentDataStore = paymentDataStore;
             _playersDataStore = playersDataStore;
+            _licenseDataStore = licenseDataStore;
             _playerMainPageViewModel = playerMainPageViewModel;
             EditCommand = new NavaigateCommand<EditSubscriptionViewModel>(new NavigationService<EditSubscriptionViewModel>(_navigationStore, () => EditSubscription(_sportDataStore, _navigationStore, _subscriptionDataStore, _playersDataStore, _playerMainPageViewModel)));
             StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _playerMainPageViewModel)));
             MoveToNewTrainerCommand = new NavaigateCommand<MoveToNewTrainerViewModel>(new NavigationService<MoveToNewTrainerViewModel>(_navigationStore, () => new MoveToNewTrainerViewModel(_navigationStore, _subscriptionDataStore, _playerMainPageViewModel)));
             string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + RollDate + "_" + SportName;
-            PrintCommand = new PrintCommand(new PrintWindowViewModel(new SubscriptionPrintViewModel(Subscription), new NavigationStore()), filename);
+            PrintCommand = new PrintCommand(new PrintWindowViewModel(new SubscriptionPrintViewModel(Subscription,_licenseDataStore), new NavigationStore()), filename);
+            
         }
         public SubscriptionListItemViewModel(Subscription subscription)
         {

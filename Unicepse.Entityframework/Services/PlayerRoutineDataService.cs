@@ -137,6 +137,17 @@ namespace Unicepse.Entityframework.Services
             await context.SaveChangesAsync();
             return entity;
         }
+        public async Task<PlayerRoutine> UpdateDataStatus(PlayerRoutine entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            PlayerRoutine existedPlayer = await Get(entity.Id);
+            if (existedPlayer == null)
+                throw new ConflictException("this routine is not existed");
+            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            await context.SaveChangesAsync();
+            return entity;
+
+        }
         public async Task<IEnumerable<PlayerRoutine>> GetByDataStatus(DataStatus status)
         {
             using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())

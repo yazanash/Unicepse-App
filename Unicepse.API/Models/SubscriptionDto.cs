@@ -18,8 +18,8 @@ namespace Unicepse.API.Models
         public string? gym_id { get; set; }
         public string? sport_name { get; set; }
         public string? trainer_name { get; set; }
-        public string? start_date { get; set; }
-        public string? end_date { get; set; }
+        public DateTime start_date { get; set; }
+        public DateTime end_date { get; set; }
         public double price { get; set; }
         public double discount_value { get; set; }
         public string? discount_des { get; set; }
@@ -32,8 +32,8 @@ namespace Unicepse.API.Models
             pid = entity.Player!.Id.ToString();
             sport_name = entity.Sport!.Name;
             trainer_name = entity.Trainer != null ? entity.Trainer.FullName : "";
-            start_date = entity.RollDate.ToString("dd/MM/yyyy");
-            end_date = entity.EndDate.ToString("dd/MM/yyyy");
+            start_date = entity.RollDate;
+            end_date = entity.EndDate;
             price = entity.Price;
             discount_value = entity.OfferValue;
             discount_des = entity.OfferDes;
@@ -54,16 +54,11 @@ namespace Unicepse.API.Models
                 OfferDes = discount_des,
                 IsPaid = Convert.ToBoolean(is_paid),
                 PaidValue = paid_value,
-
+                RollDate = start_date,
+                EndDate = end_date
             };
             //if (!string.IsNullOrEmpty(trainer_name))
             subscription.Trainer = new Employee { FullName = trainer_name };
-            if (!string.IsNullOrEmpty(start_date) && !string.IsNullOrEmpty(end_date))
-            {
-                subscription.RollDate = DateTime.ParseExact(start_date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                subscription.EndDate = DateTime.ParseExact(end_date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            }
-
             return subscription;
         }
     }

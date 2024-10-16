@@ -30,8 +30,9 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private readonly PaymentDataStore? _paymentDataStore;
         private readonly MetricDataStore? _metricDataStore;
         private readonly RoutineDataStore? _routineDataStore;
-
+        private readonly LicenseDataStore _licenseDataStore;
         private readonly PlayersAttendenceStore? _playersAttendenceStore;
+
         public int Id => Player.Id;
 
         private int _order;
@@ -80,26 +81,28 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
         public PlayerListItemViewModel(Player player, NavigationStore navigationStore,
             SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore,
-            SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayerListViewModel playerList, PlayersAttendenceStore playersAttendenceStore)
+            SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayerListViewModel playerList, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore)
         {
             Player = player;
             IsVerified = Player.UID != null;
-            IsActive = Player.IsSubscribed; 
+            IsActive = Player.IsSubscribed;
             _playersDataStore = playersDataStore;
             _subscriptionDataStore = subscriptionDataStore;
             _navigationStore = navigationStore;
             _sportDataStore = sportDataStore;
             _paymentDataStore = paymentDataStore;
             _metricDataStore = metricDataStore;
-            _routineDataStore = routineDataStore;
+            _routineDataStore = routineDataStore; 
+            _licenseDataStore = licenseDataStore;
             _playersAttendenceStore = playersAttendenceStore;
-            VerifyAccountCommand = new VerifyAccountCommand(new ReadPlayerQrCodeViewModel(),_playersDataStore);
+            VerifyAccountCommand = new VerifyAccountCommand(new ReadPlayerQrCodeViewModel(), _playersDataStore);
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
-            EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(PlayerMainPageNavigation, () => new EditPlayerViewModel(PlayerMainPageNavigation, _playersDataStore, _subscriptionDataStore, CreatePlayerMainPageViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _sportDataStore), _sportDataStore, _paymentDataStore)));
+            EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(PlayerMainPageNavigation, () => new EditPlayerViewModel(PlayerMainPageNavigation, _playersDataStore, _subscriptionDataStore, CreatePlayerMainPageViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _sportDataStore,_licenseDataStore), _sportDataStore, _paymentDataStore,_licenseDataStore)));
             DeleteCommand = new DeletePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList), _playersDataStore);
-            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore)));
-            TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigationStore)));
+            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore,_licenseDataStore)));
+            TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigationStore,_licenseDataStore)));
             ReactivePlayerCommand = new ReactivePlayerCommand(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerList), _playersDataStore);
+          
         }
 
         //public PlayerListItemViewModel(Player player, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore,HomeViewModel homeViewModel)
@@ -117,19 +120,19 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
             OnPropertyChanged(nameof(FullName));
         }
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore)
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,LicenseDataStore licenseDataStore)
         {
             //playersDataStore.SelectedPlayer = this;
-            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore);
+            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore,licenseDataStore);
         }
-        private static PlayerMainPageViewModel CreatePlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore)
+        private static PlayerMainPageViewModel CreatePlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore,LicenseDataStore licenseDataStore)
         {
             //playersDataStore.SelectedPlayer = this
-            return new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore);
+            return new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore,licenseDataStore);
         }
-        private RoutinePlayerViewModels LoadRoutineViewModel(RoutineDataStore routineDataStore, PlayersDataStore playerDataStore, NavigationStore navigationStore)
+        private RoutinePlayerViewModels LoadRoutineViewModel(RoutineDataStore routineDataStore, PlayersDataStore playerDataStore, NavigationStore navigationStore,LicenseDataStore licenseDataStore)
         {
-            return RoutinePlayerViewModels.LoadViewModel(routineDataStore, playerDataStore, navigationStore);
+            return RoutinePlayerViewModels.LoadViewModel(routineDataStore, playerDataStore, navigationStore,licenseDataStore);
         }
     }
 }

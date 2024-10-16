@@ -47,10 +47,16 @@ namespace Unicepse.ViewModels.Metrics
             _metricReportViewModel = metricReportViewModel;
             _playerDataStore = playerDataStore;
             Metric = metric;
-            _metricDataStore.SelectedMetric = Metric;
-            EditCommand = new NavaigateCommand<EditMetricsViewModel>(new NavigationService<EditMetricsViewModel>(_navigationStore, () => new EditMetricsViewModel(_metricDataStore, _navigationStore, _metricReportViewModel, _playerDataStore)));
+            EditCommand = new NavaigateCommand<EditMetricsViewModel>(new NavigationService<EditMetricsViewModel>(_navigationStore, () => EditMetrics()));
 
         }
+
+        private EditMetricsViewModel EditMetrics()
+        {
+            _metricDataStore.SelectedMetric = Metric;
+            return new EditMetricsViewModel(_metricDataStore, _navigationStore, _metricReportViewModel, _playerDataStore);
+        }
+
         public ICommand EditCommand { get; }
         public void Update(Metric metric)
         {

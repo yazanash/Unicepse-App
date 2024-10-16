@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unicepse.Core.Models.Employee;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.Stores
 {
@@ -25,13 +26,15 @@ namespace Unicepse.Stores
         public IEnumerable<Sport> Sports => _sports;
 
         public IEnumerable<Employee> Trainers => _trainers;
-
-        public SportDataStore(SportServices sportDataService)
+        string LogFlag = "[Sport] ";
+        private readonly ILogger<SportDataStore> _logger;
+        public SportDataStore(SportServices sportDataService, ILogger<SportDataStore> logger)
         {
             _sportDataService = sportDataService;
             _sports = new List<Sport>();
             _trainers = new List<Employee>();
             _initializeLazy = new Lazy<Task>(Initialize);
+            _logger = logger;
         }
         private Sport? _selectedSport;
         public Sport? SelectedSport
@@ -70,6 +73,7 @@ namespace Unicepse.Stores
         public event Action<Sport?>? StateChanged;
         public async Task Add(Sport entity)
         {
+            _logger.LogInformation(LogFlag + "add sport");
             await _sportDataService.Create(entity);
             _sports.Add(entity);
             Created?.Invoke(entity);
@@ -77,6 +81,7 @@ namespace Unicepse.Stores
 
         public async Task Delete(int entity_id)
         {
+            _logger.LogInformation(LogFlag + "delete sport");
             bool deleted = await _sportDataService.Delete(entity_id);
             int currentIndex = _sports.FindIndex(y => y.Id == entity_id);
             _sports.RemoveAt(currentIndex);
@@ -84,6 +89,7 @@ namespace Unicepse.Stores
         }
         public async Task Delete(Sport entity)
         {
+            _logger.LogInformation(LogFlag + "delete sport");
             entity.IsActive = false;
             await _sportDataService.Update(entity);
             int currentIndex = _sports.FindIndex(y => y.Id == entity.Id);
@@ -92,23 +98,27 @@ namespace Unicepse.Stores
         }
         public async Task GetAll()
         {
+            _logger.LogInformation(LogFlag + "get all sport");
             await _initializeLazy.Value;
             Loaded?.Invoke();
         }
 
         public async Task Initialize()
         {
+            _logger.LogInformation(LogFlag + "get all sport from init");
             IEnumerable<Sport> sports = await _sportDataService.GetAll();
             _sports.Clear();
             _sports.AddRange(sports);
         }
         public async Task DeleteConnectedTrainers(int Id)
         {
+            _logger.LogInformation(LogFlag + "delete all linked trainers");
             await _sportDataService.DeleteConnectedTrainers(Id);
 
         }
         public async Task Update(Sport entity)
         {
+            _logger.LogInformation(LogFlag + "update sport");
             await _sportDataService.Update(entity);
             int currentIndex = _sports.FindIndex(y => y.Id == entity.Id);
 

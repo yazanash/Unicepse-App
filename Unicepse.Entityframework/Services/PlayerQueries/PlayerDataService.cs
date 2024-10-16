@@ -92,6 +92,17 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
             return entity;
 
         }
+        public async Task<Player> UpdateDataStatus(Player entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Player existedPlayer = await Get(entity.Id);
+            if (existedPlayer == null)
+                throw new PlayerConflictException(existedPlayer!, entity, "this player is existed");
+            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            await context.SaveChangesAsync();
+            return entity;
+
+        }
         public async Task<Player> CheckIfExistByName(string name)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

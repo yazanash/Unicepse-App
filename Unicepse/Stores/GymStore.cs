@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.Stores
 {
@@ -16,8 +17,9 @@ namespace Unicepse.Stores
         private readonly EmployeeDataService _employeeDataService;
         private readonly EmployeeCreditsDataService _employeeCreditsDataService;
         private readonly ExpensesDataService _expensesDataService;
-
+        string LogFlag = "[Gym] ";
         private readonly DausesDataService _dausesDataService;
+        private readonly ILogger<GymStore> _logger;
 
         #region Payment
         public event Action? PaymentsLoaded;
@@ -29,6 +31,7 @@ namespace Unicepse.Stores
 
         public async Task GetAllPayments(DateTime dateFrom, DateTime dateTo)
         {
+            _logger.LogInformation(LogFlag + "Get all payment");
             IEnumerable<PlayerPayment> subscriptions = await _paymentDataService.GetAll(dateFrom, dateTo);
             _payments.Clear();
             _payments.AddRange(subscriptions);
@@ -36,6 +39,7 @@ namespace Unicepse.Stores
         }
         public async Task GetDailyPayments(DateTime dateTo)
         {
+            _logger.LogInformation(LogFlag + "Get daily payment");
             IEnumerable<PlayerPayment> subscriptions = await _paymentDataService.GetAll(dateTo);
             _payments.Clear();
             _payments.AddRange(subscriptions);
@@ -43,6 +47,7 @@ namespace Unicepse.Stores
         }
         public async Task GetLastMonthPayments(DateTime dateFrom, DateTime dateTo)
         {
+            _logger.LogInformation(LogFlag + "Get daily payment");
             IEnumerable<PlayerPayment> subscriptions = await _paymentDataService.GetAll(dateFrom, dateTo);
             _payments.Clear();
             _payments.AddRange(subscriptions);
@@ -57,6 +62,7 @@ namespace Unicepse.Stores
         public IEnumerable<Expenses> Expenses => _expenses;
         public async Task GetPeriodExpenses(DateTime dateFrom, DateTime dateTo)
         {
+            _logger.LogInformation(LogFlag + "GetPeriodExpenses");
             IEnumerable<Expenses> expenses = await _expensesDataService.GetPeriodExpenses(dateFrom, dateTo);
             _expenses.Clear();
             _expenses.AddRange(expenses);
@@ -64,6 +70,7 @@ namespace Unicepse.Stores
         }
         public async Task GetDailyExpenses(DateTime dateTo)
         {
+            _logger.LogInformation(LogFlag + "GetDailyExpenses");
             IEnumerable<Expenses> expenses = await _expensesDataService.GetPeriodExpenses(dateTo);
             _expenses.Clear();
             _expenses.AddRange(expenses);
@@ -79,6 +86,7 @@ namespace Unicepse.Stores
 
         public async Task GetDauses(DateTime date)
         {
+            _logger.LogInformation(LogFlag + "GetDauses");
             IEnumerable<Employee> employees = await _employeeDataService.GetAllParcentTrainers();
 
             foreach (Employee employee in employees)
@@ -116,6 +124,7 @@ namespace Unicepse.Stores
         public IEnumerable<Employee> Credits => _credits;
         public async Task GetAllCredits()
         {
+            _logger.LogInformation(LogFlag + "GetAllCredits");
             IEnumerable<Employee> employees = await _employeeDataService.GetAll();
             _credits.Clear();
             _credits.AddRange(employees);
@@ -126,6 +135,7 @@ namespace Unicepse.Stores
         public IEnumerable<Credit> EmployeeCredits => _employeeCredits;
         public async Task GetDailyCredits(DateTime date)
         {
+            _logger.LogInformation(LogFlag + "GetDailyCredits");
             IEnumerable<Credit> credits = await _employeeCreditsDataService.GetAll(date);
             _employeeCredits.Clear();
             _employeeCredits.AddRange(credits);
@@ -137,11 +147,13 @@ namespace Unicepse.Stores
 
         public double GetPaymentSum()
         {
+            _logger.LogInformation(LogFlag + "GetPaymentSum");
             double sum = Payments.Sum(x => x.PaymentValue);
             return sum;
         }
         public double GetThisMouthPaymentSum(DateTime date)
         {
+            _logger.LogInformation(LogFlag + "GetThisMouthPaymentSum");
             double sum = 0;
             foreach (var pay in _payments)
             {
@@ -151,25 +163,29 @@ namespace Unicepse.Stores
         }
         public double GetExpensesSum()
         {
+            _logger.LogInformation(LogFlag + "GetExpensesSum");
             double sum = Expenses.Sum(x => x.Value);
             return sum;
         }
         public double GetDausesSum()
         {
+            _logger.LogInformation(LogFlag + "GetDausesSum");
             double sum = Dauses.Sum(x => x.TotalSubscriptions * x.Parcent);
             return sum;
         }
         public double GetCreditsSum()
         {
+            _logger.LogInformation(LogFlag + "GetCreditsSum");
             double sum = Credits.Sum(x => x.SalaryValue);
             return sum;
         }
         public double GetEmployeeCreditsSum()
         {
+            _logger.LogInformation(LogFlag + "GetEmployeeCreditsSum");
             double sum = _employeeCredits.Sum(x => x.CreditValue);
             return sum;
         }
-        public GymStore(EmployeeDataService employeeDataService, ExpensesDataService expensesDataService, PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService)
+        public GymStore(EmployeeDataService employeeDataService, ExpensesDataService expensesDataService, PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService, ILogger<GymStore> logger)
         {
             _employeeDataService = employeeDataService;
             _expensesDataService = expensesDataService;
@@ -181,25 +197,31 @@ namespace Unicepse.Stores
             _employeeCredits = new List<Credit>();
             _dauses = new List<TrainerDueses>();
             _employeeCreditsDataService = employeeCreditsDataService;
+            _logger = logger;
         }
 
         public async Task GetReport(DateTime date)
         {
+            _logger.LogInformation(LogFlag + "GetReport");
             DateTime firstDayInMonth = new DateTime(date.Year, date.Month, 1);
             DateTime LastDayInMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
             MonthlyReport monthlyReport = new();
+            _logger.LogInformation(LogFlag + "Get payments from: {0} to: {1}", firstDayInMonth, LastDayInMonth);
             await GetAllPayments(firstDayInMonth, LastDayInMonth);
             monthlyReport.TotalIncome = GetPaymentSum();
             monthlyReport.IncomeForNextMonth = monthlyReport.TotalIncome - GetThisMouthPaymentSum(LastDayInMonth);
             DateTime firstDayInLastMonth = firstDayInMonth.AddMonths(-1);
             DateTime LastDayInLastMonth = new DateTime(firstDayInLastMonth.Year, firstDayInLastMonth.Month, DateTime.DaysInMonth(firstDayInLastMonth.Year, firstDayInLastMonth.Month));
+            _logger.LogInformation(LogFlag + "Get payments from: {0} to: {1}", firstDayInLastMonth, LastDayInLastMonth);
             await GetAllPayments(firstDayInLastMonth, LastDayInLastMonth);
             monthlyReport.IncomeFromLastMonth = GetPaymentSum() - GetThisMouthPaymentSum(LastDayInLastMonth);
+            _logger.LogInformation(LogFlag + "Get expenses from: {0} to: {1}", firstDayInMonth, LastDayInMonth);
             await GetPeriodExpenses(firstDayInMonth, LastDayInMonth);
             monthlyReport.Expenses = GetExpensesSum();
-
+            _logger.LogInformation(LogFlag + "Get dauses to: {0}", LastDayInMonth);
             await GetDauses(LastDayInMonth);
             monthlyReport.TrainerDauses = GetDausesSum();
+            _logger.LogInformation(LogFlag + "Get all credits");
             await GetAllCredits();
             monthlyReport.Salaries = GetCreditsSum();
             monthlyReport.NetIncome = monthlyReport.TotalIncome - monthlyReport.IncomeForNextMonth + monthlyReport.IncomeFromLastMonth - monthlyReport.TrainerDauses - monthlyReport.Salaries - monthlyReport.Expenses;
@@ -214,7 +236,7 @@ namespace Unicepse.Stores
 
         public async Task GetStates(DateTime date)
         {
-
+            _logger.LogInformation(LogFlag + "GetStates");
             await GetDailyPayments(date);
             double paySum = GetPaymentSum();
             await GetDailyCredits(date);

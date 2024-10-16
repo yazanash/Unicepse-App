@@ -12,6 +12,7 @@ using System.Windows.Input;
 using Unicepse.utlis.common;
 using Unicepse.Core.Models.Employee;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace Unicepse.ViewModels.PrintViewModels
 {
@@ -24,19 +25,49 @@ namespace Unicepse.ViewModels.PrintViewModels
         public IEnumerable<SubscriptionListItemViewModel> Subscriptions => _subscriptionListItemViewModels;
         public EmployeeAccountantPageViewModel _employeeAccountantPageViewModel;
         public PrintedTrainerMounthlyReportViewModel? TrainerMounthlyReportViewModel { get; set; }
-
-        public TrainerDetiledReportViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel employeeAccountantPageViewModel)
+        private readonly LicenseDataStore _licenseDataStore;
+        public TrainerDetiledReportViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel employeeAccountantPageViewModel, LicenseDataStore licenseDataStore)
         {
             _employeeStore = employeeStore;
             _dausesDataStore = dausesDataStore;
             _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
             _employeeAccountantPageViewModel = employeeAccountantPageViewModel;
             _subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
-            GroupedTasks = new CollectionViewSource(); 
+            GroupedTasks = new CollectionViewSource();
             ReportDate = _employeeAccountantPageViewModel.ReportDate.ToShortDateString();
             FullName = _employeeStore.SelectedEmployee!.FullName;
+            _licenseDataStore = licenseDataStore;
+            GymName = _licenseDataStore.CurrentGymProfile!.GymName;
+            try
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(_licenseDataStore.CurrentGymProfile!.Logo!);
+                bitmap.EndInit();
+                GymLogo = bitmap;
+            }
+            catch
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
+                bitmap.EndInit();
+                GymLogo = bitmap;
+            }
         }
+        private string? _gymName;
+        public string? GymName
+        {
+            get { return _gymName; }
+            set { _gymName = value; OnPropertyChanged(nameof(GymName)); }
+        }
+        private BitmapImage? _gymLogo;
 
+        public BitmapImage? GymLogo
+        {
+            get { return _gymLogo; }
+            set { _gymLogo = value; OnPropertyChanged(nameof(GymLogo)); }
+        }
         private void _dausesDataStore_StateChanged(TrainerDueses? obj)
         {
             TrainerMounthlyReportViewModel = new(obj!);
