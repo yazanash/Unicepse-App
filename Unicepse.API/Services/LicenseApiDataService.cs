@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unicepse.API.Models;
+using Unicepse.Core.Exceptions;
 using Unicepse.Core.Models;
 
 namespace Unicepse.API.Services
@@ -19,9 +20,17 @@ namespace Unicepse.API.Services
         public async Task<License> GetLicense(string ProductKey)
         {
             LicenseDto licenseDto = await _client.GetAsync<LicenseDto>($"licenses/{ProductKey}");
+            if (licenseDto == null)
+                throw new NotExistException("هذا المفتاح غير موجود");
             return licenseDto.ToLicense();
         }
-
+        public async Task<License> GetLicenseById(string id)
+        {
+            LicenseDto licenseDto = await _client.GetAsync<LicenseDto>($"licenses/get-info");
+            if (licenseDto == null)
+                throw new NotExistException("هذا الترخيص غير موجود");
+            return licenseDto.ToLicense();
+        }
         public async Task<int> VerifyLicense()
         {
             int IsValid = await _client.GetCodeAsync<bool>($"licenses/verify");

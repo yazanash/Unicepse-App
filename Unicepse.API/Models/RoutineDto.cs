@@ -14,7 +14,7 @@ namespace Unicepse.API.Models
         public string? pid { get; set; }
         public string? gym_id { get; set; }
         public string? routine_no { get; set; }
-        public string? routine_date { get; set; }
+        public DateTime routine_date { get; set; }
         public Dictionary<int, string?>? days_group_map { get; set; }
         public List<RoutineItemDto> routine_items { get; set; }
 
@@ -30,7 +30,7 @@ namespace Unicepse.API.Models
                 Id = Convert.ToInt32( rid),
                 Player = new Core.Models.Player.Player() { Id = Convert.ToInt32(pid) },
                 RoutineNo = routine_no,
-                RoutineData = DateTime.ParseExact(routine_date!, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                RoutineData = routine_date,
             DaysGroupMap = days_group_map!,
             };
             foreach (var item in routine_items)
@@ -44,7 +44,7 @@ namespace Unicepse.API.Models
             rid = entity.Id.ToString();
             pid = entity.Player!.Id.ToString();
             routine_no = entity.RoutineNo;
-            routine_date = entity.RoutineData.ToString("dd/MM/yyyy");
+            routine_date = entity.RoutineData;
             days_group_map = entity.DaysGroupMap;
             foreach (var item in entity.RoutineSchedule)
             {

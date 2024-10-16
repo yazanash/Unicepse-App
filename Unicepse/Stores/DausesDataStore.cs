@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.Stores
 {
@@ -18,6 +19,8 @@ namespace Unicepse.Stores
         private readonly EmployeeCreditsDataService _employeeCreditsDataService;
         public List<TrainerDueses> _dauses;
         public List<PlayerPayment> _payments;
+        string LogFlag = "[Dauses] ";
+        private readonly ILogger<DausesDataStore> _logger;
         public IEnumerable<TrainerDueses> Dauses => _dauses;
 
         public IEnumerable<PlayerPayment> Payments => _payments;
@@ -30,7 +33,7 @@ namespace Unicepse.Stores
         public event Action<TrainerDueses>? Updated;
         public event Action<int>? Deleted;
         //private readonly Lazy<Task> _initializeLazy;
-        public DausesDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService, EmployeeDataService employeeDataService)
+        public DausesDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService, EmployeeDataService employeeDataService, ILogger<DausesDataStore> logger)
         {
             _paymentDataService = paymentDataService;
             _dausesDataService = dausesDataService;
@@ -38,15 +41,19 @@ namespace Unicepse.Stores
             _payments = new List<PlayerPayment>();
             _employeeCreditsDataService = employeeCreditsDataService;
             _employeeDataService = employeeDataService;
+            _logger = logger;
 
             //_initializeLazy = new Lazy<Task>(Initialize);
         }
         public async Task GetMonthlyReport(Employee trainer, DateTime date)
         {
+            _logger.LogInformation(LogFlag+"Get trainer payments");
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetTrainerPayments(trainer, date);
+            _logger.LogInformation(LogFlag + "Get trainer credits");
             IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(trainer, date);
             _payments.Clear();
             _payments.AddRange(payments);
+            _logger.LogInformation(LogFlag + "create trainer dueses");
             MonthlyTrainerDause = new TrainerDueses();
             MonthlyTrainerDause.TotalSubscriptions = 0;
             foreach (PlayerPayment pay in payments)
@@ -67,10 +74,13 @@ namespace Unicepse.Stores
         }
         public async Task GetPrintedMonthlyReport(Employee trainer, DateTime date)
         {
+            _logger.LogInformation(LogFlag + "Get trainer payments");
             IEnumerable<PlayerPayment> payments = await _paymentDataService.GetTrainerPayments(trainer, date);
+            _logger.LogInformation(LogFlag + "Get trainer credits");
             IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(trainer, date);
             _payments.Clear();
             _payments.AddRange(payments);
+            _logger.LogInformation(LogFlag + "create trainer dueses");
             MonthlyTrainerDause = new TrainerDueses();
             MonthlyTrainerDause.TotalSubscriptions = 0;
             foreach (PlayerPayment pay in payments)
@@ -93,6 +103,7 @@ namespace Unicepse.Stores
 
         public async Task GetAll()
         {
+            _logger.LogInformation(LogFlag + "get all dueses");
             IEnumerable<TrainerDueses> employees = await _dausesDataService.GetAll();
             _dauses.Clear();
             _dauses.AddRange(employees);
@@ -100,6 +111,7 @@ namespace Unicepse.Stores
         }
         public async Task GetAll(Employee employee)
         {
+            _logger.LogInformation(LogFlag + "get all trainer dueses");
             IEnumerable<TrainerDueses> employees = await _dausesDataService.GetAll(employee);
             _dauses.Clear();
             _dauses.AddRange(employees);
@@ -107,6 +119,7 @@ namespace Unicepse.Stores
         }
         public async Task GetAll(Employee employee, DateTime date)
         {
+            _logger.LogInformation(LogFlag + "get all trainer dueses by date : " + date);
             IEnumerable<TrainerDueses> employees = await _dausesDataService.GetAll(employee, date);
             _dauses.Clear();
             _dauses.AddRange(employees);
@@ -114,6 +127,7 @@ namespace Unicepse.Stores
         }
         public async Task Add(TrainerDueses entity)
         {
+            _logger.LogInformation(LogFlag + "add trainer dueses by date : ");
             await _dausesDataService.Create(entity);
             _dauses.Add(entity);
             Created?.Invoke(entity);
@@ -121,6 +135,7 @@ namespace Unicepse.Stores
 
         public async Task Update(TrainerDueses entity)
         {
+            _logger.LogInformation(LogFlag + "update trainer dueses");
             await _dausesDataService.Update(entity);
             int currentIndex = _dauses.FindIndex(y => y.Id == entity.Id);
 
@@ -137,6 +152,7 @@ namespace Unicepse.Stores
 
         public async Task Delete(int entity_id)
         {
+            _logger.LogInformation(LogFlag + "delete trainer dueses");
             bool deleted = await _dausesDataService.Delete(entity_id);
             int currentIndex = _dauses.FindIndex(y => y.Id == entity_id);
             _dauses.RemoveAt(currentIndex);
@@ -145,6 +161,7 @@ namespace Unicepse.Stores
 
         public async Task Initialize()
         {
+            _logger.LogInformation(LogFlag + "initialize trainer dueses");
             IEnumerable<Employee> employees = await _employeeDataService.GetAllParcentTrainers();
             DateTime date = DateTime.Now;
             foreach (Employee employee in employees)

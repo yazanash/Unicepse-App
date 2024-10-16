@@ -29,7 +29,8 @@ namespace Unicepse.Commands.Player
         private readonly RoutineDataStore _routineDataStore;
         private readonly PaymentDataStore _paymentDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-        public SubmitCommand(NavigationService<PlayerProfileViewModel> navigationService, AddPlayerViewModel addPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, PlayerListViewModel playerListViewModel, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PaymentDataStore paymentDataStore, PlayersAttendenceStore playersAttendenceStore)
+        private readonly LicenseDataStore _licenseDataStore;
+        public SubmitCommand(NavigationService<PlayerProfileViewModel> navigationService, AddPlayerViewModel addPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, PlayerListViewModel playerListViewModel, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PaymentDataStore paymentDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore)
         {
 
             this.navigationService = navigationService;
@@ -44,6 +45,7 @@ namespace Unicepse.Commands.Player
             _routineDataStore = routineDataStore;
             _paymentDataStore = paymentDataStore;
             _playersAttendenceStore = playersAttendenceStore;
+            _licenseDataStore = licenseDataStore;
         }
 
         private void AddPlayerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -80,7 +82,7 @@ namespace Unicepse.Commands.Player
                 };
                 await _playerStore.AddPlayer(player);
                 
-                _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _PlayerListViewModel, _playersAttendenceStore);
+                _playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _PlayerListViewModel, _playersAttendenceStore,_licenseDataStore);
                 if (!string.IsNullOrEmpty(_addPlayerViewModel.UID))
                     await _playerStore.HandShakePlayer(player, _addPlayerViewModel.UID!);
                 _addPlayerViewModel.Submited = true;

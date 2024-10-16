@@ -18,7 +18,8 @@
         <!--<Border.Effect>
             <DropShadowEffect BlurRadius="5" ShadowDepth="0.5"/>
         </Border.Effect>-->
-
+        <ScrollViewer >
+            
         <StackPanel Orientation="Vertical" >
             <Button HorizontalAlignment="Left" Command="{Binding EditCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
 
@@ -51,11 +52,11 @@
                     </StackPanel>
                 </Border>
 
-                <TextBlock  Text="{Binding FullName}" FontSize="15" TextWrapping="Wrap" Margin="5" HorizontalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                <TextBlock  Text="{Binding FullName,UpdateSourceTrigger=PropertyChanged}" FontSize="15" TextWrapping="Wrap" Margin="5" HorizontalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
 
             </StackPanel>
             <Separator Background="#ccc"  Margin="10 10"/>
-            <Button HorizontalAlignment="Center" Visibility="{Binding IsVerified , Converter={StaticResource InverseBooleanToVisibalityConverter}}" Command="{Binding VerifyAccountCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
+                <Button HorizontalAlignment="Center" Visibility="{Binding IsVerified ,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InverseBooleanToVisibalityConverter}}" Command="{Binding VerifyAccountCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
 
                 <StackPanel Orientation="Horizontal">
 
@@ -73,31 +74,31 @@
                 <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="رقم الهاتف" FontSize="12" Foreground="{StaticResource colors.primary}"/>
-                        <TextBlock Text="{Binding Phone}"  FontSize="13" Foreground="#384756"/>
+                            <TextBlock Text="{Binding Phone,UpdateSourceTrigger=PropertyChanged}"  FontSize="13" Foreground="#384756"/>
                     </StackPanel>
                 </Border>
                 <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="الجنس" FontSize="14" Foreground="{StaticResource colors.primary}"/>
-                        <TextBlock Text="{Binding Gendertext}" FontSize="14" Foreground="#384756"/>
+                            <TextBlock Text="{Binding Gendertext,UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="#384756"/>
                     </StackPanel>
                 </Border>
                 <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="سنة الميلاد" FontSize="14" Foreground="{StaticResource colors.primary}"/>
-                        <TextBlock Text="{Binding BirthDate}" FontSize="14" Foreground="#384756"/>
+                            <TextBlock Text="{Binding BirthDate,UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="#384756"/>
                     </StackPanel>
                 </Border>
                 <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="تاريخ الاشتراك" FontSize="14" Foreground="{StaticResource colors.primary}"/>
-                        <TextBlock Text="{Binding SubscribeDate}" FontSize="14"  Foreground="#384756"/>
+                            <TextBlock Text="{Binding SubscribeDate,UpdateSourceTrigger=PropertyChanged}" FontSize="14"  Foreground="#384756"/>
                     </StackPanel>
                 </Border>
                 <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 5">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="رصيد الحساب" FontSize="14" Foreground="{StaticResource colors.primary}"/>
-                        <TextBlock Text="{Binding Balance,Converter={StaticResource convertNum}}" FontSize="14"  Foreground="#384756"/>
+                            <TextBlock Text="{Binding Balance,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontSize="14"  Foreground="#384756"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -133,5 +134,8 @@
 
             </Grid>
             </StackPanel>
+
+        </ScrollViewer>
+
     </Border>
 </UserControl>

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Unicepse.API.Services;
 using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.Stores
 {
@@ -17,6 +18,7 @@ namespace Unicepse.Stores
     {
         public event Action<PlayerRoutine>? Created;
         public event Action? Loaded;
+        public event Action? TempLoaded;
         public event Action? ExercisesLoaded;
         public event Action<PlayerRoutine>? Updated;
         public event Action<int>? Deleted;
@@ -24,7 +26,8 @@ namespace Unicepse.Stores
         private readonly PlayerRoutineDataService _playerRoutineDataService;
         private readonly RoutineApiDataService _routineApiDataService;
 
-      
+        string LogFlag = "[Routine] ";
+        private readonly ILogger<RoutineDataStore> _logger;
 
         public event Action? Reorderd;
         private readonly List<PlayerRoutine> _playerRoutines;
@@ -47,7 +50,7 @@ namespace Unicepse.Stores
 
         public IEnumerable<RoutineItems> RoutineItems => _routineItems;
         public IEnumerable<DayGroupListItemViewModel> DaysItems => _daysItems;
-        public RoutineDataStore(PlayerRoutineDataService playerRoutineDataService, RoutineApiDataService routineApiDataService)
+        public RoutineDataStore(PlayerRoutineDataService playerRoutineDataService, RoutineApiDataService routineApiDataService, ILogger<RoutineDataStore> logger)
         {
             _playerRoutineDataService = playerRoutineDataService;
             _playerRoutines = new List<PlayerRoutine>();
@@ -56,10 +59,12 @@ namespace Unicepse.Stores
             _daysItems = new List<DayGroupListItemViewModel>();
             _tempRoutines = new List<PlayerRoutine>();
             _routineApiDataService = routineApiDataService;
+            _logger = logger;
         }
 
         internal void ReloadDaysItems()
         {
+            _logger.LogInformation(LogFlag + "reload days item");
             List<DayGroupListItemViewModel> daysListItemViewModels = _daysItems.ToList();
             _daysItems.Clear();
             foreach (var item in daysListItemViewModels)
@@ -81,8 +86,9 @@ namespace Unicepse.Stores
             set
             {
                 _selectedMuscleGroup = value;
+                _logger.LogInformation(LogFlag + "selected muscle changed");
                 MuscleChanged?.Invoke(SelectedMuscle);
-
+                
             }
         }
         public event Action<MuscleGroup?>? MuscleChanged;
@@ -96,6 +102,7 @@ namespace Unicepse.Stores
             set
             {
                 _selectedRoutine = value;
+                _logger.LogInformation(LogFlag + "selected routine changed");
                 _routineItems.Clear();
                 StateChanged?.Invoke(SelectedRoutine);
             }
@@ -104,21 +111,28 @@ namespace Unicepse.Stores
 
         public async Task Add(PlayerRoutine entity)
         {
+            _logger.LogInformation(LogFlag + "add routine");
             entity.DataStatus = DataStatus.ToCreate;
             await _playerRoutineDataService.Create(entity);
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
             if (internetAvailable)
             {
                 try
                 {
+                    _logger.LogInformation(LogFlag + "add routine to api");
                     int status = await _routineApiDataService.Create(entity);
                     if (status == 201 || status == 409)
                     {
+                        _logger.LogInformation(LogFlag + "routine synced successfully with code {0}", status.ToString());
                         entity.DataStatus = DataStatus.Synced;
-                        await _playerRoutineDataService.Update(entity);
+                        await _playerRoutineDataService.UpdateDataStatus(entity);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    _logger.LogError(LogFlag + "routine synced failed with error {0}", ex.Message);
+                }
             }
             _playerRoutines.Add(entity);
             Created?.Invoke(entity);
@@ -126,7 +140,7 @@ namespace Unicepse.Stores
         }
         public void AddRoutineItem(RoutineItems entity)
         {
-            //int currentIndex = _playerRoutines.FindIndex(y => y.Id == entity.Id);
+            _logger.LogInformation(LogFlag + "add routine item");
             _routineItems.Add(entity);
             RoutineItemCreated?.Invoke(entity);
             Reorderd?.Invoke();
@@ -139,28 +153,30 @@ namespace Unicepse.Stores
 
         public void DeleteRoutineItem(RoutineItems entity)
         {
-            //await _playerRoutineDataService.Create(entity);
+            _logger.LogInformation(LogFlag + "delete routine item");
             _routineItems.Remove(entity);
             RoutineItemDeleted?.Invoke(entity);
         }
         public async Task DeleteRoutineItems(int id)
         {
+            _logger.LogInformation(LogFlag + "add routine items");
             await _playerRoutineDataService.DeleteRoutineItems(id);
         }
         public void AddDaysItem(DayGroupListItemViewModel entity)
         {
-            //await _playerRoutineDataService.Create(entity);
+            _logger.LogInformation(LogFlag + "add days item");
             _daysItems.Add(entity);
             daysItemCreated?.Invoke(entity);
         }
         public void DeleteDaysItem(DayGroupListItemViewModel entity)
         {
-            //await _playerRoutineDataService.Create(entity);
+            _logger.LogInformation(LogFlag + "delete days item");
             _daysItems.Remove(entity);
             daysItemDeleted?.Invoke(entity);
         }
         public async Task Delete(int entity_id)
         {
+            _logger.LogInformation(LogFlag + "delete routine");
             bool deleted = await _playerRoutineDataService.Delete(entity_id);
             int currentIndex = _playerRoutines.FindIndex(y => y.Id == entity_id);
 
@@ -170,7 +186,7 @@ namespace Unicepse.Stores
 
         public async Task GetAll()
         {
-
+            _logger.LogInformation(LogFlag + "get all routines");
             IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetAll();
             _playerRoutines.Clear();
             _playerRoutines.AddRange(routines);
@@ -179,7 +195,7 @@ namespace Unicepse.Stores
 
         public async Task GetAllExercises()
         {
-
+            _logger.LogInformation(LogFlag + "get all exercises");
             IEnumerable<Exercises> routines = await _playerRoutineDataService.GetAllExercises();
             _exercises.Clear();
             _exercises.AddRange(routines);
@@ -188,7 +204,7 @@ namespace Unicepse.Stores
 
         public async Task GetAll(Player player)
         {
-
+            _logger.LogInformation(LogFlag + "get all player routines");
             IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetAll(player);
             _playerRoutines.Clear();
             _playerRoutines.AddRange(routines);
@@ -196,11 +212,11 @@ namespace Unicepse.Stores
         }
         public async Task GetAllTemp()
         {
-
+            _logger.LogInformation(LogFlag + "get all templates");
             IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetAllTemp();
             _tempRoutines.Clear();
             _tempRoutines.AddRange(routines);
-            Loaded?.Invoke();
+            TempLoaded?.Invoke();
         }
 
         public Task Initialize()
@@ -210,23 +226,30 @@ namespace Unicepse.Stores
 
         public async Task Update(PlayerRoutine entity)
         {
+            _logger.LogInformation(LogFlag + "update routine");
             if (entity.DataStatus != DataStatus.ToCreate)
                 entity.DataStatus = DataStatus.ToUpdate;
             await _playerRoutineDataService.Update(entity);
 
             bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
             if (internetAvailable)
             {
                 try
                 {
+                    _logger.LogInformation(LogFlag + "update routine to api");
                     int status = await _routineApiDataService.Update(entity);
                     if (status == 200)
                     {
+                        _logger.LogInformation(LogFlag + "routine synced successfully with code {0}", status.ToString());
                         entity.DataStatus = DataStatus.Synced;
-                        await _playerRoutineDataService.Update(entity);
+                        await _playerRoutineDataService.UpdateDataStatus(entity);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    _logger.LogError(LogFlag + "routine synced failed with error {0}", ex.Message);
+                }
 
             }
 
@@ -250,14 +273,18 @@ namespace Unicepse.Stores
             IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetByDataStatus(DataStatus.ToCreate);
             foreach (PlayerRoutine routine in routines)
             {
-
+                _logger.LogInformation(LogFlag + "create routine to api");
                 int status = await _routineApiDataService.Create(routine);
                 if (status == 201 || status == 409)
                 {
+                    _logger.LogInformation(LogFlag + "routine synced successfully with code {0}", status.ToString());
                     routine.DataStatus = DataStatus.Synced;
-                    await _playerRoutineDataService.Update(routine);
+                    await _playerRoutineDataService.UpdateDataStatus(routine);
                 }
-
+                else
+                {
+                    _logger.LogWarning(LogFlag + "routine synced failed with code {0}", status.ToString());
+                }
 
             }
         }
@@ -267,19 +294,25 @@ namespace Unicepse.Stores
             IEnumerable<PlayerRoutine> routines = await _playerRoutineDataService.GetByDataStatus(DataStatus.ToUpdate);
             foreach (PlayerRoutine routine in routines)
             {
+                _logger.LogInformation(LogFlag + "update routine to api");
                 int status = await _routineApiDataService.Update(routine);
                 if (status == 200)
                 {
+                    _logger.LogInformation(LogFlag + "routine synced successfully with code {0}", status.ToString());
                     routine.DataStatus = DataStatus.Synced;
-                    await _playerRoutineDataService.Update(routine);
+                    await _playerRoutineDataService.UpdateDataStatus(routine);
                 }
-
+                else
+                {
+                    _logger.LogWarning(LogFlag + "routine synced failed with code {0}", status.ToString());
+                }
 
             }
         }
 
         internal void ClearRoutineItems()
         {
+            _logger.LogInformation(LogFlag + "clear routine items");
             List<Exercises> exercises = new List<Exercises>();
             foreach (var item in _routineItems)
             {
@@ -292,6 +325,7 @@ namespace Unicepse.Stores
 
         internal void ClearDaysItems()
         {
+            _logger.LogInformation(LogFlag + "clear days items");
             _daysItems.Clear();
         }
     }

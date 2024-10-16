@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unicepse.Core.Common;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.Stores
 {
@@ -13,11 +15,13 @@ namespace Unicepse.Stores
     {
         private readonly AuthenticationService _authenticationService;
         private readonly AccountStore _accountStore;
-
-        public AuthenticationStore(AuthenticationService authenticationService, AccountStore accountStore)
+        private readonly ILogger<AuthenticationStore> _logger;
+        string LogFlag = "[Authentication] ";
+        public AuthenticationStore(AuthenticationService authenticationService, AccountStore accountStore, ILogger<AuthenticationStore> logger)
         {
             _authenticationService = authenticationService;
             _accountStore = accountStore;
+            _logger = logger;
         }
 
         public User? CurrentAccount
@@ -36,7 +40,9 @@ namespace Unicepse.Stores
         public bool IsLoggedIn => CurrentAccount != null;
         public bool HasUser()
         {
+            _logger.LogInformation(LogFlag+"checking for users");
             bool data = _authenticationService.HasUsers();
+            _logger.LogInformation(LogFlag + "Has Users : " +data.ToString());
             return data;
         }
 
@@ -44,11 +50,13 @@ namespace Unicepse.Stores
 
         public async Task Login(string username, string password)
         {
+            _logger.LogInformation(LogFlag + "login user");
             CurrentAccount = await _authenticationService.Login(username, password);
         }
 
         public void Logout()
         {
+            _logger.LogInformation(LogFlag + "logout user");
             if (CurrentAccount != null)
             {
                 var acc = CurrentAccount;
@@ -61,6 +69,7 @@ namespace Unicepse.Stores
 
         public async Task<RegistrationResult> Register(string username, string password, string confirmPassword,Roles role)
         {
+            _logger.LogInformation(LogFlag + "register user");
             return await _authenticationService.Register(username, password, confirmPassword, role);
         }
     }

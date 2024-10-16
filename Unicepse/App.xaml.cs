@@ -1,32 +1,18 @@
-﻿using Microsoft.AspNet.Identity;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Http;
 using Newtonsoft.Json;
-using Unicepse.Core.Models.Authentication;
-using Unicepse.Core.Models.Employee;
-using Unicepse.Core.Models.Payment;
-using Unicepse.Core.Models.Player;
-using Unicepse.Core.Models.Sport;
-using Unicepse.Core.Models.Subscription;
 using Unicepse.Core.Models.TrainingProgram;
-using Unicepse.Core.Services;
 using Unicepse.Entityframework.DbContexts;
-using Unicepse.Entityframework.Services;
-using Unicepse.Entityframework.Services.AuthService;
-using Unicepse.Entityframework.Services.PlayerQueries;
 using Unicepse.Views.AuthView;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Unicepse.navigation.Stores;
 using Unicepse.Stores;
 using Unicepse.HostBuilders;
 using Unicepse.ViewModels.Authentication;
@@ -35,8 +21,6 @@ using Serilog;
 using Microsoft.Extensions.Logging;
 using Unicepse.BackgroundServices;
 using Unicepse.API.Models;
-using Unicepse.API;
-using Unicepse.API.Services;
 using Unicepse.ViewModels._ِAppViewModels;
 using System.Threading;
 using System.Diagnostics;
@@ -46,20 +30,47 @@ namespace Unicepse
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
+
     public partial class App : Application
     {
         private IHost _host;
         private static Mutex? mutex = null;
-
+        string LogFlag = "[App] ";
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
         public App()
         {
+
             _host = CreateHostBuilder().Build();
             AuthViewModel auth = _host.Services.GetRequiredService<AuthViewModel>();
             auth.LoginAction += Auth_LoginAction;
             LicenseViewModel license = _host.Services.GetRequiredService<LicenseViewModel>();
             license.LicenseAction += License_VerifiedAction;
+        }
+        private async void CheckForUpdates()
+        {
+            try
+            {
+                if (await Updater.CheckForUpdate())
+                {
+                    MessageBox.Show("A new update is available. Downloading now...");
+                    var progressWindow = new ProgressWindow();
+                    progressWindow.Show();
+                    string? filename = await Updater.DownloadUpdate(progressWindow);
+                    progressWindow.Close();
+                    MessageBox.Show("Update downloaded. Please restart the application.");
+                    ApplyUpdate(filename);
+                }
+            }
+            catch { }
+
+        }
+        private void ApplyUpdate(string filename)
+        {
+            // Execute the installer
+            System.Diagnostics.Process.Start(filename);
+            // Shutdown the current application
+            Application.Current.Shutdown();
         }
         private void Auth_LoginAction()
         {
@@ -97,6 +108,12 @@ namespace Unicepse
         {
             if (_host.Services.GetRequiredService<LicenseDataStore>().CurrentLicense != null)
             {
+                LicenseDataStore licenseDataStore = _host.Services.GetRequiredService<LicenseDataStore>();
+                licenseDataStore.ActiveLicense();
+                if (licenseDataStore.CurrentLicense != null)
+                {
+                    _host.Services.GetRequiredService<UnicepsePrepAPIKey>().updateToken(licenseDataStore.CurrentLicense.Token!, licenseDataStore.CurrentLicense.GymId!);
+                }
                 _host.Services.GetRequiredService<AuthViewModel>().openLog();
                 AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
                 Application.Current.MainWindow.Close();
@@ -121,6 +138,7 @@ namespace Unicepse
         {
             try
             {
+                CheckForUpdates();
                 const string appName = "Unicepse";
                 bool createdNew;
                 mutex = new Mutex(true, appName, out createdNew);
@@ -131,9 +149,12 @@ namespace Unicepse
                     Application.Current.Shutdown();
                 }
                 _host.Start();
+                var logger = _host.Services.GetRequiredService<ILogger<App>>();
+                logger.LogInformation(LogFlag+"services started");
                 PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
                 using (PlatinumGymDbContext platinumGymDbContext = platinumGymDbContextFactory.CreateDbContext())
                 {
+                    logger.LogInformation(LogFlag + "database migration started");
                     platinumGymDbContext.Database.Migrate();
                     #region dataConverter
                     //    platinumGymDbContext.Database.EnsureCreated();
@@ -451,12 +472,15 @@ namespace Unicepse
                     //        platinumGymDbContext.Subscriptions!.Add(s);
                     //    }
                     #endregion
-
+                    logger.LogInformation(LogFlag + "database migrate successfully");
+                    logger.LogInformation(LogFlag + "checking for exercises");
                     if (!platinumGymDbContext.Exercises!.Any())
                     {
+                        logger.LogInformation(LogFlag + "no exercises found");
                         string f_name = "Training.json";
                         using (StreamReader r = new StreamReader(f_name))
                         {
+                            logger.LogInformation(LogFlag + "add exercises started");
                             string json = r.ReadToEnd();
                             List<Exercises>? data = JsonConvert.DeserializeObject<List<Exercises>>(json);
                             foreach (Exercises ex in data!)
@@ -466,20 +490,25 @@ namespace Unicepse
                         platinumGymDbContext.SaveChanges();
                     }
                 }
-
+                logger.LogInformation(LogFlag + "get licenses");
                 LicenseDataStore licenseDataStore = _host.Services.GetRequiredService<LicenseDataStore>();
                 licenseDataStore.ActiveLicense();
                 if (licenseDataStore.CurrentLicense != null)
                 {
+                   
                     _host.Services.GetRequiredService<UnicepsePrepAPIKey>().updateToken(licenseDataStore.CurrentLicense.Token!, licenseDataStore.CurrentLicense.GymId!);
                     bool internetAvailable = InternetAvailability.IsInternetAvailable();
                     if (internetAvailable)
                     {
                         try
                         {
+                            logger.LogInformation(LogFlag + "license found  start to verify it");
+                            logger.LogInformation(LogFlag + "verify license started");
                             await licenseDataStore.CheckLicenseValidation();
-                            if (licenseDataStore.CurrentLicense != null)
+                            if (licenseDataStore.CurrentLicense != null && licenseDataStore.CurrentLicense.SubscribeEndDate > DateTime.Now)
                             {
+                                logger.LogInformation(LogFlag + "valid license");
+                                logger.LogInformation(LogFlag + "request login");
 
                                 _host.Services.GetRequiredService<AuthViewModel>().openLog();
                                 AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
@@ -487,12 +516,16 @@ namespace Unicepse
                             }
                             else
                             {
+                                logger.LogInformation(LogFlag + "no valid license");
+                                logger.LogInformation(LogFlag + "request license key");
                                 LicenseWindow auth = _host.Services.GetRequiredService<LicenseWindow>();
                                 auth.Show();
                             }
                         }
                         catch
                         {
+                            logger.LogInformation(LogFlag + "no internet to validate existed license");
+                            logger.LogInformation(LogFlag + "request login");
                             _host.Services.GetRequiredService<AuthViewModel>().openLog();
                             AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
                             auth.Show();
@@ -502,6 +535,8 @@ namespace Unicepse
                     }
                     else
                     {
+                        logger.LogInformation(LogFlag + "no internet to validate existed license");
+                        logger.LogInformation(LogFlag + "request login");
                         _host.Services.GetRequiredService<AuthViewModel>().openLog();
                         AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
                         auth.Show();
@@ -517,11 +552,20 @@ namespace Unicepse
             }
             catch (Exception ex)
             {
+                var logger = _host.Services.GetRequiredService<ILogger<App>>();
+                logger.LogInformation(LogFlag + "exeption throw on app startup {0}",ex.Message);
                 MessageBox.Show(ex.Message);
             }
         }
         public static IHostBuilder CreateHostBuilder() =>
              Host.CreateDefaultBuilder()
+                .UseSerilog((host , loggerConfiguration) =>
+                {
+                    loggerConfiguration.WriteTo.File("logs/logs.txt", rollingInterval: RollingInterval.Day)
+                    .WriteTo.Debug()
+                    .MinimumLevel.Error()
+                    .MinimumLevel.Override("Unicepse",Serilog.Events.LogEventLevel.Debug);
+                })
                 .AddViewModels()
                 .AddServices()
                 .AddStores()
@@ -533,7 +577,7 @@ namespace Unicepse
                     services.AddSingleton(new PlatinumGymDbContextFactory(CONNECTION_STRING));
 
                 });
-       
+
         private void BringExistingInstanceToFront()
         {
             var currentProcess = Process.GetCurrentProcess();
@@ -548,20 +592,30 @@ namespace Unicepse
         }
         protected override void OnExit(ExitEventArgs e)
         {
+            BackUp();
             _host.Services.GetRequiredService<AuthenticationStore>().Logout();
             _host.Dispose();
             base.OnExit(e);
         }
-        //protected void BackUp()
-        //{
-        //    PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
-        //    using (PlatinumGymDbContext platinumGymDbContext = platinumGymDbContextFactory.CreateDbContext())
-        //    {
-        //        string backupPath = @"C:\Backups\Uniceps.bak";
-        //        var backupCommand = $"BACKUP DATABASE [{platinumGymDbContext.Database.GetDbConnection().Database}] TO DISK = '{backupPath}'";
-        //        platinumGymDbContext.Database.ExecuteSqlRaw(backupCommand);
-        //    }
-        //}
+        protected void BackUp()
+        {
+            PlatinumGymDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<PlatinumGymDbContextFactory>();
+            using (PlatinumGymDbContext platinumGymDbContext = platinumGymDbContextFactory.CreateDbContext())
+            {
+                string folderName = "Backups";
+                string folderPath = Path.Combine(@"C:\", folderName);
+
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+                string filename = "Uniceps" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-t");
+                string filePath = Path.Combine(folderName, filename + ".bak");
+                string backupPath = @"C:\Backups\Uniceps.bak";
+                var backupCommand = $"BACKUP DATABASE [{platinumGymDbContext.Database.GetDbConnection().Database}] TO DISK = '{backupPath}'";
+                platinumGymDbContext.Database.ExecuteSqlRaw(backupCommand);
+            }
+        }
 
     }
 }

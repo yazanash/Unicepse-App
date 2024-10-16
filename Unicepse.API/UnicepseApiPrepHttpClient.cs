@@ -43,6 +43,8 @@ namespace Unicepse.API
         //}
         public async Task<T> GetAsync<T>(string uri)
         {
+            if (!_client.DefaultRequestHeaders.Where(x => x.Key == ("x-access-token")).Any())
+                _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
             HttpResponseMessage response = await _client.GetAsync($"{uri}");
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 throw new Exception("هذه النسخة غير مفعلة");

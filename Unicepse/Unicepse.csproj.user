@@ -18,6 +18,9 @@
     <Compile Update="PrintWindowDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="ProgressWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="SearchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -270,6 +273,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="PrintWindowDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ProgressWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\CustomStyles.xaml">

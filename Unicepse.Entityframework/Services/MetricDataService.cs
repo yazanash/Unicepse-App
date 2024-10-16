@@ -79,6 +79,17 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
+        public async Task<Metric> UpdateDataStatus(Metric entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            Metric existedPlayer = await Get(entity.Id);
+            if (existedPlayer == null)
+                throw new ConflictException("this metric is not existed");
+            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            await context.SaveChangesAsync();
+            return entity;
+
+        }
         public async Task<Metric> Update(Metric entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

@@ -50,6 +50,12 @@ namespace Unicepse.Entityframework.Services
                 throw new NotExistException();
             return entity!;
         }
+        public async Task<License> GetById(string id)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            License? entity = await context.Set<License>().FirstOrDefaultAsync((e) => e.LicenseId == id);
+            return entity!;
+        }
 
         public async Task<IEnumerable<License>> GetAll()
         {
@@ -68,9 +74,10 @@ namespace Unicepse.Entityframework.Services
         public async Task<License> Update(License entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            License entityToUpdate = await Get(entity.Id);
+            License entityToUpdate = await GetById(entity.LicenseId!);
             if (entityToUpdate == null)
                 throw new NotExistException();
+            entity.Id = entityToUpdate.Id;
             context.Set<License>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

@@ -23,25 +23,27 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         private readonly EmployeeStore _employeeStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly DausesDataStore _dausesDataStore;
+        private readonly LicenseDataStore _licenseDataStore;
         private readonly CreditViewModels.CreditListViewModel _creditListViewModel;
         ObservableCollection<SubscriptionListItemViewModel> _subscriptionListItemViewModels;
         public CollectionViewSource GroupedTasks { get; set; }
 
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionsList => _subscriptionListItemViewModels;
         public TrainerMounthlyReportViewModel? TrainerMounthlyReportViewModel { get; set; }
-        public EmployeeAccountantPageViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, NavigationStore navigationStore, CreditsDataStore creditsDataStore, CreditViewModels.CreditListViewModel creditListViewModel)
+        public EmployeeAccountantPageViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, NavigationStore navigationStore, CreditsDataStore creditsDataStore, CreditViewModels.CreditListViewModel creditListViewModel, LicenseDataStore licenseDataStore)
         {
             _employeeStore = employeeStore;
             _dausesDataStore = dausesDataStore;
             _navigationStore = navigationStore;
             _creditsDataStore = creditsDataStore;
             _creditListViewModel = creditListViewModel;
+            _licenseDataStore = licenseDataStore;
+
             _subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
             GroupedTasks = new CollectionViewSource { Source = _subscriptionListItemViewModels };
             LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, _employeeStore, this);
-            PrintCommand = new PrintCommand(new PrintWindowViewModel(new TrainerDetiledReportViewModel(_employeeStore, _dausesDataStore, this), new NavigationStore()));
-            
+            PrintCommand = new PrintCommand(new PrintWindowViewModel(new TrainerDetiledReportViewModel(_employeeStore, _dausesDataStore, this, _licenseDataStore), new NavigationStore()));
         }
 
         public ICommand? PrintCommand { get; }

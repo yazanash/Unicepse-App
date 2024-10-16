@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Unicepse.ViewModels.RoutineViewModels;
 using Unicepse.utlis.common;
 using Unicepse.Stores;
+using System.Windows.Media.Imaging;
 
 namespace Unicepse.ViewModels.PrintViewModels
 {
@@ -15,7 +16,8 @@ namespace Unicepse.ViewModels.PrintViewModels
         private readonly RoutineDataStore _routineDataStore;
         private readonly PlayersDataStore _playersDataStore;
         private readonly SelectRoutineDaysMuscleGroupViewModel _selectRoutineDaysMuscleGroupViewModel;
-        public RoutinePrintViewModel(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, SelectRoutineDaysMuscleGroupViewModel selectRoutineDaysMuscleGroupViewModel)
+        private readonly LicenseDataStore _licenseDataStore;
+        public RoutinePrintViewModel(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, SelectRoutineDaysMuscleGroupViewModel selectRoutineDaysMuscleGroupViewModel, LicenseDataStore licenseDataStore)
         {
             _routineDataStore = routineDataStore;
             _playersDataStore = playersDataStore;
@@ -33,6 +35,38 @@ namespace Unicepse.ViewModels.PrintViewModels
             {
                 _dayGroupListItemViewModels.Add(day);
             }
+            _licenseDataStore = licenseDataStore;
+            GymName = _licenseDataStore.CurrentGymProfile!.GymName;
+            try
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(_licenseDataStore.CurrentGymProfile!.Logo!);
+                bitmap.EndInit();
+                GymLogo = bitmap;
+            }
+            catch
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
+                bitmap.EndInit();
+                GymLogo = bitmap;
+            }
+
+        }
+        private string? _gymName;
+        public string? GymName
+        {
+            get { return _gymName; }
+            set { _gymName = value; OnPropertyChanged(nameof(GymName)); }
+        }
+        private BitmapImage? _gymLogo;
+
+        public BitmapImage? GymLogo
+        {
+            get { return _gymLogo; }
+            set { _gymLogo = value; OnPropertyChanged(nameof(GymLogo)); }
         }
         private void _routineDataStore_daysItemDeleted(DayGroupListItemViewModel obj)
         {

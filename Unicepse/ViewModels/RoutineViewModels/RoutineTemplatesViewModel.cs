@@ -22,6 +22,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private readonly PlayersDataStore _playersDataStore;
         private readonly NavigationStore _navigationStore;
         private readonly RoutinePlayerViewModels _routinePlayerViewModels;
+        private readonly LicenseDataStore _licenseDataStore;
         public IEnumerable<RoutinItemViewModel> RoutineList => _routineItemViewModels;
         public ICommand LoadAllRoutines { get; }
         public ICommand AddRoutineCommand { get; }
@@ -40,34 +41,35 @@ namespace Unicepse.ViewModels.RoutineViewModels
             }
         }
 
-        public RoutineTemplatesViewModel(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, RoutinePlayerViewModels routinePlayerViewModels)
+        public RoutineTemplatesViewModel(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, RoutinePlayerViewModels routinePlayerViewModels, LicenseDataStore licenseDataStore)
         {
             _routineDataStore = routineDataStore;
             _playersDataStore = playersDataStore;
             _navigationStore = navigationStore;
             _routinePlayerViewModels = routinePlayerViewModels;
-
+            _licenseDataStore = licenseDataStore;
             _routineItemViewModels = new ObservableCollection<RoutinItemViewModel>();
 
-            _routineDataStore.Loaded += _routineDataStore_Loaded;
+            _routineDataStore.TempLoaded += _routineDataStore_Loaded;
             LoadAllRoutines = new LoadAllTempRoutineCommand(_routineDataStore, this, _playersDataStore);
             //SelectedRoutine = RoutineList.FirstOrDefault();
-          
-            AddRoutineCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore,this)));
-            ChooseCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadChoosedAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore, true, this)));
+
+            AddRoutineCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore, this,_licenseDataStore)));
+            ChooseCommand = new NavaigateCommand<AddRoutineViewModel>(new NavigationService<AddRoutineViewModel>(_navigationStore, () => LoadChoosedAddRoutineViewModel(_playersDataStore, _routineDataStore, new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => _routinePlayerViewModels), _navigationStore, true, this,_licenseDataStore)));
             CancelCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => routinePlayerViewModels));
+           
         }
         public ICommand ChooseCommand { get; }
         public ICommand CancelCommand { get; }
-        private AddRoutineViewModel LoadChoosedAddRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, bool FromTemp, RoutineTemplatesViewModel routineTemplatesViewModel)
+        private AddRoutineViewModel LoadChoosedAddRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, bool FromTemp, RoutineTemplatesViewModel routineTemplatesViewModel,LicenseDataStore licenseDataStore)
         {
-            return AddRoutineViewModel.LoadViewModel(playersDataStore, routineDataStore, navigationService, navigationStore, FromTemp, routineTemplatesViewModel);
+            return AddRoutineViewModel.LoadViewModel(playersDataStore, routineDataStore, navigationService, navigationStore, FromTemp, routineTemplatesViewModel,licenseDataStore);
         }
 
 
-        private AddRoutineViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, RoutineTemplatesViewModel routineTemplatesViewModel)
+        private AddRoutineViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, RoutineTemplatesViewModel routineTemplatesViewModel,LicenseDataStore licenseDataStore)
         {
-            return AddRoutineViewModel.LoadViewModel(playerStore, routineDataStore, navigationService, navigationStore,routineTemplatesViewModel);
+            return AddRoutineViewModel.LoadViewModel(playerStore, routineDataStore, navigationService, navigationStore,routineTemplatesViewModel,licenseDataStore);
         }
 
 
@@ -97,13 +99,13 @@ namespace Unicepse.ViewModels.RoutineViewModels
         }
         private void AddRoutine(PlayerRoutine routine)
         {
-            RoutinItemViewModel viewmodel = new(routine, _playersDataStore, _routineDataStore, _navigationStore, _routinePlayerViewModels);
+            RoutinItemViewModel viewmodel = new(routine, _playersDataStore, _routineDataStore, _navigationStore, _routinePlayerViewModels,_licenseDataStore);
             _routineItemViewModels.Add(viewmodel);
         }
 
-        public static RoutineTemplatesViewModel LoadViewModel(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, RoutinePlayerViewModels routinePlayerViewModels)
+        public static RoutineTemplatesViewModel LoadViewModel(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, RoutinePlayerViewModels routinePlayerViewModels,LicenseDataStore licenseDataStore)
         {
-            RoutineTemplatesViewModel viewModel = new(routineDataStore, playersDataStore, navigationStore, routinePlayerViewModels);
+            RoutineTemplatesViewModel viewModel = new(routineDataStore, playersDataStore, navigationStore, routinePlayerViewModels,licenseDataStore);
 
             viewModel.LoadAllRoutines.Execute(null);
             return viewModel;

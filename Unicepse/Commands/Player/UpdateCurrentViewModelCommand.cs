@@ -124,7 +124,7 @@ namespace Unicepse.Commands.Player
                         break;
                     case ViewType.Players:
                         if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
-                            _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore1);
+                            _navigator.CurrentViewModel = new PlayersPageViewModel(navigator, _playersStore, _subscriptionDataStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore1,_licenseDataStore);
                         break;
                     case ViewType.Sport:
                         if(_authenticationStore!.CurrentAccount!.Role==Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor)
@@ -132,7 +132,7 @@ namespace Unicepse.Commands.Player
                         break;
                     case ViewType.Trainer:
                         if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor || _authenticationStore!.CurrentAccount!.Role == Roles.Accountant)
-                            _navigator.CurrentViewModel = new TrainersViewModel(navigator, _employeeStore, _sportStore, _subscriptionDataStore, _dausesDataStore, _creditsDataStore);
+                            _navigator.CurrentViewModel = new TrainersViewModel(navigator, _employeeStore, _sportStore, _subscriptionDataStore, _dausesDataStore, _creditsDataStore,_licenseDataStore);
                         break;
                     case ViewType.Users:
                         if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin)

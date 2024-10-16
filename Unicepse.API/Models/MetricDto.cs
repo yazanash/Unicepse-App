@@ -28,7 +28,7 @@ namespace Unicepse.API.Models
         public double waist { get; set; }
         public double chest { get; set; }
         public double hips { get; set; }
-        public string? check_date { get; set; }
+        public DateTime check_date { get; set; }
 
         internal Metric ToMetric()
         {
@@ -51,7 +51,7 @@ namespace Unicepse.API.Models
                 Waist = waist,
                 Chest = chest,
                 Hips = hips,
-                CheckDate = DateTime.ParseExact(check_date!, "dd/MM/yyyy", CultureInfo.InvariantCulture)
+                CheckDate = check_date!
         };
             return metric;
         }
@@ -74,7 +74,7 @@ namespace Unicepse.API.Models
             waist = entity.Waist;
             chest = entity.Chest;
             hips = entity.Hips;
-            check_date = entity.CheckDate.ToString("dd/MM/yyyy");
+            check_date = entity.CheckDate;
         }
     }
 }

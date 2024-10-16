@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.utlis.common;
 using Unicepse.ViewModels.PaymentsViewModels;
+using Unicepse.Stores;
+using System.Windows.Media.Imaging;
 
 namespace Unicepse.ViewModels.PrintViewModels
 {
@@ -15,9 +17,9 @@ namespace Unicepse.ViewModels.PrintViewModels
     {
         public Subscription Subscription;
         private readonly ObservableCollection<PaymentListItemViewModel> _paymentListItemViewModels;
-
+        private readonly LicenseDataStore _licenseDataStore;
         public IEnumerable<PaymentListItemViewModel> PaymentsList => _paymentListItemViewModels;
-        public SubscriptionPrintViewModel(Subscription subscription)
+        public SubscriptionPrintViewModel(Subscription subscription, LicenseDataStore licenseDataStore)
         {
             Subscription = subscription;
             _paymentListItemViewModels = new ObservableCollection<PaymentListItemViewModel>();
@@ -26,8 +28,53 @@ namespace Unicepse.ViewModels.PrintViewModels
                 PaymentListItemViewModel paymentListItemViewModel = new PaymentListItemViewModel(pay);
                 _paymentListItemViewModels.Add(paymentListItemViewModel);
             }
-        }
+            _licenseDataStore = licenseDataStore;
+            if (_licenseDataStore.CurrentGymProfile != null)
+            {
+                GymName = _licenseDataStore.CurrentGymProfile!.GymName;
+                try
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(_licenseDataStore.CurrentGymProfile!.Logo!);
+                    bitmap.EndInit();
+                    GymLogo = bitmap;
+                }
+                catch
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
+                    bitmap.EndInit();
+                    GymLogo = bitmap;
+                }
 
+            }
+            else
+            {
+
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
+                bitmap.EndInit();
+                GymLogo = bitmap;
+
+            }
+
+        }
+        private string? _gymName;
+        public string? GymName
+        {
+            get { return _gymName; }
+            set { _gymName = value; OnPropertyChanged(nameof(GymName)); }
+        }
+        private BitmapImage? _gymLogo;
+
+        public BitmapImage? GymLogo
+        {
+            get { return _gymLogo; }
+            set { _gymLogo = value; OnPropertyChanged(nameof(GymLogo)); }
+        }
         public int Id => Subscription.Id;
         public string? PlayerName => Subscription.Player!.FullName;
         public double PlayerBalance => Subscription.Player!.Balance;

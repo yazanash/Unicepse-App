@@ -29,7 +29,7 @@ namespace Unicepse.Commands.LicenseCommand
                 bool internetAvailable = InternetAvailability.IsInternetAvailable();
                 if (internetAvailable)
                 {
-                    await _licenseDataStore.VerifyLicense(_licenseViewModel.LicenseKey!);
+                    await _licenseDataStore.VerifyLicense(_licenseViewModel.LicenseKey!.Trim()) ;
                     _licenseViewModel.IsLoading = false;
                     MessageBox.Show("تم تفعيل النسخة بنجاح");
                     _licenseViewModel.OnLicenseAction();

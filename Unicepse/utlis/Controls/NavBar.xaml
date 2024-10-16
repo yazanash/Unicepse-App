@@ -63,7 +63,7 @@
                                    TextAlignment="Center"
                                VerticalAlignment="Center"
                            HorizontalAlignment="Right"
-                                   Text="UniCepse" />
+                                   Text="Uniceps" />
             </StackPanel>
 
 

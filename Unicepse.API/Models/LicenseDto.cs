@@ -9,6 +9,7 @@ namespace Unicepse.API.Models
 {
     public class LicenseDto
     {
+        public string? _id { get; set; }
         public string? gym_id { get; set; }
         public string? plan { get; set; }
         public DateTime subscribe_date { get; set; }
@@ -20,6 +21,7 @@ namespace Unicepse.API.Models
         {
             License license = new License()
             {
+                LicenseId= _id,
                 GymId = gym_id,
                 Plan = plan,
                 SubscribeDate = subscribe_date,
@@ -32,6 +34,7 @@ namespace Unicepse.API.Models
         }
         internal void FromLicense(License entity)
         {
+            _id = entity.LicenseId;
             gym_id= entity.GymId;
             plan = entity.Plan;
             subscribe_date = entity.SubscribeDate;

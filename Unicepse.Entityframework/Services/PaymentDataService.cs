@@ -137,6 +137,17 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
+        public async Task<PlayerPayment> UpdateDataStatus(PlayerPayment entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            PlayerPayment existedPlayer = await Get(entity.Id);
+            if (existedPlayer == null)
+                throw new ConflictException("this payment is not existed");
+            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            await context.SaveChangesAsync();
+            return entity;
+
+        }
         public async Task<PlayerPayment> Update(PlayerPayment entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

@@ -18,8 +18,8 @@ namespace Unicepse.API.Models
         public string? gender { get; set; }
         public double balance { get; set; }
         public string? gym_id { get; set; }
-        public string? subs_date { get; set; }
-        public string? subs_end_date { get; set; }
+        public DateTime subs_date { get; set; }
+        public DateTime subs_end_date { get; set; }
 
         public void FromPlayer(Player player)
         {
@@ -30,8 +30,8 @@ namespace Unicepse.API.Models
             balance = player.Balance;
             date_of_birth = player.BirthDate;
             gender = player.GenderMale.ToString();
-            subs_date = player.SubscribeDate.ToShortDateString();
-            subs_end_date = player.SubscribeEndDate.ToShortDateString();
+            subs_date = player.SubscribeDate;
+            subs_end_date = player.SubscribeEndDate;
 
         }
         public Player ToPlayer()
@@ -44,8 +44,8 @@ namespace Unicepse.API.Models
                 Balance = balance,
                 BirthDate = date_of_birth,
                 GenderMale = Convert.ToBoolean(gender),
-                SubscribeDate = Convert.ToDateTime(subs_date),
-                SubscribeEndDate = Convert.ToDateTime(subs_end_date),
+                SubscribeDate = subs_date,
+                SubscribeEndDate = subs_end_date,
             };
 
             return player;
