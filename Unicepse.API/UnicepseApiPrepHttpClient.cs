@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Unicepse.API.Models;
+using Unicepse.Core.Exceptions;
 
 namespace Unicepse.API
 {
@@ -49,7 +50,7 @@ namespace Unicepse.API
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 throw new Exception("هذه النسخة غير مفعلة");
             if (response.StatusCode == HttpStatusCode.NotFound)
-                throw new Exception("هذا المعرف غير متوفر لدينا");
+                throw new NotExistException("هذا المعرف غير متوفر لدينا");
             string jsonResponse = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(jsonResponse)!;
         }
