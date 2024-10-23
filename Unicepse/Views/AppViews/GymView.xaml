@@ -196,7 +196,7 @@
                                     </TextBlock>
 
                                 </StackPanel>
-                                <Button Content="حول التطبيق" Click="Button_Click" HorizontalAlignment="Center" Style="{StaticResource AddBtn}" Margin="0 10 0 0"/>
+                               
                             </StackPanel>
 
                         </StackPanel>
