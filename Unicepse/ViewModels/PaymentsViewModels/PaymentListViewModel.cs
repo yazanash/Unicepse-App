@@ -16,6 +16,7 @@ using Unicepse.navigation;
 using Unicepse.Stores;
 using Unicepse.ViewModels;
 using Unicepse.navigation.Stores;
+using System.Windows.Data;
 
 namespace Unicepse.ViewModels.PaymentsViewModels
 {
@@ -27,6 +28,7 @@ namespace Unicepse.ViewModels.PaymentsViewModels
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly ObservableCollection<PaymentListItemViewModel> _paymentListItemViewModels;
         public IEnumerable<PaymentListItemViewModel> PaymentList => _paymentListItemViewModels;
+        public CollectionViewSource GroupedTasks { get; set; }
         public ICommand LoadPaymentsCommand { get; }
         public ICommand AddPaymentsCommand { get; }
 
@@ -36,9 +38,10 @@ namespace Unicepse.ViewModels.PaymentsViewModels
             _playersDataStore = playersDataStore;
             _navigationStore = navigationStore;
             _subscriptionDataStore = subscriptionDataStore;
-
+           
             AddPaymentsCommand = new NavaigateCommand<AddPaymentViewModel>(new NavigationService<AddPaymentViewModel>(navigationStore, () => LoadAddPaymentViewModel(_paymentDataStore, _subscriptionDataStore, _playersDataStore, _navigationStore, this)));
             _paymentListItemViewModels = new ObservableCollection<PaymentListItemViewModel>();
+            GroupedTasks = new CollectionViewSource { Source = _paymentListItemViewModels }; 
             _paymentDataStore.Loaded += _paymentDataStore_Loaded;
             _paymentDataStore.Created += _paymentDataStore_Created;
             _paymentDataStore.Updated += _paymentDataStore_Updated;
@@ -105,11 +108,15 @@ namespace Unicepse.ViewModels.PaymentsViewModels
         void LoadData()
         {
             _paymentListItemViewModels.Clear();
-
+          
             foreach (PlayerPayment payment in _paymentDataStore.Payments.OrderByDescending(x => x.PayDate))
             {
                 AddPayment(payment);
             }
+            GroupedTasks.Source = _paymentListItemViewModels;
+            GroupedTasks.GroupDescriptions.Clear();
+            GroupedTasks.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
+            OnPropertyChanged(nameof(GroupedTasks));
         }
         public override void Dispose()
         {

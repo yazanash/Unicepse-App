@@ -181,6 +181,11 @@ namespace Unicepse.Stores
                 }
 
             }
+            else
+            {
+                _logger.LogError(LogFlag + "failed to connect to internet");
+                throw new Exception("لا يوجد اتصال بالانترنت");
+            }
         }
         public async Task GetPlayerProfile(string uid)
         {
@@ -209,6 +214,11 @@ namespace Unicepse.Stores
                     _logger.LogError(LogFlag + "failed to valid player id ");
                     throw new Exception("خطا في التحقق من المستخدم");
                 }
+            }
+            else
+            {
+                _logger.LogError(LogFlag + "failed to connect to internet");
+                throw new Exception("لا يوجد اتصال بالانترنت");
             }
         }
         public async Task AddPlayer(Player player)
@@ -285,6 +295,26 @@ namespace Unicepse.Stores
             _logger.LogInformation(LogFlag + "delete player");
             await _playerDataService.Update(player);
             int currentIndex = _players.FindIndex(y => y.Id == player.Id);
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
+            if (internetAvailable)
+            {
+                try
+                {
+                    _logger.LogInformation(LogFlag + "update player to api");
+                    int status = await _playerApiDataService.Update(player);
+                    if (status == 200)
+                    {
+                        _logger.LogInformation(LogFlag + "player synced successfully with code {0}", status.ToString());
+                        player.DataStatus = DataStatus.Synced;
+                        await _playerDataService.UpdateDataStatus(player);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(LogFlag + "player synced failed with error {0}", ex.Message);
+                }
+            }
             _players.RemoveAt(currentIndex);
             Player_deleted?.Invoke(player.Id);
             ArchivedPlayer_created?.Invoke(player);

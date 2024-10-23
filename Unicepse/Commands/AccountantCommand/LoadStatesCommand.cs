@@ -23,7 +23,7 @@ namespace Unicepse.Commands.AccountantCommand
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            await _gymStore.GetStates(DateTime.Now);
+            await _gymStore.GetStates(_accountingStateViewModel.Date);
         }
     }
 }

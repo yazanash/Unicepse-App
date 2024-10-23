@@ -17,7 +17,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         public int CountSubscription => trainerDueses.CountSubscription;
         public DateTime IssueDate => trainerDueses.IssueDate;
         public string IssueDateText => trainerDueses.IssueDate.ToShortDateString();
-        public double Parcent => trainerDueses.Parcent;
+        public string Parcent => trainerDueses.Parcent * 100 + "%";
         public double DausesFromParcent => trainerDueses.TotalSubscriptions * trainerDueses.Parcent;
         public double TotalDause => trainerDueses.TotalSubscriptions * trainerDueses.Parcent + trainerDueses.Salary;
         public double Credits => trainerDueses.Credits;

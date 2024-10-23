@@ -156,6 +156,9 @@
     <Compile Update="Views\AccountingViews\PaymentsCardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AccountingViews\SubscriptionsCardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ApplicationAboutView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -205,6 +208,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PaymentViews\PaymentListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayersAttendenceViews\AttendanceKeyViewWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml.cs">
@@ -476,6 +482,9 @@
     <Page Update="Views\AccountingViews\PaymentsCardView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\AccountingViews\SubscriptionsCardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ApplicationAboutView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -525,6 +534,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PaymentViews\PaymentListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayersAttendenceViews\AttendanceKeyViewWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml">

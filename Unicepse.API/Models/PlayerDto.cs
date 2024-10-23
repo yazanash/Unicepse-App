@@ -30,8 +30,8 @@ namespace Unicepse.API.Models
             balance = player.Balance;
             date_of_birth = player.BirthDate;
             gender = player.GenderMale.ToString();
-            subs_date = player.SubscribeDate;
-            subs_end_date = player.SubscribeEndDate;
+            subs_date = player.SubscribeDate.ToUniversalTime();
+            subs_end_date = player.SubscribeEndDate.ToUniversalTime();
 
         }
         public Player ToPlayer()
@@ -44,8 +44,8 @@ namespace Unicepse.API.Models
                 Balance = balance,
                 BirthDate = date_of_birth,
                 GenderMale = Convert.ToBoolean(gender),
-                SubscribeDate = subs_date,
-                SubscribeEndDate = subs_end_date,
+                SubscribeDate = subs_date.ToLocalTime(),
+                SubscribeEndDate = subs_end_date.ToLocalTime(),
             };
 
             return player;

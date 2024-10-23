@@ -57,7 +57,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             PlayerRoutine? entity = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
 
             context.Set<RoutineItems>().RemoveRange(entity!.RoutineSchedule);
             context.Set<PlayerRoutine>().Remove(entity!);
@@ -78,7 +78,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             PlayerRoutine? entity = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
 
@@ -119,7 +119,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             PlayerRoutine existed_employee = await Get(entity.Id);
             if (existed_employee == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
 
             await DeleteRoutineItems(entity.Id);
 
@@ -140,10 +140,11 @@ namespace Unicepse.Entityframework.Services
         public async Task<PlayerRoutine> UpdateDataStatus(PlayerRoutine entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            PlayerRoutine existedPlayer = await Get(entity.Id);
-            if (existedPlayer == null)
-                throw new ConflictException("this routine is not existed");
-            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            PlayerRoutine? dataToSync = await context.PlayerRoutine!.FindAsync(entity.Id);
+            if (dataToSync == null)
+                throw new NotExistException("هذا السجل غير موجود");
+            dataToSync.DataStatus = entity.DataStatus;
+            context.Entry(dataToSync).Property(e => e.DataStatus).IsModified = true;
             await context.SaveChangesAsync();
             return entity;
 

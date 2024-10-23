@@ -105,9 +105,7 @@ namespace Unicepse.ViewModels.SportsViewModels
 
         private void _subscriptionDataStore_Loaded()
         {
-            _subscriptionListItemViewModels.Clear();
-            foreach (var subs in _subscriptionDataStore.Subscriptions)
-                AddSubscription(subs);
+            LoadSubscriptions(_subscriptionDataStore.Subscriptions);
         }
         private void AddSubscription(Subscription subscription)
         {

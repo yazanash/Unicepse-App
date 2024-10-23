@@ -60,7 +60,16 @@ namespace Unicepse.Stores
             {
                 MonthlyTrainerDause.TotalSubscriptions += _dausesDataService.GetParcent(pay, date);
             }
-            MonthlyTrainerDause.CountSubscription = payments.GroupBy(x => x.Subscription).Count();
+            List<Subscription> subs = new List<Subscription>();
+            foreach(var item in payments.GroupBy(x => x.Subscription))
+            {
+                if (item.Key != null&&!subs.Any(x => x.Id == item.Key.Id))
+                {
+                    MonthlyTrainerDause.CountSubscription++;
+                    subs.Add(item.Key);
+                }
+            }
+            
             MonthlyTrainerDause.Parcent = (double)trainer.ParcentValue / 100;
             MonthlyTrainerDause.IssueDate = date;
             MonthlyTrainerDause.Trainer = trainer;

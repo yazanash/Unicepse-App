@@ -29,6 +29,7 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
         {
             try
             {
+
                 if (!string.IsNullOrEmpty(_viewModelBase.UID)&& _viewModelBase.UID!=OldUID)
                 {
                     OldUID = _viewModelBase.UID;
@@ -120,9 +121,16 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
         {
             try
             {
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window is CameraReader)
+                    {
+                        window.Close();
+                    }
+                }
                 CameraReader cameraReader = new CameraReader(true,_viewModelBase);
                 cameraReader.DataContext = _viewModelBase;
-                cameraReader.ShowDialog();
+                cameraReader.Show();
                 await Task.Delay(1);
                 _viewModelBase.UID = null;
             }

@@ -38,7 +38,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Credit? entity = await context.Set<Credit>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذه الدفعة غير موجودة");
             context.Set<Credit>().Remove(entity!);
             await context.SaveChangesAsync();
             return true;
@@ -73,7 +73,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Credit? entity = await context.Set<Credit>().AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذه الدفعة غير موجودة");
             return entity!;
         }
 
@@ -91,7 +91,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Credit existed_employee = await Get(entity.Id);
             if (existed_employee == null)
-                throw new NotExistException();
+                throw new NotExistException("هذه الدفعة غير موجودة");
             context.Set<Credit>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

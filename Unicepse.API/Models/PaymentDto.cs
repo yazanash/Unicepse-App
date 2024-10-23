@@ -27,7 +27,7 @@ namespace Unicepse.API.Models
             sid = entity.Subscription!.Id.ToString();
             value = entity.PaymentValue;
             description = entity.Des;
-            date = entity.PayDate;
+            date =entity.PayDate.ToUniversalTime();
 
         }
 
@@ -40,7 +40,7 @@ namespace Unicepse.API.Models
                 Subscription = new Subscription() { Id = Convert.ToInt32(sid) },
                 PaymentValue = value,
                 Des = description,
-                PayDate = date
+                PayDate =date.ToLocalTime()
 
             };
 

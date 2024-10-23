@@ -114,8 +114,8 @@
                                    Margin="0 0 10 0"
                                    FontSize="13"/>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <RadioButton IsChecked="{Binding DaysCounter,UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك كامل"/>
-                                <RadioButton Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك يومي"/>
+                                <RadioButton GroupName="ch" IsChecked="{Binding DaysCounter,UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك كامل"/>
+                                <RadioButton GroupName="ch" IsChecked="True"  Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك يومي"/>
                             </StackPanel>
                         </StackPanel>
                         <!--<DockPanel  Grid.Row="2">

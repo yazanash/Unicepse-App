@@ -122,7 +122,23 @@ namespace Unicepse.Stores
             }
             LoggedOut?.Invoke(entity);
         }
+        public async Task AddKeyToPlayer(DailyPlayerReport entity)
+        {
+            _logger.LogInformation(LogFlag + "add key to player");
+            DailyPlayerReport loggedOut = await _playersAttendenceService.AddKey(entity);
 
+            int currentIndex = _playersAttendence.FindIndex(y => y.Id == entity.Id);
+
+            if (currentIndex != -1)
+            {
+                _playersAttendence[currentIndex] = entity;
+            }
+            else
+            {
+                _playersAttendence.Add(entity);
+            }
+            LoggedOut?.Invoke(entity);
+        }
         public async Task GetLoggedPlayers(DateTime date)
         {
             _logger.LogInformation(LogFlag + "get logs history");

@@ -20,18 +20,20 @@ namespace Unicepse.Commands.AuthCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            try
-            {
-                if (_authenticationStore.CurrentAccount!.Id != _usersDataStore.SelectedUser!.Id)
-                    await _usersDataStore.Delete(_usersDataStore.SelectedUser!.Id);
-                else
-                    MessageBox.Show("لا يمكن حذف المستخدم الحالي");
+            if (MessageBox.Show("سيتم حذف هذا المستخدم , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                try
+                {
+                    if (_authenticationStore.CurrentAccount!.Id != _usersDataStore.SelectedUser!.Id)
+                        await _usersDataStore.Delete(_usersDataStore.SelectedUser!.Id);
+                    else
+                        MessageBox.Show("لا يمكن حذف المستخدم الحالي");
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
         }
     }
 }

@@ -9,6 +9,15 @@ namespace Unicepse.Core.Exceptions
     public class PlayerNotExistException : Exception
     {
 
-       
+        public PlayerNotExistException() : base()
+        {
+
+
+        }
+        public PlayerNotExistException(string? message) : base(message)
+        {
+
+
+        }
     }
 }

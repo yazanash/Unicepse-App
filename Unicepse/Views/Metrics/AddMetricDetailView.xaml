@@ -75,7 +75,7 @@
                                        Foreground="{StaticResource colors.secondry}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
-                                    <TextBox TabIndex="0"
+                                <TextBox TabIndex="0" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}"  GotFocus="TextBlock_GotFocus" Style="{StaticResource textBoxStyle}"/>
                                 </StackPanel>
                             </Grid>
@@ -95,7 +95,7 @@
                                        Foreground="{StaticResource colors.secondry}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
-                                <TextBox TabIndex="1"
+                                <TextBox TabIndex="1" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Wieght, UpdateSourceTrigger=PropertyChanged}"  GotFocus="TextBlock_GotFocus" Style="{StaticResource textBoxStyle}"/>
                                 </StackPanel>
                             </Grid>
@@ -120,7 +120,7 @@
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox TabIndex="2"
-                                     GotFocus="TextBlock_GotFocus"
+                                     GotFocus="TextBlock_GotFocus" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Nick, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -140,7 +140,7 @@
                                        Foreground="{StaticResource colors.secondry}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
-                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="3"
+                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="3" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Shoulders, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -164,7 +164,7 @@
                                        Foreground="{StaticResource colors.secondry}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
-                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="4"
+                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="4" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Chest, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -185,6 +185,7 @@
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="5"
+                                          PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Waist, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -210,6 +211,7 @@
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="6"
+                                          PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Hips, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -234,6 +236,7 @@
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="7"
+                                          PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding R_Arm, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -254,6 +257,7 @@
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="8"
+                                           PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding L_Arm, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -277,7 +281,7 @@
                                        Foreground="{StaticResource colors.secondry}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
-                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="9"
+                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="9" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding R_Thigh, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -297,7 +301,7 @@
                                        Foreground="{StaticResource colors.secondry}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
-                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="10"
+                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="10" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding L_Thigh, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -321,7 +325,7 @@
                                        Foreground="{StaticResource colors.secondry}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
-                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="11"
+                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="11" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding R_Leg, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>
@@ -341,7 +345,7 @@
                                        Foreground="{StaticResource colors.secondry}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
-                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="13"
+                                <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="13" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding L_Leg, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                         </Grid>

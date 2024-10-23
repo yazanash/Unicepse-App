@@ -153,6 +153,15 @@ namespace Unicepse.ViewModels.PaymentsViewModels
                     OnErrorChanged(nameof(PaymentValue));
                 }
                 OnPropertyChanged(nameof(SelectedSubscription));
+                ClearError(nameof(PayDate));
+                if (SelectedSubscription != null)
+                {
+                    if (PayDate < Convert.ToDateTime(SelectedSubscription!.RollDate))
+                    {
+                        AddError("لا يمكن ان يكون تاريخ الدفعة اصغر من تاريخ الاشتراك", nameof(PayDate));
+                        OnErrorChanged(nameof(PaymentValue));
+                    }
+                }
             }
         }
         private void AddSubscriptiont(Subscription subscription)

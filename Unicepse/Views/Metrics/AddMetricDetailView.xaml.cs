@@ -32,5 +32,15 @@ namespace Unicepse.Views.Metrics
                 textBox.SelectAll();
             }
         }
+        private void TextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null && !textBox.IsKeyboardFocusWithin)
+            {
+                textBox.Focus();
+                e.Handled = true;
+                textBox.SelectAll();
+            }
+        }
     }
 }

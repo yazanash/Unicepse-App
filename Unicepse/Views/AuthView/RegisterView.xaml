@@ -7,6 +7,7 @@
                   xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
   PreviewKeyDown="UserControl_PreviewKeyDown"
              mc:Ignorable="d" 
+             FlowDirection="RightToLeft"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -19,7 +20,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="1" Panel.ZIndex="1" VerticalAlignment="Top" Margin="10" HorizontalAlignment="Right">
+            <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight" Grid.Column="1" Panel.ZIndex="1" VerticalAlignment="Top" Margin="10" HorizontalAlignment="Right">
                 <icons:PackIconMaterial Kind="Close" Panel.ZIndex="2" MouseDown="Close_MouseUp" Width="15" Margin="5" Height="15" Foreground="#787878"/>
                 <icons:PackIconMaterial Kind="WindowMinimize" Panel.ZIndex="2" MouseDown="Minimize_MouseUp" Width="15" Margin="5" Height="15" Foreground="#787878"/>
 
@@ -39,7 +40,7 @@
                         <Ellipse Margin="50 350 0 0" Height="20" Width="20" Fill="{StaticResource colors.primary}" />
                     </Canvas>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="SignUp" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.secondry}"/>
+                        <TextBlock Text="Uniceps" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.secondry}"/>
                         <TextBlock Text="Join us Now!" Style="{StaticResource normalText}" Foreground="{StaticResource colors.secondry}"/>
                         <TextBlock Text="Welcome To Our Verse" Style="{StaticResource normalText}" Foreground="{StaticResource colors.secondry}"/>
 
@@ -50,7 +51,7 @@
 
             <Border Background="#ffffff" CornerRadius="0 10 10 0" Grid.Column="1">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="Welcome To our system" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.primary}"/>
+                    <TextBlock Text="اهلا بك بنظامنا" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.primary}"/>
                     <StackPanel Orientation="Horizontal" Margin="0 20 " HorizontalAlignment="Center">
                         <Button Style="{StaticResource circleBtn}">
                             <icons:PackIconMaterial Kind="Facebook" Width="20" Height="20" Foreground="#787878"/>
@@ -62,7 +63,7 @@
                             <icons:PackIconMaterial Kind="Linkedin" Width="20" Height="20" Foreground="#787878"/>
                         </Button>
                     </StackPanel>
-                    <TextBlock Text="Signup with your info" Style="{StaticResource normalText}" Margin="0 10 0 15" Foreground="#878787"/>
+                    <TextBlock Text="تسجيل جديد" Style="{StaticResource normalText}" Margin="0 10 0 15" Foreground="#878787"/>
                     <Border BorderThickness="1" BorderBrush="#acb8af" Margin=" 70 7">
                         <Grid Margin="9 7">
                             <Grid.ColumnDefinitions>
@@ -70,7 +71,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <icons:PackIconMaterial Kind="AccountOutline" Foreground="#787878" Width="20" Height="20"/>
-                            <TextBlock Text="Enter username" Style="{StaticResource hintText}"
+                            <TextBlock Text="اخل اسم المستخدم" Style="{StaticResource hintText}"
                                       x:Name="lbl_username" 
                                        MouseDown="email_MouseDown"/>
                             <TextBox x:Name="email_txt"
@@ -87,7 +88,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <icons:PackIconMaterial Kind="LockOutline" Foreground="#787878" Width="20" Height="20"/>
-                            <TextBlock x:Name="lbl_password" Text="Enter password" Style="{StaticResource hintText}"
+                            <TextBlock x:Name="lbl_password" Text="ادخل كلمة المرور" Style="{StaticResource hintText}"
                                       MouseDown="password_MouseDown" />
                             <PasswordBox x:Name="password_txt" TabIndex="1"
                                          PasswordChanged="password_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
@@ -100,12 +101,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <icons:PackIconMaterial Kind="LockOutline" Foreground="#787878" Width="20" Height="20"/>
-                            <TextBlock x:Name="lbl_password_confirm" Text="Confirm password" Style="{StaticResource hintText}"
+                            <TextBlock x:Name="lbl_password_confirm" Text="تاكيد كلمة المرور" Style="{StaticResource hintText}"
                                       MouseDown="lbl_password_confirm_MouseDown" />
                             <PasswordBox x:Name="password_confirm_txt" TabIndex="2" PasswordChanged="password_confirm_txt_PasswordChanged" Style="{StaticResource loginPassTextbox}" />
                         </Grid>
                     </Border>
-                    <Button x:Name="sing_btn" Content="SignUp" Command="{Binding RegisterCommand}" Style="{StaticResource signinBtn}"/>
+                    <Button x:Name="sing_btn" Content="تسجيل" Command="{Binding RegisterCommand}" Style="{StaticResource signinBtn}"/>
                 </StackPanel>
             </Border>
         </Grid>

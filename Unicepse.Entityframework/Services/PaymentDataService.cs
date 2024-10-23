@@ -43,7 +43,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             PlayerPayment? entity = await context.Set<PlayerPayment>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             context.Set<PlayerPayment>().Remove(entity!);
             await context.SaveChangesAsync();
             return true;
@@ -55,7 +55,7 @@ namespace Unicepse.Entityframework.Services
             PlayerPayment? entity = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
                 .Include(x => x.Subscription).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
 
@@ -125,7 +125,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Employee? entity = await context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
         public async Task<IEnumerable<PlayerPayment>> GetByDataStatus(DataStatus status)
@@ -140,10 +140,12 @@ namespace Unicepse.Entityframework.Services
         public async Task<PlayerPayment> UpdateDataStatus(PlayerPayment entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            PlayerPayment existedPlayer = await Get(entity.Id);
-            if (existedPlayer == null)
-                throw new ConflictException("this payment is not existed");
-            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            PlayerPayment? dataToSync =await context.PlayerPayments!.FindAsync(entity.Id);
+            if (dataToSync == null)
+                throw new NotExistException("هذا السجل غير موجود");
+
+            dataToSync.DataStatus = entity.DataStatus;
+            context.Entry(dataToSync).Property(e => e.DataStatus).IsModified = true;
             await context.SaveChangesAsync();
             return entity;
 
@@ -153,7 +155,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             PlayerPayment existed_payment = await Get(entity.Id);
             if (existed_payment == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             context.Entry(entity).State = EntityState.Detached;
             if (context.Entry(entity).State == EntityState.Detached)
             {

@@ -53,18 +53,28 @@ namespace Unicepse.Commands.SubscriptionCommand
                     Trainer = _subscriptionDataStore.SelectedTrainer,
                     Player = _playerDataStore.SelectedPlayer!.Player,
                     RollDate = _addSubscriptionViewModel.SubscribeDate,
-                    Price = _subscriptionDataStore.SelectedSport!.Price,
+                    //Price = _subscriptionDataStore.SelectedSport!.Price,
                     LastPaid = _addSubscriptionViewModel.SubscribeDate,
                     /// offer info
                     OfferValue = _addSubscriptionViewModel.OfferValue,
                     OfferDes = _addSubscriptionViewModel.Offer,
-                    PriceAfterOffer = _subscriptionDataStore.SelectedSport.Price - _addSubscriptionViewModel.OfferValue,
+                   
                     /// private info
                     IsPrivate = _addSubscriptionViewModel.PrivatePrice > 0,
                     IsPlayerPay = _addSubscriptionViewModel.PrivateProvider,
                     PrivatePrice = _addSubscriptionViewModel.PrivatePrice,
                     EndDate = _addSubscriptionViewModel.SubscribeDate.AddDays(_addSubscriptionViewModel.SubscribeDays),
                 };
+                if (_addSubscriptionViewModel.DaysCounter)
+                {
+                    subscription.Price = _subscriptionDataStore.SelectedSport!.Price;
+                    subscription.PriceAfterOffer = subscription.Price - _addSubscriptionViewModel.OfferValue;
+                }
+                else
+                {
+                    subscription.Price = _subscriptionDataStore.SelectedSport!.DailyPrice * _addSubscriptionViewModel.SubscribeDays;
+                    subscription.PriceAfterOffer = subscription.Price - _addSubscriptionViewModel.OfferValue;
+                }
                 _playerDataStore.SelectedPlayer!.Player.Balance -= subscription.PriceAfterOffer;
                 _playerDataStore.SelectedPlayer!.Player.SubscribeEndDate = subscription.EndDate; 
                 await _subscriptionDataStore.Add(subscription);

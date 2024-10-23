@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Models.Subscription;
 
 namespace Unicepse.Stores
 {
@@ -23,11 +24,19 @@ namespace Unicepse.Stores
 
         #region Payment
         public event Action? PaymentsLoaded;
+        public event Action? SubscriptionsLoaded;
         public event Action<double>? DailyPaymentsSumLoaded;
+        public event Action<double>? DailySubscriptionsSumLoaded;
 
         private readonly PaymentDataService _paymentDataService;
+        private readonly SubscriptionDataService _subscriptionDataService;
         private readonly List<PlayerPayment> _payments;
         public IEnumerable<PlayerPayment> Payments => _payments;
+
+
+        private readonly List<Subscription> _subscriptions;
+        public IEnumerable<Subscription> Subscriptions => _subscriptions;
+
 
         public async Task GetAllPayments(DateTime dateFrom, DateTime dateTo)
         {
@@ -45,6 +54,16 @@ namespace Unicepse.Stores
             _payments.AddRange(subscriptions);
             PaymentsLoaded?.Invoke();
         }
+
+        public async Task GetDailySubscriptions(DateTime dateTo)
+        {
+            _logger.LogInformation(LogFlag + "Get daily subscriptions");
+            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(dateTo);
+            _subscriptions.Clear();
+            _subscriptions.AddRange(subscriptions);
+            SubscriptionsLoaded?.Invoke();
+        }
+
         public async Task GetLastMonthPayments(DateTime dateFrom, DateTime dateTo)
         {
             _logger.LogInformation(LogFlag + "Get daily payment");
@@ -151,6 +170,12 @@ namespace Unicepse.Stores
             double sum = Payments.Sum(x => x.PaymentValue);
             return sum;
         }
+        public double GetSubscriptionsSum()
+        {
+            _logger.LogInformation(LogFlag + "GetPaymentSum");
+            double sum = Subscriptions.Count();
+            return sum;
+        }
         public double GetThisMouthPaymentSum(DateTime date)
         {
             _logger.LogInformation(LogFlag + "GetThisMouthPaymentSum");
@@ -185,19 +210,21 @@ namespace Unicepse.Stores
             double sum = _employeeCredits.Sum(x => x.CreditValue);
             return sum;
         }
-        public GymStore(EmployeeDataService employeeDataService, ExpensesDataService expensesDataService, PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService, ILogger<GymStore> logger)
+        public GymStore(EmployeeDataService employeeDataService, ExpensesDataService expensesDataService, PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService, ILogger<GymStore> logger, SubscriptionDataService subscriptionDataService)
         {
             _employeeDataService = employeeDataService;
             _expensesDataService = expensesDataService;
             _paymentDataService = paymentDataService;
             _dausesDataService = dausesDataService;
             _payments = new List<PlayerPayment>();
+            _subscriptions = new List<Subscription>();
             _expenses = new List<Expenses>();
             _credits = new List<Employee>();
             _employeeCredits = new List<Credit>();
             _dauses = new List<TrainerDueses>();
             _employeeCreditsDataService = employeeCreditsDataService;
             _logger = logger;
+            _subscriptionDataService = subscriptionDataService;
         }
 
         public async Task GetReport(DateTime date)
@@ -239,10 +266,13 @@ namespace Unicepse.Stores
             _logger.LogInformation(LogFlag + "GetStates");
             await GetDailyPayments(date);
             double paySum = GetPaymentSum();
+            await GetDailySubscriptions(date);
+            double subsSum = GetSubscriptionsSum();
             await GetDailyCredits(date);
             double creditSum = GetEmployeeCreditsSum();
             await GetDailyExpenses(date);
             double expSum = GetExpensesSum();
+            DailySubscriptionsSumLoaded?.Invoke(subsSum);
             DailyPaymentsSumLoaded?.Invoke(paySum);
             DailyExpensesSumLoaded?.Invoke(expSum);
             DailyCreditsSumLoaded?.Invoke(creditSum);

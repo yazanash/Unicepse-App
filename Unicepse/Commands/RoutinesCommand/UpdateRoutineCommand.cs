@@ -36,7 +36,8 @@ namespace Unicepse.Commands.RoutinesCommand
 
             foreach (var item in _editSelectRoutineDaysMuscleGroupViewModel.DayGroupList)
             {
-                playerRoutine.DaysGroupMap!.Add(item.SelectedDay, item.Groups);
+                if (!string.IsNullOrEmpty(item.Groups) && !string.IsNullOrWhiteSpace(item.Groups))
+                    playerRoutine.DaysGroupMap!.Add(item.SelectedDay, item.Groups);
             }
 
             playerRoutine.RoutineData = _editSelectRoutineDaysMuscleGroupViewModel.Date;

@@ -34,7 +34,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             T entityToDelete = await Get(id);
             if (entityToDelete == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             T? entity = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
             context.Set<T>().Remove(entity!);
             await context.SaveChangesAsync();
@@ -46,7 +46,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             T? entity = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
 
@@ -64,7 +64,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             T entityToUpdate = await Get(entity.Id);
             if (entityToUpdate == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             context.Set<T>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

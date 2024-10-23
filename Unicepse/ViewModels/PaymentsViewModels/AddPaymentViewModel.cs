@@ -91,6 +91,7 @@ namespace Unicepse.ViewModels.PaymentsViewModels
                     AddError("يجب اختيار الاشتراك اولا", nameof(PaymentValue));
                     OnErrorChanged(nameof(PaymentValue));
                 }
+
             }
         }
         private string? _descriptiones;
@@ -144,6 +145,15 @@ namespace Unicepse.ViewModels.PaymentsViewModels
                 {
                     AddError("يجب اختيار الاشتراك اولا", nameof(PaymentValue));
                     OnErrorChanged(nameof(PaymentValue));
+                }
+                ClearError(nameof(PayDate));
+                if (SelectedSubscription != null)
+                {
+                    if (PayDate < Convert.ToDateTime(SelectedSubscription!.RollDate))
+                    {
+                        AddError("لا يمكن ان يكون تاريخ الدفعة اصغر من تاريخ الاشتراك", nameof(PayDate));
+                        OnErrorChanged(nameof(PaymentValue));
+                    }
                 }
             }
         }

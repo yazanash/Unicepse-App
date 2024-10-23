@@ -28,6 +28,7 @@ namespace Unicepse.Commands.Player
                 try
                 {
                     Core.Models.Player.Player player = _playerStore.SelectedPlayer!.Player;
+                    player.SubscribeEndDate = DateTime.Now;
                     player.IsSubscribed = false;
                     await _playerStore.DeletePlayer(player);
                     navigationService.Navigate();

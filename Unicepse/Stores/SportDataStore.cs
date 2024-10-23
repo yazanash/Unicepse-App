@@ -99,7 +99,9 @@ namespace Unicepse.Stores
         public async Task GetAll()
         {
             _logger.LogInformation(LogFlag + "get all sport");
-            await _initializeLazy.Value;
+            IEnumerable<Sport> sports = await _sportDataService.GetAll();
+            _sports.Clear();
+            _sports.AddRange(sports);
             Loaded?.Invoke();
         }
 

@@ -56,16 +56,28 @@ namespace Unicepse.Commands.SubscriptionCommand
                 _subscriptionDataStore.SelectedSubscription!.TrainerId = _subscriptionDataStore.SelectedTrainer != null ? _subscriptionDataStore.SelectedTrainer.Id : null;
                 _subscriptionDataStore.SelectedSubscription!.Player = _playerDataStore.SelectedPlayer!.Player;
                 _subscriptionDataStore.SelectedSubscription!.RollDate = _editSubscriptionViewModel.SubscribeDate;
-                _subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.Price;
+                //_subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.Price;
                 /// offer info
                 _subscriptionDataStore.SelectedSubscription!.OfferValue = _editSubscriptionViewModel.OfferValue;
                 _subscriptionDataStore.SelectedSubscription!.OfferDes = _editSubscriptionViewModel.Offer;
-                _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _subscriptionDataStore.SelectedSport.Price - _editSubscriptionViewModel.OfferValue;
+                //_subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _subscriptionDataStore.SelectedSport.Price - _editSubscriptionViewModel.OfferValue;
                 /// private info
                 _subscriptionDataStore.SelectedSubscription!.IsPrivate = _editSubscriptionViewModel.PrivatePrice > 0;
                 _subscriptionDataStore.SelectedSubscription!.PrivatePrice = _editSubscriptionViewModel.PrivatePrice;
                 _subscriptionDataStore.SelectedSubscription!.IsPlayerPay = _editSubscriptionViewModel.PrivateProvider;
                 _subscriptionDataStore.SelectedSubscription!.EndDate = _editSubscriptionViewModel.SubscribeDate.AddDays(_editSubscriptionViewModel.SubscribeDays);
+
+
+                if (_editSubscriptionViewModel.DaysCounter)
+                {
+                    _subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.Price;
+                    _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _subscriptionDataStore.SelectedSubscription!.Price - _editSubscriptionViewModel.OfferValue;
+                }
+                else
+                {
+                    _subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.DailyPrice * _editSubscriptionViewModel.SubscribeDays;
+                    _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _subscriptionDataStore.SelectedSubscription!.Price - _editSubscriptionViewModel.OfferValue;
+                }
 
                 _subscriptionDataStore.SelectedSubscription!.PaidValue = _subscriptionDataStore.SelectedSubscription!.PaidValue;
                 if (_subscriptionDataStore.SelectedSubscription!.PaidValue == _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer)
@@ -73,6 +85,10 @@ namespace Unicepse.Commands.SubscriptionCommand
                 else
                     _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
                 _playerDataStore.SelectedPlayer!.Player.Balance -= _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
+                if(_playerDataStore.SelectedPlayer!.Player.SubscribeEndDate< _subscriptionDataStore.SelectedSubscription!.EndDate)
+                {
+                    _playerDataStore.SelectedPlayer!.Player.SubscribeEndDate = _subscriptionDataStore.SelectedSubscription!.EndDate;
+                }
                 await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription!);
                 await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!.Player);
                 _navigationService.Navigate();

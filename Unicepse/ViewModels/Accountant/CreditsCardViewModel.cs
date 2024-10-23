@@ -16,13 +16,15 @@ namespace Unicepse.ViewModels.Accountant
     public class CreditsCardViewModel : ListingViewModelBase
     {
         private readonly GymStore _gymStore;
-
-        public CreditsCardViewModel(GymStore gymStore)
+        private readonly AccountingStateViewModel _accountingStateViewModel;
+        public CreditsCardViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             _gymStore = gymStore;
+            _accountingStateViewModel = accountingStateViewModel;
+
             _creditListItemViewModels = new ObservableCollection<CreditListItemViewModel>();
-            LoadCreditsCommand = new LoadDailyCredits(_gymStore);
-            _gymStore.EmployeeCreditsLoaded += _gymStore_CreditsLoaded; 
+            LoadCreditsCommand = new LoadDailyCredits(_gymStore, _accountingStateViewModel);
+            _gymStore.EmployeeCreditsLoaded += _gymStore_CreditsLoaded;
         }
         private void _gymStore_CreditsLoaded()
         {
@@ -45,9 +47,9 @@ namespace Unicepse.ViewModels.Accountant
 
         }
         public ICommand LoadCreditsCommand;
-        public static CreditsCardViewModel LoadViewModel(GymStore gymStore)
+        public static CreditsCardViewModel LoadViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
-            CreditsCardViewModel viewModel = new CreditsCardViewModel(gymStore);
+            CreditsCardViewModel viewModel = new CreditsCardViewModel(gymStore, accountingStateViewModel);
 
             viewModel.LoadCreditsCommand.Execute(null);
 

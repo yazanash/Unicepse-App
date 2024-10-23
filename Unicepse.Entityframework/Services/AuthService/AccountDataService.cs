@@ -28,7 +28,7 @@ namespace Unicepse.Entityframework.Services.AuthService
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             User existed_user = await GetByUsername(entity.UserName!);
             if (existed_user != null)
-                throw new ConflictException();
+                throw new ConflictException("هذا المستخدم موجود بالفعل");
            
             string pass = _passwordHasher.HashPassword(entity.Password);
             entity.Password = pass;
@@ -68,7 +68,7 @@ namespace Unicepse.Entityframework.Services.AuthService
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             User? entity = await context.Set<User>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا المستخدم غير موجود");
             return entity!;
         }
 
@@ -92,7 +92,7 @@ namespace Unicepse.Entityframework.Services.AuthService
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             User entityToUpdate = await Get(entity.Id);
             if (entityToUpdate == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا المستخدم غير موجود");
             if(entity.Role != Core.Common.Roles.Admin)
             if (context.Users!.Where(x => x.Role==Core.Common.Roles.Admin).Count() == 1 && entityToUpdate.Role==Core.Common.Roles.Admin)
             {
@@ -111,7 +111,7 @@ namespace Unicepse.Entityframework.Services.AuthService
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             User entityToUpdate = await Get(entity.Id);
             if (entityToUpdate == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا المستخدم غير موجود");
             entity.Disable = true;
             context.Set<User>().Update(entity);
             await context.SaveChangesAsync();

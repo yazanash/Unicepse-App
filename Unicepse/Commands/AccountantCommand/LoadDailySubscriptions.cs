@@ -8,11 +8,11 @@ using Unicepse.ViewModels.Accountant;
 
 namespace Unicepse.Commands.AccountantCommand
 {
-    public class LoadDailyCredits : AsyncCommandBase
+    public class LoadDailySubscriptions : AsyncCommandBase
     {
         private readonly GymStore _gymStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public LoadDailyCredits(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public LoadDailySubscriptions(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             _gymStore = gymStore;
             _accountingStateViewModel = accountingStateViewModel;
@@ -20,7 +20,7 @@ namespace Unicepse.Commands.AccountantCommand
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            await _gymStore.GetDailyCredits(_accountingStateViewModel.Date);
+            await _gymStore.GetDailySubscriptions(_accountingStateViewModel.Date);
         }
     }
 }

@@ -44,7 +44,6 @@ namespace Unicepse.ViewModels.Accountant
             StatesReportCommand = new NavaigateCommand<AccountingStateViewModel>(new NavigationService<AccountingStateViewModel>(_navigatorStore, () => CreateStatesViewModel(navigation, _expensesStore, _gymStore)));
 
         }
-
         private void NavigatorStore_CurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));

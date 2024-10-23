@@ -330,7 +330,7 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
                                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
                                         <TextBox Width="40"
                                     Text="{Binding ItemOrder, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>

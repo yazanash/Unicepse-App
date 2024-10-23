@@ -25,6 +25,13 @@ namespace Unicepse.Commands.Player
         {
             try
             {
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window is CameraReader)
+                    {
+                        window.Close();
+                    }
+                }
                 CameraReader cameraReader = new CameraReader();
                 cameraReader.DataContext = _viewModelBase;
                 cameraReader.ShowDialog();

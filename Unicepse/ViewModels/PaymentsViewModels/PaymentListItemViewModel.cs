@@ -33,6 +33,8 @@ namespace Unicepse.ViewModels.PaymentsViewModels
         }
         public int Id => payment.Id;
         public int SubscriptionId => payment.Subscription!.Id;
+        public string? SportName => payment.Subscription!.Sport!=null ? payment.Subscription!.Sport.Name : "";
+        public string? GroupName => SportName +" - "+ payment.Subscription!.RollDate.ToShortDateString();
         public string? Description => payment.Des;
         public double Value => payment.PaymentValue;
         public string? Date => payment.PayDate.ToShortDateString();

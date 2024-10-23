@@ -96,7 +96,8 @@ namespace Unicepse.API
         }
         public async Task<int> DeleteAsync<T>(string uri)
         {
-            _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
+            if (!_client.DefaultRequestHeaders.Where(x => x.Key == ("x-access-token")).Any())
+                _client.DefaultRequestHeaders.Add("x-access-token", _apiKey.Key);
             HttpResponseMessage response = await _client.DeleteAsync($"{uri}");
             return ((int)response.StatusCode);
 

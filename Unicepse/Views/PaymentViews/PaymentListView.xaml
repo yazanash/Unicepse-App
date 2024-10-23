@@ -65,13 +65,23 @@
                             <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
                             <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
-                                    FlowDirection="RightToLeft" ItemsSource="{Binding PaymentList}" 
+                                    FlowDirection="RightToLeft" ItemsSource="{Binding GroupedTasks.View}" 
                                     CanUserReorderColumns="True"
                                         SelectedItem="{Binding SelectedPayment,UpdateSourceTrigger=PropertyChanged}"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-
+                                <DataGrid.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.HeaderTemplate>
+                                            <DataTemplate>
+                                                <!--<Border CornerRadius="10" BorderBrush="#aaa" BorderThickness="0.5" HorizontalAlignment="Stretch">-->
+                                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource colors.primary}" Margin="5" FontWeight="Bold" HorizontalAlignment="Left" FontSize="16"/>
+                                                <!--</Border>-->
+                                            </DataTemplate>
+                                        </GroupStyle.HeaderTemplate>
+                                    </GroupStyle>
+                                </DataGrid.GroupStyle>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"

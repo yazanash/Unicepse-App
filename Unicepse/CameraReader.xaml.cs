@@ -71,6 +71,7 @@ namespace Unicepse
                 vidlist.Items.Add(new Camera(videoDevices[i].Name, videoDevices[i].MonikerString));
             }
             vidlist.SelectedIndex = 0;
+            this.Topmost = true;
             //videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
             //videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
             //videoSource.Start();
