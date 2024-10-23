@@ -30,7 +30,7 @@ namespace Unicepse.API.Models
                 Id = Convert.ToInt32( rid),
                 Player = new Core.Models.Player.Player() { Id = Convert.ToInt32(pid) },
                 RoutineNo = routine_no,
-                RoutineData = routine_date,
+                RoutineData = routine_date.ToLocalTime(),
             DaysGroupMap = days_group_map!,
             };
             foreach (var item in routine_items)
@@ -44,7 +44,7 @@ namespace Unicepse.API.Models
             rid = entity.Id.ToString();
             pid = entity.Player!.Id.ToString();
             routine_no = entity.RoutineNo;
-            routine_date = entity.RoutineData;
+            routine_date = entity.RoutineData.ToUniversalTime();
             days_group_map = entity.DaysGroupMap;
             foreach (var item in entity.RoutineSchedule)
             {

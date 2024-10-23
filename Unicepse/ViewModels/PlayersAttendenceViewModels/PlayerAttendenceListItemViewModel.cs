@@ -21,10 +21,13 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
         {
             _playersAttendenceStore = playersAttendenceStore;
             this.dailyPlayerReport = dailyPlayerReport;
+            this.IsTakenKey = dailyPlayerReport.IsTakenKey;
+            this.Key = dailyPlayerReport.KeyNumber;
             this.IsLogged = this.dailyPlayerReport.IsLogged;
             this.logoutTime = dailyPlayerReport.IsLogged ? "لم يسجل خروج بعد" : dailyPlayerReport.logoutTime.ToShortTimeString();
             this.IsLoggedBrush = this.IsLogged ? Brushes.Green : Brushes.Red;
             LogoutCommand = new LogoutPlayerCommand(_playersAttendenceStore);
+            AddKeyCommand = new OpenAddKeyDialog(new KeyDialogViewModel(this.dailyPlayerReport.Player!.FullName!, _playersAttendenceStore));
         }
 
         private int _idSort;
@@ -35,6 +38,8 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
         }
 
         public ICommand LogoutCommand { get; }
+        public ICommand AddKeyCommand { get; }
+
         public string? Date => dailyPlayerReport.Date.ToShortDateString();
         public string? loginTime => dailyPlayerReport.loginTime.ToShortTimeString();
 
@@ -69,9 +74,33 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
         public Brush IsSubscribed => dailyPlayerReport.Player!.IsSubscribed ? Brushes.Green : Brushes.Red;
         public int Id => dailyPlayerReport.Id;
 
+        private bool _isTakenKey;
+        public bool IsTakenKey
+        {
+            get { return _isTakenKey; }
+            set
+            {
+                _isTakenKey = value;
+                OnPropertyChanged(nameof(IsTakenKey));
+            }
+        }
+
+        private int _key;
+        public int Key
+        {
+            get { return _key; }
+            set
+            {
+                _key = value;
+                OnPropertyChanged(nameof(Key));
+            }
+        }
+
         public void Update(DailyPlayerReport obj)
         {
             this.dailyPlayerReport = obj;
+            this.IsTakenKey = this.dailyPlayerReport.IsTakenKey;
+            this.Key = this.dailyPlayerReport.KeyNumber;
             this.IsLogged = this.dailyPlayerReport.IsLogged;
             this.logoutTime = dailyPlayerReport.IsLogged ? "لم يسجل خروج بعد" : dailyPlayerReport.logoutTime.ToShortTimeString();
             this.IsLoggedBrush = this.IsLogged ? Brushes.Green : Brushes.Red;

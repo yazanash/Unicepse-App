@@ -46,11 +46,11 @@ namespace Unicepse.Commands.SubscriptionCommand
                 if (!_subscriptionDataStore.SelectedSubscription!.IsStopped)
                 {
                     _playerDataStore.SelectedPlayer!.Player!.Balance += _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
-
-
-                    int days = Convert.ToInt32((_stopSubscription.SubscribeStopDate - _subscriptionDataStore.SelectedSubscription!.RollDate).TotalDays);
-                    double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / _subscriptionDataStore.SelectedSubscription!.Sport!.DaysCount;
-                    _playerDataStore.SelectedPlayer!.Player.Balance -= dayPrice * days;
+                    _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer -= _stopSubscription.ReturnCash;
+                    //entity.PriceAfterOffer = dayPrice * days;
+                    //int days = Convert.ToInt32((_stopSubscription.SubscribeStopDate - _subscriptionDataStore.SelectedSubscription!.RollDate).TotalDays);
+                    //double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / _subscriptionDataStore.SelectedSubscription!.Sport!.DaysCount;
+                    _playerDataStore.SelectedPlayer!.Player.Balance -= _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
                     await _subscriptionDataStore.Stop(_subscriptionDataStore.SelectedSubscription!, _stopSubscription.SubscribeStopDate);
                     await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer.Player);
                     _navigationService.ReNavigate();

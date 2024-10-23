@@ -10,6 +10,7 @@ using Unicepse.Stores;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using Unicepse.API;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.BackgroundServices
 {
@@ -28,10 +29,13 @@ namespace Unicepse.BackgroundServices
     {
         private readonly BackgroundServiceStore _backgroundServiceStore;
         private readonly UnicepseApiPrepHttpClient _unicepseApiPrepHttpClient;
-        public DataSyncService(BackgroundServiceStore backgroundServiceStore, UnicepseApiPrepHttpClient unicepseApiPrepHttpClient)
+        private readonly ILogger<DataSyncService> _logger;
+        string LogFlag = "[Background service] ";
+        public DataSyncService(BackgroundServiceStore backgroundServiceStore, UnicepseApiPrepHttpClient unicepseApiPrepHttpClient, ILogger<DataSyncService> logger)
         {
             _backgroundServiceStore = backgroundServiceStore;
             _unicepseApiPrepHttpClient = unicepseApiPrepHttpClient;
+            _logger = logger;
         }
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -41,6 +45,7 @@ namespace Unicepse.BackgroundServices
                 bool internetAvailable = InternetAvailability.IsInternetAvailable();
                 if (internetAvailable)
                 {
+                    _logger.LogInformation(LogFlag+"Check internet connection {0}",internetAvailable.ToString());
                     try
                     {
                         _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
@@ -63,10 +68,11 @@ namespace Unicepse.BackgroundServices
                         _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
                         await _backgroundServiceStore.SyncAttendances();
                         _backgroundServiceStore.SyncState(false, "");
+                        await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
                     }
                    catch(Exception ex)
                     {
-                        //MessageBox.Show(ex.Message);
+                        _logger.LogError(LogFlag + "failed to sync with error {0}",ex.Message);
                         _backgroundServiceStore.SyncState(true, "حدثت مشكلة اثناء المزامنة ستتم المحاولة خلال 10 ثوان");
                         await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
 

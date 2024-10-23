@@ -129,7 +129,9 @@ namespace Unicepse.Stores
         public async Task GetAll()
         {
             _logger.LogInformation(LogFlag + "get all employee started");
-            await _initializeLazy.Value;
+            IEnumerable<Employee> employees = await _employeeDataService.GetAll();
+            _employee.Clear();
+            _employee.AddRange(employees);
             Loaded?.Invoke();
         }
         public async Task Initialize()

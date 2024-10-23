@@ -24,9 +24,9 @@ namespace Unicepse.API.Models
             aid = entity.Id;
             pid = entity.Player!.Id.ToString();
             sid = "";
-            login_time = entity.loginTime;
-            logout_time = entity.logoutTime;
-            date = entity.Date;
+            login_time = entity.loginTime.ToUniversalTime();
+            logout_time = entity.logoutTime.ToUniversalTime();
+            date = entity.Date.ToUniversalTime();
 
         }
 
@@ -34,16 +34,14 @@ namespace Unicepse.API.Models
         {
             DailyPlayerReport attendance = new DailyPlayerReport()
             {
-                Id =aid,
-                Player = new Core.Models.Player.Player() { Id = Convert.ToInt32( pid) },
-                loginTime = login_time,
-                logoutTime =logout_time,
-                //Subscription = new Core.Models.Subscription.Subscription() { Id = sid },
-                 Date =date,
+                Id = aid,
+                Player = new Core.Models.Player.Player() { Id = Convert.ToInt32(pid) },
+                loginTime = login_time.ToLocalTime(),
+                logoutTime = logout_time.ToLocalTime(),
+                Date = date,
 
+            };
 
-        };
-           
             return attendance;
         }
     }

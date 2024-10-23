@@ -51,7 +51,7 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new PlayerNotExistException();
+                throw new PlayerNotExistException("هذا اللاعب غير موجود");
             return entity!;
         }
 
@@ -86,7 +86,7 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Player existedPlayer = await Get(entity.Id);
             if (existedPlayer == null)
-                throw new PlayerConflictException(existedPlayer!, entity, "this player is existed");
+                throw new PlayerNotExistException("هذا اللاعب غير موجود");
             context.Set<Player>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
@@ -95,10 +95,12 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
         public async Task<Player> UpdateDataStatus(Player entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Player existedPlayer = await Get(entity.Id);
-            if (existedPlayer == null)
-                throw new PlayerConflictException(existedPlayer!, entity, "this player is existed");
-            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            Player? dataToSync =await context.Players!.FindAsync(entity.Id);
+            if (dataToSync == null)
+                throw new PlayerNotExistException("هذا اللاعب غير موجود");
+
+            dataToSync.DataStatus = entity.DataStatus;
+            context.Entry(dataToSync).Property(e => e.DataStatus).IsModified = true;
             await context.SaveChangesAsync();
             return entity;
 

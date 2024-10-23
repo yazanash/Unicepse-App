@@ -16,6 +16,7 @@ namespace Unicepse.Core.Models.DailyActivity
         public DateTime logoutTime { get; set; }
         public virtual Player.Player? Player { get; set; }
         public virtual Subscription.Subscription? Subscription { get; set; }
+        public int KeyNumber { get; set; }
         public bool IsTakenKey { get; set; }
         public bool IsLogged { get; set; }
         public DataStatus DataStatus { get; set; }

@@ -247,7 +247,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
                     LoadPlayers(_playerStore.ArchivedPlayers.Where(x => x.GenderMale == true), order);
                     break;
                 case utlis.common.Filter.Active:
-                    LoadPlayers(_playerStore.ArchivedPlayers.Where(x => x.SubscribeEndDate > DateTime.Now), order);
+                    LoadPlayers(_playerStore.ArchivedPlayers.Where(x => x.SubscribeEndDate >= DateTime.Now.AddDays(-1)), order);
                     break;
                 case utlis.common.Filter.InActive:
                     LoadPlayers(_playerStore.ArchivedPlayers.Where(x => x.SubscribeEndDate < DateTime.Now), order);

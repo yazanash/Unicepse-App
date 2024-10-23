@@ -21,9 +21,9 @@ namespace Unicepse.Entityframework.Services.AuthService
             _accountService = accountService;
             _passwordHasher = passwordHasher;
         }
-        public  bool HasUsers()
+        public bool HasUsers()
         {
-           bool hasUsers =  _accountService.HasUsers();
+            bool hasUsers = _accountService.HasUsers();
             return hasUsers;
         }
 
@@ -33,14 +33,14 @@ namespace Unicepse.Entityframework.Services.AuthService
 
             if (storedAccount == null)
             {
-                throw new UserNotFoundException("خطأ في اسم المستخدم او كلمة المرور",username);
+                throw new UserNotFoundException("خطأ في اسم المستخدم او كلمة المرور", username);
             }
 
             PasswordVerificationResult passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.Password, password);
 
             if (passwordResult != PasswordVerificationResult.Success)
             {
-                throw new InvalidPasswordException("خطأ في اسم المستخدم او كلمة المرور",username, password);
+                throw new InvalidPasswordException("خطأ في اسم المستخدم او كلمة المرور", username, password);
             }
             AuthenticationLog log = new AuthenticationLog()
             {
@@ -59,10 +59,10 @@ namespace Unicepse.Entityframework.Services.AuthService
                 LoginDateTime = DateTime.Now,
                 status = false
             };
-             _accountService.AuthenticationLogging(log);
+            _accountService.AuthenticationLogging(log);
         }
 
-        public async Task<RegistrationResult> Register(string username, string password, string confirmPassword,Roles role)
+        public async Task<RegistrationResult> Register(string username, string password, string confirmPassword, Roles role)
         {
             RegistrationResult result = RegistrationResult.Success;
 
@@ -85,7 +85,9 @@ namespace Unicepse.Entityframework.Services.AuthService
                     UserName = username,
                     Password = password,
                     Role = role,
-            };
+                    OwnerName = "مدير النظام",
+                    Position = "مدير النظام"
+                };
 
 
                 await _accountService.Create(user);

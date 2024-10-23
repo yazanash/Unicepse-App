@@ -35,7 +35,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             License entityToDelete = await Get(id);
             if (entityToDelete == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             License? entity = await context.Set<License>().FirstOrDefaultAsync((e) => e.Id == id);
             context.Set<License>().Remove(entity!);
             await context.SaveChangesAsync();
@@ -47,7 +47,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             License? entity = await context.Set<License>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
         public async Task<License> GetById(string id)
@@ -76,7 +76,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             License entityToUpdate = await GetById(entity.LicenseId!);
             if (entityToUpdate == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             entity.Id = entityToUpdate.Id;
             context.Set<License>().Update(entity);
             await context.SaveChangesAsync();

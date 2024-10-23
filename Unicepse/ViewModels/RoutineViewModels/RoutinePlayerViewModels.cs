@@ -183,6 +183,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
             {
                 itemViewModel.Update(obj);
             }
+            SelectedMuscle = MuscleGroup.FirstOrDefault();
         }
 
         private void _routineDataStore_Loaded()
@@ -197,7 +198,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
                 }
                 SelectedRoutine = _routineItemViewModels.FirstOrDefault();
             }
-           
+            SelectedMuscle = MuscleGroup.FirstOrDefault();
         }
 
         private void _routineDataStore_Deleted(int id)
@@ -213,6 +214,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private void _routineDataStore_Created(PlayerRoutine obj)
         {
             AddRoutine(obj);
+            SelectedMuscle = MuscleGroup.FirstOrDefault();
         }
 
 

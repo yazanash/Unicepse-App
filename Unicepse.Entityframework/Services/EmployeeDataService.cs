@@ -37,7 +37,7 @@ namespace Unicepse.Entityframework.Services
             {
                 Employee existed_sport = await CheckIfExistByName(entity.FullName!);
                 if (existed_sport != null)
-                    throw new ConflictException();
+                    throw new ConflictException("هذا الموظف غير موجود");
                foreach(Sport sport in entity.Sports!)
                 {
                     context.Entry(sport).State = EntityState.Detached;
@@ -54,7 +54,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Employee? entity = await context.Set<Employee>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا الموظف غير موجود");
             context.Set<Employee>().Remove(entity!);
             await context.SaveChangesAsync();
             return true;
@@ -90,7 +90,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Employee existed_employee = await Get(entity.Id);
             if (existed_employee == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا الموظف غير موجود");
             //context.Attach(entity);
             foreach (Sport sport in entity.Sports!)
             {
@@ -111,7 +111,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Employee? entity = await context.Set<Employee>().AsNoTracking().Include(x => x.Sports).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا الموظف غير موجود");
             foreach (var sport in entity.Sports!)
             {
                 context.Attach(sport);

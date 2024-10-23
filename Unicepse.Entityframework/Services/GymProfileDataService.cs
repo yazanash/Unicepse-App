@@ -33,7 +33,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             GymProfile entityToDelete = await Get(id);
             if (entityToDelete == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             GymProfile? entity = await context.Set<GymProfile>().FirstOrDefaultAsync((e) => e.Id == id);
             context.Set<GymProfile>().Remove(entity!);
             await context.SaveChangesAsync();
@@ -45,7 +45,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             GymProfile? entity = await context.Set<GymProfile>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
         public async Task<GymProfile?> GetByGymID(string id)
@@ -74,7 +74,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             GymProfile? entityToUpdate = await GetByGymID(entity.GymId!);
             if (entityToUpdate == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             entity.Id=entityToUpdate.Id;
             context.Set<GymProfile>().Update(entity);
             await context.SaveChangesAsync();

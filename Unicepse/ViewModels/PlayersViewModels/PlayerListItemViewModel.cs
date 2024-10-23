@@ -53,7 +53,8 @@ namespace Unicepse.ViewModels.PlayersViewModels
         public string? SubscribeEndDate => Player.SubscribeEndDate.ToShortDateString();
         public bool IsTakenContainer => Player.IsTakenContainer;
         public int DayLeft => (int)Player.SubscribeEndDate.Subtract(DateTime.Now).TotalDays +1;
-        public Brush IsSubscribed => Player.IsSubscribed ? Brushes.Green : Brushes.Red; 
+        public Brush IsSubscribed => Player.IsSubscribed ? Brushes.Green : Brushes.Red;
+        public Brush BalanceColor => Balance>=0 ? Brushes.Green : Brushes.Red;
 
         private bool _isActive;
         public bool IsActive
@@ -119,6 +120,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             Player = player;
 
             OnPropertyChanged(nameof(FullName));
+            OnPropertyChanged(nameof(Balance));
         }
         private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,LicenseDataStore licenseDataStore)
         {

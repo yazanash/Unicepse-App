@@ -14,13 +14,15 @@ namespace Unicepse.ViewModels.Accountant
     public class ExpensesCardViewModel : ListingViewModelBase
     {
         private readonly GymStore _gymStore;
-
-        public ExpensesCardViewModel(GymStore gymStore)
+        private readonly AccountingStateViewModel _accountingStateViewModel;
+        public ExpensesCardViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
-            _gymStore = gymStore;
+            _gymStore = gymStore; 
+            _accountingStateViewModel = accountingStateViewModel;
             expensesListItemViewModels = new ObservableCollection<Expenses.ExpensesListItemViewModel>();
-            LoadExpensesCommand = new LoadDailyExpenses(_gymStore);
+            LoadExpensesCommand = new LoadDailyExpenses(_gymStore, _accountingStateViewModel);
             _gymStore.ExpensesLoaded += _gymStore_ExpensesLoaded;
+           
         }
 
         private void _gymStore_ExpensesLoaded()
@@ -43,9 +45,9 @@ namespace Unicepse.ViewModels.Accountant
             itemViewModel.Order = expensesListItemViewModels.Count();
         }
         public ICommand LoadExpensesCommand;
-        public static ExpensesCardViewModel LoadViewModel(GymStore gymStore)
+        public static ExpensesCardViewModel LoadViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
-            ExpensesCardViewModel viewModel = new ExpensesCardViewModel(gymStore);
+            ExpensesCardViewModel viewModel = new ExpensesCardViewModel(gymStore,accountingStateViewModel);
 
             viewModel.LoadExpensesCommand.Execute(null);
 

@@ -51,7 +51,7 @@ namespace Unicepse.API.Models
                 Waist = waist,
                 Chest = chest,
                 Hips = hips,
-                CheckDate = check_date!
+                CheckDate = check_date.ToLocalTime()
         };
             return metric;
         }
@@ -74,7 +74,7 @@ namespace Unicepse.API.Models
             waist = entity.Waist;
             chest = entity.Chest;
             hips = entity.Hips;
-            check_date = entity.CheckDate;
+            check_date = entity.CheckDate.ToUniversalTime();
         }
     }
 }

@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Unicepse.Core\Unicepse.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="common\" />
+  </ItemGroup>
+
 </Project>

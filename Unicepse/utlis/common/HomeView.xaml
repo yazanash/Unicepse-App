@@ -104,7 +104,25 @@
                                     Binding="{Binding IdSort}"
                                     CanUserResize="False"/>
 
-                                        <DataGridTemplateColumn Header="الاسم" Width="*" IsReadOnly="True">
+                                        <DataGridTemplateColumn  Width="auto" IsReadOnly="True">
+                                            <DataGridTemplateColumn.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Icon:PackIconMaterial Kind="Key" Style="{StaticResource GridBtnIcon}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.HeaderTemplate>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Visibility="{Binding IsTakenKey,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}"  ToolTip="رقم المفتاح" Text="{Binding Key,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        
+                                        
+                                        <DataGridTemplateColumn Header="الاسم" Width="1.2*" IsReadOnly="True">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
@@ -129,7 +147,7 @@
                                     />
                                         <DataGridTextColumn Header="وقت الدخول" IsReadOnly="True"
                                      Binding="{Binding loginTime,UpdateSourceTrigger=PropertyChanged}"
-                                    Width="*"
+                                    Width="auto"
                                     />
                                         <DataGridTextColumn Header="وقت الخروج" IsReadOnly="True"
                                      Binding="{Binding logoutTime,UpdateSourceTrigger=PropertyChanged}"
@@ -143,6 +161,9 @@
 
                                                         <Button Visibility="{Binding IsLogged,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}" Command="{Binding LogoutCommand}" Style="{StaticResource GridremoveBtn}">
                                                             <Icon:PackIconMaterial Kind="LogoutVariant"  Style="{StaticResource GridBtnIcon}"/>
+                                                        </Button>
+                                                        <Button Visibility="{Binding IsLogged,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}" Command="{Binding AddKeyCommand}" Style="{StaticResource GridremoveBtn}">
+                                                            <Icon:PackIconMaterial Kind="KeyPlus"  Style="{StaticResource GridBtnIcon}"/>
                                                         </Button>
                                                     </StackPanel>
                                                 </DataTemplate>

@@ -164,7 +164,6 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.GenderMale, 1, "ذكور"));
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.GenderFemale, 2, "اناث"));
-            filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.WithoutTrainer, 3, "بدون مدرب"));
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.InActive, 4, "غير فعال"));
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.Active, 6, "فعال"));
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.SubscribeEnd, 7, "منتهي الاشتراك"));
@@ -252,7 +251,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
                     LoadPlayers(_playerStore.Players.Where(x => x.GenderMale == true), order);
                     break;
                 case utlis.common.Filter.Active:
-                    LoadPlayers(_playerStore.Players.Where(x => x.SubscribeEndDate > DateTime.Now), order);
+                    LoadPlayers(_playerStore.Players.Where(x => x.SubscribeEndDate >= DateTime.Now.AddDays(-1)), order);
                     break;
                 case utlis.common.Filter.InActive:
                     LoadPlayers(_playerStore.Players.Where(x => x.SubscribeEndDate < DateTime.Now), order);
@@ -278,7 +277,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
                     players = players.OrderBy(x => x.FullName);
                     break;
                 case Order.ByDebt:
-                    players = players.OrderByDescending(x => x.Balance);
+                    players = players.OrderBy(x => x.Balance);
                     break;
                 case Order.BySubscribeEnd:
                     players = players.OrderByDescending(x => x.SubscribeEndDate);

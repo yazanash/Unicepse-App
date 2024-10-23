@@ -61,6 +61,7 @@ namespace Unicepse.Commands.RoutinesCommand
             playerRoutine.RoutineSchedule.AddRange(_routineDataStore.RoutineItems);
             foreach (var item in selectRoutineDaysMuscleGroupViewModel.DayGroupList)
             {
+                if(!string.IsNullOrEmpty(item.Groups)&&!string.IsNullOrWhiteSpace(item.Groups))
                 playerRoutine.DaysGroupMap!.Add(item.SelectedDay, item.Groups);
             }
 

@@ -38,7 +38,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Metric? entity = await context.Set<Metric>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             context.Set<Metric>().Remove(entity!);
             await context.SaveChangesAsync();
             return true;
@@ -49,7 +49,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Metric? entity = await context.Set<Metric>().Include(x => x.Player).FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
 
@@ -82,10 +82,11 @@ namespace Unicepse.Entityframework.Services
         public async Task<Metric> UpdateDataStatus(Metric entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Metric existedPlayer = await Get(entity.Id);
-            if (existedPlayer == null)
-                throw new ConflictException("this metric is not existed");
-            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            Metric? dataToSync =await context.Metrics!.FindAsync(entity.Id);
+            if (dataToSync == null)
+                throw new NotExistException("هذا السجل غير موجود");
+            dataToSync.DataStatus = entity.DataStatus;
+            context.Entry(dataToSync).Property(e => e.DataStatus).IsModified = true;
             await context.SaveChangesAsync();
             return entity;
 
@@ -95,7 +96,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Metric existed_payment = await Get(entity.Id);
             if (existed_payment == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             context.Set<Metric>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

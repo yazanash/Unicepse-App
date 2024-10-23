@@ -57,8 +57,7 @@
                                     Width="auto"
                                     Binding="{Binding IdSort}"
                                     CanUserResize="False"/>
-
-                                <DataGridTemplateColumn Header="التاريخ" Width="1.5*" IsReadOnly="True">
+                               <DataGridTemplateColumn Header="التاريخ" Width="1.5*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -77,7 +76,24 @@
                                      Binding="{Binding logoutTime}"
                                     Width="*"
                                     />
-                              </DataGrid.Columns>
+                                <DataGridTemplateColumn  Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Icon:PackIconMaterial Kind="Key" Style="{StaticResource GridBtnIcon}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.HeaderTemplate>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Visibility="{Binding IsTakenKey,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}"  ToolTip="رقم المفتاح" Text="{Binding Key,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                            </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                 </Grid>

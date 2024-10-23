@@ -199,10 +199,19 @@
                                      Binding="{Binding DayLeft}"
                                     Width="auto"
                                     />
-                                <DataGridTextColumn Header="رصيد الحساب" IsReadOnly="True"
+                                <!--<DataGridTextColumn Header="رصيد الحساب"  Foreground="{Binding BalanceColor,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"
                                      Binding="{Binding Balance,Converter={StaticResource convertNum}}"
                                     Width="auto"
-                                    />
+                                    />-->
+                                <DataGridTemplateColumn Header="رصيد الحساب" Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Margin="10 0 0 0" Foreground="{Binding BalanceColor,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Balance,Converter={StaticResource convertNum}}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn  Width="*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

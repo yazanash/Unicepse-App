@@ -24,6 +24,8 @@ using Unicepse.API.Models;
 using Unicepse.ViewModels._ِAppViewModels;
 using System.Threading;
 using System.Diagnostics;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Unicepse
 {
@@ -53,12 +55,12 @@ namespace Unicepse
             {
                 if (await Updater.CheckForUpdate())
                 {
-                    MessageBox.Show("A new update is available. Downloading now...");
+                    MessageBox.Show("تحديث جديد , سيتم تنزيل التحديث");
                     var progressWindow = new ProgressWindow();
                     progressWindow.Show();
                     string? filename = await Updater.DownloadUpdate(progressWindow);
                     progressWindow.Close();
-                    MessageBox.Show("Update downloaded. Please restart the application.");
+                    MessageBox.Show("تم تنزيل التحديث سيتم اغلاق التطبيق وتشغيل ملف التحديث");
                     ApplyUpdate(filename);
                 }
             }
@@ -134,8 +136,19 @@ namespace Unicepse
             _host = CreateHostBuilder().Build();
             _host.Start();
         }
+        private void TextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null && !textBox.IsKeyboardFocusWithin)
+            {
+                textBox.Focus();
+                e.Handled = true;
+                textBox.SelectAll();
+            }
+        }
         protected async override void OnStartup(StartupEventArgs e)
         {
+            EventManager.RegisterClassHandler(typeof(TextBox), TextBox.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(TextBox_PreviewMouseLeftButtonDown));
             try
             {
                 CheckForUpdates();
@@ -144,7 +157,6 @@ namespace Unicepse
                 mutex = new Mutex(true, appName, out createdNew);
                 if (!createdNew)
                 {
-                    MessageBox.Show("Application is already running.");
                     BringExistingInstanceToFront();
                     Application.Current.Shutdown();
                 }

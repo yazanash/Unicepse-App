@@ -57,7 +57,27 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             DailyPlayerReport existedPlayer = await Get(entity.Id);
             if (existedPlayer == null)
-                throw new NotExistException("this record is not exist");
+                throw new NotExistException("هذا السجل غير موجود");
+
+            context.Set<DailyPlayerReport>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
+
+        }
+        public async Task<DailyPlayerReport> AddKey(DailyPlayerReport entity)
+        {
+            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+            DailyPlayerReport existedPlayer = await Get(entity.Id);
+            if (existedPlayer == null)
+                throw new NotExistException("هذا السجل غير موجود");
+            DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x =>
+               x.IsLogged
+               && x.KeyNumber == entity.KeyNumber
+               ).SingleOrDefault();
+            if (dailyPlayerReport != null)
+            {
+                throw new PlayerConflictException("هذا المفتاح مع لاعب اخر لم يخرج بعد");
+            }
             context.Set<DailyPlayerReport>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
@@ -66,7 +86,6 @@ namespace Unicepse.Entityframework.Services
         public async Task<bool> LogOutPlayer(DailyPlayerReport entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-
             context.Set<DailyPlayerReport>().Update(entity);
             await context.SaveChangesAsync();
             return true;
@@ -103,7 +122,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             DailyPlayerReport existedPlayer = await Get(entity.Id);
             if (existedPlayer == null)
-                throw new ConflictException("this Daily Player Report is not existed");
+                throw new NotExistException("هذا السجل غير موجود");
             context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
             await context.SaveChangesAsync();
             return entity;

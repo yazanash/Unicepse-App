@@ -52,7 +52,7 @@ namespace Unicepse.Stores
             set
             {
                 _selectedPayment = value;
-                _logger.LogInformation(LogFlag + "selected metrics changed");
+                _logger.LogInformation(LogFlag + "selected payments changed");
             }
         }
 

@@ -32,8 +32,8 @@ namespace Unicepse.API.Models
             pid = entity.Player!.Id.ToString();
             sport_name = entity.Sport!.Name;
             trainer_name = entity.Trainer != null ? entity.Trainer.FullName : "";
-            start_date = entity.RollDate;
-            end_date = entity.EndDate;
+            start_date = entity.RollDate.ToUniversalTime();
+            end_date = entity.EndDate!.ToUniversalTime();
             price = entity.Price;
             discount_value = entity.OfferValue;
             discount_des = entity.OfferDes;
@@ -54,8 +54,8 @@ namespace Unicepse.API.Models
                 OfferDes = discount_des,
                 IsPaid = Convert.ToBoolean(is_paid),
                 PaidValue = paid_value,
-                RollDate = start_date,
-                EndDate = end_date
+                RollDate = start_date.ToLocalTime(),
+                EndDate = end_date.ToLocalTime()
             };
             //if (!string.IsNullOrEmpty(trainer_name))
             subscription.Trainer = new Employee { FullName = trainer_name };

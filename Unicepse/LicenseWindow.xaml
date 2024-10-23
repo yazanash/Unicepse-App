@@ -126,7 +126,7 @@
                    Height="90"/>
                     </Border>
                     <TextBlock Text="Welcome To Unicepse System" TextWrapping="Wrap" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.secondry}"/>
-                    <StackPanel Orientation="Horizontal" Margin="0 20 " HorizontalAlignment="Center">
+                    <!--<StackPanel Orientation="Horizontal" Margin="0 20 " HorizontalAlignment="Center">
                         <Button Style="{StaticResource circleBtn}">
                             <icons:PackIconMaterial Kind="Facebook" Width="20" Height="20" Foreground="#787878"/>
                         </Button>
@@ -136,7 +136,7 @@
                         <Button Style="{StaticResource circleBtn}">
                             <icons:PackIconMaterial Kind="Linkedin" Width="20" Height="20" Foreground="#787878"/>
                         </Button>
-                    </StackPanel>
+                    </StackPanel>-->
                     <TextBlock Text="Enter you license here" Style="{StaticResource normalText}"
                                Margin="0 10 0 15" Foreground="#878787"/>
                     <Border BorderThickness="1" BorderBrush="#acb8af" Margin=" 70 7">
@@ -145,7 +145,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <icons:PackIconMaterial Kind="License" Foreground="#787878" Width="20" Height="20"/>
+                            <icons:PackIconMaterial Kind="Key" Foreground="#787878" Width="20" Height="20"/>
                             <TextBlock Text="XXXX-XXXX-XXXX-XXXX" Style="{StaticResource hintText}"
                                       x:Name="lbl_username"
                                        MouseDown="email_MouseDown"/>

@@ -175,7 +175,7 @@
                                     Width="auto"
                                     />-->
                                     <DataGridTextColumn Header="الباقي" IsReadOnly="True"
-                                     Binding="{Binding RestValue,Converter={StaticResource convertNum}}"
+                                     Binding="{Binding RestVal,Converter={StaticResource convertNum}}"
                                     Width="auto"
                                     />
 

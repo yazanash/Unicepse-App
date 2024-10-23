@@ -36,22 +36,36 @@ namespace Unicepse.ViewModels.PrintViewModels
                 _dayGroupListItemViewModels.Add(day);
             }
             _licenseDataStore = licenseDataStore;
-            GymName = _licenseDataStore.CurrentGymProfile!.GymName;
-            try
+            if (_licenseDataStore.CurrentGymProfile != null)
             {
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(_licenseDataStore.CurrentGymProfile!.Logo!);
-                bitmap.EndInit();
-                GymLogo = bitmap;
+                GymName = _licenseDataStore.CurrentGymProfile!.GymName;
+                try
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(_licenseDataStore.CurrentGymProfile!.Logo!);
+                    bitmap.EndInit();
+                    GymLogo = bitmap;
+                }
+                catch
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
+                    bitmap.EndInit();
+                    GymLogo = bitmap;
+                }
+
             }
-            catch
+            else
             {
+
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
                 bitmap.EndInit();
                 GymLogo = bitmap;
+
             }
 
         }

@@ -91,6 +91,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
 
             //Total = _subscriptionStore.SelectedSubscription!.Price;
+            
             Offer = _subscriptionStore.SelectedSubscription!.OfferDes;
             OfferValue = _subscriptionStore.SelectedSubscription!.OfferValue;
             PrivatePrice = _subscriptionStore.SelectedSubscription!.PrivatePrice;
@@ -110,13 +111,15 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         private void _subscriptionStore_StateChanged(Sport? sport)
         {
             _trainerListItemViewModels.Clear();
+            AddTrainer(new emp.Employee() { FullName="-----------"});
             if (sport != null)
             {
                 foreach (var trainer in sport!.Trainers!)
                 {
                     AddTrainer(trainer);
                 }
-                if (_subscriptionStore.SelectedSubscription!.Sport!.Id == sport.Id)
+                if(_subscriptionStore.SelectedSubscription!=null)
+                if (_subscriptionStore.SelectedSubscription.Sport != null&&_subscriptionStore.SelectedSubscription!.Sport.Id == sport.Id)
                     if (_subscriptionStore.SelectedSubscription!.Trainer != null)
                         SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.Trainer!.Id);
             }
@@ -167,8 +170,9 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
                 if (SelectedSport != null)
                     if (DaysCounter)
                         SubscribeDays = SelectedSport!.DaysCount;
-                    else
-                        SubscribeDays = 1;
+                    else if(_subscriptionStore.SelectedSubscription !=null)
+                        SubscribeDays = _subscriptionStore.SelectedSubscription.DaysCount;
+                
                 OnPropertyChanged(nameof(DaysCounter));
                 OnPropertyChanged(nameof(Total));
 

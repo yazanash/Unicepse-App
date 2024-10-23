@@ -39,7 +39,7 @@ namespace Unicepse.Entityframework.Services
             {
                 Subscription existed_subscription = await CheckIfSubscriptionExist(entity);
                 if (existed_subscription != null)
-                    throw new ConflictException();
+                    throw new ConflictException("هذا اللاعب مسجل في هذه الرياضة مسبقا ");
                 context.Entry(entity.Sport!).State = EntityState.Detached;
                 if (context.Entry(entity.Sport!).State == EntityState.Detached)
                     context.Entry(entity.Sport!).State = EntityState.Unchanged;
@@ -66,7 +66,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Subscription? entity = await context.Set<Subscription>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             context.Set<Subscription>().Remove(entity!);
             await context.SaveChangesAsync();
             return true;
@@ -81,7 +81,7 @@ namespace Unicepse.Entityframework.Services
                 .Include(e => e.Trainer).AsNoTracking()
                 .FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
 
@@ -113,6 +113,17 @@ namespace Unicepse.Entityframework.Services
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.Sport!.Id == sport.Id
                 && ((x.RollDate.Month == date.Month && x.RollDate.Year == date.Year)
                 || (x.EndDate.Month == date.Month && x.EndDate.Year == date.Year))).Include(x => x.Trainer).AsNoTracking()
+                    .Include(x => x.Player).AsNoTracking()
+                    .Include(x => x.Sport).ToListAsync();
+                return entities;
+            }
+        }
+        public async Task<IEnumerable<Subscription>> GetAll(DateTime date)
+        {
+            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.RollDate.Day == date.Day && x.RollDate.Month == date.Month && x.RollDate.Year == date.Year)
+                    .Include(x => x.Trainer).AsNoTracking()
                     .Include(x => x.Player).AsNoTracking()
                     .Include(x => x.Sport).ToListAsync();
                 return entities;
@@ -157,13 +168,16 @@ namespace Unicepse.Entityframework.Services
 
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
+            //Subscription ex_subscription = await CheckIfSubscriptionExist(entity);
+            //if (ex_subscription != null&&existed_subscription.Id!=entity.Id)
+            //    throw new ConflictException("هذا اللاعب مسجل في هذه الرياضة مسبقا ");
             context.Entry(entity).State = EntityState.Detached;
             context.Entry(entity.Player!).State = EntityState.Detached;
             context.Entry(entity.Sport!).State = EntityState.Detached;
-            context.Attach(entity.Player!);
 
-            //context.Attach(entity.Sport!);
+            if (context.Entry(entity.Player!).State == EntityState.Detached)
+                context.Entry(entity.Player!).State = EntityState.Unchanged;
 
             if (context.Entry(entity).State == EntityState.Detached)
                 context.Entry(entity).State = EntityState.Modified;
@@ -171,11 +185,18 @@ namespace Unicepse.Entityframework.Services
             if (context.Entry(entity.Sport!).State == EntityState.Detached)
                 context.Entry(entity.Sport!).State = EntityState.Unchanged;
 
+
             if (entity.Trainer != null)
             {
-                context.Entry(entity.Trainer!).State = EntityState.Detached;
-                if (context.Entry(entity.Trainer).State == EntityState.Detached)
-                    context.Entry(entity.Trainer).State = EntityState.Unchanged;
+                if (entity.Trainer.Id == 0)
+                    entity.Trainer = null;
+                else
+                {
+                    context.Entry(entity.Trainer!).State = EntityState.Detached;
+                    if (context.Entry(entity.Trainer).State == EntityState.Detached)
+                        context.Entry(entity.Trainer).State = EntityState.Unchanged;
+                }
+                   
             }
 
             context.Set<Subscription>().Update(entity);
@@ -187,7 +208,7 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             if (existed_subscription.IsMoved)
                 throw new MovedBeforeException();
             foreach (var t in entity.Sport!.Trainers!)
@@ -216,23 +237,23 @@ namespace Unicepse.Entityframework.Services
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Subscription existed_subscription = await Get(entity.Id);
             if (existed_subscription == null)
-                throw new NotExistException();
+                throw new NotExistException("هذا السجل غير موجود");
             //Player? player = entity.Player;
             entity.EndDate = stop_date;
             entity.IsStopped = true;
-            int days = Convert.ToInt32((stop_date - entity.RollDate).TotalDays);
-            double dayPrice = entity.PriceAfterOffer / entity.Sport!.DaysCount;
-            entity.PriceAfterOffer = dayPrice * days;
+            //int days = Convert.ToInt32((stop_date - entity.RollDate).TotalDays);
+            //double dayPrice = entity.PriceAfterOffer / entity.Sport!.DaysCount;
+            //entity.PriceAfterOffer = dayPrice * days;
             context.Set<Subscription>().Update(entity);
             context.Entry(entity.Player!).State = EntityState.Detached;
             if (context.Entry(entity.Player!).State == EntityState.Detached)
                 context.Entry(entity.Player!).State = EntityState.Unchanged;
 
-            context.Entry(entity.Sport).State = EntityState.Detached;
+            context.Entry(entity.Sport!).State = EntityState.Detached;
             if (entity.Trainer != null)
                 context.Entry(entity.Trainer!).State = EntityState.Detached;
 
-            context.Entry(entity.Sport).State = EntityState.Unchanged;
+            context.Entry(entity.Sport!).State = EntityState.Unchanged;
             if (entity.Trainer != null)
                 context.Entry(entity.Trainer!).State = EntityState.Unchanged;
             await context.SaveChangesAsync();
@@ -251,10 +272,11 @@ namespace Unicepse.Entityframework.Services
         public async Task<Subscription> UpdateDataStatus(Subscription entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Subscription existedPlayer = await Get(entity.Id);
-            if (existedPlayer == null)
-                throw new ConflictException("this Subscription is not existed");
-            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
+            Subscription? dataToSync = await context.Subscriptions!.FindAsync(entity.Id);
+            if (dataToSync == null)
+                throw new NotExistException("هذا السجل غير موجود");
+            dataToSync.DataStatus = entity.DataStatus;
+            context.Entry(dataToSync).Property(e => e.DataStatus).IsModified = true;
             await context.SaveChangesAsync();
             return entity;
 
