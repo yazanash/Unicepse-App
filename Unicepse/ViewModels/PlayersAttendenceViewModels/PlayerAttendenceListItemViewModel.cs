@@ -9,14 +9,29 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Unicepse.Stores;
 using Unicepse.utlis.common;
+using Unicepse.Commands.Player;
+using Unicepse.ViewModels.PlayersViewModels;
+using Unicepse.navigation;
+using Unicepse.navigation.Stores;
+using Unicepse.Core.Models.Player;
 
 namespace Unicepse.ViewModels.PlayersAttendenceViewModels
 {
     public class PlayerAttendenceListItemViewModel : ViewModelBase
     {
         public DailyPlayerReport dailyPlayerReport { get; set; }
+        private readonly NavigationStore? _navigationStore;
+        private readonly SubscriptionDataStore? _subscriptionDataStore;
+        private readonly PlayersDataStore? _playersDataStore;
+        private readonly SportDataStore? _sportDataStore;
+        private readonly PaymentDataStore? _paymentDataStore;
+        private readonly MetricDataStore? _metricDataStore;
+        private readonly RoutineDataStore? _routineDataStore;
+        private readonly LicenseDataStore? _licenseDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-
+        private readonly PlayerListViewModel? _playerListViewModel;
+        public ICommand? OpenProfileCommand { get; }
+       
         public PlayerAttendenceListItemViewModel(DailyPlayerReport dailyPlayerReport, PlayersAttendenceStore playersAttendenceStore)
         {
             _playersAttendenceStore = playersAttendenceStore;
@@ -28,8 +43,15 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             this.IsLoggedBrush = this.IsLogged ? Brushes.Green : Brushes.Red;
             LogoutCommand = new LogoutPlayerCommand(_playersAttendenceStore);
             AddKeyCommand = new OpenAddKeyDialog(new KeyDialogViewModel(this.dailyPlayerReport.Player!.FullName!, _playersAttendenceStore));
+            
+           
         }
-
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(Player player,NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore,PlayerListViewModel playerListViewModel)
+        {
+             
+            playersDataStore.SelectedPlayer = new PlayerListItemViewModel(player, navigatorStore,subscriptionDataStore,playersDataStore,sportDataStore,paymentDataStore, _metricDataStore, routineDataStore,playerListViewModel,playersAttendenceStore, licenseDataStore);
+            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore, licenseDataStore);
+        }
         private int _idSort;
         public int IdSort
         {
@@ -50,6 +72,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             set { _logoutTime = value; OnPropertyChanged(nameof(logoutTime)); }
         }
         public string? PlayerName => dailyPlayerReport.Player!.FullName;
+        public double? Balance => dailyPlayerReport.Player!.Balance;
         public string? SubscribeEndDate => dailyPlayerReport.Player!.SubscribeEndDate.ToShortDateString();
         private bool _isLogged;
         public bool IsLogged

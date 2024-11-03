@@ -32,6 +32,8 @@ namespace Unicepse.utlis.common
         private readonly EmployeeStore _employeeStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly NavigationStore _navigationStore;
+
+       
         public IEnumerable<PlayerAttendenceListItemViewModel> PlayerAttendence => _playerAttendenceListItemViewModels;
 
         public IEnumerable<TrainerListItemViewModel> TrainersList => _trainerListItemViewModels;
@@ -48,6 +50,8 @@ namespace Unicepse.utlis.common
             _navigationStore = navigationStore;
             _playersAttendenceStore = playersAttendenceStore;
             _subscriptionDataStore = subscriptionDataStore;
+           
+
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
             _playersAttendenceStore.LoggedIn += _playersAttendenceStore_LoggedIn;
             _playersAttendenceStore.LoggedOut += _playersAttendenceStore_LoggedOut;
@@ -56,13 +60,12 @@ namespace Unicepse.utlis.common
             OpenScanCommand = new LoginPlayerScanCommand(new ReadPlayerQrCodeViewModel(), _playersAttendenceStore, _playerStore);
             _playerAttendenceListItemViewModels = new ObservableCollection<PlayerAttendenceListItemViewModel>();
             _trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
-            LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore,this);
+            LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore, this);
             SearchBox = new SearchBoxViewModel();
             LoadTrainersCommand = new LoadTrainersCommand(_employeeStore, this);
             SelectedDate = DateTime.Now;
 
             _employeeStore.Loaded += _employeeStore_Loaded;
-            
         }
         public override void Dispose()
         {
