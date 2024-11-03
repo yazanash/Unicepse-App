@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Unicepse.ViewModels.PlayersAttendenceViewModels;
 
 namespace Unicepse.Views
 {
@@ -34,5 +35,6 @@ namespace Unicepse.Views
         {
             calender.SelectedDate = DateTime.Now;
         }
+       
     }
 }

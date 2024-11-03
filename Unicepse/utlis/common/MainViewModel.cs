@@ -10,6 +10,7 @@ using Unicepse.Stores;
 using Unicepse.navigation.Stores;
 using System.Windows.Media;
 using Unicepse.ViewModels.Accountant;
+using Unicepse.ViewModels.PlayersViewModels;
 
 namespace Unicepse.utlis.common
 {
@@ -60,14 +61,16 @@ namespace Unicepse.utlis.common
             _backgroundServiceStore.StateChanged += _backgroundServiceStore_StateChanged;
             _backgroundServiceStore.SyncStatus += _backgroundServiceStore_SyncStatus;
             _usersDataStore.Updated += _usersDataStore_Updated;
-            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore, _licenseDataStore, _authenticationStore,_mainWindowViewModel);
+            Navigator = new Navigator(_navigatorStore, _playerStore, _sportStore, _employeeStore, _expensesStore, _subscriptionDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _usersDataStore, _dausesDataStore, _creditsDataStore, _gymStore, _licenseDataStore, _authenticationStore, _mainWindowViewModel);
             NavigationStore navigationStore = new NavigationStore();
             if (_authenticationStore.CurrentAccount!.Role == Core.Common.Roles.Accountant)
             {
                 Navigator.CurrentViewModel = new AccountingViewModel(navigationStore, _expensesStore, _paymentDataStore, _gymStore);
             }
             else
-                Navigator.CurrentViewModel = new HomeNavViewModel(navigationStore, _playerStore, _playersAttendenceStore, _employeeStore, _subscriptionDataStore);
+            {
+               Navigator.CurrentViewModel = new HomeNavViewModel(navigationStore, _playerStore, _playersAttendenceStore, _employeeStore, _subscriptionDataStore);
+            }
 
             StatusBarViewModel = new StatusBarViewModel(_authenticationStore.CurrentAccount!.UserName,
                 _authenticationStore.CurrentAccount!.Position,
@@ -93,7 +96,7 @@ namespace Unicepse.utlis.common
             StatusBarViewModel.Connection = _backgroundServiceStore.Connection ? Brushes.Green : Brushes.Red;
             //_navigationStore.CurrentViewModelChanged += NavigationStore_CurrentViewModelChanged;
         }
-
+      
         private void _usersDataStore_Updated(Core.Models.Authentication.User obj)
         {
             if (_authenticationStore.CurrentAccount!.Id == obj.Id)

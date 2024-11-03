@@ -98,6 +98,7 @@
                                 <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
                                 <DataGrid Background="White" SelectedItem="{Binding SelectedDailyPlayerReport,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding PlayerAttendence,UpdateSourceTrigger=PropertyChanged}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3" Margin="0,16,0,-6">
+                                  
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
@@ -140,6 +141,10 @@
                                      Binding="{Binding SubscribeEndDate,UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"
                                     />
+                                        <DataGridTextColumn Header="رصيد الحساب" IsReadOnly="True"
+                                     Binding="{Binding Balance,UpdateSourceTrigger=PropertyChanged}"
+                                    Width="*"
+                                    />
 
                                         <DataGridTextColumn Header="التاريخ" IsReadOnly="True"
                                      Binding="{Binding Date,UpdateSourceTrigger=PropertyChanged}"
@@ -165,6 +170,7 @@
                                                         <Button Visibility="{Binding IsLogged,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}" Command="{Binding AddKeyCommand}" Style="{StaticResource GridremoveBtn}">
                                                             <Icon:PackIconMaterial Kind="KeyPlus"  Style="{StaticResource GridBtnIcon}"/>
                                                         </Button>
+                                                       
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>

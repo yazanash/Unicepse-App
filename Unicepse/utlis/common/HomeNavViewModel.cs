@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.navigation.Stores;
 using Unicepse.Stores;
+using Unicepse.ViewModels.PlayersViewModels;
 
 namespace Unicepse.utlis.common
 {
@@ -24,6 +25,7 @@ namespace Unicepse.utlis.common
             _playersAttendenceStore = playersAttendenceStore;
             _employeeStore = employeeStore;
             _subscriptionDataStore = subscriptionDataStore;
+          ;
 
             _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
             _navigatorStore.CurrentViewModel = CreateHomeViewModel(playersDataStore, _playersAttendenceStore, _employeeStore, _navigatorStore, _subscriptionDataStore);
@@ -33,7 +35,7 @@ namespace Unicepse.utlis.common
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
-        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore,SubscriptionDataStore subscriptionDataStore)
+        private HomeViewModel CreateHomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
         {
             return HomeViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, employeeStore, navigationStore, subscriptionDataStore);
         }

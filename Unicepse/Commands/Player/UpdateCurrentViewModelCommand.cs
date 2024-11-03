@@ -120,7 +120,11 @@ namespace Unicepse.Commands.Player
                 {
                     case ViewType.Home:
                         if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
+                        {
+                          
                             _navigator.CurrentViewModel = new HomeNavViewModel(navigator,_playersStore, _playersAttendenceStore1, _employeeStore,_subscriptionDataStore);
+
+                        }
                         break;
                     case ViewType.Players:
                         if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
@@ -164,6 +168,9 @@ namespace Unicepse.Commands.Player
         {
             return AppInfoViewModel.LoadViewModel(licenseDataStore);
         }
-
+        private PlayerListViewModel CreatePlayersViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore)
+        {
+            return PlayerListViewModel.LoadViewModel(navigatorStore, playerStore, subscriptionDataStore, sportDataStore, paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore, licenseDataStore);
+        }
     }
 }
