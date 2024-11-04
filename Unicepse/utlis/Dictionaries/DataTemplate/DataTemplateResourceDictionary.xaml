@@ -4,7 +4,6 @@
              xmlns:vms="clr-namespace:Unicepse.ViewModels"
                       xmlns:vsa="clr-namespace:Unicepse.Views"
                      xmlns:viewapp="clr-namespace:Unicepse.Views.AppViews"
-                       xmlns:pvmodels="clr-namespace:Unicepse.ViewModels.PlayersViewModels.vm"
              xmlns:pviews="clr-namespace:Unicepse.Views.PlayerViews"
                     
                     xmlns:svmodels="clr-namespace:Unicepse.ViewModels.SportsViewModels"
@@ -20,12 +19,20 @@
              xmlns:views="clr-namespace:Unicepse.utlis.common"
                      xmlns:vis="clr-namespace:Unicepse.Views"
              xmlns:vs="clr-namespace:Unicepse.Views.AccountingViews"
+                    
+            xmlns:sport_vms="clr-namespace:Unicepse.ViewModels.SportsViewModels"
+            xmlns:sport_views="clr-namespace:Unicepse.Views.SportViews"
+                    
+                    
              xmlns:playervs="clr-namespace:Unicepse.Views.PlayerViews"
              xmlns:vi="clr-namespace:Unicepse.Views.PlayerViews"
              xmlns:login="clr-namespace:Unicepse.Views.AuthView"
                        xmlns:uservms="clr-namespace:Unicepse.ViewModels.Authentication"
              xmlns:userview="clr-namespace:Unicepse.Views.AuthView"
-                    
+                     xmlns:player_vms="clr-namespace:Unicepse.ViewModels.PlayersViewModels"
+             xmlns:player_subview="clr-namespace:Unicepse.Views.SubscriptionView"
+             xmlns:player_subvm="clr-namespace:Unicepse.ViewModels.SubscriptionViewModel"
+             xmlns:player_views="clr-namespace:Unicepse.Views.PlayerViews"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <DataTemplate DataType="{x:Type logvms:LogPlayerAttendenceViewModel }">
         <logvs:LogPlayerAttendenceView/>
@@ -55,11 +62,42 @@
     <DataTemplate DataType="{x:Type vmodels:AccountingViewModel }">
         <vs:AccountnigView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type pvmodels:PlayersPageViewModel }">
-        <vis:PlayersView/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type vms:AppInfoViewModel }">
         <viewapp:GymView/>
     </DataTemplate>
 
+    
+    
+    <!---->
+    <DataTemplate DataType="{x:Type player_vms:AddPlayerViewModel }">
+        <player_views:PlayerDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type player_vms:PlayerListViewModel }">
+        <player_views:PlayersListView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type player_vms:EditPlayerViewModel }">
+        <player_views:PlayerDetailView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type player_subvm:SubscriptionDetailsViewModel }">
+        <player_subview:SubscriptionDetailView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type player_vms:PlayerProfileViewModel }">
+        <player_views:PlayerProfile/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type player_vms:ArchivedPlayersListViewModel }">
+        <player_views:ArchivedPlayersView/>
+    </DataTemplate>
+    <!---->
+    <DataTemplate DataType="{x:Type sport_vms:AddSportViewModel }">
+        <sport_views:SportDetailsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type sport_vms:SportListViewModel }">
+        <sport_views:SportListView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type sport_vms:EditSportViewModel }">
+        <sport_views:EditSportDetailView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type sport_vms:SportSubscriptionsViewModel }">
+        <sport_views:SportSubscriptionsView/>
+    </DataTemplate>
 </ResourceDictionary>

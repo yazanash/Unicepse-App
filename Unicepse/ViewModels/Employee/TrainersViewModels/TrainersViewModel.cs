@@ -21,15 +21,15 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public TrainersViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, LicenseDataStore licenseDataStore)
         {
-            _navigatorStore = navigatorStore;
+            _navigatorStore = new NavigationStore(); ;
             _employeeStore = employeeStore;
             _sportDataStore = sportDataStore;
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
             _licenseDataStore = licenseDataStore;
             _subscriptionDataStore = subscriptionDataStore;
-            navigatorStore.CurrentViewModel = CreateTrainerViewModel(_navigatorStore, _employeeStore, _sportDataStore, _subscriptionDataStore, _dausesDataStore, _creditsDataStore,_licenseDataStore);
-            navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
+            _navigatorStore.CurrentViewModel = CreateTrainerViewModel(_navigatorStore, _employeeStore, _sportDataStore, _subscriptionDataStore, _dausesDataStore, _creditsDataStore,_licenseDataStore);
+            _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
           
         }
         private void NavigatorStore_CurrentViewModelChanged()

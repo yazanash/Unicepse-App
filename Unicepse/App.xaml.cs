@@ -78,9 +78,9 @@ namespace Unicepse
         {
             if (_host.Services.GetRequiredService<AccountStore>().CurrentAccount != null)
             {
-                MainWindowViewModel main = _host.Services.GetRequiredService<MainWindowViewModel>();
-                main.LogoutAction += Auth_LogoutAction;
-                main.openLog();
+                //MainWindowViewModel main = _host.Services.GetRequiredService<MainWindowViewModel>();
+                _host.Services.GetRequiredService<AuthenticationStore>().LogoutAction += Auth_LogoutAction;
+                //main.openLog();
                 MainWindow auth = _host.Services.GetRequiredService<MainWindow>();
 
                 AuthWindow authentication = _host.Services.GetRequiredService<AuthWindow>();

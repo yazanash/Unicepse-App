@@ -5,81 +5,102 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.Stores;
 using Unicepse.navigation.Stores;
+using Unicepse.navigation.Navigator;
+using Unicepse.ViewModels.Accountant;
+using System.Windows.Media;
 
 namespace Unicepse.utlis.common
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public NavigationStore _navigatorStore;
-        private readonly GymStore _gymStore;
-        private readonly PlayersDataStore _playerStore;
-        private readonly SportDataStore _sportStore;
-        private readonly EmployeeStore _employeeStore;
-        private readonly ExpensesDataStore _expensesStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
-        private readonly PaymentDataStore _paymentDataStore;
-        private readonly MetricDataStore _metricDataStore;
-        private readonly RoutineDataStore _routineDataStore;
-        private readonly PlayersAttendenceStore _playersAttendenceStore;
+
+        public INavigator Navigator { get; set; }
         private readonly UsersDataStore _usersDataStore;
-        private readonly DausesDataStore _dausesDataStore;
-        private readonly CreditsDataStore _creditsDataStore;
+        private readonly AccountingViewModel _accountingViewModel;
+        private readonly HomeNavViewModel _homeNavViewModel;
         private readonly BackgroundServiceStore _backgroundServiceStore;
         private readonly AuthenticationStore _authenticationStore;
-        private readonly LicenseDataStore _licenseDataStore;
-        public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
-        public event Action? LogoutAction;
-        public void OnLogoutAction()
+        public StatusBarViewModel StatusBarViewModel { get; set; }
+        public MainWindowViewModel(UsersDataStore usersDataStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, INavigator navigator, AccountingViewModel accountingViewModel, HomeNavViewModel homeNavViewModel)
         {
-            LogoutAction?.Invoke();
-        }
-        public MainWindowViewModel(NavigationStore navigatorStore,
-            PlayersDataStore playerStore, SportDataStore sportStore,
-            EmployeeStore employeeStore, ExpensesDataStore expensesStore,
-            SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore,
-            MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,
-            UsersDataStore usersDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, GymStore gymStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, LicenseDataStore licenseDataStore)
-        {
-
-            _navigatorStore = navigatorStore;
-            _playerStore = playerStore;
-            _sportStore = sportStore;
-            _employeeStore = employeeStore;
-            _expensesStore = expensesStore;
-            _paymentDataStore = paymentDataStore;
-            _metricDataStore = metricDataStore;
-            _subscriptionDataStore = subscriptionDataStore;
-            _routineDataStore = routineDataStore;
-            _playersAttendenceStore = playersAttendenceStore;
-            _dausesDataStore = dausesDataStore;
-            _creditsDataStore = creditsDataStore;
+            Navigator = navigator;
+            _accountingViewModel = accountingViewModel;
+            _homeNavViewModel = homeNavViewModel;
             _usersDataStore = usersDataStore;
-            _gymStore = gymStore;
-            _backgroundServiceStore = backgroundServiceStore;
             _authenticationStore = authenticationStore;
-            _licenseDataStore = licenseDataStore;
+            _backgroundServiceStore = backgroundServiceStore;
+            _backgroundServiceStore.StateChanged += _backgroundServiceStore_StateChanged;
+            _backgroundServiceStore.SyncStatus += _backgroundServiceStore_SyncStatus;
+            _usersDataStore.Updated += _usersDataStore_Updated;
 
-            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore,
-                _employeeStore, _expensesStore, _subscriptionDataStore,
-                _paymentDataStore, _metricDataStore, _routineDataStore,
-                _playersAttendenceStore, _usersDataStore,
-                _dausesDataStore, _creditsDataStore, _gymStore, _backgroundServiceStore, _authenticationStore, _licenseDataStore,this);
-            _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; 
-        }
-        public void openLog()
-        {
-            _navigatorStore = new();
-            _navigatorStore.CurrentViewModel = new MainViewModel(_navigatorStore, _playerStore, _sportStore,
-               _employeeStore, _expensesStore, _subscriptionDataStore,
-               _paymentDataStore, _metricDataStore, _routineDataStore,
-               _playersAttendenceStore, _usersDataStore,
-               _dausesDataStore, _creditsDataStore, _gymStore, _backgroundServiceStore, _authenticationStore, _licenseDataStore, this);
-            _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged;
+            if (_authenticationStore.CurrentAccount!.Role == Core.Common.Roles.Accountant)
+            {
+                Navigator.CurrentViewModel = _accountingViewModel;
+            }
+            else
+            {
+                Navigator.CurrentViewModel = _homeNavViewModel;
+            }
+
+            StatusBarViewModel = new StatusBarViewModel(_authenticationStore.CurrentAccount!.UserName,
+                _authenticationStore.CurrentAccount!.Position,
+                _authenticationStore.CurrentAccount!.OwnerName);
+            switch (_authenticationStore.CurrentAccount!.Role)
+            {
+                case Core.Common.Roles.Admin:
+                    StatusBarViewModel.Role = "مدير النظام";
+                    break;
+                case Core.Common.Roles.User:
+                    StatusBarViewModel.Role = "مستخدم";
+                    break;
+                case Core.Common.Roles.Accountant:
+                    StatusBarViewModel.Role = "محاسب";
+                    break;
+                case Core.Common.Roles.Supervisor:
+                    StatusBarViewModel.Role = "مسؤول";
+                    break;
+            }
+            StatusBarViewModel.SyncState = _backgroundServiceStore.SyncStateProp;
+            StatusBarViewModel.SyncMessage = _backgroundServiceStore.SyncMessage;
+            StatusBarViewModel.BackMessage = _backgroundServiceStore.BackMessage;
+            StatusBarViewModel.Connection = _backgroundServiceStore.Connection ? Brushes.Green : Brushes.Red;
+
         }
 
-        private void _navigatorStore_CurrentViewModelChanged()
+        private void _usersDataStore_Updated(Core.Models.Authentication.User obj)
         {
-            OnPropertyChanged(nameof(CurrentViewModel));
+            if (_authenticationStore.CurrentAccount!.Id == obj.Id)
+            {
+                StatusBarViewModel.UserName = _authenticationStore.CurrentAccount!.UserName;
+                StatusBarViewModel.Position = _authenticationStore.CurrentAccount!.Position;
+                StatusBarViewModel.OwnerName = _authenticationStore.CurrentAccount!.OwnerName;
+                switch (_authenticationStore.CurrentAccount!.Role)
+                {
+                    case Core.Common.Roles.Admin:
+                        StatusBarViewModel.Role = "مدير النظام";
+                        break;
+                    case Core.Common.Roles.User:
+                        StatusBarViewModel.Role = "مستخدم";
+                        break;
+                    case Core.Common.Roles.Accountant:
+                        StatusBarViewModel.Role = "محاسب";
+                        break;
+                    case Core.Common.Roles.Supervisor:
+                        StatusBarViewModel.Role = "مسؤول";
+                        break;
+                }
+            }
         }
+        private void _backgroundServiceStore_SyncStatus(bool obj, string? message)
+        {
+            StatusBarViewModel.SyncState = obj;
+            StatusBarViewModel.SyncMessage = message;
+        }
+        private void _backgroundServiceStore_StateChanged(string? obj, bool connectionStatus)
+        {
+            StatusBarViewModel.BackMessage = obj;
+            StatusBarViewModel.Connection = connectionStatus ? Brushes.Green : Brushes.Red;
+        }
+
     }
 }

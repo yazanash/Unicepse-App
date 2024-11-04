@@ -170,7 +170,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.HaveDebt, 8, "ديون"));
 
             SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Id == 6);
-           
+            LoadPlayersCommand.Execute(null);
         }
         private ArchivedPlayersListViewModel ArchivedPlayersViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,PlayerListViewModel playerListViewModel,LicenseDataStore licenseDataStore)
         {

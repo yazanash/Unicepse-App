@@ -20,7 +20,7 @@ namespace Unicepse.utlis.common
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public HomeNavViewModel(NavigationStore navigatorStore, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, SubscriptionDataStore subscriptionDataStore)
         {
-            _navigatorStore = navigatorStore;
+            _navigatorStore = new NavigationStore();
             _playersDataStore = playersDataStore;
             _playersAttendenceStore = playersAttendenceStore;
             _employeeStore = employeeStore;

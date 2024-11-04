@@ -17,6 +17,7 @@ namespace Unicepse.Stores
         private readonly AccountStore _accountStore;
         private readonly ILogger<AuthenticationStore> _logger;
         string LogFlag = "[Authentication] ";
+        public event Action? LogoutAction;
         public AuthenticationStore(AuthenticationService authenticationService, AccountStore accountStore, ILogger<AuthenticationStore> logger)
         {
             _authenticationService = authenticationService;
@@ -63,6 +64,7 @@ namespace Unicepse.Stores
                 CurrentAccount = null;
                 _authenticationService.Logout(acc!);
                 CurrentAccount = null;
+                LogoutAction?.Invoke();
             }
            
         }

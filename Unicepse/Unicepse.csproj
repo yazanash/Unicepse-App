@@ -552,12 +552,6 @@
     <Compile Update="utlis\common\MainView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PlayerViews\PlayersView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PlayerViews\PlayerView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\PlayerViews\EditPlayerDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

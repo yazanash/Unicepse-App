@@ -18,13 +18,13 @@ namespace Unicepse.ViewModels.SportsViewModels
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public SportsViewModel(NavigationStore navigatorStore, SportDataStore sportStore, EmployeeStore trainerStore, SubscriptionDataStore subscriptionDataStore)
         {
-            _navigatorStore = navigatorStore;
+            _navigatorStore = new NavigationStore();
             _sportStore = sportStore;
             _subscriptionDataStore = subscriptionDataStore;
 
             _trainerStore = trainerStore;
-            navigatorStore.CurrentViewModel = CreateSportViewModel(_navigatorStore, _sportStore, _trainerStore, _subscriptionDataStore);
-            navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
+            _navigatorStore.CurrentViewModel = CreateSportViewModel(_navigatorStore, _sportStore, _trainerStore, _subscriptionDataStore);
+            _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
         }
         private void NavigatorStore_CurrentViewModelChanged()
         {

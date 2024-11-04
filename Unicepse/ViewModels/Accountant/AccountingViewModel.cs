@@ -30,7 +30,7 @@ namespace Unicepse.ViewModels.Accountant
         public ICommand MonthlyIncomeReportCommand { get; }
         public AccountingViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore, PaymentDataStore paymentDataStore, GymStore gymStore)
         {
-            _navigatorStore = navigatorStore;
+            _navigatorStore = new NavigationStore();
             _expensesStore = expensesStore;
             _gymStore = gymStore;
             _paymentDataStore = paymentDataStore;
