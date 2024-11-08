@@ -22,11 +22,13 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
         {
             try
             {
-                AttendanceKeyViewWindow cameraReader = new AttendanceKeyViewWindow();
-                cameraReader.DataContext = _viewModelBase;
+                AttendanceKeyViewWindow cameraReader = new()
+                {
+                    DataContext = _viewModelBase
+                };
                 cameraReader.ShowDialog();
             }
-            catch (Exception ex)
+            catch
             {
                 //MessageBox.Show(ex.Message);
             }

@@ -8,6 +8,7 @@ using System.Windows;
 using Unicepse.Stores;
 using Unicepse.ViewModels;
 using Unicepse.Commands;
+using Microsoft.Extensions.Logging;
 
 namespace Unicepse.Commands.Player
 {
@@ -15,26 +16,26 @@ namespace Unicepse.Commands.Player
     {
         private readonly PlayersDataStore _playerStore;
         private readonly ListingViewModelBase _playerListing;
-
-
-        public LoadPlayersCommand(ListingViewModelBase playerListing, PlayersDataStore playerStore)
+        private readonly ILogger _logger;
+        public LoadPlayersCommand(ListingViewModelBase playerListing, PlayersDataStore playerStore, ILogger logger)
         {
             _playerStore = playerStore;
             _playerListing = playerListing;
+            _logger = logger;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
             _playerListing.ErrorMessage = null;
             _playerListing.IsLoading = true;
-
+            _logger.LogInformation("Load Players Command");
             try
-            {
-          
+            {          
                 await _playerStore.GetPlayers();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError("Load Players error {0}",ex.Message);
                 _playerListing.ErrorMessage = "خطأ في تحميل اللاعبين يرجى اعادة تشغيل البرنامج";
             }
             finally

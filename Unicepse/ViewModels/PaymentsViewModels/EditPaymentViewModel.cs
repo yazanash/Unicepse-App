@@ -39,7 +39,7 @@ namespace Unicepse.ViewModels.PaymentsViewModels
             _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
 
-            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore.SelectedPlayer!);
+            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore);
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
             SubmitCommand = new EditPaymentsCommand(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel), _paymentDataStore, this, _playersDataStore, _subscriptionDataStore);
             CancelCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel));
@@ -54,15 +54,14 @@ namespace Unicepse.ViewModels.PaymentsViewModels
         private void _subscriptionDataStore_Loaded()
         {
             _subscriptionListViewModel.Clear();
-
-            foreach (Subscription subscription in _subscriptionDataStore.Subscriptions.Where(x => !x.IsPaid))
+            if(_paymentDataStore.SelectedPayment!=null&& _paymentDataStore.SelectedPayment.Subscription != null)
             {
-                AddSubscriptiont(subscription);
+                foreach (Subscription subscription in _subscriptionDataStore.Subscriptions.Where(x => !x.IsPaid || x.Id == _paymentDataStore.SelectedPayment!.Subscription!.Id))
+                {
+                    AddSubscriptiont(subscription);
+                }
             }
-            if (!_subscriptionListViewModel.Any(x => x.Id == _paymentDataStore.SelectedPayment!.Subscription!.Id))
-            {
-                AddSubscriptiont(_paymentDataStore.SelectedPayment!.Subscription!);
-            }
+           
             SelectedSubscription = SubscriptionList.FirstOrDefault(x => x.Id == _paymentDataStore.SelectedPayment!.Subscription!.Id);
         }
 

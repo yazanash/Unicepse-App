@@ -31,13 +31,12 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly PlayerListViewModel _playerListViewModel;
         private readonly LicenseDataStore _licenseDataStore;
+        private readonly NavigationService<PlayerListViewModel> _navigationService;
         public SearchBoxViewModel SearchBox { get; set; }
-
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public IEnumerable<OrderByItemViewModel> OrderByList => OrderByItemViewModel;
         public ICommand BackCommand { get; }
-
         public FiltersItemViewModel? SelectedFilter
         {
             get
@@ -64,17 +63,16 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
             }
         }
-
-
         public PlayerListItemViewModel? SelectedPlayer
         {
             get
             {
-                return _playerStore.SelectedPlayer;
+                return PlayerList
+                    .FirstOrDefault(x=>x.Player.Id==_playerStore.SelectedPlayer!.Id);
             }
             set
             {
-                _playerStore.SelectedPlayer = value;
+                _playerStore.SelectedPlayer = value?.Player;
 
             }
         }
@@ -120,7 +118,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
         }
 
         public ICommand LoadPlayersCommand { get; }
-        public ArchivedPlayersListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, PlayerListViewModel playerListViewModel, LicenseDataStore licenseDataStore)
+        public ArchivedPlayersListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, PlayerListViewModel playerListViewModel, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService)
         {
             _navigatorStore = navigatorStore;
             _playerStore = playerStore;
@@ -132,6 +130,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             _playersAttendenceStore = playersAttendenceStore;
             _playerListViewModel = playerListViewModel;
             _licenseDataStore = licenseDataStore;
+            _navigationService = navigationService;
             LoadPlayersCommand = new LoadArchivedPlayersCommand(this, _playerStore);
 
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
@@ -140,23 +139,16 @@ namespace Unicepse.ViewModels.PlayersViewModels
             _playerStore.ArchivedPlayers_loaded += PlayerStore_PlayersLoaded;
             _playerStore.ArchivedPlayer_created += PlayerStore_PlayerAdded;
             _playerStore.Player_update += PlayerStore_PlayerUpdated;
-            _playerStore.Player_deleted += PlayerStore_PlayerDeleted;
+            _playerStore.ArchivedPlayer_restored += _playerStore_ArchivedPlayer_restored;
             _playerStore.FilterChanged += PlayerStore_FilterChanged;
             _playerStore.OrderChanged += PlayerStore_OrderChanged;
-
-
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
-
             OrderByItemViewModel = new();
-
             OrderByItemViewModel.Add(new OrderByItemViewModel(Order.ByName, 1, "الاسم"));
             OrderByItemViewModel.Add(new OrderByItemViewModel(Order.ByDebt, 2, "الديون"));
             OrderByItemViewModel.Add(new OrderByItemViewModel(Order.BySubscribeEnd, 3, "منتهي الاشتراك"));
-
             SelectedOrderBy = OrderByItemViewModel.FirstOrDefault(x => x.Id == 1);
-
-
             filtersItemViewModel = new();
 
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.GenderMale, 1, "ذكور"));
@@ -166,10 +158,19 @@ namespace Unicepse.ViewModels.PlayersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.Active, 6, "فعال"));
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.SubscribeEnd, 7, "منتهي الاشتراك"));
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.HaveDebt, 8, "ديون"));
-
             SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Id == 6);
             BackCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigatorStore, () => playerListViewModel));
-            
+   
+        }
+
+        private void _playerStore_ArchivedPlayer_restored(Player obj)
+        {
+            PlayerListItemViewModel? itemViewModel = playerListItemViewModels.FirstOrDefault(y => y.Player?.Id == obj.Id);
+
+            if (itemViewModel != null)
+            {
+                playerListItemViewModels.Remove(itemViewModel);
+            }
         }
 
         private void SearchBox_SearchedText(string? obj)
@@ -304,13 +305,13 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new(player, _navigatorStore, _subscriptionStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playerListViewModel, _playersAttendenceStore,_licenseDataStore);
+                new(player, _navigatorStore, _subscriptionStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore,_licenseDataStore,_navigationService);
             playerListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = playerListItemViewModels.Count();
         }
-        public static ArchivedPlayersListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,PlayerListViewModel playerListViewModel,LicenseDataStore licenseDataStore)
+        public static ArchivedPlayersListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,PlayerListViewModel playerListViewModel,LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService)
         {
-            ArchivedPlayersListViewModel viewModel = new(navigatorStore, playersStore, subscriptionDataStore, sportDataStore, paymentDataStore, metricDataStore, routineDataStore, playersAttendenceStore, playerListViewModel,licenseDataStore);
+            ArchivedPlayersListViewModel viewModel = new(navigatorStore, playersStore, subscriptionDataStore, sportDataStore, paymentDataStore, metricDataStore, routineDataStore, playersAttendenceStore, playerListViewModel,licenseDataStore,navigationService);
 
             viewModel.LoadPlayersCommand.Execute(null);
 

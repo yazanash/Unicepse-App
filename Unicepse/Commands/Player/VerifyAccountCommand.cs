@@ -36,7 +36,7 @@ namespace Unicepse.Commands.Player
                 cameraReader.DataContext = _viewModelBase;
                 cameraReader.ShowDialog();
                 if(!string.IsNullOrEmpty(_viewModelBase.UID))
-                    await _playersDataStore.HandShakePlayer(_playersDataStore.SelectedPlayer!.Player!, _viewModelBase.UID!);
+                    await _playersDataStore.HandShakePlayer(_playersDataStore.SelectedPlayer!, _viewModelBase.UID!);
                 _viewModelBase.UID = null;
             }
          catch(Exception ex)

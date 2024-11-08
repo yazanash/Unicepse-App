@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Unicepse.API.Services;
+using Unicepse.Commands.Player;
 using Unicepse.Core.Models.Authentication;
 using Unicepse.Core.Services;
 using Unicepse.Entityframework.Services;
@@ -44,6 +46,12 @@ namespace Unicepse.HostBuilders
                 services.AddSingleton<LicenseApiDataService>();
                 services.AddSingleton<LicenseDataService>();
                 services.AddSingleton<GymProfileDataService>();
+
+                /////////////////////////////
+                ///comands
+                ////////////////////////////
+                services.AddSingleton<UpdateCurrentViewModelCommand>();
+
 
             });
             return _hostBuilder;

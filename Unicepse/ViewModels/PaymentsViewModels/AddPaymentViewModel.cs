@@ -40,7 +40,7 @@ namespace Unicepse.ViewModels.PaymentsViewModels
             _navigatorStore = navigatorStore;
             _paymentListViewModel = paymentListViewModel;
             _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
-            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore.SelectedPlayer!);
+            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore);
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
             SubmitCommand = new SubmitPaymentCommand(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel), _paymentDataStore, this, _playersDataStore, _subscriptionDataStore);
             CancelCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel));

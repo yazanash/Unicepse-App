@@ -510,9 +510,6 @@
     <Compile Update="Views\AuthView\UsersListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EmployeeViews\TrainersView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\EmployeeViews\EditTrainerDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -549,15 +546,6 @@
     <Compile Update="utlis\common\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="utlis\common\MainView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PlayerViews\PlayersView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PlayerViews\PlayerView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\PlayerViews\EditPlayerDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -568,9 +556,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayerViews\PlayersListView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\SportViews\SportsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SportViews\EditSportDetailView.xaml.cs">

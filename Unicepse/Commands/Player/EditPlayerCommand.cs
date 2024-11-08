@@ -16,10 +16,8 @@ namespace Unicepse.Commands.Player
         private readonly NavigationService<PlayerMainPageViewModel> navigationService;
         private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
-        private readonly SportDataStore _sportStore;
         private readonly EditPlayerViewModel _editPlayerViewModel;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
-        public EditPlayerCommand(NavigationService<PlayerMainPageViewModel> navigationService, EditPlayerViewModel editPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore)
+        public EditPlayerCommand(NavigationService<PlayerMainPageViewModel> navigationService, EditPlayerViewModel editPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore)
         {
 
             this.navigationService = navigationService;
@@ -27,8 +25,6 @@ namespace Unicepse.Commands.Player
             _editPlayerViewModel = editPlayerViewModel;
             _editPlayerViewModel.PropertyChanged += AddPlayerViewModel_PropertyChanged;
             _navigationStore = navigationStore;
-            _subscriptionDataStore = subscriptionDataStore;
-            _sportStore = sportStore;
         }
 
         private void AddPlayerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -49,7 +45,7 @@ namespace Unicepse.Commands.Player
             try
             {
                 _editPlayerViewModel.Submited = false;
-                Core.Models.Player.Player player = _playerStore.SelectedPlayer!.Player;
+                Core.Models.Player.Player player = _playerStore.SelectedPlayer!;
 
                 player.FullName = _editPlayerViewModel.FullName;
                 player.BirthDate = _editPlayerViewModel.Year!.year;

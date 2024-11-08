@@ -24,9 +24,6 @@
     <Compile Update="SearchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="utlis\common\HomeNavView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="utlis\Components\CustomRadioButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -177,9 +174,6 @@
     <Compile Update="Views\AuthView\UserLogReportView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AuthView\UsersView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -291,9 +285,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="SearchWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="utlis\common\HomeNavView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\CustomRadioButton.xaml">
@@ -501,9 +492,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\UserLogReportView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\AuthView\UsersView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml">

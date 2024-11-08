@@ -36,7 +36,7 @@ namespace Unicepse.Stores
 
 
         public event Action<Filter?>? FilterChanged;
-        public event Action<PlayerListItemViewModel?>? PlayerChanged;
+        public event Action<Player?>? PlayerChanged;
         public PlayersDataStore(PlayerDataService playerDataService, PlayerApiDataService playerApiDataService, ILogger<PlayersDataStore> logger)
         {
             _playerDataService = playerDataService;
@@ -60,8 +60,8 @@ namespace Unicepse.Stores
             return player;
         }
 
-        private PlayerListItemViewModel? _selectedPlayer;
-        public PlayerListItemViewModel? SelectedPlayer
+        private Player? _selectedPlayer;
+        public Player? SelectedPlayer
         {
             get
             {
@@ -104,6 +104,7 @@ namespace Unicepse.Stores
         }
 
         public event Action<Player>? ArchivedPlayer_created;
+        public event Action<Player>? ArchivedPlayer_restored;
 
         public event Action<Order?>? OrderChanged;
         public async Task GetPlayers()
@@ -151,7 +152,7 @@ namespace Unicepse.Stores
                         player.UID = uid;
                         _logger.LogInformation(LogFlag + "player handshake synced successfully with code {0}", status.ToString());
                         await _playerDataService.Update(player);
-                        SelectedPlayer!.Player.UID = player.UID;
+                        SelectedPlayer!.UID = player.UID;
                         int currentIndex = _players.FindIndex(y => y.Id == player.Id);
 
                         if (currentIndex != -1)
@@ -164,10 +165,10 @@ namespace Unicepse.Stores
                         }
 
                         Player_update?.Invoke(player);
-                        if(SelectedPlayer.Player!=null && SelectedPlayer.Player.Id == player.Id)
-                        {
-                            SelectedPlayer.IsVerified = true;
-                        }
+                        //if(SelectedPlayer!=null && SelectedPlayer.Id == player.Id)
+                        //{
+                        //    SelectedPlayer.IsVerified = true;
+                        //}
                     }
                     else
                     {
@@ -324,11 +325,7 @@ namespace Unicepse.Stores
             _logger.LogInformation(LogFlag + "reactive player");
             await _playerDataService.Update(player);
             _players.Add(player);
-            if (SelectedPlayer != null && SelectedPlayer.Player.Id == player.Id)
-            {
-                SelectedPlayer.IsActive = true;
-            }
-            Player_created?.Invoke(player);
+            ArchivedPlayer_restored?.Invoke(player);
         }
         public async Task ForceDeletePlayer(int player_id)
         {

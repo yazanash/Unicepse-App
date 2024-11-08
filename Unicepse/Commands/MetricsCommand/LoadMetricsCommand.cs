@@ -13,14 +13,14 @@ namespace Unicepse.Commands.MetricsCommand
     {
         private readonly MetricDataStore _metricDataStore;
         private readonly ListingViewModelBase _metricListing;
-        private readonly PlayerListItemViewModel _player;
+        private readonly PlayersDataStore _playersDataStore;
 
 
-        public LoadMetricsCommand(ListingViewModelBase metricListing, MetricDataStore metricDataStore, PlayerListItemViewModel player)
+        public LoadMetricsCommand(ListingViewModelBase metricListing, MetricDataStore metricDataStore, PlayersDataStore playersDataStore)
         {
             _metricDataStore = metricDataStore;
             _metricListing = metricListing;
-            _player = player;
+            _playersDataStore = playersDataStore;
         }
 
         public override async Task ExecuteAsync(object? parameter)
@@ -31,7 +31,7 @@ namespace Unicepse.Commands.MetricsCommand
             try
             {
 
-                await _metricDataStore.GetAll(_player.Player);
+                await _metricDataStore.GetAll(_playersDataStore.SelectedPlayer!);
             }
             catch (Exception)
             {

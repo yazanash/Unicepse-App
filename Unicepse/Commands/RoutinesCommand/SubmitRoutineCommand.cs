@@ -50,7 +50,7 @@ namespace Unicepse.Commands.RoutinesCommand
             {
                 RoutineNo = selectRoutineDaysMuscleGroupViewModel.Number,
                 RoutineData = selectRoutineDaysMuscleGroupViewModel.Date,
-                Player = _playersDataStore.SelectedPlayer!.Player,
+                Player = _playersDataStore.SelectedPlayer!,
                 IsTemplate = selectRoutineDaysMuscleGroupViewModel.IsTemplate
             };
             foreach(var item in _routineDataStore.RoutineItems)
@@ -66,14 +66,14 @@ namespace Unicepse.Commands.RoutinesCommand
             }
 
             await _routineDataStore.Add(playerRoutine);
-            if (!_playersDataStore.SelectedPlayer!.Player.IsSubscribed)
+            if (!_playersDataStore.SelectedPlayer!.IsSubscribed)
             {
-                _playersDataStore.SelectedPlayer!.Player.IsSubscribed = true;
-                await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!.Player);
-                if (_playersDataStore.SelectedPlayer.Player != null)
-                {
-                    _playersDataStore.SelectedPlayer.IsActive = true;
-                }
+                _playersDataStore.SelectedPlayer!.IsSubscribed = true;
+                await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!);
+                //if (_playersDataStore.SelectedPlayer != null)
+                //{
+                //    _playersDataStore.SelectedPlayer.IsActive = true;
+                //}
             }
             //string jsonString = ExportToJsonTemplate(playerRoutine);
 

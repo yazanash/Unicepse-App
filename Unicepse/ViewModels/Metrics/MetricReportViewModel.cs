@@ -50,7 +50,7 @@ namespace Unicepse.ViewModels.Metrics
             _metricDataStore.Created += _metricDataStore_Created;
             _metricDataStore.Updated += _metricDataStore_Updated;
             _metricDataStore.Deleted += _metricDataStore_Deleted;
-            LoadMetricCommand = new LoadMetricsCommand(this, _metricDataStore, _playerDataStore!.SelectedPlayer!);
+            LoadMetricCommand = new LoadMetricsCommand(this, _metricDataStore, _playerDataStore);
             AddMetricsCommand = new NavaigateCommand<AddMetricsViewModel>(new NavigationService<AddMetricsViewModel>(_navigationStore, () => new AddMetricsViewModel(_metricDataStore, _navigationStore, this, _playerDataStore)));
             SelectedMetric = _metricListItemViewModels.FirstOrDefault();
         }

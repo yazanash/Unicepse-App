@@ -46,7 +46,7 @@ namespace Unicepse.Commands.SubscriptionCommand
         {
             try
             {
-                _playerDataStore.SelectedPlayer!.Player.Balance += _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
+                _playerDataStore.SelectedPlayer!.Balance += _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
                 /// subscription info
                 _subscriptionDataStore.SelectedSubscription!.Id = _subscriptionDataStore.SelectedSubscription!.Id;
                 _subscriptionDataStore.SelectedSubscription!.Sport = _subscriptionDataStore.SelectedSport;
@@ -54,7 +54,7 @@ namespace Unicepse.Commands.SubscriptionCommand
                 _subscriptionDataStore.SelectedSubscription!.LastCheck = _editSubscriptionViewModel.SubscribeDate;
                 _subscriptionDataStore.SelectedSubscription!.Trainer = _subscriptionDataStore.SelectedTrainer;
                 _subscriptionDataStore.SelectedSubscription!.TrainerId = _subscriptionDataStore.SelectedTrainer != null ? _subscriptionDataStore.SelectedTrainer.Id : null;
-                _subscriptionDataStore.SelectedSubscription!.Player = _playerDataStore.SelectedPlayer!.Player;
+                _subscriptionDataStore.SelectedSubscription!.Player = _playerDataStore.SelectedPlayer!;
                 _subscriptionDataStore.SelectedSubscription!.RollDate = _editSubscriptionViewModel.SubscribeDate;
                 //_subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.Price;
                 /// offer info
@@ -84,13 +84,13 @@ namespace Unicepse.Commands.SubscriptionCommand
                     _subscriptionDataStore.SelectedSubscription!.IsPaid = true;
                 else
                     _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
-                _playerDataStore.SelectedPlayer!.Player.Balance -= _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
-                if(_playerDataStore.SelectedPlayer!.Player.SubscribeEndDate< _subscriptionDataStore.SelectedSubscription!.EndDate)
+                _playerDataStore.SelectedPlayer!.Balance -= _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
+                if(_playerDataStore.SelectedPlayer!.SubscribeEndDate< _subscriptionDataStore.SelectedSubscription!.EndDate)
                 {
-                    _playerDataStore.SelectedPlayer!.Player.SubscribeEndDate = _subscriptionDataStore.SelectedSubscription!.EndDate;
+                    _playerDataStore.SelectedPlayer!.SubscribeEndDate = _subscriptionDataStore.SelectedSubscription!.EndDate;
                 }
                 await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription!);
-                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!.Player);
+                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!);
                 _navigationService.Navigate();
             }
             catch (Exception ex)

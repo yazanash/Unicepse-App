@@ -25,7 +25,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private readonly PlayersDataStore _playersDataStore;
         private readonly SportDataStore _sportDataStore;
         private readonly LicenseDataStore _licenseDataStore;
-        public PlayerListItemViewModel? Player => _playersDataStore.SelectedPlayer;
+        //public PlayerListItemViewModel? Player => new (_playersDataStore.SelectedPlayer!);
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => subscriptionListItemViewModels;
         public SubscriptionListItemViewModel? SelectedSubscription
@@ -89,7 +89,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             _paymentStore = paymentStore;  
             _sportDataStore = sportDataStore;
             _licenseDataStore = licenseDataStore;
-            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _playersDataStore.SelectedPlayer!);
+            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _playersDataStore);
             LoadPaymentCommand = new LoadPaymentsCommand(_playersDataStore, _paymentStore);
             subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             _subscriptionStore.Loaded += _subscriptionStore_Loaded;

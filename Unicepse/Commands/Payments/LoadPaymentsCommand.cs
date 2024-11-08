@@ -25,7 +25,7 @@ namespace Unicepse.Commands.Payments
             try
             {
 
-                await _paymentDataStore.GetPlayerPayments(_playersDataStore.SelectedPlayer!.Player);
+                await _paymentDataStore.GetPlayerPayments(_playersDataStore.SelectedPlayer!);
             }
             catch (Exception)
             {
