@@ -49,7 +49,7 @@
             </Border>
 
 
-            <Border Background="#ffffff" CornerRadius="0 10 10 0" Grid.Column="0">
+            <Border Background="#ffffff" CornerRadius="10 0 0 10" Grid.Column="0">
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="اهلا بك" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.primary}"/>
                     <StackPanel Orientation="Horizontal" Margin="0 20 " HorizontalAlignment="Center">

@@ -177,9 +177,6 @@
     <Compile Update="Views\AuthView\UserLogReportView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AuthView\UsersView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -501,9 +498,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\UserLogReportView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\AuthView\UsersView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml">

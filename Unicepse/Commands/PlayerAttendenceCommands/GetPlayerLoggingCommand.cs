@@ -22,7 +22,7 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
         public override async Task ExecuteAsync(object? parameter)
         {
 
-            await _playersAttendenceStore.GetPlayerLogging(_playersDataStore.SelectedPlayer!.Player.Id);
+            await _playersAttendenceStore.GetPlayerLogging(_playersDataStore.SelectedPlayer!.Id);
         }
     }
 }

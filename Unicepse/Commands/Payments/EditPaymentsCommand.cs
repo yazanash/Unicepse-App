@@ -34,7 +34,7 @@ namespace Unicepse.Commands.Payments
         {
             _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
             _subscriptionDataStore.SelectedSubscription!.PaidValue -= _paymentDataStore.SelectedPayment!.PaymentValue;
-            _playersDataStore.SelectedPlayer!.Player.Balance -= _paymentDataStore.SelectedPayment.PaymentValue;
+            _playersDataStore.SelectedPlayer!.Balance -= _paymentDataStore.SelectedPayment.PaymentValue;
 
 
             _paymentDataStore.SelectedPayment.Id = _paymentDataStore.SelectedPayment!.Id;
@@ -42,17 +42,17 @@ namespace Unicepse.Commands.Payments
             _paymentDataStore.SelectedPayment.PaymentValue = _editPaymentViewModel.PaymentValue;
             _paymentDataStore.SelectedPayment.Des = _editPaymentViewModel.Descriptiones;
             _paymentDataStore.SelectedPayment.Subscription = _subscriptionDataStore.SelectedSubscription!;
-            _paymentDataStore.SelectedPayment.Player = _playersDataStore.SelectedPlayer!.Player;
+            _paymentDataStore.SelectedPayment.Player = _playersDataStore.SelectedPlayer!;
 
 
             _subscriptionDataStore.SelectedSubscription!.PaidValue += _paymentDataStore.SelectedPayment.PaymentValue;
-            _playersDataStore.SelectedPlayer!.Player.Balance += _paymentDataStore.SelectedPayment.PaymentValue;
+            _playersDataStore.SelectedPlayer!.Balance += _paymentDataStore.SelectedPayment.PaymentValue;
             if (_subscriptionDataStore.SelectedSubscription!.PaidValue == _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer)
                 _subscriptionDataStore.SelectedSubscription.IsPaid = true;
 
             await _paymentDataStore.Update(_paymentDataStore.SelectedPayment!);
             await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription);
-            await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!.Player);
+            await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!);
             _navigationService.ReNavigate();
         }
     }

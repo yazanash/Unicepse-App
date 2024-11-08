@@ -13,11 +13,9 @@ namespace Unicepse.Commands.Player
 {
     public class ReactivePlayerCommand : AsyncCommandBase
     {
-        private readonly NavigationService<PlayerListViewModel> navigationService;
         private readonly PlayersDataStore _playerStore;
-        public ReactivePlayerCommand(NavigationService<PlayerListViewModel> navigationService, PlayersDataStore playerStore)
+        public ReactivePlayerCommand( PlayersDataStore playerStore)
         {
-            this.navigationService = navigationService;
             _playerStore = playerStore;
         }
 
@@ -25,10 +23,9 @@ namespace Unicepse.Commands.Player
         {
             try
             {
-                Core.Models.Player.Player player = _playerStore.SelectedPlayer!.Player;
+                Core.Models.Player.Player player = _playerStore.SelectedPlayer!;
                 player.IsSubscribed = true;
                 await _playerStore.ReactivePlayer(player);
-                navigationService.Navigate();
             }
             catch (NotExistException ex)
             {

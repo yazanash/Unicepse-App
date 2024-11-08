@@ -51,7 +51,7 @@ namespace Unicepse.Commands.SubscriptionCommand
                     Sport = _subscriptionDataStore.SelectedSport,
                     LastCheck = _addSubscriptionViewModel.SubscribeDate,
                     Trainer = _subscriptionDataStore.SelectedTrainer,
-                    Player = _playerDataStore.SelectedPlayer!.Player,
+                    Player = _playerDataStore.SelectedPlayer!,
                     RollDate = _addSubscriptionViewModel.SubscribeDate,
                     //Price = _subscriptionDataStore.SelectedSport!.Price,
                     LastPaid = _addSubscriptionViewModel.SubscribeDate,
@@ -75,15 +75,15 @@ namespace Unicepse.Commands.SubscriptionCommand
                     subscription.Price = _subscriptionDataStore.SelectedSport!.DailyPrice * _addSubscriptionViewModel.SubscribeDays;
                     subscription.PriceAfterOffer = subscription.Price - _addSubscriptionViewModel.OfferValue;
                 }
-                _playerDataStore.SelectedPlayer!.Player.Balance -= subscription.PriceAfterOffer;
-                _playerDataStore.SelectedPlayer!.Player.SubscribeEndDate = subscription.EndDate; 
+                _playerDataStore.SelectedPlayer!.Balance -= subscription.PriceAfterOffer;
+                _playerDataStore.SelectedPlayer!.SubscribeEndDate = subscription.EndDate; 
                 await _subscriptionDataStore.Add(subscription);
-                _playerDataStore.SelectedPlayer!.Player.IsSubscribed = true;
-                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!.Player);
-                if (_playerDataStore.SelectedPlayer.Player != null )
-                {
-                    _playerDataStore.SelectedPlayer.IsActive= true;
-                }
+                _playerDataStore.SelectedPlayer!.IsSubscribed = true;
+                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!);
+                //if (_playerDataStore.SelectedPlayer.Player != null )
+                //{
+                //    _playerDataStore.SelectedPlayer.IsActive= true;
+                //}
                 _navigationService.ReNavigate();
             }
             catch (Exception ex)

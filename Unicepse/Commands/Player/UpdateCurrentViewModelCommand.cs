@@ -26,16 +26,16 @@ namespace Unicepse.Commands.Player
         private readonly HomeNavViewModel _homeNavViewModel;
         private readonly PlayerListViewModel _playersPageViewModel;
         private readonly SportListViewModel _sportsViewModel;
-        private readonly TrainersViewModel _trainersViewModel;
-        private readonly UsersViewModel _usersViewModel;
+        private readonly TrainersListViewModel _trainersViewModel;
+        private readonly UsersListViewModel _usersViewModel;
         private readonly AccountingViewModel _accountingViewModel;
 
         private readonly LicenseDataStore _licenseDataStore;
         private readonly AuthenticationStore? _authenticationStore;
         public UpdateCurrentViewModelCommand(NavigationStore navigationStore, AuthenticationStore? authenticationStore,
             HomeNavViewModel homeNavViewModel, PlayerListViewModel playersPageViewModel,
-            SportListViewModel sportsViewModel, TrainersViewModel trainersViewModel, 
-            UsersViewModel usersViewModel, AccountingViewModel accountingViewModel,
+            SportListViewModel sportsViewModel, TrainersListViewModel trainersViewModel,
+            UsersListViewModel usersViewModel, AccountingViewModel accountingViewModel,
             LicenseDataStore licenseDataStore)
         {
             _navigationStore = navigationStore;

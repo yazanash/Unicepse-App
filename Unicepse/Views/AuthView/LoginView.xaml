@@ -107,7 +107,7 @@
             </Border>
 
 
-            <Border Background="#ffffff" CornerRadius="0 10 10 0" Grid.Column="0">
+            <Border Background="#ffffff" CornerRadius="10 0 0 10" Grid.Column="0">
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="اهلا بك من جديد" Style="{StaticResource textTitle}" Foreground="{StaticResource colors.secondry}"/>
                     <StackPanel Orientation="Horizontal" Margin="0 20 " HorizontalAlignment="Center">

@@ -20,16 +20,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
     public class PlayerAttendenceListItemViewModel : ViewModelBase
     {
         public DailyPlayerReport dailyPlayerReport { get; set; }
-        private readonly NavigationStore? _navigationStore;
-        private readonly SubscriptionDataStore? _subscriptionDataStore;
-        private readonly PlayersDataStore? _playersDataStore;
-        private readonly SportDataStore? _sportDataStore;
-        private readonly PaymentDataStore? _paymentDataStore;
-        private readonly MetricDataStore? _metricDataStore;
-        private readonly RoutineDataStore? _routineDataStore;
-        private readonly LicenseDataStore? _licenseDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly PlayerListViewModel? _playerListViewModel;
         public ICommand? OpenProfileCommand { get; }
        
         public PlayerAttendenceListItemViewModel(DailyPlayerReport dailyPlayerReport, PlayersAttendenceStore playersAttendenceStore)
@@ -46,12 +37,12 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             
            
         }
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(Player player,NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore,PlayerListViewModel playerListViewModel)
-        {
+        //private static PlayerProfileViewModel CreatePlayerProfileViewModel(Player player,NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore,PlayerListViewModel playerListViewModel)
+        //{
              
-            playersDataStore.SelectedPlayer = new PlayerListItemViewModel(player, navigatorStore,subscriptionDataStore,playersDataStore,sportDataStore,paymentDataStore, _metricDataStore, routineDataStore,playerListViewModel,playersAttendenceStore, licenseDataStore);
-            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore, licenseDataStore);
-        }
+        //    playersDataStore.SelectedPlayer = new PlayerListItemViewModel(player, navigatorStore,subscriptionDataStore,playersDataStore,sportDataStore,paymentDataStore, _metricDataStore, routineDataStore,playerListViewModel,playersAttendenceStore, licenseDataStore);
+        //    return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore, licenseDataStore);
+        //}
         private int _idSort;
         public int IdSort
         {

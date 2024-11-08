@@ -29,7 +29,7 @@ namespace Unicepse.Commands.RoutinesCommand
             //try
             //{
 
-            await _routineDataStore.GetAll(_playerDataStore.SelectedPlayer!.Player);
+            await _routineDataStore.GetAll(_playerDataStore.SelectedPlayer!);
             //}
             //catch (Exception)
             //{

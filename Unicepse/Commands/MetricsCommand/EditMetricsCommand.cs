@@ -58,7 +58,7 @@ namespace Unicepse.Commands.MetricsCommand
                 L_Thigh = _editMetricsViewModel.L_Thigh,
                 R_Thigh = _editMetricsViewModel.R_Thigh,
                 //Player
-                Player = _playerDataStore.SelectedPlayer!.Player
+                Player = _playerDataStore.SelectedPlayer
 
             };
             await _metricDataStore.Update(metric);

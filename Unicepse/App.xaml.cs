@@ -26,6 +26,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Unicepse.utlis.LogEnrich;
 
 namespace Unicepse
 {
@@ -573,8 +574,10 @@ namespace Unicepse
              Host.CreateDefaultBuilder()
                 .UseSerilog((host , loggerConfiguration) =>
                 {
-                    loggerConfiguration.WriteTo.File("logs/logs.txt", rollingInterval: RollingInterval.Day)
-                    .WriteTo.Debug()
+                    loggerConfiguration.WriteTo.File("logs/logs-.txt", rollingInterval: RollingInterval.Day,
+                         outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] ({Version}) {Message}{NewLine}{Exception}")
+                    .Enrich.WithProperty("Version", "1.0.0.0")
+                    .WriteTo.Debug(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] ({Version}) {Message}{NewLine}{Exception}")
                     .MinimumLevel.Error()
                     .MinimumLevel.Override("Unicepse",Serilog.Events.LogEventLevel.Debug);
                 })

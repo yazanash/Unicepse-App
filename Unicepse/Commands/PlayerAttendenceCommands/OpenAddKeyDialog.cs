@@ -26,7 +26,7 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
                 cameraReader.DataContext = _viewModelBase;
                 cameraReader.ShowDialog();
             }
-            catch (Exception ex)
+            catch
             {
                 //MessageBox.Show(ex.Message);
             }

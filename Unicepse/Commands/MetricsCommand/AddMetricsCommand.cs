@@ -57,17 +57,17 @@ namespace Unicepse.Commands.MetricsCommand
                 L_Thigh = _addMetricsViewModel.L_Thigh,
                 R_Thigh = _addMetricsViewModel.R_Thigh,
                 //Player
-                Player = _playerDataStore.SelectedPlayer!.Player
+                Player = _playerDataStore.SelectedPlayer!
 
             };
-            if(!_playerDataStore.SelectedPlayer!.Player.IsSubscribed)
+            if(!_playerDataStore.SelectedPlayer!.IsSubscribed)
             {
-                _playerDataStore.SelectedPlayer!.Player.IsSubscribed = true;
-                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!.Player);
-                if (_playerDataStore.SelectedPlayer.Player != null)
-                {
-                    _playerDataStore.SelectedPlayer.IsActive = true;
-                }
+                _playerDataStore.SelectedPlayer!.IsSubscribed = true;
+                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!);
+                //if (_playerDataStore.SelectedPlayer != null)
+                //{
+                //    _playerDataStore.SelectedPlayer.IsActive = true;
+                //}
             }
             await _metricDataStore.Add(metric);
             _metricDataStore.SelectedMetric = _metricDataStore.Metrics.FirstOrDefault(x=>x.Id==metric.Id);
