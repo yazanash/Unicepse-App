@@ -22,19 +22,16 @@
         xmlns:player_subvm="clr-namespace:Unicepse.ViewModels.SubscriptionViewModel"
         xmlns:player_views="clr-namespace:Unicepse.Views.PlayerViews"
         xmlns:authvms="clr-namespace:Unicepse.ViewModels.Authentication"
-        xmlns:authvs="clr-namespace:Unicepse.Views.AuthView"
+        xmlns:authvs="clr-namespace:Unicepse.Views.AuthView"            
+        xmlns:home_vms="clr-namespace:Unicepse.utlis.common"
+        xmlns:home_logvms="clr-namespace:Unicepse.ViewModels.PlayersAttendenceViewModels"
+        xmlns:home_logvs="clr-namespace:Unicepse.Views.PlayersAttendenceViews"
+        xmlns:home_views="clr-namespace:Unicepse.Views"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <DataTemplate DataType="{x:Type logvms:LogPlayerAttendenceViewModel }">
         <logvs:LogPlayerAttendenceView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:MainViewModel}">
-        <vis:MainView />
-
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:HomeNavViewModel }">
-        <views:HomeNavView />
-
-    </DataTemplate>
+   
     <DataTemplate DataType="{x:Type authvmodels:AuthViewModel }">
         <!--<views:HomeView />-->
         <login:LoginView/>
@@ -47,7 +44,11 @@
     </DataTemplate>
 
     
-    
+    <!---->
+    <DataTemplate DataType="{x:Type home_vms:HomeViewModel }">
+        <home_views:HomeView />
+    </DataTemplate>
+   
     <!---->
     <DataTemplate DataType="{x:Type player_vms:AddPlayerViewModel }">
         <player_views:PlayerDetailView />

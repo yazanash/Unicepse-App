@@ -32,8 +32,15 @@ namespace Unicepse.utlis.common
         private readonly EmployeeStore _employeeStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly NavigationStore _navigationStore;
+        private readonly PlayersDataStore? _playersDataStore;
+        private readonly SportDataStore? _sportDataStore;
+        private readonly PaymentDataStore? _paymentDataStore;
+        private readonly MetricDataStore? _metricDataStore;
+        private readonly RoutineDataStore? _routineDataStore;
+        private readonly LicenseDataStore? _licenseDataStore;
+        private readonly NavigationService<PlayerListViewModel>? _navigationService;
 
-       
+
         public IEnumerable<PlayerAttendenceListItemViewModel> PlayerAttendence => _playerAttendenceListItemViewModels;
 
         public IEnumerable<TrainerListItemViewModel> TrainersList => _trainerListItemViewModels;
@@ -43,14 +50,14 @@ namespace Unicepse.utlis.common
         public ICommand LoadTrainersCommand { get; }
         public ICommand OpenScanCommand { get; }
         public SearchBoxViewModel SearchBox { get; set; }
-        public HomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
+        public HomeViewModel(PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore? sportDataStore, PaymentDataStore? paymentDataStore, MetricDataStore? metricDataStore, RoutineDataStore? routineDataStore, LicenseDataStore? licenseDataStore, NavigationService<PlayerListViewModel>? navigationService)
         {
             _playerStore = playersDataStore;
             _employeeStore = employeeStore;
             _navigationStore = navigationStore;
             _playersAttendenceStore = playersAttendenceStore;
             _subscriptionDataStore = subscriptionDataStore;
-           
+
 
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
             _playersAttendenceStore.LoggedIn += _playersAttendenceStore_LoggedIn;
@@ -66,6 +73,12 @@ namespace Unicepse.utlis.common
             SelectedDate = DateTime.Now;
 
             _employeeStore.Loaded += _employeeStore_Loaded;
+            _sportDataStore = sportDataStore;
+            _paymentDataStore = paymentDataStore;
+            _metricDataStore = metricDataStore;
+            _routineDataStore = routineDataStore;
+            _licenseDataStore = licenseDataStore;
+            _navigationService = navigationService;
         }
         public override void Dispose()
         {
@@ -149,9 +162,9 @@ namespace Unicepse.utlis.common
             return LogPlayerAttendenceViewModel.LoadViewModel(playersDataStore, playersAttendenceStore, navigationStore, homeViewModel, subscriptionDataStore);
         }
 
-        public static HomeViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
+        public static HomeViewModel LoadViewModel(PlayersDataStore playersStore, PlayersAttendenceStore playersAttendenceStore, EmployeeStore employeeStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore? sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService)
         {
-            HomeViewModel viewModel = new(playersStore, playersAttendenceStore, employeeStore, navigationStore, subscriptionDataStore);
+            HomeViewModel viewModel = new(playersStore, playersAttendenceStore, employeeStore, navigationStore, subscriptionDataStore, sportDataStore, paymentDataStore, metricDataStore, routineDataStore, licenseDataStore, navigationService);
 
             viewModel.LoadDailyReport.Execute(null);
             viewModel.LoadTrainersCommand.Execute(null);

@@ -17,11 +17,11 @@ namespace Unicepse.utlis.common
         public INavigator Navigator { get; set; }
         private readonly UsersDataStore _usersDataStore;
         private readonly AccountingViewModel _accountingViewModel;
-        private readonly HomeNavViewModel _homeNavViewModel;
+        private readonly HomeViewModel _homeNavViewModel;
         private readonly BackgroundServiceStore _backgroundServiceStore;
         private readonly AuthenticationStore _authenticationStore;
         public StatusBarViewModel StatusBarViewModel { get; set; }
-        public MainWindowViewModel(UsersDataStore usersDataStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, INavigator navigator, AccountingViewModel accountingViewModel, HomeNavViewModel homeNavViewModel)
+        public MainWindowViewModel(UsersDataStore usersDataStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, INavigator navigator, AccountingViewModel accountingViewModel, HomeViewModel homeNavViewModel)
         {
             Navigator = navigator;
             _accountingViewModel = accountingViewModel;

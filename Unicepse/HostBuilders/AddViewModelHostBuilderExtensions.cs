@@ -28,20 +28,15 @@ namespace Unicepse.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
-                services.AddSingleton<MainViewModel>();
                 services.AddSingleton<MainWindowViewModel>();
                 services.AddSingleton<AuthViewModel>();
                 services.AddSingleton<LicenseViewModel>();
-                services.AddSingleton<HomeNavViewModel>();
-                services.AddTransient<PlayerListViewModel>((s) => CreatePlayerListingViewModel(s));
+                services.AddTransient((s) => CreateHomeListingViewModel(s));
+                services.AddTransient((s) => CreatePlayerListingViewModel(s));
                 services.AddTransient((s) => CreateSportListingViewModel(s));
                 services.AddTransient((s) => CreateEmployeeListingViewModel(s));
                 services.AddTransient((s) => CreateUserListingViewModel(s));
-
-
-
                 services.AddSingleton<AccountingViewModel>();
-                services.AddSingleton<HomeNavViewModel>();
                 services.AddTransient<Func<PlayerListViewModel>>(services => () => services.GetRequiredService<PlayerListViewModel>());
                 services.AddTransient<NavigationService<PlayerListViewModel>>();
                 services.AddSingleton<INavigator, Navigator>();
@@ -72,8 +67,8 @@ namespace Unicepse.HostBuilders
                 services.GetRequiredService<RoutineDataStore>(),
                 services.GetRequiredService<PlayersAttendenceStore>(),
                 services.GetRequiredService<LicenseDataStore>(),
-                 services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
-                  services.GetRequiredService<ILogger<PlayerListViewModel>>()
+                services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
+                services.GetRequiredService<ILogger<PlayerListViewModel>>()
                 );
         }
         private static SportListViewModel CreateSportListingViewModel(IServiceProvider services)
@@ -102,6 +97,22 @@ namespace Unicepse.HostBuilders
                 services.GetRequiredService<UsersDataStore>(),
                 services.GetRequiredService<EmployeeStore>(),
                 services.GetRequiredService<AuthenticationStore>());
+        }
+        private static HomeViewModel CreateHomeListingViewModel(IServiceProvider services)
+        {
+            return HomeViewModel.LoadViewModel(
+                services.GetRequiredService<PlayersDataStore>(),
+                services.GetRequiredService<PlayersAttendenceStore>(),
+                services.GetRequiredService<EmployeeStore>(),
+                services.GetRequiredService<NavigationStore>(),
+
+                services.GetRequiredService<SubscriptionDataStore>(),
+                services.GetRequiredService<SportDataStore>(),
+                services.GetRequiredService<PaymentDataStore>(),
+                services.GetRequiredService<MetricDataStore>(),
+                services.GetRequiredService<RoutineDataStore>(),
+                services.GetRequiredService<LicenseDataStore>(),
+                services.GetRequiredService<NavigationService<PlayerListViewModel>>());
         }
     }
 }

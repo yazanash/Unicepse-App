@@ -546,9 +546,6 @@
     <Compile Update="utlis\common\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="utlis\common\MainView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\PlayerViews\EditPlayerDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

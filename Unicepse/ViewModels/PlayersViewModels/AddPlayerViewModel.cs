@@ -63,11 +63,14 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
         private void _playerStore_profile_loaded(Profile obj)
         {
-            FullName = obj.FullName;
-            Phone = obj.Phone;
-            GenderMale = obj.GenderMale;
-            Year = years.FirstOrDefault(x=>x.year== obj.BirthDate) ;
-            UID = obj.UID;
+            if(obj != null)
+            {
+                FullName = obj.FullName;
+                Phone = obj.Phone;
+                GenderMale = obj.GenderMale;
+                Year = years.FirstOrDefault(x => x.year == obj.BirthDate);
+                UID = obj.UID;
+            }
         }
         public bool ScanAvailable { get; set; }
         private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,LicenseDataStore licenseDataStore,NavigationService<PlayerListViewModel> navigationService)

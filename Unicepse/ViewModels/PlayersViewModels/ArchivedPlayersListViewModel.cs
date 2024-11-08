@@ -33,12 +33,10 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private readonly LicenseDataStore _licenseDataStore;
         private readonly NavigationService<PlayerListViewModel> _navigationService;
         public SearchBoxViewModel SearchBox { get; set; }
-
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public IEnumerable<OrderByItemViewModel> OrderByList => OrderByItemViewModel;
         public ICommand BackCommand { get; }
-
         public FiltersItemViewModel? SelectedFilter
         {
             get
@@ -65,8 +63,6 @@ namespace Unicepse.ViewModels.PlayersViewModels
 
             }
         }
-
-
         public PlayerListItemViewModel? SelectedPlayer
         {
             get
@@ -143,23 +139,16 @@ namespace Unicepse.ViewModels.PlayersViewModels
             _playerStore.ArchivedPlayers_loaded += PlayerStore_PlayersLoaded;
             _playerStore.ArchivedPlayer_created += PlayerStore_PlayerAdded;
             _playerStore.Player_update += PlayerStore_PlayerUpdated;
-            _playerStore.Player_deleted += PlayerStore_PlayerDeleted;
+            _playerStore.ArchivedPlayer_restored += _playerStore_ArchivedPlayer_restored;
             _playerStore.FilterChanged += PlayerStore_FilterChanged;
             _playerStore.OrderChanged += PlayerStore_OrderChanged;
-
-
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
-
             OrderByItemViewModel = new();
-
             OrderByItemViewModel.Add(new OrderByItemViewModel(Order.ByName, 1, "الاسم"));
             OrderByItemViewModel.Add(new OrderByItemViewModel(Order.ByDebt, 2, "الديون"));
             OrderByItemViewModel.Add(new OrderByItemViewModel(Order.BySubscribeEnd, 3, "منتهي الاشتراك"));
-
             SelectedOrderBy = OrderByItemViewModel.FirstOrDefault(x => x.Id == 1);
-
-
             filtersItemViewModel = new();
 
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.GenderMale, 1, "ذكور"));
@@ -169,10 +158,19 @@ namespace Unicepse.ViewModels.PlayersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.Active, 6, "فعال"));
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.SubscribeEnd, 7, "منتهي الاشتراك"));
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.HaveDebt, 8, "ديون"));
-
             SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Id == 6);
             BackCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigatorStore, () => playerListViewModel));
-            
+   
+        }
+
+        private void _playerStore_ArchivedPlayer_restored(Player obj)
+        {
+            PlayerListItemViewModel? itemViewModel = playerListItemViewModels.FirstOrDefault(y => y.Player?.Id == obj.Id);
+
+            if (itemViewModel != null)
+            {
+                playerListItemViewModels.Remove(itemViewModel);
+            }
         }
 
         private void SearchBox_SearchedText(string? obj)
