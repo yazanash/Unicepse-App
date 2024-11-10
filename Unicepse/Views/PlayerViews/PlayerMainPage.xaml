@@ -72,14 +72,7 @@
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-                            <DataGrid.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="نقل الى مدرب" Command="{Binding MoveToNewTrainerCommand}"/>
-                                    <MenuItem Header="ايقاف الاشتراك" Command="{Binding StopSubscriptionCommand}"/>
-                                    <MenuItem Header="طباعة" Command="{Binding PrintCommand}"/>
-                                    <!-- Add more menu items as needed -->
-                                </ContextMenu>
-                            </DataGrid.ContextMenu>
+                          
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
@@ -127,17 +120,14 @@
                                      Binding="{Binding RestVal,Converter={StaticResource covNum}}"
                                     Width="auto"
                                     />
-
-                                <DataGridTemplateColumn Header="تدريب خاص" Width="auto" IsReadOnly="True">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Vertical">
-                                                <TextBlock Text="{Binding IsPrivate}" FontSize="12"/>
-                                                <TextBlock Text="{Binding PrivatePrice}" FontSize="12"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="تدريب خاص" IsReadOnly="True"
+                                     Binding="{Binding PrivatePrice,Converter={StaticResource covNum}}"
+                                    Width="auto"
+                                    />
+                              <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
+                                     Binding="{Binding EndDate}"
+                                    Width="*"
+                                    />
                                 <DataGridTemplateColumn Header="الحالة" Width="100" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -151,10 +141,7 @@
                                      Binding="{Binding PaidValue}"
                                     Width="*"
                                     />-->
-                                <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding EndDate}"
-                                    Width="*"
-                                    />
+                               
 
                                 <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>

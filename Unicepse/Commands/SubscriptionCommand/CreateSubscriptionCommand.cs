@@ -77,7 +77,13 @@ namespace Unicepse.Commands.SubscriptionCommand
                 }
                 await _subscriptionDataStore.Add(subscription);
                 _playerDataStore.SelectedPlayer!.Balance -= subscription.PriceAfterOffer;
-                _playerDataStore.SelectedPlayer!.SubscribeEndDate = subscription.EndDate;
+                Subscription? subscriptions = _subscriptionDataStore.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault(x => x.Id != subscription.Id);
+                if (subscriptions != null && subscriptions.EndDate >= subscription.EndDate)
+                {
+                    _playerDataStore.SelectedPlayer!.SubscribeEndDate = subscriptions.EndDate;
+                }
+                else
+                    _playerDataStore.SelectedPlayer!.SubscribeEndDate = subscription.EndDate;
                 _playerDataStore.SelectedPlayer!.IsSubscribed = true;
                 await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!);
                 _navigationService.ReNavigate();

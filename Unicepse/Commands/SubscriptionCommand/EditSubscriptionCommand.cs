@@ -90,6 +90,13 @@ namespace Unicepse.Commands.SubscriptionCommand
                     _playerDataStore.SelectedPlayer!.SubscribeEndDate = _subscriptionDataStore.SelectedSubscription!.EndDate;
                 }
                 await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription!);
+                Subscription? subscription = _subscriptionDataStore.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault(x => x.Id != _subscriptionDataStore.SelectedSubscription.Id);
+                if (subscription != null&&subscription.EndDate>= _subscriptionDataStore.SelectedSubscription.EndDate)
+                {
+                    _playerDataStore.SelectedPlayer!.SubscribeEndDate = subscription.EndDate;
+                }
+                else
+                    _playerDataStore.SelectedPlayer!.SubscribeEndDate = _subscriptionDataStore.SelectedSubscription.EndDate;
                 await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!);
                 _navigationService.Navigate();
             }
