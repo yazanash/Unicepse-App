@@ -8,15 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
     public class DausesDataStore : IDataStore<TrainerDueses>
     {
-        private readonly PaymentDataService _paymentDataService;
+        private readonly IPaymentDataService _paymentDataService;
         private readonly DausesDataService _dausesDataService;
-        private readonly EmployeeDataService _employeeDataService;
-        private readonly EmployeeCreditsDataService _employeeCreditsDataService;
+        private readonly IEmployeeDataStore _employeeDataService;
+        private readonly ICreditDataService _employeeCreditsDataService;
         public List<TrainerDueses> _dauses;
         public List<PlayerPayment> _payments;
         string LogFlag = "[Dauses] ";
@@ -33,7 +34,7 @@ namespace Unicepse.Stores
         public event Action<TrainerDueses>? Updated;
         public event Action<int>? Deleted;
         //private readonly Lazy<Task> _initializeLazy;
-        public DausesDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService, EmployeeDataService employeeDataService, ILogger<DausesDataStore> logger)
+        public DausesDataStore(IPaymentDataService paymentDataService, DausesDataService dausesDataService, ICreditDataService employeeCreditsDataService, IEmployeeDataStore employeeDataService, ILogger<DausesDataStore> logger)
         {
             _paymentDataService = paymentDataService;
             _dausesDataService = dausesDataService;

@@ -15,7 +15,7 @@ using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class PlayerRoutineDataService : IDataService<PlayerRoutine>
+    public class PlayerRoutineDataService : IRoutineDateService
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 

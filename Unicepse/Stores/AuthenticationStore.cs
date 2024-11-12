@@ -13,12 +13,12 @@ namespace Unicepse.Stores
 {
     public class AuthenticationStore
     {
-        private readonly AuthenticationService _authenticationService;
+        private readonly IAuthenticationService _authenticationService;
         private readonly AccountStore _accountStore;
         private readonly ILogger<AuthenticationStore> _logger;
         string LogFlag = "[Authentication] ";
         public event Action? LogoutAction;
-        public AuthenticationStore(AuthenticationService authenticationService, AccountStore accountStore, ILogger<AuthenticationStore> logger)
+        public AuthenticationStore(IAuthenticationService authenticationService, AccountStore accountStore, ILogger<AuthenticationStore> logger)
         {
             _authenticationService = authenticationService;
             _accountStore = accountStore;

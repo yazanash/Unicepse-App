@@ -8,6 +8,7 @@ using Unicepse.Stores;
 using Unicepse.ViewModels.SubscriptionViewModel;
 using Unicepse.ViewModels.PlayersViewModels;
 using Unicepse.navigation;
+using Unicepse.Core.Models.Subscription;
 
 namespace Unicepse.Commands.SubscriptionCommand
 {
@@ -52,6 +53,13 @@ namespace Unicepse.Commands.SubscriptionCommand
                     //double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / _subscriptionDataStore.SelectedSubscription!.Sport!.DaysCount;
                     _playerDataStore.SelectedPlayer!.Balance -= _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
                     await _subscriptionDataStore.Stop(_subscriptionDataStore.SelectedSubscription!, _stopSubscription.SubscribeStopDate);
+                    Subscription? subscription= _subscriptionDataStore.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault(x=>x.Id!=_subscriptionDataStore.SelectedSubscription.Id);
+                    if (subscription != null && subscription.EndDate >= _subscriptionDataStore.SelectedSubscription.EndDate)
+                    {
+                        _playerDataStore.SelectedPlayer!.SubscribeEndDate = subscription.EndDate;
+                    }
+                    else
+                        _playerDataStore.SelectedPlayer!.SubscribeEndDate = _subscriptionDataStore.SelectedSubscription.EndDate;
                     await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer);
                     _navigationService.ReNavigate();
                 }

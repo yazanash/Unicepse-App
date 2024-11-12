@@ -6,17 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
     public class CreditsDataStore : IDataStore<Credit>
     {
         string LogFlag = "[Credits] ";
-        private readonly EmployeeCreditsDataService _employeeCreditsDataService;
+        private readonly ICreditDataService _employeeCreditsDataService;
         private readonly ILogger<CreditsDataStore> _logger;
         public List<Credit> _credits;
         public IEnumerable<Credit> Credits => _credits;
-        public CreditsDataStore(EmployeeCreditsDataService employeeCreditsDataService, ILogger<CreditsDataStore> logger)
+        public CreditsDataStore(ICreditDataService employeeCreditsDataService, ILogger<CreditsDataStore> logger)
         {
             _employeeCreditsDataService = employeeCreditsDataService;
             _credits = new List<Credit>();

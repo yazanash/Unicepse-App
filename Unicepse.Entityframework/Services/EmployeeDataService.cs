@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Unicepse.Entityframework.Services
 {
    
-    public class EmployeeDataService : IDataService<Employee>
+    public class EmployeeDataService : IEmployeeDataStore
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 

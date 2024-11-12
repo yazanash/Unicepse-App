@@ -12,7 +12,7 @@ using Unicepse.Entityframework.DbContexts;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class GymProfileDataService : IDataService<GymProfile>
+    public class GymProfileDataService : IGymProfileDataService
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 

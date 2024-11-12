@@ -16,7 +16,7 @@ using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class SubscriptionDataService : IDataService<Subscription>
+    public class SubscriptionDataService : ISubscriptionDataService
     {
 
         private readonly PlatinumGymDbContextFactory _contextFactory;

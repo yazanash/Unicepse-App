@@ -12,7 +12,7 @@ using Unicepse.Entityframework.DbContexts;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class LicenseDataService : IDataService<License>
+    public class LicenseDataService : ILicenseDataService
     {
 
         private readonly PlatinumGymDbContextFactory _contextFactory;

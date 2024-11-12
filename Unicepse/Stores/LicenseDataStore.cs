@@ -9,6 +9,7 @@ using System.Windows;
 using Unicepse.API.Services;
 using Unicepse.Core.Exceptions;
 using Unicepse.Core.Models;
+using Unicepse.Core.Services;
 using Unicepse.Entityframework.Services;
 
 namespace Unicepse.Stores
@@ -60,9 +61,9 @@ namespace Unicepse.Stores
 
         public IEnumerable<License> Licenses => _licenses;
         private readonly LicenseApiDataService _licenseApiDataService;
-        private readonly LicenseDataService _licenseDataService;
-        private readonly GymProfileDataService _gymProfileDataService;
-        public LicenseDataStore(LicenseApiDataService licenseApiDataService, LicenseDataService licenseDataService, GymProfileDataService gymProfileDataService, ILogger<LicenseDataStore> logger)
+        private readonly ILicenseDataService _licenseDataService;
+        private readonly IGymProfileDataService _gymProfileDataService;
+        public LicenseDataStore(LicenseApiDataService licenseApiDataService, ILicenseDataService licenseDataService, IGymProfileDataService gymProfileDataService, ILogger<LicenseDataStore> logger)
         {
             _licenseApiDataService = licenseApiDataService;
             _licenseDataService = licenseDataService;

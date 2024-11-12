@@ -19,33 +19,15 @@ namespace Unicepse.Commands.Player
     {
 
         private readonly NavigationService<PlayerProfileViewModel> navigationService;
-        private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
-        private readonly SportDataStore _sportStore;
-        private readonly PlayerListViewModel _PlayerListViewModel;
         private readonly AddPlayerViewModel _addPlayerViewModel;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
-        private readonly MetricDataStore _metricDataStore;
-        private readonly RoutineDataStore _routineDataStore;
-        private readonly PaymentDataStore _paymentDataStore;
-        private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly LicenseDataStore _licenseDataStore;
         public SubmitCommand(NavigationService<PlayerProfileViewModel> navigationService, AddPlayerViewModel addPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, PlayerListViewModel playerListViewModel, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PaymentDataStore paymentDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore)
         {
 
             this.navigationService = navigationService;
             _playerStore = playerStore;
             _addPlayerViewModel = addPlayerViewModel;
-            _navigationStore = navigationStore;
             _addPlayerViewModel.PropertyChanged += AddPlayerViewModel_PropertyChanged;
-            _PlayerListViewModel = playerListViewModel;
-            _subscriptionDataStore = subscriptionDataStore;
-            _sportStore = sportStore;
-            _metricDataStore = metricDataStore;
-            _routineDataStore = routineDataStore;
-            _paymentDataStore = paymentDataStore;
-            _playersAttendenceStore = playersAttendenceStore;
-            _licenseDataStore = licenseDataStore;
         }
 
         private void AddPlayerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -82,13 +64,10 @@ namespace Unicepse.Commands.Player
                 };
                 await _playerStore.AddPlayer(player);
                 _playerStore.SelectedPlayer = player;
-                //_playerStore.SelectedPlayer = new PlayerListItemViewModel(player, _navigationStore, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _PlayerListViewModel, _playersAttendenceStore,_licenseDataStore);
                 if (!string.IsNullOrEmpty(_addPlayerViewModel.UID))
                     await _playerStore.HandShakePlayer(player, _addPlayerViewModel.UID!);
                 _addPlayerViewModel.Submited = true;
-
-                //_playerStore.SelectedPlayer!.OpenProfileCommand!.Execute(null);
-                //navigationService.ReNavigate();
+                navigationService.ReNavigate();
             }
             catch (PlayerConflictException ex)
             {

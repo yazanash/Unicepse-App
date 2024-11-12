@@ -14,6 +14,7 @@ using Unicepse.API.Services;
 using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
@@ -27,7 +28,7 @@ namespace Unicepse.Stores
         string LogFlag = "[Subscriptions] ";
         private readonly ILogger<SubscriptionDataStore> _logger;
 
-        private readonly SubscriptionDataService _subscriptionDataService;
+        private readonly ISubscriptionDataService _subscriptionDataService;
         private readonly SubscriptionApiDataService _subscriptionApiDataService;
         private readonly List<Subscription> _subscriptions;
         private readonly Lazy<Task> _initializeLazy;
@@ -82,7 +83,7 @@ namespace Unicepse.Stores
         }
 
         public event Action<Subscription?>? SubscriptionChanged;
-        public SubscriptionDataStore(SubscriptionDataService subscriptionDataService, SubscriptionApiDataService subscriptionApiDataService, ILogger<SubscriptionDataStore> logger)
+        public SubscriptionDataStore(ISubscriptionDataService subscriptionDataService, SubscriptionApiDataService subscriptionApiDataService, ILogger<SubscriptionDataStore> logger)
         {
             _subscriptionDataService = subscriptionDataService;
             _subscriptions = new List<Subscription>();
@@ -301,7 +302,7 @@ namespace Unicepse.Stores
                     }
                 }
                 catch { }
-             
+
 
             }
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);

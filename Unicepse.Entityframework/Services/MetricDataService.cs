@@ -14,7 +14,7 @@ using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class MetricDataService : IDataService<Metric>
+    public class MetricDataService : IMetricDataService
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
         public MetricDataService(PlatinumGymDbContextFactory contextFactory) 

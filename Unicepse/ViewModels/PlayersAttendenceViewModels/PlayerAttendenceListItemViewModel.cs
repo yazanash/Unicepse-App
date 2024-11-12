@@ -142,7 +142,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
                 OnPropertyChanged(nameof(Key));
             }
         }
-
+        public Brush BalanceColor => Balance >= 0 ? Brushes.Green : Brushes.Red;
         public void Update(DailyPlayerReport obj)
         {
             this.dailyPlayerReport = obj;

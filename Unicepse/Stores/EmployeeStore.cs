@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Unicepse.utlis.common;
 using Unicepse.Core.Models.Sport;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
@@ -28,21 +29,19 @@ namespace Unicepse.Stores
         public event Action<Filter?>? FilterChanged;
         public event Action<Sport?>? SportChanged;
         private readonly ILogger<EmployeeStore> _logger;
-        private readonly EmployeeDataService _employeeDataService;
-        private readonly DausesDataService _dausesDataService;
+        private readonly IEmployeeDataStore _employeeDataService;
         private readonly List<Employee> _employee;
         private readonly Lazy<Task> _initializeLazy;
         public IEnumerable<Employee> Employees => _employee;
         private readonly List<Sport> _sports;
         public IEnumerable<Sport> Sports => _sports;
 
-        public EmployeeStore(EmployeeDataService employeeDataService, DausesDataService dausesDataService, ILogger<EmployeeStore> logger)
+        public EmployeeStore(IEmployeeDataStore employeeDataService ,ILogger<EmployeeStore> logger)
         {
             _employeeDataService = employeeDataService;
             _employee = new List<Employee>();
             _sports = new List<Sport>();
             _initializeLazy = new Lazy<Task>(Initialize);
-            _dausesDataService = dausesDataService;
             _logger = logger;
         }
 

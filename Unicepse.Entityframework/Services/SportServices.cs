@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class SportServices : IDataService<Sport>
+    public class SportServices : ISportDataService
     {
 
         private readonly PlatinumGymDbContextFactory _contextFactory;

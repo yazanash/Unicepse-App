@@ -12,13 +12,14 @@ using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
 using Unicepse.Core.Exceptions;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
 
     public class PlayersDataStore
     {
-        private readonly PlayerDataService _playerDataService;
+        private readonly IPlayerDataService _playerDataService;
         private readonly PlayerApiDataService _playerApiDataService;
         private readonly List<Player> _players;
         private readonly List<Player> _archivedPlayers;
@@ -33,11 +34,9 @@ namespace Unicepse.Stores
         public event Action<int>? Player_deleted;
         public event Action? ArchivedPlayers_loaded;
         public event Action<Profile>? profile_loaded;
-
-
         public event Action<Filter?>? FilterChanged;
         public event Action<Player?>? PlayerChanged;
-        public PlayersDataStore(PlayerDataService playerDataService, PlayerApiDataService playerApiDataService, ILogger<PlayersDataStore> logger)
+        public PlayersDataStore(IPlayerDataService playerDataService, PlayerApiDataService playerApiDataService, ILogger<PlayersDataStore> logger)
         {
             _playerDataService = playerDataService;
             _players = new List<Player>();

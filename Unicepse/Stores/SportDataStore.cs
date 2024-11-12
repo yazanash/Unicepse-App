@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.Core.Models.Employee;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
@@ -17,7 +18,7 @@ namespace Unicepse.Stores
         public event Action<Sport>? Updated;
         public event Action<int>? Deleted;
         public event Action<Employee?>? TrainerChanged;
-        private readonly SportServices _sportDataService;
+        private readonly ISportDataService _sportDataService;
         private readonly List<Sport> _sports;
         private readonly List<Employee> _trainers;
 
@@ -28,7 +29,7 @@ namespace Unicepse.Stores
         public IEnumerable<Employee> Trainers => _trainers;
         string LogFlag = "[Sport] ";
         private readonly ILogger<SportDataStore> _logger;
-        public SportDataStore(SportServices sportDataService, ILogger<SportDataStore> logger)
+        public SportDataStore(ISportDataService sportDataService, ILogger<SportDataStore> logger)
         {
             _sportDataService = sportDataService;
             _sports = new List<Sport>();
