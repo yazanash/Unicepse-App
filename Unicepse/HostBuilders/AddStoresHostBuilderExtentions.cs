@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Models.Authentication;
 using Unicepse.navigation.Stores;
 using Unicepse.Stores;
 

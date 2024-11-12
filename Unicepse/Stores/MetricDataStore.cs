@@ -10,12 +10,13 @@ using Unicepse.Core.Common;
 using Unicepse.API.Services;
 using Unicepse.BackgroundServices;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
     public class MetricDataStore : IDataStore<Metric>
     {
-        private readonly MetricDataService _metricDataService;
+        private readonly IMetricDataService _metricDataService;
         private readonly MetricApiDataService _metricApiDataService;
         private readonly List<Metric> _metrics;
         string LogFlag = "[Metrics] ";
@@ -26,7 +27,7 @@ namespace Unicepse.Stores
         public event Action? Loaded;
         public event Action<Metric>? Updated;
         public event Action<int>? Deleted;
-        public MetricDataStore(MetricDataService metricDataService, MetricApiDataService metricApiDataService, ILogger<MetricDataStore> logger)
+        public MetricDataStore(IMetricDataService metricDataService, MetricApiDataService metricApiDataService, ILogger<MetricDataStore> logger)
         {
             _metricDataService = metricDataService;
             _metrics = new List<Metric>();

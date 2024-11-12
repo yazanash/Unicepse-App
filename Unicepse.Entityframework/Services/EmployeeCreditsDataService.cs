@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class EmployeeCreditsDataService : IDataService<Credit>
+    public class EmployeeCreditsDataService : ICreditDataService
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 

@@ -12,6 +12,7 @@ using Unicepse.API.Services;
 using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
@@ -24,18 +25,16 @@ namespace Unicepse.Stores
         public event Action? SumUpdated;
         string LogFlag = "[Payments] ";
         private readonly ILogger<PaymentDataStore> _logger;
-        public PaymentDataStore(PaymentDataService paymentDataService, DausesDataService dausesDataService, PaymentApiDataService paymentApiDataService, ILogger<PaymentDataStore> logger)
+        public PaymentDataStore(IPaymentDataService paymentDataService, PaymentApiDataService paymentApiDataService, ILogger<PaymentDataStore> logger)
         {
             _paymentDataService = paymentDataService;
             _payments = new List<PlayerPayment>();
-            _dausesDataService = dausesDataService;
             _paymentApiDataService = paymentApiDataService;
             _logger = logger;
         }
 
-        private readonly PaymentDataService _paymentDataService;
+        private readonly IPaymentDataService _paymentDataService;
         private readonly PaymentApiDataService _paymentApiDataService;
-        private readonly DausesDataService _dausesDataService;
         private readonly List<PlayerPayment> _payments;
         public IEnumerable<PlayerPayment> Payments => _payments;
 

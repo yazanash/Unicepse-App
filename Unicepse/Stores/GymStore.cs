@@ -10,13 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Unicepse.Core.Models.Subscription;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
     public class GymStore
     {
-        private readonly EmployeeDataService _employeeDataService;
-        private readonly EmployeeCreditsDataService _employeeCreditsDataService;
+        private readonly IEmployeeDataStore _employeeDataService;
+        private readonly ICreditDataService _employeeCreditsDataService;
         private readonly ExpensesDataService _expensesDataService;
         string LogFlag = "[Gym] ";
         private readonly DausesDataService _dausesDataService;
@@ -28,8 +29,8 @@ namespace Unicepse.Stores
         public event Action<double>? DailyPaymentsSumLoaded;
         public event Action<double>? DailySubscriptionsSumLoaded;
 
-        private readonly PaymentDataService _paymentDataService;
-        private readonly SubscriptionDataService _subscriptionDataService;
+        private readonly IPaymentDataService _paymentDataService;
+        private readonly ISubscriptionDataService _subscriptionDataService;
         private readonly List<PlayerPayment> _payments;
         public IEnumerable<PlayerPayment> Payments => _payments;
 
@@ -210,7 +211,7 @@ namespace Unicepse.Stores
             double sum = _employeeCredits.Sum(x => x.CreditValue);
             return sum;
         }
-        public GymStore(EmployeeDataService employeeDataService, ExpensesDataService expensesDataService, PaymentDataService paymentDataService, DausesDataService dausesDataService, EmployeeCreditsDataService employeeCreditsDataService, ILogger<GymStore> logger, SubscriptionDataService subscriptionDataService)
+        public GymStore(IEmployeeDataStore employeeDataService, ExpensesDataService expensesDataService, IPaymentDataService paymentDataService, DausesDataService dausesDataService, ICreditDataService employeeCreditsDataService, ILogger<GymStore> logger, ISubscriptionDataService subscriptionDataService)
         {
             _employeeDataService = employeeDataService;
             _expensesDataService = expensesDataService;

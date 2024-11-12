@@ -15,7 +15,7 @@ using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class PaymentDataService : IDataService<PlayerPayment>
+    public class PaymentDataService : IPaymentDataService
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 

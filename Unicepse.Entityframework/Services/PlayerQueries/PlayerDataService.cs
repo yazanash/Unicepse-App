@@ -14,7 +14,7 @@ using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services.PlayerQueries
 {
-    public class PlayerDataService: IDataService<Player>
+    public class PlayerDataService: IPlayerDataService
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 

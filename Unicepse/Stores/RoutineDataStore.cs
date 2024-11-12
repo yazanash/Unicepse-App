@@ -11,6 +11,7 @@ using Unicepse.API.Services;
 using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
@@ -23,7 +24,7 @@ namespace Unicepse.Stores
         public event Action<PlayerRoutine>? Updated;
         public event Action<int>? Deleted;
         public event Action<RoutineItems>? OrdersApplied;
-        private readonly PlayerRoutineDataService _playerRoutineDataService;
+        private readonly IRoutineDateService _playerRoutineDataService;
         private readonly RoutineApiDataService _routineApiDataService;
 
         string LogFlag = "[Routine] ";
@@ -50,7 +51,7 @@ namespace Unicepse.Stores
 
         public IEnumerable<RoutineItems> RoutineItems => _routineItems;
         public IEnumerable<DayGroupListItemViewModel> DaysItems => _daysItems;
-        public RoutineDataStore(PlayerRoutineDataService playerRoutineDataService, RoutineApiDataService routineApiDataService, ILogger<RoutineDataStore> logger)
+        public RoutineDataStore(IRoutineDateService playerRoutineDataService, RoutineApiDataService routineApiDataService, ILogger<RoutineDataStore> logger)
         {
             _playerRoutineDataService = playerRoutineDataService;
             _playerRoutines = new List<PlayerRoutine>();
