@@ -11,13 +11,15 @@ using Unicepse.API.Services;
 using Unicepse.BackgroundServices;
 using Microsoft.Extensions.Logging;
 using Unicepse.Core.Services;
+using Unicepse.Stores.ApiDataStores;
 
 namespace Unicepse.Stores
 {
     public class MetricDataStore : IDataStore<Metric>
     {
-        private readonly IMetricDataService _metricDataService;
-        private readonly MetricApiDataService _metricApiDataService;
+        private readonly IDataService<Metric> _metricDataService;
+        private readonly IApiDataStore<Metric> _apiDataStore;
+        private readonly IGetPlayerTransactionService<Metric> _getPlayerTransactionService;
         private readonly List<Metric> _metrics;
         string LogFlag = "[Metrics] ";
         private readonly ILogger<MetricDataStore> _logger;
@@ -27,12 +29,13 @@ namespace Unicepse.Stores
         public event Action? Loaded;
         public event Action<Metric>? Updated;
         public event Action<int>? Deleted;
-        public MetricDataStore(IMetricDataService metricDataService, MetricApiDataService metricApiDataService, ILogger<MetricDataStore> logger)
+        public MetricDataStore(IDataService<Metric> metricDataService, ILogger<MetricDataStore> logger, IGetPlayerTransactionService<Metric> getPlayerTransactionService, IApiDataStore<Metric> apiDataStore)
         {
             _metricDataService = metricDataService;
             _metrics = new List<Metric>();
-            _metricApiDataService = metricApiDataService;
             _logger = logger;
+            _getPlayerTransactionService = getPlayerTransactionService;
+            _apiDataStore = apiDataStore;
         }
         private Metric? _selectedMetric;
         public Metric? SelectedMetric
@@ -54,26 +57,7 @@ namespace Unicepse.Stores
             _logger.LogInformation(LogFlag + "add metrics");
             entity.DataStatus = DataStatus.ToCreate;
             await _metricDataService.Create(entity);
-         
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
-            if (internetAvailable)
-            {
-                try
-                {
-                    _logger.LogInformation(LogFlag + "add metrics to api");
-                    int status = await _metricApiDataService.Create(entity);
-                    if (status == 201 || status == 409)
-                    {
-                        _logger.LogInformation(LogFlag + "metrics synced successfully with code {0}", status.ToString());
-                        entity.DataStatus = DataStatus.Synced;
-                        await _metricDataService.UpdateDataStatus(entity);
-                    }
-                }
-                catch { }
-            }
-
-
+            await _apiDataStore.Create(entity);
             _metrics.Add(entity);
             Created?.Invoke(entity);
         }
@@ -98,7 +82,7 @@ namespace Unicepse.Stores
         public async Task GetAll(Player player)
         {
             _logger.LogInformation(LogFlag + "get all player metrics");
-            IEnumerable<Metric> metric = await _metricDataService.GetAll(player);
+            IEnumerable<Metric> metric = await _getPlayerTransactionService.GetAll(player);
             _metrics.Clear();
             _metrics.AddRange(metric);
             Loaded?.Invoke();
@@ -116,25 +100,8 @@ namespace Unicepse.Stores
                 entity.DataStatus = DataStatus.ToUpdate;
            
             await _metricDataService.Update(entity);
+            await _apiDataStore.Update(entity);
            
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
-            if (internetAvailable)
-            {
-                try
-                {
-
-                    _logger.LogInformation(LogFlag + "update metrics to api");
-                    int status = await _metricApiDataService.Update(entity);
-                    if (status == 200)
-                    {
-                        _logger.LogInformation(LogFlag + "metrics synced successfully with code {0}", status.ToString());
-                        entity.DataStatus = DataStatus.Synced;
-                        await _metricDataService.UpdateDataStatus(entity);
-                    }
-                }
-                catch { }
-            }
             int currentIndex = _metrics.FindIndex(y => y.Id == entity.Id);
 
             if (currentIndex != -1)
@@ -146,47 +113,6 @@ namespace Unicepse.Stores
                 _metrics.Add(entity);
             }
             Updated?.Invoke(entity);
-        }
-        public async Task SyncMetricsToCreate()
-        {
-            IEnumerable<Metric> metrics = await _metricDataService.GetByDataStatus(DataStatus.ToCreate);
-            foreach (Metric metric in metrics)
-            {
-                _logger.LogInformation(LogFlag + "create metrics to api");
-                int status = await _metricApiDataService.Create(metric);
-                if (status==201||status==409)
-                {
-                    _logger.LogInformation(LogFlag + "metrics synced successfully with code {0}" , status.ToString());
-                    metric.DataStatus = DataStatus.Synced;
-                    await _metricDataService.UpdateDataStatus(metric);
-                }
-                else
-                {
-                    _logger.LogWarning(LogFlag + "metrics synced failed with code {0}", status.ToString());
-                }
-
-            }
-        }
-
-        public async Task SyncMetricsToUpdate()
-        {
-            IEnumerable<Metric> metrics = await _metricDataService.GetByDataStatus(DataStatus.ToUpdate);
-            foreach (Metric metric in metrics)
-            {
-                _logger.LogInformation(LogFlag + "update metrics to api");
-                int status = await _metricApiDataService.Update(metric);
-                if (status==200)
-                {
-                    _logger.LogInformation(LogFlag + "metrics synced successfully with code {0}", status.ToString());
-                    metric.DataStatus = DataStatus.Synced;
-                    await _metricDataService.UpdateDataStatus(metric);
-                }
-                else
-                {
-                    _logger.LogWarning(LogFlag + "metrics synced failed with code {0}", status.ToString());
-                }
-
-            }
         }
     }
 }

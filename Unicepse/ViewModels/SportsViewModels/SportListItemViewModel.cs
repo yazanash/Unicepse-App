@@ -4,7 +4,6 @@ using Unicepse.Commands;
 using Unicepse.Commands.Sport;
 using Unicepse.Commands.Player;
 using Unicepse.navigation;
-//using PlatinumGymPro.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +13,7 @@ using System.Windows.Input;
 using Unicepse.Stores;
 using Unicepse.utlis.common;
 using Unicepse.navigation.Stores;
+using Unicepse.Stores.SportStores;
 
 namespace Unicepse.ViewModels.SportsViewModels
 {
@@ -24,7 +24,7 @@ namespace Unicepse.ViewModels.SportsViewModels
         private readonly EmployeeStore? _employeeStore;
         private readonly SportListViewModel? _sportListViewModel;
         private readonly NavigationStore? _navigationStore;
-        private SubscriptionDataStore? _subscriptionDataStore;
+        private SportSubscriptionDataStore? _subscriptionDataStore;
         public int Id => Sport.Id;
         public string? SportName => Sport.Name;
         public double Price => Sport.Price;
@@ -38,7 +38,7 @@ namespace Unicepse.ViewModels.SportsViewModels
         public ICommand? DeleteCommand { get; }
         public ICommand? SubscriptionsCommand { get; }
 
-        public SportListItemViewModel(Sport sport, SportDataStore sportStore, NavigationStore navigationStore, EmployeeStore employeeStore, SportListViewModel sportListViewModel, SubscriptionDataStore subscriptionDataStore)
+        public SportListItemViewModel(Sport sport, SportDataStore sportStore, NavigationStore navigationStore, EmployeeStore employeeStore, SportListViewModel sportListViewModel, SportSubscriptionDataStore subscriptionDataStore)
         {
             Sport = sport;
             _sportStore = sportStore;
@@ -57,7 +57,7 @@ namespace Unicepse.ViewModels.SportsViewModels
             Sport = sport;
         }
 
-        private SportSubscriptionsViewModel SupscrtionSportViewModel(SportDataStore sportStore, SubscriptionDataStore subscriptionDataStore)
+        private SportSubscriptionsViewModel SupscrtionSportViewModel(SportDataStore sportStore, SportSubscriptionDataStore subscriptionDataStore)
         {
             return SportSubscriptionsViewModel.LoadViewModel(sportStore, subscriptionDataStore);
         }

@@ -63,11 +63,14 @@ namespace Unicepse.Test.ApiDataService
             Subscription subscription = subscriptionFactory!.FakeSubscriptionWithRandom(sport,trainer);
             PlayerPayment expected_payment= paymentFactory!.FakePayments(subscription);
             //Act
-            int actual_payment = await paymentDataService!.Create(expected_payment);
+            PaymentDto paymentDto = new PaymentDto();
+            paymentDto.FromPayment(expected_payment);
+            int actual_payment = await paymentDataService!.Create(paymentDto);
             //Assert
             Assert.IsTrue(actual_payment==201);
-            PlayerPayment created_payment = await paymentDataService!.Get(expected_payment);
-            Assert.AreEqual(expected_payment.PaymentValue, created_payment.PaymentValue);
+            PaymentDto created_payment = await paymentDataService!.Get(paymentDto);
+            PlayerPayment pay = created_payment.ToPayment();
+            Assert.AreEqual(expected_payment.PaymentValue, pay.PaymentValue);
         }
 
         [Test]
@@ -80,16 +83,20 @@ namespace Unicepse.Test.ApiDataService
             Subscription subscription = subscriptionFactory!.FakeSubscriptionWithRandom(sport, trainer);
             PlayerPayment expected_payment = paymentFactory!.FakePayments(subscription);
             //Act
-            int actual_player = await paymentDataService!.Create(expected_payment);
+            PaymentDto paymentDto = new PaymentDto();
+            paymentDto.FromPayment(expected_payment);
+            int actual_player = await paymentDataService!.Create(paymentDto);
             //Assert
             Assert.IsTrue(actual_player==201);
             expected_payment.PaymentValue=180000;
-            int updated_subscription = await paymentDataService!.Update(expected_payment);
+            paymentDto.FromPayment(expected_payment);
+            int updated_subscription = await paymentDataService!.Update(paymentDto);
             //Assert
             Assert.IsTrue(updated_subscription==200);
 
-            PlayerPayment updated_payment_dto = await paymentDataService!.Get(expected_payment);
-            Assert.AreEqual(expected_payment.PaymentValue, updated_payment_dto.PaymentValue);
+            PaymentDto updated_payment_dto = await paymentDataService!.Get(paymentDto);
+            PlayerPayment pay = updated_payment_dto.ToPayment();
+            Assert.AreEqual(expected_payment.PaymentValue, pay.PaymentValue);
         }
     }
 }

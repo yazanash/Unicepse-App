@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class SportServices : ISportDataService
+    public class SportServices : IDataService<Sport>
     {
 
         private readonly PlatinumGymDbContextFactory _contextFactory;
@@ -76,22 +76,6 @@ namespace Unicepse.Entityframework.Services
             if (entity == null)
                 throw new NotExistException("هذه الرياضة غير موجودة");
             context.Set<Sport>().Remove(entity!);
-            await context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> DeleteConnectedTrainers(int id)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Sport? entity = await context.Set<Sport>().AsNoTracking().Include(x=>x.Trainers).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
-            if (entity == null)
-                throw new NotExistException("هذه الرياضة غير موجودة");
-            foreach(var trainer in entity.Trainers!)
-            {
-                context.Attach(trainer);
-                entity.Trainers!.Remove(trainer);
-            }
-           
-            context.Set<Sport>().Update(entity!);
             await context.SaveChangesAsync();
             return true;
         }

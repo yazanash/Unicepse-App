@@ -44,14 +44,7 @@ namespace Unicepse.Entityframework.Services
                 return CreatedResult.Entity;
             }
         }
-        public async Task<IEnumerable<DailyPlayerReport>> GetByDataStatus(DataStatus status)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Include(x => x.Player).Where(x => x.DataStatus == status).ToListAsync();
-                return entities;
-            }
-        }
+     
         public async Task<DailyPlayerReport> Update(DailyPlayerReport entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -117,17 +110,7 @@ namespace Unicepse.Entityframework.Services
             x.Date.Day == date.Day).Include(x=>x.Player).AsNoTracking().ToListAsync();
             return entities;
         }
-        public async Task<DailyPlayerReport> UpdateDataStatus(DailyPlayerReport entity)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            DailyPlayerReport existedPlayer = await Get(entity.Id);
-            if (existedPlayer == null)
-                throw new NotExistException("هذا السجل غير موجود");
-            context.Entry(entity).Property(e => e.DataStatus).IsModified = true;
-            await context.SaveChangesAsync();
-            return entity;
-
-        }
+       
         public async Task<IEnumerable<DailyPlayerReport>> GetPlayerLogging(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

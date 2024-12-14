@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-
+        <converters:NumberFormatConverter x:Key="convertNum"/>
 
 
     </UserControl.Resources>
@@ -72,9 +72,9 @@
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
                         <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
-                                    FlowDirection="RightToLeft" ItemsSource="{Binding SubscriptionList}" 
+                                    FlowDirection="RightToLeft" ItemsSource="{Binding PlayersList}" 
                                     CanUserReorderColumns="True"
-                                    SelectedItem="{Binding SelectedSubscription}"
+                                    SelectedItem="{Binding SelectedPlayer}"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
@@ -82,49 +82,57 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
-                                    Binding="{Binding Id}"
+                                    Binding="{Binding Order}"
                                     CanUserResize="False"/>
 
                                 <DataGridTemplateColumn Header="الاسم" Width="1.5*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <!--<Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
-                                                </Border>-->
-                                                <TextBlock Margin="10 0 0 0" Text="{Binding PlayerName}" VerticalAlignment="Center"/>
+                                                <Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
+                                                </Border>
+                                                <TextBlock Margin="10 0 0 0" Text="{Binding FullName}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="الرياضة" IsReadOnly="True"
-                                     Binding="{Binding SportName}"
+                                <DataGridTextColumn Header="تاريخ الميلاد" IsReadOnly="True"
+                                     Binding="{Binding BirthDate}"
                                     Width="auto"
                                     />
-                                <DataGridTextColumn Header="المدرب" IsReadOnly="True"
-                                     Binding="{Binding Trainer}"
+                                <DataGridTextColumn Header="الجنس" IsReadOnly="True"
+                                     Binding="{Binding Gendertext}"
                                     Width="auto"
                                     />
 
                                 <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding RollDate}"
+                                     Binding="{Binding SubscribeDate}"
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding EndDate}"
+                                     Binding="{Binding SubscribeEndDate}"
                                     Width="*"
                                     />
-                                <DataGridTextColumn Header="قيمة الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding PriceAfterOffer}"
+                                <DataGridTextColumn Header="الايام المتبقية" IsReadOnly="True"
+                                     Binding="{Binding DayLeft}"
                                     Width="auto"
                                     />
-                                <DataGridTextColumn Header="المدفوع" IsReadOnly="True"
-                                     Binding="{Binding PaidValue}"
-                                    Width="auto"
-                                    />
-                                <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">
+                                <DataGridTemplateColumn Header="رصيد الحساب" Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Margin="10 0 0 0" Foreground="{Binding BalanceColor,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Balance,Converter={StaticResource convertNum}}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn  Width="*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" x:Name="menu">
+                                                <Button ToolTip="فتح الصفحة الرئيسية" Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
+                                                    <Icon:PackIconMaterial Kind="Account"  Style="{StaticResource GridBtnIcon}"/>
+                                                </Button>
                                                 <Button Command="{Binding LogInCommand}"  Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Login"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>

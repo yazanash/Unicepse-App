@@ -14,6 +14,7 @@ using Unicepse.navigation;
 using Unicepse.Stores;
 using Unicepse.utlis.common;
 using Unicepse.navigation.Stores;
+using Unicepse.Stores.EmployeeStores;
 
 namespace Unicepse.ViewModels.Employee.TrainersViewModels
 {
@@ -26,8 +27,8 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         private readonly TrainersListViewModel? _trainersListViewModel;
         private readonly NavigationStore? _navigationStore;
         private readonly CreditsDataStore? _creditsDataStore;
-        private readonly SubscriptionDataStore? _subscriptionDataStore;
         private readonly LicenseDataStore? _licenseDataStore;
+        private readonly EmployeeSubscriptionDataStore? _employeeSubscriptionDataStore;
         public int Id => Trainer.Id;
         public string? FullName => Trainer.FullName;
         public double SalaryValue => Trainer.SalaryValue;
@@ -42,7 +43,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         public ICommand? OpenAccountCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public TrainerListItemViewModel(emp.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, DausesDataStore? dausesDataStore, CreditsDataStore? creditsDataStore, SubscriptionDataStore subscriptionDataStore, LicenseDataStore licenseDataStore)
+        public TrainerListItemViewModel(emp.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, DausesDataStore? dausesDataStore, CreditsDataStore? creditsDataStore, LicenseDataStore licenseDataStore, EmployeeSubscriptionDataStore? employeeSubscriptionDataStore)
         {
             Trainer = trainer;
             _employeeStore = employeeStore;
@@ -51,8 +52,9 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
             _dausesDataStore = dausesDataStore;
             _navigationStore = navigationStore;
             _creditsDataStore = creditsDataStore;
-            _subscriptionDataStore = subscriptionDataStore;
             _licenseDataStore = licenseDataStore;
+            _employeeSubscriptionDataStore = employeeSubscriptionDataStore;
+
             NavigationStore EmployeeAccountPageNavigation = new NavigationStore();
             if (trainer.IsTrainer)
                 EditCommand = new NavaigateCommand<EditTrainerViewModel>(new NavigationService<EditTrainerViewModel>(_navigationStore, () => CreateEditTrainerViewModel(navigationStore, _trainersListViewModel, _sportDataStore, _employeeStore)));
@@ -60,8 +62,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
                 EditCommand = new NavaigateCommand<EditEmployeeViewModel>(new NavigationService<EditEmployeeViewModel>(_navigationStore, () => new EditEmployeeViewModel(navigationStore, _trainersListViewModel, _employeeStore)));
             DeleteCommand = new DeleteEmployeeCommand(_employeeStore, new NavigationService<TrainersListViewModel>(_navigationStore, () => _trainersListViewModel));
 
-            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!, _sportDataStore, _trainersListViewModel, this, _subscriptionDataStore,_licenseDataStore)));
-           
+            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!, this, _licenseDataStore, _employeeSubscriptionDataStore!)));
         }
         public TrainerListItemViewModel(emp.Employee trainer)
         {

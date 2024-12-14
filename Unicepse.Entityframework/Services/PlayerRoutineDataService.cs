@@ -15,13 +15,15 @@ using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class PlayerRoutineDataService : IRoutineDateService
+    public class PlayerRoutineDataService : IDataService<PlayerRoutine>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
+        private readonly IRoutineItemsDataService _routineItemsDataService;
 
-        public PlayerRoutineDataService(PlatinumGymDbContextFactory contextFactory)
+        public PlayerRoutineDataService(PlatinumGymDbContextFactory contextFactory, IRoutineItemsDataService routineItemsDataService)
         {
             _contextFactory = contextFactory;
+            _routineItemsDataService = routineItemsDataService;
         }
         public async Task<PlayerRoutine> CheckIfRoutineExist(PlayerRoutine playerRoutine)
         {
@@ -64,15 +66,6 @@ namespace Unicepse.Entityframework.Services
             await context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> DeleteRoutineItems(int id)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            IEnumerable<RoutineItems>? entity = await context.Set<RoutineItems>().Where(x => x.PlayerRoutine!.Id == id).ToListAsync();
-
-            context.Set<RoutineItems>().RemoveRange(entity);
-            await context.SaveChangesAsync();
-            return true;
-        }
         public async Task<PlayerRoutine> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -90,30 +83,6 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
-        public async Task<IEnumerable<PlayerRoutine>> GetAllTemp()
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).AsNoTracking().Where(x => x.IsTemplate == true).ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<Exercises>> GetAllExercises()
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Exercises>? entities = await context.Set<Exercises>().AsNoTracking().ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<PlayerRoutine>> GetAll(Player player)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).Include(x => x.Player).Where(x => x.Player!.Id == player.Id).ToListAsync();
-                return entities;
-            }
-        }
         public async Task<PlayerRoutine> Update(PlayerRoutine entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -121,7 +90,7 @@ namespace Unicepse.Entityframework.Services
             if (existed_employee == null)
                 throw new NotExistException("هذا السجل غير موجود");
 
-            await DeleteRoutineItems(entity.Id);
+            await _routineItemsDataService.DeleteRoutineItems(entity.Id);
 
             foreach (var sc in entity.RoutineSchedule!)
             {
@@ -137,25 +106,6 @@ namespace Unicepse.Entityframework.Services
             await context.SaveChangesAsync();
             return entity;
         }
-        public async Task<PlayerRoutine> UpdateDataStatus(PlayerRoutine entity)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            PlayerRoutine? dataToSync = await context.PlayerRoutine!.FindAsync(entity.Id);
-            if (dataToSync == null)
-                throw new NotExistException("هذا السجل غير موجود");
-            dataToSync.DataStatus = entity.DataStatus;
-            context.Entry(dataToSync).Property(e => e.DataStatus).IsModified = true;
-            await context.SaveChangesAsync();
-            return entity;
-
-        }
-        public async Task<IEnumerable<PlayerRoutine>> GetByDataStatus(DataStatus status)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<PlayerRoutine>? entities = await context.Set<PlayerRoutine>().Include(x => x.Player).AsNoTracking().Include(x => x.RoutineSchedule).ThenInclude(x => x.Exercises).AsNoTracking().Where(x => x.DataStatus == status).ToListAsync();
-                return entities;
-            }
-        }
+       
     }
 }

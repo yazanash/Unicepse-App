@@ -14,7 +14,7 @@ using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services.PlayerQueries
 {
-    public class PlayerDataService: IPlayerDataService
+    public class PlayerDataService: IDataService<Player>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 
@@ -22,8 +22,6 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
         {
             _contextFactory = contextFactory;
         }
-
-
         public async Task<Player> Create(Player entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -34,7 +32,6 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
             await context.SaveChangesAsync();
             return CreatedResult.Entity;
         }
-
         public async Task<bool> Delete(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -59,28 +56,10 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
-            IEnumerable<Player>? entities = await context.Set<Player>().ToListAsync();
+            IEnumerable<Player>? entities = await context.Set<Player>().Where(x => x.IsSubscribed == true).ToListAsync();
             return entities;
 
         }
-        public async Task<IEnumerable<Player>> GetByStatus(bool status)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Player>? entities = await context.Set<Player>().Where(x => x.IsSubscribed == status).ToListAsync();
-                return entities;
-            }
-        }
-
-        public async Task<IEnumerable<Player>> GetByDataStatus(DataStatus status)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Player>? entities = await context.Set<Player>().Where(x => x.DataStatus== status).ToListAsync();
-                return entities;
-            }
-        }
-
         public async Task<Player> Update(Player entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -92,31 +71,12 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
             return entity;
 
         }
-        public async Task<Player> UpdateDataStatus(Player entity)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Player? dataToSync =await context.Players!.FindAsync(entity.Id);
-            if (dataToSync == null)
-                throw new PlayerNotExistException("هذا اللاعب غير موجود");
-
-            dataToSync.DataStatus = entity.DataStatus;
-            context.Entry(dataToSync).Property(e => e.DataStatus).IsModified = true;
-            await context.SaveChangesAsync();
-            return entity;
-
-        }
         public async Task<Player> CheckIfExistByName(string name)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
             Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.FullName == name);
             return entity!;
         }
-
-        public async Task<Player?> GetByUID(string uid)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.UID == uid);
-            return entity!;
-        }
+       
     }
 }

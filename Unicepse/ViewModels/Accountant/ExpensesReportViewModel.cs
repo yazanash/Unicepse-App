@@ -9,20 +9,21 @@ using System.Windows.Input;
 using Unicepse.ViewModels;
 using Unicepse.Stores;
 using Unicepse.navigation.Stores;
+using Unicepse.Stores.AccountantStores;
 
 namespace Unicepse.ViewModels.Accountant
 {
     public class ExpensesReportViewModel : ListingViewModelBase
     {
         private readonly ObservableCollection<ExpensesListItemViewModel> _expensesListItemViewModel;
-        private readonly ExpensesDataStore _expensesDataStore;
+        private readonly ExpensesAccountantDataStore _expensesDataStore;
         private readonly NavigationStore _navigationStore;
         public IEnumerable<ExpensesListItemViewModel> ExpensesList => _expensesListItemViewModel;
-        public ExpensesReportViewModel(ExpensesDataStore expensesDataStore, NavigationStore navigationStore)
+        public ExpensesReportViewModel(ExpensesAccountantDataStore expensesDataStore, NavigationStore navigationStore)
         {
             _expensesDataStore = expensesDataStore;
             _navigationStore = navigationStore;
-            _expensesDataStore.Loaded += _paymentDataStore_Loaded;
+            _expensesDataStore.ExpensesLoaded += _paymentDataStore_Loaded;
             _expensesListItemViewModel = new ObservableCollection<ExpensesListItemViewModel>();
             LoadExpenses = new LoadExpensesReportCommand(_expensesDataStore, this);
         }
@@ -34,7 +35,7 @@ namespace Unicepse.ViewModels.Accountant
             {
                 AddExpenses(expenses);
             }
-            Total = _expensesDataStore.GetSum();
+            Total = _expensesDataStore.Expenses.Sum(x=>x.Value);
         }
         private void AddExpenses(Core.Models.Expenses.Expenses expenses)
         {

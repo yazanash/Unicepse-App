@@ -19,6 +19,9 @@ using Unicepse.ViewModels.PlayersViewModels;
 using Unicepse.navigation.Stores;
 using Unicepse.navigation;
 using Microsoft.Extensions.Logging;
+using Unicepse.Stores.EmployeeStores;
+using Unicepse.Stores.SportStores;
+using Unicepse.Stores.RoutineStores;
 
 namespace Unicepse.HostBuilders
 {
@@ -68,7 +71,9 @@ namespace Unicepse.HostBuilders
                 services.GetRequiredService<PlayersAttendenceStore>(),
                 services.GetRequiredService<LicenseDataStore>(),
                 services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
-                services.GetRequiredService<ILogger<PlayerListViewModel>>()
+                services.GetRequiredService<ILogger<PlayerListViewModel>>(),
+                services.GetRequiredService<ExercisesDataStore>(),
+                services.GetRequiredService<RoutineTemplatesDataStore>()
                 );
         }
         private static SportListViewModel CreateSportListingViewModel(IServiceProvider services)
@@ -77,7 +82,7 @@ namespace Unicepse.HostBuilders
                 services.GetRequiredService<NavigationStore>(),
                 services.GetRequiredService<SportDataStore>(),
                 services.GetRequiredService<EmployeeStore>(),
-                services.GetRequiredService<SubscriptionDataStore>());
+                services.GetRequiredService<SportSubscriptionDataStore>());
         }
         private static TrainersListViewModel CreateEmployeeListingViewModel(IServiceProvider services)
         {
@@ -85,10 +90,10 @@ namespace Unicepse.HostBuilders
                 services.GetRequiredService<NavigationStore>(),
                 services.GetRequiredService<EmployeeStore>(),
                 services.GetRequiredService<SportDataStore>(),
-                services.GetRequiredService<SubscriptionDataStore>(),
                 services.GetRequiredService<DausesDataStore>(),
                 services.GetRequiredService<CreditsDataStore>(),
-                services.GetRequiredService<LicenseDataStore>());
+                services.GetRequiredService<LicenseDataStore>(),
+                services.GetRequiredService<EmployeeSubscriptionDataStore>());
         }
         private static UsersListViewModel CreateUserListingViewModel(IServiceProvider services)
         {
@@ -112,7 +117,9 @@ namespace Unicepse.HostBuilders
                 services.GetRequiredService<MetricDataStore>(),
                 services.GetRequiredService<RoutineDataStore>(),
                 services.GetRequiredService<LicenseDataStore>(),
-                services.GetRequiredService<NavigationService<PlayerListViewModel>>());
+                services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
+                services.GetRequiredService<ExercisesDataStore>(),
+                services.GetRequiredService<RoutineTemplatesDataStore>());
         }
     }
 }

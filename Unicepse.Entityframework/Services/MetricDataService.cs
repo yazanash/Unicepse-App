@@ -14,7 +14,7 @@ using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class MetricDataService : IMetricDataService
+    public class MetricDataService : IDataService<Metric>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
         public MetricDataService(PlatinumGymDbContextFactory contextFactory) 
@@ -62,35 +62,8 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
-        public async Task<IEnumerable<Metric>> GetAll(Player player)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Metric>? entities = await context.Set<Metric>().Where(x=>x.Player!.Id==player.Id).Include(x => x.Player)
-                    .ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<Metric>> GetByDataStatus(DataStatus status)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Metric>? entities = await context.Set<Metric>().Where(x => x.DataStatus == status).Include(x => x.Player).AsNoTracking().ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<Metric> UpdateDataStatus(Metric entity)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Metric? dataToSync =await context.Metrics!.FindAsync(entity.Id);
-            if (dataToSync == null)
-                throw new NotExistException("هذا السجل غير موجود");
-            dataToSync.DataStatus = entity.DataStatus;
-            context.Entry(dataToSync).Property(e => e.DataStatus).IsModified = true;
-            await context.SaveChangesAsync();
-            return entity;
-
-        }
+     
+       
         public async Task<Metric> Update(Metric entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

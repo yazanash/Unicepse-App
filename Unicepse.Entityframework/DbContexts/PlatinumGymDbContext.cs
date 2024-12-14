@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Unicepse.Core.Models;
+using Unicepse.Core.Models.SyncModel;
 
 namespace Unicepse.Entityframework.DbContexts
 {
@@ -49,6 +50,7 @@ namespace Unicepse.Entityframework.DbContexts
         public DbSet<License>? Licenses { get; set; }
         public DbSet<GymProfile>? GymProfile { get; set; }
         public DbSet<AuthenticationLog>? authenticationLogs { get; set; }
+        public DbSet<SyncObject>? SyncObjects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -114,6 +116,7 @@ namespace Unicepse.Entityframework.DbContexts
             base.OnModelCreating(modelBuilder);
         }
     }
+
     class SportConfiguration : IEntityTypeConfiguration<Sport>
     {
         public void Configure(EntityTypeBuilder<Sport> builder)

@@ -14,6 +14,7 @@ using Unicepse.Stores;
 using Unicepse.ViewModels;
 using Unicepse.navigation.Stores;
 using Unicepse.navigation;
+using Unicepse.Stores.RoutineStores;
 
 namespace Unicepse.ViewModels.RoutineViewModels
 {
@@ -27,6 +28,8 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private readonly PlayersDataStore _playersDataStore;
         private readonly NavigationStore _navigationStore;
         private readonly LicenseDataStore _licenseDataStore;
+        private readonly ExercisesDataStore _exercisesDataStore;
+        private readonly RoutineTemplatesDataStore _routineTemplatesDataStore;
         public IEnumerable<RoutinItemViewModel> RoutineList => _routineItemViewModels;
         public IEnumerable<RoutineExercisesItemsViewModel> SelectedRoutineItemsList => _selectedRoutineItemsViewModels;
         public IEnumerable<GroupMuscleListItemViewModel> MuscleGroup => _groupMuscleListItemViewModels;
@@ -60,12 +63,15 @@ namespace Unicepse.ViewModels.RoutineViewModels
 
             }
         }
-        public RoutinePlayerViewModels(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, LicenseDataStore licenseDataStore)
+        public RoutinePlayerViewModels(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, LicenseDataStore licenseDataStore, ExercisesDataStore exercisesDataStore, RoutineTemplatesDataStore routineTemplatesDataStore)
         {
             _routineDataStore = routineDataStore;
             _playersDataStore = playersDataStore;
-            _navigationStore = navigationStore; 
+            _navigationStore = navigationStore;
             _licenseDataStore = licenseDataStore;
+            _exercisesDataStore = exercisesDataStore;
+            _routineTemplatesDataStore = routineTemplatesDataStore;
+
             _groupMuscleListItemViewModels = new ObservableCollection<GroupMuscleListItemViewModel>();
             _routineItemViewModels = new ObservableCollection<RoutinItemViewModel>();
             _selectedRoutineItemsViewModels = new ObservableCollection<RoutineExercisesItemsViewModel>();
@@ -134,8 +140,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
                 Id = (int)EMuscleGroup.Chest
             }));
             SelectedMuscle = MuscleGroup.FirstOrDefault();
-            AddRoutineCommand = new NavaigateCommand<RoutineTemplatesViewModel>(new NavigationService<RoutineTemplatesViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, _navigationStore, this,_licenseDataStore)));
-           
+            AddRoutineCommand = new NavaigateCommand<RoutineTemplatesViewModel>(new NavigationService<RoutineTemplatesViewModel>(_navigationStore, () => LoadAddRoutineViewModel(_playersDataStore, _routineDataStore, _navigationStore, this, _licenseDataStore, _exercisesDataStore,_routineTemplatesDataStore)));
         }
 
         private void _routineDataStore_MuscleChanged(MuscleGroup? muscle)
@@ -157,9 +162,13 @@ namespace Unicepse.ViewModels.RoutineViewModels
             _selectedRoutineItemsViewModels.Add(routineExercisesItemsViewModel);
         }
 
-        private RoutineTemplatesViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore, NavigationStore navigationStore, RoutinePlayerViewModels routinePlayerViewModels,LicenseDataStore licenseDataStore)
+        private RoutineTemplatesViewModel LoadAddRoutineViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore, NavigationStore navigationStore,
+            RoutinePlayerViewModels routinePlayerViewModels,LicenseDataStore licenseDataStore,
+            ExercisesDataStore exercisesDataStore,RoutineTemplatesDataStore routineTemplatesDataStore)
         {
-            return RoutineTemplatesViewModel.LoadViewModel(routineDataStore, playerStore, navigationStore, routinePlayerViewModels,licenseDataStore);
+            return RoutineTemplatesViewModel.LoadViewModel(routineDataStore, playerStore, navigationStore,
+                routinePlayerViewModels,
+                licenseDataStore,exercisesDataStore, routineTemplatesDataStore);
         }
         //private AddRoutineViewModel AddRoutineIViewModel(PlayersDataStore playerStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore)
         //{
@@ -220,7 +229,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
 
         private void AddRoutine(PlayerRoutine routine)
         {
-            RoutinItemViewModel viewmodel = new(routine, _playersDataStore, _routineDataStore, _navigationStore, this,_licenseDataStore);
+            RoutinItemViewModel viewmodel = new(routine, _playersDataStore, _routineDataStore, _navigationStore, this,_licenseDataStore,_exercisesDataStore);
             _routineItemViewModels.Add(viewmodel);
         }
         public override void Dispose()
@@ -233,9 +242,9 @@ namespace Unicepse.ViewModels.RoutineViewModels
             _routineDataStore.MuscleChanged -= _routineDataStore_MuscleChanged;
             base.Dispose();
         }
-        public static RoutinePlayerViewModels LoadViewModel(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore,LicenseDataStore licenseDataStore)
+        public static RoutinePlayerViewModels LoadViewModel(RoutineDataStore routineDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore,LicenseDataStore licenseDataStore,ExercisesDataStore exercisesDataStore,RoutineTemplatesDataStore routineTemplatesDataStore)
         {
-            RoutinePlayerViewModels viewModel = new(routineDataStore, playersDataStore, navigationStore,licenseDataStore);
+            RoutinePlayerViewModels viewModel = new(routineDataStore, playersDataStore, navigationStore,licenseDataStore,exercisesDataStore, routineTemplatesDataStore);
 
             viewModel.LoadAllRoutines.Execute(null);
 

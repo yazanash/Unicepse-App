@@ -10,6 +10,8 @@ using Unicepse.API.Services;
 using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
+using Unicepse.Stores.ApiDataStores;
 
 namespace Unicepse.Stores
 {
@@ -22,17 +24,17 @@ namespace Unicepse.Stores
         private readonly ILogger<PlayersAttendenceStore> _logger;
         public event Action<DailyPlayerReport>? LoggedOut;
         private readonly Lazy<Task> _initializeLazy;
-        public PlayersAttendenceStore(PlayersAttendenceService playersAttendenceService, AttendanceApiDataService playersAttendenceApiService, ILogger<PlayersAttendenceStore> logger)
+        public PlayersAttendenceStore(PlayersAttendenceService playersAttendenceService, ILogger<PlayersAttendenceStore> logger, IApiDataStore<DailyPlayerReport> apiDataStore)
         {
             _playersAttendenceService = playersAttendenceService;
             _playersAttendence = new List<DailyPlayerReport>();
             _initializeLazy = new Lazy<Task>(Initialize);
-            _playersAttendenceApiService = playersAttendenceApiService;
             _logger = logger;
+            _apiDataStore = apiDataStore;
         }
 
         private readonly PlayersAttendenceService _playersAttendenceService;
-        private readonly AttendanceApiDataService _playersAttendenceApiService;
+        private readonly IApiDataStore<DailyPlayerReport> _apiDataStore;
         private readonly List<DailyPlayerReport> _playersAttendence;
         public IEnumerable<DailyPlayerReport> PlayersAttendence => _playersAttendence;
 
@@ -56,28 +58,7 @@ namespace Unicepse.Stores
             _logger.LogInformation(LogFlag + "login player");
             entity.DataStatus = DataStatus.ToCreate;
             await _playersAttendenceService.LogInPlayer(entity);
-
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
-            if (internetAvailable)
-            {
-                try
-                {
-                    _logger.LogInformation(LogFlag + "add attendance to api");
-                    int status = await _playersAttendenceApiService.Create(entity);
-                    if (status == 201 || status == 409)
-                    {
-                        _logger.LogInformation(LogFlag + "attendance synced successfully with code {0}", status.ToString());
-                        entity.DataStatus = DataStatus.Synced;
-                        await _playersAttendenceService.UpdateDataStatus(entity);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(LogFlag + "attendance synced failed with error {0}", ex.Message);
-                }
-
-            }
+            await _apiDataStore.Create(entity);
 
             _playersAttendence.Add(entity);
             LoggedIn?.Invoke(entity);
@@ -90,26 +71,7 @@ namespace Unicepse.Stores
                 entity.DataStatus = DataStatus.ToUpdate;
             bool loggedOut = await _playersAttendenceService.LogOutPlayer(entity);
 
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
-            if (internetAvailable)
-            {
-                try
-                {
-                    _logger.LogInformation(LogFlag + "update attendance to api");
-                    int status = await _playersAttendenceApiService.Update(entity);
-                    if (status == 200)
-                    {
-                        _logger.LogInformation(LogFlag + "attendance synced successfully with code {0}", status.ToString());
-                        entity.DataStatus = DataStatus.Synced;
-                        await _playersAttendenceService.UpdateDataStatus(entity);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(LogFlag + "attendance synced failed with error {0}", ex.Message);
-                }
-            }
+            
             int currentIndex = _playersAttendence.FindIndex(y => y.Id == entity.Id);
 
             if (currentIndex != -1)
@@ -164,49 +126,6 @@ namespace Unicepse.Stores
         {
             throw new NotImplementedException();
 
-        }
-        public async Task SyncAttendanceToCreate()
-        {
-            IEnumerable<DailyPlayerReport> attendances = await _playersAttendenceService.GetByDataStatus(DataStatus.ToCreate);
-            foreach (DailyPlayerReport attendance in attendances)
-            {
-                _logger.LogInformation(LogFlag + "create attendance to api");
-                int status = await _playersAttendenceApiService.Create(attendance);
-                if (status==201||status==409)
-                {
-                    _logger.LogInformation(LogFlag + "attendance synced successfully with code {0}", status.ToString());
-                    attendance.DataStatus = DataStatus.Synced;
-                    await _playersAttendenceService.UpdateDataStatus(attendance);
-                }
-                else
-                {
-                    _logger.LogWarning(LogFlag + "attendance synced failed with code {0}", status.ToString());
-                }
-
-
-            }
-        }
-
-        public async Task SyncAttendanceToUpdate()
-        {
-            IEnumerable<DailyPlayerReport> attendances = await _playersAttendenceService.GetByDataStatus(DataStatus.ToUpdate);
-            foreach (DailyPlayerReport attendance in attendances)
-            {
-                _logger.LogInformation(LogFlag + "update attendance to api");
-                int status = await _playersAttendenceApiService.Update(attendance);
-                if (status==200)
-                {
-                    _logger.LogInformation(LogFlag + "attendance synced successfully with code {0}", status.ToString());
-                    attendance.DataStatus = DataStatus.Synced;
-                    await _playersAttendenceService.UpdateDataStatus(attendance);
-                }
-                else
-                {
-                    _logger.LogWarning(LogFlag + "attendance synced failed with code {0}", status.ToString());
-                }
-
-
-            }
         }
 
     }

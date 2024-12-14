@@ -9,7 +9,7 @@ using Unicepse.Core.Services;
 
 namespace Unicepse.API.Services
 {
-    public class SubscriptionApiDataService : IApiDataService<Subscription>
+    public class SubscriptionApiDataService : IApiDataService<SubscriptionDto>
     {
         private readonly UnicepseApiPrepHttpClient _client;
 
@@ -18,25 +18,25 @@ namespace Unicepse.API.Services
             _client = client;
         }
 
-        public async Task<int> Create(Subscription entity)
+        public async Task<int> Create(SubscriptionDto entity)
         {
-            SubscriptionDto subscriptionDto = new SubscriptionDto();
-            subscriptionDto.FromSubscription(entity);
-            subscriptionDto.gym_id = _client.id;
-            return await _client.PostAsync("subscription", subscriptionDto);
+            //SubscriptionDto subscriptionDto = new SubscriptionDto();
+            //subscriptionDto.FromSubscription(entity);
+            entity.gym_id = _client.id;
+            return await _client.PostAsync("subscription", entity);
         }
 
-        public async Task<Subscription> Get(Subscription entity)
+        public async Task<SubscriptionDto> Get(SubscriptionDto entity)
         {
-            SubscriptionDto subscriptionDto = await _client.GetAsync<SubscriptionDto>($"subscription/{_client.id}/{entity.Player!.Id}/{entity.Id}");
-            return subscriptionDto.ToSubscription();
+            SubscriptionDto subscriptionDto = await _client.GetAsync<SubscriptionDto>($"subscription/{_client.id}/{entity.pid!}/{entity.id}");
+            return subscriptionDto;
         }
-        public async Task<int> Update(Subscription entity)
+        public async Task<int> Update(SubscriptionDto entity)
         {
-            SubscriptionDto subscriptionDto = new SubscriptionDto();
-            subscriptionDto.FromSubscription(entity);
-            subscriptionDto.gym_id = _client.id;
-            return await _client.PutAsync("subscription", subscriptionDto);
+            //SubscriptionDto subscriptionDto = new SubscriptionDto();
+            //subscriptionDto.FromSubscription(entity);
+            entity.gym_id = _client.id;
+            return await _client.PutAsync("subscription", entity);
         }
     }
 }

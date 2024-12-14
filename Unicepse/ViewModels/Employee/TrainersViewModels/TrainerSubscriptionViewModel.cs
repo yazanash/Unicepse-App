@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Unicepse.Stores;
 using Unicepse.ViewModels.SubscriptionViewModel;
 using Unicepse.ViewModels.SportsViewModels;
+using Unicepse.Stores.EmployeeStores;
 
 namespace Unicepse.ViewModels.Employee.TrainersViewModels
 {
@@ -19,11 +20,11 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
         private readonly ObservableCollection<SportListItemViewModel> _sportListItemViewModels;
 
         private readonly EmployeeStore _employeeStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly EmployeeSubscriptionDataStore _subscriptionDataStore;
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => _subscriptionListItemViewModels;
         public IEnumerable<SportListItemViewModel> SportList => _sportListItemViewModels;
         public SearchBoxViewModel SearchBox { get; set; }
-        public TrainerSubscriptionViewModel(EmployeeStore employeeStore, SubscriptionDataStore subscriptionDataStore)
+        public TrainerSubscriptionViewModel(EmployeeStore employeeStore, EmployeeSubscriptionDataStore subscriptionDataStore)
         {
             _employeeStore = employeeStore;
             _subscriptionDataStore = subscriptionDataStore;
@@ -132,7 +133,7 @@ namespace Unicepse.ViewModels.Employee.TrainersViewModels
             subscriptionListItemViewModel.Order = _subscriptionListItemViewModels.Count();
         }
         public ICommand LoadSubscriptionsForTrainer { get; }
-        public static TrainerSubscriptionViewModel LoadViewModel(EmployeeStore employeeStore, SubscriptionDataStore subscriptionDataStore)
+        public static TrainerSubscriptionViewModel LoadViewModel(EmployeeStore employeeStore, EmployeeSubscriptionDataStore subscriptionDataStore)
         {
             TrainerSubscriptionViewModel viewModel = new TrainerSubscriptionViewModel(employeeStore, subscriptionDataStore);
 

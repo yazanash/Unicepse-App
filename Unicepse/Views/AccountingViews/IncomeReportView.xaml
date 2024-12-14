@@ -106,7 +106,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
-                                    Binding="{Binding Id}"
+                                    Binding="{Binding Order,UpdateSourceTrigger=PropertyChanged}"
                                     CanUserResize="False"/>
 
                                 <DataGridTemplateColumn Header="اسم اللاعب" Width="*" IsReadOnly="True">

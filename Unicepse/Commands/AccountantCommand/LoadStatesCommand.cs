@@ -13,8 +13,8 @@ namespace Unicepse.Commands.AccountantCommand
     {
         private readonly AccountingStateViewModel _accountingStateViewModel;
         private readonly ExpensesDataStore _expensesDataStore;
-        private readonly GymStore _gymStore;
-        public LoadStatesCommand(AccountingStateViewModel accountingStateViewModel, ExpensesDataStore expensesDataStore, GymStore gymStore)
+        private readonly AccountantDailyStore _gymStore;
+        public LoadStatesCommand(AccountingStateViewModel accountingStateViewModel, ExpensesDataStore expensesDataStore, AccountantDailyStore gymStore)
         {
             _accountingStateViewModel = accountingStateViewModel;
             _expensesDataStore = expensesDataStore;

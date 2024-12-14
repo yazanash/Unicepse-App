@@ -4,29 +4,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Core.Common;
+using Unicepse.Core.Models.DailyActivity;
+using Unicepse.Core.Models.Metric;
+using Unicepse.Core.Models.Payment;
+using Unicepse.Core.Models.Player;
+using Unicepse.Core.Models.Subscription;
+using Unicepse.Core.Models.SyncModel;
+using Unicepse.Core.Models.TrainingProgram;
+using Unicepse.Stores.ApiDataStores;
 
 namespace Unicepse.Stores
 {
     public class BackgroundServiceStore
     {
-        private readonly PlayersDataStore _playersDataStore;
-        private readonly SubscriptionDataStore  _subscriptionDataStore;
-        private readonly PaymentDataStore _paymentDataStore;
-        private readonly MetricDataStore _metricDataStore;
-        private readonly RoutineDataStore _routineDataStore;
-        private readonly PlayersAttendenceStore _playersAttendenceStore;
+        private readonly IApiDataStore<Player> _playersApiDataStore;
+        private readonly IApiDataStore<Subscription> _subscriptionApiDataStore;
+        private readonly IApiDataStore<PlayerPayment> _paymentApiDataStore;
+        private readonly IDeleteApiDataStore<PlayerPayment> _deletePaymentApiDataStore;
+
+        private readonly IApiDataStore<Metric> _metricApiDataStore;
+        private readonly IApiDataStore<PlayerRoutine> _routineApiDataStore;
+        private readonly IApiDataStore<DailyPlayerReport> _AttendenceApiDataStore;
         private readonly ILogger<BackgroundServiceStore> _logger;
+        private readonly SyncStore _syncStore;
         string LogFlag = "[Background] ";
-        public BackgroundServiceStore(PlayersDataStore playersDataStore, SubscriptionDataStore subscriptionDataStore,
-            PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, ILogger<BackgroundServiceStore> logger)
+        public BackgroundServiceStore(IApiDataStore<Player> playersApiDataStore, IApiDataStore<Subscription> subscriptionApiDataStore,
+            IApiDataStore<PlayerPayment> paymentApiDataStore, IApiDataStore<Metric> metricApiDataStore, IApiDataStore<PlayerRoutine> routineApiDataStore,
+            IApiDataStore<DailyPlayerReport> AttendenceApiDataStore, ILogger<BackgroundServiceStore> logger, IDeleteApiDataStore<PlayerPayment> deletePaymentApiDataStore, SyncStore syncStore)
         {
-            _playersDataStore = playersDataStore;
-            _subscriptionDataStore = subscriptionDataStore;
-            _paymentDataStore = paymentDataStore;
-            _metricDataStore = metricDataStore;
-            _routineDataStore = routineDataStore;
-            _playersAttendenceStore = playersAttendenceStore;
+            _playersApiDataStore = playersApiDataStore;
+            _subscriptionApiDataStore = subscriptionApiDataStore;
+            _paymentApiDataStore = paymentApiDataStore;
+            _metricApiDataStore = metricApiDataStore;
+            _routineApiDataStore = routineApiDataStore;
+            _AttendenceApiDataStore = AttendenceApiDataStore;
             _logger = logger;
+            _deletePaymentApiDataStore = deletePaymentApiDataStore;
+            _syncStore = syncStore;
         }
         private string? _backMessage;
         public string? BackMessage
@@ -67,50 +82,33 @@ namespace Unicepse.Stores
             SyncStateProp = connectionStatus;
             SyncStatus?.Invoke(connectionStatus,message);
         }
-        public async Task SyncPlayers()
+        public async Task Sync()
         {
-            _logger.LogInformation(LogFlag+"sync players creation started");
-            await _playersDataStore.SyncPlayersToCreate();
-            _logger.LogInformation(LogFlag + "sync players updates started");
-            await _playersDataStore.SyncPlayersToUpdate();
-        }
-        public async Task SyncSubscribtions()
-        {
-            _logger.LogInformation(LogFlag + "sync subscriptions creation started");
-            await _subscriptionDataStore.SyncSubscriptionsToCreate();
-            _logger.LogInformation(LogFlag + "sync subscriptions updates started");
-            await _subscriptionDataStore.SyncSubscriptionsToUpdate();
-        }
-
-        public async Task SyncPayments()
-        {
-            _logger.LogInformation(LogFlag + "sync payments creation started");
-            await _paymentDataStore.SyncPaymentsToCreate();
-            _logger.LogInformation(LogFlag + "sync payments updates started");
-            await _paymentDataStore.SyncPaymentsToUpdate();
-            _logger.LogInformation(LogFlag + "sync payments deletion started");
-            await _paymentDataStore.SyncPaymentsToDelete();
-        }
-        public async Task SyncMetrics()
-        {
-            _logger.LogInformation(LogFlag + "sync metrics creation started");
-            await _metricDataStore.SyncMetricsToCreate();
-            _logger.LogInformation(LogFlag + "sync metrics updates started");
-            await _metricDataStore.SyncMetricsToUpdate();
-        }
-        public async Task SyncRoutines()
-        {
-            _logger.LogInformation(LogFlag + "sync routines creation started");
-            await _routineDataStore.SyncRoutineToCreate();
-            _logger.LogInformation(LogFlag + "sync routines updates started");
-            await _routineDataStore.SyncRoutineToUpdate();
-        }
-        public async Task SyncAttendances()
-        {
-            _logger.LogInformation(LogFlag + "sync attendances creation started");
-            await _playersAttendenceStore.SyncAttendanceToCreate();
-            _logger.LogInformation(LogFlag + "sync attendances updates started");
-            await _playersAttendenceStore.SyncAttendanceToUpdate();
+            IEnumerable<SyncObject> syncObjects = await _syncStore.GetAll();
+            foreach(SyncObject syncObject in syncObjects)
+            {
+                switch (syncObject.EntityType)
+                {
+                    case DataType.Player:
+                        await _playersApiDataStore.Sync(syncObject);
+                        break;
+                    case DataType.Subscription:
+                        await _subscriptionApiDataStore.Sync(syncObject);
+                        break;
+                    case DataType.Payment:
+                        await _paymentApiDataStore.Sync(syncObject);
+                        break;
+                    case DataType.Metric:
+                        await _metricApiDataStore.Sync(syncObject);
+                        break;
+                    case DataType.Routine:
+                        await _routineApiDataStore.Sync(syncObject);
+                        break;
+                    case DataType.Attendance:
+                        await _AttendenceApiDataStore.Sync(syncObject);
+                        break;
+                }
+            }
         }
     }
 }

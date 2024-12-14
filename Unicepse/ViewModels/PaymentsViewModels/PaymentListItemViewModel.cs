@@ -38,6 +38,9 @@ namespace Unicepse.ViewModels.PaymentsViewModels
         public string? Description => payment.Des;
         public double Value => payment.PaymentValue;
         public string? Date => payment.PayDate.ToShortDateString();
+        public bool IsEdited => payment.CreatedAt != payment.UpdatedAt;
+        public string? CreatedDate => payment.CreatedAt.ToString("yyyy-M-dd hh:mm:ss");
+        public string? EditedDate => payment.UpdatedAt.ToString("yyyy-M-dd hh:mm:ss");
         public PaymentListItemViewModel(PlayerPayment payment, PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore, PaymentListViewModel paymentListViewModel)
         {
             this.payment = payment;

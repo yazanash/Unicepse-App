@@ -9,7 +9,7 @@ using Unicepse.Core.Services;
 
 namespace Unicepse.API.Services
 {
-    public class MetricApiDataService : IApiDataService<Metric>
+    public class MetricApiDataService : IApiDataService<MetricDto>
     {
         private readonly UnicepseApiPrepHttpClient _client;
 
@@ -18,26 +18,26 @@ namespace Unicepse.API.Services
             _client = client;
         }
 
-        public async Task<int> Create(Metric entity)
+        public async Task<int> Create(MetricDto entity)
         {
-            MetricDto metricDto = new MetricDto();
-            metricDto.FromMetric(entity);
-            metricDto.gym_id = _client.id;
-            return await _client.PostAsync("metrics", metricDto);
+            //MetricDto metricDto = new MetricDto();
+            //metricDto.FromMetric(entity);
+            entity.gym_id = _client.id;
+            return await _client.PostAsync("metrics", entity);
         }
 
-        public async Task<Metric> Get(Metric entity)
+        public async Task<MetricDto> Get(MetricDto entity)
         {
-            MetricDto metricDto = await _client.GetAsync<MetricDto>($"metrics/{_client.id}/{entity.Player!.Id}/{entity.Id}");
-            return metricDto.ToMetric();
+            MetricDto metricDto = await _client.GetAsync<MetricDto>($"metrics/{_client.id}/{entity.pid}/{entity.id}");
+            return metricDto;
         }
 
-        public async Task<int> Update(Metric entity)
+        public async Task<int> Update(MetricDto entity)
         {
-            MetricDto metricDto = new MetricDto();
-            metricDto.FromMetric(entity);
-            metricDto.gym_id = _client.id;
-            return await _client.PutAsync("metrics", metricDto);
+            //MetricDto metricDto = new MetricDto();
+            //metricDto.FromMetric(entity);
+            entity.gym_id = _client.id;
+            return await _client.PutAsync("metrics", entity);
         }
     }
 }

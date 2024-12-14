@@ -81,7 +81,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
             _playerMainPageViewModel = playerMainPageViewModel;
             EditCommand = new NavaigateCommand<EditSubscriptionViewModel>(new NavigationService<EditSubscriptionViewModel>(_navigationStore, () => EditSubscription(_sportDataStore, _navigationStore, _subscriptionDataStore, _playersDataStore, _playerMainPageViewModel)));
             StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _playerMainPageViewModel)));
-            MoveToNewTrainerCommand = new NavaigateCommand<MoveToNewTrainerViewModel>(new NavigationService<MoveToNewTrainerViewModel>(_navigationStore, () => new MoveToNewTrainerViewModel(_navigationStore, _subscriptionDataStore, _playerMainPageViewModel)));
+            //MoveToNewTrainerCommand = new NavaigateCommand<MoveToNewTrainerViewModel>(new NavigationService<MoveToNewTrainerViewModel>(_navigationStore, () => new MoveToNewTrainerViewModel(_navigationStore, _subscriptionDataStore, _playerMainPageViewModel)));
             string filename = _playersDataStore.SelectedPlayer!.FullName + "_" + RollDate + "_" + SportName;
             PrintCommand = new PrintCommand(new PrintWindowViewModel(new SubscriptionPrintViewModel(Subscription,_licenseDataStore), new NavigationStore()), filename);
             
@@ -92,17 +92,7 @@ namespace Unicepse.ViewModels.SubscriptionViewModel
         }
         public ICommand? LogInCommand { get; }
 
-        private readonly PlayersAttendenceStore? _playersAttendenceStore;
-        private readonly HomeViewModel? _homeViewModel;
-        public SubscriptionListItemViewModel(Subscription subscription, SubscriptionDataStore subscriptionDataStore, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, HomeViewModel homeViewModel)
-        {
-            Subscription = subscription;
-            _subscriptionDataStore = subscriptionDataStore;
-            _playersAttendenceStore = playersAttendenceStore;
-            _navigationStore = navigationStore;
-            _homeViewModel = homeViewModel;
-            LogInCommand = new LoginPlayerCommand(_playersAttendenceStore, _subscriptionDataStore, new NavigationService<HomeViewModel>(_navigationStore, () => _homeViewModel));
-        }
+      
         public void Update(Subscription subscription)
         {
             Subscription = subscription;

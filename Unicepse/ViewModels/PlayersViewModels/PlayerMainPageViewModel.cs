@@ -174,6 +174,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             SubscriptionListItemViewModel itemViewModel =
                 new SubscriptionListItemViewModel(subscription, _navigatorStore, _subscriptionStore, _sportDataStore, _playersDataStore, this, _paymentStore,_licenseDataStore);
             subscriptionListItemViewModels.Add(itemViewModel);
+            itemViewModel.Order = subscriptionListItemViewModels.Count();
         }
 
         public static PlayerMainPageViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore,LicenseDataStore licenseDataStore)

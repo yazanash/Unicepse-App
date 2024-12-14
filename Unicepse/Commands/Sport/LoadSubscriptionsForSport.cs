@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unicepse.Stores;
+using Unicepse.Stores.SportStores;
 
 namespace Unicepse.Commands.Sport
 {
     public class LoadSubscriptionsForSport : AsyncCommandBase
     {
         private readonly SportDataStore  _sportDataStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly SportSubscriptionDataStore _subscriptionDataStore;
 
-        public LoadSubscriptionsForSport(SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore)
+        public LoadSubscriptionsForSport(SportDataStore sportDataStore, SportSubscriptionDataStore subscriptionDataStore)
         {
             _sportDataStore = sportDataStore;
             _subscriptionDataStore = subscriptionDataStore;

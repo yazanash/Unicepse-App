@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Unicepse.Commands.Sport;
 using Unicepse.Core.Models.Subscription;
 using Unicepse.Stores;
+using Unicepse.Stores.SportStores;
 using Unicepse.ViewModels.SubscriptionViewModel;
 
 namespace Unicepse.ViewModels.SportsViewModels
@@ -17,12 +18,12 @@ namespace Unicepse.ViewModels.SportsViewModels
         private readonly ObservableCollection<SubscriptionListItemViewModel> _subscriptionListItemViewModels;
         private readonly ObservableCollection<TrainersListItemViewModel> _trainersListItemViewModels;
         private readonly SportDataStore _sportDataStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly SportSubscriptionDataStore _subscriptionDataStore;
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => _subscriptionListItemViewModels;
         public IEnumerable<TrainersListItemViewModel> TrainersList => _trainersListItemViewModels;
         public SearchBoxViewModel SearchBox { get; set; }
 
-        public SportSubscriptionsViewModel(SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore)
+        public SportSubscriptionsViewModel(SportDataStore sportDataStore, SportSubscriptionDataStore subscriptionDataStore)
         {
             _sportDataStore = sportDataStore;
             _subscriptionDataStore = subscriptionDataStore;
@@ -114,7 +115,7 @@ namespace Unicepse.ViewModels.SportsViewModels
             subscriptionListItemViewModel.Order = _subscriptionListItemViewModels.Count();
         }
         public ICommand LoadSubscriptionsForSport { get; }
-        public static SportSubscriptionsViewModel LoadViewModel(SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore)
+        public static SportSubscriptionsViewModel LoadViewModel(SportDataStore sportDataStore, SportSubscriptionDataStore subscriptionDataStore)
         {
             SportSubscriptionsViewModel viewModel = new SportSubscriptionsViewModel(sportDataStore, subscriptionDataStore);
 

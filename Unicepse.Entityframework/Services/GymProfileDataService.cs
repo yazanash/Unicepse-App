@@ -12,13 +12,14 @@ using Unicepse.Entityframework.DbContexts;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class GymProfileDataService : IGymProfileDataService
+    public class GymProfileDataService : IDataService<GymProfile>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
-
-        public GymProfileDataService(PlatinumGymDbContextFactory contextFactory)
+        private readonly IPublicIdService<GymProfile> _publicIdService;
+        public GymProfileDataService(PlatinumGymDbContextFactory contextFactory, IPublicIdService<GymProfile> publicIdService)
         {
             _contextFactory = contextFactory;
+            _publicIdService = publicIdService;
         }
         public async Task<GymProfile> Create(GymProfile entity)
         {
@@ -48,19 +49,6 @@ namespace Unicepse.Entityframework.Services
                 throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
-        public async Task<GymProfile?> GetByGymID(string id)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            GymProfile? entity = await context.Set<GymProfile>().FirstOrDefaultAsync((e) => e.GymId == id);
-            
-            return entity;
-        }
-        public async Task<GymProfile?> Get()
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            GymProfile? entity = await context.Set<GymProfile>().FirstOrDefaultAsync();
-            return entity;
-        }
         public async Task<IEnumerable<GymProfile>> GetAll()
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -72,7 +60,7 @@ namespace Unicepse.Entityframework.Services
         public async Task<GymProfile> Update(GymProfile entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            GymProfile? entityToUpdate = await GetByGymID(entity.GymId!);
+            GymProfile? entityToUpdate = await _publicIdService.GetByUID(entity.GymId!);
             if (entityToUpdate == null)
                 throw new NotExistException("هذا السجل غير موجود");
             entity.Id=entityToUpdate.Id;

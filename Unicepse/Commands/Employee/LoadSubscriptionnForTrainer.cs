@@ -5,15 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.Commands;
 using Unicepse.Stores;
+using Unicepse.Stores.EmployeeStores;
 
 namespace Unicepse.Commands.Employee
 {
     public class LoadSubscriptionnForTrainer : AsyncCommandBase
     {
         private readonly EmployeeStore _employeeStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly EmployeeSubscriptionDataStore _subscriptionDataStore;
 
-        public LoadSubscriptionnForTrainer(EmployeeStore employeeStore, SubscriptionDataStore subscriptionDataStore)
+        public LoadSubscriptionnForTrainer(EmployeeStore employeeStore, EmployeeSubscriptionDataStore subscriptionDataStore)
         {
             _employeeStore = employeeStore;
             _subscriptionDataStore = subscriptionDataStore;

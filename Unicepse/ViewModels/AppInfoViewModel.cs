@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,7 +20,7 @@ namespace Unicepse.ViewModels
     {
         private readonly LicenseDataStore _licenseDataStore;
         private readonly ObservableCollection<LicensesListItemViewModel> _licensesListItemViewModels;
-
+        private static readonly string currentVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
         public IEnumerable<LicensesListItemViewModel> Licenses => _licensesListItemViewModels;
         public AppInfoViewModel(LicenseDataStore licenseDataStore)
         {
@@ -28,7 +29,7 @@ namespace Unicepse.ViewModels
             _licenseDataStore.Loaded += _licenseDataStore_Loaded;
 
             LoadLicensesCommand = new LoadLicensesCommand(_licenseDataStore, this);
-
+            Version = currentVersion;
             if (_licenseDataStore.CurrentGymProfile != null)
             {
                 GymName = _licenseDataStore.CurrentGymProfile!.GymName;
@@ -45,7 +46,7 @@ namespace Unicepse.ViewModels
                     GymLogo = bitmap;
                 }
                 catch
-                {
+                { 
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
@@ -70,6 +71,12 @@ namespace Unicepse.ViewModels
         {
             LicensesListItemViewModel licensesListItem = new LicensesListItemViewModel(license);
             _licensesListItemViewModels.Add(licensesListItem);
+        }
+        private string? _version;
+        public string? Version
+        {
+            get { return _version; }
+            set { _version = value; OnPropertyChanged(nameof(Version)); }
         }
         private string? _gymName;
         public string? GymName

@@ -61,16 +61,27 @@ namespace Unicepse.Stores
 
         public IEnumerable<License> Licenses => _licenses;
         private readonly LicenseApiDataService _licenseApiDataService;
-        private readonly ILicenseDataService _licenseDataService;
-        private readonly IGymProfileDataService _gymProfileDataService;
-        public LicenseDataStore(LicenseApiDataService licenseApiDataService, ILicenseDataService licenseDataService, IGymProfileDataService gymProfileDataService, ILogger<LicenseDataStore> logger)
+        private readonly IDataService<License> _licenseDataService;
+        private readonly IDataService<GymProfile> _gymProfileDataService;
+
+        private readonly IGetSingleLatestService<License> _licenseGetSingleLatestService;
+        private readonly IGetSingleLatestService<GymProfile> _gymProfileGetSingleLatestService;
+
+        private readonly IPublicIdService<License> _licensePublicIdService;
+        private readonly IPublicIdService<GymProfile> _gymProfilePublicIdService;
+        public LicenseDataStore(LicenseApiDataService licenseApiDataService, IDataService<License> licenseDataService, IDataService<GymProfile> gymProfileDataService, ILogger<LicenseDataStore> logger, IGetSingleLatestService<License> licenseGetSingleLatestService, IGetSingleLatestService<GymProfile> gymProfileGetSingleLatestService, IPublicIdService<License> licensePublicIdService, IPublicIdService<GymProfile> gymProfilePublicIdService)
         {
+            _licenseGetSingleLatestService = licenseGetSingleLatestService;
+            _gymProfileGetSingleLatestService = gymProfileGetSingleLatestService;
+            _licensePublicIdService = licensePublicIdService;
+            _gymProfilePublicIdService = gymProfilePublicIdService;
             _licenseApiDataService = licenseApiDataService;
             _licenseDataService = licenseDataService;
             _gymProfileDataService = gymProfileDataService;
             _licenses = new List<License>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
+          
         }
 
 
@@ -86,18 +97,18 @@ namespace Unicepse.Stores
             _licenses.Clear();
             _licenses.AddRange(licenses);
         }
-        public async void ActiveLicense()
+        public void ActiveLicense()
         {
             _logger.LogInformation(LogFlag + "activated license");
-            _currentLicense = _licenseDataService.ActiveLicenses();
-            _currentGymProfile = await _gymProfileDataService.Get();
+            _currentLicense =  _licenseGetSingleLatestService.Get();
+            _currentGymProfile =  _gymProfileGetSingleLatestService.Get();
         }
         public async Task GetGymProfile(License license)
         {
             _logger.LogInformation(LogFlag + "get gym profile");
             GymProfile gymProfile = await _licenseApiDataService.GetGymProfile(license.GymId!);
             _logger.LogInformation(LogFlag + "check gym profile if exists");
-            GymProfile? ExistGymProfile = await _gymProfileDataService.GetByGymID(gymProfile.GymId!);
+            GymProfile? ExistGymProfile = await _gymProfilePublicIdService.GetByUID(gymProfile.GymId!);
             if (ExistGymProfile != null)
             {
                 _logger.LogInformation(LogFlag + "update gym profile");
@@ -125,7 +136,7 @@ namespace Unicepse.Stores
                     throw new Exception("لا يتطابق هذا الترخيص من هذا النادي");
                 }
                 License created_license;
-                License exist_license = await _licenseDataService.GetById(license.LicenseId!);
+                License? exist_license = await _licensePublicIdService.GetByUID(license.LicenseId!);
                 if (exist_license != null)
                 {
                     _logger.LogInformation(LogFlag + "update license info");
@@ -157,7 +168,7 @@ namespace Unicepse.Stores
                     if (license != null)
                     {
                         _logger.LogInformation(LogFlag + "get license from local");
-                        License exist_license = await _licenseDataService.GetById(_currentLicense.LicenseId!);
+                        License? exist_license = await _licensePublicIdService.GetByUID(_currentLicense.LicenseId!);
                         if (exist_license != null)
                         {
                             _logger.LogInformation(LogFlag + "update license info");

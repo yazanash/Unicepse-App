@@ -140,7 +140,7 @@
                                     <TextBlock  Text="معلومات الاصدار"  FontSize="18" Foreground="{StaticResource colors.primary}" />
                                     <StackPanel  Orientation="Horizontal">
                                         <TextBlock Text="الاصدار الحالي : " FontWeight="Bold" FontSize="14" />
-                                        <TextBlock Text="1.0.0" FontSize="14" />
+                                        <TextBlock Text="{Binding Version,UpdateSourceTrigger=PropertyChanged}" FontSize="14" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="تاريخ الاصدار : " FontWeight="Bold" FontSize="14" />

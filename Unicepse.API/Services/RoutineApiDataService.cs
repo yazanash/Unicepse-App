@@ -9,7 +9,7 @@ using Unicepse.Core.Services;
 
 namespace Unicepse.API.Services
 {
-    public class RoutineApiDataService : IApiDataService<PlayerRoutine>
+    public class RoutineApiDataService : IApiDataService<RoutineDto>
     {
         private readonly UnicepseApiPrepHttpClient _client;
 
@@ -18,26 +18,26 @@ namespace Unicepse.API.Services
             _client = client;
         }
 
-        public async Task<int> Create(PlayerRoutine entity)
+        public async Task<int> Create(RoutineDto entity)
         {
-            RoutineDto routineDto = new RoutineDto();
-            routineDto.FromRoutine(entity);
-            routineDto.gym_id = _client.id;
-            return await _client.PostAsync("routines", routineDto);
+            //RoutineDto routineDto = new RoutineDto();
+            //routineDto.FromRoutine(entity);
+            entity.gym_id = _client.id;
+            return await _client.PostAsync("routines", entity);
         }
 
-        public async Task<PlayerRoutine> Get(PlayerRoutine entity)
+        public async Task<RoutineDto> Get(RoutineDto entity)
         {
-            RoutineDto routineDto = await _client.GetAsync<RoutineDto>($"routines/{_client.id}/{entity.Player!.Id}/{entity.Id}");
-            return routineDto.ToRoutine();
+            RoutineDto routineDto = await _client.GetAsync<RoutineDto>($"routines/{_client.id}/{entity.pid}/{entity.rid}");
+            return routineDto;
         }
 
-        public async Task<int> Update(PlayerRoutine entity)
+        public async Task<int> Update(RoutineDto entity)
         {
-            RoutineDto routineDto = new RoutineDto();
-            routineDto.FromRoutine(entity);
-            routineDto.gym_id = _client.id;
-            return await _client.PutAsync("routines", routineDto);
+            //RoutineDto routineDto = new RoutineDto();
+            //routineDto.FromRoutine(entity);
+            entity.gym_id = _client.id;
+            return await _client.PutAsync("routines", entity);
         }
     }
 }

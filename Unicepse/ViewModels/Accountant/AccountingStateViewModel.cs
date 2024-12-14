@@ -14,6 +14,7 @@ using Unicepse.navigation.Stores;
 using Unicepse.Commands.Player;
 using Unicepse.navigation;
 using Unicepse.utlis.common;
+using Unicepse.Stores.AccountantStores;
 
 namespace Unicepse.ViewModels.Accountant
 {
@@ -21,7 +22,11 @@ namespace Unicepse.ViewModels.Accountant
     {
         private readonly NavigationStore _navigationStore;
         private readonly ExpensesDataStore _expensesStore;
-        private readonly GymStore _gymStore;
+        private readonly AccountantDailyStore _gymStore;
+        private readonly PaymentsDailyAccountantStore _paymentsDailyAccountantStore;
+        private readonly ExpansesDailyAccountantDataStore _expansesDailyAccountantDataStore;
+        private readonly SubscriptionDailyAccountantDataStore _subscriptionDailyAccountantDataStore;
+        private readonly CreditsDailyAccountantStore _creditsDailyAccountantStore;
         private int ViewNum = 0;
         public ViewModelBase? CurrentViewModel => _navigationStore.CurrentViewModel;
         public ICommand SubscriptionsCommand { get; }
@@ -85,22 +90,27 @@ namespace Unicepse.ViewModels.Accountant
                     break;
             }
         }
-        public AccountingStateViewModel(NavigationStore navigationStore, ExpensesDataStore expensesStore, GymStore gymStore)
+        public AccountingStateViewModel(NavigationStore navigationStore, ExpensesDataStore expensesStore, AccountantDailyStore gymStore, PaymentsDailyAccountantStore paymentsDailyAccountantStore, ExpansesDailyAccountantDataStore expansesDailyAccountantDataStore, SubscriptionDailyAccountantDataStore subscriptionDailyAccountantDataStore, CreditsDailyAccountantStore creditsDailyAccountantStore)
         {
             _navigationStore = navigationStore;
             _expensesStore = expensesStore;
             _gymStore = gymStore;
+            _paymentsDailyAccountantStore = paymentsDailyAccountantStore;
+            _expansesDailyAccountantDataStore = expansesDailyAccountantDataStore;
+            _subscriptionDailyAccountantDataStore = subscriptionDailyAccountantDataStore;
+            _creditsDailyAccountantStore = creditsDailyAccountantStore;
+
             LoadStateCommand = new LoadStatesCommand(this, _expensesStore, _gymStore);
             _gymStore.DailyPaymentsSumLoaded += _gymStore_PaymentsLoaded;
-            _gymStore.DailySubscriptionsSumLoaded += _gymStore_DailySubscriptionsSumLoaded; 
+            _gymStore.DailySubscriptionsSumLoaded += _gymStore_DailySubscriptionsSumLoaded;
             _gymStore.DailyExpensesSumLoaded += _gymStore_ExpensesLoaded;
             _gymStore.DailyCreditsSumLoaded += _gymStore_CreditsLoaded;
-            _navigationStore.CurrentViewModel = CreateSubscriptions(_gymStore, this);
+            _navigationStore.CurrentViewModel = CreateSubscriptions(_subscriptionDailyAccountantDataStore, this);
             _navigationStore.CurrentViewModelChanged += _navigationStore_CurrentViewModelChanged;
-            ExpensesCommand = new NavaigateCommand<ExpensesCardViewModel>(new NavigationService<ExpensesCardViewModel>(_navigationStore, () => CreateExpenses(_gymStore, this)));
-            IncomeCommand = new NavaigateCommand<PaymentsCardViewModel>(new NavigationService<PaymentsCardViewModel>(_navigationStore, () => CreatePayments(_gymStore, this)));
-            CreditsCommand = new NavaigateCommand<CreditsCardViewModel>(new NavigationService<CreditsCardViewModel>(_navigationStore, () => CreateCredits(_gymStore, this)));
-            SubscriptionsCommand = new NavaigateCommand<SubscriptionCardViewModel>(new NavigationService<SubscriptionCardViewModel>(_navigationStore, () => CreateSubscriptions(_gymStore, this)));
+            ExpensesCommand = new NavaigateCommand<ExpensesCardViewModel>(new NavigationService<ExpensesCardViewModel>(_navigationStore, () => CreateExpenses(_expansesDailyAccountantDataStore, this)));
+            IncomeCommand = new NavaigateCommand<PaymentsCardViewModel>(new NavigationService<PaymentsCardViewModel>(_navigationStore, () => CreatePayments(_paymentsDailyAccountantStore, this)));
+            CreditsCommand = new NavaigateCommand<CreditsCardViewModel>(new NavigationService<CreditsCardViewModel>(_navigationStore, () => CreateCredits(_creditsDailyAccountantStore, this)));
+            SubscriptionsCommand = new NavaigateCommand<SubscriptionCardViewModel>(new NavigationService<SubscriptionCardViewModel>(_navigationStore, () => CreateSubscriptions(_subscriptionDailyAccountantDataStore, this)));
         }
 
         private void _gymStore_DailySubscriptionsSumLoaded(double obj)
@@ -128,31 +138,31 @@ namespace Unicepse.ViewModels.Accountant
             PaymentsCard = obj;
         }
         public ICommand LoadStateCommand;
-        public static AccountingStateViewModel LoadViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore, GymStore gymStore)
+        public static AccountingStateViewModel LoadViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore, AccountantDailyStore gymStore, PaymentsDailyAccountantStore paymentsDailyAccountantStore, ExpansesDailyAccountantDataStore expansesDailyAccountantDataStore,SubscriptionDailyAccountantDataStore subscriptionDailyAccountantDataStore, CreditsDailyAccountantStore creditsDailyAccountantStore)
         {
-            AccountingStateViewModel viewModel = new AccountingStateViewModel(navigatorStore, expensesStore, gymStore);
+            AccountingStateViewModel viewModel = new AccountingStateViewModel(navigatorStore, expensesStore, gymStore, paymentsDailyAccountantStore, expansesDailyAccountantDataStore, subscriptionDailyAccountantDataStore, creditsDailyAccountantStore);
 
             viewModel.LoadStateCommand.Execute(null);
 
             return viewModel;
         }
 
-        private ExpensesCardViewModel CreateExpenses(GymStore gymStore,AccountingStateViewModel accountingStateViewModel)
+        private ExpensesCardViewModel CreateExpenses(ExpansesDailyAccountantDataStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             ViewNum = 0;
             return ExpensesCardViewModel.LoadViewModel(gymStore, accountingStateViewModel);
         }
-        private PaymentsCardViewModel CreatePayments(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        private PaymentsCardViewModel CreatePayments(PaymentsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             ViewNum = 1;
             return PaymentsCardViewModel.LoadViewModel(gymStore, accountingStateViewModel);
         }
-        private CreditsCardViewModel CreateCredits(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        private CreditsCardViewModel CreateCredits(CreditsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             ViewNum = 2;
             return CreditsCardViewModel.LoadViewModel(gymStore, accountingStateViewModel);
         }
-        private SubscriptionCardViewModel CreateSubscriptions(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        private SubscriptionCardViewModel CreateSubscriptions(SubscriptionDailyAccountantDataStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             ViewNum = 3;
             return SubscriptionCardViewModel.LoadViewModel(gymStore, accountingStateViewModel);

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Unicepse.Commands.AccountantCommand;
 using Unicepse.Core.Models.Employee;
 using Unicepse.Stores;
+using Unicepse.Stores.AccountantStores;
 using Unicepse.utlis.common;
 using Unicepse.ViewModels.Employee.CreditViewModels;
 
@@ -15,9 +16,9 @@ namespace Unicepse.ViewModels.Accountant
 {
     public class CreditsCardViewModel : ListingViewModelBase
     {
-        private readonly GymStore _gymStore;
+        private readonly CreditsDailyAccountantStore _gymStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public CreditsCardViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public CreditsCardViewModel(CreditsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             _gymStore = gymStore;
             _accountingStateViewModel = accountingStateViewModel;
@@ -47,7 +48,7 @@ namespace Unicepse.ViewModels.Accountant
 
         }
         public ICommand LoadCreditsCommand;
-        public static CreditsCardViewModel LoadViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public static CreditsCardViewModel LoadViewModel(CreditsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             CreditsCardViewModel viewModel = new CreditsCardViewModel(gymStore, accountingStateViewModel);
 

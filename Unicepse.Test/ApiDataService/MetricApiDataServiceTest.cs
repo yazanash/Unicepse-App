@@ -57,11 +57,14 @@ namespace Unicepse.Test.ApiDataService
             //expected_metric.Player = new Core.Models.Player.Player() {Id=1852369 };
             //expected_metric.Id = 123456789;
             //Act
-            int actual_metric = await metricDataService!.Create(expected_metric);
+            MetricDto metricDto = new MetricDto();
+            metricDto.FromMetric(expected_metric);
+            int actual_metric = await metricDataService!.Create(metricDto);
             //Assert
             Assert.IsTrue(actual_metric==201);
-            Metric created_metric = await metricDataService!.Get(expected_metric);
-            Assert.AreEqual(expected_metric.Hieght, created_metric.Hieght);
+            MetricDto created_metric = await metricDataService!.Get(metricDto);
+            Metric metric = created_metric.ToMetric();
+            Assert.AreEqual(expected_metric.Hieght, metric.Hieght);
         }
 
         [Test]
@@ -71,16 +74,20 @@ namespace Unicepse.Test.ApiDataService
             //Arrange
             Metric expected_metric = metricFactory!.FakeMetricWithId();
             //Act
-            int actual_player = await metricDataService!.Create(expected_metric);
+            MetricDto metricDto = new MetricDto();
+            metricDto.FromMetric(expected_metric);
+            int actual_player = await metricDataService!.Create(metricDto);
             //Assert
             Assert.IsTrue(actual_player==201);
             expected_metric.Hieght = 180.0;
-            int updated_metric = await metricDataService!.Update(expected_metric);
+            metricDto.FromMetric(expected_metric);
+            int updated_metric = await metricDataService!.Update(metricDto);
             //Assert
             Assert.IsTrue(updated_metric==200);
 
-            Metric updated_metric_dto = await metricDataService!.Get(expected_metric);
-            Assert.AreEqual(expected_metric.Hieght, updated_metric_dto.Hieght);
+            MetricDto updated_metric_dto = await metricDataService!.Get(metricDto);
+            Metric metric = updated_metric_dto.ToMetric();
+            Assert.AreEqual(expected_metric.Hieght, metric.Hieght);
         }
 
 

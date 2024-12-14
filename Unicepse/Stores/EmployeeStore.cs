@@ -29,20 +29,22 @@ namespace Unicepse.Stores
         public event Action<Filter?>? FilterChanged;
         public event Action<Sport?>? SportChanged;
         private readonly ILogger<EmployeeStore> _logger;
-        private readonly IEmployeeDataStore _employeeDataService;
+        private readonly IDataService<Employee> _employeeDataService;
+        private readonly IDeleteConnectionService<Employee> _deleteConnectionService;
         private readonly List<Employee> _employee;
         private readonly Lazy<Task> _initializeLazy;
         public IEnumerable<Employee> Employees => _employee;
         private readonly List<Sport> _sports;
         public IEnumerable<Sport> Sports => _sports;
 
-        public EmployeeStore(IEmployeeDataStore employeeDataService ,ILogger<EmployeeStore> logger)
+        public EmployeeStore(IDataService<Employee> employeeDataService, ILogger<EmployeeStore> logger, IDeleteConnectionService<Employee> deleteConnectionService)
         {
             _employeeDataService = employeeDataService;
             _employee = new List<Employee>();
             _sports = new List<Sport>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
+            _deleteConnectionService = deleteConnectionService;
         }
 
 
@@ -60,7 +62,6 @@ namespace Unicepse.Stores
                 if (SelectedEmployee != null)
                 {
                     _sports.Add(new Sport() { Id = -1, Name = "الكل" });
-                    _sports.Add(new Sport() { Id = -2, Name  = "بدون مدرب" });
                     _sports.AddRange(SelectedEmployee.Sports!);
 
                 }
@@ -186,7 +187,7 @@ namespace Unicepse.Stores
         public async Task DeleteConnectedSports(int Id)
         {
             _logger.LogInformation(LogFlag + "delete trainer sports connection started");
-            await _employeeDataService.DeleteConnectedSports(Id);
+            await _deleteConnectionService.DeleteConnection(Id);
 
         }
     }

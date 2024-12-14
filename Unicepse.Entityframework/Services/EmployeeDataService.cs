@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Unicepse.Entityframework.Services
 {
    
-    public class EmployeeDataService : IEmployeeDataStore
+    public class EmployeeDataService : IDataService<Employee>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 
@@ -77,14 +77,6 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
-        public async Task<IEnumerable<Employee>> GetAllParcentTrainers()
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Employee>? entities = await context.Set<Employee>().AsNoTracking().Include(x => x.Sports).AsNoTracking().Where(x => x.IsActive == true&&x.ParcentValue>0).ToListAsync();
-                return entities;
-            }
-        }
         public async Task<Employee> Update(Employee entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
@@ -105,21 +97,6 @@ namespace Unicepse.Entityframework.Services
             context.Set<Employee>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
-        }
-        public async Task<bool> DeleteConnectedSports(int id)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Employee? entity = await context.Set<Employee>().AsNoTracking().Include(x => x.Sports).AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
-            if (entity == null)
-                throw new NotExistException("هذا الموظف غير موجود");
-            foreach (var sport in entity.Sports!)
-            {
-                context.Attach(sport);
-                entity.Sports!.Remove(sport);
-            }
-            context.Set<Employee>().Update(entity!);
-            await context.SaveChangesAsync();
-            return true;
         }
        
     }

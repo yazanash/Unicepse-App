@@ -55,11 +55,14 @@ namespace Unicepse.Test.ApiDataService
             //Arrange
             Player expected_player = playerFactory!.FakePlayerWithId();
             //Act
-            int actual_player = await playerDataService!.Create(expected_player);
+            PlayerDto playerDto = new PlayerDto();
+            playerDto.FromPlayer(expected_player);
+            int actual_player = await playerDataService!.Create(playerDto);
             //Assert
             Assert.IsTrue(actual_player==201);
-            Player created_player = await playerDataService!.Get(expected_player);
-            Assert.AreEqual(expected_player.FullName, created_player.FullName);
+            PlayerDto created_player = await playerDataService!.Get(playerDto);
+            Player player = created_player.ToPlayer();
+            Assert.AreEqual(expected_player.FullName, player.FullName);
         }
         [Test]
         /// it should create player and assert that is created
@@ -68,16 +71,20 @@ namespace Unicepse.Test.ApiDataService
             //Arrange
             Player expected_player = playerFactory!.FakePlayerWithId();
             //Act
-            int actual_player = await playerDataService!.Create(expected_player);
+            PlayerDto playerDto = new PlayerDto();
+            playerDto.FromPlayer(expected_player);
+            int actual_player = await playerDataService!.Create(playerDto);
             //Assert
             Assert.IsTrue(actual_player==201);
             expected_player.FullName = "yazan ash";
-            int updated_player = await playerDataService!.Update(expected_player);
+            playerDto.FromPlayer(expected_player);
+            int updated_player = await playerDataService!.Update(playerDto);
             //Assert
             Assert.IsTrue(updated_player==201);
 
-            Player updated_player_dto = await playerDataService!.Get(expected_player);
-            Assert.AreEqual(expected_player.FullName, updated_player_dto.FullName);
+            PlayerDto updated_player_dto = await playerDataService!.Get(playerDto);
+            Player player = updated_player_dto.ToPlayer();
+            Assert.AreEqual(expected_player.FullName, player.FullName);
         }
     }
 }

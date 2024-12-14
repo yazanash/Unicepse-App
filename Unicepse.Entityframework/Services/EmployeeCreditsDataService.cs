@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class EmployeeCreditsDataService : ICreditDataService
+    public class EmployeeCreditsDataService : IDataService<Credit>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 
@@ -44,30 +44,6 @@ namespace Unicepse.Entityframework.Services
             return true;
         }
 
-        public async Task<IEnumerable<Credit>> GetAll(Employee trainer)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Where(x=>x.EmpPerson!.Id==trainer.Id).ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<Credit>> GetAll(Employee trainer, DateTime date)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Include(x=>x.EmpPerson).AsNoTracking().Where(x => x.EmpPerson!.Id == trainer.Id&& x.Date.Year==date.Year&&x.Date.Month==date.Month).ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<Credit>> GetAll( DateTime date)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Include(x => x.EmpPerson).AsNoTracking().Where(x => x.Date.Year == date.Year && x.Date.Month == date.Month && x.Date.Day == date.Day).ToListAsync();
-                return entities;
-            }
-        }
         public async Task<Credit> Get(int id)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

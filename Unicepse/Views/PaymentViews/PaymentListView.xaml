@@ -110,7 +110,15 @@
                                      Binding="{Binding Description}"
                                     Width="*"
                                     />
-
+                                    <!--<DataGridTemplateColumn Header="تاريخ الانشاء" Width="*" IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="10 0 0 0" Text="{Binding FullName}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>-->
 
                                     <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
                                         <DataGridTemplateColumn.CellTemplate>

@@ -20,8 +20,8 @@ namespace Unicepse.HostBuilders
                 services.AddHttpClient<UnicepseApiPrepHttpClient>(c =>
                 {
                     c.Timeout = TimeSpan.FromSeconds(10);
-                    c.BaseAddress = new Uri("https://uniceps.trio-verse.com/api/v1/");
-                    //c.BaseAddress = new Uri("https://uniapi-ui65lw0m.b4a.run/api/v1/");
+                    //c.BaseAddress = new Uri("https://uniceps.trio-verse.com/api/v1/");
+                    c.BaseAddress = new Uri("https://uniapi-ui65lw0m.b4a.run/api/v1/");
                 });
             });
             return _hostBuilder;

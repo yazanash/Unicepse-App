@@ -13,6 +13,7 @@ using Unicepse.utlis.common;
 using Unicepse.Stores;
 using Unicepse.navigation.Stores;
 using Unicepse.navigation;
+using Unicepse.Stores.RoutineStores;
 
 namespace Unicepse.ViewModels.RoutineViewModels
 {
@@ -25,6 +26,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
 
         private readonly PlayersDataStore _playersDataStore;
         private readonly RoutineDataStore _routineDataStore;
+        private readonly ExercisesDataStore _exercisesDataStore;
         private readonly NavigationStore _navigationStore;
         private readonly NavigationService<RoutinePlayerViewModels> _navigationService;
         private readonly LicenseDataStore _licenseDataStore;
@@ -45,21 +47,21 @@ namespace Unicepse.ViewModels.RoutineViewModels
         public IEnumerable<ExercisesListItemViewModel> ExercisesList => _exercisesListItemViewModel;
         public IEnumerable<GroupMuscleListItemViewModel> MuscleGroup => _groupMuscleListItemViewModels;
         public IEnumerable<RoutineItemFillViewModel> RoutineItems => _routineExercisesItemsViewModels;
-        public EditRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, RoutinePlayerViewModels routinePlayerViewModels, LicenseDataStore licenseDataStore)
+        public EditRoutineViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore, RoutinePlayerViewModels routinePlayerViewModels, LicenseDataStore licenseDataStore, ExercisesDataStore exercisesDataStore)
         {
             _playersDataStore = playersDataStore;
             _routineDataStore = routineDataStore;
             _licenseDataStore = licenseDataStore;
-
             _navigationService = navigationService;
             _navigationStore = navigationStore;
+            _exercisesDataStore = exercisesDataStore;
 
             _exercisesListItemViewModel = new ObservableCollection<ExercisesListItemViewModel>();
             _groupMuscleListItemViewModels = new ObservableCollection<GroupMuscleListItemViewModel>();
             _routineExercisesItemsViewModels = new ObservableCollection<RoutineItemFillViewModel>();
             loadRoutineItems();
-            _routineDataStore.ExercisesLoaded += _routineDataStore_ExercisesLoaded;
-            LoadExercisesItems = new LoadExercisesCommand(_routineDataStore, this);
+            _exercisesDataStore.ExercisesLoaded += _routineDataStore_ExercisesLoaded;
+            LoadExercisesItems = new LoadExercisesCommand(_exercisesDataStore, this);
             _routineDataStore.MuscleChanged += _routineDataStore_MuscleChanged;
             _routineDataStore.RoutineItemCreated += _routineDataStore_RoutineItemCreated;
             _routineDataStore.RoutineItemDeleted += _routineDataStore_RoutineItemDeleted;
@@ -123,9 +125,8 @@ namespace Unicepse.ViewModels.RoutineViewModels
             }));
             _routineDataStore.Reorderd += _routineDataStore_Reorderd;
             ReorderCommand = new ReorderCommand(_routineDataStore);
-            SubmitCommand = new NavaigateCommand<EditSelectRoutineDaysMuscleGroupViewModel>(new NavigationService<EditSelectRoutineDaysMuscleGroupViewModel>(_navigationStore, () => new EditSelectRoutineDaysMuscleGroupViewModel(_routineDataStore, _navigationService, _playersDataStore, this, _navigationStore,_licenseDataStore)));
+            SubmitCommand = new NavaigateCommand<EditSelectRoutineDaysMuscleGroupViewModel>(new NavigationService<EditSelectRoutineDaysMuscleGroupViewModel>(_navigationStore, () => new EditSelectRoutineDaysMuscleGroupViewModel(_routineDataStore, _navigationService, _playersDataStore, this, _navigationStore, _licenseDataStore)));
             CancelCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigationStore, () => routinePlayerViewModels));
-          
         }
         private void _routineDataStore_OrdersApplied(RoutineItems obj)
         {
@@ -172,7 +173,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
         private void _routineDataStore_MuscleChanged(MuscleGroup? muscle)
         {
             _exercisesListItemViewModel.Clear();
-            foreach (var exercise in _routineDataStore.Exercises.Where(x => x.GroupId == muscle!.Id).OrderBy(x => x.Tid))
+            foreach (var exercise in _exercisesDataStore.Exercises.Where(x => x.GroupId == muscle!.Id).OrderBy(x => x.Tid))
             {
                 AddExercise(exercise);
             }
@@ -189,7 +190,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
             if (SelectedMuscle != null)
             {
                 _exercisesListItemViewModel.Clear();
-                foreach (var exercise in _routineDataStore.Exercises.Where(x => x.GroupId == SelectedMuscle!.MuscleGroup!.Id).OrderBy(x => x.Tid))
+                foreach (var exercise in _exercisesDataStore.Exercises.Where(x => x.GroupId == SelectedMuscle!.MuscleGroup!.Id).OrderBy(x => x.Tid))
                 {
 
                     AddExercise(exercise);
@@ -217,7 +218,7 @@ namespace Unicepse.ViewModels.RoutineViewModels
 
         public override void Dispose()
         {
-            _routineDataStore.ExercisesLoaded -= _routineDataStore_ExercisesLoaded;
+            _exercisesDataStore.ExercisesLoaded -= _routineDataStore_ExercisesLoaded;
             _routineDataStore.MuscleChanged -= _routineDataStore_MuscleChanged;
             _routineDataStore.RoutineItemCreated -= _routineDataStore_RoutineItemCreated;
             _routineDataStore.RoutineItemDeleted -= _routineDataStore_RoutineItemDeleted;
@@ -228,9 +229,9 @@ namespace Unicepse.ViewModels.RoutineViewModels
 
 
 
-        public static EditRoutineViewModel LoadViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore,RoutinePlayerViewModels routinePlayerViewModels,LicenseDataStore licenseDataStore)
+        public static EditRoutineViewModel LoadViewModel(PlayersDataStore playersDataStore, RoutineDataStore routineDataStore, NavigationService<RoutinePlayerViewModels> navigationService, NavigationStore navigationStore,RoutinePlayerViewModels routinePlayerViewModels,LicenseDataStore licenseDataStore,ExercisesDataStore exercisesDataStore)
         {
-            EditRoutineViewModel viewModel = new(playersDataStore, routineDataStore, navigationService, navigationStore, routinePlayerViewModels,licenseDataStore);
+            EditRoutineViewModel viewModel = new(playersDataStore, routineDataStore, navigationService, navigationStore, routinePlayerViewModels,licenseDataStore, exercisesDataStore);
 
             viewModel.LoadExercisesItems.Execute(null);
 

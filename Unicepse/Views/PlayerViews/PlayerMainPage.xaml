@@ -76,7 +76,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
-                                    Binding="{Binding Id}"
+                                    Binding="{Binding Order,UpdateSourceTrigger=PropertyChanged}"
                                     CanUserResize="False"/>
 
                                 <DataGridTemplateColumn Header="الرياضة" Width="1.5*" IsReadOnly="True">
@@ -111,11 +111,11 @@
                                 <!--<DataGridTextColumn Header="الحسم" IsReadOnly="True"
                                      Binding="{Binding OfferDes}"
                                     Width="120"
-                                    />
-                                        <DataGridTextColumn Header="قيمة الحسم" IsReadOnly="True"
+                                    />-->
+                                        <DataGridTextColumn Header="الحسم" IsReadOnly="True"
                                      Binding="{Binding OfferValue}"
                                     Width="auto"
-                                    />-->
+                                    />
                                 <DataGridTextColumn Header="الباقي" IsReadOnly="True"
                                      Binding="{Binding RestVal,Converter={StaticResource covNum}}"
                                     Width="auto"

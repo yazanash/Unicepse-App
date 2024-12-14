@@ -15,7 +15,7 @@ using Unicepse.Core.Common;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class PaymentDataService : IPaymentDataService
+    public class PaymentDataService : IDataService<PlayerPayment>
     {
         private readonly PlatinumGymDbContextFactory _contextFactory;
 
@@ -69,87 +69,16 @@ namespace Unicepse.Entityframework.Services
                 return entities;
             }
         }
-        public async Task<IEnumerable<PlayerPayment>> GetAll(DateTime dateFrom, DateTime dateTo)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Subscription).Include(x => x.Subscription!.Sport).Include(x => x.Subscription!.Trainer).AsNoTracking().Where(x => x.PayDate >= dateFrom && x.PayDate <= dateTo && x.DataStatus != DataStatus.ToDelete)
-                    .ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<PlayerPayment>> GetAll(DateTime dateTo)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Subscription).Include(x => x.Subscription!.Sport).Include(x => x.Subscription!.Trainer).AsNoTracking()
-                    .Where(x => x.PayDate.Month == dateTo.Month && x.PayDate.Year == dateTo.Year && x.PayDate.Day == dateTo.Day && x.DataStatus != DataStatus.ToDelete)
-                    .ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<PlayerPayment>> GetPlayerPayments(Player player)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Subscription).AsNoTracking().AsNoTracking().Include(x => x.Subscription!.Sport).AsNoTracking().Include(x => x.Subscription!.Trainer).AsNoTracking().Where(x => x.Player!.Id == player.Id && x.DataStatus != DataStatus.ToDelete).AsNoTracking()
-                   .AsNoTracking().ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<IEnumerable<PlayerPayment>> GetTrainerPayments(Employee trainer, DateTime date)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Subscription).AsNoTracking()
-                    .Include(x => x.Subscription!.Player).AsNoTracking()
-                    .Include(x => x.Subscription!.Sport).AsNoTracking()
-                    .Include(x => x.Subscription!.Trainer).AsNoTracking()
-                    .Where(x => x.Subscription!.Trainer!.Id == trainer.Id &&
-                    (
-                   (x.PayDate.Month == date.Month && x.PayDate.Year == date.Year ||
-                    x.To.Month == date.Month && x.To.Year == date.Year) && x.DataStatus != DataStatus.ToDelete
-                    )
-                    ).AsNoTracking()
-                    .ToListAsync();
-                return entities;
-            }
-        }
-
-        public async Task<Employee> GetPreviousTrainer(int id)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            Employee? entity = await context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
-            if (entity == null)
-                throw new NotExistException("هذا السجل غير موجود");
-            return entity!;
-        }
-        public async Task<IEnumerable<PlayerPayment>> GetByDataStatus(DataStatus status)
-        {
-            using (PlatinumGymDbContext context = _contextFactory.CreateDbContext())
-            {
-                IEnumerable<PlayerPayment>? entities = await context.Set<PlayerPayment>().Where(x => x.DataStatus == status).Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Subscription).AsNoTracking().ToListAsync();
-                return entities;
-            }
-        }
-        public async Task<PlayerPayment> UpdateDataStatus(PlayerPayment entity)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            PlayerPayment? dataToSync =await context.PlayerPayments!.FindAsync(entity.Id);
-            if (dataToSync == null)
-                throw new NotExistException("هذا السجل غير موجود");
-
-            dataToSync.DataStatus = entity.DataStatus;
-            context.Entry(dataToSync).Property(e => e.DataStatus).IsModified = true;
-            await context.SaveChangesAsync();
-            return entity;
-
-        }
+        //public async Task<Employee> GetPreviousTrainer(int id)
+        //{
+        //    using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
+        //    Employee? entity = await context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync((e) => e.Id == id);
+        //    if (entity == null)
+        //        throw new NotExistException("هذا السجل غير موجود");
+        //    return entity!;
+        //}
+        
+       
         public async Task<PlayerPayment> Update(PlayerPayment entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();

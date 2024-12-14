@@ -10,20 +10,21 @@ using System.Windows.Input;
 using Unicepse.ViewModels;
 using Unicepse.Stores;
 using Unicepse.navigation.Stores;
+using Unicepse.Stores.AccountantStores;
 
 namespace Unicepse.ViewModels.Accountant
 {
     public class IncomeReportViewModel : ListingViewModelBase
     {
         private readonly ObservableCollection<IncomeListItemViewModel> _incomeListItemViewModels;
-        private readonly PaymentDataStore _paymentDataStore;
+        private readonly PaymentAccountantDataStore _paymentDataStore;
         private readonly NavigationStore _navigationStore;
         public IEnumerable<IncomeListItemViewModel> IncomeList => _incomeListItemViewModels;
-        public IncomeReportViewModel(PaymentDataStore paymentDataStore, NavigationStore navigationStore)
+        public IncomeReportViewModel(PaymentAccountantDataStore paymentDataStore, NavigationStore navigationStore)
         {
             _paymentDataStore = paymentDataStore;
             _navigationStore = navigationStore;
-            _paymentDataStore.Loaded += _paymentDataStore_Loaded;
+            _paymentDataStore.PaymentsLoaded += _paymentDataStore_Loaded;
             _incomeListItemViewModels = new ObservableCollection<IncomeListItemViewModel>();
             LoadPayments = new LoadIncomePaymentsCommand(_paymentDataStore, this);
         }
@@ -35,12 +36,13 @@ namespace Unicepse.ViewModels.Accountant
             {
                 AddPayment(payment);
             }
-            Total = _paymentDataStore.GetSum();
+            Total = _paymentDataStore.Payments.Sum(x=>x.PaymentValue);
         }
         private void AddPayment(PlayerPayment playerPayment)
         {
             IncomeListItemViewModel incomeListItemViewModel = new IncomeListItemViewModel(playerPayment);
             _incomeListItemViewModels.Add(incomeListItemViewModel);
+            incomeListItemViewModel.Order = _incomeListItemViewModels.Count();
         }
         private double _total = 0;
         public double Total

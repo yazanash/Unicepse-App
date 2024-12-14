@@ -7,6 +7,15 @@
         ToDelete = 2,
         Synced = 3,
     }
+    public enum DataType
+    {
+        Player = 0,
+        Subscription = 1,
+        Payment = 2,
+        Metric = 3,
+        Routine = 4,
+        Attendance = 5,
+    }
     public enum Roles
     {
         Admin = 0,
