@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unicepse.Entityframework.Interceptors;
 
 namespace Unicepse.Entityframework.DbContexts
 {
@@ -18,7 +19,8 @@ namespace Unicepse.Entityframework.DbContexts
 
         public PlatinumGymDbContext CreateDbContext()
         {
-            DbContextOptions options = new DbContextOptionsBuilder().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution).UseSqlServer(_connectionString).Options;
+            DbContextOptions options = new DbContextOptionsBuilder().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
+                .AddInterceptors(new TimestampInterceptor()).UseSqlServer(_connectionString).Options;
             return new PlatinumGymDbContext(options);
         }
     }

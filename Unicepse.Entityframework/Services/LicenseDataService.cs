@@ -12,14 +12,17 @@ using Unicepse.Entityframework.DbContexts;
 
 namespace Unicepse.Entityframework.Services
 {
-    public class LicenseDataService : ILicenseDataService
+    public class LicenseDataService : IDataService<License>
     {
 
         private readonly PlatinumGymDbContextFactory _contextFactory;
+        private readonly IPublicIdService<License> _publicIdService;
 
-        public LicenseDataService(PlatinumGymDbContextFactory contextFactory)
+
+        public LicenseDataService(PlatinumGymDbContextFactory contextFactory, IPublicIdService<License> publicIdService)
         {
             _contextFactory = contextFactory;
+            _publicIdService = publicIdService;
         }
 
         public async Task<License> Create(License entity)
@@ -50,12 +53,7 @@ namespace Unicepse.Entityframework.Services
                 throw new NotExistException("هذا السجل غير موجود");
             return entity!;
         }
-        public async Task<License> GetById(string id)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            License? entity = await context.Set<License>().FirstOrDefaultAsync((e) => e.LicenseId == id);
-            return entity!;
-        }
+     
 
         public async Task<IEnumerable<License>> GetAll()
         {
@@ -64,17 +62,10 @@ namespace Unicepse.Entityframework.Services
             IEnumerable<License>? entities = await context.Set<License>().ToListAsync();
             return entities;
         }
-        public License? ActiveLicenses()
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-
-            License? entities = context.Set<License>().Where(x=>x.SubscribeEndDate>=DateTime.Now).FirstOrDefault();
-            return entities;
-        }
         public async Task<License> Update(License entity)
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-            License entityToUpdate = await GetById(entity.LicenseId!);
+            License? entityToUpdate = await _publicIdService.GetByUID(entity.LicenseId!);
             if (entityToUpdate == null)
                 throw new NotExistException("هذا السجل غير موجود");
             entity.Id = entityToUpdate.Id;

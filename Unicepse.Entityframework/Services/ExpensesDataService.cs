@@ -18,21 +18,5 @@ namespace Unicepse.Entityframework.Services
         {
             _contextFactory = contextFactory;
         }
-        public async Task<IEnumerable<Expenses>> GetPeriodExpenses(DateTime pstart, DateTime pend)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-
-            IEnumerable<Expenses>? entities = await context.Set<Expenses>().Where(x => x.date >= pstart && x.date <= pend).ToListAsync();
-            return entities;
-
-        }
-        public async Task<IEnumerable<Expenses>> GetPeriodExpenses( DateTime pend)
-        {
-            using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
-
-            IEnumerable<Expenses>? entities = await context.Set<Expenses>().Where(x => x.date.Year == pend.Year && x.date.Month == pend.Month&& x.date.Day == pend.Day).ToListAsync();
-            return entities;
-
-        }
     }
 }

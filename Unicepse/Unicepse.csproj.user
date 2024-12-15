@@ -24,6 +24,9 @@
     <Compile Update="SearchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="SplashScreenWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\CustomRadioButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -240,9 +243,6 @@
     <Compile Update="Views\RoutineViews\SelectRoutineDayMuscleGroup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\SplashScreen.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\SportViews\SportSubscriptionsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -285,6 +285,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="SearchWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SplashScreenWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\CustomRadioButton.xaml">
@@ -558,9 +561,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineViews\SelectRoutineDayMuscleGroup.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SplashScreen.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SportViews\SportSubscriptionsView.xaml">

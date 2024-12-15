@@ -23,6 +23,7 @@ using Unicepse.Core.Models.TrainingProgram;
 using Unicepse.Core.Services;
 using Unicepse.Entityframework.Services;
 using Unicepse.Entityframework.Services.AuthService;
+using Unicepse.Entityframework.Services.DataSyncServices;
 using Unicepse.Entityframework.Services.PlayerQueries;
 
 namespace Unicepse.HostBuilders
@@ -36,34 +37,21 @@ namespace Unicepse.HostBuilders
                 services.AddSingleton<IPasswordHasher, PasswordHasher>();
                 services.AddSingleton<IAccountDataService<User>, AccountDataService>();
                 services.AddSingleton<IAuthenticationService, AuthenticationService>();
-                services.AddSingleton<IPlayerDataService, PlayerDataService>();
-                services.AddSingleton<ISportDataService, SportServices>();
-                services.AddSingleton<IEmployeeDataStore, EmployeeDataService>();
-                services.AddSingleton<DausesDataService>();
-                services.AddSingleton<ICreditDataService, EmployeeCreditsDataService>();
-                services.AddSingleton<IPaymentDataService, PaymentDataService>();
+                services.AddSingleton<IDataService<Player>, PlayerDataService>();
+
+                services.AddSingleton<IDataService<Sport>, SportServices>();
+                services.AddSingleton<IDataService<Employee>, EmployeeDataService>();
+                services.AddSingleton<IDataService<Metric>, MetricDataService>();
+                services.AddSingleton<IDataService<PlayerRoutine>, PlayerRoutineDataService>();
+                services.AddSingleton<IDataService<Credit>, EmployeeCreditsDataService>();
+                services.AddSingleton<IDataService<PlayerPayment>, PaymentDataService>();
+                services.AddSingleton<IDataService<Subscription>, SubscriptionDataService>();
+                services.AddSingleton<IDataService<License>, LicenseDataService>();
+                services.AddSingleton<IDataService<GymProfile>, GymProfileDataService>();
                 services.AddSingleton<PlayersAttendenceService>();
-                services.AddSingleton<ISubscriptionDataService, SubscriptionDataService>();
                 services.AddSingleton<ExpensesDataService>();
-                services.AddSingleton<IMetricDataService, MetricDataService>();
-                services.AddSingleton<IRoutineDateService, PlayerRoutineDataService>();
-
-                services.AddSingleton<PlayerApiDataService>();
-                services.AddSingleton<PaymentApiDataService>();
-                services.AddSingleton<MetricApiDataService>();
-                services.AddSingleton<SubscriptionApiDataService>();
-                services.AddSingleton<RoutineApiDataService>();
-                services.AddSingleton<AttendanceApiDataService>();
-                services.AddSingleton<LicenseApiDataService>();
-
-                services.AddSingleton<ILicenseDataService, LicenseDataService>();
-                services.AddSingleton<IGymProfileDataService, GymProfileDataService>();
-                /////////////////////////////
-                ///commands
-                ////////////////////////////
-                services.AddSingleton<UpdateCurrentViewModelCommand>();
-
-
+               
+              
             });
             return _hostBuilder;
         }

@@ -9,7 +9,7 @@ using Unicepse.API.Models;
 
 namespace Unicepse.API.Services
 {
-    public class AttendanceApiDataService : IApiDataService<DailyPlayerReport>
+    public class AttendanceApiDataService : IApiDataService<AttendanceDto>
     {
         private readonly UnicepseApiPrepHttpClient _client;
 
@@ -17,26 +17,26 @@ namespace Unicepse.API.Services
         {
             _client = client;
         }
-        public async Task<int> Create(DailyPlayerReport entity)
+        public async Task<int> Create(AttendanceDto entity)
         {
-            AttendanceDto attendance = new AttendanceDto();
-            attendance.FromAttendance(entity);
-            attendance.gym_id = _client.id;
-            return await _client.PostAsync("attendances", attendance);
+            //AttendanceDto attendance = new AttendanceDto();
+            //attendance.FromAttendance(entity);
+            entity.gym_id = _client.id;
+            return await _client.PostAsync("attendances", entity);
         }
 
-        public async Task<DailyPlayerReport> Get(DailyPlayerReport entity)
+        public async Task<AttendanceDto> Get(AttendanceDto entity)
         {
-            AttendanceDto attendance = await _client.GetAsync<AttendanceDto>($"attendances/{_client.id}/{entity.Player!.Id}/{entity.Id}");
-            return attendance.ToAttendance();
+            AttendanceDto attendance = await _client.GetAsync<AttendanceDto>($"attendances/{_client.id}/{entity.pid}/{entity.aid}");
+            return attendance;
         }
 
-        public async Task<int> Update(DailyPlayerReport entity)
+        public async Task<int> Update(AttendanceDto entity)
         {
-            AttendanceDto attendance = new AttendanceDto();
-            attendance.FromAttendance(entity);
-            attendance.gym_id = _client.id;
-            return await _client.PutAsync("attendances", attendance);
+            //AttendanceDto attendance = new AttendanceDto();
+            //attendance.FromAttendance(entity);
+            entity.gym_id = _client.id;
+            return await _client.PutAsync("attendances", entity);
         }
     }
 }

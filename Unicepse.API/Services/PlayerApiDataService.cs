@@ -9,7 +9,7 @@ using Unicepse.Core.Services;
 
 namespace Unicepse.API.Services
 {
-    public class PlayerApiDataService : IApiDataService<Player>
+    public class PlayerApiDataService : IApiDataService<PlayerDto>
     {
         private readonly UnicepseApiPrepHttpClient _client;
 
@@ -18,12 +18,12 @@ namespace Unicepse.API.Services
             _client = client;
         }
 
-        public async Task<int> Create(Player entity)
+        public async Task<int> Create(PlayerDto entity)
         {
-            PlayerDto playerDto = new PlayerDto();
-            playerDto.gym_id = _client.id;
-            playerDto.FromPlayer(entity);
-            return await _client.PostAsync("player",playerDto);
+            //PlayerDto playerDto = new PlayerDto();
+            entity.gym_id = _client.id;
+            //playerDto.FromPlayer(entity);
+            return await _client.PostAsync("player", entity);
              
         }
         public async Task<int> CreateHandShake(Player entity,string uid)
@@ -35,10 +35,10 @@ namespace Unicepse.API.Services
             return await _client.PostAsync("handshake", handShakeDto);
 
         }
-        public async Task<Player> Get(Player entity)
+        public async Task<PlayerDto> Get(PlayerDto entity)
         {
-            PlayerDto player = await _client.GetAsync<PlayerDto>($"player/{_client.id}/{entity.Id}");
-            return player.ToPlayer();
+            PlayerDto player = await _client.GetAsync<PlayerDto>($"player/{_client.id}/{entity.pid}");
+            return player;
         }
 
         public async Task<Profile> GetProfile(string? uid)
@@ -47,12 +47,12 @@ namespace Unicepse.API.Services
             return profile.ToProfile();
         }
 
-        public async Task<int> Update(Player entity)
+        public async Task<int> Update(PlayerDto entity)
         {
-            PlayerDto playerDto = new PlayerDto();
-            playerDto.gym_id = _client.id;
-            playerDto.FromPlayer(entity);
-            return await _client.PutAsync("player", playerDto);
+            //PlayerDto playerDto = new PlayerDto();
+            entity.gym_id = _client.id;
+            //playerDto.FromPlayer(entity);
+            return await _client.PutAsync("player", entity);
         }
     }
 }

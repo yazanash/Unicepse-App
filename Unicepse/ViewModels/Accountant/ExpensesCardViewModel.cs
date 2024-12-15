@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Unicepse.Commands.AccountantCommand;
 using Unicepse.Stores;
+using Unicepse.Stores.AccountantStores;
 using Unicepse.utlis.common;
 using Exp = Unicepse.Core.Models.Expenses;
 namespace Unicepse.ViewModels.Accountant
 {
     public class ExpensesCardViewModel : ListingViewModelBase
     {
-        private readonly GymStore _gymStore;
+        private readonly ExpansesDailyAccountantDataStore _gymStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public ExpensesCardViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public ExpensesCardViewModel(ExpansesDailyAccountantDataStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             _gymStore = gymStore; 
             _accountingStateViewModel = accountingStateViewModel;
@@ -45,7 +46,7 @@ namespace Unicepse.ViewModels.Accountant
             itemViewModel.Order = expensesListItemViewModels.Count();
         }
         public ICommand LoadExpensesCommand;
-        public static ExpensesCardViewModel LoadViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public static ExpensesCardViewModel LoadViewModel(ExpansesDailyAccountantDataStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             ExpensesCardViewModel viewModel = new ExpensesCardViewModel(gymStore,accountingStateViewModel);
 

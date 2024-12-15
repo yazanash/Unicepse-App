@@ -60,11 +60,14 @@ namespace Unicepse.Test.ApiDataService
             Employee trainer = new() { FullName = "yazan ash"};
             Subscription expected_subscription = subscriptionFactory!.FakeSubscriptionWithRandom(sport, trainer);
             //Act
-            int actual_subscription = await subscriptionDataService!.Create(expected_subscription);
+            SubscriptionDto subscriptionDto = new SubscriptionDto();
+            subscriptionDto.FromSubscription(expected_subscription);
+            int actual_subscription = await subscriptionDataService!.Create(subscriptionDto);
             //Assert
             Assert.IsTrue(actual_subscription==201);
-            Subscription created_subscription = await subscriptionDataService!.Get(expected_subscription);
-            Assert.AreEqual(expected_subscription.Sport!.Name, created_subscription.Sport!.Name);
+            SubscriptionDto created_subscription = await subscriptionDataService!.Get(subscriptionDto);
+            Subscription sub = created_subscription.ToSubscription();
+            Assert.AreEqual(expected_subscription.Sport!.Name, sub.Sport!.Name);
         }
 
         [Test]
@@ -76,16 +79,20 @@ namespace Unicepse.Test.ApiDataService
             Employee trainer = new() { FullName = "yazan ash" };
             Subscription expected_subscription = subscriptionFactory!.FakeSubscriptionWithRandom(sport, trainer);
             //Act
-            int actual_player = await subscriptionDataService!.Create(expected_subscription);
+            SubscriptionDto subscriptionDto = new SubscriptionDto();
+            subscriptionDto.FromSubscription(expected_subscription);
+            int actual_player = await subscriptionDataService!.Create(subscriptionDto);
             //Assert
             Assert.IsTrue(actual_player==201);
             expected_subscription.Trainer!.FullName = "";
-            int updated_subscription = await subscriptionDataService!.Update(expected_subscription);
+            subscriptionDto.FromSubscription(expected_subscription);
+            int updated_subscription = await subscriptionDataService!.Update(subscriptionDto);
             //Assert
             Assert.IsTrue(updated_subscription==200);
 
-            Subscription updated_subscription_dto = await subscriptionDataService!.Get(expected_subscription);
-            Assert.AreEqual(expected_subscription.Trainer!.FullName, updated_subscription_dto.Trainer!.FullName);
+            SubscriptionDto updated_subscription_dto = await subscriptionDataService!.Get(subscriptionDto);
+            Subscription sub = updated_subscription_dto.ToSubscription();
+            Assert.AreEqual(expected_subscription.Trainer!.FullName, sub.Trainer!.FullName);
         }
 
     }

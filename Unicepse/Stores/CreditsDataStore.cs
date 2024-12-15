@@ -13,15 +13,17 @@ namespace Unicepse.Stores
     public class CreditsDataStore : IDataStore<Credit>
     {
         string LogFlag = "[Credits] ";
-        private readonly ICreditDataService _employeeCreditsDataService;
+        private readonly IDataService<Credit> _employeeCreditsDataService;
+        private readonly IEmployeeTransaction<Credit> _employeeTransaction;
         private readonly ILogger<CreditsDataStore> _logger;
         public List<Credit> _credits;
         public IEnumerable<Credit> Credits => _credits;
-        public CreditsDataStore(ICreditDataService employeeCreditsDataService, ILogger<CreditsDataStore> logger)
+        public CreditsDataStore(IDataService<Credit> employeeCreditsDataService, ILogger<CreditsDataStore> logger, IEmployeeTransaction<Credit> employeeTransaction)
         {
             _employeeCreditsDataService = employeeCreditsDataService;
             _credits = new List<Credit>();
             _logger = logger;
+            _employeeTransaction = employeeTransaction;
         }
 
         public event Action<Credit>? Created;
@@ -71,15 +73,7 @@ namespace Unicepse.Stores
         public async Task GetAll(Employee employee)
         {
             _logger.LogInformation(LogFlag + "get all employee credit started");
-            IEnumerable<Credit> employees = await _employeeCreditsDataService.GetAll(employee);
-            _credits.Clear();
-            _credits.AddRange(employees);
-            Loaded?.Invoke();
-        }
-        public async Task GetAll(Employee employee, DateTime date)
-        {
-            _logger.LogInformation(LogFlag + "get all employee credit by date started");
-            IEnumerable<Credit> employees = await _employeeCreditsDataService.GetAll(employee, date);
+            IEnumerable<Credit> employees = await _employeeTransaction.GetAll(employee);
             _credits.Clear();
             _credits.AddRange(employees);
             Loaded?.Invoke();

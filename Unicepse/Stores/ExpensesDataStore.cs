@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
@@ -70,15 +71,6 @@ namespace Unicepse.Stores
             await _initializeLazy.Value;
             Loaded?.Invoke();
         }
-        public async Task GetPeriodExpenses(DateTime dateFrom, DateTime dateTo)
-        {
-            _logger.LogInformation(LogFlag + "get all expenses by period from {0} to {1}", dateFrom,dateTo);
-            IEnumerable<Expenses> expenses = await _expensesDataService.GetPeriodExpenses(dateFrom, dateTo);
-            _expenses.Clear();
-            _expenses.AddRange(expenses);
-            Loaded?.Invoke();
-        }
-
         public async Task Initialize()
         {
             _logger.LogInformation(LogFlag + "init expenses");

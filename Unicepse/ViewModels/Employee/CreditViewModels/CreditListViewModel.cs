@@ -93,6 +93,7 @@ namespace Unicepse.ViewModels.Employee.CreditViewModels
             CreditListItemViewModel itemViewModel =
                 new CreditListItemViewModel(credit, _employeeStore, _creditDataStore, _navigatorStore, this);
             _creditListItemViewModels.Add(itemViewModel);
+            itemViewModel.Order = _creditListItemViewModels.Count();
         }
         public override void Dispose()
         {

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Unicepse.Commands.AccountantCommand;
 using Unicepse.Core.Models.Subscription;
 using Unicepse.Stores;
+using Unicepse.Stores.AccountantStores;
 using Unicepse.utlis.common;
 using Unicepse.ViewModels.SubscriptionViewModel;
 
@@ -15,9 +16,9 @@ namespace Unicepse.ViewModels.Accountant
 {
     public class SubscriptionCardViewModel : ListingViewModelBase
     {
-        private readonly GymStore _gymStore;
+        private readonly SubscriptionDailyAccountantDataStore _gymStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public SubscriptionCardViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public SubscriptionCardViewModel(SubscriptionDailyAccountantDataStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             _gymStore = gymStore;
             _accountingStateViewModel = accountingStateViewModel;
@@ -46,7 +47,7 @@ namespace Unicepse.ViewModels.Accountant
             itemViewModel.Order = _incomeListItemViewModels.Count();
         }
         public ICommand LoadSubscriptionsCommand;
-        public static SubscriptionCardViewModel LoadViewModel(GymStore gymStore,AccountingStateViewModel accountingStateViewModel)
+        public static SubscriptionCardViewModel LoadViewModel(SubscriptionDailyAccountantDataStore gymStore,AccountingStateViewModel accountingStateViewModel)
         {
             SubscriptionCardViewModel viewModel = new SubscriptionCardViewModel(gymStore,accountingStateViewModel);
 

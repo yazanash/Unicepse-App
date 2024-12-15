@@ -10,13 +10,13 @@ namespace Unicepse.Commands.RoutinesCommand
 {
     internal class LoadAllTempRoutineCommand : AsyncCommandBase
     {
-        private readonly RoutineDataStore _routineDataStore;
+        private readonly RoutineTemplatesDataStore _routineTemplatesDataStore;
         private readonly ListingViewModelBase _routineListing;
         private readonly PlayersDataStore _playerDataStore;
 
-        public LoadAllTempRoutineCommand(RoutineDataStore routineDataStore, ListingViewModelBase routineListing, PlayersDataStore playerDataStore)
+        public LoadAllTempRoutineCommand(RoutineTemplatesDataStore routineTemplatesDataStore, ListingViewModelBase routineListing, PlayersDataStore playerDataStore)
         {
-            _routineDataStore = routineDataStore;
+            _routineTemplatesDataStore = routineTemplatesDataStore;
             _routineListing = routineListing;
             _playerDataStore = playerDataStore;
         }
@@ -29,7 +29,7 @@ namespace Unicepse.Commands.RoutinesCommand
             try
             {
 
-                await _routineDataStore.GetAllTemp();
+                await _routineTemplatesDataStore.GetAll();
             }
             catch (Exception)
             {

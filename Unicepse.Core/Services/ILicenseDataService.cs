@@ -9,7 +9,6 @@ namespace Unicepse.Core.Services
 {
     public interface ILicenseDataService : IDataService<License>
     {
-        Task<License> GetById(string id);
         public License? ActiveLicenses();
     }
 }

@@ -5,17 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Unicepse.ViewModels;
 using Unicepse.Stores;
+using Unicepse.Stores.RoutineStores;
 
 namespace Unicepse.Commands.RoutinesCommand
 {
     public class LoadExercisesCommand : AsyncCommandBase
     {
-        private readonly RoutineDataStore _routineDataStore;
+        private readonly ExercisesDataStore _exercisesDataStore;
         private readonly ListingViewModelBase _routineListing;
 
-        public LoadExercisesCommand(RoutineDataStore routineDataStore, ListingViewModelBase routineListing)
+        public LoadExercisesCommand(ExercisesDataStore exercisesDataStore, ListingViewModelBase routineListing)
         {
-            _routineDataStore = routineDataStore;
+            _exercisesDataStore = exercisesDataStore;
             _routineListing = routineListing;
         }
 
@@ -27,7 +28,7 @@ namespace Unicepse.Commands.RoutinesCommand
             try
             {
 
-                await _routineDataStore.GetAllExercises();
+                await _exercisesDataStore.GetAll();
             }
             catch (Exception)
             {

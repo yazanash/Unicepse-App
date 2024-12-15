@@ -20,7 +20,7 @@ namespace Unicepse.API.Models
         public string? description { get; set; }
         public DateTime date { get; set; }
 
-        internal void FromPayment(PlayerPayment entity)
+        public void FromPayment(PlayerPayment entity)
         {
             id = entity.Id.ToString();
             pid = entity.Player!.Id.ToString();
@@ -31,7 +31,7 @@ namespace Unicepse.API.Models
 
         }
 
-        internal PlayerPayment ToPayment()
+        public PlayerPayment ToPayment()
         {
             PlayerPayment playerPayment = new PlayerPayment()
             {

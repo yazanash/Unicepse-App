@@ -14,6 +14,8 @@ using Unicepse.navigation;
 using Unicepse.Stores;
 using Unicepse.utlis.common;
 using Unicepse.navigation.Stores;
+using Unicepse.Stores.RoutineStores;
+
 namespace Unicepse.ViewModels.PlayersViewModels
 {
     public class ArchivedPlayersListViewModel : ListingViewModelBase
@@ -31,6 +33,8 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly PlayerListViewModel _playerListViewModel;
         private readonly LicenseDataStore _licenseDataStore;
+        private readonly ExercisesDataStore _exercisesDataStore;
+        private readonly RoutineTemplatesDataStore _routineTemplatesDataStore;
         private readonly NavigationService<PlayerListViewModel> _navigationService;
         public SearchBoxViewModel SearchBox { get; set; }
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
@@ -118,7 +122,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
         }
 
         public ICommand LoadPlayersCommand { get; }
-        public ArchivedPlayersListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, PlayerListViewModel playerListViewModel, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService)
+        public ArchivedPlayersListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, PlayerListViewModel playerListViewModel, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService, ExercisesDataStore exercisesDataStore, RoutineTemplatesDataStore routineTemplatesDataStore)
         {
             _navigatorStore = navigatorStore;
             _playerStore = playerStore;
@@ -160,7 +164,8 @@ namespace Unicepse.ViewModels.PlayersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.HaveDebt, 8, "ديون"));
             SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Id == 6);
             BackCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigatorStore, () => playerListViewModel));
-   
+            _exercisesDataStore = exercisesDataStore;
+            _routineTemplatesDataStore = routineTemplatesDataStore;
         }
 
         private void _playerStore_ArchivedPlayer_restored(Player obj)
@@ -305,13 +310,19 @@ namespace Unicepse.ViewModels.PlayersViewModels
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                new(player, _navigatorStore, _subscriptionStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore,_licenseDataStore,_navigationService);
+                new(player, _navigatorStore, _subscriptionStore, _playerStore, _sportStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore,_licenseDataStore,_navigationService, _exercisesDataStore, _routineTemplatesDataStore);
             playerListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = playerListItemViewModels.Count();
         }
-        public static ArchivedPlayersListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore,PlayerListViewModel playerListViewModel,LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService)
+        public static ArchivedPlayersListViewModel LoadViewModel(NavigationStore navigatorStore,
+            PlayersDataStore playersStore, SubscriptionDataStore subscriptionDataStore,
+            SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, 
+            PlayersAttendenceStore playersAttendenceStore,PlayerListViewModel playerListViewModel,
+            LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService,ExercisesDataStore exercisesDataStore,
+            RoutineTemplatesDataStore routineTemplatesDataStore)
         {
-            ArchivedPlayersListViewModel viewModel = new(navigatorStore, playersStore, subscriptionDataStore, sportDataStore, paymentDataStore, metricDataStore, routineDataStore, playersAttendenceStore, playerListViewModel,licenseDataStore,navigationService);
+            ArchivedPlayersListViewModel viewModel = new(navigatorStore, playersStore, subscriptionDataStore, sportDataStore, paymentDataStore,
+                metricDataStore, routineDataStore, playersAttendenceStore, playerListViewModel,licenseDataStore,navigationService, exercisesDataStore, routineTemplatesDataStore);
 
             viewModel.LoadPlayersCommand.Execute(null);
 

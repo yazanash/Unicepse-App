@@ -15,6 +15,7 @@ using Unicepse.Core.Common;
 using Unicepse.BackgroundServices;
 using Microsoft.Extensions.Logging;
 using Unicepse.Core.Services;
+using Unicepse.Stores.ApiDataStores;
 
 namespace Unicepse.Stores
 {
@@ -28,8 +29,10 @@ namespace Unicepse.Stores
         string LogFlag = "[Subscriptions] ";
         private readonly ILogger<SubscriptionDataStore> _logger;
 
-        private readonly ISubscriptionDataService _subscriptionDataService;
-        private readonly SubscriptionApiDataService _subscriptionApiDataService;
+        private readonly IDataService<Subscription> _subscriptionDataService;
+        private readonly IGetPlayerTransactionService<Subscription> _getPlayerTransactionService;
+        private readonly IActiveTransactionService<Subscription> _activeTransactionService;
+        private readonly IApiDataStore<Subscription>  _apiDataStore;
         private readonly List<Subscription> _subscriptions;
         private readonly Lazy<Task> _initializeLazy;
 
@@ -83,13 +86,15 @@ namespace Unicepse.Stores
         }
 
         public event Action<Subscription?>? SubscriptionChanged;
-        public SubscriptionDataStore(ISubscriptionDataService subscriptionDataService, SubscriptionApiDataService subscriptionApiDataService, ILogger<SubscriptionDataStore> logger)
+        public SubscriptionDataStore(IDataService<Subscription> subscriptionDataService,  ILogger<SubscriptionDataStore> logger, IGetPlayerTransactionService<Subscription> getPlayerTransactionService, IActiveTransactionService<Subscription> activeTransactionService, IApiDataStore<Subscription> apiDataStore)
         {
             _subscriptionDataService = subscriptionDataService;
             _subscriptions = new List<Subscription>();
             _initializeLazy = new Lazy<Task>(Initialize);
-            _subscriptionApiDataService = subscriptionApiDataService;
             _logger = logger;
+            _getPlayerTransactionService = getPlayerTransactionService;
+            _activeTransactionService = activeTransactionService;
+            _apiDataStore = apiDataStore;
         }
 
         public async Task Add(Subscription entity)
@@ -97,27 +102,7 @@ namespace Unicepse.Stores
             _logger.LogInformation(LogFlag + "add subscription");
             entity.DataStatus = DataStatus.ToCreate;
             await _subscriptionDataService.Create(entity);
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
-            if (internetAvailable)
-            {
-                try
-                {
-                    _logger.LogInformation(LogFlag + "add attendance to api");
-                    int status = await _subscriptionApiDataService.Create(entity);
-                    if (status == 201 || status == 409)
-                    {
-                        _logger.LogInformation(LogFlag + "subscription synced successfully with code {0}", status.ToString());
-                        entity.DataStatus = DataStatus.Synced;
-                        await _subscriptionDataService.UpdateDataStatus(entity);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(LogFlag + "subscription synced failed with error {0}", ex.Message);
-                }
-
-            }
+            await _apiDataStore.Create(entity);
             _subscriptions.Add(entity);
             Created?.Invoke(entity);
             SelectedTrainer = null;
@@ -136,39 +121,11 @@ namespace Unicepse.Stores
         public async Task GetAll(Player player)
         {
             _logger.LogInformation(LogFlag + "get all subscription");
-            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(player);
+            IEnumerable<Subscription> subscriptions = await _getPlayerTransactionService.GetAll(player);
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
             Loaded?.Invoke();
         }
-        public async Task GetAll(Employee trainer)
-        {
-            _logger.LogInformation(LogFlag + "get all trainer subscription");
-            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(trainer);
-            _subscriptions.Clear();
-            _subscriptions.AddRange(subscriptions);
-            Loaded?.Invoke();
-        }
-
-        public async Task GetAll(Sport sport, DateTime date)
-        {
-            _logger.LogInformation(LogFlag + "get all subscription for sport in date {0}", date);
-            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(sport, date);
-            _subscriptions.Clear();
-            _subscriptions.AddRange(subscriptions);
-            Loaded?.Invoke();
-        }
-
-
-        public async Task GetAll(Employee trainer, DateTime date)
-        {
-            _logger.LogInformation(LogFlag + "get all subscription for trainer in date {0}", date);
-            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll(trainer, date);
-            _subscriptions.Clear();
-            _subscriptions.AddRange(subscriptions);
-            Loaded?.Invoke();
-        }
-
         public async Task GetAll()
         {
             _logger.LogInformation(LogFlag + "get all subscription");
@@ -180,7 +137,7 @@ namespace Unicepse.Stores
         public async Task GetAllActive()
         {
             _logger.LogInformation(LogFlag + "get all active subscription");
-            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAllActive();
+            IEnumerable<Subscription> subscriptions = await _activeTransactionService.GetAll();
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
             Loaded?.Invoke();
@@ -200,29 +157,9 @@ namespace Unicepse.Stores
                 entity.DataStatus = DataStatus.ToUpdate;
 
             await _subscriptionDataService.Update(entity);
+            await _apiDataStore.Update(entity);
 
-
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
-            if (internetAvailable)
-            {
-                try
-                {
-                    _logger.LogInformation(LogFlag + "add Subscription to api");
-                    int status = await _subscriptionApiDataService.Update(entity);
-                    if (status == 200)
-                    {
-                        _logger.LogInformation(LogFlag + "Subscription synced successfully with code {0}", status.ToString());
-                        entity.DataStatus = DataStatus.Synced;
-                        await _subscriptionDataService.UpdateDataStatus(entity);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(LogFlag + "Subscription synced failed with error {0}", ex.Message);
-                }
-
-            }
+          
 
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
 
@@ -243,30 +180,12 @@ namespace Unicepse.Stores
             _logger.LogInformation(LogFlag + "stop subscription");
             if (entity.DataStatus != DataStatus.ToCreate)
                 entity.DataStatus = DataStatus.ToUpdate;
+            entity.EndDate = stopDate;
+            entity.IsStopped = true;
+            await _subscriptionDataService.Update(entity);
 
-            await _subscriptionDataService.Stop(entity, stopDate);
 
-
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
-            if (internetAvailable)
-            {
-                try
-                {
-                    _logger.LogInformation(LogFlag + "add subscription to api");
-                    int status = await _subscriptionApiDataService.Update(entity);
-                    if (status == 200)
-                    {
-                        _logger.LogInformation(LogFlag + "subscription synced successfully with code {0}", status.ToString());
-                        entity.DataStatus = DataStatus.Synced;
-                        await _subscriptionDataService.UpdateDataStatus(entity);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(LogFlag + "subscription synced failed with error {0}", ex.Message);
-                }
-            }
+            await _apiDataStore.Update(entity);
 
 
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
@@ -281,85 +200,6 @@ namespace Unicepse.Stores
             }
             Updated?.Invoke(entity);
         }
-        public async Task MoveToNewTrainer(Subscription entity, Employee trainer, DateTime movedate)
-        {
-            if (entity.DataStatus != DataStatus.ToCreate)
-                entity.DataStatus = DataStatus.ToUpdate;
-
-            await _subscriptionDataService.MoveToNewTrainer(entity, trainer, movedate);
-
-
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            if (internetAvailable)
-            {
-                try
-                {
-                    int status = await _subscriptionApiDataService.Update(entity);
-                    if (status == 200)
-                    {
-                        entity.DataStatus = DataStatus.Synced;
-                        await _subscriptionDataService.UpdateDataStatus(entity);
-                    }
-                }
-                catch { }
-
-
-            }
-            int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
-
-            if (currentIndex != -1)
-            {
-                _subscriptions[currentIndex] = entity;
-            }
-            else
-            {
-                _subscriptions.Add(entity);
-            }
-            Updated?.Invoke(entity);
-            SelectedTrainer = null;
-            SelectedSport = null;
-        }
-        public async Task SyncSubscriptionsToCreate()
-        {
-            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetByDataStatus(DataStatus.ToCreate);
-            foreach (Subscription subscription in subscriptions)
-            {
-                _logger.LogInformation(LogFlag + "create subscription to api");
-                int status = await _subscriptionApiDataService.Create(subscription);
-                if (status == 201 || status == 409)
-                {
-                    _logger.LogInformation(LogFlag + "subscription synced successfully with code {0}", status.ToString());
-                    subscription.DataStatus = DataStatus.Synced;
-                    await _subscriptionDataService.UpdateDataStatus(subscription);
-                }
-                else
-                {
-                    _logger.LogWarning(LogFlag + "subscription synced failed with code {0}", status.ToString());
-                }
-
-            }
-        }
-
-        public async Task SyncSubscriptionsToUpdate()
-        {
-            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetByDataStatus(DataStatus.ToUpdate);
-            foreach (Subscription subscription in subscriptions)
-            {
-                _logger.LogInformation(LogFlag + "update subscription to api");
-                int status = await _subscriptionApiDataService.Update(subscription);
-                if (status == 200)
-                {
-                    _logger.LogInformation(LogFlag + "subscription synced successfully with code {0}", status.ToString());
-                    subscription.DataStatus = DataStatus.Synced;
-                    await _subscriptionDataService.UpdateDataStatus(subscription);
-                }
-                else
-                {
-                    _logger.LogWarning(LogFlag + "subscription synced failed with code {0}", status.ToString());
-                }
-
-
-            }
-        }
+      
     }
 }

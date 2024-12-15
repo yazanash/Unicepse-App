@@ -16,26 +16,22 @@ namespace Unicepse.Commands.Player
     {
         private readonly PlayersDataStore _playerStore;
         private readonly ListingViewModelBase _playerListing;
-        private readonly ILogger _logger;
-        public LoadPlayersCommand(ListingViewModelBase playerListing, PlayersDataStore playerStore, ILogger logger)
+        public LoadPlayersCommand(ListingViewModelBase playerListing, PlayersDataStore playerStore)
         {
             _playerStore = playerStore;
             _playerListing = playerListing;
-            _logger = logger;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
             _playerListing.ErrorMessage = null;
             _playerListing.IsLoading = true;
-            _logger.LogInformation("Load Players Command");
             try
             {          
-                await _playerStore.GetPlayers();
+                await _playerStore.GetAll();
             }
             catch (Exception ex)
             {
-                _logger.LogError("Load Players error {0}",ex.Message);
                 _playerListing.ErrorMessage = "خطأ في تحميل اللاعبين يرجى اعادة تشغيل البرنامج";
             }
             finally

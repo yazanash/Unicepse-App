@@ -40,7 +40,7 @@ namespace Unicepse.Test.DataServicesTest
             routineFactory = new(routineItemFactory);
             playerFactory = new();
             playerDataService = new(db!);
-            routineDataService = new(db!);
+            //routineDataService = new(db!);
         }
 
         [OneTimeTearDown]

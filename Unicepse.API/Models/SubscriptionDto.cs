@@ -26,7 +26,7 @@ namespace Unicepse.API.Models
         public string? is_paid { get; set; }
         public double paid_value { get; set; }
 
-        internal void FromSubscription(Subscription entity)
+        public void FromSubscription(Subscription entity)
         {
             id = entity.Id.ToString();
             pid = entity.Player!.Id.ToString();
@@ -41,7 +41,7 @@ namespace Unicepse.API.Models
             paid_value = entity.PaidValue;
         }
 
-        internal Subscription ToSubscription()
+        public Subscription ToSubscription()
         {
             Subscription subscription = new Subscription()
             {

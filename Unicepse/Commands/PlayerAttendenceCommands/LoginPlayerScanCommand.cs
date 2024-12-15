@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Unicepse.Core.Models.DailyActivity;
+using Unicepse.navigation;
+using Unicepse.navigation.Stores;
 using Unicepse.Stores;
+using Unicepse.Stores.RoutineStores;
 using Unicepse.ViewModels.PlayersViewModels;
 using player = Unicepse.Core.Models.Player;
 namespace Unicepse.Commands.PlayerAttendenceCommands
@@ -15,13 +18,35 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
         private readonly ReadPlayerQrCodeViewModel _viewModelBase;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly PlayersDataStore _playersDataStore;
+        private readonly NavigationStore _navigationStore;
+        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly SportDataStore _sportDataStore;
+        private readonly PaymentDataStore _paymentDataStore;
+        private readonly MetricDataStore _metricDataStore;
+        private readonly RoutineDataStore _routineDataStore;
+        private readonly LicenseDataStore _licenseDataStore;
+        private readonly NavigationService<PlayerListViewModel> _navigationService;
+        private readonly ExercisesDataStore? _exercisesDataStore;
+
+        private readonly RoutineTemplatesDataStore? _routineTemplatesDataStore;
         public string? OldUID;
 
-        public LoginPlayerScanCommand(ReadPlayerQrCodeViewModel viewModelBase, PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore)
+        public LoginPlayerScanCommand(ReadPlayerQrCodeViewModel viewModelBase, PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService, ExercisesDataStore exercisesDataStore, RoutineTemplatesDataStore routineTemplatesDataStore)
         {
             _viewModelBase = viewModelBase;
             _playersAttendenceStore = playersAttendenceStore;
             _playersDataStore = playersDataStore;
+            _navigationStore = navigationStore;
+            _subscriptionDataStore = subscriptionDataStore;
+            _sportDataStore = sportDataStore;
+            _paymentDataStore = paymentDataStore;
+            _metricDataStore = metricDataStore;
+            _routineDataStore = routineDataStore;
+            _licenseDataStore = licenseDataStore;
+            _navigationService = navigationService;
+            _exercisesDataStore = exercisesDataStore;
+            _routineTemplatesDataStore = routineTemplatesDataStore;
+
             _viewModelBase.onCatch += _viewModelBase_onCatch;
         }
 
@@ -60,7 +85,15 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
                         }
                         else
                         {
-                            MessageBox.Show("هذا اللاعب منتهي الاشتراك");
+                            if (MessageBox.Show("هذا اللاعب منتهي الاشتراك هل تريد اضافة اشتراك له ؟", "تنبيه", MessageBoxButton.YesNo,
+                                           MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                            {
+                                _playersDataStore.SelectedPlayer = player;
+                                NavigationStore PlayerMainPageNavigation = new NavigationStore();
+                                NavigationService<PlayerProfileViewModel> nav = new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(player, PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _licenseDataStore, _navigationService, _exercisesDataStore!, _routineTemplatesDataStore!));
+                                nav.Navigate();
+                            }
+                                
                         }
                     }
                     
@@ -139,6 +172,17 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
                 MessageBox.Show(ex.Message);
             }
         }
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(player.Player player, NavigationStore navigatorStore,
+           SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore,
+           PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore,
+           PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService,
+           ExercisesDataStore exercisesDataStore, RoutineTemplatesDataStore routineTemplatesDataStore)
+        {
 
+            playersDataStore.SelectedPlayer = player;
+            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore,
+                paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore, licenseDataStore, navigationService,
+                exercisesDataStore, routineTemplatesDataStore);
+        }
     }
 }

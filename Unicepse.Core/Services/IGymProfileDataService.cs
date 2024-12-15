@@ -9,7 +9,6 @@ namespace Unicepse.Core.Services
 {
     public interface IGymProfileDataService: IDataService<GymProfile>
     {
-        Task<GymProfile?> GetByGymID(string id);
         Task<GymProfile?> Get();
     }
 }

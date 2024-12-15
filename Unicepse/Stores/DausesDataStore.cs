@@ -12,46 +12,31 @@ using Unicepse.Core.Services;
 
 namespace Unicepse.Stores
 {
-    public class DausesDataStore : IDataStore<TrainerDueses>
+    public class DausesDataStore 
     {
-        private readonly IPaymentDataService _paymentDataService;
-        private readonly DausesDataService _dausesDataService;
-        private readonly IEmployeeDataStore _employeeDataService;
-        private readonly ICreditDataService _employeeCreditsDataService;
-        public List<TrainerDueses> _dauses;
+        private readonly IEmployeeMonthlyTransaction<Credit> _employeeMonthlyTransaction;
+        private readonly IEmployeeMonthlyTransaction<PlayerPayment> _paymentEmployeeMonthlyTransaction;
         public List<PlayerPayment> _payments;
         string LogFlag = "[Dauses] ";
         private readonly ILogger<DausesDataStore> _logger;
-        public IEnumerable<TrainerDueses> Dauses => _dauses;
-
         public IEnumerable<PlayerPayment> Payments => _payments;
 
         public TrainerDueses? MonthlyTrainerDause { get; set; }
         public event Action<TrainerDueses?>? StateChanged;
         public event Action<TrainerDueses?>? ReportLoaded;
-        public event Action<TrainerDueses>? Created;
-        public event Action? Loaded;
-        public event Action<TrainerDueses>? Updated;
-        public event Action<int>? Deleted;
-        //private readonly Lazy<Task> _initializeLazy;
-        public DausesDataStore(IPaymentDataService paymentDataService, DausesDataService dausesDataService, ICreditDataService employeeCreditsDataService, IEmployeeDataStore employeeDataService, ILogger<DausesDataStore> logger)
+        public DausesDataStore( ILogger<DausesDataStore> logger, IEmployeeMonthlyTransaction<Credit> employeeMonthlyTransaction, IEmployeeMonthlyTransaction<PlayerPayment> paymentEmployeeMonthlyTransaction)
         {
-            _paymentDataService = paymentDataService;
-            _dausesDataService = dausesDataService;
-            _dauses = new List<TrainerDueses>();
             _payments = new List<PlayerPayment>();
-            _employeeCreditsDataService = employeeCreditsDataService;
-            _employeeDataService = employeeDataService;
             _logger = logger;
-
-            //_initializeLazy = new Lazy<Task>(Initialize);
+            _employeeMonthlyTransaction = employeeMonthlyTransaction;
+            _paymentEmployeeMonthlyTransaction = paymentEmployeeMonthlyTransaction;
         }
         public async Task GetMonthlyReport(Employee trainer, DateTime date)
         {
             _logger.LogInformation(LogFlag+"Get trainer payments");
-            IEnumerable<PlayerPayment> payments = await _paymentDataService.GetTrainerPayments(trainer, date);
+            IEnumerable<PlayerPayment> payments = await _paymentEmployeeMonthlyTransaction.GetAll(trainer, date);
             _logger.LogInformation(LogFlag + "Get trainer credits");
-            IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(trainer, date);
+            IEnumerable<Credit> Credits = await _employeeMonthlyTransaction.GetAll(trainer, date);
             _payments.Clear();
             _payments.AddRange(payments);
             _logger.LogInformation(LogFlag + "create trainer dueses");
@@ -59,7 +44,7 @@ namespace Unicepse.Stores
             MonthlyTrainerDause.TotalSubscriptions = 0;
             foreach (PlayerPayment pay in payments)
             {
-                MonthlyTrainerDause.TotalSubscriptions += _dausesDataService.GetParcent(pay, date);
+                MonthlyTrainerDause.TotalSubscriptions += GetParcent(pay, date);
             }
             List<Subscription> subs = new List<Subscription>();
             foreach(var item in payments.GroupBy(x => x.Subscription))
@@ -85,9 +70,9 @@ namespace Unicepse.Stores
         public async Task GetPrintedMonthlyReport(Employee trainer, DateTime date)
         {
             _logger.LogInformation(LogFlag + "Get trainer payments");
-            IEnumerable<PlayerPayment> payments = await _paymentDataService.GetTrainerPayments(trainer, date);
+            IEnumerable<PlayerPayment> payments = await _paymentEmployeeMonthlyTransaction.GetAll(trainer, date);
             _logger.LogInformation(LogFlag + "Get trainer credits");
-            IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(trainer, date);
+            IEnumerable<Credit> Credits = await _employeeMonthlyTransaction.GetAll(trainer, date);
             _payments.Clear();
             _payments.AddRange(payments);
             _logger.LogInformation(LogFlag + "create trainer dueses");
@@ -95,7 +80,7 @@ namespace Unicepse.Stores
             MonthlyTrainerDause.TotalSubscriptions = 0;
             foreach (PlayerPayment pay in payments)
             {
-                MonthlyTrainerDause.TotalSubscriptions += _dausesDataService.GetParcent(pay, date);
+                MonthlyTrainerDause.TotalSubscriptions += GetParcent(pay, date);
             }
             MonthlyTrainerDause.CountSubscription = payments.GroupBy(x => x.Subscription).Count();
             MonthlyTrainerDause.Parcent = (double)trainer.ParcentValue / 100;
@@ -109,109 +94,52 @@ namespace Unicepse.Stores
                 MonthlyTrainerDause.Credits = 0;
             ReportLoaded?.Invoke(MonthlyTrainerDause);
         }
-
-
-        public async Task GetAll()
+        public double GetParcent(PlayerPayment entity, DateTime date)
         {
-            _logger.LogInformation(LogFlag + "get all dueses");
-            IEnumerable<TrainerDueses> employees = await _dausesDataService.GetAll();
-            _dauses.Clear();
-            _dauses.AddRange(employees);
-            Loaded?.Invoke();
-        }
-        public async Task GetAll(Employee employee)
-        {
-            _logger.LogInformation(LogFlag + "get all trainer dueses");
-            IEnumerable<TrainerDueses> employees = await _dausesDataService.GetAll(employee);
-            _dauses.Clear();
-            _dauses.AddRange(employees);
-            Loaded?.Invoke();
-        }
-        public async Task GetAll(Employee employee, DateTime date)
-        {
-            _logger.LogInformation(LogFlag + "get all trainer dueses by date : " + date);
-            IEnumerable<TrainerDueses> employees = await _dausesDataService.GetAll(employee, date);
-            _dauses.Clear();
-            _dauses.AddRange(employees);
-            Loaded?.Invoke();
-        }
-        public async Task Add(TrainerDueses entity)
-        {
-            _logger.LogInformation(LogFlag + "add trainer dueses by date : ");
-            await _dausesDataService.Create(entity);
-            _dauses.Add(entity);
-            Created?.Invoke(entity);
-        }
-
-        public async Task Update(TrainerDueses entity)
-        {
-            _logger.LogInformation(LogFlag + "update trainer dueses");
-            await _dausesDataService.Update(entity);
-            int currentIndex = _dauses.FindIndex(y => y.Id == entity.Id);
-
-            if (currentIndex != -1)
+            if (entity.PayDate.Month == date.AddMonths(-1).Month)
             {
-                _dauses[currentIndex] = entity;
-            }
-            else
-            {
-                _dauses.Add(entity);
-            }
-            Updated?.Invoke(entity);
-        }
+                DateTime firstDayInMonth = new DateTime(date.Year, date.Month, 1);
 
-        public async Task Delete(int entity_id)
-        {
-            _logger.LogInformation(LogFlag + "delete trainer dueses");
-            bool deleted = await _dausesDataService.Delete(entity_id);
-            int currentIndex = _dauses.FindIndex(y => y.Id == entity_id);
-            _dauses.RemoveAt(currentIndex);
-            Deleted?.Invoke(entity_id);
-        }
-
-        public async Task Initialize()
-        {
-            _logger.LogInformation(LogFlag + "initialize trainer dueses");
-            IEnumerable<Employee> employees = await _employeeDataService.GetAllParcentTrainers();
-            DateTime date = DateTime.Now;
-            foreach (Employee employee in employees)
-            {
-                var trainerDuse = _dauses.Where(x => x.IssueDate.Month == date.Month && x.IssueDate.Year == date.Year && x.IssueDate.Day == date.Day).Any();
-                if (!trainerDuse)
+                if (entity.To <= date)
                 {
-                    IEnumerable<PlayerPayment> payments = await _paymentDataService.GetTrainerPayments(employee, date);
-                    IEnumerable<Credit> Credits = await _employeeCreditsDataService.GetAll(employee, date);
-                    TrainerDueses MonthlyTrainerDause = new TrainerDueses();
-                    MonthlyTrainerDause.TotalSubscriptions = 0;
-                    foreach (PlayerPayment pay in payments)
-                    {
-                        MonthlyTrainerDause.TotalSubscriptions += _dausesDataService.GetParcent(pay, date);
-                    }
-                    MonthlyTrainerDause.CountSubscription = payments.GroupBy(x => x.Subscription).Count();
-                    MonthlyTrainerDause.Parcent = (double)employee.ParcentValue / 100;
-                    MonthlyTrainerDause.IssueDate = date;
-                    MonthlyTrainerDause.Trainer = employee;
-                    MonthlyTrainerDause.Salary = employee.SalaryValue;
-                    MonthlyTrainerDause.CreditsCount = Credits.Count();
-                    if (MonthlyTrainerDause.CreditsCount > 0)
-                        MonthlyTrainerDause.Credits = Credits.Sum(x => x.CreditValue);
+                    int days = 0;
+                    if (entity.From > firstDayInMonth)
+                        days = (int)entity.To.Subtract(entity.From).TotalDays + 1;
                     else
-                        MonthlyTrainerDause.Credits = 0;
-                    StateChanged?.Invoke(MonthlyTrainerDause);
-                    var td = _dauses.Where(x => x.IssueDate.Month == MonthlyTrainerDause.IssueDate.Month && x.IssueDate.Year == MonthlyTrainerDause.IssueDate.Year).SingleOrDefault();
-                    if (td != null)
-                    {
-                        if (MonthlyTrainerDause.IssueDate > td.IssueDate)
-                        {
-                            MonthlyTrainerDause.Id = td.Id;
-                            await Update(MonthlyTrainerDause);
-                        }
-                    }
+                        days = (int)entity.To.Subtract(firstDayInMonth).TotalDays+1;
+                    double dayprice = entity.PaymentValue / entity.CoverDays;
+                    double total = (days * dayprice);
+                    return total;
+                }
+                else if (entity.To > date)
+                {
+                    int days = 0;
+                    if (entity.From > firstDayInMonth)
+                        days = (int)date.Subtract(entity.From).TotalDays;
                     else
-                        await Add(MonthlyTrainerDause);
+                        days = (int)date.Subtract(firstDayInMonth).TotalDays + 1;
+                    double dayprice = entity.PaymentValue / entity.CoverDays;
+                    double total = (days * dayprice);
+                    return total;
+                }
+            }
+            else if (entity.From <= date)
+            {
+                if (entity.To <= date)
+                    return (entity.PaymentValue);
+                else if (entity.To > date)
+                {
+                    int days = (int)date.Subtract(entity.From).TotalDays;
+                    double dayprice = entity.PaymentValue / entity.CoverDays;
+                    double total = (days * dayprice);
+                    return total;
                 }
             }
 
+
+            return 0;
         }
+
+       
     }
 }

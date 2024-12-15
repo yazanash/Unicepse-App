@@ -45,7 +45,13 @@ namespace Unicepse.Entityframework.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("LoginDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("UserId")
@@ -69,6 +75,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("Disable")
                         .HasColumnType("bit");
 
@@ -83,6 +92,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(4000)");
@@ -99,6 +111,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
@@ -120,6 +135,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("loginTime")
                         .HasColumnType("datetime2");
@@ -144,6 +162,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("CreditValue")
                         .HasColumnType("float");
 
@@ -155,6 +176,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.Property<int?>("EmpPersonId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -176,6 +200,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.Property<int>("BirthDate")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(4000)");
@@ -213,6 +240,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
@@ -228,6 +258,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.Property<int>("CountSubscription")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Credits")
                         .HasColumnType("float");
@@ -250,6 +283,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<int?>("TrainerId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TrainerId");
@@ -265,11 +301,17 @@ namespace Unicepse.Entityframework.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(4000)");
 
                     b.Property<int?>("RecipientId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Value")
                         .HasColumnType("float");
@@ -298,6 +340,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("GymId")
                         .HasColumnType("nvarchar(max)");
 
@@ -316,6 +361,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<string>("Telephone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("GymProfile");
@@ -328,6 +376,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("GymId")
                         .HasColumnType("nvarchar(max)");
@@ -350,6 +401,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Licenses");
@@ -368,6 +422,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.Property<double>("Chest")
                         .HasColumnType("float");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
@@ -411,6 +468,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<double>("Shoulders")
                         .HasColumnType("float");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("Waist")
                         .HasColumnType("float");
 
@@ -432,6 +492,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
@@ -439,6 +502,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RefDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<double>("Value")
@@ -463,6 +529,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.Property<int>("CoverDays")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
@@ -491,6 +560,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<DateTime>("To")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PlayerId");
@@ -515,6 +587,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.Property<int>("BirthDate")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
@@ -546,6 +621,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<string>("UID")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("Weight")
                         .HasColumnType("float");
 
@@ -561,6 +639,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("DailyPrice")
                         .HasColumnType("float");
@@ -580,6 +661,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Sports");
@@ -592,6 +676,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
@@ -662,6 +749,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<int?>("TrainerId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PlayerId");
@@ -671,6 +761,37 @@ namespace Unicepse.Entityframework.Migrations
                     b.HasIndex("TrainerId");
 
                     b.ToTable("Subscriptions");
+                });
+
+            modelBuilder.Entity("Unicepse.Core.Models.SyncModel.SyncObject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ObjectData")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OperationType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SyncObjects");
                 });
 
             modelBuilder.Entity("Unicepse.Core.Models.TrainingProgram.Exercises", b =>

@@ -30,7 +30,7 @@ namespace Unicepse.API.Models
         public double hips { get; set; }
         public DateTime check_date { get; set; }
 
-        internal Metric ToMetric()
+        public Metric ToMetric()
         {
             Metric metric = new Metric()
             {
@@ -55,7 +55,7 @@ namespace Unicepse.API.Models
         };
             return metric;
         }
-        internal void FromMetric(Metric entity)
+        public void FromMetric(Metric entity)
         {
             id = entity.Id.ToString();
             pid = entity.Player!.Id.ToString();

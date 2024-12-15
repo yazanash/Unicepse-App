@@ -13,6 +13,7 @@ using Unicepse.navigation;
 using Unicepse.Stores;
 using Unicepse.utlis.common;
 using Unicepse.navigation.Stores;
+using Unicepse.Stores.SportStores;
 
 namespace Unicepse.ViewModels.SportsViewModels
 {
@@ -23,7 +24,7 @@ namespace Unicepse.ViewModels.SportsViewModels
         private NavigationStore _navigatorStore;
         private SportDataStore _sportStore;
         private EmployeeStore _trainerStore;
-        private SubscriptionDataStore _subscriptionDataStore;
+        private SportSubscriptionDataStore _subscriptionDataStore;
         public IEnumerable<SportListItemViewModel> SportList => sportListItemViewModels;
         public SearchBoxViewModel SearchBox { get; set; }
 
@@ -60,7 +61,7 @@ namespace Unicepse.ViewModels.SportsViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadSportsCommand { get; }
-        public SportListViewModel(NavigationStore navigatorStore, SportDataStore sportStore, EmployeeStore trainerStore, SubscriptionDataStore subscriptionDataStore)
+        public SportListViewModel(NavigationStore navigatorStore, SportDataStore sportStore, EmployeeStore trainerStore, SportSubscriptionDataStore subscriptionDataStore)
         {
             _navigatorStore = navigatorStore;
             _sportStore = sportStore;
@@ -154,7 +155,7 @@ namespace Unicepse.ViewModels.SportsViewModels
                 new SportListItemViewModel(sport, _sportStore, _navigatorStore, _trainerStore, this,_subscriptionDataStore);
             sportListItemViewModels.Add(itemViewModel);
         }
-        public static SportListViewModel LoadViewModel(NavigationStore navigatorStore, SportDataStore sportStore, EmployeeStore employeeStore,SubscriptionDataStore subscriptionDataStore)
+        public static SportListViewModel LoadViewModel(NavigationStore navigatorStore, SportDataStore sportStore, EmployeeStore employeeStore, SportSubscriptionDataStore subscriptionDataStore)
         {
             SportListViewModel viewModel = new SportListViewModel(navigatorStore, sportStore, employeeStore,subscriptionDataStore);
 

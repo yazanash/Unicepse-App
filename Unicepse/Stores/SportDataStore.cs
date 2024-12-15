@@ -18,7 +18,8 @@ namespace Unicepse.Stores
         public event Action<Sport>? Updated;
         public event Action<int>? Deleted;
         public event Action<Employee?>? TrainerChanged;
-        private readonly ISportDataService _sportDataService;
+        private readonly IDeleteConnectionService<Sport> _deleteConnectionService;
+        private readonly IDataService<Sport> _sportDataService;
         private readonly List<Sport> _sports;
         private readonly List<Employee> _trainers;
 
@@ -29,13 +30,14 @@ namespace Unicepse.Stores
         public IEnumerable<Employee> Trainers => _trainers;
         string LogFlag = "[Sport] ";
         private readonly ILogger<SportDataStore> _logger;
-        public SportDataStore(ISportDataService sportDataService, ILogger<SportDataStore> logger)
+        public SportDataStore(IDataService<Sport> sportDataService, ILogger<SportDataStore> logger, IDeleteConnectionService<Sport> deleteConnectionService)
         {
             _sportDataService = sportDataService;
             _sports = new List<Sport>();
             _trainers = new List<Employee>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
+            _deleteConnectionService = deleteConnectionService;
         }
         private Sport? _selectedSport;
         public Sport? SelectedSport
@@ -116,7 +118,7 @@ namespace Unicepse.Stores
         public async Task DeleteConnectedTrainers(int Id)
         {
             _logger.LogInformation(LogFlag + "delete all linked trainers");
-            await _sportDataService.DeleteConnectedTrainers(Id);
+            await _deleteConnectionService.DeleteConnection(Id);
 
         }
         public async Task Update(Sport entity)

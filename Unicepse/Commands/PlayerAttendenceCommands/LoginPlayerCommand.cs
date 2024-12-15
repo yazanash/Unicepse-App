@@ -10,37 +10,52 @@ using Unicepse.Commands;
 using System.Windows.Navigation;
 using Unicepse.utlis.common;
 using Unicepse.navigation;
+using Unicepse.ViewModels.PlayersViewModels;
+using Unicepse.navigation.Stores;
 
 namespace Unicepse.Commands.PlayerAttendenceCommands
 {
     public class LoginPlayerCommand : AsyncCommandBase
     {
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly PlayersDataStore  _playersDataStore;
         private NavigationService<HomeViewModel> _navigationService;
-        public LoginPlayerCommand(PlayersAttendenceStore playersAttendenceStore, SubscriptionDataStore subscriptionDataStore, NavigationService<HomeViewModel> navigationService)
+        PlayerListItemViewModel _playerListItemViewModel;
+        public LoginPlayerCommand(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore, NavigationService<HomeViewModel> navigationService, PlayerListItemViewModel playerListItemViewModel)
         {
             _playersAttendenceStore = playersAttendenceStore;
-            _subscriptionDataStore = subscriptionDataStore;
+            _playersDataStore = playersDataStore;
             _navigationService = navigationService;
+            _playerListItemViewModel = playerListItemViewModel;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
             try
             {
-                //DailyPlayerReport ExistdailyPlayerReport = _playersAttendenceStore.get
-                DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+                if (_playersDataStore.SelectedPlayer!.SubscribeEndDate > DateTime.Now)
                 {
-                    loginTime = DateTime.Now,
-                    logoutTime = DateTime.Now,
-                    Date = DateTime.Now,
-                    IsLogged = true,
-                    Player = _subscriptionDataStore.SelectedSubscription!.Player,
+                    DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+                    {
+                        loginTime = DateTime.Now,
+                        logoutTime = DateTime.Now,
+                        Date = DateTime.Now,
+                        IsLogged = true,
+                        Player = _playersDataStore.SelectedPlayer,
 
-                };
-                await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
-                _navigationService.ReNavigate();
+                    };
+                    await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
+                    _navigationService.ReNavigate();
+                }
+                else
+                {
+                    if (MessageBox.Show("هذا اللاعب منتهي الاشتراك هل تريد اضافة اشتراك له ؟", "تنبيه", MessageBoxButton.YesNo,
+                                   MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    {
+                        _playerListItemViewModel.OpenProfileCommand.Execute(null);
+                    }
+
+                }
             }
             catch (Exception ex)
             {

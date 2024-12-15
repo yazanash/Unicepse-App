@@ -39,7 +39,7 @@ namespace Unicepse.API.Models
             }
             return routine;
         }
-        internal void FromRoutine(PlayerRoutine entity)
+        public void FromRoutine(PlayerRoutine entity)
         {
             rid = entity.Id.ToString();
             pid = entity.Player!.Id.ToString();

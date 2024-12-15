@@ -19,7 +19,7 @@ namespace Unicepse.API.Models
         public DateTime login_time { get; set; }
         public DateTime date { get; set; }
 
-        internal void FromAttendance(DailyPlayerReport entity)
+        public void FromAttendance(DailyPlayerReport entity)
         {
             aid = entity.Id;
             pid = entity.Player!.Id.ToString();

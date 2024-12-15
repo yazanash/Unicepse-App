@@ -8,15 +8,16 @@ using System.Windows.Input;
 using Unicepse.Commands.AccountantCommand;
 using Unicepse.Core.Models.Payment;
 using Unicepse.Stores;
+using Unicepse.Stores.AccountantStores;
 using Unicepse.utlis.common;
 
 namespace Unicepse.ViewModels.Accountant
 {
     public class PaymentsCardViewModel : ListingViewModelBase
     {
-        private readonly GymStore _gymStore;
+        private readonly PaymentsDailyAccountantStore _gymStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public PaymentsCardViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public PaymentsCardViewModel(PaymentsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             _gymStore = gymStore;
             _accountingStateViewModel = accountingStateViewModel;
@@ -46,7 +47,7 @@ namespace Unicepse.ViewModels.Accountant
             itemViewModel.Order = _incomeListItemViewModels.Count();
         }
         public ICommand LoadPaymentsCommand;
-        public static PaymentsCardViewModel LoadViewModel(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public static PaymentsCardViewModel LoadViewModel(PaymentsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             PaymentsCardViewModel viewModel = new PaymentsCardViewModel(gymStore, accountingStateViewModel);
 

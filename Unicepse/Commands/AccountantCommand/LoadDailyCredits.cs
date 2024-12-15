@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unicepse.Stores;
+using Unicepse.Stores.AccountantStores;
 using Unicepse.ViewModels.Accountant;
 
 namespace Unicepse.Commands.AccountantCommand
 {
     public class LoadDailyCredits : AsyncCommandBase
     {
-        private readonly GymStore _gymStore;
+        private readonly CreditsDailyAccountantStore _gymStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public LoadDailyCredits(GymStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public LoadDailyCredits(CreditsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
         {
             _gymStore = gymStore;
             _accountingStateViewModel = accountingStateViewModel;
@@ -20,7 +21,7 @@ namespace Unicepse.Commands.AccountantCommand
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            await _gymStore.GetDailyCredits(_accountingStateViewModel.Date);
+            await _gymStore.GetDaily(_accountingStateViewModel.Date);
         }
     }
 }
