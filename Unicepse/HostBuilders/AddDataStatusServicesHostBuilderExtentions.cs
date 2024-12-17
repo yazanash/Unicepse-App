@@ -36,14 +36,6 @@ namespace Unicepse.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
-                services.AddSingleton<IDataStatusService<Player>, PlayerDataStatusSyncService>();
-                services.AddSingleton<IDataStatusService<PlayerPayment>, PaymentDataStatusSyncService>();
-                services.AddSingleton<IDataStatusService<Subscription>, SubscriptionDataStatusSyncService>();
-                services.AddSingleton<IDataStatusService<Metric>, MetricDataStatusSyncService>();
-                services.AddSingleton<IDataStatusService<PlayerRoutine>, RoutineDataStatusSyncService>();
-                services.AddSingleton<IDataStatusService<DailyPlayerReport>, AttendanceDataStatusSyncService>();
-
-
                 services.AddSingleton<IGetPlayerTransactionService<PlayerPayment>, GetPaymentService>();
                 services.AddSingleton<IGetPlayerTransactionService<Subscription>, GetSubscriptionsService>();
                 services.AddSingleton<IGetPlayerTransactionService<Metric>, GetMetricsService>();

@@ -21,7 +21,7 @@ namespace Unicepse.Commands.Player
         private readonly NavigationService<PlayerProfileViewModel> navigationService;
         private readonly PlayersDataStore _playerStore;
         private readonly AddPlayerViewModel _addPlayerViewModel;
-        public SubmitCommand(NavigationService<PlayerProfileViewModel> navigationService, AddPlayerViewModel addPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore, PlayerListViewModel playerListViewModel, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, PaymentDataStore paymentDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore)
+        public SubmitCommand(NavigationService<PlayerProfileViewModel> navigationService, AddPlayerViewModel addPlayerViewModel, PlayersDataStore playerStore)
         {
 
             this.navigationService = navigationService;
