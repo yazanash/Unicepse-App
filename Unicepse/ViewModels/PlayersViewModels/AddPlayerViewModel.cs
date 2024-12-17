@@ -23,47 +23,29 @@ namespace Unicepse.ViewModels.PlayersViewModels
     {
         private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
-        private readonly MetricDataStore _metricStore;
-        private readonly SportDataStore _sportStore;
-        private readonly PaymentDataStore _paymentDataStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
-        private readonly PlayerListViewModel _playerListViewModel;
-        private readonly RoutineDataStore _routineDataStore;
-        private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly LicenseDataStore _licenseDataStore;
-        private readonly NavigationService<PlayerListViewModel> _navigationService;
-        private readonly ExercisesDataStore _exercisesDataStore;
-        private readonly RoutineTemplatesDataStore _routineTemplatesDataStore;
+        private readonly PlayerProfileViewModel _playerProfileViewModel;
         public ObservableCollection<Year> years;
 
         public IEnumerable<Year> Years => years;
-        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportStore, PaymentDataStore paymentDataStore, MetricDataStore metricStore, RoutineDataStore routineDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService, ExercisesDataStore exercisesDataStore, RoutineTemplatesDataStore routineTemplatesDataStore)
+        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, PlayerProfileViewModel playerProfileViewModel)
         {
             years = new ObservableCollection<Year>();
             for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
                 years.Add(new Year() { year = i });
             Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
 
-            _licenseDataStore = licenseDataStore;
+         
             _navigationStore = navigationStore;
             _playerStore = playerStore;
-            _subscriptionDataStore = subscriptionDataStore;
-            _paymentDataStore = paymentDataStore;
-            _sportStore = sportStore;
-            _playerListViewModel = playerListViewModel;
-            _routineDataStore = routineDataStore;
-            _metricStore = metricStore;
-            _playersAttendenceStore = playersAttendenceStore;
-            _navigationService = navigationService;
-            _exercisesDataStore = exercisesDataStore;
-            _routineTemplatesDataStore = routineTemplatesDataStore;
+           
+            _playerProfileViewModel = playerProfileViewModel;
 
             _playerStore.profile_loaded += _playerStore_profile_loaded;
             ScanAvailable = true;
             OpenScanCommand = new GetProfileScanCommand(new ReadPlayerQrCodeViewModel(), _playerStore);
             CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
-            SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(PlayerMainPageNavigation, _subscriptionDataStore, _playerStore, _sportStore, _paymentDataStore, _metricStore, _routineDataStore, _playersAttendenceStore, _licenseDataStore, _navigationService, _exercisesDataStore,_routineTemplatesDataStore)), this, _playerStore, _navigationStore, _playerListViewModel, _subscriptionDataStore, _sportStore, _metricStore, _routineDataStore, _paymentDataStore, _playersAttendenceStore, _licenseDataStore);
+            SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => _playerProfileViewModel), this, _playerStore);
         }
 
         private void _playerStore_profile_loaded(Profile obj)

@@ -39,6 +39,7 @@ namespace Unicepse.HostBuilders
                 services.AddTransient((s) => CreateSportListingViewModel(s));
                 services.AddTransient((s) => CreateEmployeeListingViewModel(s));
                 services.AddTransient((s) => CreateUserListingViewModel(s));
+                services.AddTransient((s) => CreatePlayerProfileViewModel(s));
                 services.AddSingleton<AccountingViewModel>();
                 services.AddTransient<Func<PlayerListViewModel>>(services => () => services.GetRequiredService<PlayerListViewModel>());
                 services.AddTransient<NavigationService<PlayerListViewModel>>();
@@ -63,17 +64,8 @@ namespace Unicepse.HostBuilders
             return PlayerListViewModel.LoadViewModel(
                 services.GetRequiredService<NavigationStore>(),
                 services.GetRequiredService<PlayersDataStore>(),
-                services.GetRequiredService<SubscriptionDataStore>(),
-                services.GetRequiredService<SportDataStore>(),
-                services.GetRequiredService<PaymentDataStore>(),
-                services.GetRequiredService<MetricDataStore>(),
-                services.GetRequiredService<RoutineDataStore>(),
-                services.GetRequiredService<PlayersAttendenceStore>(),
-                services.GetRequiredService<LicenseDataStore>(),
-                services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
                 services.GetRequiredService<ILogger<PlayerListViewModel>>(),
-                services.GetRequiredService<ExercisesDataStore>(),
-                services.GetRequiredService<RoutineTemplatesDataStore>()
+                services.GetRequiredService<PlayerProfileViewModel>()
                 );
         }
         private static SportListViewModel CreateSportListingViewModel(IServiceProvider services)
@@ -110,12 +102,19 @@ namespace Unicepse.HostBuilders
                 services.GetRequiredService<PlayersAttendenceStore>(),
                 services.GetRequiredService<EmployeeStore>(),
                 services.GetRequiredService<NavigationStore>(),
-
+                services.GetRequiredService<PlayerProfileViewModel>());
+        }
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(IServiceProvider services)
+        {
+            return new PlayerProfileViewModel(
+                services.GetRequiredService<NavigationStore>(),
                 services.GetRequiredService<SubscriptionDataStore>(),
+                services.GetRequiredService<PlayersDataStore>(),
                 services.GetRequiredService<SportDataStore>(),
                 services.GetRequiredService<PaymentDataStore>(),
                 services.GetRequiredService<MetricDataStore>(),
                 services.GetRequiredService<RoutineDataStore>(),
+                services.GetRequiredService<PlayersAttendenceStore>(),
                 services.GetRequiredService<LicenseDataStore>(),
                 services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
                 services.GetRequiredService<ExercisesDataStore>(),

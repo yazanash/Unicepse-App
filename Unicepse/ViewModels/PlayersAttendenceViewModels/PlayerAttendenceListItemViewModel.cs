@@ -21,33 +21,16 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
     public class PlayerAttendenceListItemViewModel : ViewModelBase
     {
         private readonly NavigationStore? _navigationStore;
-        private readonly SubscriptionDataStore? _subscriptionDataStore;
-        private readonly PlayersDataStore? _playersDataStore;
-        private readonly SportDataStore? _sportDataStore;
-        private readonly PaymentDataStore? _paymentDataStore;
-        private readonly MetricDataStore? _metricDataStore;
-        private readonly RoutineDataStore? _routineDataStore;
-        private readonly LicenseDataStore? _licenseDataStore;
-        private readonly NavigationService<PlayerListViewModel>? _navigationService;
-        private readonly ExercisesDataStore? _exercisesDataStore;
-        private readonly RoutineTemplatesDataStore? _routineTemplatesDataStore;
         public DailyPlayerReport dailyPlayerReport { get; set; }
         private readonly PlayersAttendenceStore _playersAttendenceStore;
+        private readonly PlayerProfileViewModel? _playerProfileViewModel;
         public ICommand? OpenProfileCommand { get; }
-       
 
-        public PlayerAttendenceListItemViewModel(DailyPlayerReport dailyPlayerReport, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, RoutineDataStore routineDataStore, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService, ExercisesDataStore? exercisesDataStore, RoutineTemplatesDataStore routineTemplatesDataStore)
+
+        public PlayerAttendenceListItemViewModel(DailyPlayerReport dailyPlayerReport, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, PlayerProfileViewModel playerProfileViewModel)
         {
             _navigationStore = navigationStore;
-            _subscriptionDataStore = subscriptionDataStore;
-            _playersDataStore = playersDataStore;
-            _sportDataStore = sportDataStore;
-            _paymentDataStore = paymentDataStore;
-            _metricDataStore = metricDataStore;
-            _routineDataStore = routineDataStore;
-            _licenseDataStore = licenseDataStore;
-            _navigationService = navigationService;
-            _exercisesDataStore = exercisesDataStore;
+            _playerProfileViewModel = playerProfileViewModel;
 
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
             _playersAttendenceStore = playersAttendenceStore;
@@ -59,8 +42,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
             this.IsLoggedBrush = this.IsLogged ? Brushes.Green : Brushes.Red;
             LogoutCommand = new LogoutPlayerCommand(_playersAttendenceStore);
             AddKeyCommand = new OpenAddKeyDialog(new KeyDialogViewModel(this.dailyPlayerReport.Player!.FullName!, _playersAttendenceStore));
-            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => CreatePlayerProfileViewModel(dailyPlayerReport.Player!, PlayerMainPageNavigation, _subscriptionDataStore, _playersDataStore, _sportDataStore, _paymentDataStore, _metricDataStore, _routineDataStore, _playersAttendenceStore, _licenseDataStore, _navigationService, _exercisesDataStore!,_routineTemplatesDataStore!)));
-            _routineTemplatesDataStore = routineTemplatesDataStore;
+            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => _playerProfileViewModel));
         }
         public PlayerAttendenceListItemViewModel(DailyPlayerReport dailyPlayerReport, PlayersAttendenceStore playersAttendenceStore)
         {
@@ -76,18 +58,7 @@ namespace Unicepse.ViewModels.PlayersAttendenceViewModels
 
 
         }
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(Player player, NavigationStore navigatorStore,
-            SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, 
-            PaymentDataStore paymentDataStore, MetricDataStore _metricDataStore, RoutineDataStore routineDataStore, 
-            PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService,
-            ExercisesDataStore exercisesDataStore, RoutineTemplatesDataStore routineTemplatesDataStore)
-        {
-
-            playersDataStore.SelectedPlayer = player;
-            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore,
-                paymentDataStore, _metricDataStore, routineDataStore, playersAttendenceStore, licenseDataStore,navigationService,
-                exercisesDataStore, routineTemplatesDataStore);
-        }
+       
         private int _idSort;
         public int IdSort
         {
