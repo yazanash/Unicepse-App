@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using System.Windows.Shapes;
+using System.Configuration;
+using System.Reflection;
 
 namespace Unicepse
 {
@@ -22,12 +24,14 @@ namespace Unicepse
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly string currentVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
         public MainWindow()
         {
             InitializeComponent();
-         
 
-           
+            string buildName = ConfigurationManager.AppSettings["BuildName"]!; 
+            this.Title = $"Uniceps : {currentVersion} - {buildName} ";
+
         }
        
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

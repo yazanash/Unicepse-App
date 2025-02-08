@@ -113,7 +113,7 @@ namespace Unicepse.ViewModels.PlayersViewModels
             _homeViewModel = homeViewModel;
             OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => playerProfileViewModel));
 
-            LogInCommand = new LoginPlayerCommand(_playersAttendenceStore, _playersDataStore, new NavigationService<HomeViewModel>(_navigationStore, () => _homeViewModel), this);
+            LogInCommand = new LoginPlayerCommand(_playersAttendenceStore, _playersDataStore, new NavigationService<HomeViewModel>(_navigationStore, () => _homeViewModel), this,playerProfileViewModel,_navigationStore);
         }
 
 

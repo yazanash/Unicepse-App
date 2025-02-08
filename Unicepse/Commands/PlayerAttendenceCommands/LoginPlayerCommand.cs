@@ -12,6 +12,7 @@ using Unicepse.utlis.common;
 using Unicepse.navigation;
 using Unicepse.ViewModels.PlayersViewModels;
 using Unicepse.navigation.Stores;
+using Unicepse.Core.Models.Player;
 
 namespace Unicepse.Commands.PlayerAttendenceCommands
 {
@@ -21,12 +22,16 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
         private readonly PlayersDataStore  _playersDataStore;
         private NavigationService<HomeViewModel> _navigationService;
         PlayerListItemViewModel _playerListItemViewModel;
-        public LoginPlayerCommand(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore, NavigationService<HomeViewModel> navigationService, PlayerListItemViewModel playerListItemViewModel)
+        private readonly PlayerProfileViewModel _playerProfileViewModel;
+        private readonly NavigationStore _navigationStore;
+        public LoginPlayerCommand(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore, NavigationService<HomeViewModel> navigationService, PlayerListItemViewModel playerListItemViewModel, PlayerProfileViewModel playerProfileViewModel, NavigationStore navigationStore)
         {
             _playersAttendenceStore = playersAttendenceStore;
             _playersDataStore = playersDataStore;
             _navigationService = navigationService;
             _playerListItemViewModel = playerListItemViewModel;
+            _playerProfileViewModel = playerProfileViewModel;
+            _navigationStore = navigationStore;
         }
 
         public override async Task ExecuteAsync(object? parameter)
@@ -52,7 +57,10 @@ namespace Unicepse.Commands.PlayerAttendenceCommands
                     if (MessageBox.Show("هذا اللاعب منتهي الاشتراك هل تريد اضافة اشتراك له ؟", "تنبيه", MessageBoxButton.YesNo,
                                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
                     {
-                        _playerListItemViewModel.OpenProfileCommand.Execute(null);
+                        _playersDataStore.SelectedPlayer = _playersDataStore.SelectedPlayer;
+                        _playerProfileViewModel.SubscriptionCommand!.Execute(null);
+                        NavigationService<PlayerProfileViewModel> nav = new NavigationService<PlayerProfileViewModel>(_navigationStore, () => _playerProfileViewModel);
+                        nav.Navigate();
                     }
 
                 }

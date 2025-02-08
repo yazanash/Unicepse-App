@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
-
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

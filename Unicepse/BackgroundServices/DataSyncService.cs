@@ -50,7 +50,6 @@ namespace Unicepse.BackgroundServices
                     {
                         _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
                         _backgroundServiceStore.SyncState(true, "جار مزامنة");
-                        _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
                         await _backgroundServiceStore.Sync();
                         _backgroundServiceStore.SyncState(false, "");
                         await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);

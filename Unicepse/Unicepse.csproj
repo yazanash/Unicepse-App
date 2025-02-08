@@ -12,6 +12,18 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyVersion>1.1.0.1</AssemblyVersion>
     <FileVersion>1.1.0.1</FileVersion>
+    
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TransformXmlSource>App.config</TransformXmlSource>
+    <TransformXmlTransform>Debug.config</TransformXmlTransform>
+    <TransformXmlDestination>$(OutDir)\$(TargetFileName).config</TransformXmlDestination>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TransformXmlSource>Release.config</TransformXmlSource>
+    <TransformXmlTransform>App.config</TransformXmlTransform>
+    <TransformXmlDestination>$(OutDir)\$(TargetFileName).config</TransformXmlDestination>
   </PropertyGroup>
 
   <ItemGroup>

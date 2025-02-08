@@ -115,7 +115,11 @@
                 <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="1"  Padding="5"  Margin="5">
                     <DockPanel>
                         <TextBlock Foreground="{StaticResource colors.primary}" Text="المدربين" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
-                        <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource TrainersItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding TrainerList}" >
+                        <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}"
+                                 ItemContainerStyle="{DynamicResource TrainersItemContainerStyle1}"
+                                 Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" 
+                                 VirtualizingPanel.ScrollUnit="Pixel"
+                                 BorderBrush="#fff" ItemsSource="{Binding TrainerList}" >
 
 
                         </ListBox>

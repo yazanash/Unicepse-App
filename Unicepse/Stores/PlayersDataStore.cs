@@ -31,8 +31,6 @@ namespace Unicepse.Stores
         string LogFlag = "[Players] ";
         private readonly ILogger<PlayersDataStore> _logger;
 
-
-
         public IEnumerable<Player> Players => _players;
         public IEnumerable<Player> ArchivedPlayers => _archivedPlayers;
         public event Action<Player>? Player_created;

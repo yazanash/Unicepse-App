@@ -51,7 +51,7 @@ namespace Unicepse.utlis.common
             _playersAttendenceStore = playersAttendenceStore;
            
             _playerProfileViewModel = playerProfileViewModel;
-
+            //SelectedDate = DateTime.Now;
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
             _playersAttendenceStore.LoggedIn += _playersAttendenceStore_LoggedIn;
             _playersAttendenceStore.LoggedOut += _playersAttendenceStore_LoggedOut;
@@ -64,7 +64,7 @@ namespace Unicepse.utlis.common
             LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore, this);
             SearchBox = new SearchBoxViewModel();
             LoadTrainersCommand = new LoadTrainersCommand(_employeeStore, this);
-            SelectedDate = DateTime.Now;
+           
 
             _employeeStore.Loaded += _employeeStore_Loaded;
         }
@@ -101,7 +101,7 @@ namespace Unicepse.utlis.common
                 OnPropertyChanged(nameof(SelectedDailyPlayerReport));
             }
         }
-        private DateTime _selectedDate;
+        private DateTime _selectedDate =DateTime.Now;
         public DateTime SelectedDate
         {
             get { return _selectedDate; }

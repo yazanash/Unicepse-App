@@ -23,12 +23,12 @@ namespace Unicepse.Stores
         string LogFlag = "[Attendence] ";
         private readonly ILogger<PlayersAttendenceStore> _logger;
         public event Action<DailyPlayerReport>? LoggedOut;
-        private readonly Lazy<Task> _initializeLazy;
+        private readonly Lazy<Task>? _initializeLazy;
         public PlayersAttendenceStore(PlayersAttendenceService playersAttendenceService, ILogger<PlayersAttendenceStore> logger, IApiDataStore<DailyPlayerReport> apiDataStore)
         {
             _playersAttendenceService = playersAttendenceService;
             _playersAttendence = new List<DailyPlayerReport>();
-            _initializeLazy = new Lazy<Task>(Initialize);
+            //_initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
             _apiDataStore = apiDataStore;
         }
@@ -70,8 +70,8 @@ namespace Unicepse.Stores
             if (entity.DataStatus != DataStatus.ToCreate)
                 entity.DataStatus = DataStatus.ToUpdate;
             bool loggedOut = await _playersAttendenceService.LogOutPlayer(entity);
+            await _apiDataStore.Update(entity);
 
-            
             int currentIndex = _playersAttendence.FindIndex(y => y.Id == entity.Id);
 
             if (currentIndex != -1)

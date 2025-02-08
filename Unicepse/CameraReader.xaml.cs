@@ -65,6 +65,7 @@ namespace Unicepse
             InitializeComponent();
             _stillOpen=stillOpen;
             _viewModelBase = viewModelBase;
+            _viewModelBase.UID = null;
             videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             for (int i = 0; i < videoDevices.Count; i++)
             {

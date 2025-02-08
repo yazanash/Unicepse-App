@@ -182,6 +182,7 @@
                         <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" 
                                  ItemContainerStyle="{DynamicResource SportsItemContainerStyle1}"
                                  Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top"
+                                 VirtualizingPanel.ScrollUnit="Pixel"
                                  BorderBrush="#fff" ItemsSource="{Binding SportList}" >
 
 

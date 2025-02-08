@@ -31,6 +31,7 @@
                     <!--<ScrollViewer DockPanel.Dock="Top" >-->
                     <ListView ScrollViewer.CanContentScroll="True"
                                     SelectedItem="{Binding SelectedSport,UpdateSourceTrigger=PropertyChanged}"
+                              VirtualizingPanel.ScrollUnit="Pixel"
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" ItemsSource="{Binding SportList}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" >
                     </ListView>
                     <!--</ScrollViewer>-->
