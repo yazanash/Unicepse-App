@@ -20,8 +20,19 @@ namespace Unicepse.utlis.common
         private readonly HomeViewModel _homeNavViewModel;
         private readonly BackgroundServiceStore _backgroundServiceStore;
         private readonly AuthenticationStore _authenticationStore;
+        private readonly LicenseDataStore _licenseDataStore;
         public StatusBarViewModel StatusBarViewModel { get; set; }
-        public MainWindowViewModel(UsersDataStore usersDataStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, INavigator navigator, AccountingViewModel accountingViewModel, HomeViewModel homeNavViewModel)
+
+        private int _daysLeft;
+        public int DaysLeft 
+        {
+            get { return _daysLeft; }
+            set { _daysLeft = value; OnPropertyChanged(nameof(DaysLeft)); }
+        }
+
+        public bool IsExpired { get; set; }
+
+        public MainWindowViewModel(UsersDataStore usersDataStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, INavigator navigator, AccountingViewModel accountingViewModel, HomeViewModel homeNavViewModel, LicenseDataStore licenseDataStore)
         {
             Navigator = navigator;
             _accountingViewModel = accountingViewModel;
@@ -64,9 +75,14 @@ namespace Unicepse.utlis.common
             StatusBarViewModel.SyncMessage = _backgroundServiceStore.SyncMessage;
             StatusBarViewModel.BackMessage = _backgroundServiceStore.BackMessage;
             StatusBarViewModel.Connection = _backgroundServiceStore.Connection ? Brushes.Green : Brushes.Red;
-
+            _licenseDataStore = licenseDataStore;
+            if (_licenseDataStore.CurrentLicense != null)
+            {
+                DaysLeft = (int)_licenseDataStore.CurrentLicense.SubscribeEndDate.Subtract(DateTime.Now).TotalDays;
+                IsExpired = DaysLeft <= 5;
+            }
         }
-
+       
         private void _usersDataStore_Updated(Core.Models.Authentication.User obj)
         {
             if (_authenticationStore.CurrentAccount!.Id == obj.Id)

@@ -22,6 +22,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Unicepse.Core.Models;
 using Unicepse.Core.Models.SyncModel;
+using Serilog.Context;
 
 namespace Unicepse.Entityframework.DbContexts
 {
@@ -29,6 +30,7 @@ namespace Unicepse.Entityframework.DbContexts
     {
         public PlatinumGymDbContext(DbContextOptions options) : base(options)
         {
+
         }
 
         public DbSet<Player>? Players { get; set; }
@@ -116,7 +118,15 @@ namespace Unicepse.Entityframework.DbContexts
             base.OnModelCreating(modelBuilder);
         }
     }
+    public class SqliteUnicepsContext : PlatinumGymDbContext
+    {
+        public SqliteUnicepsContext(DbContextOptions options) : base(options)
+        {
+        }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+            => options.UseSqlite("Data Source=Uniceps.db");
+    }
     class SportConfiguration : IEntityTypeConfiguration<Sport>
     {
         public void Configure(EntityTypeBuilder<Sport> builder)

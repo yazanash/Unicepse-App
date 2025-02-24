@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Unicepse.Entityframework.DbContexts;
 
@@ -11,9 +12,11 @@ using Unicepse.Entityframework.DbContexts;
 namespace Unicepse.Entityframework.Migrations
 {
     [DbContext(typeof(PlatinumGymDbContext))]
-    partial class PlatinumGymDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250208104017_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -582,6 +585,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
+
                     b.Property<int>("BirthDate")
                         .HasColumnType("int");
 
@@ -689,6 +695,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<bool>("IsMoved")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsPlayerPay")
                         .HasColumnType("bit");
 
@@ -713,6 +722,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<double>("OfferValue")
                         .HasColumnType("float");
 
+                    b.Property<double>("PaidValue")
+                        .HasColumnType("float");
+
                     b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
@@ -726,6 +738,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("float");
 
                     b.Property<double>("PrivatePrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("RestValue")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("RollDate")
@@ -969,7 +984,7 @@ namespace Unicepse.Entityframework.Migrations
             modelBuilder.Entity("Unicepse.Core.Models.Payment.PlayerPayment", b =>
                 {
                     b.HasOne("Unicepse.Core.Models.Player.Player", "Player")
-                        .WithMany("Payments")
+                        .WithMany()
                         .HasForeignKey("PlayerId");
 
                     b.HasOne("Unicepse.Core.Models.Employee.Employee", "Recipient")
@@ -990,7 +1005,7 @@ namespace Unicepse.Entityframework.Migrations
             modelBuilder.Entity("Unicepse.Core.Models.Subscription.Subscription", b =>
                 {
                     b.HasOne("Unicepse.Core.Models.Player.Player", "Player")
-                        .WithMany("Subscriptions")
+                        .WithMany()
                         .HasForeignKey("PlayerId");
 
                     b.HasOne("Unicepse.Core.Models.Sport.Sport", "Sport")
@@ -1035,13 +1050,6 @@ namespace Unicepse.Entityframework.Migrations
             modelBuilder.Entity("Unicepse.Core.Models.Employee.Employee", b =>
                 {
                     b.Navigation("PlayerTrainings");
-                });
-
-            modelBuilder.Entity("Unicepse.Core.Models.Player.Player", b =>
-                {
-                    b.Navigation("Payments");
-
-                    b.Navigation("Subscriptions");
                 });
 
             modelBuilder.Entity("Unicepse.Core.Models.Sport.Sport", b =>

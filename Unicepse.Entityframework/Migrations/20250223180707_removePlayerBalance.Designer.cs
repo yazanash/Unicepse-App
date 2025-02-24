@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Unicepse.Entityframework.DbContexts;
 
@@ -11,9 +12,11 @@ using Unicepse.Entityframework.DbContexts;
 namespace Unicepse.Entityframework.Migrations
 {
     [DbContext(typeof(PlatinumGymDbContext))]
-    partial class PlatinumGymDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250223180707_removePlayerBalance")]
+    partial class removePlayerBalance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -689,6 +692,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<bool>("IsMoved")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsPlayerPay")
                         .HasColumnType("bit");
 
@@ -713,6 +719,9 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<double>("OfferValue")
                         .HasColumnType("float");
 
+                    b.Property<double>("PaidValue")
+                        .HasColumnType("float");
+
                     b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
@@ -726,6 +735,9 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("float");
 
                     b.Property<double>("PrivatePrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("RestValue")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("RollDate")

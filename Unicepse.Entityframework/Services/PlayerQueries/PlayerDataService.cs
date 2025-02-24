@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unicepse.Core.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Unicepse.Entityframework.Services.PlayerQueries
 {
@@ -56,7 +57,22 @@ namespace Unicepse.Entityframework.Services.PlayerQueries
         {
             using PlatinumGymDbContext context = _contextFactory.CreateDbContext();
 
-            IEnumerable<Player>? entities = await context.Set<Player>().Where(x => x.IsSubscribed == true).ToListAsync();
+            IEnumerable<Player>? entities = await context.Set<Player>().Select(p => new Player
+            {
+                Id = p.Id,
+                FullName  =p.FullName,
+                Phone = p.Phone,
+                BirthDate = p.BirthDate,
+                GenderMale = p.GenderMale,
+                Weight = p.Weight,
+                Hieght = p.Hieght,
+                SubscribeDate = p.SubscribeDate,
+                SubscribeEndDate =p.Subscriptions.Count()>0? p.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault()!.EndDate: p.SubscribeDate.AddDays(30),
+                IsTakenContainer = p.IsTakenContainer,
+                IsSubscribed = p.IsSubscribed,
+                UID = p.UID,
+                Balance = p.Subscriptions.Sum(s => s.PriceAfterOffer) - p.Payments.Sum(py => py.PaymentValue)
+            }).Where(x => x.IsSubscribed == true).ToListAsync();
             return entities;
 
         }
