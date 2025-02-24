@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,8 +35,11 @@ namespace Unicepse.Core.Models.Subscription
         public bool IsStopped { get; set; }
         public bool IsMoved { get; set; }
         public double PrivatePrice { get; set; }
+        [NotMapped]
         public bool IsPaid { get; set; }
+        [NotMapped]
         public double PaidValue { get; set; }
+        [NotMapped]
         public double RestValue { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime LastPaid { get; set; }

@@ -33,6 +33,9 @@ using Unicepse.Core.Models.Subscription;
 using Unicepse.Core.Models.Employee;
 using Unicepse.Core.Models.Sport;
 using Unicepse.Stores.ApiDataStores;
+using Unicepse.Views;
+using Unicepse.ViewModels;
+using Unicepse.Stores.RoutineStores;
 
 namespace Unicepse
 {
@@ -578,6 +581,9 @@ namespace Unicepse
                 logger.LogInformation(LogFlag + "services started");
                 await PrepareDatabase();
                 logger.LogInformation(LogFlag + "get licenses");
+                //RoutineTemplateWindow routineTemplateWindow = new();
+                //routineTemplateWindow.DataContext =  RoutineTemplateViewModel.LoadViewModel(_host.Services.GetRequiredService<ExercisesDataStore>());
+                //routineTemplateWindow.Show();
                 LicenseDataStore licenseDataStore = _host.Services.GetRequiredService<LicenseDataStore>();
                 licenseDataStore.ActiveLicense();
                 if (licenseDataStore.CurrentLicense != null)
@@ -634,14 +640,12 @@ namespace Unicepse
         protected async override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
             splashScreen = new SplashScreenWindow();
             splashScreen.Show();
             EventManager.RegisterClassHandler(typeof(TextBox), TextBox.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(TextBox_PreviewMouseLeftButtonDown));
             await PerpareApp();
             splashScreen.Close();
-
-
-            //await PerpareApp();
         }
         public static IHostBuilder CreateHostBuilder() =>
              Host.CreateDefaultBuilder()
@@ -666,7 +670,10 @@ namespace Unicepse
                 {
                     services.AddHostedService<DataSyncService>();
                     string? CONNECTION_STRING = hostContext.Configuration.GetConnectionString("default");
-                    services.AddSingleton(new PlatinumGymDbContextFactory(CONNECTION_STRING));
+                    bool SQLITE = hostContext.Configuration.GetValue<bool>("UseSqlite");
+                    if(SQLITE)
+                    CONNECTION_STRING = hostContext.Configuration.GetConnectionString("sqlite");
+                    services.AddSingleton(new PlatinumGymDbContextFactory(CONNECTION_STRING, SQLITE));
 
                 });
 

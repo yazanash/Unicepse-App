@@ -38,7 +38,7 @@ namespace Unicepse.Test.DataServicesTest
         public void OnetimeSetUp()
         {
             string CONNECTION_STRING = @"data source =.\sqlexpress; initial catalog = PlatinumDB_test; integrated security = SSPI; TrustServerCertificate = True; ";
-            db = new PlatinumGymDbContextFactory(CONNECTION_STRING);
+            db = new PlatinumGymDbContextFactory(CONNECTION_STRING, false);
 
             using (PlatinumGymDbContext platinumGymDbContext = db.CreateDbContext())
             {

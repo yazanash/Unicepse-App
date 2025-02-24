@@ -28,6 +28,13 @@ namespace Unicepse.ViewModels.RoutineViewModels
             RepeateItemCommand = new RepeateItemCommand(_playerStore, _routineDataStore, RoutineItems);
             ApplyToAllCommand = new ApplyToAllCommand(_routineDataStore, RoutineItems);
         }
+        public RoutineItemFillViewModel(RoutineItems routineItems)
+        {
+            RoutineItems = routineItems;
+            _notes = routineItems.Notes;
+            _orders = routineItems.Orders;
+            _itemOrder = RoutineItems.ItemOrder;
+        }
         public ICommand RemoveItemCommand { get; }
         public ICommand RepeateItemCommand { get; }
 
