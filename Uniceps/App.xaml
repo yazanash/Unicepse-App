@@ -1,0 +1,48 @@
+﻿<Application x:Class="Uniceps.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:Uniceps"
+             xmlns:viewmodels="clr-namespace:Uniceps.ViewModels"
+             xmlns:vms="clr-namespace:Uniceps.ViewModels.PlayersViewModels"
+             xmlns:vmodels="clr-namespace:Uniceps.ViewModels.Accountant"
+             xmlns:views="clr-namespace:Uniceps.Views"
+             xmlns:vs="clr-namespace:Uniceps.Views.AccountingViews"
+             xmlns:playervs="clr-namespace:Uniceps.Views.PlayerViews"
+             xmlns:vi="clr-namespace:Uniceps.Views.PlayerViews"
+             xmlns:login="clr-namespace:Uniceps.Views.AuthView"
+             xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+    <Application.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Name="ff" Source="Resources/Theme/LightThemeResourceDictionary.xaml"/>
+                <ResourceDictionary Source="Resources/CustomStyles.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/DataTemplate/DataTemplateResourceDictionary.xaml"/>
+
+
+                <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/ButtonsStyleResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/CalendarStyleResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/DataGridResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/DropDownResourceDictionary.xaml"/>
+
+                <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/InputControlsResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/ListViewResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/ScrollViewerResouceDictionary.xaml"/>
+
+                <ResourceDictionary Source="utlis/Dictionaries/PagesStyle/LoginPageResourceDictionary.xaml"/>
+
+
+
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/MetricItemsResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/PaymentInvoiceItemResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/RoutineItemsResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/SportItemsResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/SubscriptionItemsResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/TrainerItemsResourceDictionary.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/GroupDaysSelectionListView.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/RoutineListResource.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+         
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

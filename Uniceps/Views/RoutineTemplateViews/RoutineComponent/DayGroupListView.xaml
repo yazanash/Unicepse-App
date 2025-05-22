@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="Uniceps.Views.RoutineTemplateViews.RoutineComponent.DayGroupListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uniceps.Views.RoutineTemplateViews.RoutineComponent"
+             mc:Ignorable="d" 
+             xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             FlowDirection="RightToLeft"
+             >
+    <Border Background="#fff" CornerRadius="15" Padding="10" Margin="10">
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                <TextBlock Text="الأيام :" VerticalAlignment="Center" Margin="0 0 8 0" FontSize="16"/>
+                <Button Grid.Column="2" Grid.Row="1" Command="{Binding AddDayGroupCommand}" Style="{StaticResource IconBtn}">
+                    <icons:PackIconMaterial Kind="Plus" Foreground="{StaticResource colors.primary}"/>
+                </Button>
+            </StackPanel>
+            <ListView BorderThickness="0" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding DayGroups}" SelectedItem="{Binding SelectedDayGroup}" ItemContainerStyle="{StaticResource DayGroupsListBoxItemContainerStyle1}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+           
+        </Grid>
+
+    </Border>
+
+</UserControl>

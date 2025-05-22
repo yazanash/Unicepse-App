@@ -1,0 +1,141 @@
+﻿<UserControl x:Class="Uniceps.Controls.InfoCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uniceps.Controls"
+             mc:Ignorable="d" 
+             Background="White"
+             FlowDirection="RightToLeft"
+              xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
+             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+        <converters:NumberFormatConverter x:Key="convertNum"/>
+    </UserControl.Resources>
+    <Border Background="White" CornerRadius="15" Width="220" Margin="5" Padding="10 5">
+        <!--<Border.Effect>
+            <DropShadowEffect BlurRadius="5" ShadowDepth="0.5"/>
+        </Border.Effect>-->
+        <ScrollViewer >
+            
+        <StackPanel Orientation="Vertical" >
+            <Button HorizontalAlignment="Left" Command="{Binding EditCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
+
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Text="تعديل"  VerticalAlignment="Center"/>
+                    <icon:PackIconMaterial Kind="Pen"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 0"
+                                       VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </Button>
+
+            <Border Width="60" Background="{StaticResource colors.primary}" CornerRadius="50" Height="60" Margin="5" HorizontalAlignment="Center">
+                <icon:PackIconMaterial Width="40" Height="40" Foreground="#fff" Kind="Account" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Border>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Border Visibility="{Binding IsVerified , Converter={StaticResource BoolToVis}}" FlowDirection="LeftToRight" Width="25" Height="25" Padding="5" HorizontalAlignment="Center" CornerRadius="100" BorderBrush="{StaticResource colors.primary}" BorderThickness="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                        <!--<TextBlock Text="الحساب موثق"  VerticalAlignment="Center" Foreground="Green"/>-->
+                        <icon:PackIconMaterial Kind="Check"
+                                       Width="11"
+                                       Height="11"
+                                               FontWeight="Bold" FontSize="22"
+                                           Foreground="{StaticResource colors.primary}"
+                                       VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock  Text="{Binding FullName,UpdateSourceTrigger=PropertyChanged}" FontSize="15" TextWrapping="Wrap" Margin="5" HorizontalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+
+            </StackPanel>
+            <Separator Background="#ccc"  Margin="10 10"/>
+                <Button HorizontalAlignment="Center" Visibility="{Binding IsVerified ,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InverseBooleanToVisibalityConverter}}" Command="{Binding VerifyAccountCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
+
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Text="ربط الحساب"  VerticalAlignment="Center"/>
+                    <icon:PackIconMaterial Kind="Check"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 0"
+                                       VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </Button>
+          
+            <StackPanel>
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="رقم الهاتف" FontSize="12" Foreground="{StaticResource colors.primary}"/>
+                            <TextBlock Text="{Binding Phone,UpdateSourceTrigger=PropertyChanged}"  FontSize="13" Foreground="#384756"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="الجنس" FontSize="14" Foreground="{StaticResource colors.primary}"/>
+                            <TextBlock Text="{Binding Gendertext,UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="#384756"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="سنة الميلاد" FontSize="14" Foreground="{StaticResource colors.primary}"/>
+                            <TextBlock Text="{Binding BirthDate,UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="#384756"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="تاريخ الاشتراك" FontSize="14" Foreground="{StaticResource colors.primary}"/>
+                            <TextBlock Text="{Binding SubscribeDate,UpdateSourceTrigger=PropertyChanged}" FontSize="14"  Foreground="#384756"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 5">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="رصيد الحساب" FontSize="14" Foreground="{StaticResource colors.primary}"/>
+                            <TextBlock Foreground="{Binding BalanceColor,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Balance,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontSize="14" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+            <Grid>
+                <Button HorizontalAlignment="Center" Visibility="{Binding IsActive,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}"  Command="{Binding DeleteCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource DeleteBtn}">
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Text="حذف الحساب"  VerticalAlignment="Center"/>
+                        <icon:PackIconMaterial Kind="TrashCan"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 0"
+                                           Foreground="#fff"
+                                       VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                </Button>
+                <Button HorizontalAlignment="Center" Visibility="{Binding IsActive,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  Command="{Binding ReactivePlayerCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Text="استرجاع الحساب"  VerticalAlignment="Center"/>
+                        <icon:PackIconMaterial Kind="TrashCan"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 0"
+                                           Foreground="#fff"
+                                       VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                </Button>
+
+            </Grid>
+            </StackPanel>
+
+        </ScrollViewer>
+
+    </Border>
+</UserControl>

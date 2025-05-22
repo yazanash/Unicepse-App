@@ -1,0 +1,147 @@
+﻿<UserControl x:Class="Uniceps.Views.PlayerViews.TrainerPlayerSubscriptionDausesListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uniceps.Views.PlayerViews"
+              xmlns:comp="clr-namespace:Uniceps.utlis.Components"
+                xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
+             xmlns:vms="clr-namespace:Uniceps.ViewModels.PlayersViewModels"
+             xmlns:view="clr-namespace:Uniceps.Views.PlayerViews"
+                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+
+    </UserControl.Resources>
+    <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">
+
+            <DockPanel DockPanel.Dock="Top" >
+                <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="#C14E00" FontSize="18" DockPanel.Dock="Top"/>
+                <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
+                <Grid  Grid.Row="4">
+                    <custom:LoadingSpinner
+                IsLoading="{Binding IsLoading}"
+                Diameter="100" Thickness="3" Color="#C14E00" />
+                    <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+
+                        <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
+
+                        <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
+                                    FlowDirection="RightToLeft" ItemsSource="{Binding SubscriptionList}" 
+                                    CanUserReorderColumns="True"
+                                SelectedItem="{Binding SelectedSubscription}"
+                                    x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
+                                    CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                    ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+                         
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="#" IsReadOnly="True"
+                                    Width="auto"
+                                    Binding="{Binding Id}"
+                                    CanUserResize="False"/>
+
+                                <DataGridTemplateColumn Header="اسم اللاعب" Width="*" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <!--<Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
+                                                        </Border>-->
+                                                <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding SportName}" VerticalAlignment="Center"/>
+                                               
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="الاشتراك" Width="*" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <!--<Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
+                                                        </Border>-->
+                                                <TextBlock Margin="10 0 0 0" Text="{Binding SportName}" VerticalAlignment="Center"/>
+                                                <TextBlock Margin="10 0 0 0" Text="{Binding Trainer}"
+                                                                  Foreground="#888" FontSize="13" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+
+                                <DataGridTextColumn Header="قيمة الاشتراك" IsReadOnly="True"
+                                     Binding="{Binding RollDate}"
+                                    Width="*"
+                                    />
+                                <DataGridTextColumn Header="المدفوع" IsReadOnly="True"
+                                     Binding="{Binding Price}"
+                                    Width="auto"
+                                    />
+                                <DataGridTextColumn Header="قيمة الحسم" IsReadOnly="True"
+                                     Binding="{Binding Price}"
+                                    Width="auto"
+                                    />
+                                <DataGridTemplateColumn Header="مدة الاستحقاق" Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <!--<Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
+                                                        </Border>-->
+                                                <TextBlock Margin="10 0 0 0" Text="{Binding SportName}" VerticalAlignment="Center"/>
+                                                <TextBlock Margin="10 0 0 0" Text="{Binding Trainer}"
+                                                                  Foreground="#888" FontSize="13" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="تدريب خاص" Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="{Binding IsPrivate}" FontSize="12"/>
+                                                <TextBlock Text="{Binding PrivatePrice}" FontSize="12"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                              
+                                <DataGridTextColumn Header="عدد الايام" IsReadOnly="True"
+                                     Binding="{Binding EndDate}"
+                                    Width="auto"
+                                    />
+                                <DataGridTextColumn Header="مستحقات المدرب" IsReadOnly="True"
+                                     Binding="{Binding EndDate}"
+                                    Width="auto"
+                                    />
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!--<Border Background="#fff">
+                            
+                        </Border>-->
+                    </Grid>
+                </Grid>
+            </DockPanel>
+        </Border>
+
+
+    </Grid>
+
+</UserControl>
