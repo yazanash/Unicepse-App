@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Uniceps.Core.Services
 {
-    public interface IRoutineItemsDataService
+    public interface IUpdateRangeDataService<T>
     {
-        Task<bool> DeleteRoutineItems(int id);
+        Task<IEnumerable<T>> UpdateRange(List<T> entity);
     }
 }

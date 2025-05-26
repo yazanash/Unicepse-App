@@ -1,6 +1,5 @@
 ﻿using Uniceps.Core.Models;
 using Uniceps.Commands;
-using Uniceps.ViewModels.TrainingViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

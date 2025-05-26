@@ -86,9 +86,6 @@
 
   <ItemGroup>
     <Content Include="launcher.ico" />
-    <Content Include="Training.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />

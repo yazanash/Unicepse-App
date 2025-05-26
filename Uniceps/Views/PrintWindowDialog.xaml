@@ -1,14 +1,14 @@
-﻿<Window x:Class="Uniceps.PrintWindowDialog"
+﻿<Window x:Class="Uniceps.Views.PrintWindowDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Uniceps"
+        xmlns:local="clr-namespace:Uniceps.Views"
         mc:Ignorable="d"
         xmlns:subprintvms="clr-namespace:Uniceps.ViewModels.PrintViewModels"
         xmlns:subprintvs="clr-namespace:Uniceps.utlis.Pages"
         WindowState="Normal"
-         Icon="Resources/icons/Logo.ico"
+         Icon="../Resources/icons/Logo.ico"
         Title="PrintWindowDialog"   >
     <Window.Resources>
         <DataTemplate DataType="{x:Type subprintvms:SubscriptionPrintViewModel }">

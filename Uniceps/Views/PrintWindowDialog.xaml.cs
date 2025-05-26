@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 
-namespace Uniceps
+namespace Uniceps.Views
 {
     /// <summary>
     /// Interaction logic for PrintWindowDialog.xaml

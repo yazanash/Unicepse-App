@@ -45,6 +45,7 @@ namespace Uniceps.HostBuilders
 
                 services.AddSingleton<IDataService<RoutineModel>, RoutineModelDataService>();
                 services.AddSingleton<IDataService<DayGroup>, RoutineDayGroupDataService>();
+                services.AddSingleton<IUpdateRangeDataService<DayGroup>, RoutineDayGroupDataService>();
                 services.AddSingleton<IDataService<RoutineItemModel>, RoutineItemDataService>();
                 services.AddSingleton<IGetAllById<DayGroup>, RoutineDayGroupDataService>();
                 services.AddSingleton<IGetAllById<RoutineItemModel>, RoutineItemDataService>();

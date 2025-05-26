@@ -13,13 +13,15 @@ namespace Uniceps.Stores.RoutineStores
     {
         private readonly IDataService<DayGroup> _dataService;
         private readonly IGetAllById<DayGroup> _getAllDataService;
+        private readonly IUpdateRangeDataService<DayGroup> _updateRangeDataService;
         private readonly List<DayGroup> _dayGroups;
         public IEnumerable<DayGroup> DayGroups => _dayGroups;
-        public DayGroupDataStore(IDataService<DayGroup> dataService, IGetAllById<DayGroup> getAllDataService)
+        public DayGroupDataStore(IDataService<DayGroup> dataService, IGetAllById<DayGroup> getAllDataService, IUpdateRangeDataService<DayGroup> updateRangeDataService)
         {
             _dataService = dataService;
             _dayGroups = new List<DayGroup>();
             _getAllDataService = getAllDataService;
+            _updateRangeDataService = updateRangeDataService;
         }
 
         public event Action<DayGroup>? Created;
@@ -92,5 +94,24 @@ namespace Uniceps.Stores.RoutineStores
             _dayGroups.AddRange(dayGroups);
             Loaded?.Invoke();
         }
+        public async Task UpdateRange(List<DayGroup> entities)
+        {
+            await _updateRangeDataService.UpdateRange(entities);
+            foreach(DayGroup entity in entities)
+            {
+                int currentIndex = _dayGroups.FindIndex(y => y.Id == entity.Id);
+
+                if (currentIndex != -1)
+                {
+                    _dayGroups[currentIndex] = entity;
+                }
+                else
+                {
+                    _dayGroups.Add(entity);
+                }
+            }
+           
+        }
+
     }
 }

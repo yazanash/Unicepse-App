@@ -13,7 +13,7 @@ using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps;
 using Uniceps.Stores.RoutineStores;
 using player = Uniceps.Core.Models.Player;
-using Unicepse;
+using Uniceps.Views;
 namespace Uniceps.Commands.PlayerAttendenceCommands
 {
     public class LoginPlayerScanCommand : AsyncCommandBase

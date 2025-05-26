@@ -9,22 +9,22 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="CameraReader.xaml.cs">
+    <Compile Update="Views\CameraReader.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="LicenseWindow.xaml.cs">
+    <Compile Update="Views\LicenseWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="PrintWindowDialog.xaml.cs">
+    <Compile Update="Views\PrintWindowDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="ProgressWindow.xaml.cs">
+    <Compile Update="Views\ProgressWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="SearchWindow.xaml.cs">
+    <Compile Update="Views\SearchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="SplashScreenWindow.xaml.cs">
+    <Compile Update="Views\SplashScreenWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Components\CustomTextBox.xaml.cs">
@@ -272,16 +272,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="CameraReader.xaml">
+    <Page Update="Views\CameraReader.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="LicenseWindow.xaml">
+    <Page Update="Views\LicenseWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="PrintWindowDialog.xaml">
+    <Page Update="Views\PrintWindowDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="ProgressWindow.xaml">
+    <Page Update="Views\ProgressWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\CustomStyles.xaml">
@@ -290,10 +290,10 @@
     <Page Update="Resources\Theme\LightThemeResourceDictionary.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="SearchWindow.xaml">
+    <Page Update="Views\SearchWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="SplashScreenWindow.xaml">
+    <Page Update="Views\SplashScreenWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="utlis\Components\CustomTextBox.xaml">

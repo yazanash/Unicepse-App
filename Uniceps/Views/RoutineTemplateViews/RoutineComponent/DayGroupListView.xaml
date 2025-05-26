@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Views.RoutineTemplateViews.RoutineComponent"
              mc:Ignorable="d" 
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
              >
@@ -12,24 +13,129 @@
         <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
                 <TextBlock Text="الأيام :" VerticalAlignment="Center" Margin="0 0 8 0" FontSize="16"/>
                 <Button Grid.Column="2" Grid.Row="1" Command="{Binding AddDayGroupCommand}" Style="{StaticResource IconBtn}">
                     <icons:PackIconMaterial Kind="Plus" Foreground="{StaticResource colors.primary}"/>
                 </Button>
             </StackPanel>
-            <ListView BorderThickness="0" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding DayGroups}" SelectedItem="{Binding SelectedDayGroup}" ItemContainerStyle="{StaticResource DayGroupsListBoxItemContainerStyle1}">
+            <ListView x:Name="lvItems" AllowDrop="True" 
+            DragLeave="TodoItemList_DragLeave"
+            DragOver="TodoItemList_DragOver" 
+                      BorderThickness="0"  VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding DayGroups}" SelectedItem="{Binding SelectedDayGroup}" >
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <VirtualizingStackPanel  Orientation="vertical"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="SnapsToDevicePixels" Value="True"/>
+                        <Setter Property="Padding" Value="5"/>
+                        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <TranslateTransform />
+                            </Setter.Value>
+                        </Setter>
+                        <EventSetter Event="MouseMove" Handler="MouseMoveHandler"/>
+                        <EventSetter Event="DragOver" Handler="DragOverHandler"/>
+                        <EventSetter Event="Drop" Handler="ListBoxItem_Drop"/>
+                        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+
+                                    <Border BorderThickness="1" MinWidth="100" x:Name="Bd" BorderBrush="#ccc" Margin="5 0" Padding="5" CornerRadius="0" Background="#fff">
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <!-- Display Mode -->
+
+                                            <TextBlock FontSize="16" Foreground="#797979" FontWeight="Bold"
+                                   Text="{Binding DayGroupName,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"  HorizontalAlignment="Center"></TextBlock>
+                                            <CheckBox  VerticalAlignment="Center"  Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
+
+                                                <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
+                                            </CheckBox>
+                                            <Button Command="{Binding DeleteCommand}" Style="{StaticResource IconBtn}" FontSize="12"  Grid.Column="0" Grid.Row="4"  HorizontalAlignment="Center">
+                                                <Icon:PackIconMaterial Kind="TrashCan" Foreground="red" Style="{StaticResource GridBtnIcon}"/>
+                                            </Button>
+                                            <!-- Popup for Editing -->
+                                            <Popup StaysOpen="False" AllowsTransparency="True" Name="MyPopup" IsOpen="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
+                                                <!-- Customize the popup content here -->
+                                                <Border Background="#fff" Padding="5" BorderThickness="1" BorderBrush="#444" CornerRadius="10">
+
+                                                    <StackPanel Orientation="Vertical">
+                                                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+
+                                                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+
+                                                        </StackPanel>
+                                                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" FontSize="12"  Grid.Column="0" Grid.Row="4"  Content="حفظ"  HorizontalAlignment="Center">
+                                                        </Button>
+                                                    </StackPanel>
+
+                                                </Border>
+                                            </Popup>
+                                        </StackPanel>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <!--<EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.X"
+                                         From="10" To="0"
+                                         Duration="0:0:0.5"
+                                        />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>-->
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>
+                                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.MouseOver.Border}"/>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
+                                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Background}"/>
+                                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Border}"/>
+                                            <!--<Setter Property="Visibility" TargetName="editbtn" Value="Visible"/>-->
+                                        </MultiTrigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+          
             </ListView>
            
         </Grid>

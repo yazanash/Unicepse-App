@@ -10,6 +10,9 @@ using Uniceps.Stores.RoutineStores;
 using Uniceps.utlis.common;
 using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
 using Uniceps.Commands.RoutineSystemCommands.DayGroupCommands;
+using System.Windows.Controls;
+using System.Windows;
+using Microsoft.EntityFrameworkCore;
 
 namespace Uniceps.ViewModels.RoutineTemplateViewModels
 {
@@ -21,12 +24,76 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         public IEnumerable<DayGroupViewModel> DayGroups => _dayGroupViewModels;
         public ICommand AddDayGroupCommand { get; }
         public ICommand LoadDayGroupCommand { get; }
+        public ICommand SaveNewOrderCommand { get; }
+        private DayGroupViewModel _incomingDayGroupViewModel;
+        public DayGroupViewModel IncomingDayGroupViewModel
+        {
+            get
+            {
+                return _incomingDayGroupViewModel;
+            }
+            set
+            {
+                _incomingDayGroupViewModel = value;
+                OnPropertyChanged(nameof(IncomingDayGroupViewModel));
+            }
+        }
+
+        private DayGroupViewModel _removedDayGroupViewModel;
+        public DayGroupViewModel RemovedDayGroupViewModel
+        {
+            get
+            {
+                return _removedDayGroupViewModel;
+            }
+            set
+            {
+                _removedDayGroupViewModel = value;
+                OnPropertyChanged(nameof(RemovedDayGroupViewModel));
+            }
+        }
+
+        private DayGroupViewModel _insertedDayGroupViewModel;
+        public DayGroupViewModel InsertedDayGroupViewModel
+        {
+            get
+            {
+                return _insertedDayGroupViewModel;
+            }
+            set
+            {
+                _insertedDayGroupViewModel = value;
+                OnPropertyChanged(nameof(InsertedDayGroupViewModel));
+            }
+        }
+
+        private DayGroupViewModel _targetDayGroupViewModel;
+        public DayGroupViewModel TargetDayGroupViewModel
+        {
+            get
+            {
+                return _targetDayGroupViewModel;
+            }
+            set
+            {
+                _targetDayGroupViewModel = value;
+                OnPropertyChanged(nameof(TargetDayGroupViewModel));
+            }
+        }
+
+        public ICommand DayGroupReceivedCommand { get; }
+        public ICommand DayGroupRemovedCommand { get; }
+        public ICommand DayGroupInsertedCommand { get; }
+
         public RoutineDayGroupViewModel(DayGroupDataStore dayGroupDataStore, RoutineTempDataStore routineTempDataStore)
         {
             _dayGroupDataStore = dayGroupDataStore;
             _dayGroupViewModels = new();
             _routineTempDataStore = routineTempDataStore;
-
+            DayGroupReceivedCommand = new DayGroupReceivedCommand(this);
+            DayGroupRemovedCommand = new DayGroupRemovedCommand(this);
+            DayGroupInsertedCommand = new DayGroupInsertedCommand(this);
+            SaveNewOrderCommand = new SaveReorderCommand(_dayGroupDataStore, this);
             AddDayGroupCommand = new CreateDayGroupCommand(_dayGroupDataStore, _routineTempDataStore);
             LoadDayGroupCommand = new LoadDayGroupsCommand(_dayGroupDataStore, _routineTempDataStore);
             _routineTempDataStore.RoutineChanged += _routineTempDataStore_RoutineChanged;
@@ -35,6 +102,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             _dayGroupDataStore.Updated += _dayGroupDataStore_Updated;
             _dayGroupDataStore.Deleted += _dayGroupDataStore_Deleted;
         }
+       
         public DayGroupViewModel? SelectedDayGroup
         {
             get
@@ -92,7 +160,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         private void _dayGroupDataStore_Loaded()
         {
             _dayGroupViewModels.Clear();
-            foreach (DayGroup dayGroup in _dayGroupDataStore.DayGroups)
+            foreach (DayGroup dayGroup in _dayGroupDataStore.DayGroups.OrderBy(x => x.Order))
             {
                 AddDayGroup(dayGroup);
             }
@@ -101,6 +169,34 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         {
             DayGroupViewModel viewModel = new DayGroupViewModel(dayGroup, _dayGroupDataStore);
             _dayGroupViewModels.Add(viewModel);
+        }
+        public void AddTodoItem(DayGroupViewModel item)
+        {
+            if (!_dayGroupViewModels.Contains(item))
+            {
+                _dayGroupViewModels.Add(item);
+            }
+        }
+
+        public void InsertTodoItem(DayGroupViewModel insertedTodoItem, DayGroupViewModel targetTodoItem)
+        {
+            if (insertedTodoItem == targetTodoItem)
+            {
+                return;
+            }
+
+            int oldIndex = _dayGroupViewModels.IndexOf(insertedTodoItem);
+            int nextIndex = _dayGroupViewModels.IndexOf(targetTodoItem);
+
+            if (oldIndex != -1 && nextIndex != -1)
+            {
+                _dayGroupViewModels.Move(oldIndex, nextIndex);
+            }
+        }
+
+        public void RemoveTodoItem(DayGroupViewModel item)
+        {
+            _dayGroupViewModels.Remove(item);
         }
     }
 }

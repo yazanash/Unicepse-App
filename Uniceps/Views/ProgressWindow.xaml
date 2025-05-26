@@ -1,9 +1,9 @@
-﻿<Window x:Class="Uniceps.ProgressWindow"
+﻿<Window x:Class="Uniceps.Views.ProgressWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Uniceps"
+        xmlns:local="clr-namespace:Uniceps.Views"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="Updater" Width="500" >
@@ -14,7 +14,7 @@
                         Padding="5"
                          BorderThickness="0" >
 
-                <Image Stretch="Uniform" Source="Resources/Assets/logo.png" 
+                <Image Stretch="Uniform" Source="../Resources/Assets/logo.png" 
                                     RenderOptions.BitmapScalingMode="HighQuality"
                                                 Height="100" Width="100"         RenderOptions.EdgeMode="Aliased"/>
 

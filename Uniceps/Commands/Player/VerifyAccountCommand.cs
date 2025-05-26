@@ -7,7 +7,7 @@ using System.Windows;
 using Uniceps.Commands;
 using Uniceps.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
-using Unicepse;
+using Uniceps.Views;
 using Uniceps.utlis.common;
 
 namespace Uniceps.Commands.Player

@@ -14,7 +14,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
     public class DayGroupViewModel : ViewModelBase
     {
         private readonly DayGroupDataStore _dayGroupDataStore;
-        public DayGroup? DayGroup { get; set; }
+        public DayGroup DayGroup { get; set; }
         private bool _isEditing;
         public bool IsEditing
         {
@@ -31,7 +31,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
             DayGroup = dayGroup;
             Name = dayGroup.Name!;
             SubmitCommand = new UpdateDayGroupCommand(_dayGroupDataStore, this);
-            DeleteCommand = new DeleteDayGroupCommand(_dayGroupDataStore);
+            DeleteCommand = new DeleteDayGroupCommand(_dayGroupDataStore,this);
         }
         public string? DayGroupName => DayGroup!.Name;
         private string? _name;
@@ -39,6 +39,13 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
         {
             get { return _name; }
             set { _name = value; OnPropertyChanged(nameof(Name)); }
+        }
+
+        private int _order;
+        public int Order
+        {
+            get { return _order; }
+            set { _order = value; OnPropertyChanged(nameof(Order)); }
         }
 
         internal void Update(DayGroup obj)

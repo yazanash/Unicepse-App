@@ -12,21 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Uniceps
+namespace Uniceps.Views
 {
     /// <summary>
-    /// Interaction logic for ProgressWindow.xaml
+    /// Interaction logic for SearchWindow.xaml
     /// </summary>
-    public partial class ProgressWindow : Window
+    public partial class SearchWindow : Window
     {
-        public ProgressWindow()
+        public SearchWindow()
         {
             InitializeComponent();
-        }
-        public void UpdateProgress(int percentage)
-        {
-            progressBar.Value = percentage;
-            progressText.Text = $"{percentage}%";
         }
     }
 }

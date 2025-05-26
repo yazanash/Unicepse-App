@@ -11,16 +11,26 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <routinecomponent:DayGroupListView Grid.ColumnSpan="2" DataContext="{Binding RoutineDayGroupViewModel}"/>
-        <routinecomponent:RoutineItemsView Grid.Row="1" Grid.Column="0" DataContext="{Binding RoutineItemListViewModel}" />
-        <routinecomponent:RoutineItemModelCardView Grid.Row="2" Grid.Column="1" DataContext="{Binding SetModelListItemViewModel,UpdateSourceTrigger=PropertyChanged}" />
+        <routinecomponent:DayGroupListView Grid.Column="0"
+                                           
+                                        DataContext="{Binding RoutineDayGroupViewModel}"
+                                        IncomingDayGroupItem="{Binding IncomingDayGroupViewModel}"
+                                        InsertedDayGroupItem="{Binding InsertedDayGroupViewModel}"
+                                        RemovedDayGroupItem="{Binding RemovedDayGroupViewModel}"
+                                        TargetDayGroupItem="{Binding TargetDayGroupViewModel}"
+                                        DayGroupItemDropCommand="{Binding DayGroupReceivedCommand}"
+                                        DayGroupItemInsertedCommand="{Binding DayGroupInsertedCommand}"
+                                           SaveNewOrderCommand="{Binding SaveNewOrderCommand}"
+                                        DayGroupItemRemovedCommand="{Binding DayGroupRemovedCommand}"/>
+        <routinecomponent:RoutineItemsView  Grid.Column="1" DataContext="{Binding RoutineItemListViewModel}" />
+        <routinecomponent:RoutineItemModelCardView  Grid.Column="2" DataContext="{Binding SetModelListItemViewModel,UpdateSourceTrigger=PropertyChanged}" />
 
     </Grid>
 </UserControl>

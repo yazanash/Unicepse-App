@@ -18,7 +18,7 @@ using Uniceps.ViewModels.Authentication;
 using Uniceps.ViewModels.Accountant;
 using Uniceps.Stores.SportStores;
 using Uniceps.navigation.Navigator;
-using Unicepse;
+using Uniceps.Views;
 
 namespace Uniceps.HostBuilders
 {

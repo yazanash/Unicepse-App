@@ -12,16 +12,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Uniceps
+namespace Uniceps.Views
 {
     /// <summary>
-    /// Interaction logic for SplashScreenWindow.xaml
+    /// Interaction logic for ProgressWindow.xaml
     /// </summary>
-    public partial class SplashScreenWindow : Window
+    public partial class ProgressWindow : Window
     {
-        public SplashScreenWindow()
+        public ProgressWindow()
         {
             InitializeComponent();
+        }
+        public void UpdateProgress(int percentage)
+        {
+            progressBar.Value = percentage;
+            progressText.Text = $"{percentage}%";
         }
     }
 }

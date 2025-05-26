@@ -28,7 +28,7 @@ using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.API.Exercises;
 using Uniceps.ViewModels.AppViewModels;
 using Uniceps.Views.AuthView;
-
+using Uniceps.Views;
 namespace Uniceps
 {
     /// <summary>

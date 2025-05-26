@@ -26,7 +26,7 @@ using System.Reflection;
 using Uniceps.utlis.common;
 using Uniceps.ViewModels.PlayersViewModels;
 
-namespace Uniceps
+namespace Uniceps.Views
 {
     /// <summary>
     /// Interaction logic for CameraReader.xaml

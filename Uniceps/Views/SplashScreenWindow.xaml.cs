@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Uniceps
+namespace Uniceps.Views
 {
     /// <summary>
-    /// Interaction logic for SearchWindow.xaml
+    /// Interaction logic for SplashScreenWindow.xaml
     /// </summary>
-    public partial class SearchWindow : Window
+    public partial class SplashScreenWindow : Window
     {
-        public SearchWindow()
+        public SplashScreenWindow()
         {
             InitializeComponent();
         }

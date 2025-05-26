@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Uniceps
+namespace Uniceps.Views
 {
     /// <summary>
     /// Interaction logic for LicenseWindow.xaml
