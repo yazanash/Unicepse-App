@@ -22,9 +22,10 @@ namespace Uniceps.Commands.RoutineSystemCommands.SetModelsCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
+            int reps = _setsModelDataStore.SetModels.Count()>0?_setsModelDataStore.SetModels.LastOrDefault()!.Repetition:0;
             SetModel setModel = new SetModel()
             {
-                Repetition = 0,
+                Repetition = reps,
                 RoundIndex = _setsModelDataStore.SetModels.Count(),
                 RoutineItem = _routineItemDataStore.SelectedRoutineItem!,
                 RoutineItemId = _routineItemDataStore.SelectedRoutineItem!.Id,
