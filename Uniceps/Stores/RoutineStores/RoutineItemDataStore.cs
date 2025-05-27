@@ -13,13 +13,15 @@ namespace Uniceps.Stores.RoutineStores
     {
         private readonly IDataService<RoutineItemModel> _dataService;
         private readonly IGetAllById<RoutineItemModel> _getAllDataService;
+        private readonly IUpdateRangeDataService<RoutineItemModel> _updateRangeDataService;
         private readonly List<RoutineItemModel> _routineItemModels;
         public IEnumerable<RoutineItemModel> RoutineItems => _routineItemModels;
-        public RoutineItemDataStore(IDataService<RoutineItemModel> dataService, IGetAllById<RoutineItemModel> getAllDataService)
+        public RoutineItemDataStore(IDataService<RoutineItemModel> dataService, IGetAllById<RoutineItemModel> getAllDataService, IUpdateRangeDataService<RoutineItemModel> updateRangeDataService)
         {
             _dataService = dataService;
             _routineItemModels = new List<RoutineItemModel>();
             _getAllDataService = getAllDataService;
+            _updateRangeDataService = updateRangeDataService;
         }
 
         public event Action<RoutineItemModel>? Created;
@@ -90,6 +92,24 @@ namespace Uniceps.Stores.RoutineStores
             _routineItemModels.Clear();
             _routineItemModels.AddRange(routineItems);
             Loaded?.Invoke();
+        }
+        public async Task UpdateRange(List<RoutineItemModel> entities)
+        {
+            await _updateRangeDataService.UpdateRange(entities);
+            foreach (RoutineItemModel entity in entities)
+            {
+                int currentIndex = _routineItemModels.FindIndex(y => y.Id == entity.Id);
+
+                if (currentIndex != -1)
+                {
+                    _routineItemModels[currentIndex] = entity;
+                }
+                else
+                {
+                    _routineItemModels.Add(entity);
+                }
+            }
+
         }
     }
 }

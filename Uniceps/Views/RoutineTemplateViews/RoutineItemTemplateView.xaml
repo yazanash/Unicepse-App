@@ -29,7 +29,16 @@
                                         DayGroupItemInsertedCommand="{Binding DayGroupInsertedCommand}"
                                            SaveNewOrderCommand="{Binding SaveNewOrderCommand}"
                                         DayGroupItemRemovedCommand="{Binding DayGroupRemovedCommand}"/>
-        <routinecomponent:RoutineItemsView  Grid.Column="1" DataContext="{Binding RoutineItemListViewModel}" />
+        
+        <routinecomponent:RoutineItemsView  Grid.Column="1" DataContext="{Binding RoutineItemListViewModel}"
+                                            IncomingRoutineItem="{Binding IncomingRoutineItemViewModel}"
+InsertedRoutineItem="{Binding InsertedRoutineItemViewModel}"
+RemovedRoutineItem="{Binding RemovedRoutineItemViewModel}"
+TargetRoutineItem="{Binding TargetRoutineItemViewModel}"
+RoutineItemDropCommand="{Binding RoutineItemReceivedCommand}"
+RoutineItemInsertedCommand="{Binding RoutineItemInsertedCommand}"
+   SaveNewRoutineItemOrderCommand="{Binding SaveNewOrderCommand}"
+RoutineItemRemovedCommand="{Binding RoutineItemRemovedCommand}"/>
         <routinecomponent:RoutineItemModelCardView  Grid.Column="2" DataContext="{Binding SetModelListItemViewModel,UpdateSourceTrigger=PropertyChanged}" />
 
     </Grid>

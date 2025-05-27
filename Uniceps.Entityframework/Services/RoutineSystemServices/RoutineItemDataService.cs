@@ -13,7 +13,7 @@ using Uniceps.Core.Models.TrainingProgram;
 
 namespace Uniceps.Entityframework.Services.RoutineSystemServices
 {
-    public class RoutineItemDataService : IDataService<RoutineItemModel>, IGetAllById<RoutineItemModel>
+    public class RoutineItemDataService : IDataService<RoutineItemModel>, IGetAllById<RoutineItemModel>, IUpdateRangeDataService<RoutineItemModel>
     {
         private readonly UnicepsDbContextFactory _contextFactory;
 
@@ -24,8 +24,8 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
         public async Task<RoutineItemModel> Create(RoutineItemModel entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            context.Attach(entity.Day);
-            context.Attach(entity.Exercise);
+            context.Attach(entity.Day!);
+            context.Attach(entity.Exercise!);
             EntityEntry<RoutineItemModel> CreatedResult = await context.Set<RoutineItemModel>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;
@@ -76,6 +76,15 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
             if (entityToUpdate == null)
                 throw new NotExistException("هذا السجل غير موجود");
             context.Set<RoutineItemModel>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<IEnumerable<RoutineItemModel>> UpdateRange(List<RoutineItemModel> entity)
+        {
+            using UnicepsDbContext context = _contextFactory.CreateDbContext();
+
+            context.Set<RoutineItemModel>().UpdateRange(entity);
             await context.SaveChangesAsync();
             return entity;
         }
