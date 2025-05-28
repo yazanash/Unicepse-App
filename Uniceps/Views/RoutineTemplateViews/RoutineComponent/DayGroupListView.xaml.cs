@@ -82,14 +82,14 @@ namespace Uniceps.Views.RoutineTemplateViews.RoutineComponent
             set { SetValue(RemovedDayGroupItemProperty, value); }
         }
 
-        public static readonly DependencyProperty DayGroupRemovedCommandProperty =
+        public static readonly DependencyProperty DayGroupItemRemovedCommandProperty =
           DependencyProperty.Register("DayGroupItemRemovedCommand", typeof(ICommand), typeof(DayGroupListView),
               new PropertyMetadata(null));
 
         public ICommand DayGroupItemRemovedCommand
         {
-            get { return (ICommand)GetValue(DayGroupRemovedCommandProperty); }
-            set { SetValue(DayGroupRemovedCommandProperty, value); }
+            get { return (ICommand)GetValue(DayGroupItemRemovedCommandProperty); }
+            set { SetValue(DayGroupItemRemovedCommandProperty, value); }
         }
 
 

@@ -30,8 +30,8 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
 
         public ICommand SaveNewOrderCommand { get; }
 
-        private RoutineItemListItemViewModel _incomingRoutineItemViewModel;
-        public RoutineItemListItemViewModel IncomingRoutineItemViewModel
+        private RoutineItemListItemViewModel? _incomingRoutineItemViewModel;
+        public RoutineItemListItemViewModel? IncomingRoutineItemViewModel
         {
             get
             {
@@ -44,8 +44,8 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             }
         }
 
-        private RoutineItemListItemViewModel _removedRoutineItemViewModel;
-        public RoutineItemListItemViewModel RemovedRoutineItemViewModel
+        private RoutineItemListItemViewModel? _removedRoutineItemViewModel;
+        public RoutineItemListItemViewModel? RemovedRoutineItemViewModel
         {
             get
             {
@@ -58,8 +58,8 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             }
         }
 
-        private RoutineItemListItemViewModel _insertedRoutineItemViewModel;
-        public RoutineItemListItemViewModel InsertedRoutineItemViewModel
+        private RoutineItemListItemViewModel? _insertedRoutineItemViewModel;
+        public RoutineItemListItemViewModel? InsertedRoutineItemViewModel
         {
             get
             {
@@ -72,8 +72,8 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             }
         }
 
-        private RoutineItemListItemViewModel _targetRoutineItemViewModel;
-        public RoutineItemListItemViewModel TargetRoutineItemViewModel
+        private RoutineItemListItemViewModel? _targetRoutineItemViewModel;
+        public RoutineItemListItemViewModel? TargetRoutineItemViewModel
         {
             get
             {

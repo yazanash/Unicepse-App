@@ -16,9 +16,9 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
             _viewModel = viewModel;
         }
 
-        public override void Execute(object parameter)
+        public override void Execute(object? parameter)
         {
-            _viewModel.InsertTodoItem(_viewModel.InsertedRoutineItemViewModel, _viewModel.TargetRoutineItemViewModel);
+            _viewModel.InsertTodoItem(_viewModel.InsertedRoutineItemViewModel!, _viewModel.TargetRoutineItemViewModel!);
         }
     }
 }

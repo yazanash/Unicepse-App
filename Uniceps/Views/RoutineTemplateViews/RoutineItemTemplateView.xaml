@@ -25,10 +25,11 @@
                                         InsertedDayGroupItem="{Binding InsertedDayGroupViewModel}"
                                         RemovedDayGroupItem="{Binding RemovedDayGroupViewModel}"
                                         TargetDayGroupItem="{Binding TargetDayGroupViewModel}"
+                                          DayGroupItemRemovedCommand="{Binding DayGroupItemRemovedCommand}"
                                         DayGroupItemDropCommand="{Binding DayGroupReceivedCommand}"
                                         DayGroupItemInsertedCommand="{Binding DayGroupInsertedCommand}"
                                            SaveNewOrderCommand="{Binding SaveNewOrderCommand}"
-                                        DayGroupItemRemovedCommand="{Binding DayGroupRemovedCommand}"/>
+                                       />
         
         <routinecomponent:RoutineItemsView  Grid.Column="1" DataContext="{Binding RoutineItemListViewModel}"
                                             IncomingRoutineItem="{Binding IncomingRoutineItemViewModel}"
@@ -39,7 +40,15 @@ RoutineItemDropCommand="{Binding RoutineItemReceivedCommand}"
 RoutineItemInsertedCommand="{Binding RoutineItemInsertedCommand}"
    SaveNewRoutineItemOrderCommand="{Binding SaveNewOrderCommand}"
 RoutineItemRemovedCommand="{Binding RoutineItemRemovedCommand}"/>
-        <routinecomponent:RoutineItemModelCardView  Grid.Column="2" DataContext="{Binding SetModelListItemViewModel,UpdateSourceTrigger=PropertyChanged}" />
+        <routinecomponent:RoutineItemModelCardView  Grid.Column="2" DataContext="{Binding SetModelListItemViewModel,UpdateSourceTrigger=PropertyChanged}" 
+                                                                                                IncomingSetModelItem="{Binding IncomingSetModelItemViewModel}"
+InsertedSetModelItem="{Binding InsertedSetModelItemViewModel}"
+RemovedSetModelItem="{Binding RemovedSetModelItemViewModel}"
+TargetSetModelItem="{Binding TargetSetModelItemViewModel}"
+SetModelItemDropCommand="{Binding SetModelItemReceivedCommand}"
+SetModelItemInsertedCommand="{Binding SetModelItemInsertedCommand}"
+   SaveNewSetModelItemOrderCommand="{Binding SaveNewOrderCommand}"
+SetModelItemRemovedCommand="{Binding SetModelItemRemovedCommand}"/>
 
     </Grid>
 </UserControl>

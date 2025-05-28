@@ -12,13 +12,15 @@ namespace Uniceps.Stores.RoutineStores
     {
         private readonly IDataService<SetModel> _dataService;
         private readonly IGetAllById<SetModel> _getAllDataService;
+        private readonly IUpdateRangeDataService<SetModel> _updateRangeDataService;
         private readonly List<SetModel> _setModels;
 
-        public SetsModelDataStore(IDataService<SetModel> dataService, IGetAllById<SetModel> getAllDataService)
+        public SetsModelDataStore(IDataService<SetModel> dataService, IGetAllById<SetModel> getAllDataService, IUpdateRangeDataService<SetModel> updateRangeDataService)
         {
             _dataService = dataService;
             _getAllDataService = getAllDataService;
             _setModels = new List<SetModel>();
+            _updateRangeDataService = updateRangeDataService;
         }
 
         public IEnumerable<SetModel> SetModels => _setModels;
@@ -77,6 +79,24 @@ namespace Uniceps.Stores.RoutineStores
                 _setModels.Add(entity);
             }
             Updated?.Invoke(entity);
+        }
+        public async Task UpdateRange(List<SetModel> entities)
+        {
+            await _updateRangeDataService.UpdateRange(entities);
+            foreach (SetModel entity in entities)
+            {
+                int currentIndex = _setModels.FindIndex(y => y.Id == entity.Id);
+
+                if (currentIndex != -1)
+                {
+                    _setModels[currentIndex] = entity;
+                }
+                else
+                {
+                    _setModels.Add(entity);
+                }
+            }
+
         }
     }
 }

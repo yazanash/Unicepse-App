@@ -26,11 +26,76 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         public IEnumerable<SetModelListItemViewModel> SetModelItems => _setModelListItemViewModels;
         public ICommand LoadSetsCommand { get; }
         public ICommand AddSetModelCommand { get; }
+        public ICommand SaveNewOrderCommand { get; }
+
+        private SetModelListItemViewModel? _incomingSetModelItemViewModel;
+        public SetModelListItemViewModel? IncomingSetModelItemViewModel
+        {
+            get
+            {
+                return _incomingSetModelItemViewModel;
+            }
+            set
+            {
+                _incomingSetModelItemViewModel = value;
+                OnPropertyChanged(nameof(IncomingSetModelItemViewModel));
+            }
+        }
+
+        private SetModelListItemViewModel? _removedSetModelItemViewModel;
+        public SetModelListItemViewModel? RemovedSetModelItemViewModel
+        {
+            get
+            {
+                return _removedSetModelItemViewModel;
+            }
+            set
+            {
+                _removedSetModelItemViewModel = value;
+                OnPropertyChanged(nameof(RemovedSetModelItemViewModel));
+            }
+        }
+
+        private SetModelListItemViewModel? _insertedSetModelItemViewModel;
+        public SetModelListItemViewModel? InsertedSetModelItemViewModel
+        {
+            get
+            {
+                return _insertedSetModelItemViewModel;
+            }
+            set
+            {
+                _insertedSetModelItemViewModel = value;
+                OnPropertyChanged(nameof(InsertedSetModelItemViewModel));
+            }
+        }
+
+        private SetModelListItemViewModel? _targetSetModelItemViewModel;
+        public SetModelListItemViewModel? TargetSetModelItemViewModel
+        {
+            get
+            {
+                return _targetSetModelItemViewModel;
+            }
+            set
+            {
+                _targetSetModelItemViewModel = value;
+                OnPropertyChanged(nameof(TargetSetModelItemViewModel));
+            }
+        }
+
+        public ICommand SetModelItemReceivedCommand { get; }
+        public ICommand SetModelItemRemovedCommand { get; }
+        public ICommand SetModelItemInsertedCommand { get; }
         public SetModelItemsListViewModel(RoutineItemDataStore routineItemDataStore, SetsModelDataStore setsModelDataStore)
         {
             _routineItemDataStore = routineItemDataStore;
             _setsModelDataStore = setsModelDataStore;
+            SetModelItemReceivedCommand = new SetModelReceivedCommand(this);
+            SetModelItemRemovedCommand = new SetModelRemovedCommand(this);
+            SetModelItemInsertedCommand = new SetModelInsertedCommand(this);
             _setModelListItemViewModels = new ObservableCollection<SetModelListItemViewModel>();
+            SaveNewOrderCommand = new SaveSetModelItemReorderCommand(_setsModelDataStore, this);
             LoadSetsCommand = new LoadSetModelsCommand(_setsModelDataStore, _routineItemDataStore);
             AddSetModelCommand = new AddSetModelCommand(_setsModelDataStore, _routineItemDataStore);
             _setsModelDataStore.Loaded += _setsModelDataStore_Loaded;
@@ -104,6 +169,35 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         {
             SetModelListItemViewModel viewModel = new SetModelListItemViewModel(setModel, _setsModelDataStore);
             _setModelListItemViewModels.Add(viewModel);
+        }
+        public void AddTodoItem(SetModelListItemViewModel item)
+        {
+            if (!_setModelListItemViewModels.Contains(item))
+            {
+                _setModelListItemViewModels.Add(item);
+            }
+        }
+
+        public void InsertTodoItem(SetModelListItemViewModel insertedTodoItem, SetModelListItemViewModel targetTodoItem)
+        {
+            if (insertedTodoItem == targetTodoItem)
+            {
+                return;
+            }
+
+            int oldIndex = _setModelListItemViewModels.IndexOf(insertedTodoItem);
+            int nextIndex = _setModelListItemViewModels.IndexOf(targetTodoItem);
+
+            if (oldIndex != -1 && nextIndex != -1)
+            {
+               
+                _setModelListItemViewModels.Move(oldIndex, nextIndex);
+            }
+        }
+
+        public void RemoveTodoItem(SetModelListItemViewModel item)
+        {
+            _setModelListItemViewModels.Remove(item);
         }
     }
 }

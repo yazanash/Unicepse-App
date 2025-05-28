@@ -12,7 +12,7 @@ using Uniceps.Core.Exceptions;
 
 namespace Uniceps.Entityframework.Services.RoutineSystemServices
 {
-    public class RoutineSetsDataService : IDataService<SetModel>, IGetAllById<SetModel>
+    public class RoutineSetsDataService : IDataService<SetModel>, IGetAllById<SetModel>, IUpdateRangeDataService<SetModel>
     {
         private readonly UnicepsDbContextFactory _contextFactory;
 
@@ -73,6 +73,15 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
             if (entityToUpdate == null)
                 throw new NotExistException("هذا السجل غير موجود");
             context.Set<SetModel>().Update(entity);
+            await context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<IEnumerable<SetModel>> UpdateRange(List<SetModel> entity)
+        {
+            using UnicepsDbContext context = _contextFactory.CreateDbContext();
+
+            context.Set<SetModel>().UpdateRange(entity);
             await context.SaveChangesAsync();
             return entity;
         }

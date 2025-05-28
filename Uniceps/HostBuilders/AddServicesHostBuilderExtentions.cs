@@ -54,6 +54,7 @@ namespace Uniceps.HostBuilders
 
                 services.AddSingleton<IDataService<SetModel>, RoutineSetsDataService>();
                 services.AddSingleton<IGetAllById<SetModel>, RoutineSetsDataService>();
+                services.AddSingleton<IUpdateRangeDataService<SetModel>, RoutineSetsDataService>();
             });
             return _hostBuilder;
         }
