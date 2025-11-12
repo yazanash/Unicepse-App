@@ -80,11 +80,11 @@ namespace Uniceps.Entityframework.Services.AuthService
             IEnumerable<User>? entities = await context.Set<User>().ToListAsync();
             return entities;
         }
-        public bool HasUsers()
+        public async Task<bool> HasUsers()
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
 
-            bool entities = context.Set<User>().Any();
+            bool entities = await context.Set<User>().AnyAsync();
             return entities;
         }
 

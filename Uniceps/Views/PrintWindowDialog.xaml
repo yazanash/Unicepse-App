@@ -20,9 +20,7 @@
             <subprintvs:TrainerDetailedReport />
         </DataTemplate>
     </Window.Resources>
-        <Border Background="#fff"
-            Padding="5 10" 
-            CornerRadius="10">
+        <Border Style="{DynamicResource StaticCardBorderStyle}">
         <!--<views:HomeView/>-->
         <Grid>
             <Grid.RowDefinitions>

@@ -94,11 +94,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
 
             Offer = _subscriptionStore.SelectedSubscription!.OfferDes;
             OfferValue = _subscriptionStore.SelectedSubscription!.OfferValue;
-            PrivatePrice = _subscriptionStore.SelectedSubscription!.PrivatePrice;
             SubscribeDate = _subscriptionStore.SelectedSubscription!.RollDate;
             DaysCounter = _subscriptionStore.SelectedSubscription.DaysCount == _subscriptionStore.SelectedSubscription.Sport!.DaysCount;
             SubscribeDays = _subscriptionStore.SelectedSubscription.DaysCount;
-            PrivateProvider = _subscriptionStore.SelectedSubscription.IsPlayerPay;
 
             _sportDataStore.Loaded += _sportDataStore_Loaded;
             _subscriptionStore.StateChanged += _subscriptionStore_StateChanged;

@@ -18,7 +18,7 @@
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
         <converters:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#EEE" Padding="10">
+    <Border  Padding="5">
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -43,7 +43,7 @@
                 <!--<uc:DashboardCard Title="المدفوعات" Money="150,000,000" BackColor="#FFF" Grid.Column="0" Grid.Row="0"/>
                 <uc:DashboardCard Title="الايرادات"  Money="150,000,000" BackColor="#FFF" Grid.Column="1" Grid.Row="0"/>
                 <uc:DashboardCard Title="المصاريف"  Money="150,000,000" BackColor="#FFF" Grid.Column="2" Grid.Row="0"/>-->
-                <Border Background="#fff" CornerRadius="10" Padding="15 5" Margin="5"  Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
+                <Border Margin="5"  Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <!--<ColumnDefinition Width="300"/>-->
@@ -79,16 +79,14 @@
                         </Button>
                     </Grid>
                 </Border>
-                <Border Background="#FFF" CornerRadius="10" Grid.ColumnSpan="3" Grid.Row="3" Margin="5" Padding="5">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
-                    </Border.Effect>
+                <Border Style="{DynamicResource CardBorderStyle}" Grid.ColumnSpan="3" Grid.Row="3" Margin="5" >
+                    
                     <DockPanel>
 
                         <Grid >
                             <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                             <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="13*"/>
@@ -98,7 +96,7 @@
 
                                 <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                                <DataGrid Background="White" SelectedItem="{Binding SelectedDailyPlayerReport,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding PlayerAttendence,UpdateSourceTrigger=PropertyChanged}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3" Margin="0,16,0,-6">
+                                <DataGrid  SelectedItem="{Binding SelectedDailyPlayerReport,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding PlayerAttendence,UpdateSourceTrigger=PropertyChanged}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3" Margin="0,16,0,-6">
                                   
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="#" IsReadOnly="True"
@@ -197,14 +195,12 @@
             <Viewbox Margin="5 0" VerticalAlignment="Top" Stretch="Uniform" Grid.Row="0" Grid.Column="1" >
                 <Calendar x:Name="calender" LostFocus="Calendar_LostFocus" SelectedDate="{Binding SelectedDate,UpdateSourceTrigger=PropertyChanged}" CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" Style="{DynamicResource CalendarStyle1}" />
             </Viewbox>
-            <Border Background="#fff" CornerRadius="10" Padding="5" Margin="5 10"  Grid.Row="1" Grid.Column="1">
-                <Border.Effect>
-                    <DropShadowEffect ShadowDepth="1" Opacity="0.16" />
-                </Border.Effect>
+            <Border Style="{DynamicResource CardBorderStyle}" Margin="5 10"  Grid.Row="1" Grid.Column="1">
+              
                 <Grid Grid.ColumnSpan="3" Grid.Row="3">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="13*"/>

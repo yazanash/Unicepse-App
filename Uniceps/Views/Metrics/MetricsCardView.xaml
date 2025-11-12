@@ -11,18 +11,35 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="bolToVs"/>
     </UserControl.Resources>
-    <Border Background="#eee"  Padding="5">
+    <Border  Background="{DynamicResource Brush.Background}" CornerRadius="{DynamicResource Radius.Small}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" >
 
-            <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Padding="5">
-
-                <DockPanel DockPanel.Dock="Top" >
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <TextBlock Text="سجل القياسات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Left"/>
-
-                    <Button Grid.Column="0" Margin="5 0"  Command="{Binding AddMetricsCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
-
+                <DockPanel  >
+                    <Grid DockPanel.Dock="Top" Margin="0 0 0 5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="سجل القياسات"  HorizontalAlignment="Left" Margin="10" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Left"/>
+                <ComboBox Style="{DynamicResource ComboBoxStyle1}"  HorizontalAlignment="Center"
+                   ItemsSource="{Binding Metrics}" Grid.Column="1" VerticalAlignment="Center"
+             SelectedItem="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}"
+             ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
                             <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CheckDate}" FontSize="14" FontWeight="SemiBold"  />
+                                <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                    <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
+                                </Button>
+                            </StackPanel>
 
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Button Grid.Column="2" VerticalAlignment="Center" Margin="5 0"  Command="{Binding AddMetricsCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="أضافة قياس" />
                                 <Icon:PackIconMaterial Kind="Plus"
                                        Width="11"
@@ -32,65 +49,28 @@
                             </StackPanel>
 
                         </Button>
-                    </StackPanel>
-
-                    <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
-
+                    </Grid>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                    <Border Grid.Row="0" Grid.Column="0" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
-                        <DockPanel>
-                            <!--<ScrollViewer DockPanel.Dock="Top" >-->
-                            <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
-                                            ItemsSource="{Binding Metrics}"
-                                      SelectedItem="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}"
-                                      ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding CheckDate}" FontSize="14" FontWeight="SemiBold"  />
-                                                    <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
-                                                        <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                                    </Button>
-                                                </StackPanel>
-
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <!--<ListView ScrollViewer.CanContentScroll="True"
-                                    SelectedItem="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}"
-                                  ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="#fff" 
-                              ItemsSource="{Binding Metrics}" ItemContainerStyle="{DynamicResource MetricListBoxItemContainerStyle1}" >
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel  Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                            </ListView>
-                            --><!--</ScrollViewer>-->
-
-                        </DockPanel>
-                    </Border>
-                   
-                    <Border Grid.Row="1"   Grid.Column="0">
+                <Border Style="{DynamicResource StaticCardBorderStyle}" Grid.Row="1"   Grid.Column="0">
                          <comp:MetricCard DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" />
                     </Border>
-                    <Border Grid.Row="1"   Grid.Column="1">
-                        <Image Stretch="UniformToFill" Source="pack://application:,,,/Resources/Assets/Metric/body_front.jpg" 
+                <Border Grid.Row="1" Margin="10 0"  Grid.Column="1" Style="{DynamicResource StaticCardBorderStyle}" >
+                        <Image Stretch="UniformToFill" Source="pack://application:,,,/Resources/Assets/Metric/body_front.png" 
                                     RenderOptions.BitmapScalingMode="HighQuality"
                                HorizontalAlignment="Center"
                                                    RenderOptions.EdgeMode="Aliased"/>
                     </Border>
-                    <Border Grid.Row="1"  Grid.Column="2">
+                <Border Grid.Row="1"  Grid.Column="2" Style="{DynamicResource StaticCardBorderStyle}" >
                         <compon:MetricCardArms DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" />
                     </Border>
                 </Grid>
@@ -98,5 +78,4 @@
             </DockPanel>
             </Border>
            
-    </Border>
 </UserControl>

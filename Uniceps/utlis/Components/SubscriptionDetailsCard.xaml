@@ -11,31 +11,30 @@
         <con:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
 
-    <Border   Background="#fff" CornerRadius="10" Padding="5"  Margin="5">
+    <Border Style="{DynamicResource CardBorderStyle}" Padding="5"  Margin="5">
         <DockPanel >
-            <TextBlock FontSize="18"  Text="معلومات الاشتراك" Foreground="{StaticResource colors.primary}" DockPanel.Dock="Top"/>
-            <Separator DockPanel.Dock="Top" Foreground="#aaa" Margin="10 5"/>
+            <TextBlock FontSize="18"  Text="معلومات الاشتراك" Foreground="{DynamicResource Brush.Foreground}"  DockPanel.Dock="Top"/>
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding SportName,UpdateSourceTrigger=PropertyChanged}" Foreground="{StaticResource colors.primary}"  FontSize="18" FontWeight="SemiBold" Margin="5" />
-                <TextBlock Text="{Binding Trainer,UpdateSourceTrigger=PropertyChanged}" Margin="5" FontSize="16"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding SportName,UpdateSourceTrigger=PropertyChanged}" FontSize="18" FontWeight="SemiBold" Margin="5" />
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding Trainer,UpdateSourceTrigger=PropertyChanged}" Margin="5" FontSize="16"/>
 
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <TextBlock Text="{Binding RollDate}" Foreground="#787878" FontSize="14"/>
-                    <Separator Width="10" Margin="10 0" Background="#787878"/>
-                    <TextBlock Text="{Binding EndDate}" Foreground="#787878" FontSize="14"/>
+                    <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding RollDate}"  FontSize="14"/>
+                    <Separator Width="10" Margin="10 0" Background="{DynamicResource Brush.Border}"/>
+                    <TextBlock Text="{Binding EndDate}" Foreground="{DynamicResource Brush.Foreground}"  FontSize="14"/>
                 </StackPanel>
                 <DockPanel Margin="5">
-                    <TextBlock HorizontalAlignment="Center" Text="{Binding DaysCount,UpdateSourceTrigger=PropertyChanged}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                    <TextBlock Text="عدد ايام الاشتراك" VerticalAlignment="Center"  FontSize="16" DockPanel.Dock="Left"/>
+                    <TextBlock Foreground="{DynamicResource Brush.Foreground}"  HorizontalAlignment="Center" Text="{Binding DaysCount,UpdateSourceTrigger=PropertyChanged}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                    <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="عدد ايام الاشتراك" VerticalAlignment="Center"  FontSize="16" DockPanel.Dock="Left"/>
                 </DockPanel>
 
                 <DockPanel Margin="5">
-                    <TextBlock HorizontalAlignment="Center" Text="{Binding PriceAfterOffer,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                    <TextBlock Text="الاجمالي" VerticalAlignment="Center"  FontSize="16" DockPanel.Dock="Left"/>
+                    <TextBlock Foreground="{DynamicResource Brush.Foreground}"  HorizontalAlignment="Center" Text="{Binding PriceAfterOffer,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                    <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="الاجمالي" VerticalAlignment="Center"  FontSize="16" DockPanel.Dock="Left"/>
                 </DockPanel>
                 <DockPanel Margin="5">
-                    <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource colors.primary}" Text="{Binding PaidValue,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                    <TextBlock Text="المدفوع" Foreground="{StaticResource colors.primary}" VerticalAlignment="Center"  FontSize="16" DockPanel.Dock="Left"/>
+                    <TextBlock Foreground="{DynamicResource Brush.Foreground}"  HorizontalAlignment="Center"  Text="{Binding PaidValue,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                    <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="المدفوع"  VerticalAlignment="Center"  FontSize="16" DockPanel.Dock="Left"/>
                 </DockPanel>
             </StackPanel>
 

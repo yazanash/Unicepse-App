@@ -8,54 +8,84 @@
         xmlns:View="clr-namespace:Uniceps.Views.AuthView"
         xmlns:vms="clr-namespace:Uniceps.ViewModels"
         xmlns:controls="clr-namespace:Uniceps.Controls"
+          xmlns:new_controls="clr-namespace:Uniceps.utlis.Controls"
         xmlns:nav="clr-namespace:Uniceps.navigation.Navigator" xmlns:views="clr-namespace:Uniceps.Views"
-        
+        FlowDirection="RightToLeft"
              xmlns:comp="clr-namespace:Uniceps.utlis.Components"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        WindowStyle="SingleBorderWindow"
+          WindowStyle="SingleBorderWindow"
         WindowState="Maximized"
+        Background="{DynamicResource Brush.Background}"
         Title="Unicepse - Release" Height="720" Width="1080">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
     </Window.Resources>
-    <!--<Border Background="#fff"
-           
-            Padding="5 10"
-            CornerRadius="10">
-        --><!--<views:HomeView/>--><!--
-  
-        <ContentControl Content="{Binding CurrentViewModel}" Grid.ColumnSpan="2"/>
-    </Border>-->
-    <Border Background="#fff"
-            
-            Padding="0 0"
-            CornerRadius="0">
+    <Border >
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <!--Top Menu-->
-            <Border Grid.ColumnSpan="2" Visibility="{Binding IsExpired,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}" Padding="5" Grid.Row="0" Background="#ed4337">
-                <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Foreground="white" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Text="انتهت مدة الاشتراك يرجى تجديد الاشتراك خلال "/>
-                    <TextBlock Foreground="white" Margin="5 0" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding DaysLeft,UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock Foreground="white" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Text="ايام"/>
-                </StackPanel>
+            <!--Notification Bar -->
+            <!---->
+            <Border Grid.Row="0" Grid.Column="1" Style="{DynamicResource StaticCardBorderStyle}"  BorderThickness="0 1 1 1"  Padding="10 5">
+
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!--Logo-->
+
+                    <StackPanel  Orientation="Horizontal"  Grid.Column="0" >
+
+
+                        <Border FlowDirection="LeftToRight"
+                    Margin="0 0 15 5"
+                Padding="5"
+                 BorderThickness="0" >
+
+                            <Image Stretch="Fill" Source="/Resources/Assets/logo.png" 
+                            RenderOptions.BitmapScalingMode="HighQuality"
+                        Width="30"  Height="30"
+                                                 RenderOptions.EdgeMode="Aliased"/>
+
+
+                        </Border>
+                        <TextBlock DockPanel.Dock="Top"
+                           Foreground="{DynamicResource Brush.Foreground}"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           TextAlignment="Center"
+                       VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                           Text="Uniceps" />
+                    </StackPanel>
+                    <comp:NotificationBar Grid.Column="1" HorizontalAlignment="Center" Margin="10 0" VerticalAlignment="Center"
+                DataContext="{Binding NotificationBarViewModel,UpdateSourceTrigger=PropertyChanged}" 
+                 Visibility="{Binding HasNotification,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}"/>
+                    <StackPanel Grid.Column="2"  Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Style="{DynamicResource IconBtn}" VerticalAlignment="Center" Command="{Binding ChangeThemeCommand}">
+                            <Icon:PackIconMaterial Kind="{Binding ThemeIcon,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="25" Height="25"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
             </Border>
             <!--left Menu-->
-            <controls:NavBar  Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" DataContext="{Binding Navigator}" />
+            <controls:NavBar  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" DataContext="{Binding Navigator}" />
             <!--<controls:HeaderBar Grid.Column="0" Grid.Row="0"   DataContext="{Binding Navigator}" />-->
             <!--<controls:NavBar Grid.Row="1" DataContext="{Binding Navigator}" Grid.Column="1"/>-->
             <!--MenuSection-->
 
-            <Grid Grid.Column="0" Grid.Row="1">
+            <Grid Grid.Column="1" Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
@@ -73,15 +103,15 @@
                    Background="#dae2ea" Margin="10 10"
                    Grid.Row="1"/>-->
                 <!--<View:HomeView Grid.Row="1" DataContext="{Binding CurrentViewModel}"/>-->
-               
-                <Border Padding="10 0" Grid.Row="1">
+
+                <Border Background="{DynamicResource Brush.Background}" Grid.Row="1">
                     <Grid Grid.Row="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <ContentControl Content="{Binding Navigator.CurrentViewModel}" Grid.ColumnSpan="2"/>
-                        <comp:StatusBar Grid.Row="2" DataContext="{Binding StatusBarViewModel,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right"/>
+                        <comp:StatusBar Grid.Row="2" DataContext="{Binding StatusBarViewModel,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
 
                     </Grid>
                     <!--#endregion-->

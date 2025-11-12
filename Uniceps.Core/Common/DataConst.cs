@@ -23,4 +23,17 @@
         User = 2,
         Accountant = 3
     }
+    public enum GenderType
+    {
+        Male = 1,
+        Female = 2
+    }
+    public enum UserContextState
+    {
+        UnAuthenticated,
+        NoProfile,
+        NoSubscription,
+        NoLocalUser,
+        Ready
+    }
 }

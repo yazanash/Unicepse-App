@@ -12,17 +12,17 @@
     <UserControl.Resources>
         <converters:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
-    <Border Background="#fff"  CornerRadius="10" Padding="10 5" Margin="5">
+    <Border Style="{DynamicResource CardBorderStyle}" Padding="10 5" >
       
         <StackPanel Orientation="Horizontal">
 
-            <Icon:PackIconMaterial Kind="{Binding IconPacks}" HorizontalAlignment="Right" Foreground="{StaticResource colors.primary}" Width="40" Height="40" VerticalAlignment="Center" Margin="10"/>
+            <Icon:PackIconMaterial Kind="{Binding IconPacks}" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.Primary}" Width="40" Height="40" VerticalAlignment="Center" Margin="10"/>
             <StackPanel HorizontalAlignment="Left">
                 <TextBlock 
                 Text="{Binding PlayerState}"
-                Foreground="#888" FontWeight="Heavy" FontSize="16" HorizontalAlignment="Right"/>
+                Foreground="{DynamicResource Brush.Foreground}" FontWeight="Heavy" FontSize="16" HorizontalAlignment="Right"/>
                 <TextBlock Margin="0 0 0 10"
-                       TextAlignment="Left" Text="{Binding StateValue,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="30" Foreground="{StaticResource colors.primary}" />
+                       TextAlignment="Left" Text="{Binding StateValue,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="30" Foreground="{DynamicResource Brush.Primary}" />
                 <!--<Icon:PackIconMaterial Kind="ArrowUpCircleOutline" HorizontalAlignment="Left" Height="20" Width="20" RotationAngle="45" Foreground="#aaa"/>-->
 
             </StackPanel>

@@ -63,9 +63,6 @@ namespace Uniceps.Commands.SubscriptionCommand
                 _subscriptionDataStore.SelectedSubscription!.OfferDes = _editSubscriptionViewModel.Offer;
                 //_subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _subscriptionDataStore.SelectedSport.Price - _editSubscriptionViewModel.OfferValue;
                 /// private info
-                _subscriptionDataStore.SelectedSubscription!.IsPrivate = _editSubscriptionViewModel.PrivatePrice > 0;
-                _subscriptionDataStore.SelectedSubscription!.PrivatePrice = _editSubscriptionViewModel.PrivatePrice;
-                _subscriptionDataStore.SelectedSubscription!.IsPlayerPay = _editSubscriptionViewModel.PrivateProvider;
                 _subscriptionDataStore.SelectedSubscription!.EndDate = _editSubscriptionViewModel.SubscribeDate.AddDays(_editSubscriptionViewModel.SubscribeDays);
 
 

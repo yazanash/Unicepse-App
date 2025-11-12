@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Uniceps.ViewModels.SystemAuthViewModels;
 
 namespace Uniceps.Views
 {
@@ -24,7 +25,16 @@ namespace Uniceps.Views
         public LicenseWindow()
         {
             InitializeComponent();
+            this.DataContextChanged += LicenseWindow_DataContextChanged;
         }
+
+        private void LicenseWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var vm = DataContext as SystemLoginViewModel;
+            if (vm != null)
+                vm.OTPVerifiedAction += () => this.Close();
+        }
+
         private void email_MouseDown(object sender, MouseButtonEventArgs e)
         {
             email_txt.Focus();
@@ -38,7 +48,10 @@ namespace Uniceps.Views
 
             }
         }
-
+        private void password_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            password_txt.Focus();
+        }
 
         private void email_txt_TextChanged(object sender, RoutedEventArgs e)
         {
@@ -59,7 +72,7 @@ namespace Uniceps.Views
 
         private void Close_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
 
 
 
@@ -84,5 +97,17 @@ namespace Uniceps.Views
             e.Handled = true;
         }
 
+        private void password_txt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(password_txt.Text) && password_txt.Text.Length > 0)
+            {
+                lbl_password.Visibility = Visibility.Hidden;
+
+            }
+            else
+            {
+                lbl_password.Visibility = Visibility.Visible;
+            }
+        }
     }
 }

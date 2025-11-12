@@ -15,24 +15,20 @@
     <Application.Resources>
         <ResourceDictionary >
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary x:Name="ff" Source="Resources/Theme/LightThemeResourceDictionary.xaml"/>
-                <ResourceDictionary Source="Resources/CustomStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Theme/BaseTheme.xaml"/>
+
                 <ResourceDictionary Source="utlis/Dictionaries/DataTemplate/DataTemplateResourceDictionary.xaml"/>
-
-
                 <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/ButtonsStyleResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/CalendarStyleResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/DataGridResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/DropDownResourceDictionary.xaml"/>
-
                 <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/InputControlsResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/ListViewResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/ScrollViewerResouceDictionary.xaml"/>
-
                 <ResourceDictionary Source="utlis/Dictionaries/PagesStyle/LoginPageResourceDictionary.xaml"/>
 
-
-
+                <ResourceDictionary Source="Resources/Theme/DarkTheme.xaml"/>
+               
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/MetricItemsResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/PaymentInvoiceItemResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/RoutineItemsResourceDictionary.xaml"/>
@@ -41,6 +37,7 @@
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/TrainerItemsResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/GroupDaysSelectionListView.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/RoutineListResource.xaml"/>
+                <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/SystemSubscriptionListResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
          
         </ResourceDictionary>

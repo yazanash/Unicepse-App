@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:Uniceps.Views.PlayersAttendenceViews"
              mc:Ignorable="d" 
               xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             Background="Transparent"
               xmlns:cs="clr-namespace:Uniceps.Components"
              xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
@@ -22,7 +21,7 @@
 
 
 
-    <Border CornerRadius="10" Background="#EEE" Padding="10" x:Name="parent">
+    <Border  Padding="5" x:Name="parent">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -31,7 +30,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" Padding="5" Margin="0 0 0 5">
 
 
                 <Grid>
@@ -44,7 +43,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Button Command="{Binding CancelCommand}" Style="{StaticResource IconBtn}" Grid.Column="0" >
-                        <Icon:PackIconMaterial Kind="ArrowRight" Height="15" Width="15" Foreground="{StaticResource colors.primary}"/>
+                        <Icon:PackIconMaterial Kind="ArrowRight" Height="15" Width="15" Foreground="{DynamicResource Brush.Primary}"/>
                     </Button>
                         <cs:CustomTextBox Grid.Column="1" Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
                    
@@ -57,11 +56,11 @@
 
 
 
-            <Border  Background="#FFF" CornerRadius="10" Grid.Row="4" Margin="5 10" Padding="5">
+            <Border   Grid.Row="4" Margin="5 10" Style="{DynamicResource StaticCardBorderStyle}">
                 <Grid  Grid.Row="4">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="13*"/>

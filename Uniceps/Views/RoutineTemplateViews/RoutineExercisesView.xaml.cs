@@ -20,9 +20,13 @@ namespace Uniceps.Views.RoutineTemplateViews
     /// </summary>
     public partial class RoutineExercisesView : UserControl
     {
+      
+        
         public RoutineExercisesView()
         {
             InitializeComponent();
         }
+
+        
     }
 }

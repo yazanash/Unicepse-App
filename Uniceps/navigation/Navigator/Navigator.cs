@@ -22,7 +22,6 @@ namespace Uniceps.navigation.Navigator
             _navigationStore = navigationStore;
             _navigationStore.CurrentViewModelChanged += _navigationStore_CurrentViewModelChanged;
             UpdateCurrentViewModelCommand = updateCurrentViewModelCommand;
-
         }
 
         private void _navigationStore_CurrentViewModelChanged()

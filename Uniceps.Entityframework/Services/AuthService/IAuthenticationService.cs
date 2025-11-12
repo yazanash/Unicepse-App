@@ -38,7 +38,7 @@ namespace Uniceps.Entityframework.Services.AuthService
         /// <exception cref="InvalidPasswordException">Thrown if the password is invalid.</exception>
         /// <exception cref="Exception">Thrown if the login fails.</exception>
         Task<User> Login(string username, string password);
-        public bool HasUsers();
+        public Task<bool> HasUsers();
         public void Logout(User user);
     }
 }

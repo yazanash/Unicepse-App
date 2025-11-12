@@ -43,7 +43,7 @@
         </DataTemplate>
        
         <DataTemplate DataType="{x:Type subsvms:EditSubscriptionViewModel }">
-            <subsview:EditSubscriptionDetailsView />
+            <subsview:SubscriptionDetailView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type payvms:AddPaymentViewModel}">
             <payview:PaymentDetalView />
@@ -52,7 +52,7 @@
             <payview:PaymentListView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type payvms:EditPaymentViewModel}">
-            <payview:EditPaymentDetailView/>
+            <payview:PaymentDetalView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type metricvms:MetricReportViewModel}">
             <metricview:MetricsCardView />
@@ -61,7 +61,7 @@
             <metricview:AddMetricDetailView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type metricvms:EditMetricsViewModel}">
-            <metricview:EditMetricDetailView />
+            <metricview:AddMetricDetailView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type attenvms:PlayerAttendenceViewModel}">
             <attenview:PlayerAttendenceView />
@@ -74,105 +74,80 @@
 
         
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#EEE" Padding="10" >
+    <Border>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
+                
             </Grid.RowDefinitions>
-
-            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="5" Margin="5" Background="#fff">
-                <DockPanel>
-                    <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
-                        <RadioButton
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.ColumnSpan="2" >
+                <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
+                    <RadioButton
                          IsChecked="True"   
                             Command="{Binding PlayerHomeCommand}"
                             Style="{StaticResource BarButtonRD}" >
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Account"/>
-                                <TextBlock  Text="الصفحة الشخصية" />
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Account"/>
+                            <TextBlock  Text="الصفحة الشخصية" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
                     Command="{Binding SubscriptionCommand}"
                                 Style="{StaticResource BarButtonRD}" >
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>
-                                <TextBlock  Text="اضافة اشتراك" />
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>
+                            <TextBlock  Text="اضافة اشتراك" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
                             Command="{Binding PaymentCommand}"
                                 Style="{StaticResource BarButtonRD}" >
-                            <StackPanel Orientation="Horizontal" >
-                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
-                                <TextBlock Text="اضافة دفعة"  />
+                        <StackPanel Orientation="Horizontal" >
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
+                            <TextBlock Text="اضافة دفعة"  />
 
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
                             Command="{Binding MetricsCommand}"
                                 Style="{StaticResource BarButtonRD}" >
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartArc" />
-                                <TextBlock Text="القياسات"  />
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartArc" />
+                            <TextBlock Text="القياسات"  />
 
-                            </StackPanel>
-                        </RadioButton>
-                        
-                        <RadioButton
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton
                             Command="{Binding PlayerAttendenceCommand}"
                                 Style="{StaticResource BarButtonRD}" >
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartBarStacked" />
-                                <TextBlock Text="جدول الدوام" />
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartBarStacked" />
+                            <TextBlock Text="جدول الدوام" />
 
-                            </StackPanel>
-                        </RadioButton>
+                        </StackPanel>
+                    </RadioButton>
 
 
 
-                    </StackPanel>
-                </DockPanel>
+                </StackPanel>
             </Border>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <!--<Border Grid.Row="0" Grid.Column="2"  Background="#fff" Margin="5" CornerRadius="10" Padding="5">
-                    <DockPanel>
-                        <TextBlock Foreground="#C14E00" Text="المدفوعات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
-                        <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SelectedSportListingItemViewModel.TrainerList}" >
+            
 
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </DockPanel>
-                </Border>-->
-
-              
-                <Border Background="#fff" CornerRadius="10" Grid.Column="1" Grid.RowSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
-
-                    <ctrl:InfoCard DockPanel.Dock="Top" DataContext="{Binding Player,UpdateSourceTrigger=PropertyChanged}"/>
-                </Border>
+                <ctrl:InfoCard Grid.Column="1" Grid.RowSpan="2" Grid.Row="0"  DataContext="{Binding Player,UpdateSourceTrigger=PropertyChanged}"/>
 
 
 
-                
-                <Grid Grid.Column="0">
-                    <ContentControl Content="{Binding CurrentPlayerViewModel}"/>
-                </Grid>
 
-
-            </Grid>
-
+            <Border Padding="10" Grid.Column="0" Grid.Row="1">
+                <ContentControl Content="{Binding CurrentPlayerViewModel}"/>
+            </Border>
 
         </Grid>
     </Border>

@@ -22,7 +22,7 @@
 
 
 
-    <Border CornerRadius="10" Background="#EEE" Padding="10" x:Name="parent">
+    <Border  Padding="5" x:Name="parent">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -31,7 +31,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft"  Padding="5" Margin="0 0 0 5" >
 
 
                 <Grid>
@@ -59,11 +59,11 @@
 
 
 
-            <Border  Background="#FFF" CornerRadius="10" Grid.Row="4" Margin="5 10" Padding="5">
+            <Border   Grid.Row="4" Margin="5 10" Style="{DynamicResource StaticCardBorderStyle}">
                 <Grid  Grid.Row="4">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="13*"/>

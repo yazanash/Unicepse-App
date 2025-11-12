@@ -28,7 +28,6 @@ namespace Uniceps.Test.Fakes
                   subscription.PriceAfterOffer = sport.Price;
                   subscription.RollDate = DateTime.Now.AddDays(-20);
                   subscription.RestValue = 0;
-                  subscription.PrivatePrice = 0;
                   subscription.OfferValue = 0;
                   subscription.OfferDes = "";
                   subscription.LastPaid = subscription.RollDate;
@@ -54,7 +53,6 @@ namespace Uniceps.Test.Fakes
                   subscription.PriceAfterOffer = sport.Price;
                   subscription.RollDate = DateTime.Now.AddDays(-20);
                   subscription.RestValue = 0;
-                  subscription.PrivatePrice = 0;
                   subscription.OfferValue = 0;
                   subscription.OfferDes = "";
                   subscription.LastPaid = subscription.RollDate;

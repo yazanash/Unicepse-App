@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,9 +20,11 @@ namespace Uniceps.Views
     /// </summary>
     public partial class SplashScreenWindow : Window
     {
+        private static readonly string currentVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
         public SplashScreenWindow()
         {
             InitializeComponent();
+            lbl_Version.Text = currentVersion;
         }
     }
 }

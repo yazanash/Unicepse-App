@@ -27,9 +27,9 @@ namespace Uniceps.ViewModels.Authentication
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
 
         }
-        public void openLog()
+        public async Task openLog()
         {
-            if (_authenticationStore.HasUser())
+            if (await _authenticationStore.HasUser())
                 _navigatorStore.CurrentViewModel = new LoginViewModel(this, _navigatorStore, _authenticationStore);
             else
                 _navigatorStore.CurrentViewModel = new RegisterViewModel(this, _navigatorStore, _authenticationStore);

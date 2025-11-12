@@ -10,125 +10,13 @@
               xmlns:cs="clr-namespace:Uniceps.Components"
              FlowDirection="RightToLeft"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="conv"/>
-    </UserControl.Resources>
-    <Border Background="#EEE" Margin="5" Padding="5" CornerRadius="15">
-       
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="White" Padding="5" Margin="5" CornerRadius="10">
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="250" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="صفحة اختيار التمارين" VerticalAlignment="Center" FontSize="18"/>
-                    <Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="1"  VerticalAlignment="Top">
-                        <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
-                    </Border>
-                    <StackPanel Grid.Row="0" Grid.Column="2" Margin="5" Orientation="Horizontal"  VerticalAlignment="Center">
-                        <TextBlock Text="العضلة :" 
-Foreground="{StaticResource colors.secondry}"
-Margin="0 0 8 0" VerticalAlignment="Center"
-FontSize="16"/>
-                        <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
-       ItemsSource="{Binding MuscleGroupList,UpdateSourceTrigger=PropertyChanged}"
-       SelectedItem="{Binding SelectedMuscle,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
-       ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" FontSize="12"   />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </StackPanel>
-                    <Button Style="{StaticResource AddBtn}" Margin="10 0" Grid.Column="3" Command="{Binding AddToRoutineCommand}">
-                        <TextBlock Text="تم"/>
-                    </Button>
-                </Grid>
-            </Border>
-          
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                <Border Grid.Row="1" Background="#fff" CornerRadius="15" Padding="10" Margin="10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <StackPanel  Grid.Column="0" Orientation="Horizontal">
-                        <TextBlock Text="التمارين الرياضية" FontSize="16"  Margin="0 0 8 0"/>
-                    </StackPanel>
-                    <Separator Grid.ColumnSpan="2" Grid.Column="0" Margin="5 10" Grid.Row="1"/>
-                    <DataGrid Grid.Row="2"  FlowDirection="RightToLeft" ItemsSource="{Binding ExercisesList}" 
-CanUserReorderColumns="True"  VirtualizingPanel.ScrollUnit="Pixel"
-x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
-CellStyle="{DynamicResource DataGridCellStyle1}" 
-ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" >
-
-                        <DataGrid.Columns>
-                            <!--   <DataGridTextColumn Header="#" IsReadOnly="True"
-Width="auto"
-Binding="{Binding Id}"
-CanUserResize="False"/>-->
-                                <DataGridTemplateColumn  Width="auto" IsReadOnly="True">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" x:Name="menu">
-                                                <Border Background="#fff" BorderThickness="1" BorderBrush="LawnGreen" Padding="10 5" Visibility="{Binding IsChecked,Converter={StaticResource conv}}" CornerRadius="10" >
-                                                    <icons:PackIconMaterial Kind="CheckCircle" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LawnGreen"/>
-                                                </Border>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="الصورة" Width="auto" IsReadOnly="True">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Image Width="100"
-                                 Source="{Binding ExerciseImage}"
-                                 RenderOptions.BitmapScalingMode="HighQuality"
-                                 RenderOptions.EdgeMode="Aliased"
-                                 Height="100" DockPanel.Dock="Top"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-
-                            <DataGridTextColumn Header="اسم التمرين" IsReadOnly="True"
- Binding="{Binding ExerciseName}"
-Width="auto"
-/>
-                            <DataGridTemplateColumn  Width="*" IsReadOnly="True">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" x:Name="menu">
-                                                <Button Command="{Binding AddItemCommand}" Style="{StaticResource GridremoveBtn}">
-                                                    <TextBlock Text="أضافة" FontSize="12"/>
-                                                </Button>
-                                            </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    </Grid>
-                </Border>
-                    
-                <routinecomponent:SelectedRoutineItemsBufferView Grid.Column="1" DataContext="{Binding RoutineItemListViewModel}" />
-                </Grid>
-                 
-                </Grid>
-            </Border>
+    <Border >
+        <routinecomponent:ExercisesListView Grid.Row="2"  
+                                            DataContext="{Binding ExercisesListViewModel}"
+                                            SelectedItem="{Binding SelectedExerciseViewModel}"
+                                            UnSelectedItem="{Binding UnSelectedExerciseViewModel}"
+                                            ExerciseSelectedCommand="{Binding ExerciseSelectedCommand}"
+                                            ExerciseUnSelectedCommand="{Binding ExerciseUnSelectedCommand}"/>
+    </Border>
         
 </UserControl>

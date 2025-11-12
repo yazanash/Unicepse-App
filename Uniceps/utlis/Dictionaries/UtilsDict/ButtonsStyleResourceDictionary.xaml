@@ -2,6 +2,61 @@
                       xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Style x:Key="CardBorderStyle" TargetType="Border">
+        <!-- الخلفية -->
+        <Setter Property="Background" Value="{DynamicResource Brush.Card}" />
+        <!-- البوردر -->
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource BorderThickness.Main}" />
+        <!-- الزوايا -->
+        <Setter Property="CornerRadius" Value="{DynamicResource Radius.Small}" />
+        <!-- البادينغ الداخلي -->
+        <Setter Property="Padding" Value="5" />
+
+    </Style>
+    <Style x:Key="StaticCardBorderStyle" TargetType="Border">
+        <!-- الخلفية -->
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}" />
+        <!-- البوردر -->
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+        <!-- الزوايا -->
+        <Setter Property="CornerRadius" Value="{DynamicResource Radius.Small}" />
+        <!-- البادينغ الداخلي -->
+        <Setter Property="Padding" Value="5" />
+
+    </Style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -11,8 +66,8 @@
 
 
     <Style x:Key="MenuBtnStyle" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Background" Value="#ccc"/>
-        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.primary}"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
         <Setter Property="MaxHeight" Value="45"/>
         <Setter Property="MaxWidth" Value="45"/>
         <Setter Property="Template">
@@ -22,12 +77,12 @@
                         <Border 
                                 x:Name="PART"
                                 Background="{TemplateBinding Background}"
-                                                                CornerRadius="7"
+                                                                CornerRadius="{DynamicResource Radius.Small}"
                                                                 Height="40"
                                                                 Width="40"
                                                                 VerticalAlignment="Center"
                                                                 HorizontalAlignment="Center"/>
-                        <Icon:PackIconMaterial Kind="Menu" Foreground="{StaticResource ResourceKey=colors.primary}" Height="35"
+                        <Icon:PackIconMaterial Kind="Menu" Foreground="{DynamicResource Brush.Primary}" Height="35"
                                                                 Width="35"/>
 
                     </Grid>
@@ -67,14 +122,14 @@
 
     <Style x:Key="IconBtn" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="#787878"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="5" BorderThickness="1" Padding="5">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="{DynamicResource Radius.Small}" BorderThickness="1" Padding="5">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -83,7 +138,8 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#dcdcdc"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.OnPrimary}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -92,7 +148,7 @@
 
     <Style x:Key="MenuButtonRD" TargetType="RadioButton">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Height" Value="35"/>
         <Setter Property="Margin" Value="5"/>
@@ -100,7 +156,7 @@
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
-                    <Border Background="{TemplateBinding Background}" Padding="5" BorderBrush="{StaticResource ResourceKey=colors.primary}" BorderThickness="0" CornerRadius="7">
+                    <Border Background="{TemplateBinding Background}" Padding="5" BorderBrush="{DynamicResource Brush.Primary}" BorderThickness="0" CornerRadius="{DynamicResource Radius.Small}">
                         <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -109,12 +165,12 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#eee"/>
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.secondry}"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.OnPrimary}"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Background" Value="{StaticResource ResourceKey=colors.secondry}"/>
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.background.white}"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Secondary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.OnSecondary}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="#999"/>
@@ -124,15 +180,15 @@
 
 
     <Style x:Key="BarButtonRD" TargetType="RadioButton">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="#999"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Margin" Value="5"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
-                    <Border Background="{TemplateBinding Background}" Padding="10 5" BorderBrush="#fff" BorderThickness="0" CornerRadius="7">
+                    <Border Background="{TemplateBinding Background}" Padding="10 5" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0" CornerRadius="{DynamicResource Radius.Small}">
                         <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -141,17 +197,17 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
     <Style x:Key="CradBarButtonRD" TargetType="RadioButton">
-        <Setter Property="Background" Value="#fff"/>
-        <Setter Property="Foreground" Value="#999"/>
-        <Setter Property="BorderBrush" Value="#fff"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Margin" Value="5"/>
@@ -168,14 +224,10 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.secondry}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.primary}"/>
-                    <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -198,12 +250,12 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -232,7 +284,7 @@
 
     <Style x:Key="MenuTopBtn" TargetType="{x:Type ToggleButton}">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Width" Value="30"/>
         <Setter Property="Height" Value="30"/>
@@ -250,7 +302,7 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.secondry}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -264,7 +316,7 @@
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" Padding="5" BorderBrush="{StaticResource ResourceKey=colors.primary}" BorderThickness="0" CornerRadius="7">
+                    <Border Background="{TemplateBinding Background}" Padding="5" BorderBrush="{DynamicResource Brush.Primary}" BorderThickness="0" CornerRadius="7">
                         <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -289,7 +341,7 @@
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" Padding="5" BorderBrush="{StaticResource ResourceKey=colors.primary}" BorderThickness="0" CornerRadius="7">
+                    <Border Background="{TemplateBinding Background}" Padding="5" BorderBrush="{DynamicResource Brush.Primary}" BorderThickness="0" CornerRadius="7">
                         <ContentPresenter HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -298,8 +350,8 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#973D00"/>
-                <Setter Property="Foreground" Value="#ffffff"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Card}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -319,8 +371,8 @@
     </Style>
     <!--Text Box Search-->
     <Style x:Key="SearchText" TargetType="TextBox">
-        <Setter Property="Background" Value="#EEEEEE"/>
-        <Setter Property="Foreground" Value="#888888"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="15 10"/>
@@ -329,8 +381,8 @@
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border x:Name="border" CornerRadius="10" Background="{TemplateBinding Background}"
-                                BorderThickness="1"
+                    <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}"
+                                BorderThickness=".5"
                                 BorderBrush="#EEEEEE"
                                 SnapsToDevicePixels="True">
                         <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
@@ -353,8 +405,8 @@
         </Setter>
     </Style>
     <Style x:Key="AddBtn" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource ResourceKey=colors.primary}"/>
-        <Setter Property="Foreground" Value="{StaticResource colors.background.white}"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.OnPrimary}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Width" Value="150"/>
         <Setter Property="Height" Value="35"/>
@@ -365,7 +417,7 @@
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="7">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="{DynamicResource Radius.Small}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -374,15 +426,15 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource colors.secondry}"/>
-                <Setter Property="Foreground" Value="{StaticResource colors.primary}"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Secondary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.OnSecondary}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <Style x:Key="EditBtn" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <!--<Setter Property="Width" Value="150"/>-->
         <Setter Property="Height" Value="35"/>
@@ -407,8 +459,8 @@
     </Style>
 
     <Style x:Key="DeleteBtn" TargetType="Button">
-        <Setter Property="Background" Value="#DB0033"/>
-        <Setter Property="Foreground" Value="#fff"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.OnPrimary}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <!--<Setter Property="Width" Value="150"/>-->
         <Setter Property="Height" Value="35"/>
@@ -418,7 +470,7 @@
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" Padding="5"  CornerRadius="7">
+                    <Border Background="{TemplateBinding Background}" Padding="5"  CornerRadius="{DynamicResource Radius.Small}">
                         <ContentPresenter HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -434,17 +486,16 @@
 
     <Style x:Key="TabBtn" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="#121518"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Padding" Value="25 5"/>
-        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.primary}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="0"
+                    <Border Background="{TemplateBinding Background}" 
                                 BorderThickness="0 0 0 1" 
                                 Padding="{TemplateBinding Padding}"
                                 BorderBrush="{TemplateBinding BorderBrush}">
@@ -456,7 +507,7 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.primary}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -473,23 +524,23 @@
 
 
 
-    <SolidColorBrush x:Key="RadioButton.Static.Background" Color="#fff"/>
-    <SolidColorBrush x:Key="RadioButton.Static.Border" Color="#ccc"/>
+    <SolidColorBrush x:Key="RadioButton.Static.Background" Color="{DynamicResource Color.Card}"/>
+    <SolidColorBrush x:Key="RadioButton.Static.Border" Color="{DynamicResource Color.Border }"/>
     <SolidColorBrush x:Key="RadioButton.Static.Glyph" Color="Green"/>
-    <SolidColorBrush x:Key="RadioButton.MouseOver.Background" Color="#FFF3F9FF"/>
-    <SolidColorBrush x:Key="RadioButton.MouseOver.Border" Color="#FF5593FF"/>
+    <SolidColorBrush x:Key="RadioButton.MouseOver.Background" Color="{DynamicResource Color.Card}"/>
+    <SolidColorBrush x:Key="RadioButton.MouseOver.Border" Color="{DynamicResource Color.Border}"/>
     <SolidColorBrush x:Key="RadioButton.MouseOver.Glyph" Color="#FF212121"/>
-    <SolidColorBrush x:Key="RadioButton.Pressed.Background" Color="#FFD9ECFF"/>
-    <SolidColorBrush x:Key="RadioButton.Pressed.Border" Color="#FF3C77DD"/>
+    <SolidColorBrush x:Key="RadioButton.Pressed.Background" Color="{DynamicResource Color.Card}"/>
+    <SolidColorBrush x:Key="RadioButton.Pressed.Border" Color="{DynamicResource Color.Border}"/>
     <SolidColorBrush x:Key="RadioButton.Pressed.Glyph" Color="#FF212121"/>
-    <SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="#FFE6E6E6"/>
-    <SolidColorBrush x:Key="RadioButton.Disabled.Border" Color="#FFBCBCBC"/>
+    <SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="{DynamicResource Color.Background}"/>
+    <SolidColorBrush x:Key="RadioButton.Disabled.Border" Color="{DynamicResource Color.Border}"/>
     <SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF707070"/>
     <Style x:Key="RadioButtonStyle1" TargetType="{x:Type RadioButton}">
         <Setter Property="FocusVisualStyle" Value="{DynamicResource FocusVisual1}"/>
         <Setter Property="Background" Value="{DynamicResource RadioButton.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource RadioButton.Static.Border}"/>
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -499,7 +550,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="radioButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Padding="5" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1,1,2,1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                        <Border x:Name="radioButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{DynamicResource Radius.Small}" Padding="5" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1,1,2,1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
 
                             <ContentPresenter x:Name="contentPresenter" Grid.Row="1" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
 
@@ -522,9 +573,9 @@
                             <!--<Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.Pressed.Glyph}"/>-->
                         </Trigger>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter Property="Background" TargetName="radioButtonBorder" Value="#fff"/>
-                            <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource ResourceKey=colors.primary}"/>
-                            <Setter Property="Foreground"  Value="{StaticResource ResourceKey=colors.primary}"/>
+                            <Setter Property="Background" TargetName="radioButtonBorder" Value="{DynamicResource Brush.Card}"/>
+                            <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{DynamicResource Brush.Primary}"/>
+                            <Setter Property="Foreground"  Value="{DynamicResource Brush.Primary}"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="{x:Null}">
                             <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>

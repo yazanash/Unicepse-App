@@ -17,7 +17,6 @@ using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services.EmployeeQueries;
 using Uniceps.Entityframework.Services.EmployeeTransaction;
 using Uniceps.Entityframework.Services.GetPlayerTransaction;
-using Uniceps.Entityframework.Services.LicenseQuery;
 using Uniceps.Entityframework.Services.PlayerQueries;
 using Uniceps.Entityframework.Services.PublicIdServices;
 using Uniceps.Entityframework.Services.RelationService;
@@ -71,13 +70,9 @@ namespace Uniceps.HostBuilders
 
 
                 services.AddSingleton<IArchivedService<Player>, ArchivedPlayerService>();
-                services.AddSingleton<IGetSingleLatestService<License>, LicenseGetLatestService>();
-                services.AddSingleton<IGetSingleLatestService<GymProfile>, GymProfileGetLatestService>();
 
 
                 services.AddSingleton<IPublicIdService<Player>, PlayerUidService>();
-                services.AddSingleton<IPublicIdService<License>, LicensePidService>();
-                services.AddSingleton<IPublicIdService<GymProfile>, GymPidService>();
 
 
             });

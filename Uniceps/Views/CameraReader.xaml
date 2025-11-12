@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         FlowDirection="RightToLeft"
         Title="CameraReader" Height="350" Width="350">
-    <Border Padding="10" Background="#fff">
+    <Border Style="{DynamicResource StaticCardBorderStyle}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -15,22 +15,21 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5">
 
-                <TextBlock Text="الكاميرا" 
-                                   Foreground="{StaticResource colors.secondry}"
+                <TextBlock Text="الكاميرا"  Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 8 8" VerticalAlignment="Center"
                                    FontSize="16"/>
                 <ComboBox Style="{DynamicResource ComboBoxStyle1}" VerticalAlignment="Center"
                               x:Name="vidlist"   SelectionChanged="vidlist_SelectionChanged"     ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}" FontSize="12"   />
+                            <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Brush.Foreground}" FontSize="12"   />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
 
                 </ComboBox>
 
             </StackPanel>
-            <Border Margin="10"  Grid.Row="1" ClipToBounds="True" CornerRadius="20" BorderThickness="1" BorderBrush="#aaa">
+            <Border Margin="10"  Grid.Row="1" ClipToBounds="True" Style="{DynamicResource CardBorderStyle}" Padding="0">
                 <Border.Background>
                     <VisualBrush Stretch="Fill">
                         <VisualBrush.Visual>

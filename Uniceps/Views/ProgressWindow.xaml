@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Uniceps.Views"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
+        Background="{DynamicResource Brush.Surface}"
         Title="Updater" Width="500" >
     <Border>
         <StackPanel Margin="20 0">
@@ -20,10 +21,10 @@
 
 
             </Border>
-            <TextBlock Text="تطبيق يونيسيبس لادارة الاندية الرياضية" FontWeight="Bold" HorizontalAlignment="Center" FontSize="20" Foreground="{StaticResource colors.primary}"/>
-            <TextBlock Text="Downloading update..." HorizontalAlignment="Center" FontSize="14" FontWeight="Bold" VerticalAlignment="Top" Margin="10"/>
-            <TextBlock Name="progressText" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" VerticalAlignment="Bottom" Margin="5"/>
-            <ProgressBar Name="progressBar" Foreground="{StaticResource colors.primary}" Minimum="0" Maximum="100" Height="10" VerticalAlignment="Center" Margin="10"/>
+            <TextBlock Text="تطبيق يونيسيبس لادارة الاندية الرياضية" FontWeight="Bold" HorizontalAlignment="Center" FontSize="20" Foreground="{DynamicResource Brush.Primary}"/>
+            <TextBlock Text="Downloading update..." Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold" VerticalAlignment="Top" Margin="10"/>
+            <TextBlock Name="progressText" Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" VerticalAlignment="Bottom" Margin="5"/>
+            <ProgressBar Name="progressBar" Foreground="{DynamicResource Brush.Primary}" Minimum="0" Maximum="100" Height="10" VerticalAlignment="Center" Margin="10"/>
 
         </StackPanel>
        

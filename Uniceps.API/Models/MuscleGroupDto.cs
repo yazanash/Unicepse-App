@@ -8,8 +8,8 @@ namespace Uniceps.API.Models
 {
     public class MuscleGroupDto
     {
-        public int id { get; set; }
-        public string? name { get; set; }
-        public string? engName { get; set; }
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string? EngName { get; set; }
     }
 }

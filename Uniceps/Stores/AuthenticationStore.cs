@@ -39,10 +39,10 @@ namespace Uniceps.Stores
         }
 
         public bool IsLoggedIn => CurrentAccount != null;
-        public bool HasUser()
+        public async Task<bool> HasUser()
         {
             _logger.LogInformation(LogFlag + "checking for users");
-            bool data = _authenticationService.HasUsers();
+            bool data = await _authenticationService.HasUsers();
             _logger.LogInformation(LogFlag + "Has Users : " + data.ToString());
             return data;
         }

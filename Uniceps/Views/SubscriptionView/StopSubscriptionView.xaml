@@ -19,7 +19,7 @@
       
 
     </UserControl.Resources>
-    <Border CornerRadius="10"  Background="#EEE" Padding="0" >
+    <Border >
         <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300"/>
@@ -28,10 +28,9 @@
             <comp:SubscriptionDetailsCard DataContext="{Binding Subscription,UpdateSourceTrigger=PropertyChanged}"/>
             
             
-            <Border Background="#fff" Grid.Column="1" CornerRadius="10" Grid.Row="0"  Padding="5"  Margin="5">
+            <Border Style="{DynamicResource StaticCardBorderStyle}" Grid.Column="1" Grid.Row="0"  Padding="5"  Margin="5">
                 <DockPanel >
-                    <TextBlock Text="عملية ايقاف الاشتراك" Margin="5" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
-                    <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
+                    <TextBlock Text="عملية ايقاف الاشتراك" Margin="5" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Top"/>
 
                     <Grid >
                         <Grid.ColumnDefinitions>
@@ -48,8 +47,7 @@
                         </Grid.RowDefinitions>
                 
                         <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
-                            <TextBlock Text="عدد الايام المستحقة" 
-                                   Foreground="{StaticResource colors.secondry}"
+                            <TextBlock Text="عدد الايام المستحقة" Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
                             <TextBox 
@@ -59,34 +57,30 @@
                         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
 
                             <TextBlock Text="تاريخ ايقاف الاشتراك" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 5"
+                                   Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="13"/>
-                            <DatePicker Style="{StaticResource DatePickerStyle1}"
+                            <DatePicker 
                                     SelectedDate="{Binding SubscribeStopDate, UpdateSourceTrigger=PropertyChanged}"
-                                    CalendarStyle="{DynamicResource DatePickerCalendarStyle1}" IsEnabled="{Binding FromDate,UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="{Binding FromDate,UpdateSourceTrigger=PropertyChanged}"
                                    />
                         </StackPanel>
 
                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5 5">
-                            <TextBlock Text="المستحق" 
-                                   Foreground="{StaticResource colors.secondry}"
+                            <TextBlock Text="المستحق" Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 5"
                                    FontSize="13"/>
                             <TextBox IsReadOnly="True" Text="{Binding DuesCash,Converter={StaticResource convertNum}, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.Column="2"  Margin="5 5">
                             <TextBlock Text="المرتجع" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 5"
+                                   Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="13"/>
                             <TextBox IsReadOnly="{Binding FromRef,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanNegationConverter}}" Text="{Binding ReturnCash, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0" Margin="5">
                             <TextBlock Text="ايقاف الاشتراك حسب :" 
-                                   Foreground="{StaticResource colors.secondry}"
                                                    VerticalAlignment="Center"
-                                   Margin="0 0 10 0"
+                                   Margin="0 0 10 0" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="13"/>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <RadioButton IsChecked="{Binding FromRef,UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource RadioButtonStyle1}" Content="المرتجع"/>

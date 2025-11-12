@@ -10,7 +10,7 @@
              FlowDirection="RightToLeft"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks" 
              d:DesignWidth="800">
-    <Border CornerRadius="10" Background="#EEE" Padding="5" >
+    <Border Padding="5" >
 
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
@@ -22,18 +22,16 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>-->
-                <Border Background="#fff" CornerRadius="10" Grid.Column="0" Grid.ColumnSpan="2"  Grid.Row="0"  Padding="10"  Margin="5">
+                <Border Grid.Column="0" Grid.ColumnSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="تاريخ التقرير " Foreground="{StaticResource colors.secondry}" Margin="0 0 20 0" FontSize="20" VerticalAlignment="Center" DockPanel.Dock="Top"/>
-                            <DatePicker Style="{DynamicResource DatePickerStyle1}"
+                            <TextBlock Text="تاريخ التقرير " Foreground="{DynamicResource Brush.Foreground}" Margin="0 0 20 0" FontSize="20" VerticalAlignment="Center" DockPanel.Dock="Top"/>
+                            <DatePicker 
                                     SelectedDate="{Binding ReportDate, UpdateSourceTrigger=PropertyChanged}"
-                                    
-                                    CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />
 
                         </StackPanel>
@@ -68,7 +66,7 @@
                     </StackPanel>
                     </Grid>
                 </Border>
-                <Border Background="#fff" CornerRadius="10" Grid.Column="0"   Grid.Row="1"  Padding="5"  Margin="5">
+                <Border  Grid.Column="0" Grid.Row="1" Margin="5">
                     <DockPanel>
                         <cdr:EmployeeAccountantCard DockPanel.Dock="Top" DataContext="{Binding TrainerMounthlyReportViewModel,UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
@@ -76,7 +74,7 @@
             </Border>
 
                 <!--#region DataList-->
-                <Border Background="#fff" CornerRadius="10" Grid.Column="1"   Grid.Row="2"  Padding="5"  Margin="5">
+                <Border Grid.Column="1"   Grid.Row="2"  Style="{DynamicResource StaticCardBorderStyle}"  Margin="5">
                     <DockPanel DockPanel.Dock="Top" >
                         <!--<TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
                         <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>-->
@@ -93,7 +91,7 @@
                                         <GroupStyle.HeaderTemplate>
                                             <DataTemplate>
                                                 <!--<Border CornerRadius="10" BorderBrush="#aaa" BorderThickness="0.5" HorizontalAlignment="Stretch">-->
-                                                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource colors.primary}" Margin="5" FontWeight="Bold" HorizontalAlignment="Left" FontSize="16"/>
+                                                    <TextBlock Text="{Binding Name}"  Margin="5" FontWeight="Bold" HorizontalAlignment="Left" FontSize="16"/>
                                                 <!--</Border>-->
                                             </DataTemplate>
                                         </GroupStyle.HeaderTemplate>

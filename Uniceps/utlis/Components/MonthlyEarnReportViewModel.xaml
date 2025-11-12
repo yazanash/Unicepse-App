@@ -8,7 +8,7 @@
              FlowDirection="RightToLeft"
               xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DesignWidth="800">
-    <Border    Background="#fff" CornerRadius="10" Padding="5">
+    <Border Style="{DynamicResource CardBorderStyle}">
         <ScrollViewer>
             <Grid >
                 <Grid.ColumnDefinitions>
@@ -30,34 +30,34 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock FontSize="16" Text="اجمالي الايرادات" FontWeight="Bold" Grid.Column="0" Margin="5"/>
-                <TextBlock Text="{Binding TotalIncome, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}"  Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
-                
-                <TextBlock FontSize="16" Text="ايرادات محجوزة للشهر القادم" FontWeight="Bold" Grid.Row="1" Grid.Column="0" Margin="5"/>
-                <TextBlock Text="{Binding IncomeForNextMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="اجمالي الايرادات" FontWeight="Bold" Grid.Column="0" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" Text="{Binding TotalIncome, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}"  Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
 
-                <TextBlock FontSize="16" Text="ارباح مستحقة للشهر الحالي" FontWeight="Bold" Grid.Row="2" Grid.Column="0" Margin="5"/>
-                <TextBlock Text="{Binding IncomeForThisMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="ايرادات محجوزة للشهر القادم" FontWeight="Bold" Grid.Row="1" Grid.Column="0" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" Text="{Binding IncomeForNextMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
 
-                <TextBlock FontSize="16" Text="ايرادات محجوزة من الشهر السابق" FontWeight="Bold" Grid.Row="3" Grid.Column="0" Margin="5"/>
-                <TextBlock Text="{Binding IncomeFromLastMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="ارباح مستحقة للشهر الحالي" FontWeight="Bold" Grid.Row="2" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding IncomeForThisMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
 
-                <TextBlock FontSize="16" Text="صافي الايرادات" FontWeight="Bold" Grid.Row="4" Grid.Column="0" Margin="5"/>
-                <TextBlock Text="{Binding EarnNet, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="ايرادات محجوزة من الشهر السابق" FontWeight="Bold" Grid.Row="3" Grid.Column="0" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" Text="{Binding IncomeFromLastMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
 
-
-                <TextBlock FontSize="16" Text="مستحقات المدربين" FontWeight="Bold" Grid.Row="5" Grid.Column="0" Margin="5"/>
-                <TextBlock Text="{Binding TrainerDauses, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  FontSize="16" Text="صافي الايرادات" FontWeight="Bold" Grid.Row="4" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding EarnNet, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
 
 
-                <TextBlock FontSize="16" Text="الرواتب والاجور" FontWeight="Bold" Grid.Row="6" Grid.Column="0" Margin="5"/>
-                <TextBlock Text="{Binding Salaries, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  FontSize="16" Text="مستحقات المدربين" FontWeight="Bold" Grid.Row="5" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding TrainerDauses, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
 
-                <TextBlock FontSize="16" Text="المصاريف" FontWeight="Bold" Grid.Row="7" Grid.Column="0" Margin="5"/>
-                <TextBlock Text="{Binding Expenses, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
 
-                <TextBlock FontSize="16" Text="الصافي" FontWeight="Bold" Grid.Row="8" Grid.Column="0" Margin="5"/>
-                <TextBlock Text="{Binding NetIncome, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="8" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  FontSize="16" Text="الرواتب والاجور" FontWeight="Bold" Grid.Row="6" Grid.Column="0" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" Text="{Binding Salaries, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  FontSize="16" Text="المصاريف" FontWeight="Bold" Grid.Row="7" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding Expenses, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="الصافي" FontWeight="Bold" Grid.Row="8" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding NetIncome, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="8" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
                 <!--<StackPanel  Orientation="Horizontal" Grid.Row="9" Grid.ColumnSpan="2">
                     <Grid >
                         <Grid.ColumnDefinitions>

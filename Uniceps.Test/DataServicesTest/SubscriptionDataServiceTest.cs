@@ -265,26 +265,7 @@ namespace Uniceps.Test.DataServicesTest
             //Assert.AreEqual(subscription.PrevTrainer_Id, trainer.Id);
             //Assert.AreEqual(subscription.Trainer!.Id, new_trainer.Id);
         }
-        [Test]
-        /// it should thro exception because cannot move to new trainer twice
-        public async Task Move_MovedSubscriptionToNewTrainer()
-        {
-            //Arrange
-            Player player = await create_player();
-            Sport sport = await create_sport();
-            Employee trainer = await create_trainer();
-            Subscription expected_subsciption = subscriptionFactory!.FakeSubscription(sport, player, trainer);
-            //Act
-            Subscription created_subscription = await subscriptionDataService!.Create(expected_subsciption);
-            Employee new_trainer = await create_trainer();
-            Subscription get_subscription = await subscriptionDataService!.Get(created_subscription.Id);
-            get_subscription.IsMoved = true;
-            //Subscription subscription = await subscriptionDataService.MoveToNewTrainer(get_subscription, new_trainer, DateTime.Now);
-            //Assert
-            //Assert.ThrowsAsync<MovedBeforeException>(
-            //async () => await subscriptionDataService!.MoveToNewTrainer(get_subscription, new_trainer, DateTime.Now));
-
-        }
+      
 
         [Test]
         /// it should stop subscription

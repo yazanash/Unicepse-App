@@ -7,7 +7,6 @@
              xmlns:views="clr-namespace:Uniceps.Views.Expenses"
              xmlns:vms="clr-namespace:Uniceps.ViewModels.Expenses"
              mc:Ignorable="d" 
-              Background="#ffffff"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type vms:AddExpenseViewModel }">
@@ -17,12 +16,11 @@
                 <views:ExpansesListView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type vms:EditExpenseViewModel }">
-                <views:EditExpansesDetailView/>
+            <views:ExpansesDetailView/>
             </DataTemplate>
         </UserControl.Resources>
-        
+
     <Grid>
-        
         <ContentControl Content="{Binding CurrentViewModel}"/>
     </Grid>
 </UserControl>

@@ -1,0 +1,66 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--Dark theme-->
+    <!-- Colors -->
+    <Color x:Key="Color.Primary">#0095A6</Color>
+    <Color x:Key="Color.OnPrimary">#fff</Color>
+    <Color x:Key="Color.Secondary">#1C2328</Color>
+    <Color x:Key="Color.OnSecondary">#fff</Color>
+    <Color x:Key="Color.Background">#000</Color>
+    <Color x:Key="Color.Surface">#101417</Color>
+    <Color x:Key="Color.Card">#1A1F23</Color>
+    <Color x:Key="Color.Foreground">#FFFFFF</Color>
+    <Color x:Key="Color.Border">#2A2F35</Color>
+    <!-- Border -->
+    <SolidColorBrush x:Key="Brush.Border">#2A2F35</SolidColorBrush>
+    <Thickness x:Key="BorderThickness.Main">1</Thickness>
+
+    <!-- CornerRadius -->
+    <CornerRadius x:Key="Radius.Small">4</CornerRadius>
+    <CornerRadius x:Key="Radius.Medium">8</CornerRadius>
+    <CornerRadius x:Key="Radius.Large">12</CornerRadius>
+    <SolidColorBrush x:Key="Brush.Primary"     Color="{DynamicResource Color.Primary}" />
+    <SolidColorBrush x:Key="Brush.OnPrimary"     Color="{DynamicResource Color.OnPrimary}" />
+    <SolidColorBrush x:Key="Brush.Secondary"   Color="{DynamicResource Color.Secondary}" />
+    <SolidColorBrush x:Key="Brush.OnSecondary"   Color="{DynamicResource Color.OnSecondary}" />
+    <SolidColorBrush x:Key="Brush.Background"  Color="{DynamicResource Color.Background}" />
+    <SolidColorBrush x:Key="Brush.Surface"  Color="{DynamicResource Color.Surface}" />
+    <SolidColorBrush x:Key="Brush.Card"        Color="{DynamicResource Color.Card}" />
+    <SolidColorBrush x:Key="Brush.Foreground"  Color="{DynamicResource Color.Foreground}" />
+
+    <!-- Borders -->
+
+
+    <!-- ========== GLOBAL FONT ========== -->
+    <FontFamily x:Key="Cairo">pack://application:,,,/Resources/Fonts/Cairo/#Cairo</FontFamily>
+
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Cairo}" />
+        <!--<Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}" />-->
+    </Style>
+
+    <Style x:Key="CardBorderStyle" TargetType="Border">
+        <!-- الخلفية -->
+        <Setter Property="Background" Value="{DynamicResource Brush.Card}" />
+        <!-- البوردر -->
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource BorderThickness.Main}" />
+        <!-- الزوايا -->
+        <Setter Property="CornerRadius" Value="{DynamicResource Radius.Small}" />
+        <!-- البادينغ الداخلي -->
+        <Setter Property="Padding" Value="5" />
+
+    </Style>
+    <Style x:Key="StaticCardBorderStyle" TargetType="Border">
+        <!-- الخلفية -->
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}" />
+        <!-- البوردر -->
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+        <!-- الزوايا -->
+        <Setter Property="CornerRadius" Value="{DynamicResource Radius.Small}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource BorderThickness.Main}" />
+        <!-- البادينغ الداخلي -->
+        <Setter Property="Padding" Value="5" />
+
+    </Style>
+</ResourceDictionary>

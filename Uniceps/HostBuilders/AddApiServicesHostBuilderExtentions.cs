@@ -25,8 +25,10 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<MetricApiDataService>();
                 services.AddSingleton<SubscriptionApiDataService>();
                 services.AddSingleton<AttendanceApiDataService>();
-                services.AddSingleton<LicenseApiDataService>();
                 services.AddSingleton<GetExercisesService>();
+                services.AddSingleton<SystemAuthApiService>();
+                services.AddSingleton<SystemProfileApiDataService>();
+                services.AddSingleton<SystemSubscriptionApiDataService>();
                 services.AddSingleton<IDataService<SyncObject>, SyncDataService>();
             });
             return _hostBuilder;

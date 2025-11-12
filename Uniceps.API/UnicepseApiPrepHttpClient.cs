@@ -20,28 +20,7 @@ namespace Uniceps.API
         {
             _client = client;
             _apiKey = apiKey;
-            //RunAsync();
         }
-        //public async Task RunAsync()
-        //{
-        //    bool gender = true;
-        //    PlayerDto entity = new PlayerDto()
-        //    {
-        //        balance = 0,
-        //        date_of_birth = 1999,
-        //        gender = gender.ToString(),
-        //        gym_id = 18,
-        //        height = 18.0,
-        //        name = "yaz",
-        //        phone_number = "+963994916917",
-        //        pid = 22,
-        //        width = 16.5
-        //    };
-        //    HttpContent content = new StringContent(JsonConvert.SerializeObject(entity));
-        //    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-        //    HttpResponseMessage response = await _client.PostAsync($"/player", content);
-        //    string jsonResponse = await response.Content.ReadAsStringAsync();
-        //}
         public async Task<T> GetAsync<T>(string uri)
         {
             if (!_client.DefaultRequestHeaders.Where(x => x.Key == "x-access-token").Any())
@@ -103,5 +82,6 @@ namespace Uniceps.API
             return (int)response.StatusCode;
 
         }
+
     }
 }

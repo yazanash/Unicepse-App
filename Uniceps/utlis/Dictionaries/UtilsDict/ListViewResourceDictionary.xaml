@@ -51,12 +51,12 @@
         </Setter>
     </Style>
 
-    <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#eee"/>
-    <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#ccc"/>
-    <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="#EEE"/>
-    <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="#3DDADADA"/>
-    <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="{StaticResource ResourceKey=colors.color.primary}"/>
+    <SolidColorBrush x:Key="Item.MouseOver.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="Item.MouseOver.Border" Color="{DynamicResource Color.Card}"/>
+    <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="{DynamicResource Color.Primary}"/>
+    <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="{DynamicResource Color.Primary}"/>
     <Style x:Key="ListBoxItemContainerStyle1" TargetType="{x:Type ListBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Padding" Value="5"/>
@@ -70,30 +70,30 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
-                    <Border Background="#eee" FlowDirection="RightToLeft" x:Name="Bd" CornerRadius="10" Margin="5" BorderThickness="1" BorderBrush="#fff"  Padding="10 5">
+                    <Border  FlowDirection="RightToLeft" x:Name="Bd"  Margin="5" Style="{DynamicResource CardBorderStyle}">
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding SportName}" Grid.Row="0" FontSize="15" MaxHeight="30"
                            VerticalAlignment="Center"
                        Margin="0 5"
                            LineStackingStrategy="BlockLineHeight" TextWrapping="WrapWithOverflow"
-                           TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="#333"/>
+                           TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="{DynamicResource Brush.Foreground}"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="السعر اليومي :" Foreground="#666" Grid.Column="0" Grid.Row="0"/>
-                                <TextBlock Text="{Binding DailyPrice,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" Foreground="#666" Grid.Column="1" Grid.Row="0"/>
+                                <TextBlock Text="السعر اليومي :" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="0" Grid.Row="0"/>
+                                <TextBlock Text="{Binding DailyPrice,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="1" Grid.Row="0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="عدد تدريب الايام بالاسبوع :" Foreground="#666" Grid.Column="0" Grid.Row="1"/>
-                                <TextBlock Text="{Binding DaysInWeek}" Foreground="#666" Grid.Column="1" Grid.Row="1"/>
+                                <TextBlock Text="عدد تدريب الايام بالاسبوع :" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="0" Grid.Row="1"/>
+                                <TextBlock Text="{Binding DaysInWeek}" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="1" Grid.Row="1"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="مدة الاشتراك" Foreground="#666" Grid.Column="0" Grid.Row="2"/>
-                                <TextBlock Text="{Binding DaysCount}" Foreground="#666" Grid.Column="1" Grid.Row="2"/>
+                                <TextBlock Text="مدة الاشتراك" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="0" Grid.Row="2"/>
+                                <TextBlock Text="{Binding DaysCount}" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="1" Grid.Row="2"/>
                             </StackPanel>
 
 
 
 
-                            <TextBlock Text="{Binding Price,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" Foreground="{StaticResource ResourceKey=colors.primary}" Margin="0 10" FontSize="20" FontWeight="Bold" />
+                            <TextBlock Text="{Binding Price,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" Foreground="{DynamicResource Brush.Primary}" Margin="0 10" FontSize="20" FontWeight="Bold" />
                         </StackPanel>
 
                     </Border>
@@ -187,8 +187,8 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                                    <TextBlock  Foreground="{StaticResource colors.primary}"  FontSize="16" FontWeight="Bold" Text="الخطة : "/>
-                                    <TextBlock  Foreground="{StaticResource colors.primary}"  FontSize="16" FontWeight="Bold" Text="{Binding Plan,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock  Foreground="{DynamicResource Brush.Primary}"  FontSize="16" FontWeight="Bold" Text="الخطة : "/>
+                                    <TextBlock  Foreground="{DynamicResource Brush.Primary}"  FontSize="16" FontWeight="Bold" Text="{Binding Plan,UpdateSourceTrigger=PropertyChanged}"/>
 
                                 </StackPanel>
                              

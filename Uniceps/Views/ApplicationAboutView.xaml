@@ -9,7 +9,7 @@
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
             >
-    <Border CornerRadius="10" Background="#EEE" Padding="10" >
+    <Border Padding="5" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -17,10 +17,10 @@
                 
             </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2"  CornerRadius="10" Padding="15 5" Margin="0 0 0 5" >
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="معلومات التطبيق" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                        <TextBlock Text="معلومات التطبيق" FontSize="18" VerticalAlignment="Center" Foreground="{DynamicResource Brush.Foreground}"/>
                     </StackPanel>
 
                 </DockPanel>
@@ -43,10 +43,10 @@
                     </Border>-->
                  
                         
-                    <Border Background="#fff" CornerRadius="10" Grid.Column="0" HorizontalAlignment="Left"  Grid.Row="1"  Padding="5"  Margin="5">
+                    <Border Style="{DynamicResource StaticCardBorderStyle}" Grid.Column="0" HorizontalAlignment="Left"  Grid.Row="1"  Padding="5"  Margin="5">
                         <DockPanel HorizontalAlignment="Center" Width="800" >
                             <DockPanel DockPanel.Dock="Top" >
-                                <TextBlock Text="معلومات التطبيق" Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
+                                <TextBlock Text="معلومات التطبيق" Foreground="{DynamicResource Brush.Foreground}" FontSize="24" DockPanel.Dock="Left"/>
                             </DockPanel>
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <cs:AppCard/>

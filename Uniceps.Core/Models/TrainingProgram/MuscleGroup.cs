@@ -11,6 +11,6 @@ namespace Uniceps.Core.Models.TrainingProgram
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? EngName { get; set; }
-
+        public int PublicId { get; set; }
     }
 }

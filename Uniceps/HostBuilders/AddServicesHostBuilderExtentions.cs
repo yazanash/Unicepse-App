@@ -17,6 +17,7 @@ using Uniceps.Entityframework.Services.PlayerQueries;
 using Uniceps.Entityframework.Services.RoutineSystemServices;
 using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.utlis.common;
+using Uniceps.Helpers;
 
 namespace Uniceps.HostBuilders
 {
@@ -26,6 +27,7 @@ namespace Uniceps.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
+                services.AddSingleton<ISessionManager, SessionManager>();
                 services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
                 services.AddSingleton<IAccountDataService<User>, AccountDataService>();
                 services.AddSingleton<IAuthenticationService, AuthenticationService>();
@@ -37,8 +39,6 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IDataService<Credit>, EmployeeCreditsDataService>();
                 services.AddSingleton<IDataService<PlayerPayment>, PaymentDataService>();
                 services.AddSingleton<IDataService<Subscription>, SubscriptionDataService>();
-                services.AddSingleton<IDataService<License>, LicenseDataService>();
-                services.AddSingleton<IDataService<GymProfile>, GymProfileDataService>();
                 services.AddSingleton<PlayersAttendenceService>();
                 services.AddSingleton<ExpensesDataService>();
 
@@ -55,6 +55,9 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IDataService<SetModel>, RoutineSetsDataService>();
                 services.AddSingleton<IGetAllById<SetModel>, RoutineSetsDataService>();
                 services.AddSingleton<IUpdateRangeDataService<SetModel>, RoutineSetsDataService>();
+
+                services.AddSingleton<IProfileDataService, SystemProfileDataService>();
+                services.AddSingleton<ISystemSubscriptionDataService, SystemSubscriptionDataService>();
             });
             return _hostBuilder;
         }

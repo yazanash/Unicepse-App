@@ -10,7 +10,6 @@
              xmlns:views="clr-namespace:Uniceps.Views.AccountingViews"
               xmlns:expvms="clr-namespace:Uniceps.ViewModels.Expenses"
              xmlns:expviews="clr-namespace:Uniceps.Views.Expenses"
-             Background="Transparent"
              xmlns:converters="clr-namespace:Uniceps.utlis.Converters" 
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
@@ -26,7 +25,7 @@
             <expviews:ExpansesDetailView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type expvms:EditExpenseViewModel}">
-            <expviews:EditExpansesDetailView/>
+            <expviews:ExpansesDetailView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vms:IncomeReportViewModel}">
             <views:IncomeReportView/>
@@ -44,7 +43,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="5" Margin="5" Background="#fff">
+        <Border  Grid.ColumnSpan="2" Padding="5" Margin="0 0 0 5" >
             <DockPanel>
                 <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                     <RadioButton

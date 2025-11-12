@@ -16,9 +16,8 @@ namespace Uniceps.ViewModels.PrintViewModels
     {
         public Subscription Subscription;
         private readonly ObservableCollection<PaymentListItemViewModel> _paymentListItemViewModels;
-        private readonly LicenseDataStore _licenseDataStore;
         public IEnumerable<PaymentListItemViewModel> PaymentsList => _paymentListItemViewModels;
-        public SubscriptionPrintViewModel(Subscription subscription, LicenseDataStore licenseDataStore)
+        public SubscriptionPrintViewModel(Subscription subscription)
         {
             Subscription = subscription;
             _paymentListItemViewModels = new ObservableCollection<PaymentListItemViewModel>();
@@ -27,38 +26,8 @@ namespace Uniceps.ViewModels.PrintViewModels
                 PaymentListItemViewModel paymentListItemViewModel = new PaymentListItemViewModel(pay);
                 _paymentListItemViewModels.Add(paymentListItemViewModel);
             }
-            _licenseDataStore = licenseDataStore;
-            if (_licenseDataStore.CurrentGymProfile != null)
-            {
-                GymName = _licenseDataStore.CurrentGymProfile!.GymName;
-                try
-                {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(_licenseDataStore.CurrentGymProfile!.Logo!);
-                    bitmap.EndInit();
-                    GymLogo = bitmap;
-                }
-                catch
-                {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
-                    bitmap.EndInit();
-                    GymLogo = bitmap;
-                }
-
-            }
-            else
-            {
-
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
-                bitmap.EndInit();
-                GymLogo = bitmap;
-
-            }
+            
+            
 
         }
         private string? _gymName;
@@ -86,8 +55,6 @@ namespace Uniceps.ViewModels.PrintViewModels
         public double OfferValue => Subscription.OfferValue;
         public string? OfferDes => Subscription.OfferDes;
         public double PriceAfterOffer => Subscription.PriceAfterOffer;
-        public string IsPrivate => Subscription.IsPrivate ? "تدريب خاص" : "لا يوجد";
-        public double PrivatePrice => Subscription.IsPrivate ? Subscription.PrivatePrice : 0;
         public double PaidValue => Subscription.PaidValue;
         public string EndDate => Subscription.EndDate.ToString("ddd,MMM dd,yyy");
     }

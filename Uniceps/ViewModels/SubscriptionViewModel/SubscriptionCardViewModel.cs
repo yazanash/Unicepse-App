@@ -23,8 +23,6 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public double OfferValue => Subscription.OfferValue;
         public string? OfferDes => Subscription.OfferDes;
         public double PriceAfterOffer => Subscription.PriceAfterOffer;
-        public string IsPrivate => Subscription.IsPrivate ? "تدريب خاص" : "لا يوجد";
-        public double PrivatePrice => Subscription.IsPrivate ? Subscription.PrivatePrice : 0;
         public string IsPaid => Subscription.IsPaid ? "مدفوع" : "غير مدفوع";
         public Brush IsPaidColor => Subscription.IsPaid ? Brushes.Green : Brushes.Red;
         public double PaidValue => Subscription.PaidValue;

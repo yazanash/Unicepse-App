@@ -32,7 +32,7 @@
         </Grid.ColumnDefinitions>
 
         <comp:PlayerMetricCard DataContext="{Binding PlayerSubscription,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0"/>
-        <comp:PlayerMetricCard DataContext="{Binding PlayerPayments,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1"/>
+        <comp:PlayerMetricCard DataContext="{Binding PlayerPayments,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Margin="10 0"/>
         <comp:PlayerMetricCard DataContext="{Binding PlayerSubscriptionCount,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="2"/>
 
         <!--<Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
@@ -52,15 +52,14 @@
                         </DockPanel>
                     </Border>-->
 
-        <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">
+        <Border Style="{DynamicResource StaticCardBorderStyle}" Grid.Row="1" Margin="0 10 0 0" Grid.Column="0" Grid.ColumnSpan="3" >
 
             <DockPanel DockPanel.Dock="Top" >
-                <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
-                <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
+                <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Top"/>
                 <Grid  Grid.Row="4">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
 
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
@@ -166,7 +165,7 @@
                                                     <!-- Customize the popup content here -->
                                                     <Border Background="#fff" Padding="5"
                                                             BorderThickness="1"
-                                                            BorderBrush="{StaticResource colors.primary}" CornerRadius="10">
+                                                            BorderBrush="{DynamicResource Brush.Border}" CornerRadius="10">
 
                                                         <StackPanel>
                                                             <Button HorizontalAlignment="Stretch" Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">

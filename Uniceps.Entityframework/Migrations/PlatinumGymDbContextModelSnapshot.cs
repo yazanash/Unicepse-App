@@ -324,86 +324,6 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("Expenses");
                 });
 
-            modelBuilder.Entity("Uniceps.Core.Models.GymProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("GymId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GymName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Logo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwnerName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telephone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GymProfile");
-                });
-
-            modelBuilder.Entity("Uniceps.Core.Models.License", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("GymId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LicenseId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Plan")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Price")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("SubscribeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("SubscribeEndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Licenses");
-                });
-
             modelBuilder.Entity("Uniceps.Core.Models.Metric.Metric", b =>
                 {
                     b.Property<int>("Id")
@@ -775,15 +695,6 @@ namespace Unicepse.Entityframework.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsMoved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPlayerPay")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPrivate")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsStopped")
                         .HasColumnType("bit");
 
@@ -812,9 +723,6 @@ namespace Unicepse.Entityframework.Migrations
                         .HasColumnType("float");
 
                     b.Property<double>("PriceAfterOffer")
-                        .HasColumnType("float");
-
-                    b.Property<double>("PrivatePrice")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("RollDate")
@@ -871,6 +779,71 @@ namespace Unicepse.Entityframework.Migrations
                     b.ToTable("SyncObjects");
                 });
 
+            modelBuilder.Entity("Uniceps.Core.Models.SystemAuthModels.SystemProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("BusinessId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemProfiles");
+                });
+
+            modelBuilder.Entity("Uniceps.Core.Models.SystemAuthModels.SystemSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsGift")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PlanName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("PublicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemSubscriptions");
+                });
+
             modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.Exercises", b =>
                 {
                     b.Property<int>("Id")
@@ -915,6 +888,9 @@ namespace Unicepse.Entityframework.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PublicId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

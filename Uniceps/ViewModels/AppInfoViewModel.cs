@@ -10,68 +10,38 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Uniceps.Core.Models;
 using Uniceps.Stores;
-using Uniceps.Commands.LicenseCommand;
 using Uniceps.utlis.common;
-using Uniceps.ViewModels.AppViewModels;
 
 namespace Uniceps.ViewModels
 {
     public class AppInfoViewModel : ListingViewModelBase
     {
-        private readonly LicenseDataStore _licenseDataStore;
-        private readonly ObservableCollection<LicensesListItemViewModel> _licensesListItemViewModels;
         private static readonly string currentVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
-        public IEnumerable<LicensesListItemViewModel> Licenses => _licensesListItemViewModels;
-        public AppInfoViewModel(LicenseDataStore licenseDataStore)
+        private AccountStore _accountStore;
+        public AppInfoViewModel(AccountStore accountStore)
         {
-            _licenseDataStore = licenseDataStore;
-            _licensesListItemViewModels = new ObservableCollection<LicensesListItemViewModel>();
-            _licenseDataStore.Loaded += _licenseDataStore_Loaded;
 
-            LoadLicensesCommand = new LoadLicensesCommand(_licenseDataStore, this);
             Version = currentVersion;
-            if (_licenseDataStore.CurrentGymProfile != null)
+            _accountStore = accountStore;
+            _accountStore.ProfileChanged += _accountStore_ProfileChanged;
+            if (_accountStore.SystemProfile != null)
             {
-                GymName = _licenseDataStore.CurrentGymProfile!.GymName;
-                GymOwner = _licenseDataStore.CurrentGymProfile!.OwnerName;
-                GymPhone = _licenseDataStore.CurrentGymProfile!.PhoneNumber;
-                GymTelephone = _licenseDataStore.CurrentGymProfile!.Telephone;
-                GymAddress = _licenseDataStore.CurrentGymProfile!.Address;
-                try
-                {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(_licenseDataStore.CurrentGymProfile!.Logo!);
-                    bitmap.EndInit();
-                    GymLogo = bitmap;
-                }
-                catch
-                {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
-                    bitmap.EndInit();
-                    GymLogo = bitmap;
-                }
-            }
-
-
-
-        }
-        public ICommand LoadLicensesCommand { get; }
-        private void _licenseDataStore_Loaded()
-        {
-            _licensesListItemViewModels.Clear();
-            foreach (var item in _licenseDataStore.Licenses)
-            {
-                AddLicense(item);
+                GymName = _accountStore.SystemProfile.DisplayName;
+                GymPhone = _accountStore.SystemProfile.PhoneNumber;
             }
         }
-        void AddLicense(License license)
+
+        private void _accountStore_ProfileChanged()
         {
-            LicensesListItemViewModel licensesListItem = new LicensesListItemViewModel(license);
-            _licensesListItemViewModels.Add(licensesListItem);
+            if (_accountStore.SystemProfile != null)
+            {
+                GymName = _accountStore.SystemProfile.DisplayName;
+                GymPhone = _accountStore.SystemProfile.PhoneNumber;
+            }
         }
+
+        public ICommand? LoadLicensesCommand { get; }
+       
         private string? _version;
         public string? Version
         {
@@ -118,13 +88,6 @@ namespace Uniceps.ViewModels
             set { _gymLogo = value; OnPropertyChanged(nameof(GymLogo)); }
         }
 
-        public static AppInfoViewModel LoadViewModel(LicenseDataStore licenseDataStore)
-        {
-            AppInfoViewModel viewModel = new(licenseDataStore);
-
-            viewModel.LoadLicensesCommand.Execute(null);
-
-            return viewModel;
-        }
+       
     }
 }

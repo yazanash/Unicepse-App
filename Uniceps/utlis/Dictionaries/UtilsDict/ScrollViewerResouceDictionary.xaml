@@ -4,8 +4,8 @@
 
 
     <!--#region Scroll Style -->
-    <SolidColorBrush x:Key="PrimaryColor" Color="{StaticResource ResourceKey=colors.color.secondry}"/>
-    <SolidColorBrush x:Key="SecoundryColor" Color="#993300"/>
+    <SolidColorBrush x:Key="PrimaryColor" Color="{DynamicResource Color.Primary}"/>
+    <SolidColorBrush x:Key="SecoundryColor" Color="{DynamicResource Color.Secondary}"/>
     <SolidColorBrush x:Key="WhiteColor" Color="#fff"/>
     <SolidColorBrush x:Key="GrayColor" Color="#868686"/>
     <Style x:Key="ScrollType" TargetType="{x:Type Thumb}">
@@ -31,7 +31,7 @@
     </Style>
     <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-        <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
         <Setter Property="Background" Value="#fff"/>
         <Setter Property="Width" Value="8"/>
         <Setter Property="Template" >

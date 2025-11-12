@@ -2,20 +2,22 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHover.Background" Color="#fff"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHover.Border" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelected.Background" Color="#fff"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelected.Border" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedHover.Background" Color="#fff"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedHover.Border" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedNoFocus.Background" Color="#3DDADADA"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedNoFocus.Border" Color="#fff"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewFocus.Border" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHoverFocus.Background" Color="#fff"/>
-    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHoverFocus.Border" Color="{StaticResource ResourceKey=colors.color.primary}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHover.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHover.Border" Color="{DynamicResource Color.Border}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelected.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelected.Border" Color="{DynamicResource Color.Border}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedHover.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedHover.Border" Color="{DynamicResource Color.Border}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedNoFocus.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewSelectedNoFocus.Border" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewFocus.Border" Color="{DynamicResource Color.Border}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHoverFocus.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHoverFocus.Border" Color="{DynamicResource Color.Border}"/>
     <Style x:Key="ComboBoxItemContainerStyle1" TargetType="{x:Type ComboBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Padding" Value="5"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Background}"/>
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -88,116 +90,93 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="toggleBtnStyle" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Background" Value="#aaa"/>
-        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.primary}"/>
-        <!--<Setter Property="Height" Value="20"/>-->
-        <!--<Setter Property="Width" Value="35"/>-->
+    <Style x:Key="toggleBtnStyle" TargetType="ToggleButton">
+        <Setter Property="Background" Value="{DynamicResource Brush.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
         <Setter Property="MaxHeight" Value="20"/>
         <Setter Property="MaxWidth" Value="35"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                <ControlTemplate TargetType="ToggleButton">
                     <Grid>
-                        <Border 
-                                x:Name="PART"
-                                Background="{TemplateBinding Background}"
-                                                                CornerRadius="7"
-                                                                Height="14"
-                                                                Width="35"
-                                                            
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Center"/>
-                        <Ellipse Fill="#fff"
-                                     x:Name="PART_Ellipse"
-                                         Height="20"
-                                         Width="20"
-                                     VerticalAlignment="Center"
-                                     HorizontalAlignment="Left"
-                                         Stroke="{TemplateBinding BorderBrush}" StrokeThickness="3"/>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART"
+                                                                   Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <DynamicResource ResourceKey="Brush.Primary"/>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ThicknessAnimation Storyboard.TargetName="PART_Ellipse"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        To="15 0 0 0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART"
+                                                                   Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <SolidColorBrush Color="#aaa"/>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ThicknessAnimation Storyboard.TargetName="PART_Ellipse"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        To="0 0 0 0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
 
+                        <Border x:Name="PART"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="7"
+                            Height="14"
+                            Width="35"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"/>
+                        <Ellipse x:Name="PART_Ellipse"
+                             Fill="{DynamicResource Brush.Surface}"
+                             Height="20"
+                             Width="20"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             Stroke="{TemplateBinding BorderBrush}"
+                             StrokeThickness="3"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Trigger.EnterActions >
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="PART"
-                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource ResourceKey=colors.color.primary}" Duration="0:0:0.2"/>
-                                        <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
-                                                            Storyboard.TargetProperty="Margin"
-                                                        To="15 0 0 0" Duration="0:0:0.2" />
-                                      
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
+                            <Setter TargetName="PART_Ellipse" Property="Margin" Value="15 0 0 0"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
-                            <Trigger.EnterActions >
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="PART"
-                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="#aaa" Duration="0:0:0.2"/>
-                                        <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
-                                                            Storyboard.TargetProperty="Margin"
-                                                        To="0 0 0 0" Duration="0:0:0.2" />
-                                      
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
+                            <Setter TargetName="PART_Ellipse" Property="Margin" Value="0 0 0 0"/>
                         </Trigger>
-                        <EventTrigger RoutedEvent="Checked">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetName="PART"
-                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource ResourceKey=colors.color.primary}" Duration="0:0:0.2"/>
-                                    <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
-                                                            Storyboard.TargetProperty="Margin"
-                                                        To="15 0 0 0" Duration="0:0:0.2" />
-                                  
-                                 
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-
-                        <EventTrigger RoutedEvent="Unchecked">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetName="PART"
-                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="#aaa" Duration="0:0:0.2"/>
-                                    <ThicknessAnimation  Storyboard.TargetName="PART_Ellipse"
-                                                            Storyboard.TargetProperty="Margin"
-                                                        To="0 0 0 0" Duration="0:0:0.2" />
-                                    
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
-
             </Setter.Value>
         </Setter>
     </Style>
+    <SolidColorBrush x:Key="ComboBox.Static.Background" Color="{DynamicResource Color.Surface}"/>
 
-    <SolidColorBrush x:Key="ComboBox.Static.Background" Color="Transparent"/>
-
-    <SolidColorBrush x:Key="ComboBox.Static.Border" Color="#999"/>
-    <SolidColorBrush x:Key="ComboBox.Static.Glyph" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Background" Color="#eee" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Border" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Glyph" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="ComboBox.Pressed.Background"  Color="#ccc"/>
-    <SolidColorBrush x:Key="ComboBox.Pressed.Border" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="ComboBox.Pressed.Glyph" Color="{StaticResource ResourceKey=colors.color.primary}"/>
-    <SolidColorBrush x:Key="ComboBox.Disabled.Background" Color="#FFF0F0F0"/>
-    <SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="#FFD9D9D9"/>
-    <SolidColorBrush x:Key="ComboBox.Disabled.Glyph" Color="#FFBFBFBF"/>
-    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Background" Color="#FFFFFFFF"/>
-    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Border" Color="#FFBFBFBF"/>
+    <SolidColorBrush x:Key="ComboBox.Static.Border" Color="{DynamicResource Color.Border}"/>
+    <SolidColorBrush x:Key="ComboBox.Static.Glyph" Color="{DynamicResource Color.Primary}"/>
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Background" Color="{DynamicResource Color.Surface}" />
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Border" Color="{DynamicResource Color.Border}"/>
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Glyph" Color="{DynamicResource Color.Primary}"/>
+    <SolidColorBrush x:Key="ComboBox.Pressed.Background"  Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="ComboBox.Pressed.Border" Color="{DynamicResource Color.Border}"/>
+    <SolidColorBrush x:Key="ComboBox.Pressed.Glyph" Color="{DynamicResource Color.Primary}"/>
+    <SolidColorBrush x:Key="ComboBox.Disabled.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="{DynamicResource Color.Border}"/>
+    <SolidColorBrush x:Key="ComboBox.Disabled.Glyph" Color="#ccc"/>
+    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Background" Color="{DynamicResource Color.Surface}"/>
+    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Border" Color="{DynamicResource Color.Border}"/>
     <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Background" Color="Transparent"/>
     <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Border" Color="Transparent"/>
     <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
@@ -275,8 +254,8 @@
                         <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                     </Grid.ColumnDefinitions>
                     <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="10 10" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                        <theme:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                            <Border x:Name="dropDownBorder" CornerRadius="10" Padding="5" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1">
+                        <theme:SystemDropShadowChrome x:Name="shadow" Color="{DynamicResource Color.Surface}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                            <Border x:Name="dropDownBorder" CornerRadius="10" Padding="5" Background="{DynamicResource Brush.Surface}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1">
                                 <ScrollViewer x:Name="DropDownScrollViewer">
                                     <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
                                         <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
@@ -290,7 +269,7 @@
                     </Popup>
                     <ToggleButton Grid.Column="2" x:Name="toggleButton" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxToggleButton}"/>
                     <ContentPresenter Grid.Column="1" x:Name="contentPresenter" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    <TextBlock Text="{TemplateBinding Tag}" Foreground="{StaticResource ResourceKey=colors.primary}" Grid.Column="0" VerticalAlignment="Center"/>
+                    <TextBlock Text="{TemplateBinding Tag}" Foreground="{DynamicResource Brush.Primary}" Grid.Column="0" VerticalAlignment="Center"/>
                 </Grid>
             </Border>
             <ItemsControl ItemsSource="{TemplateBinding Validation.Errors}" >
@@ -326,7 +305,7 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Background" Value="{StaticResource ComboBox.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ComboBox.Static.Border}"/>
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -370,12 +349,12 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.primary}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.secondry}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=colors.secondry}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Secondary}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Secondary}"/>
             </Trigger>
         </Style.Triggers>
     </Style>

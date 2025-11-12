@@ -13,18 +13,18 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <con:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#EEE" Padding="10" >
+    <Border Padding="10" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2" Margin="0 0 0 5" >
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
                         <!--<Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>-->
-                        <TextBlock Text="العاملين / اضافة موظف" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                        <TextBlock Text="العاملين / اضافة موظف" FontSize="18" Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center"/>
                     </StackPanel>
 
                 </DockPanel>
@@ -33,10 +33,10 @@
 
             <Grid Grid.Row="1" >
              
-                <Border Background="#fff" CornerRadius="10" Grid.Column="1"  Grid.Row="0"  Padding="5"  Margin="5">
+                <Border  Grid.Column="1" HorizontalAlignment="Left" Grid.Row="0"  Style="{DynamicResource CardBorderStyle}"  Margin="5">
                     <DockPanel HorizontalAlignment="Center" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
-                            <TextBlock Text="معلومات الموظف " Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
+                            <TextBlock Text="معلومات الموظف " Foreground="{DynamicResource Brush.Foreground}" FontSize="24" DockPanel.Dock="Left"/>
                         </DockPanel>
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -53,7 +53,7 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                                 <TextBlock Text="اسم الموظف" 
-                                    Foreground="{StaticResource colors.secondry}"
+                                  Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -62,7 +62,7 @@
 
                             <StackPanel  Grid.Row="0" Grid.Column="1" Margin="5">
                                 <TextBlock Text="رقم الهاتف" 
-                                   Foreground="{StaticResource colors.secondry}"
+                                 Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -71,7 +71,7 @@
 
                             <StackPanel  Grid.Row="1" Grid.Column="2" Margin="5">
                                 <TextBlock Text="سنة الميلاد" 
-                                   Foreground="{StaticResource colors.secondry}"
+                                  Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
@@ -88,7 +88,7 @@
 
                             <StackPanel  Grid.Row="2" Grid.Column="3" Margin="5">
                                 <TextBlock Text="قيمة الراتب" 
-                                     Foreground="{StaticResource colors.secondry}"
+                                    Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding SalaryValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
@@ -99,7 +99,7 @@
 
                             <StackPanel  Grid.Row="1" Grid.Column="0" Margin="5">
                                 <TextBlock Text="المسمى الوظيفي" 
-                                    Foreground="{StaticResource colors.secondry}"
+                                    Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Position, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -108,18 +108,16 @@
 
                             <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
                                 <TextBlock Text="تاريخ التوظيف" 
-                                   Foreground="{StaticResource colors.secondry}"
+                                 Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <!--<TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>-->
-                                <DatePicker Style="{DynamicResource DatePickerStyle1}"
+                                <DatePicker 
                                     SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
-                                    CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />
                             </StackPanel>
                             <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
-                                <TextBlock Text="الوظيفة" 
-                                   Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="الوظيفة"  Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <StackPanel Orientation="Horizontal">
@@ -149,8 +147,7 @@
 
                             <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
                                 <TextBlock Text="الجنس" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
                                 <StackPanel Orientation="Horizontal">
                                     <RadioButton Style="{StaticResource RadioChoose}" IsChecked="{Binding GenderMale}" >

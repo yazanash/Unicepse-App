@@ -8,7 +8,7 @@
              FlowDirection="RightToLeft"
               xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border Grid.ColumnSpan="2" Grid.Row="2" Background="#fff" CornerRadius="15" Padding="10" Margin="10">
+    <Border Grid.ColumnSpan="2" Grid.Row="2" Padding="5" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -16,10 +16,10 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Orientation="Horizontal">
-                <TextBlock Text="التمارين الرياضية" FontSize="16"  Margin="0 0 8 0"/>
+                <TextBlock Text="التمارين الرياضية" Foreground="{DynamicResource Brush.Foreground}" FontSize="16"  Margin="0 0 8 0"/>
             </StackPanel>
-            <Separator Grid.ColumnSpan="2" Grid.Column="0" Margin="5 10" Grid.Row="1"/>
-            <DataGrid Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft" ItemsSource="{Binding RoutineItems}" 
+            <Border Grid.Row="2" Grid.Column="0" Style="{DynamicResource CardBorderStyle}">
+            <DataGrid  FlowDirection="RightToLeft" ItemsSource="{Binding RoutineItems}" 
 CanUserReorderColumns="True" SelectedItem="{Binding SelectedRoutineItem}"
 x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
 CellStyle="{DynamicResource DataGridCellStyle1}" VirtualizingPanel.ScrollUnit="Pixel"
@@ -60,7 +60,7 @@ Width="*"
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
+            </Border>
         </Grid>
     </Border>
 </UserControl>

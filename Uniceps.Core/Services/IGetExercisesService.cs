@@ -11,5 +11,8 @@ namespace Uniceps.Core.Services
     {
         Task<IEnumerable<Exercises>> GetAll();
         Task<IEnumerable<MuscleGroup>> GetAllMuscleGroups();
+        Task<Exercises> GetOrCreate(Exercises exercises);
+        Task<MuscleGroup> GetOrCreateMuscleGroup(MuscleGroup muscleGroup);
+        Task<Exercises> Update(Exercises exercises);
     }
 }

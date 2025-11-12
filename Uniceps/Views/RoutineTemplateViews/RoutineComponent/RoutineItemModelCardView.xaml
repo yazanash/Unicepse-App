@@ -26,7 +26,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
-                        <Border BorderThickness="1" x:Name="Bd" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
+                        <Border Style="{DynamicResource StaticCardBorderStyle}" x:Name="Bd"  Margin="5" >
 
                             <Grid >
                                 <Grid.ColumnDefinitions>
@@ -37,16 +37,16 @@
 
 
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                    <TextBlock FontSize="16" Foreground="#797979" FontWeight="Bold"
+                                    <TextBlock FontSize="16" Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
                                         Text="{Binding RoundIndex ,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"  HorizontalAlignment="Left"></TextBlock>
-                                    <TextBlock FontSize="16" Foreground="#797979" FontWeight="Bold"
+                                    <TextBlock FontSize="16" Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
           Text="-" VerticalAlignment="Center"  HorizontalAlignment="Left"></TextBlock>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="5">
-                                    <TextBlock FontSize="16" Foreground="#797979" FontWeight="Bold"
+                                    <TextBlock FontSize="16" Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
       Text="العد :" VerticalAlignment="Center"  HorizontalAlignment="Center"></TextBlock>
 
-                                    <TextBlock FontSize="16" Foreground="#797979" FontWeight="Bold"
+                                    <TextBlock FontSize="16" Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
       Text="{Binding Repetition,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"  HorizontalAlignment="Center"></TextBlock>
                                 </StackPanel>
 
@@ -56,7 +56,7 @@
                                 <!-- Popup for Editing -->
                                 <Popup StaysOpen="False" AllowsTransparency="True" Name="MyPopup" IsOpen="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
                                     <!-- Customize the popup content here -->
-                                    <Border Background="#fff" Padding="5" BorderThickness="1" BorderBrush="{StaticResource colors.primary}" CornerRadius="10">
+                                    <Border Style="{DynamicResource CardBorderStyle}">
 
                                         <StackPanel Orientation="Vertical">
                                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
@@ -84,16 +84,15 @@
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsMouseOver" Value="True"/>
                                 </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.MouseOver.Border}"/>
+                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource Brush.Card}"/>
                             </MultiTrigger>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="Selector.IsSelectionActive" Value="False"/>
                                     <Condition Property="IsSelected" Value="True"/>
                                 </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource Brush.Card}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{DynamicResource Brush.Primary}"/>
 
                             </MultiTrigger>
                             <MultiTrigger>
@@ -101,9 +100,8 @@
                                     <Condition Property="Selector.IsSelectionActive" Value="True"/>
                                     <Condition Property="IsSelected" Value="True"/>
                                 </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Border}"/>
-                                <!--<Setter Property="Visibility" TargetName="editbtn" Value="Visible"/>-->
+                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource Brush.Card}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{DynamicResource Brush.Primary}"/>
                             </MultiTrigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
@@ -114,7 +112,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Border Padding="10" Margin="10" Background="#fff" CornerRadius="10" >
+    <Border Style="{DynamicResource StaticCardBorderStyle}" >
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -127,17 +125,17 @@
         RenderOptions.BitmapScalingMode="HighQuality"
         RenderOptions.EdgeMode="Aliased"
         Height="100" DockPanel.Dock="Top"/>
-            <TextBlock Grid.Row="1" HorizontalAlignment="Center" Text="{Binding ExerciseName,UpdateSourceTrigger=PropertyChanged}" FontSize="16" FontWeight="ExtraBold"/>
+            <TextBlock Grid.Row="1" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.Foreground}" Text="{Binding ExerciseName,UpdateSourceTrigger=PropertyChanged}" FontSize="16" FontWeight="ExtraBold"/>
            
            
                 <StackPanel Orientation="Horizontal" Grid.Row="2">
-                    <TextBlock Text="المجموعات التدريبية" FontSize="14" />
+                <TextBlock Text="المجموعات التدريبية" FontSize="14" Foreground="{DynamicResource Brush.Foreground}"/>
                     <Button Grid.Row="2" HorizontalAlignment="Center" Grid.Column="2" Command="{Binding AddSetModelCommand}" Style="{StaticResource IconBtn}">
-                        <icon:PackIconMaterial Foreground="{StaticResource colors.primary}" Kind="Plus" HorizontalAlignment="Center"/>
+                        <icon:PackIconMaterial Kind="Plus" HorizontalAlignment="Center"/>
                     </Button>
                 </StackPanel>
 
-            <ListView DragLeave="TodoItemList_DragLeave"
+            <ListView DragLeave="TodoItemList_DragLeave" Background="Transparent"
  DragOver="TodoItemList_DragOver" AllowDrop="True" x:Name="lvItems"  BorderThickness="0" VirtualizingPanel.ScrollUnit="Pixel"  Grid.Row="3" ItemsSource="{Binding SetModelItems}"  ItemContainerStyle="{StaticResource SetModelsListBoxItemContainerStyle1}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>

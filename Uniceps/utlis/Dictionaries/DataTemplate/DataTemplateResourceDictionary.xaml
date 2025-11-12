@@ -29,7 +29,24 @@
         xmlns:home_views="clr-namespace:Uniceps.Views"
                     xmlns:routine_temp="clr-namespace:Uniceps.Views.RoutineTemplateViews"
                     xmlns:routine_temp_vm="clr-namespace:Uniceps.ViewModels.RoutineTemplateViewModels"
+                    
+        xmlns:sys_auth="clr-namespace:Uniceps.Views.SystemAuthViews"
+        xmlns:sys_auth_vm="clr-namespace:Uniceps.ViewModels.SystemAuthViewModels"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <DataTemplate DataType="{x:Type player_subvm:SubscriptionMainViewModel }">
+        <!--<views:HomeView />-->
+        <player_subview:SubscriptionMainView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type sys_auth_vm:SystemProfileCreationViewModel }">
+        <!--<views:HomeView />-->
+        <sys_auth:CreateProfileView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type sys_auth_vm:SystemSubscriptionCreationViewModel }">
+        <!--<views:HomeView />-->
+        <sys_auth:SystemSubscriptionCreationView/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type logvms:LogPlayerAttendenceViewModel }">
         <logvs:LogPlayerAttendenceView/>
     </DataTemplate>
@@ -90,7 +107,7 @@
         <sport_views:SportListView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type sport_vms:EditSportViewModel }">
-        <sport_views:EditSportDetailView/>
+        <sport_views:SportDetailsView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type sport_vms:SportSubscriptionsViewModel }">
         <sport_views:SportSubscriptionsView/>
@@ -103,7 +120,7 @@
         <emp_eviews:EmployeesListView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type emp_evms:EditTrainerViewModel }">
-        <emp_views:EditTrainerDetailView/>
+        <emp_views:TrainerDetailView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type emp_evms:AddEmployeeViewModel}">
         <emp_eviews:EmployeeDetailsView/>
@@ -125,6 +142,6 @@
         <authvs:UserLogReportView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type authvms:EditUserViewModel}">
-        <authvs:EditUserView/>
+        <authvs:AddUserView/>
     </DataTemplate>
 </ResourceDictionary>

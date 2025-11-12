@@ -64,11 +64,11 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore,
             SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore,
             PaymentDataStore paymentDataStore, MetricDataStore metricStore,
-            PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore, NavigationService<PlayerListViewModel> navigationService,
+            PlayersAttendenceStore playersAttendenceStore,   NavigationService<PlayerListViewModel> navigationService,
             ExercisesDataStore exercisesDataStore)
         {
             return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, metricStore,
-                playersAttendenceStore, licenseDataStore, navigationService, exercisesDataStore);
+                playersAttendenceStore,  navigationService, exercisesDataStore);
         }
 
         #region Properties

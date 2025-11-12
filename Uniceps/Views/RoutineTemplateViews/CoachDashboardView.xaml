@@ -9,24 +9,13 @@
              FlowDirection="RightToLeft"
                xmlns:cs="clr-namespace:Uniceps.Components"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border Background="#eee" CornerRadius="10" Padding="5" Margin="5">
+    <Border Padding="5">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Border Background="#fff" CornerRadius="10" Padding="0 0 20 5" Margin="5">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                    <TextBlock FontSize="18" Foreground="{StaticResource colors.primary}" Text="أهلا بك يا مدرب"/>
-                    <StackPanel Orientation="Horizontal" Margin="0 10">
-                        <icons:PackIconMaterial Kind="Account" Height="25" Width="25" VerticalAlignment="Center" Margin="0 0 8 0" Foreground="{StaticResource colors.primary}"/>
-                        <TextBlock FontWeight="Bold" FontSize="16" Text="اسم المدرب"/>
-                    </StackPanel>
-                    <TextBlock FontSize="14" Text="963994916917"/>
-                    <TextBlock FontSize="14" Text="11-11-1999"/>
-                </StackPanel>
-            </Border>
-            <Border CornerRadius="10" Grid.Column="1" Background="#fff" Padding="5" Margin="5">
+            <Border Grid.Column="1"  Padding="5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -39,18 +28,15 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="0"  VerticalAlignment="Top">
+                        <Border CornerRadius="{DynamicResource Radius.Small}" Margin="10 5"  Grid.Row="0"  Grid.Column="0"  VerticalAlignment="Top">
                             <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
                         </Border>
                         <StackPanel Grid.Row="0" Grid.Column="1" Margin="5" Orientation="Horizontal"  VerticalAlignment="Center">
-                            <TextBlock Text="المستوى :" 
-                                Foreground="{StaticResource colors.secondry}"
-                                Margin="0 0 8 0" VerticalAlignment="Center"
-                                FontSize="16"/>
                             <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
                                ItemsSource="{Binding MuscleGroupList,UpdateSourceTrigger=PropertyChanged}"
                                SelectedItem="{Binding SelectedMuscle,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
-                               ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">              
+                               ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"
+                                      Tag="المستوى :">              
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Name}" FontSize="12"   />
@@ -63,45 +49,45 @@
                         </Button>
                     </Grid>
 
-
-                    <DataGrid Grid.Row="2" FlowDirection="RightToLeft" ItemsSource="{Binding RoutineList}" SelectedItem="{Binding SelectedRoutine,UpdateSourceTrigger=PropertyChanged}"
+                    <Border Style="{DynamicResource StaticCardBorderStyle}" Grid.Row="2">
+                        <DataGrid Grid.Row="2" FlowDirection="RightToLeft" ItemsSource="{Binding RoutineList}" SelectedItem="{Binding SelectedRoutine,UpdateSourceTrigger=PropertyChanged}"
                CanUserReorderColumns="True"
                x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                CellStyle="{DynamicResource DataGridCellStyle1}" 
                ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
 
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="#" IsReadOnly="True"
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="#" IsReadOnly="True"
                Width="auto"
                Binding="{Binding Id}"
                CanUserResize="False"/>
-                            <DataGridTemplateColumn Header="اسم البرنامج" Width="auto" IsReadOnly="True">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Name}" FontSize="16"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="اسم البرنامج" Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" FontSize="16"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
 
-                            <DataGridTextColumn Header="المستوى" IsReadOnly="True"
+                                <DataGridTextColumn Header="المستوى" IsReadOnly="True"
  Binding="{Binding Level}"
 Width="auto"
 />
 
-                            <DataGridTemplateColumn  Width="*" IsReadOnly="True">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" x:Name="menu">
-                                            <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
-                                                <TextBlock Text="عرض البرنامج" FontSize="12"/>
-                                            </Button>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-
+                                <DataGridTemplateColumn  Width="*" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" x:Name="menu">
+                                                <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
+                                                    <TextBlock Text="عرض البرنامج" FontSize="12"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
                 </Grid>
             </Border>
         </Grid>

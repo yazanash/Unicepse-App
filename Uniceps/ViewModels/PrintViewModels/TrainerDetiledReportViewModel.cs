@@ -25,8 +25,7 @@ namespace Uniceps.ViewModels.PrintViewModels
         public IEnumerable<SubscriptionListItemViewModel> Subscriptions => _subscriptionListItemViewModels;
         public EmployeeAccountantPageViewModel _employeeAccountantPageViewModel;
         public PrintedTrainerMounthlyReportViewModel? TrainerMounthlyReportViewModel { get; set; }
-        private readonly LicenseDataStore _licenseDataStore;
-        public TrainerDetiledReportViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel employeeAccountantPageViewModel, LicenseDataStore licenseDataStore)
+        public TrainerDetiledReportViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel employeeAccountantPageViewModel)
         {
             _employeeStore = employeeStore;
             _dausesDataStore = dausesDataStore;
@@ -36,24 +35,8 @@ namespace Uniceps.ViewModels.PrintViewModels
             GroupedTasks = new CollectionViewSource();
             ReportDate = _employeeAccountantPageViewModel.ReportDate.ToShortDateString();
             FullName = _employeeStore.SelectedEmployee!.FullName;
-            _licenseDataStore = licenseDataStore;
-            GymName = _licenseDataStore.CurrentGymProfile!.GymName;
-            try
-            {
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(_licenseDataStore.CurrentGymProfile!.Logo!);
-                bitmap.EndInit();
-                GymLogo = bitmap;
-            }
-            catch
-            {
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri("pack://application:,,,/Resources/Assets/logo.png");
-                bitmap.EndInit();
-                GymLogo = bitmap;
-            }
+            
+            
         }
         private string? _gymName;
         public string? GymName

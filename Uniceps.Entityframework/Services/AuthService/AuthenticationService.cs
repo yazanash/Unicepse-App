@@ -21,9 +21,9 @@ namespace Uniceps.Entityframework.Services.AuthService
             _accountService = accountService;
             _passwordHasher = passwordHasher;
         }
-        public bool HasUsers()
+        public async Task<bool> HasUsers()
         {
-            bool hasUsers = _accountService.HasUsers();
+            bool hasUsers = await _accountService.HasUsers();
             return hasUsers;
         }
 
@@ -48,7 +48,7 @@ namespace Uniceps.Entityframework.Services.AuthService
                 LoginDateTime = DateTime.Now,
                 status = true
             };
-            _accountService.AuthenticationLogging(log);
+            //_accountService.AuthenticationLogging(log);
             return storedAccount;
         }
         public void Logout(User user)
@@ -59,7 +59,7 @@ namespace Uniceps.Entityframework.Services.AuthService
                 LoginDateTime = DateTime.Now,
                 status = false
             };
-            _accountService.AuthenticationLogging(log);
+            //_accountService.AuthenticationLogging(log);
         }
 
         public async Task<RegistrationResult> Register(string username, string password, string confirmPassword, Roles role)

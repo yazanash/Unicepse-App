@@ -17,7 +17,7 @@
 
 
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#EEE" Padding="10">
+    <Border  Padding="5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -25,7 +25,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Background="#fff" CornerRadius="10" Grid.Column="0"   Grid.Row="0"  Padding="10"  Margin="5">
+            <Border Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -34,10 +34,9 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal" Margin="0 0 10 0">
-                            <TextBlock Text="تاريخ التقرير" Foreground="{StaticResource colors.secondry}" Margin="0 0 20 0" FontSize="16" VerticalAlignment="Center" DockPanel.Dock="Top"/>
-                            <DatePicker Style="{DynamicResource DatePickerStyle1}"
+                            <TextBlock Text="تاريخ التقرير" Foreground="{DynamicResource Brush.Foreground}" Margin="0 0 20 0" FontSize="16" VerticalAlignment="Center" DockPanel.Dock="Top"/>
+                            <DatePicker 
                                     SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
-                                    CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />
 
                         </StackPanel>
@@ -60,11 +59,11 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Border  Background="#FFF" CornerRadius="20" Grid.Row="4" Margin="5 10" Padding="5">
+            <Border  Grid.Row="4" Margin="5 10" Padding="5">
                 <Grid  Grid.Row="3">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="13*"/>

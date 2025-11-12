@@ -15,102 +15,81 @@
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
         <converters:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#fff" Padding="5" Margin="5" x:Name="parent">
-        <Grid Grid.Column="1">
+    <Border  Style="{DynamicResource StaticCardBorderStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  >
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <DockPanel DockPanel.Dock="Top" >
+            <Grid DockPanel.Dock="Top">
+                <TextBlock Text="الدفعات" Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Left" Margin="10"  FontSize="18" DockPanel.Dock="Left"/>
 
+                <Button HorizontalAlignment="Right" Grid.Column="0" Margin="5 0"  Command="{Binding AddPaymentsCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
-            <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Padding="5">
+                    <StackPanel Orientation="Horizontal">
 
-                <DockPanel DockPanel.Dock="Top" >
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                        <TextBlock Text="الدفعات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Left"/>
-                        <!--<ComboBox  DockPanel.Dock="Right" SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" 
-                               VerticalAlignment="Center" ItemsSource="{Binding FiltersList}"
-                               ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" 
-                               Tag="التصنيف حسب" Grid.Row="1" Grid.Column="3" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <ComboBoxItem Content="{Binding Content}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>-->
-                        <Button Grid.Column="0" Margin="5 0"  Command="{Binding AddPaymentsCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
-
-                            <StackPanel Orientation="Horizontal">
-
-                                <TextBlock Text="أضافة دفعة" />
-                                <Icon:PackIconMaterial Kind="Plus"
+                        <TextBlock Text="أضافة دفعة" />
+                        <Icon:PackIconMaterial Kind="Plus"
                                        Width="11"
                                        Height="11"
                                        Margin="8 0 0 1"
                                        VerticalAlignment="Center"/>
-                            </StackPanel>
-
-                        </Button>
                     </StackPanel>
-                    
-                    <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
-                    <Grid  Grid.Row="4">
-                        <custom:LoadingSpinner
+
+                </Button>
+            </Grid>
+            <Grid  Grid.Row="4">
+                <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
-                        <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
+                <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
 
-                            <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
+                    <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                            <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
+                    <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
                                     FlowDirection="RightToLeft" ItemsSource="{Binding GroupedTasks.View}" 
                                     CanUserReorderColumns="True"
                                         SelectedItem="{Binding SelectedPayment,UpdateSourceTrigger=PropertyChanged}"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-                                <DataGrid.GroupStyle>
-                                    <GroupStyle>
-                                        <GroupStyle.HeaderTemplate>
-                                            <DataTemplate>
-                                                <!--<Border CornerRadius="10" BorderBrush="#aaa" BorderThickness="0.5" HorizontalAlignment="Stretch">-->
-                                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource colors.primary}" Margin="5" FontWeight="Bold" HorizontalAlignment="Left" FontSize="16"/>
-                                                <!--</Border>-->
-                                            </DataTemplate>
-                                        </GroupStyle.HeaderTemplate>
-                                    </GroupStyle>
-                                </DataGrid.GroupStyle>
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="#" IsReadOnly="True"
+                        <DataGrid.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <!--<Border CornerRadius="10" BorderBrush="#aaa" BorderThickness="0.5" HorizontalAlignment="Stretch">-->
+                                        <TextBlock Text="{Binding Name}" Margin="5" FontWeight="Bold" HorizontalAlignment="Left" FontSize="16"/>
+                                        <!--</Border>-->
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </DataGrid.GroupStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
                                     Binding="{Binding Order}"
                                     CanUserResize="False"/>
 
 
-                                    <DataGridTextColumn Header="رقم الاشتراك" IsReadOnly="True"
+                            <DataGridTextColumn Header="رقم الاشتراك" IsReadOnly="True"
                                      Binding="{Binding SubscriptionId}"
                                     Width="auto"
                                     />
 
-                                    <DataGridTextColumn Header="قيمة الدفعة" IsReadOnly="True"
+                            <DataGridTextColumn Header="قيمة الدفعة" IsReadOnly="True"
                                      Binding="{Binding Value,Converter={StaticResource convertNum}}"
                                     Width="auto"
                                     />
 
 
 
-                                    <DataGridTextColumn Header="تاريخ الدفعة" IsReadOnly="True"
+                            <DataGridTextColumn Header="تاريخ الدفعة" IsReadOnly="True"
                                      Binding="{Binding Date}"
                                     Width="*"
                                     />
 
-                                    <DataGridTextColumn Header="البيان" IsReadOnly="True"
+                            <DataGridTextColumn Header="البيان" IsReadOnly="True"
                                      Binding="{Binding Description}"
                                     Width="*"
                                     />
-                                    <!--<DataGridTemplateColumn Header="تاريخ الانشاء" Width="*" IsReadOnly="True">
+                            <!--<DataGridTemplateColumn Header="تاريخ الانشاء" Width="*" IsReadOnly="True">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal">
@@ -120,38 +99,34 @@
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>-->
 
-                                    <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" x:Name="menu">
-                                                    <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
-                                                        <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                                    </Button>
-                                                    <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridEditBtn}">
-                                                        <Icon:PackIconMaterial Kind="TrashCan" Style="{StaticResource GridBtnIcon}"/>
-                                                    </Button>
-                                                    <!--<Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
+                            <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" x:Name="menu">
+                                            <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
+                                            </Button>
+                                            <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridEditBtn}">
+                                                <Icon:PackIconMaterial Kind="TrashCan" Style="{StaticResource GridBtnIcon}"/>
+                                            </Button>
+                                            <!--<Button Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
                                                         <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
                                                             <Icon:PackIconMaterial Kind="OpenInNew"  Style="{StaticResource GridBtnIcon}"/>
                                                         </Button>-->
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
 
-                            <!--<Border Background="#fff">
+                    <!--<Border Background="#fff">
                             
                         </Border>-->
-                        </Grid>
-                    </Grid>
-                </DockPanel>
-            </Border>
-
-
-        </Grid>
+                </Grid>
+            </Grid>
+        </DockPanel>
     </Border>
 </UserControl>

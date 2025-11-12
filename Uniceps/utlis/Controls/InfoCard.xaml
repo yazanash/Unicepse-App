@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Controls"
              mc:Ignorable="d" 
-             Background="White"
              FlowDirection="RightToLeft"
               xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks">
@@ -14,7 +13,7 @@
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
         <converters:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
-    <Border Background="White" CornerRadius="15" Width="220" Margin="5" Padding="10 5">
+    <Border  Style="{DynamicResource StaticCardBorderStyle}"  Width="220">
         <!--<Border.Effect>
             <DropShadowEffect BlurRadius="5" ShadowDepth="0.5"/>
         </Border.Effect>-->
@@ -35,27 +34,26 @@
 
             </Button>
 
-            <Border Width="60" Background="{StaticResource colors.primary}" CornerRadius="50" Height="60" Margin="5" HorizontalAlignment="Center">
-                <icon:PackIconMaterial Width="40" Height="40" Foreground="#fff" Kind="Account" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <Border Width="60" Background="{DynamicResource Brush.Primary}" CornerRadius="50" Height="60" Margin="5" HorizontalAlignment="Center">
+                <icon:PackIconMaterial Width="40" Height="40" Foreground="{DynamicResource Brush.OnPrimary}" Kind="Account" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Border>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Border Visibility="{Binding IsVerified , Converter={StaticResource BoolToVis}}" FlowDirection="LeftToRight" Width="25" Height="25" Padding="5" HorizontalAlignment="Center" CornerRadius="100" BorderBrush="{StaticResource colors.primary}" BorderThickness="1">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Border Visibility="{Binding IsVerified , Converter={StaticResource BoolToVis}}" FlowDirection="LeftToRight" Width="25" Height="25" Padding="5" HorizontalAlignment="Center" CornerRadius="100" BorderBrush="{DynamicResource Brush.Primary}" BorderThickness="1">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                        <!--<TextBlock Text="الحساب موثق"  VerticalAlignment="Center" Foreground="Green"/>-->
-                        <icon:PackIconMaterial Kind="Check"
+                            <!--<TextBlock Text="الحساب موثق"  VerticalAlignment="Center" Foreground="Green"/>-->
+                            <icon:PackIconMaterial Kind="Check"
                                        Width="11"
                                        Height="11"
                                                FontWeight="Bold" FontSize="22"
-                                           Foreground="{StaticResource colors.primary}"
+                                           Foreground="{DynamicResource Brush.Primary}"
                                        VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
+                        </StackPanel>
+                    </Border>
 
-                <TextBlock  Text="{Binding FullName,UpdateSourceTrigger=PropertyChanged}" FontSize="15" TextWrapping="Wrap" Margin="5" HorizontalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                    <TextBlock  Text="{Binding FullName,UpdateSourceTrigger=PropertyChanged}" FontSize="15" TextWrapping="Wrap" Margin="5" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.Primary}"/>
 
-            </StackPanel>
-            <Separator Background="#ccc"  Margin="10 10"/>
+                </StackPanel>
                 <Button HorizontalAlignment="Center" Visibility="{Binding IsVerified ,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InverseBooleanToVisibalityConverter}}" Command="{Binding VerifyAccountCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
 
                 <StackPanel Orientation="Horizontal">
@@ -71,33 +69,33 @@
             </Button>
           
             <StackPanel>
-                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
+                <Border Style="{DynamicResource CardBorderStyle}" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="رقم الهاتف" FontSize="12" Foreground="{StaticResource colors.primary}"/>
-                            <TextBlock Text="{Binding Phone,UpdateSourceTrigger=PropertyChanged}"  FontSize="13" Foreground="#384756"/>
+                            <TextBlock Text="رقم الهاتف" FontSize="12" Foreground="{DynamicResource Brush.Primary}"/>
+                            <TextBlock Text="{Binding Phone,UpdateSourceTrigger=PropertyChanged}"  FontSize="13" Foreground="{DynamicResource Brush.Foreground}"/>
                     </StackPanel>
                 </Border>
-                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
+                    <Border Style="{DynamicResource CardBorderStyle}" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="الجنس" FontSize="14" Foreground="{StaticResource colors.primary}"/>
-                            <TextBlock Text="{Binding Gendertext,UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="#384756"/>
+                            <TextBlock Text="الجنس" FontSize="14" Foreground="{DynamicResource Brush.Primary}"/>
+                            <TextBlock Text="{Binding Gendertext,UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="{DynamicResource Brush.Foreground}"/>
                     </StackPanel>
                 </Border>
-                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
+                    <Border Style="{DynamicResource CardBorderStyle}" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="سنة الميلاد" FontSize="14" Foreground="{StaticResource colors.primary}"/>
-                            <TextBlock Text="{Binding BirthDate,UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="#384756"/>
+                            <TextBlock Text="سنة الميلاد" FontSize="14" Foreground="{DynamicResource Brush.Primary}"/>
+                            <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding BirthDate,UpdateSourceTrigger=PropertyChanged}" FontSize="14"/>
                     </StackPanel>
                 </Border>
-                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 0">
+                    <Border Style="{DynamicResource CardBorderStyle}" Margin="5" Padding="10 0">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="تاريخ الاشتراك" FontSize="14" Foreground="{StaticResource colors.primary}"/>
-                            <TextBlock Text="{Binding SubscribeDate,UpdateSourceTrigger=PropertyChanged}" FontSize="14"  Foreground="#384756"/>
+                            <TextBlock Text="تاريخ الاشتراك" FontSize="14" Foreground="{DynamicResource Brush.Primary}"/>
+                            <TextBlock Text="{Binding SubscribeDate,UpdateSourceTrigger=PropertyChanged}" FontSize="14"  Foreground="{DynamicResource Brush.Foreground}"/>
                     </StackPanel>
                 </Border>
-                <Border Background="#eee" CornerRadius="10" Margin="5" Padding="10 5">
+                    <Border Style="{DynamicResource CardBorderStyle}" Margin="5" Padding="10 5">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="رصيد الحساب" FontSize="14" Foreground="{StaticResource colors.primary}"/>
+                            <TextBlock Text="رصيد الحساب" FontSize="14" Foreground="{DynamicResource Brush.Primary}"/>
                             <TextBlock Foreground="{Binding BalanceColor,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Balance,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontSize="14" />
                     </StackPanel>
                 </Border>

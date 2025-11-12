@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:Uniceps.Views.PlayersAttendenceViews"
              mc:Ignorable="d" 
                 xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             Background="Transparent"
               xmlns:cs="clr-namespace:Uniceps.Components"
              xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
@@ -15,14 +14,11 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-
-
-
     </UserControl.Resources>
 
 
 
-    <Border CornerRadius="10" Background="#EEE" Padding="10" x:Name="parent">
+    <Border x:Name="parent">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -31,11 +27,11 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border  Background="#FFF" CornerRadius="10" Grid.Row="4" Margin="5 10" Padding="5">
+            <Border   Grid.Row="4" Style="{DynamicResource CardBorderStyle}">
                 <Grid  Grid.Row="4">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="#C14E00" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="13*"/>

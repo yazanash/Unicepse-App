@@ -7,15 +7,15 @@
     
     <!--#region  Datagrid styles-->
     <Style x:Key="GridEditBtn" TargetType="Button">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="{StaticResource ResourceKey=colors.secondry}"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="5" BorderThickness="1" Padding="5">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="{DynamicResource Radius.Small}" BorderThickness="1" Padding="5">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -24,18 +24,19 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#dcdcdc"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
     <Style x:Key="GridremoveBtn" TargetType="Button" BasedOn="{StaticResource GridEditBtn}">
-        <Setter Property="Background" Value="{StaticResource ResourceKey=colors.primary}"/>
-        <Setter Property="Foreground" Value="#fff"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.OnPrimary}"/>
         <Setter Property="Margin" Value="5 0"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource colors.primary}"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.OnPrimary}"/>
                 <Setter Property="Opacity" Value="0.6"/>
             </Trigger>
         </Style.Triggers>
@@ -64,7 +65,7 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
                         <Rectangle x:Name="Border" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" SnapsToDevicePixels="True"/>
-                        <Polygon x:Name="Arrow" Fill="Black" HorizontalAlignment="Right" Margin="8,8,3,3" Opacity="0.15" Points="0,10 10,10 10,0" Stretch="Uniform" VerticalAlignment="Bottom"/>
+                        <Polygon x:Name="Arrow" Fill="Red" HorizontalAlignment="Right" Margin="8,8,3,3" Opacity="0.15" Points="0,10 10,10 10,0" Stretch="Uniform" VerticalAlignment="Bottom"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -85,7 +86,7 @@
 
     <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="#222528"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
@@ -171,7 +172,8 @@
     <Style x:Key="DataGridColumnHeaderStyle1" TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="{StaticResource colors.secondry}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Margin" Value="15 0 15 10"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -188,7 +190,8 @@
         </Setter>
     </Style>
     <Style x:Key="DataGridRowStyle1" TargetType="{x:Type DataGridRow}">
-        <Setter Property="Background" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="Margin" Value="0 4 0 0"/>
         <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -203,7 +206,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridRow}">
-                    <Border x:Name="DGR_Border" Padding="0 5" Background="{TemplateBinding Background}"   CornerRadius="5" SnapsToDevicePixels="True">
+                    <Border x:Name="DGR_Border" Padding="0 5" Background="{TemplateBinding Background}"   CornerRadius="{DynamicResource Radius.Small}" SnapsToDevicePixels="True">
                         <SelectiveScrollingGrid>
                             <SelectiveScrollingGrid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -223,22 +226,31 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#eee"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
                 <Setter Property="BorderThickness" Value="1"/>
-                <!--<Setter Property="Foreground" Value="#ffffff"/>-->
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
 
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="#ccc"/>
-                <!--<Setter Property="Foreground" Value="#ffffff"/>-->
+                <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
 
             </Trigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsSelected" Value="true"/>
-                    <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
                 </MultiTrigger.Conditions>
-                <Setter Property="Background" Value="#ccc"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="true"/>
+                    <Condition Property="FocusManager.IsFocusScope" Value="false"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
             </MultiTrigger>
         </Style.Triggers>
     </Style>

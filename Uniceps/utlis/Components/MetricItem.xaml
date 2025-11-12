@@ -7,7 +7,7 @@
              x:Name="metricItem"
              FlowDirection="RightToLeft"
              mc:Ignorable="d" >
-    <Border Padding="10" Margin="5" CornerRadius="10" Background="#fff" >
+    <Border Margin="5" Style="{DynamicResource CardBorderStyle}">
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding ElementName=metricItem,Path=Icon,UpdateSourceTrigger=PropertyChanged}" 
                  RenderOptions.BitmapScalingMode="HighQuality"
@@ -15,10 +15,10 @@
                    Height="60" Width="60"/>
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"> 
                 <TextBlock
-                    FontSize="16" Foreground="#797979" FontWeight="Bold"
+                    FontSize="16" Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
                     Text="{Binding ElementName=metricItem,Path=Title,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center"/>
                 <TextBlock 
-                     FontSize="22" FontWeight="Bold"
+                     FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Brush.Foreground}"
                     Text="{Binding ElementName=metricItem,Path=MetricValue,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
             </StackPanel>
         </StackPanel>

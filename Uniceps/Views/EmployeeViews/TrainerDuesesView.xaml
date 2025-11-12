@@ -39,14 +39,18 @@
             <cvs:CreditDetailView/>
         </DataTemplate>
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#EEE" Padding="10" >
+    <Border >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
-            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="5" Margin="5" Background="#fff">
+            <Border Padding="5" Margin="5">
                 <DockPanel>
                     <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                         <RadioButton
@@ -86,41 +90,12 @@
                 </DockPanel>
             </Border>
 
+            <Border Grid.Column="1" Grid.RowSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
+
+                <ctrl:InfoEmpCard DockPanel.Dock="Top" DataContext="{Binding Employee,UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
             <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <!--<Border Grid.Row="0" Grid.Column="2"  Background="#fff" Margin="5" CornerRadius="10" Padding="5">
-                    <DockPanel>
-                        <TextBlock Foreground="#C14E00" Text="المدفوعات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
-                        <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SelectedSportListingItemViewModel.TrainerList}" >
-
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </DockPanel>
-                </Border>-->
-
-
-                <Border Background="#fff" CornerRadius="10" Grid.Column="1" Grid.RowSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
-
-                    <ctrl:InfoEmpCard DockPanel.Dock="Top" DataContext="{Binding Employee,UpdateSourceTrigger=PropertyChanged}"/>
-                </Border>
-
-
-
-
-                <Grid Grid.Column="0">
-                    <ContentControl Content="{Binding CurrentEmployeeViewModel}"/>
-                </Grid>
-
-
+                <ContentControl Content="{Binding CurrentEmployeeViewModel}"/>
             </Grid>
 
 

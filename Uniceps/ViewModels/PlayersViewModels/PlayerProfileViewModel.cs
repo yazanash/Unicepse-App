@@ -31,7 +31,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private readonly SportDataStore _sportDataStore;
         private readonly MetricDataStore _metricDataStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly LicenseDataStore _licenseDataStore;
         private readonly NavigationService<PlayerListViewModel> _navigationService;
         private readonly ExercisesDataStore _exercisesDataStore;
         private PlayerMainPageViewModel _playerMainPageViewModel;
@@ -39,7 +38,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
         public ViewModelBase? CurrentPlayerViewModel => _navigatorStore.CurrentViewModel;
 
         public PlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore,
-            PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, PlayersAttendenceStore playersAttendenceStore, LicenseDataStore licenseDataStore,
+            PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, PlayersAttendenceStore playersAttendenceStore,
             NavigationService<PlayerListViewModel> navigationService, ExercisesDataStore exercisesDataStore)
         {
             _navigatorStore = new NavigationStore();
@@ -49,15 +48,14 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _paymentDataStore = paymentDataStore;
             _metricDataStore = metricDataStore;
             _playersAttendenceStore = playersAttendenceStore;
-            _licenseDataStore = licenseDataStore;
             _navigationService = navigationService;
             _exercisesDataStore = exercisesDataStore;
 
 
 
-            _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore, _licenseDataStore);
+            _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore);
 
-            _navigatorStore.CurrentViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore, _licenseDataStore);
+            _navigatorStore.CurrentViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore);
             _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
             _playersDataStore.PlayerChanged += _playersDataStore_PlayerChanged;
             _playersDataStore.ArchivedPlayer_restored += _playersDataStore_ArchivedPlayer_restored;
@@ -88,7 +86,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         private void _playersDataStore_PlayerChanged(Player? obj)
         {
-            _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore, _licenseDataStore);
+            _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore);
             Player = new PlayerListItemViewModel(_playersDataStore.SelectedPlayer!, _navigatorStore, _playersDataStore,
                _navigationService, _playerMainPageViewModel);
             _navigatorStore.CurrentViewModel = _playerMainPageViewModel;
@@ -99,9 +97,9 @@ namespace Uniceps.ViewModels.PlayersViewModels
         {
             OnPropertyChanged(nameof(CurrentPlayerViewModel));
         }
-        private PlayerMainPageViewModel LoadPlayerMainPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore, LicenseDataStore licenseDataStore)
+        private PlayerMainPageViewModel LoadPlayerMainPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore)
         {
-            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playerStore, paymentDataStore, sportDataStore, licenseDataStore);
+            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playerStore, paymentDataStore, sportDataStore);
         }
 
         private SubscriptionDetailsViewModel LoadSubscriptionViewModel(NavigationStore navigatorStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, PlayerMainPageViewModel playerMainPageViewModel)

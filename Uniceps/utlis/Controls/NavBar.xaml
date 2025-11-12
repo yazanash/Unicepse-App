@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
-    <Border Grid.Row="1" Width="50" Background="{StaticResource ResourceKey=colors.background.white}"  CornerRadius="15" Padding="5">
+    <Border Grid.Row="1" Width="55" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="{DynamicResource BorderThickness.Main}" Background="{DynamicResource Brush.Surface}" Padding="5">
         <Border.Style>
             <Style>
                 <Style.Triggers>
@@ -30,7 +30,7 @@
                                 <Storyboard>
                                     <DoubleAnimation 
                                                             Storyboard.TargetProperty="Width"
-                                                        To="50" Duration="0:0:0.2" />
+                                                        To="55" Duration="0:0:0.2" />
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.ExitActions>
@@ -40,32 +40,6 @@
         </Border.Style>
             <DockPanel >
                 <!--Logo-->
-
-            <StackPanel  DockPanel.Dock="Top" Orientation="Horizontal"  Grid.Column="0" >
-               
-               
-                <Border FlowDirection="LeftToRight"
-                            Margin="0 0 15 5"
-                        Padding="5"
-                         BorderThickness="0" >
-                   
-                        <Image Stretch="Fill" Source="../../Resources/Assets/logo.png" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                Width="30"  Height="30"
-                                                         RenderOptions.EdgeMode="Aliased"/>
-                   
-                 
-                </Border>
-                <TextBlock DockPanel.Dock="Top"
-                                   Foreground="{StaticResource colors.secondry}"
-                                   FontSize="16"
-                                   FontWeight="SemiBold"
-                                   TextAlignment="Center"
-                               VerticalAlignment="Center"
-                           HorizontalAlignment="Right"
-                                   Text="Uniceps" />
-            </StackPanel>
-
 
             <!--Menu Buttons-->
                 <StackPanel DockPanel.Dock="Top" >

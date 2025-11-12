@@ -7,38 +7,24 @@
              mc:Ignorable="d" 
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:comp="clr-namespace:Uniceps.utlis.Components"
-             Background="Transparent"
               FlowDirection="RightToLeft"
              d:DesignHeight="550" d:DesignWidth="900">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#EEE" Padding="10" >
+    <Border  >
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!--<Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Icon:PackIconMaterial Kind="ArrowRight" Width="20" Height="20" Margin="0 0 15 0" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
-                        <TextBlock Text="اللاعبين / تسجيل لاعب" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
-                    </StackPanel>
-                </DockPanel>
-            </Border>-->
-
+           
 
             <Grid Grid.Row="1" >
                
-                <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
+                <Border HorizontalAlignment="Left" Grid.Column="0"  Grid.Row="0" Style="{DynamicResource CardBorderStyle}" Margin="5">
                     <ScrollViewer>
 
                     <DockPanel HorizontalAlignment="Left" Width="800" >
-                        <DockPanel DockPanel.Dock="Top" >
-                            <TextBlock Text="معلومات اللاعب" Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
-                                <Button Grid.Column="1" Visibility="{Binding ScanAvailable, Converter={StaticResource BoolToVis}}" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+                        <Grid DockPanel.Dock="Top" >
+                            <TextBlock Text="معلومات اللاعب"  Foreground="{DynamicResource Brush.Foreground}" FontSize="24" />
+                                <Button HorizontalAlignment="Right" Grid.Column="1" Visibility="{Binding ScanAvailable, Converter={StaticResource BoolToVis}}" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
                                     <StackPanel  Orientation="Horizontal">
                                         <TextBlock  FlowDirection="RightToLeft" Text="مسح QR Code" />
@@ -50,7 +36,7 @@
 
                                 </Button>
 
-                            </DockPanel>
+                            </Grid>
                         <Grid >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -67,8 +53,7 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                                 <TextBlock Text="اسم اللاعب" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
@@ -76,8 +61,7 @@
 
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
                                 <TextBlock Text="رقم الهاتف" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
@@ -85,8 +69,7 @@
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="5"  VerticalAlignment="Bottom">
                                 <TextBlock Text="سنة الميلاد" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
                                 <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
                                           ItemsSource="{Binding Years,UpdateSourceTrigger=PropertyChanged}"
@@ -101,8 +84,7 @@
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
                                 <TextBlock Text="الوزن" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Weight, UpdateSourceTrigger=PropertyChanged }" Style="{StaticResource textBoxStyle}"/>
 
@@ -110,8 +92,7 @@
 
                             <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
                                 <TextBlock Text="الطول" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
@@ -120,20 +101,17 @@
 
                             <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
                                 <TextBlock Text="تاريخ الاشتراك" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
                                 <!--<TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>-->
-                                <DatePicker Style="{DynamicResource DatePickerStyle1}"
+                                <DatePicker 
                                     SelectedDate="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}"
-                                    CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
                                    />
                             </StackPanel>
 
                             <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
                                 <TextBlock Text="الجنس" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
                                 <StackPanel Orientation="Horizontal">
                                     <RadioButton Style="{StaticResource RadioChoose}" IsChecked="{Binding GenderMale}" >

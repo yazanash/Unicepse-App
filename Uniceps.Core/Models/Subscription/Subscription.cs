@@ -32,11 +32,7 @@ namespace Uniceps.Core.Models.Subscription
         public double PriceAfterOffer { get; set; }
         public int MonthCount { get; set; }
         public int DaysCount { get; set; }
-        public bool IsPrivate { get; set; }
-        public bool IsPlayerPay { get; set; }
         public bool IsStopped { get; set; }
-        public bool IsMoved { get; set; }
-        public double PrivatePrice { get; set; }
         [NotMapped]
         public bool IsPaid { get; set; }
         [NotMapped]

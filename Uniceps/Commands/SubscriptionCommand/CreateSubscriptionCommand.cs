@@ -61,9 +61,6 @@ namespace Uniceps.Commands.SubscriptionCommand
                     OfferDes = _addSubscriptionViewModel.Offer,
 
                     /// private info
-                    IsPrivate = _addSubscriptionViewModel.PrivatePrice > 0,
-                    IsPlayerPay = _addSubscriptionViewModel.PrivateProvider,
-                    PrivatePrice = _addSubscriptionViewModel.PrivatePrice,
                     EndDate = _addSubscriptionViewModel.SubscribeDate.AddDays(_addSubscriptionViewModel.SubscribeDays),
                 };
                 if (_addSubscriptionViewModel.DaysCounter)

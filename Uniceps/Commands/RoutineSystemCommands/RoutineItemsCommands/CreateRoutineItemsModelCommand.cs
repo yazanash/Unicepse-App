@@ -16,30 +16,34 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
     {
         private readonly DayGroupDataStore _dayGroupDataStore;
         private readonly RoutineItemDataStore _routineItemDataStore;
-        private readonly ExercisesListItemViewModel _exercisesViewModel;
-        public CreateRoutineItemsModelCommand(DayGroupDataStore dayGroupDataStore, RoutineItemDataStore routineItemDataStore, ExercisesListItemViewModel exercisesViewModel)
+        private readonly ExercisesListViewModel _exercisesViewModel;
+        private readonly NavigationService<RoutineDetailsViewModel> _navigationService;
+        public CreateRoutineItemsModelCommand(DayGroupDataStore dayGroupDataStore, RoutineItemDataStore routineItemDataStore, ExercisesListViewModel exercisesViewModel, NavigationService<RoutineDetailsViewModel> navigationService)
         {
             _dayGroupDataStore = dayGroupDataStore;
             _routineItemDataStore = routineItemDataStore;
             _exercisesViewModel = exercisesViewModel;
+            _navigationService = navigationService;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            //int i = 0;
-            //foreach (var item in _exercisesViewModel.ExercisesList.Where(x => x.IsChecked))
-            //{
-            RoutineItemModel routineItemModel = new()
+            int i = 0;
+            foreach (var item in _exercisesViewModel.ExercisesBufferListItemViewModel)
             {
-                Day = _dayGroupDataStore.SelectedDayGroup!,
-                DayId = _dayGroupDataStore.SelectedDayGroup!.Id,
-                Exercise = _exercisesViewModel.Exercises,
-                ExerciseId = _exercisesViewModel.Exercises.Id,
-                Order = _routineItemDataStore.RoutineItems.Count() + 1,
-            };
-            _exercisesViewModel.IsChecked = true;
+                RoutineItemModel routineItemModel = new()
+                {
+                    Day = _dayGroupDataStore.SelectedDayGroup!,
+                    DayId = _dayGroupDataStore.SelectedDayGroup!.Id,
+                    Exercise = item,
+                    ExerciseId = item.Id,
+                    Order = i++,
+                };
+                await _routineItemDataStore.Add(routineItemModel);
 
-            await _routineItemDataStore.Add(routineItemModel);
+            }
+            _exercisesViewModel.ExercisesBufferListItemViewModel.Clear();
+            _navigationService.Navigate();
         }
     }
 }

@@ -176,9 +176,9 @@ namespace Uniceps.ViewModels.PlayersViewModels
             CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => playerProfileViewModel));
 
         }
-        private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore, LicenseDataStore licenseDataStore)
+        private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore)
         {
-            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore, licenseDataStore);
+            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore);
         }
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();

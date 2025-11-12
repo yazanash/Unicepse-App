@@ -25,6 +25,14 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
             get { return _isChecked; }
             set { _isChecked = value; OnPropertyChanged(nameof(IsChecked)); }
         }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { _isSelected = value; OnPropertyChanged(nameof(IsSelected)); }
+        }
+
         public ICommand? AddItemCommand { get; }
         private readonly RoutineItemDataStore _routineItemDataStore;
         private readonly DayGroupDataStore _dayGroupDataStore;
@@ -57,7 +65,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
             }
             _routineItemDataStore = routineItemDataStore;
             _dayGroupDataStore = dayGroupDataStore;
-            AddItemCommand = new CreateRoutineItemsModelCommand(_dayGroupDataStore, _routineItemDataStore, this);
+           
             
         }
     }

@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Views.AccountingViews"
-                        Background="#fff"
             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
                xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
@@ -16,7 +15,7 @@
         <converters:NumberFormatConverter x:Key="numConv"/>
 
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#EEE" Padding="10">
+    <Border   Padding="5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -24,7 +23,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" Padding="5" Margin="0 0 0 5" >
 
 
                 <Grid>
@@ -34,7 +33,6 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <DatePickerTextBox Grid.Column="0"/>
                     <DatePicker Grid.Column="1"/>
                     <Grid Grid.Column="3">
                         <Grid.ColumnDefinitions>
@@ -67,11 +65,11 @@
 
 
 
-            <Border  Background="#FFF" CornerRadius="20" Grid.Row="4" Margin="5 10" Padding="5">
+            <Border  Style="{DynamicResource StaticCardBorderStyle}" Grid.Row="4" Margin="5 10" Padding="5">
                 <Grid  Grid.Row="3">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="#C14E00" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="13*"/>

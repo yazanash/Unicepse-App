@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Views.PlayerViews"
-                Background="Transparent"
               xmlns:cs="clr-namespace:Uniceps.Components"
              xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
@@ -21,8 +20,12 @@
 
 
 
-    <Border CornerRadius="10" Background="#EEE" Padding="10" x:Name="parent">
+    <Border  x:Name="parent">
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="29*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -30,7 +33,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="5" Background="#fff">
+            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" Padding="5" Margin="5,5,5,5" >
 
 
                 <Grid>
@@ -46,7 +49,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Button Command="{Binding BackCommand}" Style="{StaticResource IconBtn}" Grid.Column="0" >
-                        <Icon:PackIconMaterial Kind="ArrowRight" Height="15" Width="15" Foreground="{StaticResource colors.primary}"/>
+                        <Icon:PackIconMaterial Kind="ArrowRight" Height="15" Width="15" />
                     </Button>
                     <Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Top">
                         <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
@@ -74,27 +77,22 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <StackPanel  Margin="0 5" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="5" Grid.Row="1" >
-                        <!--<Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>-->
-                        <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5 0" Margin="5 0">
+                        <Border Style="{DynamicResource CardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
-                                <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanMale" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersMaleCount}"/>
+                                <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanMale" Width="30" Height="30"/>
+                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersMaleCount}"/>
                             </StackPanel>
                         </Border>
-                        <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
+                        <Border Style="{DynamicResource CardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
-                                <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanFemale" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersFemaleCount}"/>
+                                <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanFemale" Width="30" Height="30"/>
+                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersFemaleCount}"/>
                             </StackPanel>
                         </Border>
-                        <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
+                        <Border Style="{DynamicResource CardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0"  Grid.Column="0">
-                                <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="AccountGroup" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersCount}"/>
+                                <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="AccountGroup" Width="30" Height="30"/>
+                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersCount}"/>
                             </StackPanel>
                         </Border>
 
@@ -116,11 +114,11 @@
 
 
 
-            <Border  Background="#FFF" CornerRadius="10" Grid.Row="4" Margin="5 10" Padding="5">
+            <Border  Grid.Row="3" Margin="5,10,5,10" Style="{DynamicResource CardBorderStyle}" Grid.ColumnSpan="2">
                 <Grid  Grid.Row="4">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="13*"/>

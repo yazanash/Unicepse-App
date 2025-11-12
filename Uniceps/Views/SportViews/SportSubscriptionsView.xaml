@@ -16,7 +16,7 @@
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
         <converters:NumberFormatConverter x:Key="convertNum"/>
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#EEE" Padding="10">
+    <Border >
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -27,7 +27,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Border Grid.ColumnSpan="3" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="5" Background="#fff">
+            <Border Grid.ColumnSpan="3" FlowDirection="RightToLeft" Padding="5" Margin="5" >
 
 
                 <Grid>
@@ -58,57 +58,38 @@
                     </ComboBox>
                     <StackPanel  Margin="0 5" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="1" >
                        
-                        <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5 0" Margin="5 0">
+                        <Border Style="{DynamicResource CardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
-                                <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanMale" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersMaleCount}"/>
+                                <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanMale" Width="30" Height="30"/>
+                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersMaleCount}"/>
                             </StackPanel>
                         </Border>
-                        <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
+                        <Border Style="{DynamicResource CardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
-                                <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanFemale" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersFemaleCount}"/>
+                                <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanFemale" Width="30" Height="30"/>
+                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersFemaleCount}"/>
                             </StackPanel>
                         </Border>
-                        <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
+                        <Border Style="{DynamicResource CardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0"  Grid.Column="0">
-                                <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="AccountGroup" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersCount}"/>
+                                <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="AccountGroup" Width="30" Height="30"/>
+                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersCount}"/>
                             </StackPanel>
                         </Border>
 
                     </StackPanel>
-
-                    <!--<Grid Grid.Column="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="1" Grid.Row="1" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
-
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Kind="FileExcel"/>
-                            </StackPanel>
-                        </Button>
-                    </Grid>-->
-
-
-
                 </Grid>
-
             </Border>
 
 
-            <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Padding="5">
+            <Border   Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5 10" Style="{DynamicResource StaticCardBorderStyle}">
 
                 <DockPanel DockPanel.Dock="Top" >
-                    <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
-                    <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
+                    <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Top"/>
                     <Grid  Grid.Row="4">
                         <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                         <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
 
                             <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>

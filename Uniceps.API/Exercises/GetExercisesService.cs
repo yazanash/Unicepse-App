@@ -1,10 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Uniceps.API.common;
 using Uniceps.API.Models;
 using ex = Uniceps.Core.Models.TrainingProgram;
 
@@ -12,16 +15,14 @@ namespace Uniceps.API.Exercises
 {
     public class GetExercisesService
     {
-        public async Task<List<ExerciseDtoModel>> FetchExercises()
+        private readonly UnicepseApiClientV2 _client;
+        public GetExercisesService(UnicepseApiClientV2 client)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                string apiUrl = "https://yazanash-001-site1.anytempurl.com/api/Exercise";
-                string response = await client.GetStringAsync(apiUrl);
-                List<ExerciseDtoModel> exercises = JsonConvert.DeserializeObject<List<ExerciseDtoModel>>(response)!;
-
-                return exercises;
-            }
+            _client = client;
+        }
+        public async Task<ApiResponse<List<ExerciseDtoModel>>> FetchExercises(int id)
+        {
+            return await _client.GetAsync<List<ExerciseDtoModel>>($"Exercise?id={id}");
         }
 
         public async Task DownloadImage(string imageUrl, string localPath)
@@ -32,16 +33,9 @@ namespace Uniceps.API.Exercises
                 await File.WriteAllBytesAsync(localPath, imageBytes);
             }
         }
-        public async Task<List<MuscleGroupDto>> FetchMuscleGroup()
+        public async Task<ApiResponse<List<MuscleGroupDto>>> FetchMuscleGroup()
         {
-            using (HttpClient client = new HttpClient())
-            {
-                string apiUrl = "https://yazanash-001-site1.anytempurl.com/api/MuscleGroup";
-                string response = await client.GetStringAsync(apiUrl);
-                List<MuscleGroupDto> exercises = JsonConvert.DeserializeObject<List<MuscleGroupDto>>(response)!;
-
-                return exercises;
-            }
+            return await _client.GetAsync<List<MuscleGroupDto>>($"MuscleGroup");
         }
 
     }

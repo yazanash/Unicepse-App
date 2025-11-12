@@ -1,24 +1,25 @@
-﻿using Uniceps.ViewModels.Expenses;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows;
-using Uniceps.ViewModels;
+using System.Windows.Input;
 using Uniceps.Commands;
-using Uniceps.ViewModels.RoutineTemplateViewModels;
+using Uniceps.Core.Common;
+using Uniceps.navigation.Navigator;
+using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.utlis.common;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.SportsViewModels;
-using Uniceps.ViewModels.Employee.TrainersViewModels;
-using Uniceps.ViewModels.PlayersViewModels;
-using Uniceps.ViewModels.Authentication;
+using Uniceps.ViewModels;
 using Uniceps.ViewModels.Accountant;
-using Uniceps.navigation.Navigator;
-using Uniceps.Core.Common;
+using Uniceps.ViewModels.Authentication;
+using Uniceps.ViewModels.Employee.TrainersViewModels;
+using Uniceps.ViewModels.Expenses;
+using Uniceps.ViewModels.PlayersViewModels;
+using Uniceps.ViewModels.RoutineTemplateViewModels;
+using Uniceps.ViewModels.SportsViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.Commands.Player
 {
@@ -32,14 +33,14 @@ namespace Uniceps.Commands.Player
         private readonly RoutineListViewModel _routineListViewModel;
         private readonly UsersListViewModel _usersViewModel;
         private readonly AccountingViewModel _accountingViewModel;
-
-        private readonly LicenseDataStore _licenseDataStore;
+        private readonly AppInfoViewModel _appInfoViewModel;
         private readonly AuthenticationStore? _authenticationStore;
+        private readonly SubscriptionMainViewModel _subscriptionMainViewModel;
         public UpdateCurrentViewModelCommand(NavigationStore navigationStore, AuthenticationStore? authenticationStore,
             HomeViewModel homeNavViewModel, PlayerListViewModel playersPageViewModel,
             SportListViewModel sportsViewModel, TrainersListViewModel trainersViewModel,
             UsersListViewModel usersViewModel, AccountingViewModel accountingViewModel,
-            LicenseDataStore licenseDataStore, RoutineListViewModel routineListViewModel)
+           RoutineListViewModel routineListViewModel, AppInfoViewModel appInfoViewModel, SubscriptionMainViewModel subscriptionMainViewModel)
         {
             _navigationStore = navigationStore;
             _authenticationStore = authenticationStore;
@@ -49,8 +50,9 @@ namespace Uniceps.Commands.Player
             _trainersViewModel = trainersViewModel;
             _usersViewModel = usersViewModel;
             _accountingViewModel = accountingViewModel;
-            _licenseDataStore = licenseDataStore;
             _routineListViewModel = routineListViewModel;
+            _appInfoViewModel = appInfoViewModel;
+            _subscriptionMainViewModel = subscriptionMainViewModel;
         }
         public override bool CanExecute(object? parameter)
         {
@@ -112,7 +114,8 @@ namespace Uniceps.Commands.Player
                 {
                     case ViewType.Home:
                         if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
-                            _navigationStore.CurrentViewModel = _homeNavViewModel;
+                            //_navigationStore.CurrentViewModel = _homeNavViewModel;
+                            _navigationStore.CurrentViewModel = _subscriptionMainViewModel;
                         break;
                     case ViewType.Players:
                         if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
@@ -139,7 +142,7 @@ namespace Uniceps.Commands.Player
                         break;
                     case ViewType.About:
                         if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin)
-                            _navigationStore.CurrentViewModel = CreateAppInfo(_licenseDataStore);
+                            _navigationStore.CurrentViewModel = _appInfoViewModel;
                         break;
                     case ViewType.Logout:
                         if (MessageBox.Show("سيتم تسجيل خروجك , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
@@ -153,10 +156,6 @@ namespace Uniceps.Commands.Player
                 }
 
             }
-        }
-        private AppInfoViewModel CreateAppInfo(LicenseDataStore licenseDataStore)
-        {
-            return AppInfoViewModel.LoadViewModel(licenseDataStore);
         }
     }
 }

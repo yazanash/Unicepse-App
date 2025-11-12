@@ -24,7 +24,29 @@ namespace Uniceps.Entityframework.Services.TransactionsReportServices
             {
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.EndDate >= DateTime.Now).Include(x => x.Trainer).AsNoTracking()
                     .Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Sport).AsNoTracking().ToListAsync();
+                    .Include(x => x.Sport).AsNoTracking().Select(p => new Subscription
+                    {
+                        Sport = p.Sport,
+                        LastCheck = p.LastCheck,
+                        TrainerId = p.TrainerId,
+                        Trainer = p.Trainer,
+                        PrevTrainer_Id = p.PrevTrainer_Id,
+                        Player = p.Player,
+                        RollDate = p.RollDate,
+                        Price = p.Price,
+                        OfferValue = p.OfferValue,
+                        OfferDes = p.OfferDes,
+                        PriceAfterOffer = p.PriceAfterOffer,
+                        MonthCount = p.MonthCount,
+                        DaysCount = p.DaysCount,
+                        IsStopped = p.IsStopped,
+                        IsPaid = p.Payments!.Any() && p.Payments!.Sum(x => x.PaymentValue) >= p.PriceAfterOffer,
+                        PaidValue = p.Payments!.Sum(x => x.PaymentValue),
+                        RestValue = p.Payments!.Sum(x => x.PaymentValue) - p.PriceAfterOffer,
+                        EndDate = p.EndDate,
+                        LastPaid = p.LastPaid,
+
+                    }).ToListAsync();
                 return entities;
             }
         }

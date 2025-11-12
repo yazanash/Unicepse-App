@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using Uniceps.ViewModels.AppViewModels;
 using Uniceps.Views.AuthView;
 using Microsoft.Extensions.Logging;
 using Uniceps.Stores;
@@ -19,6 +18,9 @@ using Uniceps.ViewModels.Accountant;
 using Uniceps.Stores.SportStores;
 using Uniceps.navigation.Navigator;
 using Uniceps.Views;
+using Uniceps.ViewModels.SystemAuthViewModels;
+using Uniceps.ViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.HostBuilders
 {
@@ -30,12 +32,15 @@ namespace Uniceps.HostBuilders
             {
                 services.AddSingleton<MainWindowViewModel>();
                 services.AddSingleton<AuthViewModel>();
-                services.AddSingleton<LicenseViewModel>();
+                services.AddSingleton<AppInfoViewModel>();
+                services.AddSingleton<SystemProfileCreationViewModel>();
+                services.AddSingleton<SystemLoginViewModel>();
                 services.AddTransient<RoutineItemListViewModel>();
                 services.AddTransient<RoutineItemsBufferListViewModel>();
                 services.AddSingleton<RoutineDayGroupViewModel>();
                 services.AddSingleton<RoutineDetailsViewModel>();
-                services.AddSingleton<SetModelItemsListViewModel>();
+                services.AddSingleton<SetModelItemsListViewModel>(); 
+                 services.AddSingleton<ExercisesViewModel>();
                 services.AddSingleton<Func<RoutineDetailsViewModel>>((s) => () => s.GetRequiredService<RoutineDetailsViewModel>());
                 services.AddSingleton<NavigationService<RoutineDetailsViewModel>>();
                 services.AddTransient((s) => CreateRoutineListingViewModel(s));
@@ -46,6 +51,7 @@ namespace Uniceps.HostBuilders
                 services.AddTransient((s) => CreateUserListingViewModel(s));
                 services.AddTransient((s) => CreatePlayerProfileViewModel(s));
                 services.AddTransient((s) => CreateExercisesViewModel(s));
+                services.AddTransient((s) => CreateSubscriptionListingViewModel(s));
                 services.AddSingleton<AccountingViewModel>();
                 services.AddTransient<Func<PlayerListViewModel>>(services => () => services.GetRequiredService<PlayerListViewModel>());
                 services.AddTransient<NavigationService<PlayerListViewModel>>();
@@ -60,7 +66,7 @@ namespace Uniceps.HostBuilders
                 });
                 services.AddSingleton(s => new LicenseWindow()
                 {
-                    DataContext = s.GetRequiredService<LicenseViewModel>(),
+                    DataContext = s.GetRequiredService<SystemLoginViewModel>(),
                 });
             });
             return _hostBuilder;
@@ -90,7 +96,6 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<SportDataStore>(),
                 services.GetRequiredService<DausesDataStore>(),
                 services.GetRequiredService<CreditsDataStore>(),
-                services.GetRequiredService<LicenseDataStore>(),
                 services.GetRequiredService<EmployeeSubscriptionDataStore>());
         }
         private static UsersListViewModel CreateUserListingViewModel(IServiceProvider services)
@@ -101,9 +106,9 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<EmployeeStore>(),
                 services.GetRequiredService<AuthenticationStore>());
         }
-        private static ExercisesViewModel CreateExercisesViewModel(IServiceProvider services)
+        private static ExercisesListViewModel CreateExercisesViewModel(IServiceProvider services)
         {
-            return ExercisesViewModel.LoadViewModel(
+            return ExercisesListViewModel.LoadViewModel(
                 services.GetRequiredService<ExercisesDataStore>(),
                 services.GetRequiredService<DayGroupDataStore>(),
                 services.GetRequiredService<RoutineItemDataStore>(),
@@ -119,6 +124,11 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<EmployeeStore>(),
                 services.GetRequiredService<NavigationStore>(),
                 services.GetRequiredService<PlayerProfileViewModel>());
+        }
+        private static SubscriptionMainViewModel CreateSubscriptionListingViewModel(IServiceProvider services)
+        {
+            return SubscriptionMainViewModel.LoadViewModel(
+                services.GetRequiredService<SubscriptionDataStore>());
         }
         private static RoutineListViewModel CreateRoutineListingViewModel(IServiceProvider services)
         {
@@ -137,7 +147,6 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<PaymentDataStore>(),
                 services.GetRequiredService<MetricDataStore>(),
                 services.GetRequiredService<PlayersAttendenceStore>(),
-                services.GetRequiredService<LicenseDataStore>(),
                 services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
                 services.GetRequiredService<ExercisesDataStore>());
         }

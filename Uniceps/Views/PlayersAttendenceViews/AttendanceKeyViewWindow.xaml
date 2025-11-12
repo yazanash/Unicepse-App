@@ -7,27 +7,25 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"  Width="300" Height="350"
         FlowDirection="RightToLeft"
+        Background="{DynamicResource Brush.Card}"
         Title="تسجيل مفتاح" >
-    <Border Background="#fff" Padding="10" Width="250" Height="300">
+    <Border  Width="250" Height="300">
         <StackPanel >
-            <TextBlock Text="تسجيل مفتاح" Margin="5" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
-            <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
+            <TextBlock Text="تسجيل مفتاح" Margin="5" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Top"/>
             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
                 <TextBlock Text="اسم اللاعب :" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="13"/>
-                <TextBlock  Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" FontSize="16"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" FontSize="16"/>
             </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
-                <TextBlock Text="رقم المفتاح" 
-                                   Foreground="{StaticResource colors.secondry}"
+                <TextBlock Text="رقم المفتاح"  Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="13"/>
                 <TextBox  Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="2" Margin="0 20 0 0" HorizontalAlignment="Right">
+            <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="2" Margin="0 20 0 0" HorizontalAlignment="Center">
                 <Button Command="{Binding AddKeyCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4"  Content="حفظ"  HorizontalAlignment="Right">
                     </Button>
                 </StackPanel>

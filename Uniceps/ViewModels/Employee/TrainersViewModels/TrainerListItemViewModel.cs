@@ -26,7 +26,6 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         private readonly TrainersListViewModel? _trainersListViewModel;
         private readonly NavigationStore? _navigationStore;
         private readonly CreditsDataStore? _creditsDataStore;
-        private readonly LicenseDataStore? _licenseDataStore;
         private readonly EmployeeSubscriptionDataStore? _employeeSubscriptionDataStore;
         public int Id => Trainer.Id;
         public string? FullName => Trainer.FullName;
@@ -42,7 +41,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public ICommand? OpenAccountCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public TrainerListItemViewModel(Core.Models.Employee.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, DausesDataStore? dausesDataStore, CreditsDataStore? creditsDataStore, LicenseDataStore licenseDataStore, EmployeeSubscriptionDataStore? employeeSubscriptionDataStore)
+        public TrainerListItemViewModel(Core.Models.Employee.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, DausesDataStore? dausesDataStore, CreditsDataStore? creditsDataStore,  EmployeeSubscriptionDataStore? employeeSubscriptionDataStore)
         {
             Trainer = trainer;
             _employeeStore = employeeStore;
@@ -51,7 +50,6 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             _dausesDataStore = dausesDataStore;
             _navigationStore = navigationStore;
             _creditsDataStore = creditsDataStore;
-            _licenseDataStore = licenseDataStore;
             _employeeSubscriptionDataStore = employeeSubscriptionDataStore;
 
             NavigationStore EmployeeAccountPageNavigation = new NavigationStore();
@@ -61,7 +59,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
                 EditCommand = new NavaigateCommand<EditEmployeeViewModel>(new NavigationService<EditEmployeeViewModel>(_navigationStore, () => new EditEmployeeViewModel(navigationStore, _trainersListViewModel, _employeeStore)));
             DeleteCommand = new DeleteEmployeeCommand(_employeeStore, new NavigationService<TrainersListViewModel>(_navigationStore, () => _trainersListViewModel));
 
-            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!, this, _licenseDataStore, _employeeSubscriptionDataStore!)));
+            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!, this, _employeeSubscriptionDataStore!)));
         }
         public TrainerListItemViewModel(Core.Models.Employee.Employee trainer)
         {

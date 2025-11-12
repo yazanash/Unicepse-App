@@ -10,7 +10,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <Style x:Key="DataGridDropRowStyle" TargetType="{x:Type DataGridRow}">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
+            <Setter Property="BorderThickness" Value="{DynamicResource BorderThickness.Main}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource  Brush.Border}"/>
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="Margin" Value="0 4 0 0"/>
             <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -28,7 +31,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridRow}">
-                        <Border x:Name="DGR_Border" Padding="0 5" Background="{TemplateBinding Background}"   CornerRadius="5" SnapsToDevicePixels="True">
+                        <Border x:Name="DGR_Border" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"   CornerRadius="{DynamicResource Radius.Small}" SnapsToDevicePixels="True">
                             <SelectiveScrollingGrid>
                                 <SelectiveScrollingGrid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -48,41 +51,42 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#eee"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <!--<Setter Property="Foreground" Value="#ffffff"/>-->
-
-                </Trigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#ccc"/>
-                    <!--<Setter Property="Foreground" Value="#ffffff"/>-->
-
+                    <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
                 </Trigger>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
                         <Condition Property="IsSelected" Value="true"/>
                         <Condition Property="Selector.IsSelectionActive" Value="false"/>
                     </MultiTrigger.Conditions>
-                    <Setter Property="Background" Value="#ccc"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
+                    <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
+                </MultiTrigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="true"/>
+                        <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
+                    <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Border Grid.ColumnSpan="2" Grid.Row="2" Background="#fff" CornerRadius="15" Padding="10" Margin="10">
+    <Border Grid.ColumnSpan="2" Margin="10 0" Grid.Row="2" Style="{DynamicResource StaticCardBorderStyle}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Orientation="Horizontal">
-                <TextBlock Text="التمارين الرياضية" FontSize="16"  Margin="0 0 8 0"/>
+            <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Orientation="Horizontal" Margin="0 0 0 10">
+                <TextBlock Text="التمارين الرياضية" Foreground="{DynamicResource Brush.Foreground}" FontSize="16"  Margin="0 0 8 0"/>
                 <Button Style="{StaticResource AddBtn}" Command="{Binding OpenExercisesCommand}" Width="100">
                     <TextBlock Text="أضافة تمارين"/>
                 </Button>
             </StackPanel>
-            <Separator Grid.ColumnSpan="2" Grid.Column="0" Margin="5 10" Grid.Row="1"/>
-            <DataGrid Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft" ItemsSource="{Binding RoutineItems}" 
+            <Border  Grid.Row="2" Grid.Column="0"  >
+            <DataGrid FlowDirection="RightToLeft" ItemsSource="{Binding RoutineItems}" 
 CanUserReorderColumns="True" SelectedItem="{Binding SelectedRoutineItem}"
 x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}"   DragLeave="TodoItemList_DragLeave"
  DragOver="TodoItemList_DragOver" RowStyle="{StaticResource DataGridDropRowStyle}" AllowDrop="True"
@@ -109,9 +113,9 @@ CanUserResize="False"/>
 
                     <DataGridTextColumn Header="اسم التمرين" IsReadOnly="True"
  Binding="{Binding ExerciseName}"
-Width="*"
+Width="auto"
 />
-                    <DataGridTemplateColumn  Width="*" IsReadOnly="True">
+                    <DataGridTemplateColumn  Width="auto" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" x:Name="menu">
@@ -124,7 +128,7 @@ Width="*"
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
+            </Border>
         </Grid>
     </Border>
 

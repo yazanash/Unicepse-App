@@ -14,7 +14,7 @@ namespace Uniceps.Core.Services
         Task<T> Create(T entity);
         Task<T> Update(T entity);
         Task<bool> Delete(int id);
-        bool HasUsers();
+        Task<bool> HasUsers();
         public Task<T> GetByUsername(string username);
         public Task<IEnumerable<AuthenticationLog>> GetAllAuthenticationLogging(DateTime date);
         public void AuthenticationLogging(AuthenticationLog entity);

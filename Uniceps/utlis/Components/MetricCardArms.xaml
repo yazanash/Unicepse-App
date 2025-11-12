@@ -21,12 +21,12 @@
                 </Grid.ColumnDefinitions>
 
                 <comp:MetricItem Grid.Column="0" 
-                             Icon="pack://application:,,,/Resources/Assets/Metric/ForeArm.jpg" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/ForeArm.png" 
                              Title="ذراع ايمن" 
                              MetricValue="{Binding R_Arm,UpdateSourceTrigger=PropertyChanged}"
                              Grid.Row="1"/>
                 <comp:MetricItem Grid.Column="1" 
-                             Icon="pack://application:,,,/Resources/Assets/Metric/ForeArmFlip.jpg" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/ForeArmFlip.png" 
                              Title="ذراع ايسر" 
                              MetricValue="{Binding L_Arm,UpdateSourceTrigger=PropertyChanged}"
                              Grid.Row="1"/>
@@ -39,12 +39,12 @@
                 </Grid.ColumnDefinitions>
 
                 <comp:MetricItem Grid.Column="0" 
-                             Icon="pack://application:,,,/Resources/Assets/Metric/Thigh.jpg" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Thigh.png" 
                              Title="فخذ ايمن" 
                              MetricValue="{Binding R_Thigh,UpdateSourceTrigger=PropertyChanged}"
                              Grid.Row="1"/>
                 <comp:MetricItem Grid.Column="1" 
-                             Icon="pack://application:,,,/Resources/Assets/Metric/ThighFlip.jpg" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/ThighFlip.png" 
                              Title="فخذ ايسر" 
                              MetricValue="{Binding L_Thigh,UpdateSourceTrigger=PropertyChanged}"
                              Grid.Row="1"/>
@@ -57,12 +57,12 @@
                 </Grid.ColumnDefinitions>
 
                 <comp:MetricItem Grid.Column="0" 
-                             Icon="pack://application:,,,/Resources/Assets/Metric/Leg.jpg" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/Leg.png" 
                              Title="ساق ايمن" 
                              MetricValue="{Binding R_Leg,UpdateSourceTrigger=PropertyChanged}"
                              Grid.Row="1"/>
                 <comp:MetricItem Grid.Column="1" 
-                             Icon="pack://application:,,,/Resources/Assets/Metric/LegFlip.jpg" 
+                             Icon="pack://application:,,,/Resources/Assets/Metric/LegFlip.png" 
                              Title="ساق ايسر" 
                              MetricValue="{Binding L_Leg,UpdateSourceTrigger=PropertyChanged}"
                              Grid.Row="1"/>

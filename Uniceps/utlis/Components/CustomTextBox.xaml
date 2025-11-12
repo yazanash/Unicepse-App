@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Uniceps.Components"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" x:Name="CustomBox" d:Width="200"
-             d:Background="#fff">
+             d:Background="{DynamicResource Brush.Card}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="boolToVis"/>

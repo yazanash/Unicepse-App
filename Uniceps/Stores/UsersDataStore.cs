@@ -71,7 +71,7 @@ namespace Uniceps.Stores
         public void AddAuthenticationLog(AuthenticationLog entity)
         {
             _logger.LogInformation(LogFlag + "add logging");
-            _accountDataService.AuthenticationLogging(entity);
+            //_accountDataService.AuthenticationLogging(entity);
         }
         public async Task GetAuthenticationLog(DateTime date)
         {

@@ -33,43 +33,26 @@ namespace Uniceps
             this.Title = $"Uniceps : {currentVersion} - {buildName} ";
 
         }
-       
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+
+        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
-            {
                 this.DragMove();
-
-            }
         }
-        bool isMaximized = false;
-        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+
+        private void Minimize_Click(object sender, RoutedEventArgs e)
         {
-            if(e.ClickCount == 2)
-            {
-                if (isMaximized)
-                {
-                    this.WindowState = WindowState.Normal;
-                    this.Width = 1080;
-                    this.Height = 720;
-                    isMaximized = false;
-                }
-                else
-                {
-                    this.WindowState = WindowState.Maximized;
-                    isMaximized = true;
-                }
-            }
+            this.WindowState = WindowState.Minimized;
         }
 
-        private void Close(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void Minimize(object sender, RoutedEventArgs e)
+        private void Maximize_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            this.WindowState = this.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
         }
     }
 }

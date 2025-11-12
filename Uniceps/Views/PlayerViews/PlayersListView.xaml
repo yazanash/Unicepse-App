@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Views.PlayerViews"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             Background="Transparent"
               xmlns:cs="clr-namespace:Uniceps.Components"
              xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
@@ -22,7 +21,7 @@
 
 
 
-    <Border CornerRadius="10" Background="#EEE" Padding="10" x:Name="parent">
+    <Border Padding="5" x:Name="parent">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -31,7 +30,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2" FlowDirection="RightToLeft" CornerRadius="10" Padding="15 5" Margin="5" Background="#fff">
+            <Border Grid.ColumnSpan="2"  FlowDirection="RightToLeft" CornerRadius="10" Margin="5" >
 
 
                 <Grid>
@@ -46,7 +45,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top">
+                    <Border CornerRadius="{DynamicResource Radius.Small}" Margin="10 5"  Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top">
                         <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
                     </Border>
                     <ComboBox SelectedItem="{Binding SelectedOrderBy, UpdateSourceTrigger=PropertyChanged}"
@@ -77,22 +76,22 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>-->
-                        <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5 0" Margin="5 0">
+                        <Border Style="{DynamicResource StaticCardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
-                                <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanMale" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersMaleCount}"/>
+                                <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanMale" Width="30" Height="30"/>
+                                <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersMaleCount}"/>
                             </StackPanel>
                         </Border>
-                        <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
+                        <Border Style="{DynamicResource StaticCardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
-                                <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanFemale" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersFemaleCount}"/>
+                                <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanFemale" Width="30" Height="30"/>
+                                <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersFemaleCount}"/>
                             </StackPanel>
                         </Border>
-                        <Border BorderThickness="0" BorderBrush="#444" CornerRadius="10" Padding="5" Margin="5 0">
+                        <Border Style="{DynamicResource StaticCardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0"  Grid.Column="0">
-                                <Icon:PackIconMaterial Foreground="{StaticResource colors.primary}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="AccountGroup" Width="30" Height="30"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersCount}"/>
+                                <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="AccountGroup" Width="30" Height="30"/>
+                                <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" FontSize="18" Text="{Binding PlayersCount}"/>
                             </StackPanel>
                         </Border>
 
@@ -118,7 +117,6 @@
 
                         </Button>
                         <Button Grid.Column="1" ToolTip="طباعة الى جدول excel" Grid.Row="1" Click="Button_Click" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
-
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="FileExcel"/>
                             </StackPanel>
@@ -139,11 +137,11 @@
 
 
 
-            <Border  Background="#FFF" CornerRadius="10" Grid.Row="4" Margin="5 10" Padding="5">
+            <Border  Grid.Row="4" Margin="5 10" Style="{DynamicResource StaticCardBorderStyle}">
                 <Grid  Grid.Row="4">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
                     <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="13*"/>

@@ -1,0 +1,220 @@
+﻿<UserControl x:Class="Uniceps.Views.SubscriptionView.SubscriptionMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uniceps.Views.SubscriptionView"
+             mc:Ignorable="d" 
+             xmlns:cs="clr-namespace:Uniceps.Components"
+                xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+               xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
+               xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             FlowDirection="RightToLeft"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+        <converters:NumberFormatConverter x:Key="covNum"/>
+    </UserControl.Resources>
+    <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+     
+        
+
+        <Border  Grid.Row="1" Padding="10" Grid.Column="0" Grid.ColumnSpan="3" >
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Top"/>
+
+                        <Border Grid.Column="1" CornerRadius="{DynamicResource Radius.Small}" Margin="10 5"  Grid.Row="0"  VerticalAlignment="Center">
+                            <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
+                        </Border>
+                        <Button Grid.Column="2"  Margin="10 0" Command="{Binding AddPlayerCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Right">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="أضافة اشتراك" />
+                                <Icon:PackIconMaterial Kind="Plus"
+ Width="11"
+ Height="11"
+ Margin="8 0 0 1"
+ VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                        </Button>
+                    </Grid>
+                </Border>
+                <Border Grid.Row="1" Style="{DynamicResource StaticCardBorderStyle}">
+                    
+                
+                <Grid  Grid.Row="1">
+                    <custom:LoadingSpinner
+             IsLoading="{Binding IsLoading}"
+             Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
+                    <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+
+                        <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
+
+                        <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
+                                 FlowDirection="RightToLeft" ItemsSource="{Binding SubscriptionList}" 
+                                 CanUserReorderColumns="True"
+                             SelectedItem="{Binding SelectedSubscription}"
+                                 x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
+                                 CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="#" IsReadOnly="True"
+                                 Width="auto"
+                                 Binding="{Binding Order,UpdateSourceTrigger=PropertyChanged}"
+                                 CanUserResize="False"/>
+                                    <DataGridTemplateColumn Header="اسم اللاعب" Width="*" IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding PlayerName}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="الرياضة" Width="*" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <!--<Border Width="10" Height="10" Margin="0 0 0 0" Background="{Binding IsSubscribed}" CornerRadius="50">
+                                                     </Border>-->
+                                                <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding SportName}" VerticalAlignment="Center"/>
+                                                <TextBlock Margin="10 0 0 0" Text="{Binding Trainer}"
+                                                               Foreground="#888" FontSize="13" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--<DataGridTextColumn Header="المدرب" IsReadOnly="True"
+                                  Binding="{Binding Trainer}"
+                                 Width="*"
+                                 />-->
+
+                                <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
+                                  Binding="{Binding RollDate}"
+                                 Width="*"
+                                 />
+                                <DataGridTextColumn Header="السعر" IsReadOnly="True"
+                                  Binding="{Binding PriceAfterOffer,Converter={StaticResource covNum}}"
+                                 Width="auto"
+                                 />
+
+
+                                    <DataGridTextColumn Header="الحسم" IsReadOnly="True"
+                                  Binding="{Binding OfferValue}"
+                                 Width="auto"
+                                 />
+                                    <DataGridTemplateColumn Header="الباقي" Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Margin="10 0 0 0" Text="{Binding RestVal,Converter={StaticResource covNum}}"
+                                         Foreground="{Binding RestColor,UpdateSourceTrigger=PropertyChanged}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn Header="تدريب خاص" IsReadOnly="True"
+                                  Binding="{Binding PrivatePrice,Converter={StaticResource covNum}}"
+                                 Width="auto"
+                                 />
+                                <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
+                                  Binding="{Binding EndDate}"
+                                 Width="*"
+                                 />
+                                <DataGridTemplateColumn Header="الحالة" Width="100" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  Padding="5 3" Margin="0 0 0 0" BorderThickness="1" BorderBrush="{Binding IsPaidColor}" CornerRadius="10">
+                                                <TextBlock HorizontalAlignment="Center" FontSize="11" Foreground="{Binding IsPaidColor}" Margin="0 0 0 0" Text="{Binding IsPaid}" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <!--<DataGridTextColumn Header="المدفوع" IsReadOnly="True"
+                                  Binding="{Binding PaidValue}"
+                                 Width="*"
+                                 />-->
+
+
+                                <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" x:Name="menu">
+                                                <CheckBox Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
+
+                                                    <Icon:PackIconMaterial Kind="Menu" Style="{StaticResource GridBtnIcon}"/>
+                                                </CheckBox>
+                                                <!-- Popup control -->
+                                                <Popup StaysOpen="False" AllowsTransparency="True" Name="MyPopup" IsOpen="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
+                                                    <!-- Customize the popup content here -->
+                                                    <Border Style="{DynamicResource StaticCardBorderStyle}">
+
+                                                        <StackPanel>
+                                                            <Button HorizontalAlignment="Stretch" Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Pencil" Style="{DynamicResource GridBtnIcon}"/>
+                                                                    <TextBlock Text="تعديل" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                            <Button HorizontalAlignment="Stretch" Command="{Binding PrintCommand}" Style="{StaticResource GridEditBtn}">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Printer" Style="{StaticResource GridBtnIcon}"/>
+                                                                        <TextBlock Text="طباعة" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
+                                                                </StackPanel>
+                                                            </Button>
+
+
+                                                            <Button  HorizontalAlignment="Stretch" Command="{Binding StopSubscriptionCommand}" Style="{StaticResource GridEditBtn}">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="BookCancel" Style="{DynamicResource GridBtnIcon}"/>
+                                                                        <TextBlock Text="ايقاف الاشتراك" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
+
+                                                                </StackPanel>
+                                                            </Button>
+
+                                                        </StackPanel>
+
+                                                    </Border>
+                                                </Popup>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+
+    </Grid>
+
+</UserControl>

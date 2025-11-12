@@ -17,7 +17,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.DayGroupCommands
             _viewModel = viewModel;
         }
 
-        public override void Execute(object parameter)
+        public override void Execute(object? parameter)
         {
             _viewModel.InsertTodoItem(_viewModel.InsertedDayGroupViewModel, _viewModel.TargetDayGroupViewModel);
         }

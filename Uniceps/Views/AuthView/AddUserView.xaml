@@ -5,21 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Views.AuthView"
              mc:Ignorable="d" 
-             
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
             >
-    <Border CornerRadius="10" Background="#EEE" Padding="10" >
+    <Border  >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2" Height="60" CornerRadius="10" Padding="15 5" Margin="0 0 0 5" Background="#fff">
+            <Border Grid.ColumnSpan="2"  Padding="5" Margin="0 0 0 5" >
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="المستخدمين / اضافة مستخدم" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                        <TextBlock Text="المستخدمين / اضافة مستخدم" FontSize="18" Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" />
                     </StackPanel>
 
                 </DockPanel>
@@ -28,10 +27,10 @@
 
             <Grid Grid.Row="1" >
 
-                <Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
+                <Border HorizontalAlignment="Left" Style="{DynamicResource CardBorderStyle}" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
                     <DockPanel HorizontalAlignment="Center" Width="800" >
                         <DockPanel DockPanel.Dock="Top" >
-                            <TextBlock Text="معلومات المستخدم" Foreground="{StaticResource colors.primary}" FontSize="24" DockPanel.Dock="Left"/>
+                            <TextBlock Text="معلومات المستخدم" Foreground="{DynamicResource Brush.Foreground}" FontSize="24" DockPanel.Dock="Left"/>
                         </DockPanel>
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -47,8 +46,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
-                                <TextBlock Text="اسم المستخدم" 
-                                   Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="اسم المستخدم"  Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -56,8 +54,7 @@
                             </StackPanel>
 
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
-                                <TextBlock Text="كلمة المرور" 
-                                   Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="كلمة المرور"  Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -65,8 +62,7 @@
 
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
-                                <TextBlock Text="اسم صاحب الحساب" 
-                                   Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="اسم صاحب الحساب"  Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding OwnerName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -74,8 +70,7 @@
                             </StackPanel>
 
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
-                                <TextBlock Text="المسمى الوظيفي" 
-                                   Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="المسمى الوظيفي"  Foreground="{DynamicResource Brush.Foreground}"
                                    Margin="0 0 0 8"
                                    FontSize="18"/>
                                 <TextBox Text="{Binding Position, UpdateSourceTrigger=PropertyChanged }" Style="{StaticResource textBoxStyle}"/>
@@ -83,8 +78,7 @@
                             </StackPanel>
                             <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
                                 <TextBlock Text="الدور" 
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 8"
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
                                 <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
                                             ItemsSource="{Binding RolesList}"

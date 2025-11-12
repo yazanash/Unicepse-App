@@ -14,18 +14,28 @@
 
       
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-        <DataTemplate x:Key="ListViewItemTemplate1">
-            <comp:SportCard/>
-        </DataTemplate>
+       
 
     </UserControl.Resources>
-    <Border CornerRadius="10"  Background="#EEE" Padding="0" >
+    <Border >
         <Grid Grid.Row="2" >
-            <Border Background="#fff" Grid.Column="1" CornerRadius="10" Grid.Row="0"  Padding="5"  Margin="5">
+            <Border Style="{DynamicResource CardBorderStyle}" Grid.Column="1" Grid.Row="0"  Padding="5"  Margin="5">
                 <DockPanel >
-                    <TextBlock Text="القياسات" Margin="5" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Top"/>
-                    <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Text="القياسات" HorizontalAlignment="Left" Margin="5"  Foreground="{DynamicResource Brush.Foreground}"  FontSize="18" DockPanel.Dock="Top"/>
 
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" HorizontalAlignment="Center">
+
+                            <TextBlock Text="تاريخ القياس" 
+          Foreground="{DynamicResource Brush.Foreground}"
+           Margin="0 0 0 5"
+           FontSize="13"/>
+                            <DatePicker  Width="150" Margin="10 0"
+            SelectedDate="{Binding CheckDate, UpdateSourceTrigger=PropertyChanged}"
+           />
+                        </StackPanel>
+                    </Grid>
+                   
                     <Grid >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -45,18 +55,7 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <!--Date Picker-->
-                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
-
-                            <TextBlock Text="تاريخ القياس" 
-                                      
-                                   Foreground="{StaticResource colors.secondry}"
-                                   Margin="0 0 0 5"
-                                   FontSize="13"/>
-                            <DatePicker Style="{DynamicResource DatePickerStyle1}"
-                                    SelectedDate="{Binding CheckDate, UpdateSourceTrigger=PropertyChanged}"
-                                    CalendarStyle="{DynamicResource DatePickerCalendarStyle1}"
-                                   />
-                        </StackPanel>
+                        
 
                         <!--#region First Row Hieght and wieght -->
 
@@ -66,14 +65,13 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Height.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Height.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                                 <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
                                     <TextBlock Text="الطول" 
-                                       Foreground="{StaticResource colors.secondry}"
-                                       Margin="0 0 0 5"
+                                       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                        FontSize="13"/>
                                 <TextBox TabIndex="0" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Hieght, UpdateSourceTrigger=PropertyChanged}"  GotFocus="TextBlock_GotFocus" Style="{StaticResource textBoxStyle}"/>
@@ -86,14 +84,13 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Weight.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Weight.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                                 <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
                                     <TextBlock Text="الوزن" 
-                                       Foreground="{StaticResource colors.secondry}"
-                                       Margin="0 0 0 5"
+                                       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                        FontSize="13"/>
                                 <TextBox TabIndex="1" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Wieght, UpdateSourceTrigger=PropertyChanged}"  GotFocus="TextBlock_GotFocus" Style="{StaticResource textBoxStyle}"/>
@@ -110,13 +107,12 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Neck.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Neck.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
-                                <TextBlock Text="رقبة" 
-                                       Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="رقبة"  Foreground="{DynamicResource Brush.Foreground}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox TabIndex="2"
@@ -131,14 +127,13 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Shoulder.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Shoulder.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
                                 <TextBlock Text="اكتاف" 
-                                       Foreground="{StaticResource colors.secondry}"
-                                       Margin="0 0 0 5"
+                                       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="3" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Shoulders, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -155,14 +150,13 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Chest.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Chest.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
                                 <TextBlock Text="صدر" 
-                                       Foreground="{StaticResource colors.secondry}"
-                                       Margin="0 0 0 5"
+                                       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="4" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
                                     Text="{Binding Chest, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
@@ -175,14 +169,13 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/waist.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/waist.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
                                 <TextBlock Text="الخصر" 
-                                       Foreground="{StaticResource colors.secondry}"
-                                       Margin="0 0 0 5"
+                                       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="5"
                                           PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
@@ -201,14 +194,13 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/hips.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/hips.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
                                 <TextBlock Text="ورك" 
-                                       Foreground="{StaticResource colors.secondry}"
-                                       Margin="0 0 0 5"
+                                       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="6"
                                           PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
@@ -226,14 +218,13 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ForeArm.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ForeArm.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
                                 <TextBlock Text="ذراع ايمن" 
-                                       Foreground="{StaticResource colors.secondry}"
-                                       Margin="0 0 0 5"
+                                       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="7"
                                           PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
@@ -247,14 +238,13 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ForeArmFlip.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ForeArmFlip.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
                                 <TextBlock Text="ذراع ايسر" 
-                                       Foreground="{StaticResource colors.secondry}"
-                                       Margin="0 0 0 5"
+                                       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="8"
                                            PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
@@ -272,13 +262,12 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Thigh.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Thigh.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
-                                <TextBlock Text="فخذ ايمن" 
-                                       Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="فخذ ايمن"  Foreground="{DynamicResource Brush.Foreground}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="9" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
@@ -292,13 +281,12 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ThighFlip.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/ThighFlip.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
-                                <TextBlock Text="فخذ ايسر" 
-                                       Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="فخذ ايسر" Foreground="{DynamicResource Brush.Foreground}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="10" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
@@ -316,13 +304,12 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Leg.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/Leg.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
-                                <TextBlock Text="ساق ايمن" 
-                                       Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="ساق ايمن" Foreground="{DynamicResource Brush.Foreground}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="11" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 
@@ -336,13 +323,12 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="pack://application:,,,/Resources/Assets/Metric/LegFlip.jpg" 
+                            <Image Source="pack://application:,,,/Resources/Assets/Metric/LegFlip.png" 
                      RenderOptions.BitmapScalingMode="HighQuality"
            RenderOptions.EdgeMode="Aliased"
                        Height="60" Width="80"/>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="5">
-                                <TextBlock Text="ساق ايسر" 
-                                       Foreground="{StaticResource colors.secondry}"
+                                <TextBlock Text="ساق ايسر" Foreground="{DynamicResource Brush.Foreground}"
                                        Margin="0 0 0 5"
                                        FontSize="13"/>
                                 <TextBox  GotFocus="TextBlock_GotFocus" TabIndex="13" PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown" 

@@ -2,33 +2,38 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Uniceps.Entityframework.DbContexts;
+using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Serilog;
-using Microsoft.Extensions.Logging;
-using Uniceps.API.Models;
-using System.Threading;
-using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Reflection;
-using Uniceps.Stores.RoutineStores;
 using System.Windows.Markup;
-using Uniceps.Stores;
-using Uniceps.ViewModels.Authentication;
-using Uniceps.BackgroundServices;
-using Uniceps.HostBuilders;
-using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.API.Exercises;
-using Uniceps.ViewModels.AppViewModels;
-using Uniceps.Views.AuthView;
+using Uniceps.API.Models;
+using Uniceps.BackgroundServices;
+using Uniceps.Core.Common;
+using Uniceps.Core.Models.TrainingProgram;
+using Uniceps.Entityframework.DbContexts;
+using Uniceps.Helpers;
+using Uniceps.HostBuilders;
+using Uniceps.Stores;
+using Uniceps.Stores.RoutineStores;
+using Uniceps.Stores.SystemAuthStores;
+using Uniceps.utlis.common;
+using Uniceps.ViewModels.Authentication;
+using Uniceps.ViewModels.SystemAuthViewModels;
 using Uniceps.Views;
+using Uniceps.Views.AuthView;
+
 namespace Uniceps
 {
     /// <summary>
@@ -50,9 +55,8 @@ namespace Uniceps
             _host = CreateHostBuilder().Build();
             AuthViewModel auth = _host.Services.GetRequiredService<AuthViewModel>();
             auth.LoginAction += Auth_LoginAction;
-            LicenseViewModel license = _host.Services.GetRequiredService<LicenseViewModel>();
-            license.LicenseAction += License_VerifiedAction;
         }
+
         private async void CheckForUpdates()
         {
             try
@@ -102,37 +106,14 @@ namespace Uniceps
         {
             MainWindow authen = _host.Services.GetRequiredService<MainWindow>();
             ResetHost();
-            _host.Services.GetRequiredService<AuthViewModel>().openLog();
+           //await  _host.Services.GetRequiredService<AuthViewModel>().openLog();
             AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
             AuthViewModel authmod = _host.Services.GetRequiredService<AuthViewModel>();
             authmod.LoginAction += Auth_LoginAction;
             auth.Show();
             authen.Close();
         }
-
-        private void License_VerifiedAction()
-        {
-            if (_host.Services.GetRequiredService<LicenseDataStore>().CurrentLicense != null)
-            {
-                LicenseDataStore licenseDataStore = _host.Services.GetRequiredService<LicenseDataStore>();
-                licenseDataStore.ActiveLicense();
-                if (licenseDataStore.CurrentLicense != null)
-                {
-                    _host.Services.GetRequiredService<UnicepsePrepAPIKey>().updateToken(licenseDataStore.CurrentLicense.Token!, licenseDataStore.CurrentLicense.GymId!);
-                }
-                _host.Services.GetRequiredService<AuthViewModel>().openLog();
-                AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
-                Application.Current.MainWindow.Close();
-                auth.Show();
-            }
-            else
-            {
-                LicenseWindow auth = _host.Services.GetRequiredService<LicenseWindow>();
-                auth.Show();
-
-            }
-
-        }
+       
         public void ResetHost()
         {
             _host.Dispose();
@@ -531,76 +512,29 @@ namespace Uniceps
                 //logger.LogInformation(LogFlag + "add pays to sync ended");
                 #endregion
                 logger.LogInformation(LogFlag + "database migrate successfully");
-                logger.LogInformation(LogFlag + "checking for exercises");
-                GetExercisesService ge = _host.Services.GetRequiredService<GetExercisesService>();
-                if (!platinumGymDbContext.Exercises!.Any())
-                {
-                    logger.LogInformation(LogFlag + "no exercises found");
-                    //string f_name = "Training.json";
-                    //using (StreamReader r = new StreamReader(f_name))
-                    //{
-                    //    logger.LogInformation(LogFlag + "add exercises started");
-                    //    string json = r.ReadToEnd();
-                    //    List<Exercises>? data = JsonConvert.DeserializeObject<List<Exercises>>(json);
-                    //    foreach (Exercises ex in data!)
-                    //        ex.Id = 0;
-                    //    await platinumGymDbContext.Exercises!.AddRangeAsync(data!);
-                    //}
-                    //
-
-
-                    List<ExerciseDtoModel> exerciseDtoModels = await ge.FetchExercises();
-                    string appFolder = AppDomain.CurrentDomain.BaseDirectory + "Images\\";
-                    Directory.CreateDirectory(appFolder); // Ensure the folder exists
-                    foreach (var exerciseDto in exerciseDtoModels)
-                    {
-                        string folder_path = Path.Combine(appFolder, exerciseDto.muscleGroupId.ToString());
-                        Directory.CreateDirectory(folder_path);
-                        string originalExtension = Path.GetExtension(exerciseDto.imageUrl);
-                        string localPath = Path.Combine(folder_path, $"exercise_{exerciseDto.name}{originalExtension}");
-                        Exercises exercises = new()
-                        {
-                            ImagePath = localPath,
-                            MuscleGroupId = exerciseDto.muscleGroupId,
-                            Name = exerciseDto.name,
-                            Tid = exerciseDto.id,
-                            Version = 0,
-
-                        };
-                        await platinumGymDbContext.Exercises!.AddAsync(exercises!);
-                        await ge.DownloadImage(exerciseDto.imageUrl, localPath);
-
-                    }
-                    platinumGymDbContext.SaveChanges();
-                }
-              
-                if (!platinumGymDbContext.MuscleGroups!.Any())
-                {
-                    logger.LogInformation(LogFlag + "no exercises found");
-                    List<MuscleGroupDto> muscleGroupDtos = await ge.FetchMuscleGroup();
-
-                    foreach (var muscleGroupDto in muscleGroupDtos)
-                    {
-                        MuscleGroup muscleGroup = new MuscleGroup()
-                        {
-                            Name = muscleGroupDto.name,
-                            EngName = muscleGroupDto.engName,
-
-                        };
-                        await platinumGymDbContext.MuscleGroups!.AddAsync(muscleGroup!);
-                    }
-                    platinumGymDbContext.SaveChanges();
-                }
+                ExercisesDataStore exercisesDataStore = _host.Services.GetRequiredService<ExercisesDataStore>();
+                await exercisesDataStore.GetExcersisesWithMuscleGroups();
             }
         }
 
-        public void OpenAuth()
+        public async Task OpenMainView()
         {
-            _host.Services.GetRequiredService<AuthViewModel>().openLog();
-            AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
-            auth.Show();
+            AuthenticationStore authenticationStore = _host.Services.GetRequiredService<AuthenticationStore>();
+            if (await authenticationStore.HasUser())
+            {
+                await _host.Services.GetRequiredService<AuthViewModel>().openLog();
+                AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
+                auth.Show();
+
+            }
+            else
+            {
+                MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
+                mainWindow.Show();
+            }
+
         }
-        public void OpenLicense()
+        public void OpenLoginView()
         {
             LicenseWindow auth = _host.Services.GetRequiredService<LicenseWindow>();
             auth.Show();
@@ -618,51 +552,33 @@ namespace Uniceps
                 await PrepareDatabase();
                 logger.LogInformation(LogFlag + "get licenses");
 
-                LicenseDataStore licenseDataStore = _host.Services.GetRequiredService<LicenseDataStore>();
-                licenseDataStore.ActiveLicense();
-                if (licenseDataStore.CurrentLicense != null)
+                SessionValidator sysStore = _host.Services.GetRequiredService<SessionValidator>();
+                UserFlowService userFlowService = _host.Services.GetRequiredService<UserFlowService>();
+                bool hasValidSession = await sysStore.HasValidSession();
+                if (hasValidSession)
                 {
-                    _host.Services.GetRequiredService<UnicepsePrepAPIKey>().updateToken(licenseDataStore.CurrentLicense.Token!, licenseDataStore.CurrentLicense.GymId!);
-                    bool internetAvailable = InternetAvailability.IsInternetAvailable();
-                    if (internetAvailable)
-                    {
-                        try
-                        {
-                            logger.LogInformation(LogFlag + "license found  start to verify it");
-                            logger.LogInformation(LogFlag + "verify license started");
-                            await licenseDataStore.CheckLicenseValidation();
-                            if (licenseDataStore.CurrentLicense != null && licenseDataStore.CurrentLicense.SubscribeEndDate > DateTime.Now)
-                            {
-                                logger.LogInformation(LogFlag + "valid license");
-                                logger.LogInformation(LogFlag + "request login");
-                                OpenAuth();
-                            }
-                            else
-                            {
-                                logger.LogInformation(LogFlag + "no valid license");
-                                logger.LogInformation(LogFlag + "request license key");
-                                OpenLicense();
-                            }
-                        }
-                        catch
-                        {
-                            logger.LogInformation(LogFlag + "no internet to validate existed license");
-                            logger.LogInformation(LogFlag + "request login");
-                            OpenAuth();
-                        }
-                    }
-                    else
-                    {
-                        logger.LogInformation(LogFlag + "no internet to validate existed license");
-                        logger.LogInformation(LogFlag + "request login");
-                        OpenAuth();
-                    }
-
+                    logger.LogInformation(LogFlag + "Token is valid. Opening main view...");
+                    await userFlowService.RefreshUserContextAsync();
                 }
                 else
                 {
-                    OpenAuth();
+                    AccountStore accountStore=_host.Services.GetRequiredService<AccountStore>();
+                    if (accountStore.CurrentAccount == null)
+                    {
+                        accountStore.CurrentAccount = new Core.Models.Authentication.User()
+                        {
+                            OwnerName = "مستخدم غير مسجل",
+                            Role = Roles.Admin,
+                        };
+                    }
+
                 }
+                await OpenMainView();
+                //else
+                //{
+                //    logger.LogInformation(LogFlag + "Token invalid. Redirecting to login...");
+                //    OpenLoginView(); // ترجع المستخدم لتسجيل الدخول
+                //}
             }
             catch (Exception ex)
             {
@@ -674,7 +590,13 @@ namespace Uniceps
         protected async override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            var savedTheme = Uniceps.Properties.Settings.Default.AppTheme;
+            if (Enum.TryParse(savedTheme, out AppTheme theme))
+            {
+                ThemeService.ApplyTheme(theme);
+            }
 
+            // ثم تابع تحميل الواجهة
             splashScreen = new SplashScreenWindow();
             splashScreen.Show();
             EventManager.RegisterClassHandler(typeof(TextBox), TextBox.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(TextBox_PreviewMouseLeftButtonDown));
@@ -725,8 +647,8 @@ namespace Uniceps
         }
         protected override void OnExit(ExitEventArgs e)
         {
-            BackUp();
-            _host.Services.GetRequiredService<AuthenticationStore>().Logout();
+            //BackUp();
+            //_host.Services.GetRequiredService<AuthenticationStore>().Logout();
             _host.Dispose();
             base.OnExit(e);
         }

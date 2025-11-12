@@ -28,6 +28,13 @@ namespace Uniceps.HostBuilders
                     c.BaseAddress = new Uri(apiUrl!);
 
                 });
+                services.AddHttpClient<UnicepseApiClientV2>(c =>
+                {
+                    c.Timeout = TimeSpan.FromSeconds(10);
+
+                    c.BaseAddress = new Uri(apiUrl!);
+
+                });
             });
             return _hostBuilder;
         }

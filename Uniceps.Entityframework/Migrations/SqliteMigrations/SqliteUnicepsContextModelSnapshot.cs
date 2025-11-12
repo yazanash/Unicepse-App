@@ -305,82 +305,6 @@ namespace Unicepse.Entityframework.Migrations.SqliteMigrations
                     b.ToTable("Expenses");
                 });
 
-            modelBuilder.Entity("Uniceps.Core.Models.GymProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GymId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GymName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Logo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("OwnerName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Telephone")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GymProfile");
-                });
-
-            modelBuilder.Entity("Uniceps.Core.Models.License", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GymId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LicenseId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Plan")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("SubscribeDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("SubscribeEndDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Licenses");
-                });
-
             modelBuilder.Entity("Uniceps.Core.Models.Metric.Metric", b =>
                 {
                     b.Property<int>("Id")
@@ -732,15 +656,6 @@ namespace Unicepse.Entityframework.Migrations.SqliteMigrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsMoved")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsPlayerPay")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsPrivate")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("IsStopped")
                         .HasColumnType("INTEGER");
 
@@ -769,9 +684,6 @@ namespace Unicepse.Entityframework.Migrations.SqliteMigrations
                         .HasColumnType("REAL");
 
                     b.Property<double>("PriceAfterOffer")
-                        .HasColumnType("REAL");
-
-                    b.Property<double>("PrivatePrice")
                         .HasColumnType("REAL");
 
                     b.Property<DateTime>("RollDate")
@@ -826,6 +738,69 @@ namespace Unicepse.Entityframework.Migrations.SqliteMigrations
                     b.ToTable("SyncObjects");
                 });
 
+            modelBuilder.Entity("Uniceps.Core.Models.SystemAuthModels.SystemProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BusinessId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProfileImagePath")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemProfiles");
+                });
+
+            modelBuilder.Entity("Uniceps.Core.Models.SystemAuthModels.SystemSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsGift")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PlanName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PublicId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemSubscriptions");
+                });
+
             modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.Exercises", b =>
                 {
                     b.Property<int>("Id")
@@ -866,6 +841,9 @@ namespace Unicepse.Entityframework.Migrations.SqliteMigrations
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("PublicId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

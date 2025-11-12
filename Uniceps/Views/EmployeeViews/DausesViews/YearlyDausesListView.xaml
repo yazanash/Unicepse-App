@@ -15,7 +15,7 @@
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
 
     </UserControl.Resources>
-    <Border CornerRadius="10" Background="#fff" Padding="5" Margin="5" x:Name="parent">
+    <Border  Padding="5" x:Name="parent">
         <Grid Grid.Column="1">
 
             <Grid.ColumnDefinitions>
@@ -25,11 +25,11 @@
             </Grid.ColumnDefinitions>
 
 
-            <Border  Background="#FFF" CornerRadius="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Padding="5">
+            <Border  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
 
                 <DockPanel DockPanel.Dock="Top" >
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                        <TextBlock Text="مستحقات المدرب"  HorizontalAlignment="Left" Margin="10" Foreground="{StaticResource colors.primary}" FontSize="18" DockPanel.Dock="Left"/>
+                        <TextBlock Text="مستحقات المدرب" Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Left" Margin="10" FontSize="18" DockPanel.Dock="Left"/>
                       
                         <Button Grid.Column="0" Margin="5 0"  Command="{Binding CreateTrainerDauses }"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
@@ -46,11 +46,10 @@
                         </Button>
                     </StackPanel>
 
-                    <Separator Margin="10 5" Background="#ccc" DockPanel.Dock="Top"/>
                     <Grid  Grid.Row="4">
                         <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
-                Diameter="100" Thickness="3" Color="{StaticResource colors.primary}" />
+                Diameter="100" Thickness="3" />
                         <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
 
                             <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
