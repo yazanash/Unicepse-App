@@ -101,6 +101,11 @@ namespace Uniceps.ViewModels.PlayersViewModels
             OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => playerProfileViewModel));
 
         }
+        public PlayerListItemViewModel(Player player)
+        {
+            Player = player;
+
+        }
         public PlayerListItemViewModel(Player player, NavigationStore navigationStore
            , PlayerProfileViewModel playerProfileViewModel, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, HomeViewModel homeViewModel)
         {

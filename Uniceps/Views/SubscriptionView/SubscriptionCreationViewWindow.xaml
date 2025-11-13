@@ -1,0 +1,252 @@
+﻿<Window x:Class="Uniceps.Views.SubscriptionView.SubscriptionCreationViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Uniceps.Views.SubscriptionView"
+        mc:Ignorable="d"
+        FlowDirection="RightToLeft"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource Brush.Background}"
+           xmlns:ctrl="clr-namespace:Uniceps.Controls"
+    xmlns:comp="clr-namespace:Uniceps.Components"
+    xmlns:con="clr-namespace:Uniceps.utlis.Converters"
+   xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        Title="اشتراك جديد"  Width="800">
+    <Window.Resources>
+        <con:ErrorsConverter x:Key="conv"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <con:NumberFormatConverter x:Key="convertNum"/>
+    </Window.Resources>
+
+    <Border  Padding="10">
+        <StackPanel >
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Style="{DynamicResource CardBorderStyle}" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5">
+
+                            <TextBlock Text="اللاعب" 
+   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+   FontSize="16"/>
+                            <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+            ItemsSource="{Binding PlayersList}"
+                                      Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}"
+        IsEditable="True"
+        IsTextSearchEnabled="True"
+        TextSearch.TextPath="FullName"
+                                     
+      SelectedItem="{Binding SelectedPlayer,UpdateSourceTrigger=PropertyChanged}"
+      ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding FullName}" FontSize="12"   />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+
+                            </ComboBox>
+
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                            <TextBlock Text="رقم الهاتف" 
+       Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+       FontSize="18"/>
+                            <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="5"  VerticalAlignment="Top">
+                            <TextBlock Text="سنة الميلاد" 
+       Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+       FontSize="18"/>
+                            <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+              ItemsSource="{Binding Years,UpdateSourceTrigger=PropertyChanged}"
+              SelectedItem="{Binding Year,UpdateSourceTrigger=PropertyChanged}"
+              ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding year}" FontSize="12"   />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3" Grid.Column="2" Margin="5">
+                            <TextBlock Text="الجنس" 
+        Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+        FontSize="18"/>
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton Style="{StaticResource RadioChoose}" IsChecked="{Binding GenderMale}" >
+                                    <RadioButton.Content>
+                                        <!--<Border Padding="5" CornerRadius="10" BorderThickness="1" BorderBrush="#C14E00"> -->
+                                        <StackPanel Orientation="Horizontal">
+                                            <Icon:PackIconMaterial Kind="FaceMan" Width="25" Height="25" />
+                                            <TextBlock Text="ذكر" Margin="5 0" TextAlignment="Center" FontSize="14"
+                                FontWeight="Bold"/>
+                                        </StackPanel>
+                                        <!--</Border>-->
+
+
+                                    </RadioButton.Content>
+                                </RadioButton>
+                                <RadioButton Style="{StaticResource RadioChoose}" IsChecked="True">
+                                    <RadioButton.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Icon:PackIconMaterial Kind="FaceWoman" Width="25" Height="25" />
+                                            <TextBlock Text="انثى" Margin="5 0" TextAlignment="Center" FontSize="14"
+                                FontWeight="Bold"/>
+                                        </StackPanel>
+
+                                    </RadioButton.Content>
+                                </RadioButton>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+
+                 <Border Style="{DynamicResource CardBorderStyle}" Grid.Row="0" Grid.Column="1" Margin=" 10 0 0 0 ">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5">
+
+                                <TextBlock Text="الاشتراك" 
+Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+FontSize="16"/>
+                                <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+         ItemsSource="{Binding SportList}"
+   SelectedItem="{Binding SelectedSport,UpdateSourceTrigger=PropertyChanged}"
+   ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                        <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding SportName}" FontSize="12"   />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+
+                                </ComboBox>
+
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="1"  VerticalAlignment="Center" Margin="5">
+
+                                <TextBlock Text="المدرب" 
+      Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+      FontSize="16"/>
+                                <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+               ItemsSource="{Binding TrainerList}"
+         SelectedItem="{Binding SelectedTrainer,UpdateSourceTrigger=PropertyChanged}"
+         ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding TrainerName}" FontSize="12"   />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+
+                                </ComboBox>
+
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5">
+                                <TextBlock Text="عدد ايام الاشتراك" 
+      Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
+      FontSize="13"/>
+                                <TextBox 
+    IsReadOnly="{Binding DaysCounter,UpdateSourceTrigger=PropertyChanged}"
+   Text="{Binding SubscribeDays, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+
+                                <TextBlock Text="تاريخ الاشتراك" 
+      Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
+      FontSize="13"/>
+                                <DatePicker
+       SelectedDate="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}"
+      
+      />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Margin="5">
+                                <TextBlock Text="طبيعة الاشتراك"  Foreground="{DynamicResource Brush.Foreground}"
+                      VerticalAlignment="Center"
+      Margin="0 0 10 0"
+      FontSize="13"/>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <RadioButton GroupName="ch" IsChecked="{Binding DaysCounter,UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك كامل"/>
+                                    <RadioButton GroupName="ch" IsChecked="True" Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك يومي"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="1" Margin="5 5">
+                                <TextBlock Text="الاجمالي" 
+      Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
+      FontSize="13"/>
+                                <TextBox IsReadOnly="True" Text="{Binding Total, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
+                            </StackPanel>
+
+
+                        <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
+                            <TextBlock Text="قيمة الحسم" 
+Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
+FontSize="13"/>
+                            <TextBox Text="{Binding OfferValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
+
+                        </StackPanel>
+                        <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
+                            <TextBlock Text="البيان"  Foreground="{DynamicResource Brush.Foreground}"
+Margin="0 0 0 5"
+FontSize="13"/>
+                            <TextBox Text="{Binding Offer, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                        </StackPanel>
+                        
+
+
+                        <StackPanel Grid.Row="4"  Margin="5">
+                            <TextBlock Text="قيمة الدفعة"  Foreground="{DynamicResource Brush.Foreground}"
+Margin="0 0 0 5"
+FontSize="13"/>
+                            <TextBox Text="{Binding PaymentValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                        </StackPanel>
+                        <StackPanel Grid.Row="4" Grid.Column="1" Margin="5">
+                            <TextBlock Text="بيان الدفع" 
+Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
+FontSize="13"/>
+                            <TextBox Text="{Binding Descriptiones, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
+
+                        </StackPanel>
+
+
+                        <StackPanel Margin="0 0 0 5" Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                            <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="150" Grid.Column="0" Grid.Row="4"   Content="حفظ"  HorizontalAlignment="Right">
+                            </Button>
+                        </StackPanel>
+                       
+                    </Grid>
+                    </Border>
+
+
+            </Grid>
+        </StackPanel>
+    </Border>
+
+</Window>

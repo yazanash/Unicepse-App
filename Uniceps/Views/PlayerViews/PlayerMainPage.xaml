@@ -129,10 +129,6 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTextColumn Header="تدريب خاص" IsReadOnly="True"
-                                     Binding="{Binding PrivatePrice,Converter={StaticResource covNum}}"
-                                    Width="auto"
-                                    />
                               <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
                                      Binding="{Binding EndDate}"
                                     Width="*"
@@ -146,11 +142,6 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <!--<DataGridTextColumn Header="المدفوع" IsReadOnly="True"
-                                     Binding="{Binding PaidValue}"
-                                    Width="*"
-                                    />-->
-                               
 
                                 <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>

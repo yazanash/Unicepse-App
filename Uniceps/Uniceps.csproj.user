@@ -186,6 +186,9 @@
     <Compile Update="Views\SubscriptionView\StopSubscriptionView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\SubscriptionView\SubscriptionCreationViewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\SubscriptionView\SubscriptionDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

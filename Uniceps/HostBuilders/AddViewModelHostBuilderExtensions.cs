@@ -128,7 +128,9 @@ namespace Uniceps.HostBuilders
         private static SubscriptionMainViewModel CreateSubscriptionListingViewModel(IServiceProvider services)
         {
             return SubscriptionMainViewModel.LoadViewModel(
-                services.GetRequiredService<SubscriptionDataStore>());
+                services.GetRequiredService<SubscriptionDataStore>(),
+                 services.GetRequiredService<PlayersDataStore>(),
+                  services.GetRequiredService<SportDataStore>());
         }
         private static RoutineListViewModel CreateRoutineListingViewModel(IServiceProvider services)
         {
