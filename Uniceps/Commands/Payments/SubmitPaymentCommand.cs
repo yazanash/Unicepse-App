@@ -50,37 +50,23 @@ namespace Uniceps.Commands.Payments
             DateTime payd = Convert.ToDateTime(_addPaymentViewModel.PayDate.ToShortDateString());
             if (_addPaymentViewModel.PaymentValue > 0)
             {
-
-
                 PlayerPayment payment = new PlayerPayment()
                 {
                     PayDate = _addPaymentViewModel.PayDate,
                     PaymentValue = _addPaymentViewModel.PaymentValue,
                     Des = _addPaymentViewModel.Descriptiones,
-                    Subscription = _addPaymentViewModel.SelectedSubscription!.Subscription,
-                    Player = _addPaymentViewModel.SelectedSubscription!.Subscription.Player,
-
+                    PlayerId = _playersDataStore.SelectedPlayer!.Id,
+                    SubscriptionId = _addPaymentViewModel.SelectedSubscription!.Id
                 };
-                _subscriptionDataStore.SelectedSubscription!.PaidValue += payment.PaymentValue;
-                _playersDataStore.SelectedPlayer!.Balance += payment.PaymentValue;
                 _playersDataStore.SelectedPlayer!.IsSubscribed = true;
-                //if (_playersDataStore.SelectedPlayer.Player != null)
-                //{
-                //    _playersDataStore.SelectedPlayer.IsActive = true;
-                //}
-
+               
                 int sportDays = _subscriptionDataStore.SelectedSubscription!.DaysCount;
                 double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / sportDays;
                 int daysCount = Convert.ToInt32(payment.PaymentValue / dayPrice);
-                payment.From = _subscriptionDataStore.SelectedSubscription!.LastPaid;
-                _subscriptionDataStore.SelectedSubscription!.LastPaid = _subscriptionDataStore.SelectedSubscription!.LastPaid.AddDays(daysCount);
-                payment.To = _subscriptionDataStore.SelectedSubscription!.LastPaid;
-                if (_subscriptionDataStore.SelectedSubscription!.PaidValue == _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer)
-                    _subscriptionDataStore.SelectedSubscription.IsPaid = true;
 
                 await _paymentDataStore.Add(payment);
                 await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription);
-                await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!);
+                _playersDataStore.UpdatePlayerBalance(payment.PlayerId, payment.PaymentValue);
                 _navigationService.ReNavigate();
             }
             else

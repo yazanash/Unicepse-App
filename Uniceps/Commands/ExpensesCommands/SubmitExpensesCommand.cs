@@ -14,13 +14,11 @@ namespace Uniceps.Commands.ExpensesCommands
     public class SubmitExpensesCommand : AsyncCommandBase
     {
         private readonly ExpensesDataStore _expensesDataStore;
-        private readonly NavigationService<ExpensesListViewModel> _navigationService;
         private AddExpenseViewModel _addExpenseViewModel;
 
-        public SubmitExpensesCommand(ExpensesDataStore expensesDataStore, NavigationService<ExpensesListViewModel> navigationService, AddExpenseViewModel addExpenseViewModel)
+        public SubmitExpensesCommand(ExpensesDataStore expensesDataStore, AddExpenseViewModel addExpenseViewModel)
         {
             _expensesDataStore = expensesDataStore;
-            _navigationService = navigationService;
             _addExpenseViewModel = addExpenseViewModel;
         }
 
@@ -34,7 +32,7 @@ namespace Uniceps.Commands.ExpensesCommands
 
             };
             await _expensesDataStore.Add(expenses);
-            _navigationService.Navigate();
+            _addExpenseViewModel.OnExpenseCreated();
         }
     }
 }

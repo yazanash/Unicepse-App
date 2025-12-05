@@ -27,10 +27,11 @@ namespace Uniceps.Commands.RoutineSystemCommands.DayGroupCommands
             {
                 if (dayGroup != null)
                 {
-                    dayGroup.Order = reorderedList.IndexOf(dayGroup);
+                    dayGroup.Order = reorderedList.IndexOf(dayGroup) + 1;
                 }
             }
             await _dataStore.UpdateRange(reorderedList);
+            _routineDayGroupViewModel.HasOrderChanged = false;
         }
     }
 }

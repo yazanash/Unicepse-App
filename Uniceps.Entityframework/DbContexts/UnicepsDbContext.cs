@@ -44,7 +44,6 @@ namespace Uniceps.Entityframework.DbContexts
         //public DbSet<Offer>? Offer { get; set; }
         public DbSet<PayReferance>? PayReferance { get; set; }
         public DbSet<Sport>? Sports { get; set; }
-        public DbSet<TrainerDueses>? TrainerDueses { get; set; }
         public DbSet<Exercises>? Exercises { get; set; }
         public DbSet<MuscleGroup>? MuscleGroups { get; set; }
         public DbSet<User>? Users { get; set; }
@@ -64,31 +63,7 @@ namespace Uniceps.Entityframework.DbContexts
               .HasMany(c => c.Trainers)
               .WithMany(e => e.Sports);
 
-            modelBuilder.Entity<Subscription>()
-              .HasOne(c => c.Sport);
 
-            modelBuilder.Entity<Subscription>()
-             .HasOne(c => c.Player);
-
-            modelBuilder.Entity<Subscription>()
-             .HasOne(c => c.Trainer)
-             .WithMany(c => c.PlayerTrainings).HasForeignKey(x => x.TrainerId);
-
-            modelBuilder.Entity<Player>()
-            .Property(c => c.DataStatus)
-            .HasConversion<int>();
-            modelBuilder.Entity<Subscription>()
-           .Property(c => c.DataStatus)
-           .HasConversion<int>();
-            modelBuilder.Entity<DailyPlayerReport>()
-           .Property(c => c.DataStatus)
-           .HasConversion<int>();
-            modelBuilder.Entity<Metric>()
-           .Property(c => c.DataStatus)
-           .HasConversion<int>();
-            modelBuilder.Entity<PlayerPayment>()
-           .Property(c => c.DataStatus)
-           .HasConversion<int>();
             modelBuilder.Entity<User>()
           .Property(c => c.Role)
           .HasConversion<int>();
@@ -102,6 +77,23 @@ namespace Uniceps.Entityframework.DbContexts
         .WithOne(e => e.RoutineItem)
         .OnDelete(DeleteBehavior.Cascade);
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<PlayerPayment>()
+    .HasOne(p => p.Subscription)
+    .WithMany(s => s.Payments)
+    .HasForeignKey(p => p.SubscriptionId)
+    .OnDelete(DeleteBehavior.Restrict); // الحل
+
+            modelBuilder.Entity<PlayerPayment>()
+                .HasOne(p => p.Player)
+                .WithMany(p => p.Payments)
+                .HasForeignKey(p => p.PlayerId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Subscription>()
+    .HasOne<Player>()
+    .WithMany(p => p.Subscriptions)
+    .HasForeignKey(s => s.PlayerId)
+    .OnDelete(DeleteBehavior.Restrict);
         }
     }
     public class SqliteUnicepsContext : UnicepsDbContext
@@ -109,9 +101,6 @@ namespace Uniceps.Entityframework.DbContexts
         public SqliteUnicepsContext(DbContextOptions options) : base(options)
         {
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=Uniceps.db");
     }
 
 }

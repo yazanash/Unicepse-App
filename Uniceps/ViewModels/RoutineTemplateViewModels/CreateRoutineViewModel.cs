@@ -15,21 +15,22 @@ using Uniceps.navigation;
 using Uniceps.ViewModels;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.navigation.Stores;
+using Uniceps.Core.Models.RoutineModels;
 
 namespace Uniceps.ViewModels.RoutineTemplateViewModels
 {
     public class CreateRoutineViewModel : ErrorNotifyViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
         private readonly RoutineTempDataStore _routineTempDataStore;
-        public CreateRoutineViewModel(NavigationStore navigationStore, RoutineListViewModel routineListViewModel, RoutineTempDataStore routineTempDataStore)
+        public ObservableCollection<RoutineLevel> RoutineLevels{ get; set; } = new();
+        public CreateRoutineViewModel(RoutineTempDataStore routineTempDataStore)
         {
-            _navigationStore = navigationStore;
             _routineTempDataStore = routineTempDataStore;
-            NavigationService<RoutineListViewModel> navigationService = new NavigationService<RoutineListViewModel>(_navigationStore, () => routineListViewModel);
-            CancelCommand = new NavaigateCommand<RoutineListViewModel>(navigationService);
-
-            SubmitCommand = new CreateRoutineModelCommand(_routineTempDataStore, this, navigationService);
+            foreach (var item in Enum.GetValues(typeof(RoutineLevel)))
+            {
+                RoutineLevels.Add((RoutineLevel)item);
+            }
+            SubmitCommand = new CreateRoutineModelCommand(_routineTempDataStore, this);
         }
 
 
@@ -52,24 +53,22 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
                 }
             }
         }
-        private string? _level = "0";
-        public string? Level
+        private RoutineLevel _level;
+        public RoutineLevel Level
         {
             get { return _level; }
             set
             {
                 _level = value; OnPropertyChanged(nameof(Level));
-                ClearError(nameof(Level));
-                if (Level?.Trim().Length < 10)
-                {
-                    AddError("هذا الحقل مطلوب", nameof(Level));
-                    OnErrorChanged(nameof(Level));
-                }
-
             }
         }
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
+        public Action? RoutineCreated;
+        internal void OnRoutineCreated()
+        {
+            RoutineCreated?.Invoke();
+        }
         #endregion
 
     }

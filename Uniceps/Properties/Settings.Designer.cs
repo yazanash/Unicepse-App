@@ -34,5 +34,17 @@ namespace Uniceps.Properties {
                 this["AppTheme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExportFolderPath {
+            get {
+                return ((string)(this["ExportFolderPath"]));
+            }
+            set {
+                this["ExportFolderPath"] = value;
+            }
+        }
     }
 }

@@ -13,8 +13,6 @@ using Uniceps.Commands.SubscriptionCommand;
 using Uniceps.navigation;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.Stores;
-using Uniceps.ViewModels;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.Core.Models.Player;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -25,155 +26,75 @@ namespace Uniceps.Views.RoutineTemplateViews.RoutineComponent
     public partial class DayGroupListView : UserControl
     {
 
-        public static readonly DependencyProperty DayGroupItemDropCommandProperty =
-           DependencyProperty.Register("DayGroupItemDropCommand", typeof(ICommand), typeof(DayGroupListView),
-               new PropertyMetadata(null));
-
-        public static readonly DependencyProperty IncomingDayGroupItemProperty =
-           DependencyProperty.Register("IncomingDayGroupItem", typeof(object), typeof(DayGroupListView),
-               new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-        public object IncomingDayGroupItem
-        {
-            get { return (object)GetValue(IncomingDayGroupItemProperty); }
-            set { SetValue(IncomingDayGroupItemProperty, value); }
-        }
-        public ICommand DayGroupItemDropCommand
-        {
-            get { return (ICommand)GetValue(DayGroupItemDropCommandProperty); }
-            set { SetValue(DayGroupItemDropCommandProperty, value); }
-        }
-        public static readonly DependencyProperty DayGroupItemInsertedCommandProperty =
-          DependencyProperty.Register("DayGroupItemInsertedCommand", typeof(ICommand), typeof(DayGroupListView),
-              new PropertyMetadata(null));
-
-        public ICommand DayGroupItemInsertedCommand
-        {
-            get { return (ICommand)GetValue(DayGroupItemInsertedCommandProperty); }
-            set { SetValue(DayGroupItemInsertedCommandProperty, value); }
-        }
-
-        public static readonly DependencyProperty InsertedDayGroupItemProperty =
-            DependencyProperty.Register("InsertedDayGroupItem", typeof(object), typeof(DayGroupListView),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-        public object InsertedDayGroupItem
-        {
-            get { return (object)GetValue(InsertedDayGroupItemProperty); }
-            set { SetValue(InsertedDayGroupItemProperty, value); }
-        }
-
-        public static readonly DependencyProperty TargetDayGroupItemProperty =
-            DependencyProperty.Register("TargetDayGroupItem", typeof(object), typeof(DayGroupListView),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-        public object TargetDayGroupItem
-        {
-            get { return (object)GetValue(TargetDayGroupItemProperty); }
-            set { SetValue(TargetDayGroupItemProperty, value); }
-        }
-
-        public static readonly DependencyProperty RemovedDayGroupItemProperty =
-          DependencyProperty.Register("RemovedDayGroupItem", typeof(object), typeof(DayGroupListView),
-              new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-        public object RemovedDayGroupItem
-        {
-            get { return (object)GetValue(RemovedDayGroupItemProperty); }
-            set { SetValue(RemovedDayGroupItemProperty, value); }
-        }
-
-        public static readonly DependencyProperty DayGroupItemRemovedCommandProperty =
-          DependencyProperty.Register("DayGroupItemRemovedCommand", typeof(ICommand), typeof(DayGroupListView),
-              new PropertyMetadata(null));
-
-        public ICommand DayGroupItemRemovedCommand
-        {
-            get { return (ICommand)GetValue(DayGroupItemRemovedCommandProperty); }
-            set { SetValue(DayGroupItemRemovedCommandProperty, value); }
-        }
-
-
-
-        public static readonly DependencyProperty SaveNewOrderCommandProperty =
-         DependencyProperty.Register("SaveNewOrderCommand", typeof(ICommand), typeof(DayGroupListView),
-             new PropertyMetadata(null));
-
-        public ICommand SaveNewOrderCommand
-        {
-            get { return (ICommand)GetValue(SaveNewOrderCommandProperty); }
-            set { SetValue(SaveNewOrderCommandProperty, value); }
-        }
+       
         public DayGroupListView()
         {
             InitializeComponent();
         }
-        private void MouseMoveHandler(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed &&
-               sender is FrameworkElement frameworkElement)
-            {
-                object dayGroupItem = frameworkElement.DataContext;
-               
-                
-                DragDropEffects dragDropResult = DragDrop.DoDragDrop(frameworkElement,
-                    new DataObject(DataFormats.Serializable, dayGroupItem),
-                    DragDropEffects.Move);
 
-                if (dragDropResult == DragDropEffects.None)
-                {
-                    AddDayGroupItem(dayGroupItem);
-                }  
-            }
-        }
-        private void AddDayGroupItem(object todoItem)
+        private void ListView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            
-            if (DayGroupItemDropCommand?.CanExecute(null) ?? false)
-            {
-                IncomingDayGroupItem = todoItem;
-                DayGroupItemDropCommand?.Execute(null);
-               
-            }
-        }
-        private void DragOverHandler(object sender, DragEventArgs e)
-        {
-            if (DayGroupItemInsertedCommand?.CanExecute(null) ?? false)
-            {
-                if (sender is FrameworkElement element)
-                {
-                    TargetDayGroupItem = element.DataContext;
-                    InsertedDayGroupItem = e.Data.GetData(DataFormats.Serializable);
+            bool isShortcut =
+         (Keyboard.Modifiers == ModifierKeys.Alt && e.Key == Key.Up) ||
+         (Keyboard.Modifiers == ModifierKeys.Alt && e.Key == Key.Down);
 
-                    DayGroupItemInsertedCommand?.Execute(null);
+            // إذا ما كانت الاختصار المطلوب → لا تعمل شي وخلي الTextBox يشتغل طبيعي
+            if (!isShortcut)
+                return;
+
+            // إذا كان الاختصار صحيح → رجّع الفوكس للـ ListViewItem
+            if (DayGroupList.SelectedItem != null)
+            {
+                var item = DayGroupList
+                    .ItemContainerGenerator
+                    .ContainerFromItem(DayGroupList.SelectedItem) as ListViewItem;
+
+                if (item != null)
+                {
+                    item.Focus();
                 }
             }
         }
-        private void TodoItemList_DragLeave(object sender, DragEventArgs e)
-        {
-            HitTestResult result = VisualTreeHelper.HitTest(lvItems, e.GetPosition(lvItems));
 
-            if (result == null)
+        private void MyPopup_Opened(object sender, EventArgs e)
+        {
+            var popup = sender as Popup;
+            if (popup == null)
+                return;
+            // Get the root visual of the Popup
+            var root = popup.Child;
+            if (root == null) return;
+
+            // Search for the TextBox inside
+            var textBox = FindChild<TextBox>(root);
+            if (textBox == null) return;
+
+            // Focus the TextBox
+            textBox.Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (DayGroupItemRemovedCommand?.CanExecute(null) ?? false)
-                {
-                    RemovedDayGroupItem = e.Data.GetData(DataFormats.Serializable);
-                    DayGroupItemRemovedCommand?.Execute(null);
-                }
-            }
+                textBox.Focus();
+                textBox.SelectAll();
+            }));
         }
-        private void TodoItemList_DragOver(object sender, DragEventArgs e)
+        public static T? FindChild<T>(DependencyObject parent) where T : DependencyObject
         {
-            object todoItem = e.Data.GetData(DataFormats.Serializable);
+            if (parent == null) return null;
 
-            AddDayGroupItem(todoItem);
-        }
+            int count = VisualTreeHelper.GetChildrenCount(parent);
 
-        private void ListBoxItem_Drop(object sender, DragEventArgs e)
-        {
-            if (SaveNewOrderCommand?.CanExecute(null) ?? false)
+            for (int i = 0; i < count; i++)
             {
-                SaveNewOrderCommand?.Execute(null);
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is T typedChild)
+                    return typedChild;
+
+                var result = FindChild<T>(child);
+                if (result != null)
+                    return result;
             }
+
+            return null;
         }
     }
 }

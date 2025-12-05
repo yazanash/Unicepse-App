@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.Core.Models.SystemAuthModels;
-using Uniceps.utlis.common;
 
 namespace Uniceps.ViewModels.SystemAuthViewModels
 {

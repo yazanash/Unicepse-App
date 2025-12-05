@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.API.common;
+using Uniceps.API.Models;
 using Uniceps.API.ResponseModels;
 using Uniceps.API.Services;
 using Uniceps.Helpers;
@@ -16,16 +17,15 @@ namespace Uniceps.Stores.SystemAuthStores
     {
         private readonly SystemAuthApiService _systemAuthApiService;
         private readonly ISessionManager _sessionManager;
-        private readonly UserFlowService _userFlowService;
-        public SystemAuthStore(SystemAuthApiService systemAuthApiService, ISessionManager sessionManager, UserFlowService userFlowService)
+        private readonly UnicepsePrepAPIKey _apiKey;
+        public SystemAuthStore(SystemAuthApiService systemAuthApiService, ISessionManager sessionManager, UnicepsePrepAPIKey apiKey)
         {
             _systemAuthApiService = systemAuthApiService;
             _sessionManager = sessionManager;
-            _userFlowService = userFlowService;
+            _apiKey = apiKey;
         }
         public event Action<bool>? LoginStateChanged;
         public event Action<bool>? OTPRequested;
-        public event Action? OTPVerified;
         public event Action<bool>? OTPVerificationResult;
 
         public async Task RequestOTP(string email)
@@ -50,7 +50,7 @@ namespace Uniceps.Stores.SystemAuthStores
                     UserType = response.Data!.UserType
                 };
                 _sessionManager.SaveSession(session);
-                await _userFlowService.RefreshUserContextAsync();
+                _apiKey.updateToken(session.Token, "");
                 OTPVerificationResult?.Invoke(true);
                 LoginStateChanged?.Invoke(true);
 

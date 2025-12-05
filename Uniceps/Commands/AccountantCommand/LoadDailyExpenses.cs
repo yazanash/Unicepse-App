@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.Commands;
-using Uniceps.Stores.AccountantStores;
 using Uniceps.ViewModels.Accountant;
 using Uniceps.Stores;
 
@@ -12,17 +11,17 @@ namespace Uniceps.Commands.AccountantCommand
 {
     public class LoadDailyExpenses : AsyncCommandBase
     {
-        private readonly ExpansesDailyAccountantDataStore _gymStore;
+        private readonly DailyReportStore _dailyReportStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public LoadDailyExpenses(ExpansesDailyAccountantDataStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public LoadDailyExpenses(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
         {
-            _gymStore = gymStore;
+            _dailyReportStore = dailyReportStore;
             _accountingStateViewModel = accountingStateViewModel;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            await _gymStore.GetDaily(_accountingStateViewModel.Date);
+            await _dailyReportStore.GetExpenses(_accountingStateViewModel.Date);
         }
     }
 }

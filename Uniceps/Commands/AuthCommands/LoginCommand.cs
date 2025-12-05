@@ -27,6 +27,8 @@ namespace Uniceps.Commands.AuthCommands
         {
             try
             {
+                if (string.IsNullOrEmpty(_loginViewModel.UserName) || string.IsNullOrEmpty(_loginViewModel.Password))
+                    MessageBox.Show("يرجى ادخال اسم المستخدم وكلمة المرور");
                 await _authenticationStore!.Login(_loginViewModel!.UserName!, _loginViewModel.Password!);
                 if (_authenticationStore.CurrentAccount != null)
                 {

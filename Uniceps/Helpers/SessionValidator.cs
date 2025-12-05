@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Uniceps.API.Models;
 using Uniceps.API.Services;
+using Uniceps.BackgroundServices;
 
 namespace Uniceps.Helpers
 {
@@ -28,18 +29,27 @@ namespace Uniceps.Helpers
 
             try
             {
-                _apiKey.updateToken(session.Token,"");
-                var result = await _systemAuthApiService.VerifyToken();
-                return result.StatusCode == 200;
+                bool internetAvailable = InternetAvailability.IsInternetAvailable();
+                if (internetAvailable)
+                {
+                    _apiKey.updateToken(session.Token, "");
+                    var result = await _systemAuthApiService.VerifyToken();
+                    if( result.StatusCode == 200)
+                    {
+                        return true;
+                    }
+                    _sessionManager.ClearSession();
+                    return false;
+                }
+                else
+                {
+                    return _sessionManager.IsLoggedIn();
+                }
             }
             catch
             {
                 return false;
             }
-        }
-        public string? GetBusinessId()
-        {
-            return _sessionManager.LoadSession()?.BusinessId;
         }
     }
 }

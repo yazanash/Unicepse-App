@@ -25,27 +25,27 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
     {
         private readonly ObservableCollection<SportTrainerListItemViewModel> _sportListItemViewModels;
         private readonly SportDataStore _sportDataStore;
-        private readonly NavigationStore _navigationStore;
-        private readonly TrainersListViewModel _trinersListViewModel;
         private readonly EmployeeStore _employeeStore;
         public IEnumerable<SportTrainerListItemViewModel> SportList => _sportListItemViewModels;
         public ObservableCollection<Year> years;
-
+        public Action? TrainerCreated;
+        public void OnTrainerCreated()
+        {
+            TrainerCreated?.Invoke();
+        }
         public IEnumerable<Year> Years => years;
-        public AddTrainerViewModel(NavigationStore navigationStore, TrainersListViewModel trinersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        public AddTrainerViewModel(SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
             years = new ObservableCollection<Year>();
             for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
                 years.Add(new Year() { year = i });
             Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
             _sportDataStore = sportDataStore;
-            _navigationStore = navigationStore;
-            _trinersListViewModel = trinersListViewModel;
             _employeeStore = employeeStore;
             _sportListItemViewModels = new();
             _sportDataStore.Loaded += _sportDataStore_Loaded;
-            CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
-            SubmitCommand = new SubmitTrainerCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), this, _employeeStore);
+            //CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
+            SubmitCommand = new SubmitTrainerCommand( this, _employeeStore);
             LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
         }
 
@@ -197,13 +197,19 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public ICommand? CancelCommand { get; }
         public ICommand LoadSportsCommand { get; }
 
-        public static AddTrainerViewModel LoadViewModel(NavigationStore navigatorStore, TrainersListViewModel trainersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        public static AddTrainerViewModel LoadViewModel( SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
-            AddTrainerViewModel viewModel = new AddTrainerViewModel(navigatorStore, trainersListViewModel, sportDataStore, employeeStore);
+            AddTrainerViewModel viewModel = new AddTrainerViewModel( sportDataStore, employeeStore);
 
             viewModel.LoadSportsCommand.Execute(null);
 
             return viewModel;
+        }
+
+        public void ClearForm()
+        {
+            FullName = "";
+            Phone = "";
         }
     }
 }

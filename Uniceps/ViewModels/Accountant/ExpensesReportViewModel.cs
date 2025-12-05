@@ -9,33 +9,30 @@ using System.Windows.Input;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
 using Uniceps.navigation.Stores;
-using Uniceps.Stores.AccountantStores;
 
 namespace Uniceps.ViewModels.Accountant
 {
     public class ExpensesReportViewModel : ListingViewModelBase
     {
         private readonly ObservableCollection<ExpensesListItemViewModel> _expensesListItemViewModel;
-        private readonly ExpensesAccountantDataStore _expensesDataStore;
-        private readonly NavigationStore _navigationStore;
+        private readonly PeriodReportStore _periodReportStore;
         public IEnumerable<ExpensesListItemViewModel> ExpensesList => _expensesListItemViewModel;
-        public ExpensesReportViewModel(ExpensesAccountantDataStore expensesDataStore, NavigationStore navigationStore)
+        public ExpensesReportViewModel(PeriodReportStore periodReportStore)
         {
-            _expensesDataStore = expensesDataStore;
-            _navigationStore = navigationStore;
-            _expensesDataStore.ExpensesLoaded += _paymentDataStore_Loaded;
+            _periodReportStore = periodReportStore;
+            _periodReportStore.ExpensesLoaded += __periodReportStore_ExpensesLoaded;
             _expensesListItemViewModel = new ObservableCollection<ExpensesListItemViewModel>();
-            LoadExpenses = new LoadExpensesReportCommand(_expensesDataStore, this);
+            LoadExpenses = new LoadExpensesReportCommand(_periodReportStore, this);
         }
         public ICommand LoadExpenses { get; }
-        private void _paymentDataStore_Loaded()
+        private void __periodReportStore_ExpensesLoaded()
         {
             _expensesListItemViewModel.Clear();
-            foreach (var expenses in _expensesDataStore.Expenses.OrderByDescending(x => x.date))
+            foreach (var expenses in _periodReportStore.Expenses.OrderByDescending(x => x.date))
             {
                 AddExpenses(expenses);
             }
-            Total = _expensesDataStore.Expenses.Sum(x => x.Value);
+            Total = _periodReportStore.Expenses.Sum(x => x.Value);
         }
         private void AddExpenses(Core.Models.Expenses.Expenses expenses)
         {

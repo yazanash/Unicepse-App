@@ -10,12 +10,12 @@ namespace Uniceps.FileSystem
 {
     public class FileManager
     {
-        public static UniFileContainer? Read(string filePath)
+        public static UniFile? Read(string filePath)
         {
-            return JsonHelper.Read<UniFileContainer>(filePath);
+            return JsonHelper.Read<UniFile>(filePath);
         }
 
-        public static void Write(UniFileContainer file, string filePath)
+        public static void Write(UniFile file, string filePath)
         {
             JsonHelper.Write(filePath, file);
         }

@@ -17,7 +17,12 @@ using Uniceps.Entityframework.DbContexts;
 
 namespace Uniceps.Entityframework.Services
 {
-    public class SubscriptionDataService : IDataService<Subscription>
+    public class SubscriptionDataService : IDataService<Subscription>,
+        ISubscriptionRenewService,
+        ISportMonthlyTransactions<Subscription>,
+        IGetPlayerTransactionService<Subscription>,
+        IEmployeeMonthlyTransaction<Subscription>,
+        IEmployeeTransaction<Subscription>
     {
 
         private readonly UnicepsDbContextFactory _contextFactory;
@@ -30,8 +35,8 @@ namespace Uniceps.Entityframework.Services
         public async Task<Subscription> CheckIfSubscriptionExist(Subscription subscription)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            Subscription? entity = await context.Set<Subscription>().AsNoTracking().FirstOrDefaultAsync((e) => e.Player!.Id == subscription.Player!.Id &&
-            e.Sport!.Id == subscription.Sport!.Id && e.EndDate >= subscription.RollDate);
+            Subscription? entity = await context.Set<Subscription>().AsNoTracking().FirstOrDefaultAsync((e) => e.PlayerId == subscription.PlayerId &&
+            e.SportId == subscription.SportId && e.EndDate >= subscription.RollDate);
             return entity!;
         }
         public async Task<Subscription> Create(Subscription entity)
@@ -41,22 +46,16 @@ namespace Uniceps.Entityframework.Services
                 Subscription existed_subscription = await CheckIfSubscriptionExist(entity);
                 if (existed_subscription != null)
                     throw new ConflictException("هذا اللاعب مسجل في هذه الرياضة مسبقا ");
-                context.Entry(entity.Sport!).State = EntityState.Detached;
-                if (context.Entry(entity.Sport!).State == EntityState.Detached)
-                    context.Entry(entity.Sport!).State = EntityState.Unchanged;
-
-                context.Entry(entity.Player!).State = EntityState.Detached;
-                if (context.Entry(entity.Player!).State == EntityState.Detached)
-                    context.Entry(entity.Player!).State = EntityState.Unchanged;
-
-                if (entity.Trainer != null)
-                {
-                    context.Entry(entity.Trainer).State = EntityState.Detached;
-                    if (context.Entry(entity.Trainer).State == EntityState.Detached)
-                        context.Entry(entity.Trainer).State = EntityState.Unchanged;
-                }
+           
 
                 EntityEntry<Subscription> CreatedResult = await context.Set<Subscription>().AddAsync(entity);
+                await context.SaveChangesAsync();
+                if (string.IsNullOrEmpty(CreatedResult.Entity.Code))
+                {
+                    string code = CreatedResult.Entity.GenerateSubscriptionCode();
+                    CreatedResult.Entity.Code = code;
+                }
+                context.Set<Subscription>().Update(CreatedResult.Entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
             }
@@ -68,6 +67,8 @@ namespace Uniceps.Entityframework.Services
             Subscription? entity = await context.Set<Subscription>().FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException("هذا السجل غير موجود");
+            List<PlayerPayment> pays = await context.Set<PlayerPayment>().Where(x => x.SubscriptionId == id).ToListAsync();
+            context.Set<PlayerPayment>().RemoveRange(pays!);
             context.Set<Subscription>().Remove(entity!);
             await context.SaveChangesAsync();
             return true;
@@ -76,10 +77,7 @@ namespace Uniceps.Entityframework.Services
         public async Task<Subscription> Get(int id)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            Subscription? entity = await context.Set<Subscription>().Include(e => e.Sport).AsNoTracking()
-                .Include(e => e.Player).AsNoTracking()
-                .Include(x => x.Payments).AsNoTracking()
-                .Include(e => e.Trainer).AsNoTracking()
+            Subscription? entity = await context.Set<Subscription>()
                 .FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException("هذا السجل غير موجود");
@@ -89,32 +87,47 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Include(x => x.Trainer).AsNoTracking()
-                    .Include(x => x.Player).AsNoTracking()
-                    .Include(x => x.Payments).AsNoTracking()
-                    .Include(x => x.Sport).AsNoTracking().Select(p => new Subscription
-                    {
-                        Sport = p.Sport,
-                        LastCheck = p.LastCheck,
-                        TrainerId = p.TrainerId,
-                        Trainer = p.Trainer,
-                        PrevTrainer_Id = p.PrevTrainer_Id,
-                        Player = p.Player,
-                        RollDate = p.RollDate,
-                        Price = p.Price,
-                        OfferValue = p.OfferValue,
-                        OfferDes = p.OfferDes,
-                        PriceAfterOffer = p.PriceAfterOffer,
-                        MonthCount = p.MonthCount,
-                        DaysCount = p.DaysCount,
-                        IsStopped = p.IsStopped,
-                        IsPaid = p.Payments!.Any() && p.Payments!.Sum(x => x.PaymentValue) >= p.PriceAfterOffer,
-                        PaidValue = p.Payments!.Sum(x => x.PaymentValue),
-                        RestValue = p.Payments!.Sum(x => x.PaymentValue) - p.PriceAfterOffer,
-                        EndDate = p.EndDate,
-                        LastPaid = p.LastPaid,
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.EndDate >= DateTime.Now.AddDays(-2)).ToListAsync();
+                return entities;
+            }
+        }
+        public async Task<IEnumerable<Subscription>> GetAll(Sport sport, DateTime date)
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.SportId == sport.Id
+                && (x.RollDate.Month == date.Month && x.RollDate.Year == date.Year
+                || x.EndDate.Month == date.Month && x.EndDate.Year == date.Year)).ToListAsync();
+                return entities;
+            }
+        }
+        public async Task<IEnumerable<Subscription>> GetAll(Player player)
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Include(x => x.Payments).AsNoTracking().Where(x => x.PlayerId == player.Id).ToListAsync();
+                return entities;
+            }
+        }
+        public async Task<IEnumerable<Subscription>> GetAll(Employee trainer, DateTime date)
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                var monthStart = new DateTime(date.Year, date.Month, 1);
+                var monthEnd = monthStart.AddMonths(1).AddDays(-1);
 
-                    }).ToListAsync();
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.TrainerId == trainer.Id
+                && x.RollDate <= monthEnd   // يبدأ قبل نهاية الشهر
+                && x.EndDate >= monthStart).ToListAsync();
+                return entities;
+            }
+        }
+        public async Task<IEnumerable<Subscription>> GetAll(Employee trainer)
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.TrainerId == trainer.Id)
+                   .ToListAsync();
                 return entities;
             }
         }
@@ -122,42 +135,28 @@ namespace Uniceps.Entityframework.Services
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
 
-            Subscription existed_subscription = await Get(entity.Id);
+            Subscription? existed_subscription = await context.Set<Subscription>()
+                .FirstOrDefaultAsync((e) => e.Id == entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException("هذا السجل غير موجود");
-            //Subscription ex_subscription = await CheckIfSubscriptionExist(entity);
-            //if (ex_subscription != null&&existed_subscription.Id!=entity.Id)
-            //    throw new ConflictException("هذا اللاعب مسجل في هذه الرياضة مسبقا ");
-            context.Entry(entity).State = EntityState.Detached;
-            context.Entry(entity.Player!).State = EntityState.Detached;
-            context.Entry(entity.Sport!).State = EntityState.Detached;
-
-            if (context.Entry(entity.Player!).State == EntityState.Detached)
-                context.Entry(entity.Player!).State = EntityState.Unchanged;
-
-            if (context.Entry(entity).State == EntityState.Detached)
-                context.Entry(entity).State = EntityState.Modified;
-
-            if (context.Entry(entity.Sport!).State == EntityState.Detached)
-                context.Entry(entity.Sport!).State = EntityState.Unchanged;
-
-
-            if (entity.Trainer != null)
-            {
-                if (entity.Trainer.Id == 0)
-                    entity.Trainer = null;
-                else
-                {
-                    context.Entry(entity.Trainer!).State = EntityState.Detached;
-                    if (context.Entry(entity.Trainer).State == EntityState.Detached)
-                        context.Entry(entity.Trainer).State = EntityState.Unchanged;
-                }
-
-            }
-
+            
             context.Set<Subscription>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
+        }
+        public async Task<bool> MarkAsRenewed(int entityId)
+        {
+            using UnicepsDbContext context = _contextFactory.CreateDbContext();
+
+            Subscription? existed_subscription = await context.Set<Subscription>()
+                .FirstOrDefaultAsync((e) => e.Id == entityId);
+            if (existed_subscription == null)
+                throw new NotExistException("هذا السجل غير موجود");
+
+            existed_subscription.IsRenewed = true;
+            context.Set<Subscription>().Update(existed_subscription);
+            await context.SaveChangesAsync();
+            return true;
         }
 
     }

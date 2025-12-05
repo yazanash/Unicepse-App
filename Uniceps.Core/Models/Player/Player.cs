@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Uniceps.Core.Common;
 using Uniceps.Core.Models;
 using Uniceps.Core.Models.Payment;
-using sub = Uniceps.Core.Models.Subscription;
+using Sub = Uniceps.Core.Models.Subscription;
 
 namespace Uniceps.Core.Models.Player
 {
@@ -15,7 +15,7 @@ namespace Uniceps.Core.Models.Player
     {
         public Player()
         {
-            Subscriptions = new HashSet<sub.Subscription>();
+            Subscriptions = new HashSet<Sub.Subscription>();
             Payments = new HashSet<PlayerPayment>();
         }
         public double Weight { get; set; }
@@ -36,7 +36,7 @@ namespace Uniceps.Core.Models.Player
             }
             return false;
         }
-        public virtual ICollection<sub.Subscription> Subscriptions { get; set; }
+        public virtual ICollection<Sub.Subscription> Subscriptions { get; set; }
         public virtual ICollection<PlayerPayment> Payments { get; set; }
 
     }

@@ -23,7 +23,7 @@
         xmlns:player_views="clr-namespace:Uniceps.Views.PlayerViews"
         xmlns:authvms="clr-namespace:Uniceps.ViewModels.Authentication"
         xmlns:authvs="clr-namespace:Uniceps.Views.AuthView"            
-        xmlns:home_vms="clr-namespace:Uniceps.utlis.common"
+        xmlns:home_vms="clr-namespace:Uniceps.ViewModels"
         xmlns:home_logvms="clr-namespace:Uniceps.ViewModels.PlayersAttendenceViewModels"
         xmlns:home_logvs="clr-namespace:Uniceps.Views.PlayersAttendenceViews"
         xmlns:home_views="clr-namespace:Uniceps.Views"
@@ -62,15 +62,9 @@
         <viewapp:GymView/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type routine_temp_vm:ExercisesViewModel }">
-        <routine_temp:RoutineExercisesView/>
-    </DataTemplate>
 
     <DataTemplate DataType="{x:Type routine_temp_vm:RoutineDetailsViewModel }">
         <routine_temp:RoutineItemTemplateView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type routine_temp_vm:CreateRoutineViewModel }">
-        <routine_temp:CreateRoutineView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type routine_temp_vm:RoutineListViewModel }">
         <routine_temp:CoachDashboardView/>
@@ -79,16 +73,12 @@
     <DataTemplate DataType="{x:Type home_vms:HomeViewModel }">
         <home_views:HomeView />
     </DataTemplate>
-   
-    <!---->
-    <DataTemplate DataType="{x:Type player_vms:AddPlayerViewModel }">
-        <player_views:PlayerDetailView />
+    <DataTemplate DataType="{x:Type home_vms:PremiumViewModel }">
+        <home_views:PremiumView />
     </DataTemplate>
+    <!---->
     <DataTemplate DataType="{x:Type player_vms:PlayerListViewModel }">
         <player_views:PlayersListView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type player_vms:EditPlayerViewModel }">
-        <player_views:PlayerDetailView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type player_subvm:SubscriptionDetailsViewModel }">
         <player_subview:SubscriptionDetailView/>
@@ -100,34 +90,20 @@
         <player_views:ArchivedPlayersView/>
     </DataTemplate>
     <!---->
-    <DataTemplate DataType="{x:Type sport_vms:AddSportViewModel }">
-        <sport_views:SportDetailsView />
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type sport_vms:SportListViewModel }">
         <sport_views:SportListView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type sport_vms:EditSportViewModel }">
-        <sport_views:SportDetailsView/>
-    </DataTemplate>
+   
     <DataTemplate DataType="{x:Type sport_vms:SportSubscriptionsViewModel }">
         <sport_views:SportSubscriptionsView/>
     </DataTemplate>
     <!---->
-    <DataTemplate DataType="{x:Type emp_vms:AddTrainerViewModel }">
-        <emp_views:TrainerDetailView />
-    </DataTemplate>
+  
     <DataTemplate DataType="{x:Type emp_vms:TrainersListViewModel }">
         <emp_eviews:EmployeesListView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type emp_evms:EditTrainerViewModel }">
-        <emp_views:TrainerDetailView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type emp_evms:AddEmployeeViewModel}">
-        <emp_eviews:EmployeeDetailsView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type emp_evms:EditEmployeeViewModel}">
-        <emp_eviews:EmployeeDetailsView/>
-    </DataTemplate>
+   
     <DataTemplate DataType="{x:Type emp_evms:EmployeeAccountViewModel }">
         <emp_eviews:TrainerDuesesView/>
     </DataTemplate>

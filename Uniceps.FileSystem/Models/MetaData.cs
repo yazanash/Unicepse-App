@@ -9,8 +9,8 @@ namespace Uniceps.FileSystem.Models
     public class MetaData
     {
         public string? Source { get; set; }
-        public string? SchemaVersion { get; set; }
+        public int SchemaVersion { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string? FileId { get; set; }
+        public string? FileType { get; set; }
     }
 }

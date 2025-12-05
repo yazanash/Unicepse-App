@@ -16,12 +16,10 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
     {
         private readonly RoutineTempDataStore _routineTempDataStore;
         private readonly CreateRoutineViewModel _createRoutineViewModel;
-        private readonly NavigationService<RoutineListViewModel> _navigationService;
-        public CreateRoutineModelCommand(RoutineTempDataStore routineTempDataStore, CreateRoutineViewModel createRoutineViewModel, NavigationService<RoutineListViewModel> navigationService)
+        public CreateRoutineModelCommand(RoutineTempDataStore routineTempDataStore, CreateRoutineViewModel createRoutineViewModel)
         {
             _routineTempDataStore = routineTempDataStore;
             _createRoutineViewModel = createRoutineViewModel;
-            _navigationService = navigationService;
         }
 
         public override async Task ExecuteAsync(object? parameter)
@@ -32,7 +30,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
                 Level = _createRoutineViewModel.Level!
             };
             await _routineTempDataStore.Add(routineModel);
-            _navigationService.ReNavigate();
+            _createRoutineViewModel.OnRoutineCreated();
         }
     }
 }

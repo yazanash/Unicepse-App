@@ -24,7 +24,6 @@ namespace Uniceps.Views
         public SplashScreenWindow()
         {
             InitializeComponent();
-            lbl_Version.Text = currentVersion;
         }
     }
 }

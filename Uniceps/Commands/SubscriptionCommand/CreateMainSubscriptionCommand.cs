@@ -20,12 +20,13 @@ namespace Uniceps.Commands.SubscriptionCommand
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly CreateSubscriptionWindowViewModel _addSubscriptionViewModel;
         private readonly PlayersDataStore _playerDataStore;
-
-        public CreateMainSubscriptionCommand(SubscriptionDataStore subscriptionDataStore, CreateSubscriptionWindowViewModel addSubscriptionViewModel, PlayersDataStore playerDataStore)
+        private readonly PaymentDataStore _paymentDataStore;
+        public CreateMainSubscriptionCommand(SubscriptionDataStore subscriptionDataStore, CreateSubscriptionWindowViewModel addSubscriptionViewModel, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore)
         {
             _subscriptionDataStore = subscriptionDataStore;
             _addSubscriptionViewModel = addSubscriptionViewModel;
             _playerDataStore = playerDataStore;
+            _paymentDataStore = paymentDataStore;
             _addSubscriptionViewModel.PropertyChanged += _addSubscriptionViewModel_PropertyChanged;
         }
 
@@ -39,7 +40,7 @@ namespace Uniceps.Commands.SubscriptionCommand
         public override bool CanExecute(object? parameter)
         {
 
-            return _addSubscriptionViewModel.CanSubmit && _addSubscriptionViewModel.SelectedSport != null && base.CanExecute(null);
+            return _addSubscriptionViewModel.CanSubmit &&  base.CanExecute(null);
         }
         public async override Task ExecuteAsync(object? parameter)
         {
@@ -55,7 +56,7 @@ namespace Uniceps.Commands.SubscriptionCommand
                     player = new playerModel.Player()
                     {
                         FullName = _addSubscriptionViewModel.PlayerName,
-                        BirthDate = _addSubscriptionViewModel.Year!.year,
+                        BirthDate = _addSubscriptionViewModel.Year?.year??DateTime.Now.Year,
                         GenderMale = _addSubscriptionViewModel.GenderMale,
                         Phone = _addSubscriptionViewModel.Phone,
                         SubscribeDate = _addSubscriptionViewModel.SubscribeDate,
@@ -67,25 +68,25 @@ namespace Uniceps.Commands.SubscriptionCommand
                 Subscription subscription = new()
                 {
                     DaysCount = _addSubscriptionViewModel.SubscribeDays,
-                    Sport = _addSubscriptionViewModel.SelectedSport?.Sport,
+                    SportId = _addSubscriptionViewModel.SelectedSport!.Sport.Id,
+                    SportName = _addSubscriptionViewModel.SelectedSport!.SportName,
                     LastCheck = _addSubscriptionViewModel.SubscribeDate,
-                    Trainer = _addSubscriptionViewModel.SelectedTrainer?.trainer,
-                    Player = player!,
+                    TrainerId = _addSubscriptionViewModel.SelectedTrainer?.trainer.Id,
+                    TrainerName = _addSubscriptionViewModel.SelectedTrainer?.TrainerName,
+                    PlayerId = player!.Id,
+                    PlayerName = player!.FullName,
                     RollDate = _addSubscriptionViewModel.SubscribeDate,
-                    LastPaid = _addSubscriptionViewModel.SubscribeDate,
                     OfferValue = _addSubscriptionViewModel.OfferValue,
                     OfferDes = _addSubscriptionViewModel.Offer,
+                    Price = _addSubscriptionViewModel.SelectedSport!.Price,
                     EndDate = _addSubscriptionViewModel.SubscribeDate.AddDays(_addSubscriptionViewModel.SubscribeDays),
+                    PriceAfterOffer= _addSubscriptionViewModel.Total??0,
+                    Code = _addSubscriptionViewModel.Code
                 };
-                if (_addSubscriptionViewModel.DaysCounter)
+                await _subscriptionDataStore.Add(subscription);
+                if (_addSubscriptionViewModel.IsRenewal)
                 {
-                    subscription.Price = _addSubscriptionViewModel.SelectedSport!.Sport.Price;
-                    subscription.PriceAfterOffer = subscription.Price - _addSubscriptionViewModel.OfferValue;
-                }
-                else
-                {
-                    subscription.Price = _addSubscriptionViewModel.SelectedSport!.Sport.DailyPrice * _addSubscriptionViewModel.SubscribeDays;
-                    subscription.PriceAfterOffer = subscription.Price - _addSubscriptionViewModel.OfferValue;
+                    await _subscriptionDataStore.MarkAsRenewed(_addSubscriptionViewModel.RenewedSubscriptionId);
                 }
                 DateTime payd = Convert.ToDateTime(_addSubscriptionViewModel.SubscribeDate.ToShortDateString());
                 if (_addSubscriptionViewModel.PaymentValue > 0)
@@ -95,11 +96,14 @@ namespace Uniceps.Commands.SubscriptionCommand
                         PayDate = payd,
                         PaymentValue = _addSubscriptionViewModel.PaymentValue,
                         Des = _addSubscriptionViewModel.Descriptiones,
-                        Player = player
+                        PlayerId = player.Id,
+                        SubscriptionId = subscription.Id
                     };
+                   await _paymentDataStore.Add(payment);
                     subscription.Payments?.Add(payment);
                 }
-                await _subscriptionDataStore.Add(subscription);
+                double value = subscription.TotalPaid - subscription.PriceAfterOffer;
+                _playerDataStore.UpdatePlayerBalance(player.Id, value);
                 MessageBox.Show("تم الحفظ بنجاح");
                 _addSubscriptionViewModel.ClearForm();
             }

@@ -117,8 +117,8 @@ namespace Uniceps.Test.DataServicesTest
             Subscription expected_subscription = subscriptionFactory!.FakeSubscription(sport, player, trainer);
             Subscription actual_subscription = await subscriptionDataService!.Create(expected_subscription);
             //Assert
-            Assert.AreEqual(expected_subscription.Player!.FullName, actual_subscription.Player!.FullName);
-            Assert.AreEqual(expected_subscription.Sport!.Name, actual_subscription.Sport!.Name);
+            Assert.Equals(expected_subscription.PlayerName!, actual_subscription.PlayerName!);
+            Assert.Equals(expected_subscription.SportName!, actual_subscription.SportName!);
         }
 
         [Test]
@@ -147,8 +147,8 @@ namespace Uniceps.Test.DataServicesTest
             Subscription test_subscription = await subscriptionDataService!.Create(expected_subscription);
             Subscription actual_subscription = await subscriptionDataService.Get(test_subscription.Id);
             //Assert
-            Assert.AreEqual(expected_subscription.Player!.FullName, actual_subscription.Player!.FullName);
-            Assert.AreEqual(expected_subscription.Sport!.Name, actual_subscription.Sport!.Name);
+            Assert.Equals(expected_subscription.PlayerName!, actual_subscription.PlayerName!);
+            Assert.Equals(expected_subscription.SportName!, actual_subscription.SportName!);
         }
 
         [Test]
@@ -181,10 +181,10 @@ namespace Uniceps.Test.DataServicesTest
             Subscription actual_subscription = await subscriptionDataService.Get(test_subscription.Id);
             //actual_subscription.Trainer = await create_trainer();
             actual_subscription.TrainerId = null;
-            actual_subscription.Trainer = null;
+            actual_subscription.TrainerName = null;
             Subscription updated_subscription = await subscriptionDataService.Update(actual_subscription);
             //Assert
-            Assert.AreEqual(updated_subscription.Trainer, null);
+            Assert.Equals(updated_subscription.TrainerId??0, 0);
         }
 
         [Test]
@@ -244,7 +244,7 @@ namespace Uniceps.Test.DataServicesTest
             await create_subscriptions(count);
             var subscription = await subscriptionDataService!.GetAll();
             //Assert
-            Assert.AreEqual(subscription.Count(), count);
+            Assert.Equals(subscription.Count(), count);
         }
 
         [Test]
@@ -284,8 +284,8 @@ namespace Uniceps.Test.DataServicesTest
 
             //Assert
             int days = Convert.ToInt32((stop_date - created_subscription.RollDate).TotalDays);
-            double dayPrice = created_subscription.PriceAfterOffer / created_subscription.Sport!.DaysCount;
-            double price = dayPrice * days;
+            //double dayPrice = created_subscription.PriceAfterOffer / created_subscriptionDaysCount;
+            //double price = dayPrice * days;
             //Assert.AreEqual(stopped_subscription.IsStopped, true);
             //Assert.AreEqual(stopped_subscription.EndDate, stop_date);
             //Assert.AreEqual(stopped_subscription.PriceAfterOffer, price);

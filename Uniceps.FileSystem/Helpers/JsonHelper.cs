@@ -11,14 +11,14 @@ namespace Uniceps.FileSystem.Helpers
     {
         public static T? Read<T>(string filePath)
         {
-            var json = File.ReadAllText(filePath);
+            var json = File.ReadAllText(filePath, Encoding.UTF8);
             return JsonConvert.DeserializeObject<T>(json);
         }
 
         public static void Write<T>(string filePath, T obj)
         {
             var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            File.WriteAllText(filePath, json);
+            File.WriteAllText(filePath, json, Encoding.UTF8);
         }
     }
 }

@@ -14,18 +14,13 @@ namespace Uniceps.Commands.Player
 {
     public class EditPlayerCommand : AsyncCommandBase
     {
-        private readonly NavigationService<PlayerMainPageViewModel> navigationService;
-        private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
         private readonly EditPlayerViewModel _editPlayerViewModel;
-        public EditPlayerCommand(NavigationService<PlayerMainPageViewModel> navigationService, EditPlayerViewModel editPlayerViewModel, PlayersDataStore playerStore, NavigationStore navigationStore)
+        public EditPlayerCommand( EditPlayerViewModel editPlayerViewModel, PlayersDataStore playerStore)
         {
-
-            this.navigationService = navigationService;
             _playerStore = playerStore;
             _editPlayerViewModel = editPlayerViewModel;
             _editPlayerViewModel.PropertyChanged += AddPlayerViewModel_PropertyChanged;
-            _navigationStore = navigationStore;
         }
 
         private void AddPlayerViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -49,7 +44,7 @@ namespace Uniceps.Commands.Player
                 Core.Models.Player.Player player = _playerStore.SelectedPlayer!;
 
                 player.FullName = _editPlayerViewModel.FullName;
-                player.BirthDate = _editPlayerViewModel.Year!.year;
+                player.BirthDate = _editPlayerViewModel.Year?.year ?? DateTime.Now.Year;
                 player.GenderMale = _editPlayerViewModel.GenderMale;
                 player.Hieght = _editPlayerViewModel.Hieght;
                 player.Phone = _editPlayerViewModel.Phone;
@@ -58,7 +53,7 @@ namespace Uniceps.Commands.Player
                 player.Weight = _editPlayerViewModel.Weight;
 
                 await _playerStore.UpdatePlayer(player);
-                navigationService.Navigate();
+                _editPlayerViewModel.OnPlayerUpdated();
             }
             catch (Exception ex)
             {

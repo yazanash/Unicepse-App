@@ -15,7 +15,7 @@ using Uniceps.Entityframework.DbContexts;
 
 namespace Uniceps.Entityframework.Services.PlayerQueries
 {
-    public class PlayerDataService : IDataService<Player>
+    public class PlayerDataService : IDataService<Player>, IPublicIdService<Player>, IArchivedService<Player>
     {
         private readonly UnicepsDbContextFactory _contextFactory;
 
@@ -43,7 +43,12 @@ namespace Uniceps.Entityframework.Services.PlayerQueries
             await context.SaveChangesAsync();
             return true;
         }
-
+        public async Task<Player?> GetByUID(string uid)
+        {
+            using UnicepsDbContext context = _contextFactory.CreateDbContext();
+            Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.UID == uid);
+            return entity!;
+        }
         public async Task<Player> Get(int id)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
@@ -75,6 +80,29 @@ namespace Uniceps.Entityframework.Services.PlayerQueries
             }).Where(x => x.IsSubscribed == true).ToListAsync();
             return entities;
 
+        }
+        public async Task<IEnumerable<Player>> GetAllArchived()
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Player>? entities = await context.Set<Player>().Select(p => new Player
+                {
+                    Id = p.Id,
+                    FullName = p.FullName,
+                    Phone = p.Phone,
+                    BirthDate = p.BirthDate,
+                    GenderMale = p.GenderMale,
+                    Weight = p.Weight,
+                    Hieght = p.Hieght,
+                    SubscribeDate = p.SubscribeDate,
+                    SubscribeEndDate = p.Subscriptions.Count() > 0 ? p.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault()!.EndDate : p.SubscribeDate.AddDays(30),
+                    IsTakenContainer = p.IsTakenContainer,
+                    IsSubscribed = p.IsSubscribed,
+                    UID = p.UID,
+                    Balance = p.Subscriptions.Sum(s => s.PriceAfterOffer) - p.Payments.Sum(py => py.PaymentValue)
+                }).Where(x => x.IsSubscribed == false).ToListAsync();
+                return entities;
+            }
         }
         public async Task<Player> Update(Player entity)
         {

@@ -9,6 +9,7 @@
              xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
+               xmlns:Comp="clr-namespace:Uniceps.utlis.Components"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -31,8 +32,6 @@
             </Grid.RowDefinitions>
 
             <Border Grid.ColumnSpan="2"  FlowDirection="RightToLeft" CornerRadius="10" Margin="5" >
-
-
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -45,25 +44,25 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Border CornerRadius="{DynamicResource Radius.Small}" Margin="10 5"  Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top">
+                    <Border CornerRadius="{DynamicResource Radius.Small}" Margin="10 5"   Grid.Column="0"  VerticalAlignment="Top">
                         <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
                     </Border>
-                    <ComboBox SelectedItem="{Binding SelectedOrderBy, UpdateSourceTrigger=PropertyChanged}"
+                    <ComboBox Width="200" SelectedItem="{Binding SelectedOrderBy, UpdateSourceTrigger=PropertyChanged}"
                               VerticalAlignment="Center" Margin="5 0 5 0" Tag="الترتيب حسب"
                               ItemsSource="{Binding OrderByList}"
                               ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"
                               Grid.Column="2"
-                              Grid.Row="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                               FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Content}" FontSize="12"   />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox  SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" 
+                    <ComboBox Width="200" SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" 
                                VerticalAlignment="Center" ItemsSource="{Binding FiltersList}"
                                ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" 
-                               Tag="التصنيف حسب" Grid.Row="1" Grid.Column="3" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
+                               Tag="التصنيف حسب" Grid.Column="3" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Content}" FontSize="12"   />
@@ -71,11 +70,6 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <StackPanel  Margin="0 5" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="1" >
-                        <!--<Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>-->
                         <Border Style="{DynamicResource StaticCardBorderStyle}" Margin="5 0">
                             <StackPanel Orientation="Horizontal" Margin="5 0" Grid.Column="0">
                                 <Icon:PackIconMaterial Foreground="{DynamicResource Brush.Foreground}" VerticalAlignment="Center" Margin="0 0 5 0"  Kind="HumanMale" Width="30" Height="30"/>
@@ -116,7 +110,7 @@
                             </StackPanel>
 
                         </Button>
-                        <Button Grid.Column="1" ToolTip="طباعة الى جدول excel" Grid.Row="1" Click="Button_Click" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
+                        <Button Grid.Column="1" ToolTip="طباعة الى جدول excel" Grid.Row="1" Command="{Binding ExportToExcelCommand}" Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="FileExcel"/>
                             </StackPanel>
@@ -232,6 +226,9 @@
                     </Grid>
                 </Grid>
             </Border>
+            <Comp:CaptinUniForEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="4" Title="لا يوجد لاعبين بعد" 
+                        Caption="اضغط على زر اضافة لاعب وسجل اول لاعب من لاعبينك"/>
+            
         </Grid>
     </Border>
 </UserControl>

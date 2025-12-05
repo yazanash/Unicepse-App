@@ -6,250 +6,81 @@
              xmlns:local="clr-namespace:Uniceps.utlis.Pages"
              mc:Ignorable="d" 
              
+            MinWidth="793"
              FlowDirection="RightToLeft" >
-    <Border Background="#fff" Padding="30" CornerRadius="10" >
-       
-            <Grid>
-                <Grid.RowDefinitions >
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <!--#region Header Row-->
-                <Border Grid.ColumnSpan="4" Padding="5" CornerRadius="10" Margin="5">
+    <Border Background="White" Padding="40">
+        <StackPanel>
+            <!-- Header -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <Image Source="/Resources/Assets/logo.png" Width="70"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10" Grid.Column="1">
+                    <TextBlock Text="تمت طباعة هذا الملف بواسطة برنامج يونيسيبس لادارة الاندية الرياضية " FontSize="14" VerticalAlignment="Center"  Foreground="#000"/>
+                    <TextBlock Text="UNICEPS جميع الحقوق محفوظة" FontSize="14" VerticalAlignment="Center"  Foreground="#000"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="{Binding RoutineName}" FontSize="24" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBlock Text="تاريخ البرنامج:" FontSize="18"/>
+                <TextBlock Text="{Binding Date}" FontSize="18" Margin="0,0,0,5"/>
+            </StackPanel>
+          
+            <!-- Days -->
+            <ItemsControl ItemsSource="{Binding Days}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,10,0,10">
+                            <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold"/>
+                            <ItemsControl ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,5,0,5">
+                                            <Grid Margin="5">
 
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
-                        <Image Stretch="Uniform" Source="{Binding GymLogo,UpdateSourceTrigger=PropertyChanged}" 
-                               RenderOptions.BitmapScalingMode="HighQuality"
-                               Height="60" Width="60"
-                               VerticalAlignment="Center"
-                               RenderOptions.EdgeMode="Aliased"/>
-                        <TextBlock Text="{Binding GymName,UpdateSourceTrigger=PropertyChanged}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <!-- صورة -->
+                                                    <ColumnDefinition Width="*"/>
+                                                    <!-- اسم -->
+                                                    <ColumnDefinition Width="200"/>
+                                                    <!-- الجولات -->
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0"
+Text="{Binding Order}"
+FontSize="16"
+VerticalAlignment="Center"
+/>
+                                                <!-- صورة التمرين -->
+                                                <Image Grid.Column="1"
+               Source="{Binding ExerciseUrl}"
+               Width="90" Height="90"
+               Stretch="UniformToFill"
+               Margin="5"/>
+
+                                                <!-- اسم التمرين -->
+                                                <TextBlock Grid.Column="2"
+                   Text="{Binding ExerciseName}"
+                   FontSize="16"
+                   VerticalAlignment="Center"
+                   Margin="10,0"/>
+
+                                                <!-- الجولات -->
+                                                <TextBlock Grid.Column="3"
+                   Text="{Binding SetsText}"
+                   FontSize="14"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Margin="10,0"/>
+                                            </Grid>
+                                        </StackPanel>
+                                            
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="10" Grid.Column="1">
-                            <TextBlock Text="برنامج تدريبي" FontSize="22" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
-                        </StackPanel>
-                        <StackPanel Margin="10" Grid.Column="2">
-                            <StackPanel Orientation="Horizontal" Margin="5" >
-                                <TextBlock Text="اسم اللاعب :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
-                                <TextBlock Text="{Binding FullName}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="2">
-                                <TextBlock Text="اسم البرنامج :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
-                                <TextBlock Text="{Binding Id}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="2">
-                                <TextBlock Text="تاريخ البرنامج :" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
-                                <TextBlock Text="{Binding Date}" FontSize="18" VerticalAlignment="Center"  Foreground="{StaticResource colors.primary}"/>
-                            </StackPanel>
-                        </StackPanel>
-
-                    </Grid>
-                </Border>
-                <!--#endregion-->
-                <!--#region Map Grid-->
-            <Grid Grid.Row="1">
-
-                <Border BorderBrush="#000" Padding="5" Margin="5" Grid.Column="0" Grid.Row="0" BorderThickness="0">
-                    <StackPanel>
-                        <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" DockPanel.Dock="Top" VerticalAlignment="Center" Text="توزيع الايام" />
-                        <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff"
-                             VirtualizingPanel.ScrollUnit="Pixel"
-                                  ItemsSource="{Binding DaysGroup}" ItemContainerStyle="{StaticResource PrintDaysListBoxItemContainerStyle1}" >
-
-                        </ListBox>
-                    </StackPanel>
-
-                </Border>
-
-
-            </Grid>
-                <!--#endregion-->
-
-
-                <Grid  Grid.Row="2">
-                    <Grid.ColumnDefinitions >
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="250"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-
-
-                    <!--#region First Row-->
-
-                    <!--Chest List-->
-                    <Border BorderBrush="#000" Padding="5" Margin="5" Grid.Column="0" Grid.Row="0" BorderThickness="1">
-                        <StackPanel>
-                            <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" DockPanel.Dock="Top" VerticalAlignment="Center" Text="الصدر" />
-                            <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             VirtualizingPanel.ScrollUnit="Pixel"
-                                  ItemsSource="{Binding ChestExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
-
-                            </ListBox>
-                        </StackPanel>
-
-                    </Border>
-
-
-
-                    <!--Back List-->
-                    <Border BorderBrush="#000" Padding="5" Margin="5" Grid.Column="1" Grid.Row="0" BorderThickness="1">
-                        <StackPanel >
-                            <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold"
-                               DockPanel.Dock="Top" VerticalAlignment="Center" Text="الظهر" />
-                            <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                             VirtualizingPanel.ScrollUnit="Pixel"  BorderBrush="#fff"  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  ItemsSource="{Binding BackExercisesList}" 
-                             ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
-
-                            </ListBox>
-                        </StackPanel>
-
-                    </Border>
-
-
-                    <!--Shoulders List-->
-                    <Border  Margin="5" Padding="5" Grid.Column="2" Grid.Row="0" BorderBrush="#000" BorderThickness="1">
-                        <StackPanel>
-                            <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" 
-                               DockPanel.Dock="Top" VerticalAlignment="Center" Text="الاكتاف" />
-                            <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             VirtualizingPanel.ScrollUnit="Pixel"
-                                  ItemsSource="{Binding ShouldersExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
-
-                            </ListBox>
-                        </StackPanel>
-
-                    </Border>
-
-
-                    <!--Legs List-->
-                    <Border Margin="5" Grid.Column="3" Padding="5" Grid.Row="0" BorderBrush="#000" BorderThickness="1">
-                        <StackPanel >
-                            <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold"
-                               DockPanel.Dock="Top" VerticalAlignment="Center" Text="الارجل" />
-                            <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             VirtualizingPanel.ScrollUnit="Pixel"
-                                  ItemsSource="{Binding LegsExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
-
-                            </ListBox>
-                        </StackPanel>
-
-                    </Border>
-
-                    <!--#endregion-->
-
-
-                    <!--#region Second Row-->
-
-                    <!--Biceps List-->
-                    <Border BorderBrush="#000" Padding="5" Margin="5" Grid.Column="0" Grid.Row="1" BorderThickness="1">
-                        <StackPanel >
-                            <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" 
-                           DockPanel.Dock="Top" VerticalAlignment="Center" Text="بايسيبس" />
-                            <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             VirtualizingPanel.ScrollUnit="Pixel"
-                                  ItemsSource="{Binding BicepsExercisesList}" 
-                         ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
-
-                            </ListBox>
-                        </StackPanel>
-
-
-                    </Border>
-
-
-                    <!--Triceps List-->
-                    <Border BorderBrush="#000" Padding="5" BorderThickness="1" Margin="5" Grid.Column="1" Grid.Row="1">
-                        <StackPanel >
-                            <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" 
-                           DockPanel.Dock="Top" VerticalAlignment="Center" Text="ترايسيبس" />
-                            <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             VirtualizingPanel.ScrollUnit="Pixel"
-                                  ItemsSource="{Binding TricepsExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
-
-                            </ListBox>
-                        </StackPanel>
-
-                    </Border>
-
-
-                    <!--Abs List-->
-                    <Border Margin="5" Padding="5" Grid.Column="2" Grid.Row="1" BorderBrush="#000" BorderThickness="1">
-                        <StackPanel >
-                            <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" 
-                           DockPanel.Dock="Top" VerticalAlignment="Center" Text="المعدة" />
-                            <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             VirtualizingPanel.ScrollUnit="Pixel"
-                                  ItemsSource="{Binding AbsExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
-
-                            </ListBox>
-                        </StackPanel>
-
-                    </Border>
-
-
-                    <!--Calves List-->
-                    <Border BorderBrush="#000" Padding="5" Margin="5" Grid.Column="3" Grid.Row="1" BorderThickness="1">
-                        <StackPanel >
-                            <TextBlock FontSize="20" Margin="5" Grid.Column="0" FontWeight="Bold" DockPanel.Dock="Top"
-                           VerticalAlignment="Center" Text="بطات الارجل" />
-                            <ListBox ScrollViewer.CanContentScroll="True" Grid.Column="0"
-                                      BorderBrush="#fff"
-                             VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  ItemsSource="{Binding CalvesExercisesList}" ItemContainerStyle="{StaticResource PrintRoutineItemsListBoxItemContainerStyle1}" >
-
-                            </ListBox>
-                        </StackPanel>
-                    </Border>
-
-
-                    <!--#endregion-->
-                </Grid>
-
-
-                <Grid Grid.ColumnSpan="2" Margin="10 20" Grid.Row="3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
-                        <Image Source="pack://application:,,,/Resources/Assets/Logo.png"
-                           RenderOptions.BitmapScalingMode="HighQuality"
-                                                         RenderOptions.EdgeMode="Aliased"  
-                           Margin="10" Width="60" Height="65" VerticalAlignment="Center"/>
-                        <TextBlock Text="Uniceps" FontSize="25" VerticalAlignment="Center" Foreground="{StaticResource colors.primary}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10" Grid.Column="1">
-                        <TextBlock Text="تمت طباعة هذا النظام التدريبي بواسطة برنامج يونيسيبس لادارة الاندية الرياضية " FontSize="14" VerticalAlignment="Center"  Foreground="#787878"/>
-                        <TextBlock Text="UNICEPS جميع الحقوق محفوظة" FontSize="14" VerticalAlignment="Center"  Foreground="#787878"/>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-
-
-
-        </Border>
-
-
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Border>
 </UserControl>

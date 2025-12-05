@@ -9,6 +9,7 @@
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
                xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              mc:Ignorable="d" 
+               xmlns:Comp="clr-namespace:Uniceps.utlis.Components"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -176,6 +177,8 @@
                     </Grid>
                 </Grid>
             </Border>
+            <Comp:CaptinUniForEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="4" Title="لا يوجد موظفين / مدربين بعد" 
+                         Caption="اضغط على زر اضافة موظف / مدرب وتتبع الرواتب والمسحوبات"/>
         </Grid>
     </Border>
 </UserControl>

@@ -51,18 +51,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="الرياضة" IsReadOnly="True"
-                                     Binding="{Binding SportName}"
-                                    Width="*"
-                                    />
-                        <DataGridTextColumn Header="المدرب" IsReadOnly="True"
-                                     Binding="{Binding TrainerName}"
-                                    Width="*"
-                                    />
-                        <DataGridTextColumn Header="سعر الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding SubscriptionPrice,Converter={StaticResource convertNum}}"
-                                    Width="*"
-                                    />
+                      
                         <DataGridTextColumn Header="تاريخ الدفعة" IsReadOnly="True"
                                      Binding="{Binding IssueDate}"
                                     Width="*"

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.navigation.Stores;
-using Uniceps.utlis.common;
 using Uniceps.ViewModels.RoutineTemplateViewModels;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
@@ -31,8 +30,9 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
             OpenProfileCommand = new NavaigateCommand<RoutineDetailsViewModel>(new NavigationService<RoutineDetailsViewModel>(_navigationStore, () => _routineDetailsViewModel));
 
         }
-        public string Name => RoutineModel.Name;
-        public string Level => RoutineModel.Level;
+        public int Id => RoutineModel.Id;
+        public string? Name => RoutineModel.Name;
+        public RoutineLevel Level => RoutineModel.Level;
         internal void Update(RoutineModel obj)
         {
             RoutineModel = obj;

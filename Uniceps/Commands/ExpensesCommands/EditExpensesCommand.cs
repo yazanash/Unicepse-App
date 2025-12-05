@@ -14,13 +14,11 @@ namespace Uniceps.Commands.ExpensesCommands
     public class EditExpensesCommand : AsyncCommandBase
     {
         private readonly ExpensesDataStore _expensesDataStore;
-        private readonly NavigationService<ExpensesListViewModel> _navigationService;
         private EditExpenseViewModel _editExpenseViewModel;
 
-        public EditExpensesCommand(ExpensesDataStore expensesDataStore, NavigationService<ExpensesListViewModel> navigationService, EditExpenseViewModel editExpenseViewModel)
+        public EditExpensesCommand(ExpensesDataStore expensesDataStore,  EditExpenseViewModel editExpenseViewModel)
         {
             _expensesDataStore = expensesDataStore;
-            _navigationService = navigationService;
             _editExpenseViewModel = editExpenseViewModel;
         }
 
@@ -28,14 +26,14 @@ namespace Uniceps.Commands.ExpensesCommands
         {
             Expenses expenses = new Expenses()
             {
-                Id = _expensesDataStore.SelectedExpenses!.Id,
+                Id = _editExpenseViewModel.SelectedExpensesListItemViewModel.Expenses!.Id,
                 Description = _editExpenseViewModel.Descriptiones,
                 date = _editExpenseViewModel.ExpensesDate,
                 Value = _editExpenseViewModel.ExpensesValue,
 
             };
             await _expensesDataStore.Update(expenses);
-            _navigationService.Navigate();
+            _editExpenseViewModel.OnExpensesUpdated();
         }
     }
 }

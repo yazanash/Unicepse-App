@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.Commands;
 using Uniceps.Stores;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.Commands.Payments
 {
@@ -29,18 +30,8 @@ namespace Uniceps.Commands.Payments
             if (MessageBox.Show("سيتم حذف هذا الدفعة , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
                                           MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                _subscriptionDataStore.SelectedSubscription = _paymentDataStore.SelectedPayment!.Subscription;
-                if (_subscriptionDataStore.SelectedSubscription!.Player == null)
-                {
-                    _subscriptionDataStore.SelectedSubscription!.Player = new Core.Models.Player.Player() { Id = _playersDataStore.SelectedPlayer!.Id };
-                }
-                _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
-                _subscriptionDataStore.SelectedSubscription.PaidValue -= _paymentDataStore.SelectedPayment!.PaymentValue;
-                _playersDataStore.SelectedPlayer!.Balance -= _paymentDataStore.SelectedPayment!.PaymentValue;
-
-                await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!);
-                await _paymentDataStore.Delete(_paymentDataStore.SelectedPayment!);
-                await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription!);
+                _playersDataStore.UpdatePlayerBalance(_paymentDataStore.SelectedPayment!.PlayerId, 0 - _paymentDataStore.SelectedPayment!.PaymentValue);
+                await _paymentDataStore.Delete(_paymentDataStore.SelectedPayment!.Id);
                 MessageBox.Show("تم حذف الدفعة بنجاح");
             }
 

@@ -7,10 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
 using Uniceps.Commands.Player;
 using Uniceps.Core.Models;
+using Uniceps.ViewModels;
 
 namespace Uniceps.navigation.Navigator
 {

@@ -9,6 +9,7 @@
                 xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
+                xmlns:Comp="clr-namespace:Uniceps.utlis.Components"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -50,17 +51,6 @@
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
-                        <DataGrid.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.HeaderTemplate>
-                                    <DataTemplate>
-                                        <!--<Border CornerRadius="10" BorderBrush="#aaa" BorderThickness="0.5" HorizontalAlignment="Stretch">-->
-                                        <TextBlock Text="{Binding Name}" Margin="5" FontWeight="Bold" HorizontalAlignment="Left" FontSize="16"/>
-                                        <!--</Border>-->
-                                    </DataTemplate>
-                                </GroupStyle.HeaderTemplate>
-                            </GroupStyle>
-                        </DataGrid.GroupStyle>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
@@ -68,11 +58,7 @@
                                     CanUserResize="False"/>
 
 
-                            <DataGridTextColumn Header="رقم الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding SubscriptionId}"
-                                    Width="auto"
-                                    />
-
+                         
                             <DataGridTextColumn Header="قيمة الدفعة" IsReadOnly="True"
                                      Binding="{Binding Value,Converter={StaticResource convertNum}}"
                                     Width="auto"
@@ -89,15 +75,6 @@
                                      Binding="{Binding Description}"
                                     Width="*"
                                     />
-                            <!--<DataGridTemplateColumn Header="تاريخ الانشاء" Width="*" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Margin="10 0 0 0" Text="{Binding FullName}" VerticalAlignment="Center"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>-->
 
                             <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -127,6 +104,8 @@
                         </Border>-->
                 </Grid>
             </Grid>
+            <Comp:CaptinUniForEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="4" Title="لا يوجد دفعات لهذا اللاعب" 
+                          Caption=""/>
         </DockPanel>
     </Border>
 </UserControl>

@@ -8,6 +8,6 @@ namespace Uniceps.Core.Services
 {
     public interface IArchivedService<T>
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAllArchived();
     }
 }

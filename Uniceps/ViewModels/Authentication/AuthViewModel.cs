@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.utlis.common;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
 
@@ -17,20 +16,21 @@ namespace Uniceps.ViewModels.Authentication
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public event Action? LoginAction;
         private readonly AuthenticationStore _authenticationStore;
-        public AuthViewModel(AuthenticationStore authenticationStore)
+        private readonly UsersDataStore _usersDataStore;
+        public AuthViewModel(AuthenticationStore authenticationStore, UsersDataStore usersDataStore)
         {
             _navigatorStore = new NavigationStore();
             _authenticationStore = authenticationStore;
+            _usersDataStore = usersDataStore;
 
-            _navigatorStore.CurrentViewModel = new LoginViewModel(this, _navigatorStore, _authenticationStore);
+            _navigatorStore.CurrentViewModel =  LoginViewModel.LoadViewModel(this, _navigatorStore, _authenticationStore, _usersDataStore);
 
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
-
         }
         public async Task openLog()
         {
             if (await _authenticationStore.HasUser())
-                _navigatorStore.CurrentViewModel = new LoginViewModel(this, _navigatorStore, _authenticationStore);
+                _navigatorStore.CurrentViewModel = LoginViewModel.LoadViewModel(this, _navigatorStore, _authenticationStore, _usersDataStore);
             else
                 _navigatorStore.CurrentViewModel = new RegisterViewModel(this, _navigatorStore, _authenticationStore);
         }

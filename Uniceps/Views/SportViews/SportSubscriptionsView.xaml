@@ -155,21 +155,8 @@
                                      Binding="{Binding OfferValue}"
                                     Width="auto"
                                     />-->
-                                    <DataGridTextColumn Header="الباقي" IsReadOnly="True"
-                                     Binding="{Binding RestVal,Converter={StaticResource convertNum}}"
-                                    Width="auto"
-                                    />
-
-                                    <DataGridTemplateColumn Header="تدريب خاص" Width="auto" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Vertical">
-                                                    <TextBlock Text="{Binding IsPrivate}" FontSize="12"/>
-                                                    <TextBlock Text="{Binding PrivatePrice}" FontSize="12"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
+                                   
+                                  
 
                                     <!--<DataGridTextColumn Header="المدفوع" IsReadOnly="True"
                                      Binding="{Binding PaidValue}"

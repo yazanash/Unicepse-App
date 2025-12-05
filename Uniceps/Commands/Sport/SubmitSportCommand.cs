@@ -1,27 +1,27 @@
-﻿using Uniceps.Core.Models.Employee;
-using sp = Uniceps.Core.Models.Sport;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.Commands;
+using Uniceps.Core.Exceptions;
+using Uniceps.Core.Models.Employee;
 using Uniceps.navigation;
 using Uniceps.Stores;
+using Uniceps.ViewModels.Employee.TrainersViewModels;
 using Uniceps.ViewModels.SportsViewModels;
+using Uniceps.Views;
+using Sp = Uniceps.Core.Models.Sport;
 
 namespace Uniceps.Commands.Sport
 {
     public class SubmitSportCommand : AsyncCommandBase
     {
-        private readonly NavigationService<SportListViewModel> navigationService;
         private readonly SportDataStore _sportStore;
         private AddSportViewModel _addSportViewModel;
-        public SubmitSportCommand(NavigationService<SportListViewModel> navigationService, AddSportViewModel addSportViewModel, SportDataStore sportStore)
+        public SubmitSportCommand( AddSportViewModel addSportViewModel, SportDataStore sportStore)
         {
-
-            this.navigationService = navigationService;
             _sportStore = sportStore;
             _addSportViewModel = addSportViewModel;
             _addSportViewModel.PropertyChanged += _addSportViewModel_PropertyChanged;
@@ -43,10 +43,9 @@ namespace Uniceps.Commands.Sport
         {
             try
             {
-                Core.Models.Sport.Sport sport = new sp.Sport()
+                Core.Models.Sport.Sport sport = new Sp.Sport()
                 {
                     Name = _addSportViewModel.SportName,
-                    DailyPrice = _addSportViewModel.DailyPrice,
                     DaysCount = _addSportViewModel.SubscribeLength,
                     DaysInWeek = _addSportViewModel.WeeklyTrainingDays,
                     Price = _addSportViewModel.MonthlyPrice,
@@ -60,12 +59,24 @@ namespace Uniceps.Commands.Sport
                 }
                 await _sportStore.Add(sport);
 
-                navigationService.Navigate();
+                if (MessageBox.Show("تم اضافة الرياضة بنجاح ... هل تريد اضافة رياضة اخرى؟", "تم بنجاح", MessageBoxButton.YesNo, MessageBoxImage.Information)
+               == MessageBoxResult.Yes)
+                {
+                    _addSportViewModel.ClearForm();
+                }
+                else
+                _addSportViewModel.OnSportCreated();
+            }
+            catch (FreeLimitException)
+            {
+                PremiumViewDialog premiumViewDialog = new PremiumViewDialog();
+                premiumViewDialog.ShowDialog();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            
         }
 
     }

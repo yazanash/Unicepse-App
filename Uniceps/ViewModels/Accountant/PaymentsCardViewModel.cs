@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Core.Models.Payment;
-using Uniceps.Stores.AccountantStores;
 using Uniceps.ViewModels;
 using Uniceps.Commands.AccountantCommand;
 using Uniceps.Stores;
@@ -16,22 +15,22 @@ namespace Uniceps.ViewModels.Accountant
 {
     public class PaymentsCardViewModel : ListingViewModelBase
     {
-        private readonly PaymentsDailyAccountantStore _gymStore;
+        private readonly DailyReportStore _dailyReportStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public PaymentsCardViewModel(PaymentsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public PaymentsCardViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
         {
-            _gymStore = gymStore;
+            _dailyReportStore = dailyReportStore;
             _accountingStateViewModel = accountingStateViewModel;
             _incomeListItemViewModels = new ObservableCollection<IncomeListItemViewModel>();
-            LoadPaymentsCommand = new LoadDailyPayments(_gymStore, _accountingStateViewModel);
-            _gymStore.PaymentsLoaded += _gymStore_PaymentsLoaded;
+            LoadPaymentsCommand = new LoadDailyPayments(_dailyReportStore, _accountingStateViewModel);
+            _dailyReportStore.PaymentLoaded +=_dailyReportStore_PaymentLoaded;
 
         }
 
-        private void _gymStore_PaymentsLoaded()
+        private void _dailyReportStore_PaymentLoaded()
         {
             _incomeListItemViewModels.Clear();
-            foreach (PlayerPayment payment in _gymStore.Payments)
+            foreach (PlayerPayment payment in _dailyReportStore.Payments)
             {
                 AddPayment(payment);
             }
@@ -48,9 +47,9 @@ namespace Uniceps.ViewModels.Accountant
             itemViewModel.Order = _incomeListItemViewModels.Count();
         }
         public ICommand LoadPaymentsCommand;
-        public static PaymentsCardViewModel LoadViewModel(PaymentsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public static PaymentsCardViewModel LoadViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
         {
-            PaymentsCardViewModel viewModel = new PaymentsCardViewModel(gymStore, accountingStateViewModel);
+            PaymentsCardViewModel viewModel = new PaymentsCardViewModel(dailyReportStore, accountingStateViewModel);
 
             viewModel.LoadPaymentsCommand.Execute(null);
 

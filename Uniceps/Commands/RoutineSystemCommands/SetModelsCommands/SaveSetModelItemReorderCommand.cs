@@ -27,11 +27,12 @@ namespace Uniceps.Commands.RoutineSystemCommands.SetModelsCommands
             {
                 if (setModel != null)
                 {
-                    setModel.RoundIndex = reorderedList.IndexOf(setModel);
+                    setModel.RoundIndex = reorderedList.IndexOf(setModel)+1;
                     _setModelItemsList.SetModelItems.SingleOrDefault(x => x.SetModel!.Id == setModel.Id)!.RoundIndex = setModel.RoundIndex;
                 }
             }
             await _dataStore.UpdateRange(reorderedList);
+            _setModelItemsList.HasOrderChanged = false;
         }
     }
 }

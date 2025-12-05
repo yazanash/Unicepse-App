@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Core.Models.Employee;
-using Uniceps.Stores.AccountantStores;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.Employee.CreditViewModels;
 using Uniceps.Commands.AccountantCommand;
@@ -17,21 +16,21 @@ namespace Uniceps.ViewModels.Accountant
 {
     public class CreditsCardViewModel : ListingViewModelBase
     {
-        private readonly CreditsDailyAccountantStore _gymStore;
+        private readonly DailyReportStore _dailyReportStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public CreditsCardViewModel(CreditsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public CreditsCardViewModel(DailyReportStore dailyReportStore,AccountingStateViewModel accountingStateViewModel)
         {
-            _gymStore = gymStore;
+            _dailyReportStore = dailyReportStore;
             _accountingStateViewModel = accountingStateViewModel;
 
             _creditListItemViewModels = new ObservableCollection<CreditListItemViewModel>();
-            LoadCreditsCommand = new LoadDailyCredits(_gymStore, _accountingStateViewModel);
-            _gymStore.EmployeeCreditsLoaded += _gymStore_CreditsLoaded;
+            LoadCreditsCommand = new LoadDailyCredits(_dailyReportStore, _accountingStateViewModel);
+            _dailyReportStore.CreditsLoaded += _dailyReportStore_CreditsLoaded;
         }
-        private void _gymStore_CreditsLoaded()
+        private void _dailyReportStore_CreditsLoaded()
         {
             _creditListItemViewModels.Clear();
-            foreach (Credit credit in _gymStore.EmployeeCredits)
+            foreach (Credit credit in _dailyReportStore.Credits)
             {
                 AddCredit(credit);
             }
@@ -49,9 +48,9 @@ namespace Uniceps.ViewModels.Accountant
 
         }
         public ICommand LoadCreditsCommand;
-        public static CreditsCardViewModel LoadViewModel(CreditsDailyAccountantStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public static CreditsCardViewModel LoadViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
         {
-            CreditsCardViewModel viewModel = new CreditsCardViewModel(gymStore, accountingStateViewModel);
+            CreditsCardViewModel viewModel = new CreditsCardViewModel(dailyReportStore, accountingStateViewModel);
 
             viewModel.LoadCreditsCommand.Execute(null);
 

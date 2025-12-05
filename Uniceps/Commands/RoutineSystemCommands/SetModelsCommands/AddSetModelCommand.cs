@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 using Uniceps.Commands;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.Stores.RoutineStores;
+using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
 
 namespace Uniceps.Commands.RoutineSystemCommands.SetModelsCommands
 {
     public class AddSetModelCommand : AsyncCommandBase
     {
         private readonly SetsModelDataStore _setsModelDataStore;
-        private readonly RoutineItemDataStore _routineItemDataStore;
+        public RoutineItemListItemViewModel SelectedRoutineItem;
 
-        public AddSetModelCommand(SetsModelDataStore setsModelDataStore, RoutineItemDataStore routineItemDataStore)
+        public AddSetModelCommand(SetsModelDataStore setsModelDataStore, RoutineItemListItemViewModel selectedRoutineItem)
         {
             _setsModelDataStore = setsModelDataStore;
-            _routineItemDataStore = routineItemDataStore;
+            SelectedRoutineItem = selectedRoutineItem;
         }
 
         public override async Task ExecuteAsync(object? parameter)
@@ -26,9 +27,8 @@ namespace Uniceps.Commands.RoutineSystemCommands.SetModelsCommands
             SetModel setModel = new SetModel()
             {
                 Repetition = reps,
-                RoundIndex = _setsModelDataStore.SetModels.Count(),
-                RoutineItem = _routineItemDataStore.SelectedRoutineItem!,
-                RoutineItemId = _routineItemDataStore.SelectedRoutineItem!.Id,
+                RoundIndex = _setsModelDataStore.SetModels.Count()+1,
+                RoutineItemId = SelectedRoutineItem.RoutineItemModel!.Id,
             };
             await _setsModelDataStore.Add(setModel);
         }

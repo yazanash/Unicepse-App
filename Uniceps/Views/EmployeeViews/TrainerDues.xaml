@@ -129,30 +129,9 @@
                                     Width="auto"
                                     />
 
-                                    <DataGridTemplateColumn Header="تدريب خاص" Width="auto" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Vertical">
-                                                    <!--<TextBlock Text="{Binding IsPrivate}" FontSize="12"/>-->
-                                                    <TextBlock Text="{Binding PrivatePrice}" FontSize="12"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
+                                   
                                     
-                                    <DataGridTemplateColumn Header="الحالة" Width="100" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Border  Padding="5 3" Margin="0 0 0 0" BorderThickness="1" BorderBrush="{Binding IsPaidColor}" CornerRadius="10">
-                                                    <TextBlock HorizontalAlignment="Center" FontSize="12" Foreground="{Binding IsPaidColor}" Margin="0 0 0 0" Text="{Binding IsPaid}" VerticalAlignment="Center"/>
-                                                </Border>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn Header="المدفوع" IsReadOnly="True"
-                                     Binding="{Binding PaidValue}"
-                                    Width="*"
-                                    />
+                                   
                                     <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
                                      Binding="{Binding EndDate}"
                                     Width="auto"

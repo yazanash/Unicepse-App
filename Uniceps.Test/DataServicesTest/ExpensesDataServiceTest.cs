@@ -73,7 +73,7 @@ namespace Uniceps.Test.DataServicesTest
         {
             Expenses expected_expenses = expensesFactory!.FakeExpenses();
             Expenses actual_expenses = await expensesDataService!.Create(expected_expenses);
-            Assert.AreEqual(expected_expenses.Value, actual_expenses.Value);
+            Assert.Equals(expected_expenses.Value, actual_expenses.Value);
         }
 
         [Test]
@@ -86,8 +86,8 @@ namespace Uniceps.Test.DataServicesTest
             Expenses created_expenses = await expensesDataService!.Create(expenses);
             Expenses get_expenses = await expensesDataService!.Get(expenses.Id);
             // Assert
-            Assert.AreEqual(created_expenses.Value, get_expenses.Value);
-            Assert.AreEqual(created_expenses.Description, get_expenses.Description);
+            Assert.Equals(created_expenses.Value, get_expenses.Value);
+            Assert.Equals(created_expenses.Description!, get_expenses.Description!);
 
         }
         [Test]
@@ -113,7 +113,7 @@ namespace Uniceps.Test.DataServicesTest
             get_expenses.Value = 30000;
             Expenses updated_expenses = await expensesDataService.Update(get_expenses);
             // Assert
-            Assert.AreEqual(updated_expenses.Value, 30000);
+            Assert.Equals(updated_expenses.Value, 30000);
 
         }
 
@@ -167,7 +167,7 @@ namespace Uniceps.Test.DataServicesTest
             await create_expenses(count);
             var expenses = await expensesDataService!.GetAll();
             //Assert
-            Assert.AreEqual(expenses.Count(), count);
+            Assert.Equals(expenses.Count(), count);
 
         }
         [Test]

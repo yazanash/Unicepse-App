@@ -6,7 +6,7 @@
     <Color x:Key="Color.OnPrimary">#fff</Color>
     <Color x:Key="Color.Secondary">#1C2328</Color>
     <Color x:Key="Color.OnSecondary">#fff</Color>
-    <Color x:Key="Color.Background">#000</Color>
+    <Color x:Key="Color.Background">#151A1E</Color>
     <Color x:Key="Color.Surface">#101417</Color>
     <Color x:Key="Color.Card">#1A1F23</Color>
     <Color x:Key="Color.Foreground">#FFFFFF</Color>

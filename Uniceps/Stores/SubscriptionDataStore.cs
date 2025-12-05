@@ -1,6 +1,5 @@
-﻿using Uniceps.Core.Models.Payment;
-using Uniceps.Entityframework.Services;
-using Uniceps.ViewModels.SportsViewModels;
+﻿using DocumentFormat.OpenXml.Vml.Office;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Uniceps.API.Services;
 using Uniceps.BackgroundServices;
-using Microsoft.Extensions.Logging;
-using Uniceps.Stores.ApiDataStores;
-using Uniceps.Core.Services;
+using Uniceps.Core.Common;
 using Uniceps.Core.Models.Employee;
-using Uniceps.Core.Models.Subscription;
+using Uniceps.Core.Models.Payment;
 using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Sport;
-using Uniceps.Core.Common;
+using Uniceps.Core.Models.Subscription;
+using Uniceps.Core.Services;
+using Uniceps.Entityframework.Services;
+using Uniceps.Stores.ApiDataStores;
+using Uniceps.ViewModels.SportsViewModels;
 
 namespace Uniceps.Stores
 {
@@ -25,18 +26,21 @@ namespace Uniceps.Stores
         public event Action? Loaded;
         public event Action<Subscription>? Updated;
         public event Action<int>? Deleted;
+        public event Action? AllLoaded;
 
         string LogFlag = "[Subscriptions] ";
         private readonly ILogger<SubscriptionDataStore> _logger;
 
         private readonly IDataService<Subscription> _subscriptionDataService;
         private readonly IGetPlayerTransactionService<Subscription> _getPlayerTransactionService;
-        private readonly IActiveTransactionService<Subscription> _activeTransactionService;
-        private readonly IApiDataStore<Subscription> _apiDataStore;
+        private readonly ISubscriptionRenewService _subscriptionRenewService;
         private readonly List<Subscription> _subscriptions;
         private readonly Lazy<Task> _initializeLazy;
 
         public IEnumerable<Subscription> Subscriptions => _subscriptions;
+
+        private readonly List<Subscription> _allSubscriptions;
+        public IEnumerable<Subscription> AllSubscriptions => _allSubscriptions;
 
         private Sport? _selectedSport;
         public Sport? SelectedSport
@@ -86,35 +90,34 @@ namespace Uniceps.Stores
         }
 
         public event Action<Subscription?>? SubscriptionChanged;
-        public SubscriptionDataStore(IDataService<Subscription> subscriptionDataService, ILogger<SubscriptionDataStore> logger, IGetPlayerTransactionService<Subscription> getPlayerTransactionService, IActiveTransactionService<Subscription> activeTransactionService, IApiDataStore<Subscription> apiDataStore)
+        public SubscriptionDataStore(IDataService<Subscription> subscriptionDataService, ILogger<SubscriptionDataStore> logger, IGetPlayerTransactionService<Subscription> getPlayerTransactionService,ISubscriptionRenewService subscriptionRenewService)
         {
             _subscriptionDataService = subscriptionDataService;
             _subscriptions = new List<Subscription>();
+            _allSubscriptions = new List<Subscription>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
             _getPlayerTransactionService = getPlayerTransactionService;
-            _activeTransactionService = activeTransactionService;
-            _apiDataStore = apiDataStore;
+            _subscriptionRenewService = subscriptionRenewService;
         }
 
         public async Task Add(Subscription entity)
         {
             _logger.LogInformation(LogFlag + "add subscription");
-            entity.DataStatus = DataStatus.ToCreate;
             await _subscriptionDataService.Create(entity);
-            await _apiDataStore.Create(entity);
             _subscriptions.Add(entity);
+            _allSubscriptions.Add(entity);
             Created?.Invoke(entity);
             SelectedTrainer = null;
             SelectedSport = null;
         }
-
         public async Task Delete(int entity_id)
         {
             _logger.LogInformation(LogFlag + "delete subscription");
             bool deleted = await _subscriptionDataService.Delete(entity_id);
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity_id);
             _subscriptions.RemoveAt(currentIndex);
+            _allSubscriptions.RemoveAt(currentIndex);
             Deleted?.Invoke(entity_id);
         }
 
@@ -137,10 +140,10 @@ namespace Uniceps.Stores
         public async Task GetAllActive()
         {
             _logger.LogInformation(LogFlag + "get all active subscription");
-            IEnumerable<Subscription> subscriptions = await _activeTransactionService.GetAll();
-            _subscriptions.Clear();
-            _subscriptions.AddRange(subscriptions);
-            Loaded?.Invoke();
+            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll();
+            _allSubscriptions.Clear();
+            _allSubscriptions.AddRange(subscriptions);
+            AllLoaded?.Invoke();
         }
         public async Task Initialize()
         {
@@ -153,11 +156,7 @@ namespace Uniceps.Stores
         public async Task Update(Subscription entity)
         {
             _logger.LogInformation(LogFlag + "update Subscription");
-            if (entity.DataStatus != DataStatus.ToCreate)
-                entity.DataStatus = DataStatus.ToUpdate;
-
             await _subscriptionDataService.Update(entity);
-            await _apiDataStore.Update(entity);
 
 
 
@@ -166,10 +165,12 @@ namespace Uniceps.Stores
             if (currentIndex != -1)
             {
                 _subscriptions[currentIndex] = entity;
+                _allSubscriptions[currentIndex] = entity;
             }
             else
             {
                 _subscriptions.Add(entity);
+                _allSubscriptions.Add(entity);
             }
             Updated?.Invoke(entity);
             SelectedTrainer = null;
@@ -178,14 +179,9 @@ namespace Uniceps.Stores
         public async Task Stop(Subscription entity, DateTime stopDate)
         {
             _logger.LogInformation(LogFlag + "stop subscription");
-            if (entity.DataStatus != DataStatus.ToCreate)
-                entity.DataStatus = DataStatus.ToUpdate;
             entity.EndDate = stopDate;
             entity.IsStopped = true;
             await _subscriptionDataService.Update(entity);
-
-
-            await _apiDataStore.Update(entity);
 
 
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
@@ -193,12 +189,28 @@ namespace Uniceps.Stores
             if (currentIndex != -1)
             {
                 _subscriptions[currentIndex] = entity;
+                _allSubscriptions[currentIndex] = entity;
             }
             else
             {
                 _subscriptions.Add(entity);
+                _allSubscriptions.Add(entity);
             }
             Updated?.Invoke(entity);
+        }
+        public async Task MarkAsRenewed(int entityId)
+        {
+            await _subscriptionRenewService.MarkAsRenewed(entityId);
+
+            int currentIndex = _subscriptions.FindIndex(y => y.Id == entityId);
+
+            if (currentIndex != -1)
+            {
+                _subscriptions[currentIndex].IsRenewed = true;
+                _allSubscriptions[currentIndex].IsRenewed = true;
+                Updated?.Invoke(_subscriptions[currentIndex]);
+            }
+           
         }
 
     }

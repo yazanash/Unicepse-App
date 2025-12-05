@@ -5,17 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.Core.Models.RoutineModels;
-using Uniceps.navigation.Stores;
-using Uniceps.Stores.RoutineStores;
-using Uniceps.ViewModels;
-using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
+using Uniceps.Commands;
 using Uniceps.Commands.Player;
 using Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands;
 using Uniceps.Core.Models.Player;
+using Uniceps.Core.Models.RoutineModels;
 using Uniceps.navigation;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores.RoutineStores;
+using Uniceps.ViewModels;
 using Uniceps.ViewModels.PlayersViewModels;
+using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
 using Uniceps.ViewModels.SportsViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views.RoutineTemplateViews;
 
 namespace Uniceps.ViewModels.RoutineTemplateViewModels
 {
@@ -28,19 +31,42 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         public IEnumerable<RoutineTemplateListItemViewModel> RoutineList => _routineTemplateListItemViewModels;
         public ICommand LoadAllRoutines { get; }
         public ICommand AddRoutineCommand { get; }
+        public SearchBoxViewModel SearchBox { get; set; }
+        public ObservableCollection<RoutineLevel> RoutineLevels { get; set; } = new();
+        public bool HasData => _routineTemplateListItemViewModels.Count > 0;
         public RoutineListViewModel(RoutineTempDataStore routineTempDataStore, NavigationStore navigatorStore, RoutineDetailsViewModel routineDetailsViewModel)
         {
             _routineTempDataStore = routineTempDataStore;
             _navigatorStore = navigatorStore;
             _routineDetailsViewModel = routineDetailsViewModel;
-
+            SearchBox = new SearchBoxViewModel();
             _routineTemplateListItemViewModels = new ObservableCollection<RoutineTemplateListItemViewModel>();
-            AddRoutineCommand = new NavaigateCommand<CreateRoutineViewModel>(new NavigationService<CreateRoutineViewModel>(_navigatorStore, () => new CreateRoutineViewModel(_navigatorStore, this, _routineTempDataStore)));
+            AddRoutineCommand = new RelayCommand(ExecuteAddRoutineCommmand);
             LoadAllRoutines = new LoadRoutineModelsCommand(_routineTempDataStore);
             _routineTempDataStore.Loaded += _routineTempDataStore_Loaded;
             _routineTempDataStore.Created += _routineTempDataStore_Created;
             _routineTempDataStore.Updated += _routineTempDataStore_Updated;
             _routineTempDataStore.Deleted += _routineTempDataStore_Deleted;
+            foreach (var item in Enum.GetValues(typeof(RoutineLevel)))
+            {
+                RoutineLevels.Add((RoutineLevel)item);
+            }
+        }
+        public void ExecuteAddRoutineCommmand()
+        {
+            CreateRoutineViewModel createRoutineViewModel =  new CreateRoutineViewModel(_routineTempDataStore);
+            CreateRoutineWindowView createRoutineWindowView = new CreateRoutineWindowView();
+            createRoutineWindowView.DataContext = createRoutineViewModel;
+            createRoutineWindowView.ShowDialog();
+        }
+        private RoutineLevel _selectedLevel;
+        public RoutineLevel SelectedLevel
+        {
+            get { return _selectedLevel; }
+            set
+            {
+                _selectedLevel = value; OnPropertyChanged(nameof(SelectedLevel));
+            }
         }
         public RoutineTemplateListItemViewModel? SelectedRoutine
         {
@@ -63,6 +89,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             {
                 _routineTemplateListItemViewModels.Remove(itemViewModel);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _routineTempDataStore_Updated(RoutineModel obj)
@@ -74,11 +101,13 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             {
                 viewModel.Update(obj);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _routineTempDataStore_Created(RoutineModel obj)
         {
             AddRoutine(obj);
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _routineTempDataStore_Loaded()
@@ -92,6 +121,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         {
             RoutineTemplateListItemViewModel viewModel = new RoutineTemplateListItemViewModel(routineModel, _navigatorStore, _routineDetailsViewModel);
             _routineTemplateListItemViewModels.Add(viewModel);
+            OnPropertyChanged(nameof(HasData));
         }
         public static RoutineListViewModel LoadViewModel(RoutineTempDataStore routineTempDataStore, NavigationStore navigatorStore, RoutineDetailsViewModel routineDetailsViewModel)
         {

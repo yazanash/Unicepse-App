@@ -20,23 +20,23 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
     public class EditEmployeeViewModel : ErrorNotifyViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
-        private readonly TrainersListViewModel _trinersListViewModel;
         private readonly EmployeeStore _employeeStore;
         public ObservableCollection<Year> years;
 
         public IEnumerable<Year> Years => years;
-        public EditEmployeeViewModel(NavigationStore navigationStore, TrainersListViewModel trinersListViewModel, EmployeeStore employeeStore)
+        public Action? EmployeeUpdated;
+        public void OnEmployeeUpdated()
+        {
+            EmployeeUpdated?.Invoke();
+        }
+        public EditEmployeeViewModel(EmployeeStore employeeStore)
         {
             years = new ObservableCollection<Year>();
             for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
                 years.Add(new Year() { year = i });
             Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
-            _navigationStore = navigationStore;
-            _trinersListViewModel = trinersListViewModel;
             _employeeStore = employeeStore;
-            CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
-            SubmitCommand = new EditEmployeeCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), this, _employeeStore);
+            SubmitCommand = new EditEmployeeCommand(this, _employeeStore);
             FullName = _employeeStore.SelectedEmployee!.FullName;
             Phone = _employeeStore.SelectedEmployee!.Phone;
             Year = years.SingleOrDefault(x => x.year == _employeeStore.SelectedEmployee!.BirthDate);

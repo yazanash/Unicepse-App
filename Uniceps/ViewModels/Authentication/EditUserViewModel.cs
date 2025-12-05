@@ -21,26 +21,21 @@ namespace Uniceps.ViewModels.Authentication
 {
     public class EditUserViewModel : ErrorNotifyViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
         private readonly UsersDataStore _usersDataStore;
-        private UsersListViewModel _usersListViewModel;
-        private readonly EmployeeStore _trainerStore;
         private readonly ObservableCollection<RolesListItemViewModel> _rolesListItemViewModels;
         public IEnumerable<RolesListItemViewModel> RolesList => _rolesListItemViewModels;
-        public EditUserViewModel(UsersDataStore usersDataStore, NavigationStore navigationStore, UsersListViewModel usersListViewModel, EmployeeStore trainerStore)
+        public UserListItemViewModel UserListItemViewModel;
+        public EditUserViewModel(UsersDataStore usersDataStore, UserListItemViewModel userListItemViewModel)
         {
             _usersDataStore = usersDataStore;
-            _navigationStore = navigationStore;
-            _usersListViewModel = usersListViewModel;
-            _trainerStore = trainerStore;
+            UserListItemViewModel = userListItemViewModel;
+
             _rolesListItemViewModels = new ObservableCollection<RolesListItemViewModel>();
             _rolesListItemViewModels.Add(new RolesListItemViewModel("مستخدم", Roles.User));
             _rolesListItemViewModels.Add(new RolesListItemViewModel("مشرف", Roles.Supervisor));
             _rolesListItemViewModels.Add(new RolesListItemViewModel("مسؤول", Roles.Admin));
             _rolesListItemViewModels.Add(new RolesListItemViewModel("محاسب", Roles.Accountant));
-            CancelCommand = new NavaigateCommand<UsersListViewModel>(new NavigationService<UsersListViewModel>(_navigationStore, () => _usersListViewModel));
-            NavigationStore PlayerMainPageNavigation = new NavigationStore();
-            SubmitCommand = new EditUserCommand(_usersDataStore, new NavigationService<UsersListViewModel>(_navigationStore, () => _usersListViewModel), this);
+            SubmitCommand = new EditUserCommand(_usersDataStore, this);
             UserName = _usersDataStore.SelectedUser!.UserName;
             Position = _usersDataStore.SelectedUser!.Position;
             OwnerName = _usersDataStore.SelectedUser!.OwnerName;
@@ -54,13 +49,10 @@ namespace Uniceps.ViewModels.Authentication
         }
 
 
-
-
-        internal static EditUserViewModel loadViewModel(UsersDataStore usersDataStore, NavigationStore navigatorStore, UsersListViewModel usersListViewModel, EmployeeStore employeeStore)
+        public Action? UserUpdated;
+        internal void OnUserUpdated()
         {
-            EditUserViewModel editUserViewModel = new EditUserViewModel(usersDataStore, navigatorStore, usersListViewModel, employeeStore);
-
-            return editUserViewModel;
+            UserUpdated?.Invoke();
         }
 
 
@@ -136,7 +128,6 @@ namespace Uniceps.ViewModels.Authentication
 
 
         public ICommand? SubmitCommand { get; }
-        public ICommand? CancelCommand { get; }
         #endregion
 
 

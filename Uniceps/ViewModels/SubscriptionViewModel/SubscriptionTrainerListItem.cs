@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using emp = Uniceps.Core.Models.Employee;
-using Uniceps.utlis.common;
 
 namespace Uniceps.ViewModels.SubscriptionViewModel
 {

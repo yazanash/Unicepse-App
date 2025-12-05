@@ -1,18 +1,36 @@
-﻿using System;
+﻿
+using ClosedXML.Excel;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Commands.SystemAuthCommands;
 using Uniceps.Core.Models.SystemAuthModels;
+using Uniceps.navigation;
 using Uniceps.Stores.SystemAuthStores;
-using Uniceps.utlis.common;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.ViewModels.SystemAuthViewModels
 {
-    public class SystemSubscriptionCreationViewModel:ViewModelBase
+    public class FeatureItem
+    {
+        public string Name { get; set; } = "";
+        public bool IsFree { get; set; } = false;
+        public bool IsPremium { get; set; } = true;
+        public string FreeLimitString { get; set; } = "";
+        public string PrimumLimitString { get; set; } = "";
+    }
+    public class PlansConfig
+    {
+        public List<FeatureItem> Features { get; set; } = new();
+    }
+    public class SystemSubscriptionCreationViewModel : ViewModelBase
     {
         private readonly SystemSubscriptionStore _systemSubscriptionStore;
         private readonly ObservableCollection<SystemPlanModelListItemViewModel> _systemPlanModelListItemViewModels;
@@ -20,21 +38,37 @@ namespace Uniceps.ViewModels.SystemAuthViewModels
 
         private readonly ObservableCollection<FeatureListItemViewModel> _featureListItemViewModels;
         public IEnumerable<FeatureListItemViewModel> Features => _featureListItemViewModels;
-
-        public SystemSubscriptionCreationViewModel(SystemSubscriptionStore systemSubscriptionStore)
+        private NavigationService<SubscriptionMainViewModel> _navigationService;
+        public SystemSubscriptionCreationViewModel(SystemSubscriptionStore systemSubscriptionStore, NavigationService<SubscriptionMainViewModel> navigationService)
         {
             _systemSubscriptionStore = systemSubscriptionStore;
+            _navigationService = navigationService;
+
             _systemPlanModelListItemViewModels = new ObservableCollection<SystemPlanModelListItemViewModel>();
             _featureListItemViewModels = new ObservableCollection<FeatureListItemViewModel>();
-            for(int i = 0; i < 5; i++)
+            var assembly = Assembly.GetExecutingAssembly();
+            using Stream? stream = assembly.GetManifestResourceStream("Uniceps.Resources.plans.json");
+            if (stream != null)
             {
-                _featureListItemViewModels.Add(new FeatureListItemViewModel($"Feature-{i}"));
-
+                using StreamReader reader = new StreamReader(stream);
+                string json = reader.ReadToEnd();
+                var config = JsonConvert.DeserializeObject<PlansConfig>(json);
+                if (config != null)
+                {
+                    var features = config.Features;
+                    int id = 1;
+                    foreach (var feature in features)
+                    {
+                        _featureListItemViewModels.Add(new FeatureListItemViewModel(feature,id++));
+                    }
+                }
+              
             }
+          
+           
             _systemSubscriptionStore.Loaded += _systemSubscriptionStore_Loaded;
             LoadSystemPlansCommand = new LoadSystemPlansCommand(_systemSubscriptionStore);
-            CreateSystemSubscriptionCommand = new CreateSystemSubscriptionCommand(_systemSubscriptionStore,this);
-
+            CreateSystemSubscriptionCommand = new CreateSystemSubscriptionCommand(_systemSubscriptionStore, this, _navigationService);
         }
         public ICommand LoadSystemPlansCommand { get; }
         public ICommand CreateSystemSubscriptionCommand { get; }
@@ -47,15 +81,20 @@ namespace Uniceps.ViewModels.SystemAuthViewModels
         private void _systemSubscriptionStore_Loaded()
         {
             _systemPlanModelListItemViewModels.Clear();
-            foreach(SystemPlanModel systemPlan in _systemSubscriptionStore.SystemPlanModels)
+            foreach (SystemPlanModel systemPlan in _systemSubscriptionStore.SystemPlanModels)
             {
-                foreach(var item in systemPlan.PlanItems)
-                _systemPlanModelListItemViewModels.Add(new SystemPlanModelListItemViewModel(systemPlan, item));
+                foreach (var item in systemPlan.PlanItems)
+                    _systemPlanModelListItemViewModels.Add(new SystemPlanModelListItemViewModel(systemPlan, item));
             }
         }
-        public static SystemSubscriptionCreationViewModel LoadViewModel(SystemSubscriptionStore systemSubscriptionStore)
+        public Action? SubscriptionRequested;
+        public void OnSubscriptionRequested()
         {
-            SystemSubscriptionCreationViewModel systemSubscriptionCreationViewModel = new(systemSubscriptionStore);
+            SubscriptionRequested?.Invoke();
+        }
+        public static SystemSubscriptionCreationViewModel LoadViewModel(SystemSubscriptionStore systemSubscriptionStore, NavigationService<SubscriptionMainViewModel> navigationService)
+        {
+            SystemSubscriptionCreationViewModel systemSubscriptionCreationViewModel = new(systemSubscriptionStore, navigationService);
             systemSubscriptionCreationViewModel.LoadSystemPlansCommand.Execute(null);
             return systemSubscriptionCreationViewModel;
         }

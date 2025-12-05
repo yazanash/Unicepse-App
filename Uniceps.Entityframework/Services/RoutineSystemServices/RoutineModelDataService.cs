@@ -23,6 +23,8 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
         public async Task<RoutineModel> Create(RoutineModel entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
+            entity.CreatedAt = DateTime.Now;
+            entity.UpdatedAt = DateTime.Now;
             EntityEntry<RoutineModel> CreatedResult = await context.Set<RoutineModel>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;
@@ -43,7 +45,8 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
         public async Task<RoutineModel> Get(int id)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            RoutineModel? entity = await context.Set<RoutineModel>().FirstOrDefaultAsync((e) => e.Id == id);
+            RoutineModel? entity = await context.Set<RoutineModel>().Include(x=>x.Days).ThenInclude(x=>x.RoutineItems).ThenInclude(x=>x.Exercise)
+                .Include(x => x.Days).ThenInclude(x => x.RoutineItems).ThenInclude(x => x.Sets).FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new NotExistException("هذا السجل غير موجود");
             return entity!;
@@ -60,10 +63,14 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
         public async Task<RoutineModel> Update(RoutineModel entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            RoutineModel entityToUpdate = await Get(entity.Id);
+            RoutineModel? entityToUpdate = await context.Set<RoutineModel>().FirstOrDefaultAsync((e) => e.Id == entity.Id);
             if (entityToUpdate == null)
                 throw new NotExistException("هذا السجل غير موجود");
-            context.Set<RoutineModel>().Update(entity);
+            entityToUpdate.Name = entity.Name;
+            entityToUpdate.UpdatedAt = DateTime.Now;
+            entityToUpdate.Level = entity.Level;
+            
+            context.Set<RoutineModel>().Update(entityToUpdate);
             await context.SaveChangesAsync();
             return entity;
         }

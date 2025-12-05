@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using emp = Uniceps.Core.Models.Employee;
+using Emp = Uniceps.Core.Models.Employee;
 using Uniceps.Commands;
 using Uniceps.navigation;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
+using System.Windows;
 
 namespace Uniceps.Commands.Employee
 {
     public class EditEmployeeCommand : AsyncCommandBase
     {
-        private readonly NavigationService<TrainersListViewModel> navigationService;
         private readonly EmployeeStore _employeeStore;
         private EditEmployeeViewModel _editEmployeeViewModel;
 
-        public EditEmployeeCommand(NavigationService<TrainersListViewModel> navigationService, EditEmployeeViewModel editEmployeeViewModel, EmployeeStore employeeStore)
+        public EditEmployeeCommand( EditEmployeeViewModel editEmployeeViewModel, EmployeeStore employeeStore)
         {
-            this.navigationService = navigationService;
             _employeeStore = employeeStore;
             _editEmployeeViewModel = editEmployeeViewModel;
             _editEmployeeViewModel.PropertyChanged += _editEmployeeViewModel_PropertyChanged;
@@ -40,11 +39,11 @@ namespace Uniceps.Commands.Employee
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            Core.Models.Employee.Employee employee = new emp.Employee()
+            Core.Models.Employee.Employee employee = new Emp.Employee()
             {
                 Id = _employeeStore.SelectedEmployee!.Id,
                 FullName = _editEmployeeViewModel.FullName,
-                BirthDate = _editEmployeeViewModel.Year!.year,
+                BirthDate = _editEmployeeViewModel.Year?.year ?? DateTime.Now.Year,
                 GenderMale = _editEmployeeViewModel.GenderMale,
                 IsActive = true,
                 IsTrainer = false,
@@ -57,7 +56,8 @@ namespace Uniceps.Commands.Employee
             };
 
             await _employeeStore.Update(employee);
-            navigationService.ReNavigate();
+            MessageBox.Show("تم التعديل بنجاح");
+            _editEmployeeViewModel.OnEmployeeUpdated();
         }
 
     }

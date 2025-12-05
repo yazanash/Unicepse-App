@@ -1,13 +1,15 @@
-﻿using Uniceps.Entityframework.Services;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Uniceps.Core.Services;
+using Uniceps.Core.Exceptions;
 using Uniceps.Core.Models.Employee;
+using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Sport;
+using Uniceps.Core.Services;
+using Uniceps.Entityframework.Services;
 
 namespace Uniceps.Stores
 {
@@ -22,7 +24,7 @@ namespace Uniceps.Stores
         private readonly IDataService<Sport> _sportDataService;
         private readonly List<Sport> _sports;
         private readonly List<Employee> _trainers;
-
+        private readonly AccountStore _accountStore;
         private readonly Lazy<Task> _initializeLazy;
 
         public IEnumerable<Sport> Sports => _sports;
@@ -30,7 +32,7 @@ namespace Uniceps.Stores
         public IEnumerable<Employee> Trainers => _trainers;
         string LogFlag = "[Sport] ";
         private readonly ILogger<SportDataStore> _logger;
-        public SportDataStore(IDataService<Sport> sportDataService, ILogger<SportDataStore> logger, IDeleteConnectionService<Sport> deleteConnectionService)
+        public SportDataStore(IDataService<Sport> sportDataService, ILogger<SportDataStore> logger, IDeleteConnectionService<Sport> deleteConnectionService, AccountStore accountStore)
         {
             _sportDataService = sportDataService;
             _sports = new List<Sport>();
@@ -38,6 +40,7 @@ namespace Uniceps.Stores
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
             _deleteConnectionService = deleteConnectionService;
+            _accountStore = accountStore;
         }
         private Sport? _selectedSport;
         public Sport? SelectedSport
@@ -76,6 +79,8 @@ namespace Uniceps.Stores
         public event Action<Sport?>? StateChanged;
         public async Task Add(Sport entity)
         {
+            if (_accountStore.SystemSubscription == null && _sports.Count() >= 2)
+                throw new FreeLimitException("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
             _logger.LogInformation(LogFlag + "add sport");
             await _sportDataService.Create(entity);
             _sports.Add(entity);

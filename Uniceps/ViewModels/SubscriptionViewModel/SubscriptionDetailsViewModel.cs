@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using emp = Uniceps.Core.Models.Employee;
 using Uniceps.ViewModels;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
@@ -21,9 +20,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
 {
     public class SubscriptionDetailsViewModel : ErrorNotifyViewModelBase
     {
-        //private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly SportDataStore _sportDataStore;
-        //private readonly EmployeeStore _employeeStore;
         private readonly ObservableCollection<SportListItemViewModel> _sportListItemViewModels;
         private readonly ObservableCollection<SubscriptionTrainerListItem> _trainerListItemViewModels;
         private NavigationStore _navigatorStore;
@@ -52,10 +49,10 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                 }
                 else
                 {
-                    if (DaysCounter)
+                  
                         SubscribeDays = SelectedSport!.DaysCount;
-                    else
-                        SubscribeDays = 1;
+                    SportPrice = SelectedSport!.Price;
+                    CountTotal();
                     OnPropertyChanged(nameof(Total));
                 }
 
@@ -75,7 +72,6 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
 
             }
         }
-        //private readonly PlayersDataStore _playersDataStore;
         public IEnumerable<SportListItemViewModel> SportList => _sportListItemViewModels;
         public IEnumerable<SubscriptionTrainerListItem> TrainerList => _trainerListItemViewModels;
         public ICommand LoadSportsCommand { get; }
@@ -119,11 +115,8 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         {
             if (SelectedSport != null)
             {
-                if (DaysCounter)
-                    SportPrice = SelectedSport!.Price;
-                else
-                    SportPrice = SelectedSport!.DailyPrice * SubscribeDays;
-
+                
+                SportPrice = SelectedSport!.Price;
                 Total = SportPrice - OfferValue;
                 ClearError(nameof(Total));
                 if (Total < 0)
@@ -150,25 +143,6 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             }
         }
 
-        private bool _daysCounter = true;
-        public bool DaysCounter
-        {
-            get { return _daysCounter; }
-            set
-            {
-                _daysCounter = value;
-                CountTotal();
-                if (SelectedSport != null)
-                    if (DaysCounter)
-                        SubscribeDays = SelectedSport!.DaysCount;
-                    else
-                        SubscribeDays = 1;
-                OnPropertyChanged(nameof(DaysCounter));
-                OnPropertyChanged(nameof(Total));
-
-            }
-        }
-        //private double? _total;
         public double? Total
         {
             get;
@@ -193,39 +167,15 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                 OnPropertyChanged(nameof(Total));
             }
         }
-        private double _privatePrice;
-        public double PrivatePrice
-        {
-            get { return _privatePrice; }
-            set
-            {
-                _privatePrice = value; OnPropertyChanged(nameof(PrivatePrice));
-            }
-        }
-        private bool _privateProvider;
-        public bool PrivateProvider
-        {
-            get { return _privateProvider; }
-            set
-            {
-                _privateProvider = value;
-                OnPropertyChanged(nameof(PrivateProvider));
-
-            }
-        }
         private DateTime _subscribeDate = DateTime.Now.Date;
         public DateTime SubscribeDate
         {
             get { return _subscribeDate; }
             set { _subscribeDate = value; OnPropertyChanged(nameof(SubscribeDate)); }
         }
-
-
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
         #endregion
-
-
         private void _sportDataStore_Loaded()
         {
             _sportListItemViewModels.Clear();

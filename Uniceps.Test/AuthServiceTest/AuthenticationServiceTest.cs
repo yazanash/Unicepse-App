@@ -42,7 +42,7 @@ namespace Uniceps.Test.AuthServiceTest
             mockPasswordhasher!.Setup(s => s.VerifyHashedPassword(userItem, It.IsAny<string>(), password)).Returns(PasswordVerificationResult.Success);
             User user = await authenticationService!.Login(userName, password);
 
-            Assert.AreEqual(userName, user.UserName);
+            Assert.Equals(userName!, user.UserName!);
         }
         [Test]
         public void LoginUserWithCorrectUserNameAndWrongPassword()
@@ -55,7 +55,7 @@ namespace Uniceps.Test.AuthServiceTest
             InvalidPasswordException? exception = Assert.ThrowsAsync<InvalidPasswordException>(
                 async () => await authenticationService!.Login(userName, password));
 
-            Assert.AreEqual(userName, exception!.Username);
+            Assert.Equals(userName, exception!.Username);
         }
         [Test]
         public void LoginUserWithNotExistUserName()
@@ -67,7 +67,7 @@ namespace Uniceps.Test.AuthServiceTest
             UserNotFoundException? exception = Assert.ThrowsAsync<UserNotFoundException>(
                 async () => await authenticationService!.Login(userName, password));
 
-            Assert.AreEqual(userName, exception!.Username);
+            Assert.Equals(userName, exception!.Username);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Uniceps.Test.AuthServiceTest
             RegistrationResult expected = RegistrationResult.PasswordsDoNotMatch;
             RegistrationResult actual = await authenticationService!.Register(userName, password, confirm_password, Roles.Admin);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equals(expected, actual);
         }
         [Test]
         public async Task RegisterUserWithExistedUserName()
@@ -91,7 +91,7 @@ namespace Uniceps.Test.AuthServiceTest
             RegistrationResult expected = RegistrationResult.UsernameAlreadyExists;
             RegistrationResult actual = await authenticationService!.Register(userName, password, confirm_password, Roles.Admin);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equals(expected, actual);
         }
         [Test]
         public async Task RegisterUserWithCorrectUserNameAndCorrectPassword()
@@ -101,7 +101,7 @@ namespace Uniceps.Test.AuthServiceTest
             RegistrationResult expected = RegistrationResult.Success;
             RegistrationResult actual = await authenticationService!.Register(user!.UserName!, user!.Password!, user!.Password!, user.Role);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equals(expected, actual);
         }
     }
 }

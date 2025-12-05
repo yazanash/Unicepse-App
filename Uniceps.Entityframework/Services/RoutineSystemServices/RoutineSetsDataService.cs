@@ -12,7 +12,7 @@ using Uniceps.Core.Exceptions;
 
 namespace Uniceps.Entityframework.Services.RoutineSystemServices
 {
-    public class RoutineSetsDataService : IDataService<SetModel>, IGetAllById<SetModel>, IUpdateRangeDataService<SetModel>
+    public class RoutineSetsDataService : IDataService<SetModel>, IGetAllById<SetModel>, IUpdateRangeDataService<SetModel>, IApplySetsToAll
     {
         private readonly UnicepsDbContextFactory _contextFactory;
 
@@ -23,7 +23,6 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
         public async Task<SetModel> Create(SetModel entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            context.Attach(entity.RoutineItem!);
             EntityEntry<SetModel> CreatedResult = await context.Set<SetModel>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;
@@ -76,11 +75,19 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
             await context.SaveChangesAsync();
             return entity;
         }
-
+        public async Task<List<SetModel>> ApplySetsToEntity(List<SetModel> entities,int itemId)
+        {
+            using UnicepsDbContext context = _contextFactory.CreateDbContext();
+            List<SetModel> oldsets = await context.Set<SetModel>().Where(s => s.RoutineItemId == itemId).ToListAsync();
+            context.Set<SetModel>().RemoveRange(oldsets);
+            await context.Set<SetModel>().AddRangeAsync(entities);
+            await context.SaveChangesAsync();
+            return entities;
+        }
         public async Task<IEnumerable<SetModel>> UpdateRange(List<SetModel> entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-
+            
             context.Set<SetModel>().UpdateRange(entity);
             await context.SaveChangesAsync();
             return entity;

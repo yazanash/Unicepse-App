@@ -1,5 +1,5 @@
-﻿using Uniceps.Core.Models;
-using Uniceps.Commands;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,15 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
 using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Microsoft.Extensions.Logging;
-using Uniceps.Stores.RoutineStores;
-using Uniceps.ViewModels;
-using Uniceps.utlis.common;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
+using Uniceps.Core.Models;
 using Uniceps.Core.Models.Player;
+using Uniceps.navigation;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.Stores.RoutineStores;
+using Uniceps.utlis.common;
+using Uniceps.ViewModels;
+using Uniceps.ViewModels.Employee.TrainersViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views.EmployeeViews;
+using Uniceps.Views.PlayerViews;
 
 namespace Uniceps.ViewModels.PlayersViewModels
 {
@@ -31,11 +36,12 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private readonly ILogger _logger;
         private readonly string Flags = "[PL] ";
         public SearchBoxViewModel SearchBox { get; set; }
-
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
         public IEnumerable<OrderByItemViewModel> OrderByList => OrderByItemViewModel;
         public ICommand AddPlayerCommand { get; }
+        public bool HasData => playerListItemViewModels.Count > 0;
+
 
         public FiltersItemViewModel? SelectedFilter
         {
@@ -121,6 +127,41 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         public ICommand LoadPlayersCommand { get; }
         public ICommand ArchivedPlayerCommand { get; }
+        public ICommand ImportCommand => new RelayCommand(ImportExcel);
+
+        private void ImportExcel()
+        {
+            //ImporterProgressViewModel importerProgressViewModel = new ImporterProgressViewModel(_dataStore);
+            //ImportProgressWindow importProgressWindow = new ImportProgressWindow
+            //{
+            //    DataContext = importerProgressViewModel
+            //};
+            //importProgressWindow.ShowDialog();
+        }
+        public ICommand ExportToExcelCommand => new RelayCommand(ExecuteExportToExcelCommand);
+        private void ExecuteAddPlayerCommand()
+        {
+            AddPlayerViewModel addPlayerViewModel= new AddPlayerViewModel(_playerStore);
+            PlayerDetailWindowView playerDetailWindowView = new PlayerDetailWindowView();
+            playerDetailWindowView.DataContext = addPlayerViewModel;
+            playerDetailWindowView.ShowDialog();
+        }
+        private void ExecuteExportToExcelCommand()
+        {
+            var dialog = new SaveFileDialog
+            {
+                Filter = "Excel Files (*.xlsx)|*.xlsx",
+                Title = "احفظ الملف",
+                FileName = "players_" + DateTime.Now.ToString("dd-MM-yyyy _ HH-mm") + ".xlsx"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                var filePath = dialog.FileName;
+                if (string.IsNullOrWhiteSpace(filePath)) return;
+                _playerStore.ExportToExcel(filePath);
+            }
+        }
         public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, ILogger logger,
            PlayerProfileViewModel playerProfileViewModel)
         {
@@ -131,7 +172,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _playerProfileViewModel = playerProfileViewModel;
 
             LoadPlayersCommand = new LoadPlayersCommand(this, _playerStore);
-            AddPlayerCommand = new NavaigateCommand<AddPlayerViewModel>(new NavigationService<AddPlayerViewModel>(_navigatorStore, () => new AddPlayerViewModel(navigatorStore, this, _playerStore, _playerProfileViewModel)));
+            AddPlayerCommand =new RelayCommand(ExecuteAddPlayerCommand);
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
             ArchivedPlayerCommand = new NavaigateCommand<ArchivedPlayersListViewModel>(new NavigationService<ArchivedPlayersListViewModel>(_navigatorStore, () => ArchivedPlayersViewModel(navigatorStore, _playerStore, this, _playerProfileViewModel)));
             _playerStore.Players_loaded += PlayerStore_PlayersLoaded;
@@ -216,6 +257,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             {
                 playerListItemViewModels.Remove(itemViewModel);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void PlayerStore_PlayerUpdated(Player player)
@@ -228,6 +270,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             {
                 playerViewModel.Update(player);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void PlayerStore_PlayerAdded(Player player)
@@ -239,6 +282,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
                 PlayersFemaleCount++;
             else
                 PlayersMaleCount++;
+
         }
 
         private void PlayerStore_PlayersLoaded()
@@ -320,6 +364,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
                 new(player, _navigatorStore, _playerProfileViewModel);
             playerListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = playerListItemViewModels.Count;
+            OnPropertyChanged(nameof(HasData));
         }
         public static PlayerListViewModel LoadViewModel(NavigationStore navigatorStore, PlayersDataStore playersStore,
            ILogger<PlayerListViewModel> logger, PlayerProfileViewModel playerProfileViewModel)

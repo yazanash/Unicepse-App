@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Uniceps.Commands;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
+using Uniceps.ViewModels;
 
 namespace Uniceps.Commands.PlayerAttendenceCommands
 {

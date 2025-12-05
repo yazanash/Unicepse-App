@@ -1,22 +1,23 @@
-﻿using Uniceps.Core.Models.Subscription;
-using Uniceps.Commands;
-using Uniceps.Commands.Payments;
-using Uniceps.Commands.SubscriptionCommand;
-using Uniceps.ViewModels.PlayersViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Uniceps.Commands.Player;
-using Uniceps.navigation;
 using System.Windows.Data;
-using Uniceps.ViewModels;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
+using System.Windows.Input;
+using Uniceps.Commands;
+using Uniceps.Commands.Payments;
+using Uniceps.Commands.Player;
+using Uniceps.Commands.SubscriptionCommand;
 using Uniceps.Core.Models.Payment;
+using Uniceps.Core.Models.Subscription;
+using Uniceps.navigation;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.ViewModels;
+using Uniceps.ViewModels.PlayersViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.ViewModels.PaymentsViewModels
 {
@@ -29,6 +30,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
         private readonly ObservableCollection<PaymentListItemViewModel> _paymentListItemViewModels;
         public IEnumerable<PaymentListItemViewModel> PaymentList => _paymentListItemViewModels;
         public CollectionViewSource GroupedTasks { get; set; }
+        public bool HasData => _paymentListItemViewModels.Count > 0;
         public ICommand LoadPaymentsCommand { get; }
         public ICommand AddPaymentsCommand { get; }
 
@@ -75,6 +77,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             {
                 _paymentListItemViewModels.Remove(itemViewModel);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _paymentDataStore_Updated(PlayerPayment payment)
@@ -86,11 +89,13 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             {
                 subscriptionViewModel.Update(payment);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _paymentDataStore_Created(PlayerPayment payment)
         {
             LoadData();
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void AddPayment(PlayerPayment payment)
@@ -99,6 +104,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
              new PaymentListItemViewModel(payment, _paymentDataStore, _subscriptionDataStore, _playersDataStore, _navigationStore, this);
             _paymentListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = _paymentListItemViewModels.Count();
+            OnPropertyChanged(nameof(HasData));
 
         }
         private void _paymentDataStore_Loaded()
@@ -114,8 +120,6 @@ namespace Uniceps.ViewModels.PaymentsViewModels
                 AddPayment(payment);
             }
             GroupedTasks.Source = _paymentListItemViewModels;
-            GroupedTasks.GroupDescriptions.Clear();
-            GroupedTasks.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
             OnPropertyChanged(nameof(GroupedTasks));
         }
         public override void Dispose()

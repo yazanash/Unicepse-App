@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.Core.Models.Employee;

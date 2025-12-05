@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.Stores.RoutineStores;
-using Uniceps.utlis.common;
 using Uniceps.Commands.RoutineSystemCommands.DayGroupCommands;
 using Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands;
 using Uniceps.Core.Models.TrainingProgram;
@@ -25,15 +24,49 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
             _routineItemDataStore = routineItemDataStore;
 
             DeleteCommand = new DeleteRoutineItemCommand(_routineItemDataStore);
-         
+            OnPropertyChanged(nameof(SetsString));
         }
         public int Id => RoutineItemModel.Id;
-        public string? ExerciseImage => RoutineItemModel.Exercise.ImagePath;
-        public string? ExerciseName => RoutineItemModel.Exercise.Name;
+        public string? ExerciseImage => RoutineItemModel.Exercise!.ImagePath;
+        public string? ExerciseName => RoutineItemModel.Exercise!.Name;
         public int Order => RoutineItemModel.Order;
+        public string? SetsString => string.Join(" × ", RoutineItemModel.Sets.Select(x=>x.Repetition));
         internal void Update(RoutineItemModel obj)
         {
             RoutineItemModel = obj;
+
+            OnPropertyChanged(nameof(SetsString));
+            OnPropertyChanged(nameof(ExerciseName));
+        }
+        internal void UpdateSets(SetModel obj)
+        {
+            if (RoutineItemModel.Sets.Any(x => x.Id == obj.Id))
+            {
+                var set = RoutineItemModel.Sets.FirstOrDefault(x => x.Id == obj.Id);
+                if (set != null)
+                {
+                    set.Repetition = obj.Repetition;
+                    set.RoundIndex = obj.RoundIndex;
+                }
+            }
+            else
+                RoutineItemModel.Sets.Add(obj);
+
+            OnPropertyChanged(nameof(SetsString));
+            OnPropertyChanged(nameof(ExerciseName));
+        }
+        internal void RemoveSet(int obj)
+        {
+            if (RoutineItemModel.Sets.Any(x => x.Id == obj))
+            {
+                var set = RoutineItemModel.Sets.FirstOrDefault(x => x.Id == obj);
+
+                if (set != null)
+                {
+                    RoutineItemModel.Sets.Remove(set);
+                }
+            }
+            OnPropertyChanged(nameof(SetsString));
             OnPropertyChanged(nameof(ExerciseName));
         }
     }

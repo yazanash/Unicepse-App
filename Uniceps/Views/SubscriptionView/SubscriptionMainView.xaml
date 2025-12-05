@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Uniceps.Views.SubscriptionView"
              mc:Ignorable="d" 
              xmlns:cs="clr-namespace:Uniceps.Components"
+             xmlns:Comp="clr-namespace:Uniceps.utlis.Components"
                 xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
                xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
                xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -15,6 +16,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
         <converters:NumberFormatConverter x:Key="covNum"/>
+        <converters:EnumDisplayNameConverter x:Key="EnumToText"/>
     </UserControl.Resources>
     <Grid Grid.Column="1">
         <Grid.RowDefinitions>
@@ -26,10 +28,6 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-     
-        
-
         <Border  Grid.Row="1" Padding="10" Grid.Column="0" Grid.ColumnSpan="3" >
 
             <Grid>
@@ -40,16 +38,30 @@
                 <Border>
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="الاشتراكات" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Top"/>
-
                         <Border Grid.Column="1" CornerRadius="{DynamicResource Radius.Small}" Margin="10 5"  Grid.Row="0"  VerticalAlignment="Center">
                             <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
                         </Border>
-                        <Button Grid.Column="2"  Margin="10 0" Command="{Binding AddCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Right">
+                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="5" Orientation="Horizontal"  VerticalAlignment="Center">
+                            <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+       ItemsSource="{Binding SubscriptionStatuses,UpdateSourceTrigger=PropertyChanged}"
+       SelectedItem="{Binding SelectedSubscriptionStatus,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+       ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"
+              Tag="حالة الاشتراك :">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumToText}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <Button Grid.Column="4"  Margin="10 0" Command="{Binding AddCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Right">
 
                             <StackPanel Orientation="Horizontal">
 
@@ -88,7 +100,7 @@
                                  Width="auto"
                                  Binding="{Binding Order,UpdateSourceTrigger=PropertyChanged}"
                                  CanUserResize="False"/>
-                                    <DataGridTemplateColumn Header="اسم اللاعب" Width="*" IsReadOnly="True">
+                                    <DataGridTemplateColumn Header="اسم اللاعب" Width="auto" IsReadOnly="True">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Vertical">
@@ -97,7 +109,7 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="الرياضة" Width="*" IsReadOnly="True">
+                                    <DataGridTemplateColumn Header="الرياضة" Width="auto" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Vertical">
@@ -118,7 +130,7 @@
 
                                 <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
                                   Binding="{Binding RollDate}"
-                                 Width="*"
+                                 Width="auto"
                                  />
                                 <DataGridTextColumn Header="السعر" IsReadOnly="True"
                                   Binding="{Binding PriceAfterOffer,Converter={StaticResource covNum}}"
@@ -127,38 +139,36 @@
 
 
                                     <DataGridTextColumn Header="الحسم" IsReadOnly="True"
-                                  Binding="{Binding OfferValue}"
+                                  Binding="{Binding OfferValue,Converter={StaticResource covNum}}"
                                  Width="auto"
                                  />
-                                    <DataGridTemplateColumn Header="الباقي" Width="auto" IsReadOnly="True">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Margin="10 0 0 0" Text="{Binding RestVal,Converter={StaticResource covNum}}"
-                                         Foreground="{Binding RestColor,UpdateSourceTrigger=PropertyChanged}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
 
-                                <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
+                                    <DataGridTextColumn Header="الباقي" IsReadOnly="True"
+ Binding="{Binding RestValue,Converter={StaticResource covNum}}"
+Width="auto"
+/>
+
+                                    <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
                                   Binding="{Binding EndDate}"
-                                 Width="*"
+                                 Width="auto"
                                  />
-                                <DataGridTemplateColumn Header="الحالة" Width="100" IsReadOnly="True">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border  Padding="5 3" Margin="0 0 0 0" BorderThickness="1" BorderBrush="{Binding IsPaidColor}" CornerRadius="10">
-                                                <TextBlock HorizontalAlignment="Center" FontSize="11" Foreground="{Binding IsPaidColor}" Margin="0 0 0 0" Text="{Binding IsPaid}" VerticalAlignment="Center"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <!--<DataGridTextColumn Header="المدفوع" IsReadOnly="True"
-                                  Binding="{Binding PaidValue}"
-                                 Width="*"
-                                 />-->
+                              
+                                    <DataGridTemplateColumn Header="حالة الاشتراك" Width="auto" IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Icon:PackIconMaterial Kind="{Binding SubscriptionStatusIcon}" Width="25" Height="25" Foreground="{Binding SubscriptionStatusColor}"/>
+                                                    <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding SubscriptionStatusString}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="كود الدخول" IsReadOnly="True"
+ Binding="{Binding Code}"
+Width="auto"
+/>
 
-
-                                <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
+                                    <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" x:Name="menu">
@@ -172,29 +182,26 @@
                                                     <Border Style="{DynamicResource StaticCardBorderStyle}">
 
                                                         <StackPanel>
-                                                            <Button HorizontalAlignment="Stretch" Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                               
+                                                                <Button  HorizontalAlignment="Stretch" 
+                                                                            Command="{Binding DataContext.RenewCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                            CommandParameter="{Binding}" Style="{StaticResource GridEditBtn}">
                                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Pencil" Style="{DynamicResource GridBtnIcon}"/>
-                                                                    <TextBlock Text="تعديل" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
-                                                                </StackPanel>
-                                                            </Button>
-                                                            <Button HorizontalAlignment="Stretch" Command="{Binding PrintCommand}" Style="{StaticResource GridEditBtn}">
-                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Printer" Style="{StaticResource GridBtnIcon}"/>
-                                                                        <TextBlock Text="طباعة" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
-                                                                </StackPanel>
-                                                            </Button>
-
-
-                                                            <Button  HorizontalAlignment="Stretch" Command="{Binding StopSubscriptionCommand}" Style="{StaticResource GridEditBtn}">
-                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="BookCancel" Style="{DynamicResource GridBtnIcon}"/>
-                                                                        <TextBlock Text="ايقاف الاشتراك" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
+                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Autorenew" Style="{DynamicResource GridBtnIcon}"/>
+                                                                        <TextBlock Text="تجديد الاشتراك" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
 
                                                                 </StackPanel>
                                                             </Button>
+                                                                <Button  HorizontalAlignment="Stretch" 
+                Command="{Binding DataContext.LoginCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                CommandParameter="{Binding}" Style="{StaticResource GridEditBtn}">
+                                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                        <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Autorenew" Style="{DynamicResource GridBtnIcon}"/>
+                                                                        <TextBlock Text="تسجيل دخول اللاعب" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
 
-                                                        </StackPanel>
+                                                                    </StackPanel>
+                                                                </Button>
+                                                            </StackPanel>
 
                                                     </Border>
                                                 </Popup>
@@ -207,6 +214,8 @@
                     </Grid>
                 </Grid>
                 </Border>
+                <Comp:CaptinUniForEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="1" Title="لا يوجد اشتراكات بعد" 
+                                        Caption="اضغط على زر اضافة اشتراك لتبدا رحلتك"/>
             </Grid>
         </Border>
 

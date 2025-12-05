@@ -14,18 +14,13 @@ using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Sport;
 using Uniceps.Core.Models.Subscription;
 using Uniceps.Core.Services;
-using Uniceps.Entityframework.Services.EmployeeQueries;
-using Uniceps.Entityframework.Services.EmployeeTransaction;
-using Uniceps.Entityframework.Services.GetPlayerTransaction;
 using Uniceps.Entityframework.Services.PlayerQueries;
-using Uniceps.Entityframework.Services.PublicIdServices;
 using Uniceps.Entityframework.Services.RelationService;
 using Uniceps.Entityframework.Services.RoutineService;
-using Uniceps.Entityframework.Services.SportTransactions;
-using Uniceps.Entityframework.Services.TransactionsReportServices;
 using Uniceps.Core.Models.DailyActivity;
 using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.Entityframework.Services.DataSyncServices;
+using Uniceps.Entityframework.Services;
 
 namespace Uniceps.HostBuilders
 {
@@ -35,45 +30,23 @@ namespace Uniceps.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
-                services.AddSingleton<IGetPlayerTransactionService<PlayerPayment>, GetPaymentService>();
-                services.AddSingleton<IGetPlayerTransactionService<Subscription>, GetSubscriptionsService>();
-                services.AddSingleton<IGetPlayerTransactionService<Metric>, GetMetricsService>();
-
-                services.AddSingleton<IDailyTransactionService<Expenses>, ExpensesDailyReportService>();
-                services.AddSingleton<IDailyTransactionService<Subscription>, SubscriptionsDailyReportService>();
-                services.AddSingleton<IDailyTransactionService<PlayerPayment>, PaymentDailyReportService>();
-                services.AddSingleton<IDailyTransactionService<Credit>, CreditsDailyReportService>();
-
-                services.AddSingleton<IPeriodReportService<PlayerPayment>, PaymentsPeriodReportService>();
-                services.AddSingleton<IPeriodReportService<Expenses>, ExpensesPeriodReportService>();
-
-                services.AddSingleton<IEmployeeMonthlyTransaction<PlayerPayment>, PaymentEmployeeMonthlyService>();
-                services.AddSingleton<IEmployeeMonthlyTransaction<Credit>, CreditEmployeeMonthlyService>();
-                services.AddSingleton<IEmployeeMonthlyTransaction<Subscription>, SubscriptionEmployeeMonthlyService>();
-
-                services.AddSingleton<IEmployeeTransaction<Credit>, CreditEmployeeService>();
-                services.AddSingleton<IEmployeeTransaction<Subscription>, SubscriptionEmployeeService>();
-
-                services.AddSingleton<ISportMonthlyTransactions<Subscription>, SubscriptionSportMonthlyReportService>();
-                services.AddSingleton<IActiveTransactionService<Subscription>, ActiveSubsecriptionService>();
-
-
-
+                services.AddSingleton<IDailyReportService, DailyReportService>();
+                services.AddSingleton<IPeriodReportService, PeriodReportService>();
+                services.AddSingleton<ITrainerRevenueService, TrainerRevenueService>();
+                services.AddSingleton<IMonthlyReportService, MonthlyReportService>();
+                services.AddSingleton<IGetPlayerTransactionService<PlayerPayment>, PaymentDataService>();
+                services.AddSingleton<IGetPlayerTransactionService<Subscription>, SubscriptionDataService>();
+                services.AddSingleton<IGetPlayerTransactionService<Metric>, MetricDataService>();
+                services.AddSingleton<IEmployeeMonthlyTransaction<Credit>, EmployeeCreditsDataService>();
+                services.AddSingleton<IEmployeeMonthlyTransaction<Subscription>, SubscriptionDataService>();
+                services.AddSingleton<IEmployeeTransaction<Credit>, EmployeeCreditsDataService>();
+                services.AddSingleton<IEmployeeTransaction<Subscription>, SubscriptionDataService>();
+                services.AddSingleton<ISportMonthlyTransactions<Subscription>, SubscriptionDataService>();
                 services.AddSingleton<IGetExercisesService, RoutineExercisesService>();
-
-
                 services.AddSingleton<IDeleteConnectionService<Sport>, SportTrainersDeleteConnection>();
                 services.AddSingleton<IDeleteConnectionService<Employee>, TrainerSportsDeleteConnection>();
-                services.AddSingleton<IEmployeeQuery, PercentEmployeeQuery>();
-
-
-
-
-                services.AddSingleton<IArchivedService<Player>, ArchivedPlayerService>();
-
-
-                services.AddSingleton<IPublicIdService<Player>, PlayerUidService>();
-
+                services.AddSingleton<IArchivedService<Player>, PlayerDataService>();
+                services.AddSingleton<IPublicIdService<Player>, PlayerDataService>();
 
             });
             return _hostBuilder;

@@ -23,9 +23,10 @@ namespace Uniceps.Commands.RoutineSystemCommands.DayGroupCommands
         public override async Task ExecuteAsync(object? parameter)
         {
             DayGroup dayGroup = new DayGroup();
-            dayGroup.Name = "Untitled";
+            dayGroup.Name = "اليوم " + (_dataStore.DayGroups.Count()+1);
             dayGroup.Routine = _routineTempDataStore.SelectedRoutine!;
             dayGroup.RoutineId = _routineTempDataStore.SelectedRoutine!.Id;
+            dayGroup.Order = _dataStore.DayGroups.Count();
             await _dataStore.Add(dayGroup);
 
         }

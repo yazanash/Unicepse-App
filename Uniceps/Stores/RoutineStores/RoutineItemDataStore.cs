@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Vml.Office;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,7 +49,6 @@ namespace Uniceps.Stores.RoutineStores
             _routineItemModels.Add(entity);
             Created?.Invoke(entity);
         }
-
         public async Task Delete(int entity_id)
         {
             await _dataService.Delete(entity_id);

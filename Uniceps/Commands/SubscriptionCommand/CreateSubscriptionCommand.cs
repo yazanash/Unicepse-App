@@ -49,30 +49,20 @@ namespace Uniceps.Commands.SubscriptionCommand
                 {
                     /// subscription info
                     DaysCount = _addSubscriptionViewModel.SubscribeDays,
-                    Sport = _subscriptionDataStore.SelectedSport,
+                    SportId = _subscriptionDataStore.SelectedSport!.Id,
+                    SportName = _subscriptionDataStore.SelectedSport!.Name,
                     LastCheck = _addSubscriptionViewModel.SubscribeDate,
-                    Trainer = _subscriptionDataStore.SelectedTrainer,
-                    Player = _playerDataStore.SelectedPlayer!,
+                    TrainerId = _subscriptionDataStore.SelectedTrainer?.Id,
+                    TrainerName = _subscriptionDataStore.SelectedSport!.Name,
+                    PlayerId = _playerDataStore.SelectedPlayer!.Id,
+                    PlayerName = _subscriptionDataStore.SelectedSport!.Name,
                     RollDate = _addSubscriptionViewModel.SubscribeDate,
-                    //Price = _subscriptionDataStore.SelectedSport!.Price,
-                    LastPaid = _addSubscriptionViewModel.SubscribeDate,
-                    /// offer info
+                    Price = _subscriptionDataStore.SelectedSport!.Price,
                     OfferValue = _addSubscriptionViewModel.OfferValue,
                     OfferDes = _addSubscriptionViewModel.Offer,
-
-                    /// private info
                     EndDate = _addSubscriptionViewModel.SubscribeDate.AddDays(_addSubscriptionViewModel.SubscribeDays),
+                    PriceAfterOffer = _addSubscriptionViewModel.Total ?? 0
                 };
-                if (_addSubscriptionViewModel.DaysCounter)
-                {
-                    subscription.Price = _subscriptionDataStore.SelectedSport!.Price;
-                    subscription.PriceAfterOffer = subscription.Price - _addSubscriptionViewModel.OfferValue;
-                }
-                else
-                {
-                    subscription.Price = _subscriptionDataStore.SelectedSport!.DailyPrice * _addSubscriptionViewModel.SubscribeDays;
-                    subscription.PriceAfterOffer = subscription.Price - _addSubscriptionViewModel.OfferValue;
-                }
                 await _subscriptionDataStore.Add(subscription);
                 _playerDataStore.SelectedPlayer!.Balance -= subscription.PriceAfterOffer;
                 Subscription? subscriptions = _subscriptionDataStore.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault(x => x.Id != subscription.Id);

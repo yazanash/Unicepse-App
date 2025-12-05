@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Views.SystemAuthViews"
              mc:Ignorable="d" 
+             xmlns:Icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
              d:DesignHeight="450" d:DesignWidth="800">
     <Border Padding="5" >
@@ -28,11 +29,57 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
-            <Border Style="{DynamicResource StaticCardBorderStyle}" HorizontalAlignment="Center" Width="600"   Grid.Row="2" Margin="5 10" Padding="10">
+            <Border Style="{DynamicResource StaticCardBorderStyle}"  Grid.Row="2" Margin="5 10" Padding="10">
 
-                <ListBox  ItemsSource="{Binding Features}" ItemContainerStyle="{StaticResource PlanFeatureListBoxItemContainerStyle1}" Background="Transparent" BorderThickness="0">
+                <!--<ListBox  ItemsSource="{Binding Features}" ItemContainerStyle="{StaticResource PlanFeatureListBoxItemContainerStyle1}" Background="Transparent" BorderThickness="0">
                    
-                </ListBox>
+                </ListBox>-->
+                <DataGrid   
+                                 FlowDirection="RightToLeft" ItemsSource="{Binding Features}" 
+                                 CanUserReorderColumns="True"
+                                 x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
+                                 CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" IsReadOnly="True"
+                                 Width="auto"
+                                 Binding="{Binding Order,UpdateSourceTrigger=PropertyChanged}"
+                                 CanUserResize="False"/>
+                        <DataGridTemplateColumn Header="الميزة" Width="auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding Feature}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="النسخة المجانية" Width="auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <Icons:PackIconMaterial HorizontalAlignment="Center" Foreground="{Binding FreeIconColor}" Width="20" Height="20" Kind="{Binding FreeIcon}"/>
+                                        <TextBlock Text="{Binding FreeLimitString}" HorizontalAlignment="Center" FontSize="14" Foreground="{DynamicResource Brush.Foreground}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="النسخة الدفوعة" Width="auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel >
+                                        <Icons:PackIconMaterial HorizontalAlignment="Center" Foreground="{Binding PremiumIconColor}" Width="20" Height="20" Kind="{Binding PremiumIcon}"/>
+                                        <TextBlock Text="{Binding PrimumLimitString}" HorizontalAlignment="Center" FontSize="14" Foreground="{DynamicResource Brush.Foreground}"/>
+                                    </StackPanel>
+                                    </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+
+
+                    </DataGrid.Columns>
+                </DataGrid>
             </Border>
             <Button Grid.Row="3" Content="اشترك الآن"  Style="{StaticResource FormButton}" Width="200"
             Height="40" HorizontalAlignment="Center" 

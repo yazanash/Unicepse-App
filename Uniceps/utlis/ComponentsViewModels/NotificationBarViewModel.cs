@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using Uniceps.utlis.common;
+using Uniceps.ViewModels;
 
 namespace Uniceps.utlis.ComponentsViewModels
 {

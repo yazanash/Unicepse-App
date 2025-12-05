@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using emp = Uniceps.Core.Models.Employee;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
 using Uniceps.ViewModels;
@@ -20,18 +19,20 @@ namespace Uniceps.ViewModels.SportsViewModels
 {
     public class EditSportViewModel : ListingViewModelBase, INotifyDataErrorInfo
     {
-        private readonly NavigationStore _navigationStore;
         private readonly SportDataStore _sportStore;
         private readonly EmployeeStore _trainerStore;
         private readonly ObservableCollection<TrainersListItemViewModel> trainerListItemViewModels;
         public IEnumerable<TrainersListItemViewModel> TrainerList => trainerListItemViewModels;
-        public EditSportViewModel(NavigationStore navigationStore, SportListViewModel sportListViewModel, SportDataStore sportStore, EmployeeStore trainerStore)
+        public Action? SportUpdated;
+        public void OnSportUpdated()
         {
-            _navigationStore = navigationStore;
+            SportUpdated?.Invoke();
+        }
+        public EditSportViewModel( SportDataStore sportStore, EmployeeStore trainerStore)
+        {
             _sportStore = sportStore;
             _trainerStore = trainerStore;
-            CancelCommand = new NavaigateCommand<SportListViewModel>(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel));
-            SubmitCommand = new EditSportCommand(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel), this, _sportStore);
+            SubmitCommand = new EditSportCommand(this, _sportStore);
             LoadTrainersCommand = new LoadTrainersForSportCommand(_trainerStore, this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             trainerListItemViewModels = new ObservableCollection<TrainersListItemViewModel>();
@@ -40,7 +41,6 @@ namespace Uniceps.ViewModels.SportsViewModels
             _trainerStore.Loaded += _trainerStore_TrainersLoaded;
 
             SportName = _sportStore.SelectedSport!.Name;
-            DailyPrice = _sportStore.SelectedSport!.DailyPrice;
             SubscribeLength = _sportStore.SelectedSport!.DaysCount;
             WeeklyTrainingDays = _sportStore.SelectedSport!.DaysInWeek;
             MonthlyPrice = _sportStore.SelectedSport!.Price;
@@ -136,21 +136,7 @@ namespace Uniceps.ViewModels.SportsViewModels
             OnPropertyChanged(nameof(CanSubmit));
         }
 
-        private double _dailyPrice;
-        public double DailyPrice
-        {
-            get { return _dailyPrice; }
-            set
-            {
-                _dailyPrice = value; OnPropertyChanged(nameof(DailyPrice));
-                ClearError(nameof(DailyPrice));
-                if (MonthlyPrice < 0)
-                {
-                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(DailyPrice));
-                    OnErrorChanged(nameof(DailyPrice));
-                }
-            }
-        }
+       
         private int _weeklyTrainingDays;
         public int WeeklyTrainingDays
         {
@@ -199,9 +185,9 @@ namespace Uniceps.ViewModels.SportsViewModels
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
-        public static EditSportViewModel LoadViewModel(NavigationStore navigatorStore, SportListViewModel sportListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        public static EditSportViewModel LoadViewModel(SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
-            EditSportViewModel viewModel = new EditSportViewModel(navigatorStore, sportListViewModel, sportDataStore, employeeStore);
+            EditSportViewModel viewModel = new EditSportViewModel(sportDataStore, employeeStore);
 
             viewModel.LoadTrainersCommand.Execute(null);
 

@@ -15,13 +15,11 @@ namespace Uniceps.Commands.AuthCommands
     public class EditUserCommand : AsyncCommandBase
     {
         private readonly UsersDataStore _usersDataStore;
-        private NavigationService<UsersListViewModel> _navigationService;
         private EditUserViewModel _editUserViewModel;
 
-        public EditUserCommand(UsersDataStore usersDataStore, NavigationService<UsersListViewModel> navigationService, EditUserViewModel editUserViewModel)
+        public EditUserCommand(UsersDataStore usersDataStore, EditUserViewModel editUserViewModel)
         {
             _usersDataStore = usersDataStore;
-            _navigationService = navigationService;
             _editUserViewModel = editUserViewModel;
             _editUserViewModel.PropertyChanged += _addUserViewModel_PropertyChanged;
         }
@@ -46,7 +44,7 @@ namespace Uniceps.Commands.AuthCommands
             {
                 User user = new User()
                 {
-                    Id = _usersDataStore.SelectedUser!.Id,
+                    Id = _editUserViewModel.UserListItemViewModel.user!.Id,
                     UserName = _editUserViewModel.UserName,
                     Password = _editUserViewModel.Password,
                     Role = _editUserViewModel.RoleItem!.role,
@@ -54,7 +52,7 @@ namespace Uniceps.Commands.AuthCommands
                     OwnerName = _editUserViewModel.OwnerName
                 };
                 await _usersDataStore.Update(user);
-                _navigationService.ReNavigate();
+                _editUserViewModel.OnUserUpdated();
             }
             catch (Exception ex)
             {

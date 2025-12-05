@@ -71,10 +71,12 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
         public async Task<DayGroup> Update(DayGroup entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            DayGroup entityToUpdate = await Get(entity.Id);
+            DayGroup? entityToUpdate = await context.Set<DayGroup>().FirstOrDefaultAsync((e) => e.Id == entity.Id);
             if (entityToUpdate == null)
                 throw new NotExistException("هذا السجل غير موجود");
-            context.Set<DayGroup>().Update(entity);
+            entityToUpdate.Name = entity.Name;
+            entityToUpdate.Order = entity.Order;
+            context.Set<DayGroup>().Update(entityToUpdate);
             await context.SaveChangesAsync();
             return entity;
         }
@@ -83,7 +85,17 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
 
-            context.Set<DayGroup>().UpdateRange(entity);
+            foreach(var item in entity)
+            {
+                DayGroup? existDayGroup = await context.Set<DayGroup>().FirstOrDefaultAsync(x => x.Id == item.Id);
+                if (existDayGroup != null)
+                {
+                    existDayGroup.Order = item.Order;
+                    context.Set<DayGroup>().UpdateRange(existDayGroup);
+                }
+                
+            }
+            //context.Set<DayGroup>().UpdateRange(entity);
             await context.SaveChangesAsync();
             return entity;
         }

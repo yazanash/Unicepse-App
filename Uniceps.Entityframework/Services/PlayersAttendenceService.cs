@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Uniceps.Core.Common;
 using Uniceps.Core.Models.DailyActivity;
 using Uniceps.Entityframework.DbContexts;
+using Uniceps.Core.Models.Subscription;
 
 namespace Uniceps.Entityframework.Services
 {
@@ -26,11 +27,19 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                entity.Player!.Subscriptions.Clear();
-                entity.Player!.Payments.Clear();
-                EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
+                Subscription? subscription = await context.Set<Subscription>().FirstOrDefaultAsync(x => x.Code == entity.Code && x.EndDate >= DateTime.Now);
+                if (subscription != null)
+                {
+                    entity.PlayerId = subscription.PlayerId;
+                    entity.PlayerName = subscription.PlayerName??"";
+                    entity.SubscriptionId = subscription.Id;
+                    entity.SportName = subscription.SportName ?? "";
+                }
+                else
+                    throw new Exception("هذا الكود غير فعال");
+                    EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
                 DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x =>
-                x.Player!.Id == entity.Player!.Id &&
+                x.PlayerId == entity.PlayerId &&
                 x.Date.Month == entity.Date.Month &&
                 x.Date.Year == entity.Date.Year &&
                 x.Date.Day == entity.Date.Day &&
@@ -40,9 +49,6 @@ namespace Uniceps.Entityframework.Services
                 {
                     throw new PlayerConflictException("هذا اللاعب تم تسجيل دخوله بالفعل ولم يسجل خروجه بعد");
                 }
-                entity.Player!.Subscriptions.Clear();
-                entity.Player!.Payments.Clear();
-                context.Entry(entity.Player!).State = EntityState.Unchanged;
 
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
@@ -91,13 +97,14 @@ namespace Uniceps.Entityframework.Services
         public async Task<DailyPlayerReport> Get(int id)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            DailyPlayerReport? entity = await context.Set<DailyPlayerReport>().Include(x => x.Player).FirstOrDefaultAsync((e) => e.Id == id);
+            DailyPlayerReport? entity = await context.Set<DailyPlayerReport>().FirstOrDefaultAsync((e) => e.Id == id);
             return entity!;
         }
         public async Task<DailyPlayerReport?> Get(DailyPlayerReport entity)
         {
+
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            DailyPlayerReport? Getentity = await context.Set<DailyPlayerReport>().Include(x => x.Player).FirstOrDefaultAsync(x => x.Player!.Id == entity.Player!.Id &&
+            DailyPlayerReport? Getentity = await context.Set<DailyPlayerReport>().FirstOrDefaultAsync(x => x.Code == entity.Code &&
                                 x.Date.Month == entity.Date.Month &&
                                 x.Date.Year == entity.Date.Year &&
                                 x.Date.Day == entity.Date.Day &&
@@ -111,7 +118,7 @@ namespace Uniceps.Entityframework.Services
 
             IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(x => x.Date.Month == date.Month &&
             x.Date.Year == date.Year &&
-            x.Date.Day == date.Day).Include(x => x.Player).AsNoTracking().ToListAsync();
+            x.Date.Day == date.Day).AsNoTracking().ToListAsync();
             return entities;
         }
 
@@ -120,8 +127,8 @@ namespace Uniceps.Entityframework.Services
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
 
             IEnumerable<DailyPlayerReport>? entities = await context.Set<DailyPlayerReport>().Where(
-                x => x.Player!.Id == id
-                ).Include(x => x.Player).ToListAsync();
+                x => x.PlayerId == id
+                ).ToListAsync();
             return entities;
         }
 

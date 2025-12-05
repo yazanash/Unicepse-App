@@ -83,7 +83,7 @@ namespace Uniceps.Test.AuthServiceTest
         {
             User expected_user = userFactory!.FakeUser();
             User actual_user = await accountDataService!.Create(expected_user);
-            Assert.AreEqual(expected_user.UserName, actual_user.UserName);
+            Assert.Equals(expected_user.UserName!, actual_user.UserName!);
         }
         [Test]
         //it sholud try to create ana existed user and throw confilct exception
@@ -104,7 +104,7 @@ namespace Uniceps.Test.AuthServiceTest
             User test_user = await accountDataService!.Create(expected_user);
             User actual_user = await accountDataService!.Get(test_user.Id);
             //Assert
-            Assert.AreEqual(expected_user.UserName, actual_user.UserName);
+            Assert.Equals(expected_user.UserName!, actual_user.UserName!);
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace Uniceps.Test.AuthServiceTest
             actual_user.UserName = "updated Name";
             User updated_user = await accountDataService.Update(actual_user);
             //Assert
-            Assert.AreEqual(actual_user.UserName, updated_user.UserName);
+            Assert.Equals(actual_user.UserName!, updated_user.UserName!);
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace Uniceps.Test.AuthServiceTest
             await create_user(count);
             var users = await accountDataService!.GetAll();
             //Assert
-            Assert.AreEqual(users.Count(), count);
+            Assert.Equals(users.Count(), count);
         }
         [Test]
         /// it should disable user
@@ -195,7 +195,7 @@ namespace Uniceps.Test.AuthServiceTest
             actual_user.UserName = "updated Name";
             User updated_user = await accountDataService.Disable(actual_user);
             //Assert
-            Assert.AreEqual(updated_user.Disable, true);
+            Assert.Equals(updated_user.Disable, true);
 
         }
         [Test]

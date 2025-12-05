@@ -2,17 +2,18 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
-    <ApplicationIcon>launcher.ico</ApplicationIcon>
-    <PlatformTarget>x86</PlatformTarget>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
     <SignAssembly>False</SignAssembly>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AssemblyVersion>1.1.0.1</AssemblyVersion>
-    <FileVersion>1.1.0.1</FileVersion>
-    
+    <AssemblyVersion>2.1.0.2</AssemblyVersion>
+    <FileVersion>2.1.0.2</FileVersion>
+    <SelfContained>true</SelfContained>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -39,6 +40,11 @@
 
   <ItemGroup>
     <None Remove="Resources\Assets\backimage.png" />
+    <None Remove="Resources\Assets\CaptinUni\captinIntro.png" />
+    <None Remove="Resources\Assets\CaptinUni\CaptinOffice.png" />
+    <None Remove="Resources\Assets\CaptinUni\CaptinOk.png" />
+    <None Remove="Resources\Assets\CaptinUni\CaptinTablet.png" />
+    <None Remove="Resources\Assets\CaptinUni\CaptinUp.png" />
     <None Remove="Resources\Assets\gym_backgroud.jpg" />
     <None Remove="Resources\Assets\logo.png" />
     <None Remove="Resources\Assets\logo_black.png" />
@@ -61,6 +67,7 @@
     <None Remove="Resources\Assets\Metric\Weight.png" />
     <None Remove="Resources\Assets\p1.jpg" />
     <None Remove="Resources\Assets\p3.jpg" />
+    <None Remove="Resources\Assets\pro-thump.png" />
     <None Remove="Resources\Assets\trioverse.png" />
     <None Remove="Resources\Fonts\Cairo\Cairo-Black.ttf" />
     <None Remove="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
@@ -79,12 +86,28 @@
     <None Remove="Resources\Icons\logo_dark.ico" />
     <None Remove="Resources\Icons\logo_light.ico" />
     <None Remove="Resources\Icons\logo_white.ico" />
+    <None Remove="Resources\plans.json" />
     <None Remove="Resources\sounds\beep.wav" />
     <None Remove="Training.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="launcher.ico" />
+    <EmbeddedResource Include="Resources\plans.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinIntro.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinOffice.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinOk.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinTablet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="uni_luncher.ico" />
     <Content Include="Resources\Assets\Metric\body_front.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -129,31 +152,46 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
-    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Serilog" Version="4.0.2" />
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="6.2.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250507" />
+    <PackageReference Include="PdfSharpCore" Version="1.3.67" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.4" />
-    <PackageReference Include="ZXing.Net" Version="0.16.9" />
-    <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.0" />
+    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
+    <PackageReference Include="ZXing.Net" Version="0.16.11" />
+    <PackageReference Include="ZXing.Net.Bindings.OpenCV.V4" Version="0.16.11" />
+    <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.14" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Uniceps.API\Uniceps.API.csproj" />
     <ProjectReference Include="..\Uniceps.Core\Uniceps.Core.csproj" />
     <ProjectReference Include="..\Uniceps.Entityframework\Uniceps.Entityframework.csproj" />
+    <ProjectReference Include="..\Uniceps.FileSystem\Uniceps.FileSystem.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinUp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Assets\logo.png" />
     <Resource Include="Resources\Assets\logo_black.png" />
     <Resource Include="Resources\Assets\logo_dark.png" />
     <Resource Include="Resources\Assets\logo_white.png" />
+    <Resource Include="Resources\Assets\pro-thump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Assets\trioverse.png" />
     <Resource Include="Resources\Fonts\Cairo\Cairo-Black.ttf" />
     <Resource Include="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
@@ -209,9 +247,6 @@
     <Compile Update="Views\AuthView\UsersListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EmployeeViews\TrainerDetailView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\EmployeeViews\TrainerDues.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -227,19 +262,13 @@
     <Compile Update="Views\PaymentViews\PaymentDetalView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="utlis\common\HomeView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PlayerViews\PlayerDetailView.xaml.cs">
+    <Compile Update="Views\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayerViews\PlayerProfile.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayerViews\PlayersListView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\SportViews\SportDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SportViews\SportListView.xaml.cs">

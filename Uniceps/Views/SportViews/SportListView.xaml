@@ -8,7 +8,7 @@
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
                xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              mc:Ignorable="d" 
-             
+               xmlns:Comp="clr-namespace:Uniceps.utlis.Components"
               xmlns:cs="clr-namespace:Uniceps.Components"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -107,10 +107,7 @@
                                      Binding="{Binding DaysInWeek}"
                                     Width="*"
                                     />
-                                <DataGridTextColumn Header="الاشتراك اليومي" IsReadOnly="True"
-                                     Binding="{Binding DailyPrice,Converter={StaticResource convertNum}}"
-                                    Width="*"
-                                    />
+                             
                                 <DataGridTextColumn Header="عدد ايام الاشتراك" IsReadOnly="True"
                                      Binding="{Binding DaysCount}"
                                     Width="*"
@@ -139,6 +136,8 @@
                     </Grid>
                 </Grid>
             </Border>
+            <Comp:CaptinUniForEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="4" Title="لا يوجد رياضات بعد" 
+                          Caption="اضغط على زر اضافة رياضة وانشئ رياضة لتسجل لاعبينك بها"/>
         </Grid>
     </Border>
 

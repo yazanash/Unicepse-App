@@ -88,7 +88,7 @@
         Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
         FontSize="13"/>
                                         <TextBox 
-      IsReadOnly="{Binding DaysCounter,UpdateSourceTrigger=PropertyChanged}"
+      IsReadOnly="True"
      Text="{Binding SubscribeDays, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
@@ -102,16 +102,7 @@
         />
                                     </StackPanel>
 
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Margin="5">
-                                        <TextBlock Text="طبيعة الاشتراك"  Foreground="{DynamicResource Brush.Foreground}"
-                        VerticalAlignment="Center"
-        Margin="0 0 10 0"
-        FontSize="13"/>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <RadioButton GroupName="ch" IsChecked="{Binding DaysCounter,UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك كامل"/>
-                                            <RadioButton GroupName="ch" IsChecked="True" Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك يومي"/>
-                                        </StackPanel>
-                                    </StackPanel>
+                                   
                                     <StackPanel Grid.Row="1" Grid.Column="2" Margin="5 5">
                                         <TextBlock Text="الاجمالي" 
         Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"

@@ -1,17 +1,19 @@
-﻿using Uniceps.Commands;
-using Uniceps.Commands.ExpensesCommands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Exp = Uniceps.Core.Models.Expenses;
+using Uniceps.Commands;
+using Uniceps.Commands.ExpensesCommands;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
-using Uniceps.utlis.common;
-using Uniceps.Stores;
 using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.ViewModels.PlayersViewModels;
+using Uniceps.Views.Expenses;
+using Uniceps.Views.PlayerViews;
+using Exp = Uniceps.Core.Models.Expenses;
 
 namespace Uniceps.ViewModels.Expenses
 {
@@ -34,10 +36,16 @@ namespace Uniceps.ViewModels.Expenses
             _navigatorStore = navigatorStore;
             _expensesListViewModel = expensesListViewModel;
 
-            EditExpensesCommand = new NavaigateCommand<EditExpenseViewModel>(new NavigationService<EditExpenseViewModel>(_navigatorStore, () => new EditExpenseViewModel(_expensesDataStore, _navigatorStore, _expensesListViewModel)));
+            EditExpensesCommand = new RelayCommand(ExecuteEditExpensesCommand);
             DeleteExpensesCommand = new DeleteExpaensesCommand(expensesDataStore);
         }
-
+        public void ExecuteEditExpensesCommand()
+        {
+            EditExpenseViewModel editExpenseViewModel = new EditExpenseViewModel(_expensesDataStore!,this);
+            ExpenseDetailViewWinow expenseDetailViewWinow = new ExpenseDetailViewWinow();
+            expenseDetailViewWinow.DataContext = editExpenseViewModel;
+            expenseDetailViewWinow.ShowDialog();
+        }
         public ExpensesListItemViewModel(Core.Models.Expenses.Expenses expenses, NavigationStore navigatorStore)
         {
             Expenses = expenses;

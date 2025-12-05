@@ -1,18 +1,20 @@
-﻿using Uniceps.Commands;
-using Uniceps.Commands.AuthCommands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
+using Uniceps.Commands.AuthCommands;
 using Uniceps.Commands.Player;
+using Uniceps.Core.Models.Authentication;
 using Uniceps.navigation;
+using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
-using Uniceps.navigation.Stores;
-using Uniceps.Core.Models.Authentication;
+using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views.AuthView;
 
 namespace Uniceps.ViewModels.Authentication
 {
@@ -22,18 +24,17 @@ namespace Uniceps.ViewModels.Authentication
         private readonly ObservableCollection<UserListItemViewModel> _userListItemViewModels;
         private NavigationStore _navigatorStore;
         private readonly UsersDataStore _usersDataStore;
-        private readonly EmployeeStore _employeeStore;
         private readonly AuthenticationStore _authenticationStore;
         public IEnumerable<UserListItemViewModel> UsersList => _userListItemViewModels;
         public ICommand AddUserCommand { get; }
         public ICommand LoadUsersCommand { get; }
         public ICommand LoadUsersLogsCommand { get; }
         public SearchBoxViewModel SearchBox { get; set; }
-        public UsersListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore, AuthenticationStore authenticationStore)
+        public bool HasData => _userListItemViewModels.Count > 0;
+        public UsersListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, AuthenticationStore authenticationStore)
         {
             _navigatorStore = navigatorStore;
             _usersDataStore = usersDataStore;
-            _employeeStore = employeeStore;
             _authenticationStore = authenticationStore;
 
             _userListItemViewModels = new ObservableCollection<UserListItemViewModel>();
@@ -45,11 +46,16 @@ namespace Uniceps.ViewModels.Authentication
             SearchBox.SearchedText += SearchBox_SearchedText;
 
             LoadUsersCommand = new LoadUsersCommand(_usersDataStore);
-            AddUserCommand = new NavaigateCommand<AddUserViewModel>(new NavigationService<AddUserViewModel>(_navigatorStore,
-                () => CreateUserViewModel(_usersDataStore, _navigatorStore, this, _employeeStore)));
-
+            AddUserCommand = new RelayCommand(ExecuteAddUserCommand);
             LoadUsersLogsCommand = new NavaigateCommand<AuthenticationLoggingList>(new NavigationService<AuthenticationLoggingList>(_navigatorStore,
                () => CreateLogsViewModel(_usersDataStore)));
+        }
+        private void ExecuteAddUserCommand()
+        {
+            AddUserViewModel addUserViewModel = AddUserViewModel.loadViewModel(_usersDataStore);
+            AddUserViewWindow addUserViewWindow = new AddUserViewWindow();
+            addUserViewWindow.DataContext = addUserViewModel;
+            addUserViewWindow.ShowDialog();
         }
         public UserListItemViewModel? SelectedUser
         {
@@ -74,14 +80,9 @@ namespace Uniceps.ViewModels.Authentication
             }
         }
 
-        private AddUserViewModel CreateUserViewModel(UsersDataStore usersDataStore, NavigationStore navigatorStore, UsersListViewModel usersListViewModel, EmployeeStore employeeStore)
+        public static UsersListViewModel LoadViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, AuthenticationStore authenticationStore)
         {
-            return AddUserViewModel.loadViewModel(usersDataStore, navigatorStore, usersListViewModel, employeeStore);
-        }
-
-        public static UsersListViewModel LoadViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, EmployeeStore employeeStore, AuthenticationStore authenticationStore)
-        {
-            UsersListViewModel usersListViewModel = new UsersListViewModel(navigatorStore, usersDataStore, employeeStore, authenticationStore);
+            UsersListViewModel usersListViewModel = new UsersListViewModel(navigatorStore, usersDataStore, authenticationStore);
             usersListViewModel.LoadUsersCommand.Execute(null);
             return usersListViewModel;
         }
@@ -105,6 +106,7 @@ namespace Uniceps.ViewModels.Authentication
             {
                 itemViewModel.update(obj);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _usersDataStore_Deleted(int id)
@@ -115,6 +117,7 @@ namespace Uniceps.ViewModels.Authentication
             {
                 _userListItemViewModels.Remove(itemViewModel);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _usersDataStore_Created(User obj)
@@ -131,9 +134,10 @@ namespace Uniceps.ViewModels.Authentication
         }
         private void AddUser(User user)
         {
-            UserListItemViewModel userListItemViewModel = new UserListItemViewModel(user, _navigatorStore, _usersDataStore, this, _employeeStore, _authenticationStore);
+            UserListItemViewModel userListItemViewModel = new UserListItemViewModel(user, _usersDataStore, _authenticationStore);
             _userListItemViewModels.Add(userListItemViewModel);
             userListItemViewModel.Order = _userListItemViewModels.Count();
+            OnPropertyChanged(nameof(HasData));
 
         }
         private AuthenticationLoggingList CreateLogsViewModel(UsersDataStore usersDataStore)

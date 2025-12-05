@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Uniceps.utlis.common;
 using Uniceps.Core.Models.Subscription;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
@@ -17,11 +16,10 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         {
             _subscription = subscription;
         }
-        public string? PlayerName => _subscription.Player!.FullName;
-        public string? SportName => _subscription.Sport!.Name;
+        public string? PlayerName => _subscription.PlayerName;
+        public string? SportName => _subscription.SportName;
         public double Price => _subscription.PriceAfterOffer;
         public string rollAndEndDate => _subscription.RollDate.ToShortDateString() + "-" + _subscription.EndDate.ToShortDateString();
-        public double Paid => _subscription.PaidValue;
         public double OfferVal => _subscription.OfferValue;
         //public string FromTo => trainerDueses.From.ToString() + "-" + trainerDueses.To.ToString();
 

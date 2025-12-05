@@ -64,7 +64,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             }
             else if (obj != null)
             {
-                LoadSubscriptions(_subscriptionDataStore.Subscriptions.Where(x => x.Sport != null && x.Sport!.Id == obj.Id));
+                LoadSubscriptions(_subscriptionDataStore.Subscriptions.Where(x =>  x.SportId == obj.Id));
             }
         }
         public void SearchSubscriptionsBySport(Core.Models.Sport.Sport? obj, string query)
@@ -75,7 +75,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             }
             else if (SelectedSport!.Sport != null)
             {
-                LoadSubscriptions(_subscriptionDataStore.Subscriptions.Where(x => x.Sport != null && x.Sport!.Id == SelectedSport!.Sport.Id), query);
+                LoadSubscriptions(_subscriptionDataStore.Subscriptions.Where(x => x.SportId == SelectedSport!.Sport.Id), query);
             }
         }
         public SportListItemViewModel? SelectedSport
@@ -103,22 +103,22 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             {
                 AddSubscription(subscription);
             }
-            PlayersCount = _subscriptionListItemViewModels.Count;
-            PlayersFemaleCount = _subscriptionListItemViewModels.Where(x => !x.Subscription.Player!.GenderMale).Count();
-            PlayersMaleCount = _subscriptionListItemViewModels.Where(x => x.Subscription.Player!.GenderMale).Count();
+            //PlayersCount = _subscriptionListItemViewModels.Count;
+            //PlayersFemaleCount = _subscriptionListItemViewModels.Where(x => !x.Subscription.Player!.GenderMale).Count();
+            //PlayersMaleCount = _subscriptionListItemViewModels.Where(x => x.Subscription.Player!.GenderMale).Count();
 
         }
         void LoadSubscriptions(IEnumerable<Subscription> subscriptions, string query)
         {
             _subscriptionListItemViewModels.Clear();
 
-            foreach (Subscription subscription in subscriptions.Where(x => x.Player!.FullName!.Contains(query)))
+            foreach (Subscription subscription in subscriptions.Where(x => x.PlayerName!.Contains(query)))
             {
                 AddSubscription(subscription);
             }
-            PlayersCount = _subscriptionListItemViewModels.Count;
-            PlayersFemaleCount = _subscriptionListItemViewModels.Where(x => !x.Subscription.Player!.GenderMale).Count();
-            PlayersMaleCount = _subscriptionListItemViewModels.Where(x => x.Subscription.Player!.GenderMale).Count();
+            //PlayersCount = _subscriptionListItemViewModels.Count;
+            //PlayersFemaleCount = _subscriptionListItemViewModels.Where(x => !x.Subscription.Player!.GenderMale).Count();
+            //PlayersMaleCount = _subscriptionListItemViewModels.Where(x => x.Subscription.Player!.GenderMale).Count();
 
         }
         private void _subscriptionDataStore_Loaded()

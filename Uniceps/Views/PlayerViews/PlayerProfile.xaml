@@ -29,9 +29,6 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
 
-        <DataTemplate DataType="{x:Type vms:EditPlayerViewModel }">
-            <view:PlayerDetailView />
-        </DataTemplate>
         <DataTemplate DataType="{x:Type vms:PlayerMainPageViewModel }">
             <view:PlayerMainPage />
         </DataTemplate>
@@ -96,14 +93,7 @@
                             <TextBlock  Text="الصفحة الشخصية" />
                         </StackPanel>
                     </RadioButton>
-                    <RadioButton
-                    Command="{Binding SubscriptionCommand}"
-                                Style="{StaticResource BarButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>
-                            <TextBlock  Text="اضافة اشتراك" />
-                        </StackPanel>
-                    </RadioButton>
+                  
                     <RadioButton
                             Command="{Binding PaymentCommand}"
                                 Style="{StaticResource BarButtonRD}" >

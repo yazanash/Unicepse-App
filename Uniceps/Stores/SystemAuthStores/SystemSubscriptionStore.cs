@@ -8,6 +8,8 @@ using System.Windows;
 using Uniceps.API.common;
 using Uniceps.API.ResponseModels;
 using Uniceps.API.Services;
+using Uniceps.BackgroundServices;
+using Uniceps.Core.Models;
 using Uniceps.Core.Models.SystemAuthModels;
 using Uniceps.Core.Services;
 
@@ -17,44 +19,47 @@ namespace Uniceps.Stores.SystemAuthStores
     {
         private readonly SystemSubscriptionApiDataService _subscriptionApiDataService;
         private readonly ISystemSubscriptionDataService _systemSubscriptionDataService;
-        public SystemSubscriptionStore(SystemSubscriptionApiDataService subscriptionApiDataService, ISystemSubscriptionDataService systemSubscriptionDataService)
+        private readonly AccountStore _accountStore;
+        public SystemSubscriptionStore(SystemSubscriptionApiDataService subscriptionApiDataService, ISystemSubscriptionDataService systemSubscriptionDataService, AccountStore accountStore)
         {
             _subscriptionApiDataService = subscriptionApiDataService;
             _systemPlans = new List<SystemPlanModel>();
             _systemSubscriptionDataService = systemSubscriptionDataService;
+            _accountStore = accountStore;
         }
         private List<SystemPlanModel> _systemPlans;
         public IEnumerable<SystemPlanModel> SystemPlanModels => _systemPlans;
-        public event Action<SystemPlanModel>? Created;
         public event Action? Loaded;
-        public event Action<SystemPlanModel>? Updated;
-        public event Action<int>? Deleted;
-
-        public async Task Add(SystemPlanItem entity)
+        public event Action? Created;
+        public async Task<MembershipPayment> Add(SystemPlanItem entity)
         {
             ApiResponse<MembershipPaymentResponse> apiResponse = await _subscriptionApiDataService.Create(entity);
             if (apiResponse.StatusCode == 201 || apiResponse.StatusCode == 200)
             {
                 try
                 {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = apiResponse.Data!.PaymentUrl,
-                        UseShellExecute = true // This ensures it opens in the default browser
-                    });
+                    MembershipPayment membershipPayment = new MembershipPayment();
+                    membershipPayment.RequirePayment = apiResponse.Data!.RequirePayment;
+                    membershipPayment.PaymentUrl= apiResponse.Data!.PaymentUrl;
+                    membershipPayment.CashPaymentUrl = apiResponse.Data!.CashPaymentUrl;
+                    membershipPayment.Message = apiResponse.Data!.Message;
+                    Created?.Invoke();
+                    return membershipPayment;
+                
+                    
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Unable to open browser: " + ex.Message);
+                  throw new Exception("Unable to open browser: " + ex.Message);
                 }
 
             }
+            else
+            {
+                throw new Exception("خطأ في شراء النسخة");
+            }
         }
 
-        public Task Delete(int entity_id)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task GetAllPlans()
         {
@@ -82,15 +87,47 @@ namespace Uniceps.Stores.SystemAuthStores
             }
             Loaded?.Invoke();
         }
-
-        public Task Initialize()
+        public async Task<bool> CheckAndSyncSubscriptionAsync()
         {
-            throw new NotImplementedException();
-        }
+            var localsystemSubscription = await _systemSubscriptionDataService.GetActiveSubscription();
 
-        public Task Update(SystemPlanModel entity)
-        {
-            throw new NotImplementedException();
+            bool internetAvailable = InternetAvailability.IsInternetAvailable();
+            if (internetAvailable)
+            {
+                var remotesystemSubscription = await _subscriptionApiDataService.GetActiveSubscription();
+                if (remotesystemSubscription.Data != null && remotesystemSubscription.StatusCode == 200)
+                {
+                    SystemSubscription systemSubscription = new SystemSubscription()
+                    {
+                        PublicId = remotesystemSubscription.Data.Id,
+                        PlanName = remotesystemSubscription.Data.Plan,
+                        StartDate = remotesystemSubscription.Data.StartDate,
+                        EndDate = remotesystemSubscription.Data.EndDate,
+                        IsActive = remotesystemSubscription.Data.IsActive,
+                        IsGift = remotesystemSubscription.Data.IsGift,
+                        Price = remotesystemSubscription.Data.Price
+                    };
+                    if (localsystemSubscription != null)
+                    {
+                        systemSubscription.Id = localsystemSubscription.Id;
+                        _accountStore.SystemSubscription = await _systemSubscriptionDataService.Update(systemSubscription);
+                    }
+                    else
+                        _accountStore.SystemSubscription = await _systemSubscriptionDataService.Create(systemSubscription);
+
+                    return true;
+                }
+            }
+            else
+            {
+                if (localsystemSubscription != null)
+                {
+                    _accountStore.SystemSubscription = localsystemSubscription;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

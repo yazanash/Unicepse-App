@@ -19,5 +19,6 @@ namespace Uniceps.Core.Models.Employee
         public double Credits { get; set; }
         public double Salary { get; set; }
         public double CreditsCount { get; set; }
+        public List<TrainerDuesDetail> Details { get; set; } = new List<TrainerDuesDetail>();
     }
 }

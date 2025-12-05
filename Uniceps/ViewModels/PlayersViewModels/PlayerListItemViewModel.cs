@@ -10,10 +10,11 @@ using System.Windows.Media;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.navigation;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.Core.Models.Player;
+using Uniceps.Views.PlayerViews;
+using Uniceps.Commands;
 
 namespace Uniceps.ViewModels.PlayersViewModels
 {
@@ -85,9 +86,8 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _navigationService = navigationService;
             _playerMainPageViewModel = playerMainPageViewModel;
 
-            VerifyAccountCommand = new VerifyAccountCommand(new ReadPlayerQrCodeViewModel(), _playersDataStore);
 
-            EditCommand = new NavaigateCommand<EditPlayerViewModel>(new NavigationService<EditPlayerViewModel>(_navigationStore, () => new EditPlayerViewModel(_navigationStore, _playersDataStore, _playerMainPageViewModel)));
+            EditCommand = new RelayCommand(ExecuteOpenEditCommand);
             DeleteCommand = new DeletePlayerCommand(_navigationService, _playersDataStore);
             ReactivePlayerCommand = new ReactivePlayerCommand(_playersDataStore);
         }
@@ -100,6 +100,13 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _navigationStore = navigationStore;
             OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => playerProfileViewModel));
 
+        }
+        public void ExecuteOpenEditCommand()
+        {
+            EditPlayerViewModel editPlayerViewModel = new EditPlayerViewModel(_playersDataStore!);
+            PlayerDetailWindowView playerDetailWindowView = new PlayerDetailWindowView();
+            playerDetailWindowView.DataContext = editPlayerViewModel;
+            playerDetailWindowView.ShowDialog();
         }
         public PlayerListItemViewModel(Player player)
         {
@@ -118,7 +125,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _homeViewModel = homeViewModel;
             OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => playerProfileViewModel));
 
-            LogInCommand = new LoginPlayerCommand(_playersAttendenceStore, _playersDataStore, new NavigationService<HomeViewModel>(_navigationStore, () => _homeViewModel), this, playerProfileViewModel, _navigationStore);
         }
 
 

@@ -78,10 +78,6 @@
                            LineStackingStrategy="BlockLineHeight" TextWrapping="WrapWithOverflow"
                            TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="{DynamicResource Brush.Foreground}"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="السعر اليومي :" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                                <TextBlock Text="{Binding DailyPrice,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="1" Grid.Row="0"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="عدد تدريب الايام بالاسبوع :" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="0" Grid.Row="1"/>
                                 <TextBlock Text="{Binding DaysInWeek}" Foreground="{DynamicResource Brush.Foreground}" Grid.Column="1" Grid.Row="1"/>
                             </StackPanel>

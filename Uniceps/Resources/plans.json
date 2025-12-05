@@ -1,0 +1,74 @@
+{
+  "features": [
+    {
+      "Name": "تسجيل غير محدود لللاعبين والرياضات ",
+      "IsFree": true,
+      "IsPremium": true,
+      "FreeLimitString": "حد اقصى 50 لاعب - 2 رياضات",
+      "PrimumLimitString": "غير محدود"
+    },
+    {
+      "Name": "أضافة المدربين والموظفين برواتب محددة",
+      "IsFree": true,
+      "IsPremium": true,
+      "FreeLimitString": "حد اقصى 2 مدرب - 2 موظف",
+      "PrimumLimitString": "غير محدود"
+    },
+    {
+      "Name": "تسجيل غير محدود للمصاريف",
+      "IsFree": true,
+      "IsPremium": true,
+      "FreeLimitString": "",
+      "PrimumLimitString": ""
+    },
+    {
+      "Name": "تقارير زمنية عن الايرادات والمصاريف",
+      "IsFree": true,
+      "IsPremium": true,
+      "FreeLimitString": "",
+      "PrimumLimitString": ""
+    },
+    {
+      "Name": "ادارة مستخدمين التطبيق والصلاحيات وقفل التطبيق",
+      "IsFree": false,
+      "IsPremium": true,
+      "FreeLimitString": "",
+      "PrimumLimitString": ""
+    },
+    {
+      "Name": "تتبع دخول/ خروج اللاعبين (عن طريق كود الدخول / QrCode)",
+      "IsFree": false,
+      "IsPremium": true,
+      "FreeLimitString": "",
+      "PrimumLimitString": ""
+    },
+    {
+      "Name": "محاسبة متقدمة للمدربين حسب نسب محددة وضمن تتبع زمني دقيق",
+      "IsFree": false,
+      "IsPremium": true,
+      "FreeLimitString": "",
+      "PrimumLimitString": ""
+    },
+    {
+      "Name": "تقارير دقيقة عن الحركة المالية اليومية (مدفوعات -ايرادات-مصاريف-اشتراكات)",
+      "IsFree": false,
+      "IsPremium": true,
+      "FreeLimitString": "",
+      "PrimumLimitString": ""
+    },
+    {
+      "Name": "تسجيل قياسات اللاعبين ومتابعة التغييرات",
+      "IsFree": false,
+      "IsPremium": true,
+      "FreeLimitString": "",
+      "PrimumLimitString": ""
+    },
+    {
+      "Name": "انشاء وادارة البرامج الرياضية وتصديرها بصيغة PDF وبصيغة UNX (لارسالها للاعبين ستخدمون unicepse)",
+      "IsFree": false,
+      "IsPremium": true,
+      "FreeLimitString": "",
+      "PrimumLimitString": ""
+    }
+  ]
+}

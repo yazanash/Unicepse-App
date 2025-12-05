@@ -50,38 +50,24 @@ namespace Uniceps.Commands.SubscriptionCommand
                 _playerDataStore.SelectedPlayer!.Balance += _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
                 /// subscription info
                 _subscriptionDataStore.SelectedSubscription!.Id = _subscriptionDataStore.SelectedSubscription!.Id;
-                _subscriptionDataStore.SelectedSubscription!.Sport = _subscriptionDataStore.SelectedSport;
+                _subscriptionDataStore.SelectedSubscription!.SportId = _subscriptionDataStore.SelectedSport!.Id;
+                _subscriptionDataStore.SelectedSubscription!.SportName = _subscriptionDataStore.SelectedSport.Name;
                 _subscriptionDataStore.SelectedSubscription!.DaysCount = _editSubscriptionViewModel.SubscribeDays;
                 _subscriptionDataStore.SelectedSubscription!.LastCheck = _editSubscriptionViewModel.SubscribeDate;
-                _subscriptionDataStore.SelectedSubscription!.Trainer = _subscriptionDataStore.SelectedTrainer;
+                _subscriptionDataStore.SelectedSubscription!.TrainerName = _subscriptionDataStore.SelectedTrainer?.FullName;
                 _subscriptionDataStore.SelectedSubscription!.TrainerId = _subscriptionDataStore.SelectedTrainer != null ? _subscriptionDataStore.SelectedTrainer.Id : null;
-                _subscriptionDataStore.SelectedSubscription!.Player = _playerDataStore.SelectedPlayer!;
+                _subscriptionDataStore.SelectedSubscription!.PlayerId = _playerDataStore.SelectedPlayer!.Id;
+                _subscriptionDataStore.SelectedSubscription!.PlayerName = _playerDataStore.SelectedPlayer!.FullName;
                 _subscriptionDataStore.SelectedSubscription!.RollDate = _editSubscriptionViewModel.SubscribeDate;
-                //_subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.Price;
+                _subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.Price;
                 /// offer info
                 _subscriptionDataStore.SelectedSubscription!.OfferValue = _editSubscriptionViewModel.OfferValue;
                 _subscriptionDataStore.SelectedSubscription!.OfferDes = _editSubscriptionViewModel.Offer;
                 //_subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _subscriptionDataStore.SelectedSport.Price - _editSubscriptionViewModel.OfferValue;
                 /// private info
                 _subscriptionDataStore.SelectedSubscription!.EndDate = _editSubscriptionViewModel.SubscribeDate.AddDays(_editSubscriptionViewModel.SubscribeDays);
+                _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _editSubscriptionViewModel.Total ?? 0;
 
-
-                if (_editSubscriptionViewModel.DaysCounter)
-                {
-                    _subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.Price;
-                    _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _subscriptionDataStore.SelectedSubscription!.Price - _editSubscriptionViewModel.OfferValue;
-                }
-                else
-                {
-                    _subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.DailyPrice * _editSubscriptionViewModel.SubscribeDays;
-                    _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = _subscriptionDataStore.SelectedSubscription!.Price - _editSubscriptionViewModel.OfferValue;
-                }
-
-                _subscriptionDataStore.SelectedSubscription!.PaidValue = _subscriptionDataStore.SelectedSubscription!.PaidValue;
-                if (_subscriptionDataStore.SelectedSubscription!.PaidValue == _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer)
-                    _subscriptionDataStore.SelectedSubscription!.IsPaid = true;
-                else
-                    _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
                 _playerDataStore.SelectedPlayer!.Balance -= _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
                 if (_playerDataStore.SelectedPlayer!.SubscribeEndDate < _subscriptionDataStore.SelectedSubscription!.EndDate)
                 {

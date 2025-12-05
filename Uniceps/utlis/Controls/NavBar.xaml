@@ -42,56 +42,65 @@
                 <!--Logo-->
 
             <!--Menu Buttons-->
-                <StackPanel DockPanel.Dock="Top" >
+            <StackPanel DockPanel.Dock="Top" >
                 <CheckBox Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
                     <Icon:PackIconMaterial Kind="Menu"/>
                 </CheckBox>
-                    <RadioButton GroupName="nav"
+                <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Home}" 
                         IsChecked="True"
                                 Style="{StaticResource MenuButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Home"/>
-                            <TextBlock  Text="الرئيسية"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
-                        </StackPanel>
-                    </RadioButton>
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Home"/>
+                        <TextBlock  Text="الرئيسية"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton GroupName="nav"
+                Command="{Binding UpdateCurrentViewModelCommand}"
+                CommandParameter="{x:Static nav:ViewType.PlayersLog}" 
+                Style="{StaticResource MenuButtonRD}" >
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="SwapHorizontal"/>
+                        <TextBlock  Text="دخول/خروج اللاعبين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </RadioButton>
                 <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Players}" 
                                 Style="{StaticResource MenuButtonRD}" >
-                        <StackPanel Orientation="Horizontal" >
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountSupervisor" />
-                            <TextBlock Text="اللاعبين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
-                           
-                        </StackPanel>
-                    </RadioButton>
+                    <StackPanel Orientation="Horizontal" >
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountSupervisor" />
+                        <TextBlock Text="اللاعبين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+
+                    </StackPanel>
+                </RadioButton>
                 <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Sport}" 
                                 Style="{StaticResource MenuButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell" />
-                            <TextBlock Text="الرياضات"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
-                           
-                        </StackPanel>
-                    </RadioButton>
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="IdCard" />
+                        <TextBlock Text="الرياضات"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+
+                    </StackPanel>
+                </RadioButton>
                 <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Trainer}" 
                                 Style="{StaticResource MenuButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
                         <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountGroup" />
-                            <TextBlock Text="العاملين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
-                          
-                        </StackPanel>
-                    </RadioButton>
+                        <TextBlock Text="العاملين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+
+                    </StackPanel>
+                </RadioButton>
                 <RadioButton  GroupName="nav"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static nav:ViewType.Exercises}" 
                 Style="{StaticResource MenuButtonRD}" >
                     <StackPanel Orientation="Horizontal">
-                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ProgressPencil"/>
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>
                         <TextBlock Text="البرامج الرياضية"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
 
                     </StackPanel>
@@ -100,12 +109,12 @@
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Accounting}" 
                                 Style="{StaticResource MenuButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCash"/>
-                            <TextBlock Text="المحاسبة"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
-                           
-                        </StackPanel>
-                    </RadioButton>
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCash"/>
+                        <TextBlock Text="المحاسبة"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+
+                    </StackPanel>
+                </RadioButton>
 
                 <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
@@ -122,32 +131,11 @@
                                 CommandParameter="{x:Static nav:ViewType.About}" 
                                 Style="{StaticResource MenuButtonRD}" >
                     <StackPanel Orientation="Horizontal">
-                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Information" />
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CogBox" />
                         <TextBlock Text="حول"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
 
                     </StackPanel>
                 </RadioButton>
-            </StackPanel>
-            
-                
-                
-                
-                
-                <StackPanel VerticalAlignment="Stretch" DockPanel.Dock="Bottom">
-
-
-                <RadioButton GroupName="nav" VerticalAlignment="Bottom"
-                                Command="{Binding UpdateCurrentViewModelCommand}"
-                                CommandParameter="{x:Static nav:ViewType.Logout}" 
-                DockPanel.Dock="Bottom"
-                Margin="0"
-                                Style="{StaticResource MenuButtonRD}" >
-                <StackPanel Orientation="Horizontal">
-                    <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Logout" />
-                    <TextBlock Text="تسجيل خروج"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
-
-                </StackPanel>
-            </RadioButton>
             </StackPanel>
         </DockPanel>
         </Border>

@@ -21,10 +21,6 @@ namespace Uniceps.HostBuilders
             _hostBuilder.ConfigureServices(services =>
             {
                 services.AddSingleton<PlayerApiDataService>();
-                services.AddSingleton<PaymentApiDataService>();
-                services.AddSingleton<MetricApiDataService>();
-                services.AddSingleton<SubscriptionApiDataService>();
-                services.AddSingleton<AttendanceApiDataService>();
                 services.AddSingleton<GetExercisesService>();
                 services.AddSingleton<SystemAuthApiService>();
                 services.AddSingleton<SystemProfileApiDataService>();

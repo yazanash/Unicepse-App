@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Uniceps.Commands;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.Stores.RoutineStores;
@@ -23,8 +24,12 @@ namespace Uniceps.Commands.RoutineSystemCommands.DayGroupCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            DayGroup dayGroup = _dayGroupViewModel.DayGroup;
-            await _dataStore.Delete(dayGroup.Id);
+            if (MessageBox.Show("سيتم حذف اليوم التدريبي وجميع تمارينه ... هل انت متاكد", "", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                DayGroup dayGroup = _dayGroupViewModel.DayGroup;
+                await _dataStore.Delete(dayGroup.Id);
+            }
+          
         }
     }
 }

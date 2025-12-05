@@ -5,52 +5,73 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Views.RoutineTemplateViews"
              mc:Ignorable="d" 
+              xmlns:Converters="clr-namespace:Uniceps.utlis.Converters"
              xmlns:routinecomponent="clr-namespace:Uniceps.Views.RoutineTemplateViews.RoutineComponent"
                 xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
                 FlowDirection="RightToLeft" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border Padding="10">
+    <UserControl.Resources>
+        <Converters:EnumDisplayNameConverter x:Key="EnumToText"/>
+        <BooleanToVisibilityConverter x:Key="boolToVis"/>
+    </UserControl.Resources>
+    <Border Padding="5">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200"/>
-        </Grid.ColumnDefinitions>
-        <routinecomponent:DayGroupListView Grid.Column="0"
-                                           
-                                        DataContext="{Binding RoutineDayGroupViewModel}"
-                                        IncomingDayGroupItem="{Binding IncomingDayGroupViewModel}"
-                                        InsertedDayGroupItem="{Binding InsertedDayGroupViewModel}"
-                                        RemovedDayGroupItem="{Binding RemovedDayGroupViewModel}"
-                                        TargetDayGroupItem="{Binding TargetDayGroupViewModel}"
-                                          DayGroupItemRemovedCommand="{Binding DayGroupItemRemovedCommand}"
-                                        DayGroupItemDropCommand="{Binding DayGroupReceivedCommand}"
-                                        DayGroupItemInsertedCommand="{Binding DayGroupInsertedCommand}"
-                                           SaveNewOrderCommand="{Binding SaveNewOrderCommand}"
-                                       />
-        
-        <routinecomponent:RoutineItemsView  Grid.Column="1" DataContext="{Binding RoutineItemListViewModel}"
-                                            IncomingRoutineItem="{Binding IncomingRoutineItemViewModel}"
-InsertedRoutineItem="{Binding InsertedRoutineItemViewModel}"
-RemovedRoutineItem="{Binding RemovedRoutineItemViewModel}"
-TargetRoutineItem="{Binding TargetRoutineItemViewModel}"
-RoutineItemDropCommand="{Binding RoutineItemReceivedCommand}"
-RoutineItemInsertedCommand="{Binding RoutineItemInsertedCommand}"
-   SaveNewRoutineItemOrderCommand="{Binding SaveNewOrderCommand}"
-RoutineItemRemovedCommand="{Binding RoutineItemRemovedCommand}"/>
-        <routinecomponent:RoutineItemModelCardView  Grid.Column="2" DataContext="{Binding SetModelListItemViewModel,UpdateSourceTrigger=PropertyChanged}" 
-                                                                                                IncomingSetModelItem="{Binding IncomingSetModelItemViewModel}"
-InsertedSetModelItem="{Binding InsertedSetModelItemViewModel}"
-RemovedSetModelItem="{Binding RemovedSetModelItemViewModel}"
-TargetSetModelItem="{Binding TargetSetModelItemViewModel}"
-SetModelItemDropCommand="{Binding SetModelItemReceivedCommand}"
-SetModelItemInsertedCommand="{Binding SetModelItemInsertedCommand}"
-   SaveNewSetModelItemOrderCommand="{Binding SaveNewOrderCommand}"
-SetModelItemRemovedCommand="{Binding SetModelItemRemovedCommand}"/>
+            <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Border Padding="10 5" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Grid.Column="0" Style="{DynamicResource BorderedIconBtn}" Command="{Binding BackCommand}" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <icons:PackIconMaterial VerticalAlignment="Center" HorizontalAlignment="Center" Kind="ArrowRight" Width="20" Height="20"/>
+                            <TextBlock Text="عودة" VerticalAlignment="Center" Margin="10 0" HorizontalAlignment="Center" FontSize="16" />
+                        </StackPanel>
+                    </Button>
+                    <TextBox Text="{Binding Name}" Margin="10 0" Width="200" Style="{DynamicResource textBoxStyle}"/>
+                    <ComboBox Width="150" Style="{DynamicResource ComboBoxStyle1}" 
+  ItemsSource="{Binding RoutineLevels,UpdateSourceTrigger=PropertyChanged}" Tag="المستوى"
+  SelectedItem="{Binding Level,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+  ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"
+>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumToText}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
 
-    </Grid>
+
+                    <Button Visibility="{Binding IsEditable,Converter={StaticResource boolToVis}}" Width="100" Command="{Binding UpdateRoutineCommand}" Margin="10 0" Style="{DynamicResource AddBtn}" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <icons:PackIconMaterial VerticalAlignment="Center" HorizontalAlignment="Center" Kind="ContentSaveOutline" Width="20" Height="20"/>
+                            <TextBlock Text="حفظ" VerticalAlignment="Center" Margin="10 0" HorizontalAlignment="Center" FontSize="16" />
+                        </StackPanel>
+                    </Button>
+                    <Button  Command="{Binding ExportCommand}" Style="{DynamicResource BorderedIconBtn}" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <icons:PackIconMaterial VerticalAlignment="Center" HorizontalAlignment="Center" Kind="PrinterCheck" Width="20" Height="20"/>
+                            <TextBlock Text="تصدير" VerticalAlignment="Center" Margin="10 0" HorizontalAlignment="Center" FontSize="16" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding DeleteRoutineCommand}" Margin="10 0" Style="{DynamicResource BorderedIconBtn}" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <icons:PackIconMaterial VerticalAlignment="Center" HorizontalAlignment="Center" Kind="TrashCan" Width="20" Height="20"/>
+                            <TextBlock Text="حذف" VerticalAlignment="Center" Margin="10 0" HorizontalAlignment="Center" FontSize="16" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+                
+            </Border>
+        <routinecomponent:DayGroupListView Grid.Column="0" Grid.Row="1" DataContext="{Binding RoutineDayGroupViewModel}"/>
+            <routinecomponent:RoutineItemsView Grid.Row="1" Grid.Column="1" DataContext="{Binding RoutineItemListViewModel}" />
+
+        </Grid>
     </Border>
 </UserControl>

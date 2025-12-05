@@ -73,8 +73,17 @@
                 DataContext="{Binding NotificationBarViewModel,UpdateSourceTrigger=PropertyChanged}" 
                  Visibility="{Binding HasNotification,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}"/>
                     <StackPanel Grid.Column="2"  Orientation="Horizontal" VerticalAlignment="Center">
+                        
                         <Button Style="{DynamicResource IconBtn}" VerticalAlignment="Center" Command="{Binding ChangeThemeCommand}">
                             <Icon:PackIconMaterial Kind="{Binding ThemeIcon,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="25" Height="25"/>
+                        </Button>
+                        <Button 
+Command="{Binding Navigator.UpdateCurrentViewModelCommand}"
+CommandParameter="{x:Static nav:ViewType.About}" 
+Style="{StaticResource IconBtn}" >
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial  Kind="CogOutline" VerticalAlignment="Center" Width="25" Height="25"/>
+                            </StackPanel>
                         </Button>
                     </StackPanel>
                 </Grid>

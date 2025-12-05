@@ -1,17 +1,18 @@
-﻿using Uniceps.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
-using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
+using Uniceps.Stores;
 using Uniceps.Stores.EmployeeStores;
+using Uniceps.ViewModels.Accountant;
 using Uniceps.ViewModels.Employee.CreditViewModels;
+using Uniceps.ViewModels.Expenses;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
@@ -22,10 +23,11 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         private readonly DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly EmployeeSubscriptionDataStore _employeeSubscriptionDataStore;
+        private readonly AccountStore _accountStore;
         public TrainerListItemViewModel? Employee { get; set; }
         public ViewModelBase? CurrentEmployeeViewModel => _navigatorStore.CurrentViewModel;
 
-        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, TrainerListItemViewModel? employee,  EmployeeSubscriptionDataStore employeeSubscriptionDataStore)
+        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, TrainerListItemViewModel? employee, EmployeeSubscriptionDataStore employeeSubscriptionDataStore, AccountStore accountStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
@@ -33,20 +35,29 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             _creditsDataStore = creditsDataStore;
             Employee = employee;
             _employeeSubscriptionDataStore = employeeSubscriptionDataStore;
+            _accountStore = accountStore;
 
             IsTrainer = _employeeStore.SelectedEmployee!.IsTrainer;
-            if (_employeeStore.SelectedEmployee!.IsTrainer)
-                navigatorStore.CurrentViewModel = LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _navigatorStore, _creditsDataStore, LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore));
+            if (_accountStore.SystemSubscription != null)
+            {
+                if (_employeeStore.SelectedEmployee!.IsTrainer)
+                    navigatorStore.CurrentViewModel = LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _navigatorStore, _creditsDataStore, LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore));
+                else
+                    navigatorStore.CurrentViewModel = LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore);
+                navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
+                EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore)));
+                TrainerPlayersCommand = new NavaigateCommand<TrainerSubscriptionViewModel>(new NavigationService<TrainerSubscriptionViewModel>(_navigatorStore, () => LoadTrainerSubscriptions(_employeeStore, _employeeSubscriptionDataStore)));
+                TrainerDusesCommand = new NavaigateCommand<EmployeeAccountantPageViewModel>(new NavigationService<EmployeeAccountantPageViewModel>(_navigatorStore, () => LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _navigatorStore, _creditsDataStore, LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore))));
+            }
             else
+            {
                 navigatorStore.CurrentViewModel = LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore);
-            navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
-            EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore)));
-            TrainerPlayersCommand = new NavaigateCommand<TrainerSubscriptionViewModel>(new NavigationService<TrainerSubscriptionViewModel>(_navigatorStore, () => LoadTrainerSubscriptions(_employeeStore, _employeeSubscriptionDataStore)));
-            TrainerDusesCommand = new NavaigateCommand<EmployeeAccountantPageViewModel>(new NavigationService<EmployeeAccountantPageViewModel>(_navigatorStore, () => LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _navigatorStore, _creditsDataStore, LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore))));
+                navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
+                EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore)));
+                TrainerPlayersCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () =>new PremiumViewModel()));
+                TrainerDusesCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
+            }
 
-            //PaymentCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => LoadPaymentsViewModel(_paymentDataStore, _playersDataStore, _navigatorStore, _subscriptionStore)));
-            //MetricsCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigatorStore, () => LoadMetricsViewModel(_metricDataStore, _playersDataStore, _navigatorStore)));
-            //TrainingProgramCommand = new NavaigateCommand<RoutinePlayerViewModels>(new NavigationService<RoutinePlayerViewModels>(_navigatorStore, () => LoadRoutineViewModel(_routineDataStore, _playersDataStore, _navigatorStore)));
         }
         private bool _isTrainer;
         public bool IsTrainer

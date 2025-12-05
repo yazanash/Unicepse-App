@@ -30,13 +30,15 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
         public bool IsSelected
         {
             get { return _isSelected; }
-            set { _isSelected = value; OnPropertyChanged(nameof(IsSelected)); }
+            set { _isSelected = value; OnPropertyChanged(nameof(IsSelected)); exercisesListViewModel.OnSelectedChanged(); SelectedAt = DateTime.Now; }
         }
+        public DateTime? SelectedAt { get; set; }
 
         public ICommand? AddItemCommand { get; }
         private readonly RoutineItemDataStore _routineItemDataStore;
         private readonly DayGroupDataStore _dayGroupDataStore;
-        public ExercisesListItemViewModel(Exercises exercises, RoutineItemDataStore routineItemDataStore, DayGroupDataStore dayGroupDataStore)
+        private readonly ExercisesListViewModel exercisesListViewModel;
+        public ExercisesListItemViewModel(Exercises exercises, RoutineItemDataStore routineItemDataStore, DayGroupDataStore dayGroupDataStore, ExercisesListViewModel exercisesListViewModel)
         {
             Exercises = exercises;
             switch (Exercises.MuscleGroupId)
@@ -65,8 +67,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
             }
             _routineItemDataStore = routineItemDataStore;
             _dayGroupDataStore = dayGroupDataStore;
-           
-            
+            this.exercisesListViewModel = exercisesListViewModel;
         }
     }
 }

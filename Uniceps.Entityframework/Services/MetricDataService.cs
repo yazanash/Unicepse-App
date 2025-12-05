@@ -14,7 +14,7 @@ using Uniceps.Entityframework.DbContexts;
 
 namespace Uniceps.Entityframework.Services
 {
-    public class MetricDataService : IDataService<Metric>
+    public class MetricDataService : IDataService<Metric>, IGetPlayerTransactionService<Metric>
     {
         private readonly UnicepsDbContextFactory _contextFactory;
         public MetricDataService(UnicepsDbContextFactory contextFactory)
@@ -63,7 +63,15 @@ namespace Uniceps.Entityframework.Services
             }
         }
 
-
+        public async Task<IEnumerable<Metric>> GetAll(Player player)
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Metric>? entities = await context.Set<Metric>().Where(x => x.Player!.Id == player.Id).Include(x => x.Player)
+                    .ToListAsync();
+                return entities;
+            }
+        }
         public async Task<Metric> Update(Metric entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();

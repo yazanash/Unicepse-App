@@ -1,11 +1,12 @@
-﻿using Uniceps.Core.Models.Payment;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.Commands;
+using Uniceps.Core.Models.Payment;
+using Uniceps.Core.Models.Subscription;
 using Uniceps.navigation;
 using Uniceps.Stores;
 using Uniceps.ViewModels.PaymentsViewModels;
@@ -35,27 +36,22 @@ namespace Uniceps.Commands.Payments
         {
             if (_editPaymentViewModel.PaymentValue > 0)
             {
-                _subscriptionDataStore.SelectedSubscription!.IsPaid = false;
-                _subscriptionDataStore.SelectedSubscription!.PaidValue -= _paymentDataStore.SelectedPayment!.PaymentValue;
-                _playersDataStore.SelectedPlayer!.Balance -= _paymentDataStore.SelectedPayment.PaymentValue;
+                _playersDataStore.SelectedPlayer!.Balance -= _paymentDataStore.SelectedPayment!.PaymentValue;
 
-
+                _playersDataStore.UpdatePlayerBalance(_paymentDataStore.SelectedPayment!.PlayerId, 0 - _paymentDataStore.SelectedPayment!.PaymentValue);
                 _paymentDataStore.SelectedPayment.Id = _paymentDataStore.SelectedPayment!.Id;
                 _paymentDataStore.SelectedPayment.PayDate = _editPaymentViewModel.PayDate;
                 _paymentDataStore.SelectedPayment.PaymentValue = _editPaymentViewModel.PaymentValue;
                 _paymentDataStore.SelectedPayment.Des = _editPaymentViewModel.Descriptiones;
-                _paymentDataStore.SelectedPayment.Subscription = _subscriptionDataStore.SelectedSubscription!;
-                _paymentDataStore.SelectedPayment.Player = _playersDataStore.SelectedPlayer!;
+                _paymentDataStore.SelectedPayment.PlayerId = _playersDataStore.SelectedPlayer!.Id;
+                _paymentDataStore.SelectedPayment.SubscriptionId = _editPaymentViewModel.SelectedSubscription!.Id;
 
-
-                _subscriptionDataStore.SelectedSubscription!.PaidValue += _paymentDataStore.SelectedPayment.PaymentValue;
                 _playersDataStore.SelectedPlayer!.Balance += _paymentDataStore.SelectedPayment.PaymentValue;
-                if (_subscriptionDataStore.SelectedSubscription!.PaidValue == _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer)
-                    _subscriptionDataStore.SelectedSubscription.IsPaid = true;
 
                 await _paymentDataStore.Update(_paymentDataStore.SelectedPayment!);
-                await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription);
-                await _playersDataStore.UpdatePlayer(_playersDataStore.SelectedPlayer!);
+                _playersDataStore.UpdatePlayerBalance(_paymentDataStore.SelectedPayment!.PlayerId, _paymentDataStore.SelectedPayment!.PaymentValue);
+
+
                 _navigationService.ReNavigate();
             }
             else

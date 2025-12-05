@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.Stores;
-using Uniceps.Stores.AccountantStores;
 using Uniceps.Stores.EmployeeStores;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.Stores.SportStores;
@@ -33,7 +32,6 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<EmployeeStore>();
                 services.AddSingleton<BackgroundServiceStore>();
                 services.AddSingleton<GymStore>();
-                services.AddSingleton<AccountantDailyStore>();
                 services.AddSingleton<CreditsDataStore>();
                 services.AddSingleton<DausesDataStore>();
                 services.AddSingleton<PaymentDataStore>();
@@ -43,23 +41,10 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<MetricDataStore>();
                 services.AddSingleton<AuthenticationStore>();
                 services.AddSingleton<EmployeeSubscriptionDataStore>();
-
-                services.AddSingleton<PaymentsDailyAccountantStore>();
-                services.AddSingleton<PaymentAccountantDataStore>();
-
-                services.AddSingleton<CreditsAccountantDataStore>();
-                services.AddSingleton<CreditsDailyAccountantStore>();
-
-                services.AddSingleton<DausesAccountantDataStore>();
-
-                services.AddSingleton<ExpansesDailyAccountantDataStore>();
-                services.AddSingleton<ExpensesAccountantDataStore>();
-
-                services.AddSingleton<SubscriptionDailyAccountantDataStore>();
-
                 services.AddSingleton<SportSubscriptionDataStore>();
-
+                services.AddSingleton<DailyReportStore>();
                 services.AddSingleton<ExercisesDataStore>();
+                services.AddSingleton<PeriodReportStore>();
 
                 services.AddSingleton<DayGroupDataStore>();
                 services.AddSingleton<RoutineItemDataStore>();
@@ -68,10 +53,8 @@ namespace Uniceps.HostBuilders
 
                 services.AddSingleton<ISystemAuthStore,SystemAuthStore>();
                 services.AddSingleton<SessionValidator>();
-                services.AddSingleton<ProfileManager>();
                 services.AddSingleton<UserContextValidator>();
                 services.AddSingleton<UserFlowService>();
-                services.AddSingleton<SystemSubscriptionManager>();
                 services.AddSingleton<IProfileDataStore, SystemProfileStore>();
                 services.AddSingleton<SystemSubscriptionStore>();
             });

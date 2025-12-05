@@ -5,16 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using emp = Uniceps.Core.Models.Employee;
-using Uniceps.utlis.common;
+using Emp = Uniceps.Core.Models.Employee;
 
 namespace Uniceps.ViewModels.SportsViewModels
 {
     public class TrainersListItemViewModel : ViewModelBase
     {
-        public emp.Employee trainer;
+        public Emp.Employee trainer;
 
-        public TrainersListItemViewModel(emp.Employee trainer)
+        public TrainersListItemViewModel(Emp.Employee trainer)
         {
             this.trainer = trainer;
         }

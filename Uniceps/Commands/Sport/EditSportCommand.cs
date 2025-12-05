@@ -1,4 +1,4 @@
-﻿using sp = Uniceps.Core.Models.Sport;
+﻿using Sp = Uniceps.Core.Models.Sport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +14,10 @@ namespace Uniceps.Commands.Sport
 {
     internal class EditSportCommand : AsyncCommandBase
     {
-        private readonly NavigationService<SportListViewModel> navigationService;
         private readonly SportDataStore _sportStore;
         private EditSportViewModel _editSportViewModel;
-        public EditSportCommand(NavigationService<SportListViewModel> navigationService, EditSportViewModel editSportViewModel, SportDataStore sportStore)
+        public EditSportCommand( EditSportViewModel editSportViewModel, SportDataStore sportStore)
         {
-
-            this.navigationService = navigationService;
             _sportStore = sportStore;
             _editSportViewModel = editSportViewModel;
             _editSportViewModel.PropertyChanged += _addSportViewModel_PropertyChanged;
@@ -41,11 +38,10 @@ namespace Uniceps.Commands.Sport
         {
             //try
             //{
-            Core.Models.Sport.Sport sport = new sp.Sport()
+            Core.Models.Sport.Sport sport = new Sp.Sport()
             {
                 Id = _sportStore.SelectedSport!.Id,
                 Name = _editSportViewModel.SportName,
-                DailyPrice = _editSportViewModel.DailyPrice,
                 DaysCount = _editSportViewModel.SubscribeLength,
                 DaysInWeek = _editSportViewModel.WeeklyTrainingDays,
                 Price = _editSportViewModel.MonthlyPrice,
@@ -60,8 +56,8 @@ namespace Uniceps.Commands.Sport
             }
             await _sportStore.Update(sport);
 
-            //MessageBox.Show("Sport edited successfully");
-            navigationService.Navigate();
+            MessageBox.Show("تم التعديل بنجاح");
+            _editSportViewModel.OnSportUpdated();
             //}
             //catch (Exception ex)
             //{

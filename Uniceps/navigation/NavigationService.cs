@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.navigation.Stores;
-using Uniceps.utlis.common;
+using Uniceps.ViewModels;
 
 namespace Uniceps.navigation
 {

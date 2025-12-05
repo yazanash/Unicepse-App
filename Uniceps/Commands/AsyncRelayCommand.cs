@@ -17,6 +17,7 @@ namespace Uniceps.Commands
         {
             _executeAsync = executeAsync;
             _canExecute = canExecute;
+
         }
 
         public bool CanExecute(object? parameter)
@@ -39,11 +40,12 @@ namespace Uniceps.Commands
                 RaiseCanExecuteChanged();
             }
         }
-
+#pragma warning disable CS0067 // The event is never used
         public event EventHandler? CanExecuteChanged;
-
+#pragma warning restore CS0067
         public void RaiseCanExecuteChanged()
         {
+            
             CommandManager.InvalidateRequerySuggested();
 
         }

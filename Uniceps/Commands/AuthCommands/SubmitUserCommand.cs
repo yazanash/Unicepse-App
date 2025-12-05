@@ -15,12 +15,10 @@ namespace Uniceps.Commands.AuthCommands
     public class SubmitUserCommand : AsyncCommandBase
     {
         private readonly UsersDataStore _usersDataStore;
-        private NavigationService<UsersListViewModel> _navigationService;
         private AddUserViewModel _addUserViewModel;
-        public SubmitUserCommand(UsersDataStore usersDataStore, NavigationService<UsersListViewModel> navigationService, AddUserViewModel addUserViewModel)
+        public SubmitUserCommand(UsersDataStore usersDataStore, AddUserViewModel addUserViewModel)
         {
             _usersDataStore = usersDataStore;
-            _navigationService = navigationService;
             _addUserViewModel = addUserViewModel;
             _addUserViewModel.PropertyChanged += _addUserViewModel_PropertyChanged;
         }
@@ -53,7 +51,7 @@ namespace Uniceps.Commands.AuthCommands
                     OwnerName = _addUserViewModel.OwnerName
                 };
                 await _usersDataStore.Add(user);
-                _navigationService.ReNavigate();
+                _addUserViewModel.OnUserCreated();
             }
             catch (Exception ex)
             {

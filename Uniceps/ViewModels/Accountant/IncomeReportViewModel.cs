@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
 using Uniceps.navigation.Stores;
-using Uniceps.Stores.AccountantStores;
 using Uniceps.Core.Models.Payment;
 
 namespace Uniceps.ViewModels.Accountant
@@ -17,26 +16,24 @@ namespace Uniceps.ViewModels.Accountant
     public class IncomeReportViewModel : ListingViewModelBase
     {
         private readonly ObservableCollection<IncomeListItemViewModel> _incomeListItemViewModels;
-        private readonly PaymentAccountantDataStore _paymentDataStore;
-        private readonly NavigationStore _navigationStore;
+        private readonly PeriodReportStore _periodReportStore;
         public IEnumerable<IncomeListItemViewModel> IncomeList => _incomeListItemViewModels;
-        public IncomeReportViewModel(PaymentAccountantDataStore paymentDataStore, NavigationStore navigationStore)
+        public IncomeReportViewModel(PeriodReportStore periodReportStore)
         {
-            _paymentDataStore = paymentDataStore;
-            _navigationStore = navigationStore;
-            _paymentDataStore.PaymentsLoaded += _paymentDataStore_Loaded;
+            _periodReportStore = periodReportStore;
+            _periodReportStore.PaymentLoaded += _periodReportStore_PaymentLoaded;
             _incomeListItemViewModels = new ObservableCollection<IncomeListItemViewModel>();
-            LoadPayments = new LoadIncomePaymentsCommand(_paymentDataStore, this);
+            LoadPayments = new LoadIncomePaymentsCommand(_periodReportStore, this);
         }
-        public ICommand LoadPayments { get; }
-        private void _paymentDataStore_Loaded()
+        public ICommand? LoadPayments { get; }
+        private void _periodReportStore_PaymentLoaded()
         {
             _incomeListItemViewModels.Clear();
-            foreach (var payment in _paymentDataStore.Payments.OrderByDescending(x => x.PayDate))
+            foreach (var payment in _periodReportStore.Payments.OrderByDescending(x => x.PayDate))
             {
                 AddPayment(payment);
             }
-            Total = _paymentDataStore.Payments.Sum(x => x.PaymentValue);
+            Total = _periodReportStore.Payments.Sum(x => x.PaymentValue);
         }
         private void AddPayment(PlayerPayment playerPayment)
         {

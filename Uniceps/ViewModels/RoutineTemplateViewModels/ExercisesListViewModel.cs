@@ -1,17 +1,22 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 using Uniceps.Commands.RoutineSystemCommands.ExerciseCommands;
-using Uniceps.Core.Models.TrainingProgram;
-using Uniceps.navigation.Stores;
-using Uniceps.navigation;
-using Uniceps.Stores.RoutineStores;
-using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
 using Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands;
+using Uniceps.Core.Models.TrainingProgram;
+using Uniceps.navigation;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores.RoutineStores;
+using Uniceps.utlis.common;
+using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.ViewModels.RoutineTemplateViewModels
 {
@@ -20,15 +25,8 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         private readonly ExercisesDataStore _exercisesDataStore;
         private readonly DayGroupDataStore _dayGroupDataStore;
         private readonly RoutineItemDataStore _routineItemDataStore;
-        private readonly NavigationService<RoutineDetailsViewModel> _navigationService;
-        private readonly NavigationStore _navigationStore;
-        public RoutineItemsBufferListViewModel RoutineItemListViewModel { get; set; }
-        private readonly ObservableCollection<ExercisesListItemViewModel> _exercisesListItemViewModel;
-        public IEnumerable<ExercisesListItemViewModel> ExercisesList => _exercisesListItemViewModel;
-
-
-        public readonly ObservableCollection<Exercises> ExercisesBufferListItemViewModel;
-
+        public readonly ObservableCollection<ExercisesListItemViewModel> _exercisesListItemViewModel;
+        public ICollectionView ExercisesList { get; }
         private readonly ObservableCollection<MuscleGroup> _muscleGroups;
         public IEnumerable<MuscleGroup> MuscleGroupList => _muscleGroups;
 
@@ -36,71 +34,58 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         public MuscleGroup? SelectedMuscle
         {
             get { return _exercisesDataStore.SelectedMuscle; }
-            set { _exercisesDataStore.SelectedMuscle = value; }
+            set { _exercisesDataStore.SelectedMuscle = value; ExercisesList.Refresh(); }
         }
-
-
-
-        private ExercisesListItemViewModel? _selectedExerciseViewModel;
-        public ExercisesListItemViewModel? SelectedExerciseViewModel
-        {
-            get
-            {
-                return _selectedExerciseViewModel;
-            }
-            set
-            {
-                _selectedExerciseViewModel = value;
-                OnPropertyChanged(nameof(SelectedExerciseViewModel));
-            }
-        }
-
-        private ExercisesListItemViewModel? _unSelectedExerciseViewModel;
-        public ExercisesListItemViewModel? UnSelectedExerciseViewModel
-        {
-            get
-            {
-                return _unSelectedExerciseViewModel;
-            }
-            set
-            {
-                _unSelectedExerciseViewModel = value;
-                OnPropertyChanged(nameof(UnSelectedExerciseViewModel));
-            }
-        }
-        public ICommand ExerciseSelectedCommand { get; }
-        public ICommand ExerciseUnSelectedCommand { get; }
-
-        public ExercisesListViewModel(ExercisesDataStore exercisesDataStore, DayGroupDataStore dayGroupDataStore, RoutineItemDataStore routineItemDataStore, NavigationStore navigationStore, NavigationService<RoutineDetailsViewModel> navigationService, RoutineItemsBufferListViewModel routineItemListViewModel)
+        public int SelectedCount => _exercisesListItemViewModel.Where(x => x.IsSelected).Count();
+        public ExercisesListViewModel(ExercisesDataStore exercisesDataStore, DayGroupDataStore dayGroupDataStore, RoutineItemDataStore routineItemDataStore)
         {
             _exercisesDataStore = exercisesDataStore;
             _dayGroupDataStore = dayGroupDataStore;
             _routineItemDataStore = routineItemDataStore;
-            _navigationStore = navigationStore;
-            _navigationService = navigationService;
-            ExercisesBufferListItemViewModel = new();
-            ExerciseSelectedCommand = new ExerciseSelectedCommand(this);
-            ExerciseUnSelectedCommand = new ExerciseUnSelectedCommand(this);
             _exercisesListItemViewModel = new ObservableCollection<ExercisesListItemViewModel>();
+                 ExercisesList = CollectionViewSource.GetDefaultView(_exercisesListItemViewModel);
+            ExercisesList.Filter = CheckExerciseFilter;
             _muscleGroups = new ObservableCollection<MuscleGroup>();
             _exercisesDataStore.ExercisesLoaded += _exercisesDataStore_ExercisesLoaded;
             _exercisesDataStore.MuscleGroupsLoaded += _exercisesDataStore_MuscleGroupsLoaded;
-            _exercisesDataStore.SelectedMuscleChanged += _exercisesDataStore_SelectedMuscleChanged;
             LoadExercisesCommand = new LoadExercisesCommand(_exercisesDataStore, this);
-            RoutineItemListViewModel = routineItemListViewModel;
-            AddToRoutineCommand = new CreateRoutineItemsModelCommand(_dayGroupDataStore, _routineItemDataStore, this, _navigationService);
+            AddToRoutineCommand = new CreateRoutineItemsModelCommand(_dayGroupDataStore, _routineItemDataStore, this);
+        }
+        public Action? RoutineItemsCreate;
+        public void OnRoutineItemsCreated()
+        {
+            RoutineItemsCreate?.Invoke();
+        }
+        public void OnSelectedChanged()
+        {
+            OnPropertyChanged(nameof(SelectedCount));
+        }
+        private bool CheckExerciseFilter(object obj)
+        {
+            if (obj is ExercisesListItemViewModel exercisesListItemViewModel)
+            {
+                bool matchText =
+                   SelectedMuscle!=null && exercisesListItemViewModel!.Exercises.MuscleGroupId == SelectedMuscle.PublicId;
+
+                return matchText ;
+            }
+            return false;
         }
 
-        private void _exercisesDataStore_SelectedMuscleChanged()
+        public void ClearSelection()
         {
-
-            _exercisesListItemViewModel.Clear();
-            foreach (var item in _exercisesDataStore.Exercises.Where(x => x.MuscleGroupId == SelectedMuscle!.PublicId))
+            foreach(var item in _exercisesListItemViewModel)
             {
-                AddExercise(item);
+                item.IsSelected = false;
             }
         }
-
+        public void SetChecks()
+        {
+            foreach (var item in _exercisesListItemViewModel)
+            {
+                item.IsChecked = _routineItemDataStore.RoutineItems.Any(x => x.ExerciseId == item.Id); ;
+            }
+        }
         public ICommand LoadExercisesCommand { get; set; }
         private void _exercisesDataStore_MuscleGroupsLoaded()
         {
@@ -122,31 +107,19 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         }
         private void AddExercise(Exercises exercise)
         {
-            ExercisesListItemViewModel exercisesListItemViewModel = new ExercisesListItemViewModel(exercise, _routineItemDataStore, _dayGroupDataStore);
+            ExercisesListItemViewModel exercisesListItemViewModel = new ExercisesListItemViewModel(exercise, _routineItemDataStore, _dayGroupDataStore,this);
             _exercisesListItemViewModel.Add(exercisesListItemViewModel);
             exercisesListItemViewModel.IsChecked = _routineItemDataStore.RoutineItems.Any(x => x.ExerciseId == exercise.Id);
-            exercisesListItemViewModel.IsSelected = ExercisesBufferListItemViewModel.Any(x=>x.Id==exercise.Id);
 
 
         }
         public static ExercisesListViewModel LoadViewModel(ExercisesDataStore exercisesDataStore, DayGroupDataStore dayGroupDataStore, RoutineItemDataStore routineItemDataStore, NavigationStore navigationStore, NavigationService<RoutineDetailsViewModel> navigationService, RoutineItemsBufferListViewModel routineItemListViewModel)
         {
-            ExercisesListViewModel viewModel = new(exercisesDataStore, dayGroupDataStore, routineItemDataStore, navigationStore, navigationService, routineItemListViewModel);
+            ExercisesListViewModel viewModel = new(exercisesDataStore, dayGroupDataStore, routineItemDataStore);
 
             viewModel.LoadExercisesCommand.Execute(null);
 
             return viewModel;
-        }
-        public void AddTodoItem(ExercisesListItemViewModel item)
-        {
-            if (!ExercisesBufferListItemViewModel.Contains(item.Exercises))
-            {
-                ExercisesBufferListItemViewModel.Add(item.Exercises);
-            }
-        }
-        public void RemoveTodoItem(ExercisesListItemViewModel item)
-        {
-            ExercisesBufferListItemViewModel.Remove(item.Exercises);
         }
 
     }

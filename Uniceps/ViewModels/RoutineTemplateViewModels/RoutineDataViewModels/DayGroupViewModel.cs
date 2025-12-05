@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.Stores.RoutineStores;
-using Uniceps.utlis.common;
 using Uniceps.Commands.RoutineSystemCommands.DayGroupCommands;
 
 namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels

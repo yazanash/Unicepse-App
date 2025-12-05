@@ -1,15 +1,16 @@
-﻿using Uniceps.Entityframework.Services;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Uniceps.utlis.common;
-using Uniceps.Core.Services;
+using Uniceps.Core.Exceptions;
 using Uniceps.Core.Models.Employee;
 using Uniceps.Core.Models.Sport;
+using Uniceps.Core.Services;
+using Uniceps.Entityframework.Services;
+using Uniceps.utlis.common;
 
 namespace Uniceps.Stores
 {
@@ -36,8 +37,9 @@ namespace Uniceps.Stores
         public IEnumerable<Employee> Employees => _employee;
         private readonly List<Sport> _sports;
         public IEnumerable<Sport> Sports => _sports;
+        private readonly AccountStore _accountStore;
 
-        public EmployeeStore(IDataService<Employee> employeeDataService, ILogger<EmployeeStore> logger, IDeleteConnectionService<Employee> deleteConnectionService)
+        public EmployeeStore(IDataService<Employee> employeeDataService, ILogger<EmployeeStore> logger, IDeleteConnectionService<Employee> deleteConnectionService, AccountStore accountStore)
         {
             _employeeDataService = employeeDataService;
             _employee = new List<Employee>();
@@ -45,6 +47,7 @@ namespace Uniceps.Stores
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
             _deleteConnectionService = deleteConnectionService;
+            _accountStore = accountStore;
         }
 
 
@@ -103,6 +106,10 @@ namespace Uniceps.Stores
 
         public async Task Add(Employee entity)
         {
+            int empcount = _employee.Where(x => !x.IsTrainer).Count();
+            int trcount = _employee.Where(x => x.IsTrainer).Count();
+            if (_accountStore.SystemSubscription == null && (empcount >= 2|| trcount >= 2))
+                throw new FreeLimitException("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
             _logger.LogInformation(LogFlag + "Add employee");
             await _employeeDataService.Create(entity);
             _employee.Add(entity);

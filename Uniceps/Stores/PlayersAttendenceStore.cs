@@ -23,16 +23,14 @@ namespace Uniceps.Stores
         string LogFlag = "[Attendence] ";
         private readonly ILogger<PlayersAttendenceStore> _logger;
         public event Action<DailyPlayerReport>? LoggedOut;
-        public PlayersAttendenceStore(PlayersAttendenceService playersAttendenceService, ILogger<PlayersAttendenceStore> logger, IApiDataStore<DailyPlayerReport> apiDataStore)
+        public PlayersAttendenceStore(PlayersAttendenceService playersAttendenceService, ILogger<PlayersAttendenceStore> logger)
         {
             _playersAttendenceService = playersAttendenceService;
             _playersAttendence = new List<DailyPlayerReport>();
             _logger = logger;
-            _apiDataStore = apiDataStore;
         }
 
         private readonly PlayersAttendenceService _playersAttendenceService;
-        private readonly IApiDataStore<DailyPlayerReport> _apiDataStore;
         private readonly List<DailyPlayerReport> _playersAttendence;
         public IEnumerable<DailyPlayerReport> PlayersAttendence => _playersAttendence;
 
@@ -56,7 +54,6 @@ namespace Uniceps.Stores
             _logger.LogInformation(LogFlag + "login player");
             entity.DataStatus = DataStatus.ToCreate;
             await _playersAttendenceService.LogInPlayer(entity);
-            await _apiDataStore.Create(entity);
 
             _playersAttendence.Add(entity);
             LoggedIn?.Invoke(entity);
@@ -68,7 +65,6 @@ namespace Uniceps.Stores
             if (entity.DataStatus != DataStatus.ToCreate)
                 entity.DataStatus = DataStatus.ToUpdate;
             bool loggedOut = await _playersAttendenceService.LogOutPlayer(entity);
-            await _apiDataStore.Update(entity);
 
             int currentIndex = _playersAttendence.FindIndex(y => y.Id == entity.Id);
 

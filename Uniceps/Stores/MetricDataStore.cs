@@ -18,7 +18,6 @@ namespace Uniceps.Stores
     public class MetricDataStore : IDataStore<Metric>
     {
         private readonly IDataService<Metric> _metricDataService;
-        private readonly IApiDataStore<Metric> _apiDataStore;
         private readonly IGetPlayerTransactionService<Metric> _getPlayerTransactionService;
         private readonly List<Metric> _metrics;
         string LogFlag = "[Metrics] ";
@@ -29,13 +28,12 @@ namespace Uniceps.Stores
         public event Action? Loaded;
         public event Action<Metric>? Updated;
         public event Action<int>? Deleted;
-        public MetricDataStore(IDataService<Metric> metricDataService, ILogger<MetricDataStore> logger, IGetPlayerTransactionService<Metric> getPlayerTransactionService, IApiDataStore<Metric> apiDataStore)
+        public MetricDataStore(IDataService<Metric> metricDataService, ILogger<MetricDataStore> logger, IGetPlayerTransactionService<Metric> getPlayerTransactionService)
         {
             _metricDataService = metricDataService;
             _metrics = new List<Metric>();
             _logger = logger;
             _getPlayerTransactionService = getPlayerTransactionService;
-            _apiDataStore = apiDataStore;
         }
         private Metric? _selectedMetric;
         public Metric? SelectedMetric
@@ -57,7 +55,6 @@ namespace Uniceps.Stores
             _logger.LogInformation(LogFlag + "add metrics");
             entity.DataStatus = DataStatus.ToCreate;
             await _metricDataService.Create(entity);
-            await _apiDataStore.Create(entity);
             _metrics.Add(entity);
             Created?.Invoke(entity);
         }
@@ -100,7 +97,6 @@ namespace Uniceps.Stores
                 entity.DataStatus = DataStatus.ToUpdate;
 
             await _metricDataService.Update(entity);
-            await _apiDataStore.Update(entity);
 
             int currentIndex = _metrics.FindIndex(y => y.Id == entity.Id);
 

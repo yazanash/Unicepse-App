@@ -25,8 +25,8 @@ namespace Uniceps.ViewModels.Authentication
             _authViewModel = authViewModel;
             _navigationStore = navigationStore;
             _authenticationStore = authenticationStore;
-            LoginCommand = new NavaigateCommand<LoginViewModel>(new NavigationService<LoginViewModel>(_navigationStore!, () => new LoginViewModel(_authViewModel, _navigationStore!, _authenticationStore)));
-            RegisterCommand = new RegisterCommand(_authViewModel, authenticationStore, this, new NavigationService<LoginViewModel>(_navigationStore!, () => new LoginViewModel(_authViewModel, _navigationStore!, _authenticationStore)));
+            //LoginCommand = new NavaigateCommand<LoginViewModel>(new NavigationService<LoginViewModel>(_navigationStore!, () => new LoginViewModel(_authViewModel, _navigationStore!, _authenticationStore)));
+            //RegisterCommand = new RegisterCommand(_authViewModel, authenticationStore, this, new NavigationService<LoginViewModel>(_navigationStore!, () => new LoginViewModel(_authViewModel, _navigationStore!, _authenticationStore)));
 
         }
         private string? _userName;
@@ -81,7 +81,7 @@ namespace Uniceps.ViewModels.Authentication
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
-        public ICommand LoginCommand { get; }
-        public ICommand RegisterCommand { get; }
+        //public ICommand LoginCommand { get; }
+        //public ICommand RegisterCommand { get; }
     }
 }

@@ -15,17 +15,13 @@ namespace Uniceps.Helpers
     public class SessionManager : ISessionManager
     {
         private readonly string tokenFilePath;
-        private readonly SystemAuthApiService _systemAuthApiService;
-        private readonly UnicepsePrepAPIKey _apiKey;
-        public SessionManager(SystemAuthApiService systemAuthApiService, UnicepsePrepAPIKey apiKey)
+        public SessionManager()
         {
             tokenFilePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Uniceps", "session.dat");
 
             Directory.CreateDirectory(Path.GetDirectoryName(tokenFilePath)!);
-            _systemAuthApiService = systemAuthApiService;
-            _apiKey = apiKey;
         }
         public void ClearSession()
         {

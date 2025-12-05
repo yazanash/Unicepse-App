@@ -40,19 +40,19 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         {
             SubscribeDays = Convert.ToInt32((SubscribeStopDate - Convert.ToDateTime(_subscriptionStore.SelectedSubscription!.RollDate)).TotalDays);
             DuesCash = _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount * SubscribeDays;
-            ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
+            //ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
         }
         private void CountCoastFromDays()
         {
             SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
             DuesCash = _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount * SubscribeDays;
-            ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
+            //ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
         }
         private void CountCoastFromRef()
         {
             //SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
             int Price = Convert.ToInt32(_subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount);
-            DuesCash = _subscriptionStore.SelectedSubscription!.PaidValue - ReturnCash;
+            //DuesCash = _subscriptionStore.SelectedSubscription!.PaidValue - ReturnCash;
             SubscribeDays = Convert.ToInt32(DuesCash / Price);
             SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
         }

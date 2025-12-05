@@ -13,8 +13,10 @@ namespace Uniceps.Core.Models.TrainingProgram
         public int Tid { get; set; }
         public string? Name { get; set; }
         public int MuscleGroupId { get; set; }
-        public string? Muscel { get; set; }
+        public string? MuscelAr { get; set; }
+        public string? MuscelEng { get; set; }
         public string? ImagePath { get; set; }
+        public string? ImageUrl { get; set; }
         public int Version { get; set; } = 0;
     }
 }

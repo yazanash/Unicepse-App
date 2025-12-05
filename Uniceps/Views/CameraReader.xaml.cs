@@ -1,7 +1,16 @@
-﻿using System;
+﻿using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Media;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,20 +20,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using Uniceps.ViewModels;
+using Uniceps.ViewModels.PlayersViewModels;
 //using AForge.Video;
 //using AForge.Video.DirectShow;
 using ZXing;
-using System.Media;
-using System.Drawing;
+using ZXing.Aztec.Internal;
+using ZXing.Common;
 using ZXing.Windows.Compatibility;
-using System.IO;
-using System.Drawing.Imaging;
-using System.Threading;
-using System.Windows.Threading;
-using System.ComponentModel;
-using System.Reflection;
-using Uniceps.utlis.common;
-using Uniceps.ViewModels.PlayersViewModels;
 
 namespace Uniceps.Views
 {
@@ -33,32 +37,29 @@ namespace Uniceps.Views
     /// </summary>
     class Camera : ViewModelBase
     {
-        public string Name { get; set; }
-        public string MonikerString { get; set; }
-        public Camera(string name, string monikerString)
+        public int Index { get; set; }
+        public Camera(string name, int index)
         {
             Name = name;
-            MonikerString = monikerString;
+            Index = index;
         }
+        public string Name { get; set; }
     }
-    public partial class CameraReader : Window
+    public partial class CameraReader : System.Windows.Window
     {
-        //FilterInfoCollection videoDevices;
-        //VideoCaptureDevice? videoSource;
+        private VideoCapture? _capture;
+        private DispatcherTimer? _timer;
+        private BarcodeReader? _reader;
+        private CancellationTokenSource? _cts;
+        private DateTime _lastQrCheck = DateTime.MinValue;
+
         ReadPlayerQrCodeViewModel? _viewModelBase;
         bool _stillOpen= false;
         public CameraReader()
         {
             InitializeComponent();
-            //videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            //for (int i = 0; i < videoDevices.Count; i++)
-            //{
-            //    vidlist.Items.Add(new Camera(videoDevices[i].Name, videoDevices[i].MonikerString));
-            //}
+            LoadCameras();
             vidlist.SelectedIndex = 0;
-            //videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
-            //videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-            //videoSource.Start();
         }
         public CameraReader(bool stillOpen, ReadPlayerQrCodeViewModel viewModelBase)
         {
@@ -66,91 +67,123 @@ namespace Uniceps.Views
             _stillOpen=stillOpen;
             _viewModelBase = viewModelBase;
             _viewModelBase.UID = null;
-            //videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            //for (int i = 0; i < videoDevices.Count; i++)
-            //{
-            //    vidlist.Items.Add(new Camera(videoDevices[i].Name, videoDevices[i].MonikerString));
-            //}
+            LoadCameras();
             vidlist.SelectedIndex = 0;
             this.Topmost = true;
-            //videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
-            //videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-            //videoSource.Start();
+        }
+        private void LoadCameras()
+        {
+            vidlist.Items.Clear();
+            for (int i = 0; i < 5; i++) // حاول نعرض أول 5 كاميرات
+            {
+                using var tempCapture = new VideoCapture(i);
+                if (tempCapture.IsOpened())
+                {
+                    vidlist.Items.Add(new Camera($"Camera {i}", i));
+                    tempCapture.Release();
+                }
+            }
+            if (vidlist.Items.Count > 0)
+                vidlist.SelectedIndex = 0;
+        }
+        private void StartCamera(int index)
+        {
+            StopCamera();
+
+            _capture = new VideoCapture(index);
+            if (!_capture.IsOpened())
+            {
+                MessageBox.Show("لا يمكن فتح الكاميرا");
+                return;
+            }
+
+            _reader = new BarcodeReader
+            {
+                AutoRotate = true,
+                Options = new DecodingOptions { TryHarder = true }
+            };
+
+            _cts = new CancellationTokenSource();
+
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(30)
+            };
+            _timer.Tick += async (s, e) => await CaptureFrame(s, e, _cts.Token);
+            _timer.Start();
         }
 
-        //private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
-        //{
+        private async Task CaptureFrame(object? sender, EventArgs e, CancellationToken token)
+        {
+            if (token.IsCancellationRequested) return;
+            if (_capture == null || !_capture.IsOpened()) return;
 
-        //    // Capture a frame
-        //    //Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
+            try
+            {
+                using var frame = new Mat();
+                _capture.Read(frame);
 
-        //    using (Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone())
-        //    {
-        //        // Convert to BitmapSource for WPF
-        //        BitmapSource bitmapSource = ConvertToBitmapSource(bitmap);
-        //        // Update the Image control with the new frame
-        //        Dispatcher.BeginInvoke(new ThreadStart(delegate
-        //        {
-        //            camera_img.Source = bitmapSource;
+                if (frame.Empty() || frame.Width == 0 || frame.Height == 0) return;
 
+                using var bmp = BitmapConverter.ToBitmap(frame);
 
-        //        }), DispatcherPriority.Render);
-        //    }
-        //    // Read QR code
-        //    //Bitmap bitmapimg = (Bitmap)eventArgs.Frame.Clone();
-        //    Bitmap bitmapimg = (Bitmap)eventArgs.Frame.Clone();
-        //    BarcodeReader reader = new BarcodeReader();
+                // تحديث الصورة على UI
+                camera_img.Source = ConvertToBitmapSource(bmp);
 
-        //    var result = reader.Decode(bitmapimg);
-        //    if (result != null)
-        //    {
-        //        // Do something with the QR code data
-        //        string qrData = result.Text;
-        //        // Invoke on UI thread if necessary
-        //        this.Dispatcher.InvokeAsync(() =>
-        //        {
-        //            // Update UI with QR code data
-               
-        //                txt_toview.Text = qrData;
-        //                PlaySoundFromResources();
-        //                if(_viewModelBase != null)
-        //                {
-                       
-        //                    RestartCamera();
-        //                _viewModelBase.OnCatchChanged();
-                            
-        //                }
-        //                else if (!_stillOpen)
-        //                {
-        //                    this.Close();
-        //                }
+                // Throttle: قراءة QR كل 500ms فقط
+                if ((DateTime.Now - _lastQrCheck).TotalMilliseconds < 500)
+                    return;
 
-                 
+                _lastQrCheck = DateTime.Now;
 
+                string? qrText = await Task.Run(() =>
+                {
+                    if (bmp == null || bmp.Width == 0 || bmp.Height == 0)
+                        return null;
 
+                    try
+                    {
+                        var result = _reader?.Decode(bmp);
+                        return result?.Text;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }, token);
 
+                if (!string.IsNullOrEmpty(qrText)&& txt_toview.Text != qrText)
+                {
+                    txt_toview.Text = qrText;
+                    PlaySoundFromResources();
 
-        //        });
-        //        // Shutdown the dispatcher
-        //        //Dispatcher.InvokeShutdown();
-
-
-        //    }
-
-
-        //}
-
-        //private void RestartCamera()
-        //{
-        //    if (videoSource != null && videoSource.IsRunning)
-        //    {
-        //        videoSource.SignalToStop();
-        //        videoSource.WaitForStop();
-        //        videoSource.NewFrame -= video_NewFrame;
-        //        videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-        //        videoSource.Start();
-        //    }
-        //}
+                    if (_viewModelBase != null)
+                        _viewModelBase.OnCatchChanged();
+                    else if (!_stillOpen)
+                        CloseWindow();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in CaptureFrame: {ex.Message}");
+            }
+        }
+        private void StopCamera()
+        {
+            try
+            {
+                _cts?.Cancel();
+                _timer?.Stop();
+                _capture?.Release();
+                _capture?.Dispose();
+            }
+            catch { }
+        }
+        private void CloseWindow()
+        {
+            StopCamera();
+            this.Close();
+        }
 
         public void PlaySoundFromResources()
         {
@@ -161,7 +194,7 @@ namespace Uniceps.Views
                 Assembly assembly = Assembly.GetExecutingAssembly();
 
                 // Get the stream for the embedded resource
-                Stream? soundStream = assembly.GetManifestResourceStream("Unicepse.Resources.sounds.beep.wav");
+                Stream? soundStream = assembly.GetManifestResourceStream("Uniceps.Resources.sounds.beep.wav");
 
                 if (soundStream != null)
                 {
@@ -180,68 +213,39 @@ namespace Uniceps.Views
         }
         private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
         {
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                bitmap.Save(memoryStream, ImageFormat.Bmp);
-                memoryStream.Position = 0;
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memoryStream;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze(); // Freeze to make it cross-thread accessible
-                return bitmapImage;
-            }
+            using var memoryStream = new MemoryStream();
+            bitmap.Save(memoryStream, ImageFormat.Bmp);
+            memoryStream.Position = 0;
+
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.StreamSource = memoryStream;
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.EndInit();
+            bitmapImage.Freeze();
+            return bitmapImage;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //videoSource!.Start();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //if (videoSource != null && videoSource.IsRunning)
-            //{
-            //    videoSource.SignalToStop();
-            //    videoSource.WaitForStop();
-            //}
         }
         protected override void OnClosing(CancelEventArgs e)
         {
-            //if (videoSource != null && videoSource.IsRunning)
-            //{
-            //    videoSource.SignalToStop();
-            //    videoSource.WaitForStop();
-            //}
+            StopCamera();
             base.OnClosing(e);
         }
-        private void CloseWindow()
-        {
-            //if (videoSource != null && videoSource.IsRunning)
-            //{
-            //    videoSource.SignalToStop();
-            //    videoSource.WaitForStop();
-            //    videoSource.NewFrame -= video_NewFrame;
-            //    videoSource = null;
-            //}
-            this.Close();
-        }
+       
 
         private void vidlist_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (vidlist.SelectedItem is Camera cam)
-            //{
-            //    if (videoSource != null && videoSource.IsRunning)
-            //    {
-            //        videoSource.SignalToStop();
-            //        videoSource.WaitForStop();
-            //        videoSource.NewFrame -= video_NewFrame;
-            //    }
-            //    videoSource = new VideoCaptureDevice(cam.MonikerString);
-            //    videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-            //    videoSource.Start();
-            //}
+            if (vidlist.SelectedItem is Camera cam)
+            {
+                StartCamera(cam.Index);
+            }
         }
     }
 }

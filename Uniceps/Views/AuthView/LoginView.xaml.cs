@@ -24,12 +24,12 @@ namespace Uniceps.Views.AuthView
         public LoginView()
         {
             InitializeComponent();
-            email_txt.Focus();
+            password_txt.Focus();
         }
 
         private void email_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            email_txt.Focus();
+            password_txt.Focus();
         }
 
         private void password_MouseDown(object sender, MouseButtonEventArgs e)
@@ -52,15 +52,15 @@ namespace Uniceps.Views.AuthView
         }
         private void email_txt_TextChanged(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(email_txt.Text) && email_txt.Text.Length > 0)
-            {
-                lbl_username.Visibility = Visibility.Hidden;
+            //if (!string.IsNullOrEmpty(email_txt.Text) && email_txt.Text.Length > 0)
+            //{
+            //    lbl_username.Visibility = Visibility.Hidden;
 
-            }
-            else
-            {
-                lbl_username.Visibility = Visibility.Visible;
-            }
+            //}
+            //else
+            //{
+            //    lbl_username.Visibility = Visibility.Visible;
+            //}
         }
         private void Minimize_MouseUp(object sender, MouseButtonEventArgs e)
         {

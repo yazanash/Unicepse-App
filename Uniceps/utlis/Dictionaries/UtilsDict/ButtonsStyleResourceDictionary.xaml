@@ -143,6 +143,30 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="BorderedIconBtn" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Template" >
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="{DynamicResource Radius.Small}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Padding="5">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Brush.Card}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 
 
@@ -426,8 +450,7 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Brush.Secondary}"/>
-                <Setter Property="Foreground" Value="{DynamicResource Brush.OnSecondary}"/>
+                <Setter Property="Opacity" Value=".7"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -453,7 +476,7 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#dcdcdc"/>
+                <Setter Property="Opacity" Value=".7"/>
             </Trigger>
         </Style.Triggers>
     </Style>

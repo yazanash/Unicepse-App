@@ -1,5 +1,4 @@
-﻿using Uniceps.Commands;
-using Uniceps.Commands.Employee;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,39 +8,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
+using Uniceps.Commands.Employee;
 using Uniceps.Commands.Player;
+using Uniceps.Core.Models;
 using Uniceps.navigation;
+using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
-using Uniceps.navigation.Stores;
-using Uniceps.Core.Models;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
     public class AddEmployeeViewModel : ErrorNotifyViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
-        private readonly TrainersListViewModel _trinersListViewModel;
         private readonly EmployeeStore _employeeStore;
         public ObservableCollection<Year> years;
 
         public IEnumerable<Year> Years => years;
-        public AddEmployeeViewModel(NavigationStore navigationStore, TrainersListViewModel trinersListViewModel, EmployeeStore employeeStore)
+        public AddEmployeeViewModel(EmployeeStore employeeStore)
         {
             years = new ObservableCollection<Year>();
             for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
                 years.Add(new Year() { year = i });
             Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
-            _navigationStore = navigationStore;
-            _trinersListViewModel = trinersListViewModel;
             _employeeStore = employeeStore;
-            CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
-            SubmitCommand = new AddEmployeeCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), this, _employeeStore);
+            SubmitCommand = new AddEmployeeCommand(this, _employeeStore);
 
 
         }
 
-
+        public Action? EmployeeCreated;
+        public void OnEmployeeCreated()
+        {
+            EmployeeCreated?.Invoke();
+        }
 
         private string? _fullName;
         public string? FullName
@@ -172,7 +172,11 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
                 OnPropertyChanged(nameof(Balance));
             }
         }
-
+        public void ClearForm()
+        {
+            FullName = "";
+            Phone = "";
+        }
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
     }

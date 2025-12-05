@@ -51,7 +51,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
         {
             _subscriptionListViewModel.Clear();
 
-            foreach (Subscription subscription in _subscriptionDataStore.Subscriptions.Where(x => !x.IsPaid))
+            foreach (Subscription subscription in _subscriptionDataStore.Subscriptions.Where(x=>x.TotalPaid<x.PriceAfterOffer))
             {
                 AddSubscriptiont(subscription);
             }
@@ -74,14 +74,14 @@ namespace Uniceps.ViewModels.PaymentsViewModels
                 ClearError(nameof(PaymentValue));
                 if (SelectedSubscription != null)
                 {
-                    if (PaymentValue > SelectedSubscription!.PriceAfterOffer - SelectedSubscription!.PaidValue)
-                    {
-                        AddError("لا يمكن ان يكون المبلغ المدفوع اكبر من المستحق", nameof(PaymentValue));
-                        OnErrorChanged(nameof(PaymentValue));
-                    }
-                    else if (PaymentValue < 0)
+                    if (PaymentValue < 0)
                     {
                         AddError("لايمكن الدفع بقيمة اقل من 0", nameof(PaymentValue));
+                        OnErrorChanged(nameof(PaymentValue));
+                    }
+                    if(PaymentValue>SelectedSubscription.Subscription.PriceAfterOffer- SelectedSubscription.Subscription.TotalPaid)
+                    {
+                        AddError("لايمكن الدفع بقيمة اكثر من المستحق", nameof(PaymentValue));
                         OnErrorChanged(nameof(PaymentValue));
                     }
                 }
@@ -134,11 +134,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
                 ClearError(nameof(PaymentValue));
                 if (SelectedSubscription != null)
                 {
-                    if (PaymentValue > SelectedSubscription!.PriceAfterOffer - SelectedSubscription!.PaidValue)
-                    {
-                        AddError("لا يمكن ان يكون المبلغ المدفوع اكبر من المستحق", nameof(PaymentValue));
-                        OnErrorChanged(nameof(PaymentValue));
-                    }
+                    
                 }
 
                 else

@@ -7,7 +7,6 @@ using System.Windows.Input;
 using Uniceps.Commands.SystemAuthCommands;
 using Uniceps.Stores;
 using Uniceps.Stores.SystemAuthStores;
-using Uniceps.utlis.common;
 
 namespace Uniceps.ViewModels.SystemAuthViewModels
 {

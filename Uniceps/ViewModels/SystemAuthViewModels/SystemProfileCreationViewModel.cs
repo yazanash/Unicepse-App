@@ -10,7 +10,6 @@ using Uniceps.navigation;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.Stores.SystemAuthStores;
-using Uniceps.utlis.common;
 
 namespace Uniceps.ViewModels.SystemAuthViewModels
 {
@@ -18,16 +17,10 @@ namespace Uniceps.ViewModels.SystemAuthViewModels
     {
         private readonly IProfileDataStore _profileStore;
         public event Action? ProfileCreatedAction;
-        private readonly HomeViewModel _homeViewModel;
-        private readonly NavigationStore _navigationStore;
-        public SystemProfileCreationViewModel(IProfileDataStore profileStore, HomeViewModel homeViewModel, NavigationStore navigationStore)
+        public SystemProfileCreationViewModel(IProfileDataStore profileStore)
         {
             _profileStore = profileStore;
-            _navigationStore = navigationStore;
-            _homeViewModel = homeViewModel;
-
-            NavigationService<HomeViewModel> navigationService = new NavigationService<HomeViewModel>(_navigationStore, () => _homeViewModel);
-            CreateProfileCommand = new CreateProfileCommand(_profileStore, this, navigationService);
+            CreateProfileCommand = new CreateProfileCommand(_profileStore, this);
         }
 
         public void OnProfileCreatedAction()
@@ -52,6 +45,18 @@ namespace Uniceps.ViewModels.SystemAuthViewModels
         {
             get { return _phoneNumber; }
             set { _phoneNumber = value; OnPropertyChanged(nameof(PhoneNumber)); }
+        }
+        private string? _ownerName;
+        public string? OwnerName
+        {
+            get { return _ownerName; }
+            set { _ownerName = value; OnPropertyChanged(nameof(OwnerName)); }
+        }
+        private string? _address;
+        public string? Address
+        {
+            get { return _address; }
+            set { _address = value; OnPropertyChanged(nameof(Address)); }
         }
         public GenderType Gender { get; set; }
 

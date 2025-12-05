@@ -49,9 +49,10 @@ namespace Uniceps.Commands.SubscriptionCommand
                 {
                     _playerDataStore.SelectedPlayer!.Balance += _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
                     _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer -= _stopSubscription.ReturnCash;
-                    //entity.PriceAfterOffer = dayPrice * days;
-                    //int days = Convert.ToInt32((_stopSubscription.SubscribeStopDate - _subscriptionDataStore.SelectedSubscription!.RollDate).TotalDays);
-                    //double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / _subscriptionDataStore.SelectedSubscription!.Sport!.DaysCount;
+                    
+                    int days = Convert.ToInt32((_stopSubscription.SubscribeStopDate - _subscriptionDataStore.SelectedSubscription!.RollDate).TotalDays);
+                    double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / _subscriptionDataStore.SelectedSubscription!.DaysCount;
+                    _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = dayPrice * days;
                     _playerDataStore.SelectedPlayer!.Balance -= _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
                     await _subscriptionDataStore.Stop(_subscriptionDataStore.SelectedSubscription!, _stopSubscription.SubscribeStopDate);
                     Subscription? subscription = _subscriptionDataStore.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault(x => x.Id != _subscriptionDataStore.SelectedSubscription.Id);

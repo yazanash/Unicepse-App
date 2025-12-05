@@ -27,10 +27,11 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
             {
                 if (itemModel != null)
                 {
-                    itemModel.Order = reorderedList.IndexOf(itemModel);
+                    itemModel.Order = reorderedList.IndexOf(itemModel)+1;
                 }
             }
             await _dataStore.UpdateRange(reorderedList);
+            _routineItemListViewModel.HasOrderChanged = false;
         }
     }
 }

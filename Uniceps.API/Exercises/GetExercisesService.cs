@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Uniceps.API.common;
 using Uniceps.API.Models;
-using ex = Uniceps.Core.Models.TrainingProgram;
 
 namespace Uniceps.API.Exercises
 {

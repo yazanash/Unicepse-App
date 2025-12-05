@@ -30,6 +30,10 @@ namespace Uniceps.Stores.RoutineStores
         public event Action? MuscleGroupsLoaded;
         public event Action? SelectedMuscleChanged;
 
+
+        public event Action<double>? MuscleGroupDownloaded;
+        public event Action<double>? GotExercises;
+
         private MuscleGroup? _selectedMuscle;
         public MuscleGroup? SelectedMuscle
         {
@@ -68,9 +72,9 @@ namespace Uniceps.Stores.RoutineStores
             List<MuscleGroup> muscles = await GetAndVerifyMuscleGroups();
             foreach (var mg in muscles)
             {
-
+                int count = 0;
                 ApiResponse<List<ExerciseDtoModel>> exerciseDtoResponse= await _getExercisesApiService.FetchExercises(mg.PublicId);
-
+                MuscleGroupDownloaded?.Invoke(exerciseDtoResponse.Data!.Count());
                 string appFolder = AppDomain.CurrentDomain.BaseDirectory + "Images\\";
                 Directory.CreateDirectory(appFolder); // Ensure the folder exists
                 foreach (var exerciseDto in exerciseDtoResponse.Data!)
@@ -85,7 +89,10 @@ namespace Uniceps.Stores.RoutineStores
                         MuscleGroupId = exerciseDto.muscleGroupId,
                         Name = exerciseDto.name,
                         Tid = exerciseDto.id,
-                        Version = 0
+                        MuscelAr = mg.Name,
+                        MuscelEng = mg.EngName,
+                        Version = 0,
+                         ImageUrl= exerciseDto.imageUrl
                     };
 
                     await _getExercisesService.GetOrCreate(exercises);
@@ -93,6 +100,8 @@ namespace Uniceps.Stores.RoutineStores
                     {
                         await _getExercisesApiService.DownloadImage(exerciseDto.imageUrl!, localPath);
                     }
+
+                    GotExercises?.Invoke(++count);
                 }
 
             }

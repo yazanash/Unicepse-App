@@ -77,7 +77,7 @@ namespace Uniceps.Test.DataServicesTest
             //Act
             Sport actual_sport = await sportDataService!.Create(expected_sport);
             //assert
-            Assert.AreEqual(expected_sport.Name, actual_sport.Name);
+            Assert.Equals(expected_sport.Name!, actual_sport.Name!);
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace Uniceps.Test.DataServicesTest
             Sport test_sport = await sportDataService!.Create(expected_sport);
             Sport actual_sport = await sportDataService.Get(test_sport.Id);
             //Assert
-            Assert.AreEqual(expected_sport.Name, actual_sport.Name);
+            Assert.Equals(expected_sport.Name!, actual_sport.Name!);
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace Uniceps.Test.DataServicesTest
             actual_sport.Name = "updated Name";
             Sport updated_sport = await sportDataService.Update(actual_sport);
             //Assert
-            Assert.AreEqual(actual_sport.Name, updated_sport.Name);
+            Assert.Equals(actual_sport.Name, updated_sport.Name!);
         }
 
         [Test]
@@ -186,7 +186,7 @@ namespace Uniceps.Test.DataServicesTest
             await create_sport(count);
             var sports = await sportDataService!.GetAll();
             //Assert
-            Assert.AreEqual(sports.Count(), count);
+            Assert.Equals(sports.Count(), count);
         }
 
 

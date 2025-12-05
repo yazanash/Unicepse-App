@@ -12,8 +12,9 @@ namespace Uniceps.Stores.SystemAuthStores
         public event Action<SystemProfile>? Created;
         public event Action<SystemProfile>? Updated;
        
-        public Task Add(SystemProfile entity);
-        public Task Update(SystemProfile entity);
+        public Task CreateOrUpdate(SystemProfile entity);
+        Task<bool> CheckAndSyncProfileAsync(string businessId);
+        Task UploadProfilePicture(string filePath);
 
     }
 }

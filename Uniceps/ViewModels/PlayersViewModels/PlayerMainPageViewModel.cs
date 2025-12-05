@@ -1,18 +1,22 @@
-﻿using Uniceps.Commands.Payments;
-using Uniceps.Commands.SubscriptionCommand;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.ViewModels;
-using Uniceps.Stores;
-using Uniceps.utlis.common;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Commands;
+using Uniceps.Commands.Payments;
+using Uniceps.Commands.SubscriptionCommand;
+using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Subscription;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.ViewModels.PrintViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views;
+using Uniceps.Views.SubscriptionView;
 
 namespace Uniceps.ViewModels.PlayersViewModels
 {
@@ -24,7 +28,8 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private readonly PaymentDataStore _paymentStore;
         private readonly PlayersDataStore _playersDataStore;
         private readonly SportDataStore _sportDataStore;
-        //public PlayerListItemViewModel? Player => new (_playersDataStore.SelectedPlayer!);
+        private readonly EmployeeStore _employeeStore;
+        private readonly AccountStore _accountStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => subscriptionListItemViewModels;
         public SubscriptionListItemViewModel? SelectedSubscription
@@ -41,52 +46,17 @@ namespace Uniceps.ViewModels.PlayersViewModels
             }
         }
 
-        private PlayerStatesViewModel? _playerSubscription;
-        public PlayerStatesViewModel? PlayerSubscription
-        {
-            get
-            {
-                return _playerSubscription;
-            }
-            set
-            {
-                _playerSubscription = value;
-                OnPropertyChanged(nameof(PlayerSubscription));
-            }
-        }
-        private PlayerStatesViewModel? _playerPayments;
-        public PlayerStatesViewModel? PlayerPayments
-        {
-            get
-            {
-                return _playerPayments;
-            }
-            set
-            {
-                _playerPayments = value;
-                OnPropertyChanged(nameof(PlayerPayments));
-            }
-        }
-        private PlayerStatesViewModel? _playerSubscriptionCount;
-        public PlayerStatesViewModel? PlayerSubscriptionCount
-        {
-            get
-            {
-                return _playerSubscriptionCount;
-            }
-            set
-            {
-                _playerSubscriptionCount = value;
-                OnPropertyChanged(nameof(PlayerSubscriptionCount));
-            }
-        }
-        public PlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore, PaymentDataStore paymentStore, SportDataStore sportDataStore)
+
+        public PlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore, PaymentDataStore paymentStore, SportDataStore sportDataStore, AccountStore accountStore, EmployeeStore employeeStore)
         {
             _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
             _playersDataStore = playersDataStore;
             _paymentStore = paymentStore;
             _sportDataStore = sportDataStore;
+            _accountStore = accountStore;
+            _employeeStore = employeeStore;
+
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _playersDataStore);
             LoadPaymentCommand = new LoadPaymentsCommand(_playersDataStore, _paymentStore);
             subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
@@ -94,31 +64,39 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _subscriptionStore.Created += _subscriptionStore_Created;
             _subscriptionStore.Updated += _subscriptionStore_Updated;
             _subscriptionStore.Deleted += _subscriptionStore_Deleted;
-            _paymentStore.SumUpdated += _paymentStore_SumUpdated;
-            PlayerSubscription = new() { PlayerState = "قيمة الاشتراكات", StateValue = 0, IconPacks = MahApps.Metro.IconPacks.PackIconMaterialKind.Account };
-            PlayerPayments = new() { PlayerState = "المدفوعات", StateValue = 0, IconPacks = MahApps.Metro.IconPacks.PackIconMaterialKind.ChartBar };
-            PlayerSubscriptionCount = new() { PlayerState = "الاشتراكات", StateValue = 0, IconPacks = MahApps.Metro.IconPacks.PackIconMaterialKind.AccountCashOutline };
-
         }
-
-        private void _paymentStore_SumUpdated()
-        {
-            PlayerPayments!.StateValue = _paymentStore.GetSum();
-        }
-
 
         public ICommand LoadSubscriptionCommand { get; }
         public ICommand LoadPaymentCommand { get; }
 
+        public ICommand PrintSubscriptionCommand => new RelayCommand<SubscriptionListItemViewModel>(ExecutePrintSubscriptionCommand);
 
+        public void ExecutePrintSubscriptionCommand(SubscriptionListItemViewModel subscriptionListItemViewModel)
+        {
+            string filename = subscriptionListItemViewModel.SportName + "_" + subscriptionListItemViewModel.RollDate;
+            PrintWindowDialog printWindowDialog = new PrintWindowDialog(filename);
+            printWindowDialog.DataContext = new PrintWindowViewModel(new SubscriptionPrintViewModel(subscriptionListItemViewModel.Subscription,_accountStore),new NavigationStore());
+            printWindowDialog.ShowDialog();
+        }
+        public ICommand AddSubscriptionCommand => new RelayCommand(ExecuteAddSubscriptionCommand);
+
+        public void ExecuteAddSubscriptionCommand()
+        {
+            CreateSubscriptionWindowViewModel createSubscriptionWindowViewModel = CreateSubscriptionWindowViewModel.LoadViewModel(_sportDataStore, _subscriptionStore, _playersDataStore, _paymentStore, _employeeStore);
+            createSubscriptionWindowViewModel.SetPlayer(_playersDataStore.SelectedPlayer!);
+            SubscriptionCreationViewWindow subscriptionCreationViewWindow = new SubscriptionCreationViewWindow();
+            subscriptionCreationViewWindow.DataContext = createSubscriptionWindowViewModel;
+            subscriptionCreationViewWindow.Show();
+        }
         private void _subscriptionStore_Deleted(int id)
         {
             SubscriptionListItemViewModel? itemViewModel = subscriptionListItemViewModels.FirstOrDefault(y => y.Subscription?.Id == id);
 
             if (itemViewModel != null)
             {
+                double value = itemViewModel.Subscription.TotalPaid - itemViewModel.Subscription.PriceAfterOffer;
+                _playersDataStore.UpdatePlayerBalance(itemViewModel.Subscription.PlayerId, value);
                 subscriptionListItemViewModels.Remove(itemViewModel);
-                UpdateSubscriptionStatet();
             }
         }
 
@@ -130,20 +108,17 @@ namespace Uniceps.ViewModels.PlayersViewModels
             if (subscriptionViewModel != null)
             {
                 subscriptionViewModel.Update(subscription);
-                UpdateSubscriptionStatet();
             }
         }
 
         private void _subscriptionStore_Created(Subscription subscription)
         {
             LoadData();
-            UpdateSubscriptionStatet();
         }
 
         private void _subscriptionStore_Loaded()
         {
             LoadData();
-            UpdateSubscriptionStatet();
         }
         void LoadData()
         {
@@ -153,11 +128,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
             {
                 AddSubscription(subscription);
             }
-        }
-        private void UpdateSubscriptionStatet()
-        {
-            PlayerSubscriptionCount!.StateValue = subscriptionListItemViewModels.Count();
-            PlayerSubscription!.StateValue = subscriptionListItemViewModels.Sum(x => x.PriceAfterOffer);
         }
         public override void Dispose()
         {
@@ -175,9 +145,9 @@ namespace Uniceps.ViewModels.PlayersViewModels
             itemViewModel.Order = subscriptionListItemViewModels.Count();
         }
 
-        public static PlayerMainPageViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore)
+        public static PlayerMainPageViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore,AccountStore accountStore,EmployeeStore employeeStore)
         {
-            PlayerMainPageViewModel viewModel = new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore);
+            PlayerMainPageViewModel viewModel = new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore, accountStore, employeeStore);
             viewModel.LoadSubscriptionCommand.Execute(null);
             viewModel.LoadPaymentCommand.Execute(null);
             return viewModel;

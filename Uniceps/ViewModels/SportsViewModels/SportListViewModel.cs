@@ -1,20 +1,20 @@
-﻿using Uniceps.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.Commands.Sport;
+using Uniceps.Commands;
 using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Uniceps.Stores;
-using Uniceps.ViewModels;
-using Uniceps.utlis.common;
-using Uniceps.navigation.Stores;
-using Uniceps.Stores.SportStores;
+using Uniceps.Commands.Sport;
 using Uniceps.Core.Models.Sport;
+using Uniceps.navigation;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.Stores.SportStores;
+using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views.SportViews;
 
 namespace Uniceps.ViewModels.SportsViewModels
 {
@@ -28,7 +28,7 @@ namespace Uniceps.ViewModels.SportsViewModels
         private SportSubscriptionDataStore _subscriptionDataStore;
         public IEnumerable<SportListItemViewModel> SportList => sportListItemViewModels;
         public SearchBoxViewModel SearchBox { get; set; }
-
+        public bool HasData => sportListItemViewModels.Count > 0;
         public ICommand AddSportCommand { get; }
         private bool _isLoading;
         public bool IsLoading
@@ -68,7 +68,7 @@ namespace Uniceps.ViewModels.SportsViewModels
             _sportStore = sportStore;
             _trainerStore = trainerStore;
             LoadSportsCommand = new LoadSportsCommand(this, _sportStore);
-            AddSportCommand = new NavaigateCommand<AddSportViewModel>(new NavigationService<AddSportViewModel>(_navigatorStore, () => CreateAddSportViewModel(navigatorStore, this, _sportStore, _trainerStore)));
+            AddSportCommand = new RelayCommand(ExecuteAddSportCommand);
             sportListItemViewModels = new ObservableCollection<SportListItemViewModel>();
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
@@ -77,6 +77,13 @@ namespace Uniceps.ViewModels.SportsViewModels
             _sportStore.Updated += _sportStore_SportUpdated;
             _sportStore.Deleted += _sportStore_SportDeleted;
             _subscriptionDataStore = subscriptionDataStore;
+        }
+        private void ExecuteAddSportCommand()
+        {
+            AddSportViewModel addSportViewModel = AddSportViewModel.LoadViewModel(_sportStore, _trainerStore);
+            SportDetailWindowView sportDetailWindow = new SportDetailWindowView();
+            sportDetailWindow.DataContext = addSportViewModel;
+            sportDetailWindow.ShowDialog();
         }
         public SportListItemViewModel? SelectedSport
         {
@@ -109,6 +116,7 @@ namespace Uniceps.ViewModels.SportsViewModels
             {
                 sportListItemViewModels.Remove(itemViewModel);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _sportStore_SportUpdated(Sport sport)
@@ -120,11 +128,13 @@ namespace Uniceps.ViewModels.SportsViewModels
             {
                 sportViewModel.Update(sport);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _sportStore_SportAdded(Sport sport)
         {
             AddSport(sport);
+
         }
 
         private void _sportStore_SportLoaded()
@@ -155,6 +165,7 @@ namespace Uniceps.ViewModels.SportsViewModels
             SportListItemViewModel itemViewModel =
                 new SportListItemViewModel(sport, _sportStore, _navigatorStore, _trainerStore, this, _subscriptionDataStore);
             sportListItemViewModels.Add(itemViewModel);
+            OnPropertyChanged(nameof(HasData));
         }
         public static SportListViewModel LoadViewModel(NavigationStore navigatorStore, SportDataStore sportStore, EmployeeStore employeeStore, SportSubscriptionDataStore subscriptionDataStore)
         {
@@ -166,9 +177,9 @@ namespace Uniceps.ViewModels.SportsViewModels
         }
 
 
-        private AddSportViewModel CreateAddSportViewModel(NavigationStore navigatorStore, SportListViewModel sportListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        private AddSportViewModel CreateAddSportViewModel(SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
-            return AddSportViewModel.LoadViewModel(navigatorStore, sportListViewModel, sportDataStore, employeeStore);
+            return AddSportViewModel.LoadViewModel(sportDataStore, employeeStore);
         }
     }
 }

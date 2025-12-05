@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.Stores.AccountantStores;
 using Uniceps.ViewModels;
 using Uniceps.Commands.AccountantCommand;
 using Uniceps.Stores;
@@ -15,22 +14,22 @@ namespace Uniceps.ViewModels.Accountant
 {
     public class ExpensesCardViewModel : ListingViewModelBase
     {
-        private readonly ExpansesDailyAccountantDataStore _gymStore;
+        private readonly DailyReportStore _dailyReportStore;
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        public ExpensesCardViewModel(ExpansesDailyAccountantDataStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public ExpensesCardViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
         {
-            _gymStore = gymStore;
+            _dailyReportStore = dailyReportStore;
             _accountingStateViewModel = accountingStateViewModel;
             expensesListItemViewModels = new ObservableCollection<Expenses.ExpensesListItemViewModel>();
-            LoadExpensesCommand = new LoadDailyExpenses(_gymStore, _accountingStateViewModel);
-            _gymStore.ExpensesLoaded += _gymStore_ExpensesLoaded;
+            LoadExpensesCommand = new LoadDailyExpenses(_dailyReportStore, _accountingStateViewModel);
+            _dailyReportStore.ExpensesLoaded += _dailyReportStore_ExpensesLoaded;
 
         }
 
-        private void _gymStore_ExpensesLoaded()
+        private void _dailyReportStore_ExpensesLoaded()
         {
             expensesListItemViewModels.Clear();
-            foreach (Core.Models.Expenses.Expenses player in _gymStore.Expenses)
+            foreach (Core.Models.Expenses.Expenses player in _dailyReportStore.Expenses)
             {
                 AddExpenses(player);
             }
@@ -47,9 +46,9 @@ namespace Uniceps.ViewModels.Accountant
             itemViewModel.Order = expensesListItemViewModels.Count();
         }
         public ICommand LoadExpensesCommand;
-        public static ExpensesCardViewModel LoadViewModel(ExpansesDailyAccountantDataStore gymStore, AccountingStateViewModel accountingStateViewModel)
+        public static ExpensesCardViewModel LoadViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
         {
-            ExpensesCardViewModel viewModel = new ExpensesCardViewModel(gymStore, accountingStateViewModel);
+            ExpensesCardViewModel viewModel = new ExpensesCardViewModel(dailyReportStore, accountingStateViewModel);
 
             viewModel.LoadExpensesCommand.Execute(null);
 

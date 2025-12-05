@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
 using Uniceps.Core.Models.Payment;
 
@@ -32,9 +31,6 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             set { _order = value; OnPropertyChanged(nameof(Order)); }
         }
         public int Id => payment.Id;
-        public int SubscriptionId => payment.Subscription!.Id;
-        public string? SportName => payment.Subscription!.Sport != null ? payment.Subscription!.Sport.Name : "";
-        public string? GroupName => SportName + " - " + payment.Subscription!.RollDate.ToShortDateString();
         public string? Description => payment.Des;
         public double Value => payment.PaymentValue;
         public string? Date => payment.PayDate.ToShortDateString();

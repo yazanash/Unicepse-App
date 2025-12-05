@@ -24,27 +24,26 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
     {
         private readonly ObservableCollection<SportTrainerListItemViewModel> _sportListItemViewModels;
         private readonly SportDataStore _sportDataStore;
-        private readonly NavigationStore _navigationStore;
-        private readonly TrainersListViewModel _trinersListViewModel;
         private readonly EmployeeStore _employeeStore;
         public IEnumerable<SportTrainerListItemViewModel> SportList => _sportListItemViewModels;
         public ObservableCollection<Year> years;
-
+        public Action? TrainerUpdated;
+        public void OnTrainerUpdated()
+        {
+            TrainerUpdated?.Invoke();
+        }
         public IEnumerable<Year> Years => years;
-        public EditTrainerViewModel(NavigationStore navigationStore, TrainersListViewModel trinersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        public EditTrainerViewModel(SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
             years = new ObservableCollection<Year>();
             for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
                 years.Add(new Year() { year = i });
             Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
             _sportDataStore = sportDataStore;
-            _navigationStore = navigationStore;
-            _trinersListViewModel = trinersListViewModel;
             _employeeStore = employeeStore;
             _sportListItemViewModels = new();
             _sportDataStore.Loaded += _sportDataStore_Loaded;
-            CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
-            SubmitCommand = new EditTrainerCommand(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel), this, _employeeStore);
+            SubmitCommand = new EditTrainerCommand(this, _employeeStore);
             LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
             FullName = _employeeStore.SelectedEmployee!.FullName;
             Phone = _employeeStore.SelectedEmployee!.Phone;
@@ -192,9 +191,9 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public ICommand? CancelCommand { get; }
         public ICommand LoadSportsCommand { get; }
 
-        public static EditTrainerViewModel LoadViewModel(NavigationStore navigatorStore, TrainersListViewModel trainersListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        public static EditTrainerViewModel LoadViewModel(SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
-            EditTrainerViewModel viewModel = new EditTrainerViewModel(navigatorStore, trainersListViewModel, sportDataStore, employeeStore);
+            EditTrainerViewModel viewModel = new EditTrainerViewModel(sportDataStore, employeeStore);
 
             viewModel.LoadSportsCommand.Execute(null);
 

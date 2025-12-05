@@ -22,26 +22,19 @@ namespace Uniceps.ViewModels.Authentication
 {
     public class AddUserViewModel : ErrorNotifyViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
         private readonly UsersDataStore _usersDataStore;
-        private UsersListViewModel _usersListViewModel;
-        private readonly EmployeeStore _trainerStore;
         private readonly ObservableCollection<RolesListItemViewModel> _rolesListItemViewModels;
         public IEnumerable<RolesListItemViewModel> RolesList => _rolesListItemViewModels;
-        public AddUserViewModel(UsersDataStore usersDataStore, NavigationStore navigationStore, UsersListViewModel usersListViewModel, EmployeeStore trainerStore)
+        public AddUserViewModel(UsersDataStore usersDataStore)
         {
             _usersDataStore = usersDataStore;
-            _navigationStore = navigationStore;
-            _usersListViewModel = usersListViewModel;
-            _trainerStore = trainerStore;
             _rolesListItemViewModels = new ObservableCollection<RolesListItemViewModel>();
             _rolesListItemViewModels.Add(new RolesListItemViewModel("مستخدم", Roles.User));
             _rolesListItemViewModels.Add(new RolesListItemViewModel("مشرف", Roles.Supervisor));
             _rolesListItemViewModels.Add(new RolesListItemViewModel("مسؤول", Roles.Admin));
             _rolesListItemViewModels.Add(new RolesListItemViewModel("محاسب", Roles.Accountant));
-            CancelCommand = new NavaigateCommand<UsersListViewModel>(new NavigationService<UsersListViewModel>(_navigationStore, () => _usersListViewModel));
-            NavigationStore PlayerMainPageNavigation = new NavigationStore();
-            SubmitCommand = new SubmitUserCommand(_usersDataStore, new NavigationService<UsersListViewModel>(_navigationStore, () => _usersListViewModel), this);
+          
+            SubmitCommand = new SubmitUserCommand(_usersDataStore, this);
             RoleItem = _rolesListItemViewModels.FirstOrDefault();
         }
         private RolesListItemViewModel? _roleItem;
@@ -51,10 +44,15 @@ namespace Uniceps.ViewModels.Authentication
             set { _roleItem = value; OnPropertyChanged(nameof(RoleItem)); }
         }
 
-        internal static AddUserViewModel loadViewModel(UsersDataStore usersDataStore, NavigationStore navigatorStore, UsersListViewModel usersListViewModel, EmployeeStore employeeStore)
+        internal static AddUserViewModel loadViewModel(UsersDataStore usersDataStore)
         {
-            AddUserViewModel addUserViewModel = new AddUserViewModel(usersDataStore, navigatorStore, usersListViewModel, employeeStore);
+            AddUserViewModel addUserViewModel = new AddUserViewModel(usersDataStore);
             return addUserViewModel;
+        }
+        public Action? UserCreated;
+        internal void OnUserCreated()
+        {
+            UserCreated?.Invoke();
         }
 
 
@@ -131,7 +129,6 @@ namespace Uniceps.ViewModels.Authentication
 
 
         public ICommand? SubmitCommand { get; }
-        public ICommand? CancelCommand { get; }
         #endregion
 
     }

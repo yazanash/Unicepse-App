@@ -5,16 +5,34 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Views.RoutineTemplateViews.RoutineComponent"
              mc:Ignorable="d" 
+              xmlns:Comp="clr-namespace:Uniceps.utlis.Components"
+              xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
              >
+    <UserControl.InputBindings>
+        <!-- زر Up يحرك العنصر المحدد للأعلى -->
+        <KeyBinding Key="Up" Modifiers="Alt"
+                Command="{Binding MoveUpCommand}"
+                CommandParameter="{Binding SelectedDayGroup}" />
+
+        <!-- زر Down يحرك العنصر المحدد للأسفل -->
+        <KeyBinding Key="Down" Modifiers="Alt"
+                Command="{Binding MoveDownCommand}"
+                CommandParameter="{Binding SelectedDayGroup}" />
+    </UserControl.InputBindings>
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVis"/>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+    </UserControl.Resources>
     <Border Style="{DynamicResource StaticCardBorderStyle}">
-        <Grid >
+        <Grid HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -23,11 +41,26 @@
                 <Button Grid.Column="2" Grid.Row="1" Command="{Binding AddDayGroupCommand}" Style="{StaticResource IconBtn}">
                     <icons:PackIconMaterial Kind="Plus" />
                 </Button>
+              
             </StackPanel>
-            <ListView x:Name="lvItems" AllowDrop="True" 
-            DragLeave="TodoItemList_DragLeave"
-            DragOver="TodoItemList_DragOver" Background="Transparent"
-                      BorderThickness="0"  VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding DayGroups}" SelectedItem="{Binding SelectedDayGroup}" >
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+                <Button  ToolTip="Alt + Up"
+            Command="{Binding MoveUpCommand}" 
+            CommandParameter="{Binding SelectedDayGroup}" Style="{DynamicResource BorderedIconBtn}">
+                    <icons:PackIconMaterial Kind="ArrowUp"/>
+                </Button>
+                <Button  Margin="2 0"
+            Command="{Binding MoveDownCommand}" ToolTip="Alt + Down "
+            CommandParameter="{Binding SelectedDayGroup}"  Style="{DynamicResource BorderedIconBtn}">
+                    <icons:PackIconMaterial Kind="ArrowDown"/>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="1" Visibility="{Binding HasOrderChanged,Converter={StaticResource boolToVis}}" Command="{Binding SaveNewOrderCommand}" Style="{StaticResource BorderedIconBtn}">
+                    <TextBlock Text="حفظ ترتيب الايام"/>
+                </Button>
+            </StackPanel>
+            <ListView Background="Transparent" x:Name="DayGroupList"
+                       PreviewKeyDown="ListView_PreviewKeyDown"
+                      BorderThickness="0"  VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding DayGroups}" SelectedItem="{Binding SelectedDayGroup}" >
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel  Orientation="vertical"/>
@@ -42,15 +75,12 @@
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="BorderBrush" Value="Transparent"/>
                         <Setter Property="BorderThickness" Value="1"/>
-                        
+                        <Setter Property="Focusable" Value="True"/>
                         <Setter Property="RenderTransform">
                             <Setter.Value>
                                 <TranslateTransform />
                             </Setter.Value>
                         </Setter>
-                        <EventSetter Event="MouseMove" Handler="MouseMoveHandler"/>
-                        <EventSetter Event="DragOver" Handler="DragOverHandler"/>
-                        <EventSetter Event="Drop" Handler="ListBoxItem_Drop"/>
                         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
                         <Setter Property="Template">
                             <Setter.Value>
@@ -59,11 +89,11 @@
                                     <Border  MinWidth="100" x:Name="Bd" Margin="5" Style="{DynamicResource StaticCardBorderStyle}">
 
                                         <StackPanel Orientation="Horizontal">
-                                            <!-- Display Mode -->
 
                                             <TextBlock FontSize="16" Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
                                    Text="{Binding DayGroupName,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"  HorizontalAlignment="Center"></TextBlock>
-                                            <CheckBox  VerticalAlignment="Center"  Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
+                                            <CheckBox 
+                                                      VerticalAlignment="Center"  Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
 
                                                 <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                             </CheckBox>
@@ -71,14 +101,14 @@
                                                 <Icon:PackIconMaterial Kind="TrashCan" Foreground="red" Style="{StaticResource GridBtnIcon}"/>
                                             </Button>
                                             <!-- Popup for Editing -->
-                                            <Popup StaysOpen="False" AllowsTransparency="True" Name="MyPopup" IsOpen="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
+                                            <Popup Opened="MyPopup_Opened"  StaysOpen="False" AllowsTransparency="True" Name="MyPopup" IsOpen="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
                                                 <!-- Customize the popup content here -->
                                                 <Border Style="{DynamicResource CardBorderStyle}">
 
                                                     <StackPanel Orientation="Vertical">
                                                         <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
 
-                                                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                                            <TextBox Name="EditTextBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
 
                                                         </StackPanel>
@@ -87,6 +117,7 @@
                                                     </StackPanel>
 
                                                 </Border>
+                                               
                                             </Popup>
                                         </StackPanel>
                                     </Border>
@@ -136,7 +167,8 @@
                 </ListView.ItemContainerStyle>
           
             </ListView>
-           
+            <Comp:CaptinUniTRainerForEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="2" Title="لا يوجد ايام بعد" 
+                        Caption="اضغط على زر + لاضافة يوم تدريبي"/>
         </Grid>
 
     </Border>

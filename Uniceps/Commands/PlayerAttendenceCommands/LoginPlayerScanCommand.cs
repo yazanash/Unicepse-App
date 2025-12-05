@@ -12,7 +12,7 @@ using Uniceps.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps;
 using Uniceps.Stores.RoutineStores;
-using player = Uniceps.Core.Models.Player;
+using Player = Uniceps.Core.Models.Player;
 using Uniceps.Views;
 namespace Uniceps.Commands.PlayerAttendenceCommands
 {
@@ -20,19 +20,13 @@ namespace Uniceps.Commands.PlayerAttendenceCommands
     {
         private readonly ReadPlayerQrCodeViewModel _viewModelBase;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly PlayersDataStore _playersDataStore;
-        private readonly NavigationStore _navigationStore;
-        private readonly PlayerProfileViewModel _playerProfileViewModel;
 
         public string? OldUID;
 
-        public LoginPlayerScanCommand(ReadPlayerQrCodeViewModel viewModelBase, PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, PlayerProfileViewModel playerProfileViewModel)
+        public LoginPlayerScanCommand(ReadPlayerQrCodeViewModel viewModelBase, PlayersAttendenceStore playersAttendenceStore)
         {
             _viewModelBase = viewModelBase;
             _playersAttendenceStore = playersAttendenceStore;
-            _playersDataStore = playersDataStore;
-            _navigationStore = navigationStore;
-            _playerProfileViewModel = playerProfileViewModel;
 
             _viewModelBase.onCatch += _viewModelBase_onCatch;
         }
@@ -46,18 +40,15 @@ namespace Uniceps.Commands.PlayerAttendenceCommands
                 {
                     OldUID = _viewModelBase.UID;
                     string? uid = _viewModelBase.UID;
-                    Core.Models.Player.Player? player = await _playersDataStore.GetPlayerByUID(uid);
-                    if (player != null)
-                    {
-                        if (player.SubscribeEndDate > DateTime.Now)
-                        {
+                   
+                       
                             DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
                             {
                                 loginTime = DateTime.Now,
                                 logoutTime = DateTime.Now,
                                 Date = DateTime.Now,
                                 IsLogged = true,
-                                Player = player
+                                Code = uid
 
                             };
                             DailyPlayerReport? existed = await _playersAttendenceStore.GetLoggedPlayer(dailyPlayerReport);
@@ -69,30 +60,8 @@ namespace Uniceps.Commands.PlayerAttendenceCommands
                             }
                             else
                                 await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
-                        }
-                        else
-                        {
-                            if (MessageBox.Show("هذا اللاعب منتهي الاشتراك هل تريد اضافة اشتراك له ؟", "تنبيه", MessageBoxButton.YesNo,
-                                           MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                            {
-                                _playersDataStore.SelectedPlayer = player;
-                                _playerProfileViewModel.SubscriptionCommand!.Execute(null);
-                                NavigationService<PlayerProfileViewModel> nav = new NavigationService<PlayerProfileViewModel>(_navigationStore, () => _playerProfileViewModel);
-                                nav.Navigate();
-
-                                foreach (Window window in Application.Current.Windows)
-                                {
-                                    if (window is CameraReader)
-                                    {
-                                        window.Close();
-                                    }
-                                }
-                            }
-
-                        }
+                       
                     }
-
-                }
             }
             catch (Exception ex)
             {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.navigation;
 using Uniceps.Commands;
-using Uniceps.utlis.common;
+using Uniceps.ViewModels;
 
 namespace Uniceps.Commands.Player
 {

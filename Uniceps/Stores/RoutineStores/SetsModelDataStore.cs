@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office.CustomUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,16 +12,18 @@ namespace Uniceps.Stores.RoutineStores
     public class SetsModelDataStore : IDataStore<SetModel>, IGetAllByIdDataStore<SetModel>
     {
         private readonly IDataService<SetModel> _dataService;
+        private readonly IApplySetsToAll _applySetsToAll;
         private readonly IGetAllById<SetModel> _getAllDataService;
         private readonly IUpdateRangeDataService<SetModel> _updateRangeDataService;
         private readonly List<SetModel> _setModels;
 
-        public SetsModelDataStore(IDataService<SetModel> dataService, IGetAllById<SetModel> getAllDataService, IUpdateRangeDataService<SetModel> updateRangeDataService)
+        public SetsModelDataStore(IDataService<SetModel> dataService, IGetAllById<SetModel> getAllDataService, IUpdateRangeDataService<SetModel> updateRangeDataService, IApplySetsToAll applySetsToAll)
         {
             _dataService = dataService;
             _getAllDataService = getAllDataService;
             _setModels = new List<SetModel>();
             _updateRangeDataService = updateRangeDataService;
+            _applySetsToAll = applySetsToAll;
         }
 
         public IEnumerable<SetModel> SetModels => _setModels;
@@ -28,6 +31,8 @@ namespace Uniceps.Stores.RoutineStores
         public event Action? Loaded;
         public event Action<SetModel>? Updated;
         public event Action<int>? Deleted;
+        public event Action<int,int>? DeletedSet;
+        public event Action<List<SetModel>,int>? AppliedToAll;
 
         public async Task Add(SetModel entity)
         {
@@ -35,12 +40,15 @@ namespace Uniceps.Stores.RoutineStores
             _setModels.Add(entity);
             Created?.Invoke(entity);
         }
+       
 
         public async Task Delete(int entity_id)
         {
+            int ItemId = _setModels.FirstOrDefault(y => y.Id == entity_id)?.RoutineItemId ?? 0;
             await _dataService.Delete(entity_id);
             int currentIndex = _setModels.FindIndex(y => y.Id == entity_id);
             _setModels.RemoveAt(currentIndex);
+            DeletedSet?.Invoke(entity_id,ItemId);
             Deleted?.Invoke(entity_id);
         }
 
@@ -58,6 +66,11 @@ namespace Uniceps.Stores.RoutineStores
             _setModels.Clear();
             _setModels.AddRange(setModels);
             Loaded?.Invoke();
+        }
+        public async Task ApplySetsToAll(List<SetModel> entities,int id)
+        {
+            List<SetModel> setModels = await _applySetsToAll.ApplySetsToEntity(entities, id);
+            AppliedToAll?.Invoke(setModels,id);
         }
 
         public Task Initialize()

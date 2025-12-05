@@ -30,7 +30,11 @@ namespace Uniceps.Entityframework.Services.AuthService
             User existed_user = await GetByUsername(entity.UserName!);
             if (existed_user != null)
                 throw new ConflictException("هذا المستخدم موجود بالفعل");
-
+            bool hasAdmins = await context.Set<User>().Where(x => x.Role == Roles.Admin).AnyAsync();
+            if (!hasAdmins&&entity.Role!= Roles.Admin)
+            {
+                throw new Exception("يجب وجود حساب مسؤول للنظام حتى يمكنك انشاء حسابات بصلاحيات اقل");
+            }
             string pass = _passwordHasher.HashPassword(entity, entity.Password);
             entity.Password = pass;
             EntityEntry<User> CreatedResult = await context.Set<User>().AddAsync(entity);

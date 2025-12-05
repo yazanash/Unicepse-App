@@ -18,6 +18,7 @@ using Uniceps.Entityframework.Services.RoutineSystemServices;
 using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.utlis.common;
 using Uniceps.Helpers;
+using Uniceps.Services;
 
 namespace Uniceps.HostBuilders
 {
@@ -39,6 +40,8 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IDataService<Credit>, EmployeeCreditsDataService>();
                 services.AddSingleton<IDataService<PlayerPayment>, PaymentDataService>();
                 services.AddSingleton<IDataService<Subscription>, SubscriptionDataService>();
+                services.AddSingleton<ISubscriptionRenewService, SubscriptionDataService>();
+
                 services.AddSingleton<PlayersAttendenceService>();
                 services.AddSingleton<ExpensesDataService>();
 
@@ -55,9 +58,11 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IDataService<SetModel>, RoutineSetsDataService>();
                 services.AddSingleton<IGetAllById<SetModel>, RoutineSetsDataService>();
                 services.AddSingleton<IUpdateRangeDataService<SetModel>, RoutineSetsDataService>();
+                services.AddSingleton<IApplySetsToAll, RoutineSetsDataService>();
 
                 services.AddSingleton<IProfileDataService, SystemProfileDataService>();
                 services.AddSingleton<ISystemSubscriptionDataService, SystemSubscriptionDataService>();
+                services.AddSingleton<IExcelService<Player>, PlayersExcelService>();
             });
             return _hostBuilder;
         }

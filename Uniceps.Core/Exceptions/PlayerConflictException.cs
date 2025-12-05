@@ -35,7 +35,7 @@ namespace Uniceps.Core.Exceptions
             IncomingPlayer = incomingPlayer;
         }
 
-        protected PlayerConflictException(Player existingPlayer, Player incomingPlayer, SerializationInfo info, StreamingContext context) : base(info, context)
+        protected PlayerConflictException(Player existingPlayer, Player incomingPlayer, SerializationInfo info, StreamingContext context) 
         {
             ExistingPlayer = existingPlayer;
             IncomingPlayer = incomingPlayer;

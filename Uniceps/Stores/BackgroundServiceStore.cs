@@ -18,26 +18,11 @@ namespace Uniceps.Stores
 {
     public class BackgroundServiceStore
     {
-        private readonly IApiDataStore<Player> _playersApiDataStore;
-        private readonly IApiDataStore<Subscription> _subscriptionApiDataStore;
-        private readonly IApiDataStore<PlayerPayment> _paymentApiDataStore;
-        private readonly IDeleteApiDataStore<PlayerPayment> _deletePaymentApiDataStore;
-
-        private readonly IApiDataStore<Metric> _metricApiDataStore;
-        private readonly IApiDataStore<DailyPlayerReport> _AttendenceApiDataStore;
         private readonly ILogger<BackgroundServiceStore> _logger;
         private readonly SyncStore _syncStore;
-        public BackgroundServiceStore(IApiDataStore<Player> playersApiDataStore, IApiDataStore<Subscription> subscriptionApiDataStore,
-            IApiDataStore<PlayerPayment> paymentApiDataStore, IApiDataStore<Metric> metricApiDataStore,
-            IApiDataStore<DailyPlayerReport> AttendenceApiDataStore, ILogger<BackgroundServiceStore> logger, IDeleteApiDataStore<PlayerPayment> deletePaymentApiDataStore, SyncStore syncStore)
+        public BackgroundServiceStore( ILogger<BackgroundServiceStore> logger, SyncStore syncStore)
         {
-            _playersApiDataStore = playersApiDataStore;
-            _subscriptionApiDataStore = subscriptionApiDataStore;
-            _paymentApiDataStore = paymentApiDataStore;
-            _metricApiDataStore = metricApiDataStore;
-            _AttendenceApiDataStore = AttendenceApiDataStore;
             _logger = logger;
-            _deletePaymentApiDataStore = deletePaymentApiDataStore;
             _syncStore = syncStore;
         }
         private string? _backMessage;
@@ -84,27 +69,7 @@ namespace Uniceps.Stores
             IEnumerable<SyncObject> syncObjects = await _syncStore.GetAll();
             foreach (SyncObject syncObject in syncObjects)
             {
-                switch (syncObject.EntityType)
-                {
-                    case DataType.Player:
-                        await _playersApiDataStore.Sync(syncObject);
-                        break;
-                    case DataType.Subscription:
-                        await _subscriptionApiDataStore.Sync(syncObject);
-                        break;
-                    case DataType.Payment:
-                        await _paymentApiDataStore.Sync(syncObject);
-                        break;
-                    case DataType.Metric:
-                        await _metricApiDataStore.Sync(syncObject);
-                        break;
-                    case DataType.Routine:
-                        //await _routineApiDataStore.Sync(syncObject);
-                        break;
-                    case DataType.Attendance:
-                        await _AttendenceApiDataStore.Sync(syncObject);
-                        break;
-                }
+              
             }
         }
     }

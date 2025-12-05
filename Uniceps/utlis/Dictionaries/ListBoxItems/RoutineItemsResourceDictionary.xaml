@@ -100,7 +100,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
-                    <Border BorderThickness="1" Width="100" x:Name="Bd" BorderBrush="#aaa" Margin="5" Padding="5" CornerRadius="10" Background="#fff">
+                    <Border  Width="100" x:Name="Bd"  Margin="5" Style="{DynamicResource StaticCardBorderStyle}">
                         <StackPanel Orientation="Vertical">
                             <!--<Image Source="{Binding Image,UpdateSourceTrigger=PropertyChanged}" 
                  RenderOptions.BitmapScalingMode="HighQuality"
@@ -108,7 +108,7 @@
                    Height="40" Width="40" Margin="10 5"/>-->
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <TextBlock
-                    FontSize="16" Foreground="#797979" FontWeight="Bold"
+                    FontSize="16" Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
                     Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center"/>
                                 <!--<TextBlock 
                      FontSize="22" FontWeight="Bold"
@@ -121,16 +121,15 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>
-                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.MouseOver.Border}"/>
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource Brush.Card}"/>
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="Selector.IsSelectionActive" Value="False"/>
                                 <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
-                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource Brush.Card}"/>
+                            <Setter Property="BorderBrush" TargetName="Bd" Value="{DynamicResource Brush.Primary}"/>
 
                         </MultiTrigger>
                         <MultiTrigger>
@@ -138,9 +137,9 @@
                                 <Condition Property="Selector.IsSelectionActive" Value="True"/>
                                 <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Background}"/>
-                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedActive.Border}"/>
-                            <!--<Setter Property="Visibility" TargetName="editbtn" Value="Visible"/>-->
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource Brush.Card}"/>
+                            <Setter Property="BorderBrush" TargetName="Bd" Value="{DynamicResource Brush.Primary}"/>
+
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>

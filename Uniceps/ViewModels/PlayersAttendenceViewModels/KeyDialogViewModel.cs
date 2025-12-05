@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.Commands;
 
 namespace Uniceps.ViewModels.PlayersAttendenceViewModels

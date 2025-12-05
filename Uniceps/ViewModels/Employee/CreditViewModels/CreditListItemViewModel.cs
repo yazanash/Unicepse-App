@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
 using Uniceps.Core.Models.Employee;
 

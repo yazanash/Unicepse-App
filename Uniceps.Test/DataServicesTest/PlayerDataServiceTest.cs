@@ -106,7 +106,7 @@ namespace Uniceps.Test.DataServicesTest
             //Act
             Player actual_player = await playerDataService!.Create(expected_player);
             //Assert
-            Assert.AreEqual(expected_player.FullName, actual_player.FullName);
+            Assert.Equals(expected_player.FullName!, actual_player.FullName!);
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace Uniceps.Test.DataServicesTest
             Player test_player = await playerDataService!.Create(expected_player);
             Player actual_player = await playerDataService.Get(test_player.Id);
             //Assert
-            Assert.AreEqual(expected_player.FullName, actual_player.FullName);
+            Assert.Equals(expected_player.FullName!, actual_player.FullName!);
         }
 
         [Test]
@@ -159,7 +159,7 @@ namespace Uniceps.Test.DataServicesTest
             actual_player.FullName = "updated Name";
             Player updated_player = await playerDataService.Update(actual_player);
             //Assert
-            Assert.AreEqual(actual_player.FullName, updated_player.FullName);
+            Assert.Equals(actual_player.FullName!, updated_player.FullName!);
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace Uniceps.Test.DataServicesTest
             await create_players(count);
             var players = await playerDataService!.GetAll();
             //Assert
-            Assert.AreEqual(players.Count(), count);
+            Assert.Equals(players.Count(), count);
         }
 
 

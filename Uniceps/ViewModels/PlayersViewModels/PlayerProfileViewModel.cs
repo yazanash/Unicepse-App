@@ -1,24 +1,24 @@
-﻿using Uniceps.Core.Models.Subscription;
-using Uniceps.Commands;
-using Uniceps.Commands.SubscriptionCommand;
-using Uniceps.Commands.Player;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
+using Uniceps.Commands.Player;
+using Uniceps.Commands.SubscriptionCommand;
+using Uniceps.Core.Common;
+using Uniceps.Core.Models.Player;
+using Uniceps.Core.Models.Subscription;
 using Uniceps.navigation;
+using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.Stores.RoutineStores;
-using Uniceps.utlis.common;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.SubscriptionViewModel;
-using Uniceps.ViewModels.PlayersAttendenceViewModels;
-using Uniceps.ViewModels.PaymentsViewModels;
 using Uniceps.ViewModels.Metrics;
-using Uniceps.Core.Models.Player;
+using Uniceps.ViewModels.PaymentsViewModels;
+using Uniceps.ViewModels.PlayersAttendenceViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.ViewModels.PlayersViewModels
 {
@@ -33,13 +33,15 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly NavigationService<PlayerListViewModel> _navigationService;
         private readonly ExercisesDataStore _exercisesDataStore;
+        private readonly AccountStore _accountStore;
+        private readonly EmployeeStore _employeeStore;
         private PlayerMainPageViewModel _playerMainPageViewModel;
         public PlayerListItemViewModel? Player { get; set; }
         public ViewModelBase? CurrentPlayerViewModel => _navigatorStore.CurrentViewModel;
 
         public PlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore,
             PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, PlayersAttendenceStore playersAttendenceStore,
-            NavigationService<PlayerListViewModel> navigationService, ExercisesDataStore exercisesDataStore)
+            NavigationService<PlayerListViewModel> navigationService, ExercisesDataStore exercisesDataStore, AccountStore accountStore, EmployeeStore employeeStore)
         {
             _navigatorStore = new NavigationStore();
             _subscriptionStore = subscriptionStore;
@@ -50,12 +52,10 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _playersAttendenceStore = playersAttendenceStore;
             _navigationService = navigationService;
             _exercisesDataStore = exercisesDataStore;
-
-
-
-            _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore);
-
-            _navigatorStore.CurrentViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore);
+            _accountStore = accountStore;
+            _employeeStore = employeeStore;
+            _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore, _accountStore, _employeeStore);
+            _navigatorStore.CurrentViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore, _accountStore, _employeeStore);
             _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
             _playersDataStore.PlayerChanged += _playersDataStore_PlayerChanged;
             _playersDataStore.ArchivedPlayer_restored += _playersDataStore_ArchivedPlayer_restored;
@@ -63,8 +63,19 @@ namespace Uniceps.ViewModels.PlayersViewModels
             PlayerHomeCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageViewModel));
             SubscriptionCommand = new NavaigateCommand<SubscriptionDetailsViewModel>(new NavigationService<SubscriptionDetailsViewModel>(_navigatorStore, () => LoadSubscriptionViewModel(_navigatorStore, _sportDataStore, _subscriptionStore, _playersDataStore, _paymentDataStore, _playerMainPageViewModel)));
             PaymentCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => LoadPaymentsViewModel(_paymentDataStore, _playersDataStore, _navigatorStore, _subscriptionStore)));
-            MetricsCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigatorStore, () => LoadMetricsViewModel(_metricDataStore, _playersDataStore, _navigatorStore)));
-            PlayerAttendenceCommand = new NavaigateCommand<PlayerAttendenceViewModel>(new NavigationService<PlayerAttendenceViewModel>(_navigatorStore, () => LoadPlayerAttendenceViewModel(_playersAttendenceStore, _playersDataStore)));
+
+            if (_accountStore.SystemSubscription != null)
+            {
+                MetricsCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigatorStore, () => LoadMetricsViewModel(_metricDataStore, _playersDataStore, _navigatorStore)));
+                PlayerAttendenceCommand = new NavaigateCommand<PlayerAttendenceViewModel>(new NavigationService<PlayerAttendenceViewModel>(_navigatorStore, () => LoadPlayerAttendenceViewModel(_playersAttendenceStore, _playersDataStore)));
+
+            }
+            else
+            {
+                MetricsCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
+                PlayerAttendenceCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
+
+            }
         }
 
         private void _playersDataStore_Player_update(Player obj)
@@ -86,7 +97,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         private void _playersDataStore_PlayerChanged(Player? obj)
         {
-            _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore);
+            _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore, _accountStore,_employeeStore);
             Player = new PlayerListItemViewModel(_playersDataStore.SelectedPlayer!, _navigatorStore, _playersDataStore,
                _navigationService, _playerMainPageViewModel);
             _navigatorStore.CurrentViewModel = _playerMainPageViewModel;
@@ -97,9 +108,9 @@ namespace Uniceps.ViewModels.PlayersViewModels
         {
             OnPropertyChanged(nameof(CurrentPlayerViewModel));
         }
-        private PlayerMainPageViewModel LoadPlayerMainPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore)
+        private PlayerMainPageViewModel LoadPlayerMainPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore,AccountStore accountStore,EmployeeStore employeeStore)
         {
-            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playerStore, paymentDataStore, sportDataStore);
+            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playerStore, paymentDataStore, sportDataStore, accountStore, employeeStore);
         }
 
         private SubscriptionDetailsViewModel LoadSubscriptionViewModel(NavigationStore navigatorStore, SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, PlayerMainPageViewModel playerMainPageViewModel)

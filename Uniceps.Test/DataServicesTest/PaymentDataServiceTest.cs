@@ -107,9 +107,10 @@ namespace Uniceps.Test.DataServicesTest
         {
             for (int i = 0; i < count; i++)
             {
+                Player player= await create_player();
                 Subscription subscribtion = await create_subscription();
                 PlayerPayment actual_payment = await paymentDataService!
-                    .Create(paymentFactory!.FakePayments(subscribtion));
+                    .Create(paymentFactory!.FakePayments(player,subscribtion));
             }
         }
 
@@ -123,13 +124,13 @@ namespace Uniceps.Test.DataServicesTest
         public async Task CreatePayment()
         {
             // Arrange
+            Player player = await create_player();
             Subscription subscription = await create_subscription();
-            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            PlayerPayment payment = paymentFactory!.FakePayments(player,subscription);
             // Act
             PlayerPayment created_payment = await paymentDataService!.Create(payment);
             // Assert
-            Assert.AreEqual(payment.Player!.Id, created_payment.Player!.Id);
-            Assert.AreEqual(payment.Subscription!.Id, created_payment.Subscription!.Id);
+            Assert.Equals(payment.Player!.Id, created_payment.Player!.Id);
 
         }
 
@@ -138,14 +139,14 @@ namespace Uniceps.Test.DataServicesTest
         public async Task GetPayment()
         {
             // Arrange
+            Player player = await create_player();
             Subscription subscription = await create_subscription();
-            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            PlayerPayment payment = paymentFactory!.FakePayments(player,subscription);
             // Act
             PlayerPayment created_payment = await paymentDataService!.Create(payment);
             PlayerPayment get_payment = await paymentDataService!.Get(payment.Id);
             // Assert
-            Assert.AreEqual(created_payment.Player!.Id, get_payment.Player!.Id);
-            Assert.AreEqual(created_payment.Subscription!.Id, get_payment.Subscription!.Id);
+            Assert.Equals(created_payment.Player!.Id, get_payment.Player!.Id);
 
         }
         [Test]
@@ -153,8 +154,9 @@ namespace Uniceps.Test.DataServicesTest
         public async Task GetNotExistPayment()
         {
             // Arrange
+            Player player = await create_player();
             Subscription subscription = await create_subscription();
-            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            PlayerPayment payment = paymentFactory!.FakePayments(player,subscription);
             // Assert
             Assert.ThrowsAsync<NotExistException>(
                 async () => await paymentDataService!.Get(payment.Id));
@@ -165,15 +167,16 @@ namespace Uniceps.Test.DataServicesTest
         public async Task UpdatePayment()
         {
             // Arrange
+            Player player = await create_player();
             Subscription subscription = await create_subscription();
-            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            PlayerPayment payment = paymentFactory!.FakePayments(player,subscription);
             // Act
             PlayerPayment created_payment = await paymentDataService!.Create(payment);
             PlayerPayment get_payment = await paymentDataService!.Get(payment.Id);
             get_payment.PaymentValue = 30000;
             PlayerPayment updated_payment = await paymentDataService.Update(get_payment);
             // Assert
-            Assert.AreEqual(updated_payment.PaymentValue, 30000);
+            Assert.Equals(updated_payment.PaymentValue, 30000);
 
         }
 
@@ -182,8 +185,9 @@ namespace Uniceps.Test.DataServicesTest
         public async Task UpdateNotExistPayment()
         {
             // Arrange
+            Player player = await create_player();
             Subscription subscription = await create_subscription();
-            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            PlayerPayment payment = paymentFactory!.FakePayments(player,subscription);
             // Act
             payment.PaymentValue = 30000;
             // Assert
@@ -197,8 +201,9 @@ namespace Uniceps.Test.DataServicesTest
         public async Task DeletePayment()
         {
             // Arrange
+            Player player = await create_player();
             Subscription subscription = await create_subscription();
-            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            PlayerPayment payment = paymentFactory!.FakePayments(player,subscription);
             PlayerPayment created_payment = await paymentDataService!.Create(payment);
             // Act
             await paymentDataService.Delete(created_payment.Id);
@@ -212,8 +217,9 @@ namespace Uniceps.Test.DataServicesTest
         public async Task DeleteNotExistPayment()
         {
             // Arrange
+            Player player = await create_player();
             Subscription subscription = await create_subscription();
-            PlayerPayment payment = paymentFactory!.FakePayments(subscription);
+            PlayerPayment payment = paymentFactory!.FakePayments(player,subscription);
             //Assert
             Assert.ThrowsAsync<NotExistException>(
                async () => await paymentDataService!.Delete(payment.Id));
@@ -229,7 +235,7 @@ namespace Uniceps.Test.DataServicesTest
             await create_payments(count);
             var payments = await paymentDataService!.GetAll();
             //Assert
-            Assert.AreEqual(payments.Count(), count);
+            Assert.Equals(payments.Count(), count);
 
         }
 

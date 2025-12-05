@@ -5,23 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using emp = Uniceps.Core.Models.Employee;
 using Uniceps.Commands;
+using Uniceps.Core.Exceptions;
 using Uniceps.navigation;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
+using Uniceps.ViewModels.SportsViewModels;
+using Uniceps.Views;
+using Emp = Uniceps.Core.Models.Employee;
 
 namespace Uniceps.Commands.Employee
 {
     public class SubmitTrainerCommand : AsyncCommandBase
     {
-        private readonly NavigationService<TrainersListViewModel> navigationService;
         private readonly EmployeeStore _employeeStore;
         private AddTrainerViewModel _addTrainerViewModel;
 
-        public SubmitTrainerCommand(NavigationService<TrainersListViewModel> navigationService, AddTrainerViewModel addTrainerViewModel, EmployeeStore employeeStore)
+        public SubmitTrainerCommand(AddTrainerViewModel addTrainerViewModel, EmployeeStore employeeStore)
         {
-            this.navigationService = navigationService;
             _employeeStore = employeeStore;
             _addTrainerViewModel = addTrainerViewModel;
             _addTrainerViewModel.PropertyChanged += _addTrainerViewModel_PropertyChanged;
@@ -44,11 +45,11 @@ namespace Uniceps.Commands.Employee
         {
             try
             {
-                Core.Models.Employee.Employee employee = new emp.Employee()
+                Core.Models.Employee.Employee employee = new Emp.Employee()
                 {
                     FullName = _addTrainerViewModel.FullName,
                     Balance = _addTrainerViewModel.Balance,
-                    BirthDate = _addTrainerViewModel.Year!.year,
+                    BirthDate = _addTrainerViewModel.Year?.year ?? DateTime.Now.Year,
                     GenderMale = _addTrainerViewModel.GenderMale,
                     IsActive = true,
                     IsTrainer = true,
@@ -65,7 +66,18 @@ namespace Uniceps.Commands.Employee
                         employee.Sports!.Add(SportListItem.sport);
                 }
                 await _employeeStore.Add(employee);
-                navigationService.ReNavigate();
+                if (MessageBox.Show("تم اضافة المدرب بنجاح ... هل تريد اضافة مدرب اخر؟", "تم بنجاح", MessageBoxButton.YesNo, MessageBoxImage.Information)
+                   == MessageBoxResult.Yes)
+                {
+                    _addTrainerViewModel.ClearForm();
+                }
+                else
+                _addTrainerViewModel.OnTrainerCreated();
+            }
+            catch (FreeLimitException)
+            {
+                PremiumViewDialog premiumViewDialog = new PremiumViewDialog();
+                premiumViewDialog.ShowDialog();
             }
             catch (Exception ex)
             {

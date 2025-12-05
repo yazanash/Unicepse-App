@@ -16,20 +16,19 @@ namespace Uniceps.ViewModels.Expenses
     public class AddExpenseViewModel : ErrorNotifyViewModelBase
     {
         private readonly ExpensesDataStore _expensesDataStore;
-        private readonly NavigationStore _navigationStore;
-        private readonly ExpensesListViewModel _expensesListViewModel;
 
-        public AddExpenseViewModel(ExpensesDataStore expensesDataStore, NavigationStore navigationStore, ExpensesListViewModel expensesListViewModel)
+        public AddExpenseViewModel(ExpensesDataStore expensesDataStore)
         {
             _expensesDataStore = expensesDataStore;
-            _expensesListViewModel = expensesListViewModel;
-            _navigationStore = navigationStore;
-            SubmitCommand = new SubmitExpensesCommand(_expensesDataStore, new NavigationService<ExpensesListViewModel>(_navigationStore, () => _expensesListViewModel), this);
-            CancelCommand = new NavaigateCommand<ExpensesListViewModel>(new NavigationService<ExpensesListViewModel>(_navigationStore, () => _expensesListViewModel));
+            SubmitCommand = new SubmitExpensesCommand(_expensesDataStore, this);
 
         }
+        public Action? ExpensesCreated;
+        public void OnExpenseCreated()
+        {
+            ExpensesCreated?.Invoke();
+        }
         public ICommand SubmitCommand { get; }
-        public ICommand CancelCommand { get; }
         #region Properties
         private double _expensesValue;
         public double ExpensesValue

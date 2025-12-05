@@ -94,16 +94,7 @@
 
 
 
-                        <DataGridTemplateColumn Header="تدريب خاص" Width="auto" IsReadOnly="True">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Vertical">
-                                        <TextBlock Text="{Binding IsPrivate}" FontSize="12"/>
-                                        <TextBlock Text="{Binding PrivatePrice}" FontSize="12"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                       
                         
                         <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
                                      Binding="{Binding EndDate}"

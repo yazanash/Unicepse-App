@@ -4,23 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using emp = Uniceps.Core.Models.Employee;
 using Uniceps.Commands;
+using Uniceps.Core.Exceptions;
 using Uniceps.navigation;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
+using Uniceps.Views;
+using Emp = Uniceps.Core.Models.Employee;
 
 namespace Uniceps.Commands.Employee
 {
     public class AddEmployeeCommand : AsyncCommandBase
     {
-        private readonly NavigationService<TrainersListViewModel> navigationService;
         private readonly EmployeeStore _employeeStore;
         private AddEmployeeViewModel _addEmployeeViewModel;
 
-        public AddEmployeeCommand(NavigationService<TrainersListViewModel> navigationService, AddEmployeeViewModel addEmployeeViewModel, EmployeeStore employeeStore)
+        public AddEmployeeCommand( AddEmployeeViewModel addEmployeeViewModel, EmployeeStore employeeStore)
         {
-            this.navigationService = navigationService;
             _employeeStore = employeeStore;
             _addEmployeeViewModel = addEmployeeViewModel;
             _addEmployeeViewModel.PropertyChanged += _addEmployeeViewModel_PropertyChanged;
@@ -43,11 +43,11 @@ namespace Uniceps.Commands.Employee
         {
             try
             {
-                Core.Models.Employee.Employee employee = new emp.Employee()
+                Core.Models.Employee.Employee employee = new Emp.Employee()
                 {
                     FullName = _addEmployeeViewModel.FullName,
                     Balance = _addEmployeeViewModel.Balance,
-                    BirthDate = _addEmployeeViewModel.Year!.year,
+                    BirthDate = _addEmployeeViewModel.Year?.year ?? DateTime.Now.Year,
                     GenderMale = _addEmployeeViewModel.GenderMale,
                     IsActive = true,
                     IsTrainer = false,
@@ -61,7 +61,17 @@ namespace Uniceps.Commands.Employee
                 };
 
                 await _employeeStore.Add(employee);
-                navigationService.ReNavigate();
+               if( MessageBox.Show("تم اضافة الموظف بنجاح ... هل تريد اضافة موظف اخر؟","تم بنجاح",MessageBoxButton.YesNo,MessageBoxImage.Information)
+                    == MessageBoxResult.Yes)
+                {
+                    _addEmployeeViewModel.ClearForm();
+                }else
+                    _addEmployeeViewModel.OnEmployeeCreated();
+            }
+            catch (FreeLimitException)
+            {
+                PremiumViewDialog premiumViewDialog = new PremiumViewDialog();
+                premiumViewDialog.ShowDialog();
             }
             catch (Exception ex)
             {

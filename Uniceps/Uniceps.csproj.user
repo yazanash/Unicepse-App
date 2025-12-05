@@ -9,16 +9,46 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="utlis\Components\CaptinRoutineItemEmpty.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\CaptinUniForEmpty.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\CaptinUniTRainerForEmpty.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="utlis\Components\NotificationBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="utlis\Controls\TopNavBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AuthView\AddUserViewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\CameraReader.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\EmployeeViews\EmployeeDetailsWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\TrainerDetailsWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Expenses\ExpenseDetailViewWinow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\LicenseWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\PlayerDetailWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PremiumView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PremiumViewDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PrintWindowDialog.xaml.cs">
@@ -27,7 +57,13 @@
     <Compile Update="Views\ProgressWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\RoutineTemplateViews\RoutineComponent\ExercisesListView.xaml.cs">
+    <Compile Update="Views\RoutineTemplateViews\ExportDialogWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\RoutineComponent\ExercisesListViewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\RoutineComponent\RoutineItemModelCardWindowView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SearchWindow.xaml.cs">
@@ -117,9 +153,6 @@
     <Compile Update="Views\EmployeeViews\DausesViews\YearlyDausesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EmployeeViews\EmployeeDetailsView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\EmployeeViews\EmployeesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -159,13 +192,7 @@
     <Compile Update="Views\RoutineTemplateViews\CoachDashboardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\RoutineTemplateViews\CreateRoutineView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\RoutineTemplateViews\RoutineComponent\DayGroupListView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\RoutineTemplateViews\RoutineComponent\RoutineItemModelCardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\RoutineTemplateViews\RoutineComponent\RoutineItemsView.xaml.cs">
@@ -174,10 +201,10 @@
     <Compile Update="Views\RoutineTemplateViews\RoutineComponent\SelectedRoutineItemsBufferView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\RoutineTemplateViews\RoutineExercisesView.xaml.cs">
+    <Compile Update="Views\RoutineTemplateViews\RoutineItemTemplateView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\RoutineTemplateViews\RoutineItemTemplateView.xaml.cs">
+    <Compile Update="Views\SportViews\SportDetailWindowView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SportViews\SportSubscriptionsView.xaml.cs">
@@ -201,6 +228,9 @@
     <Compile Update="Views\SystemAuthViews\SystemSubscriptionCreationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\SystemSubscriptionPaymentOptionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="utlis\Dictionaries\ListBoxItems\SystemSubscriptionListResourceDictionary.xaml">
@@ -219,9 +249,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Theme\LightTheme.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\RoutineTemplateViews\RoutineComponent\ExercisesListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SearchWindow.xaml">
@@ -365,9 +392,6 @@
     <Page Update="Views\EmployeeViews\DausesViews\YearlyDausesListView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\EmployeeViews\EmployeeDetailsView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\EmployeeViews\EmployeesListView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -407,22 +431,13 @@
     <Page Update="Views\RoutineTemplateViews\CoachDashboardView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\RoutineTemplateViews\CreateRoutineView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\RoutineTemplateViews\RoutineComponent\DayGroupListView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\RoutineTemplateViews\RoutineComponent\RoutineItemModelCardView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineTemplateViews\RoutineComponent\RoutineItemsView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineTemplateViews\RoutineComponent\SelectedRoutineItemsBufferView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\RoutineTemplateViews\RoutineExercisesView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RoutineTemplateViews\RoutineItemTemplateView.xaml">

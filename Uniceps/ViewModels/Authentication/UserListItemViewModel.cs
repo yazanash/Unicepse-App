@@ -1,27 +1,24 @@
-﻿using Uniceps.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.Commands.Player;
-using Uniceps.navigation;
+using Uniceps.Commands;
 using Uniceps.Commands.AuthCommands;
-using Uniceps.Stores;
-using Uniceps.utlis.common;
-using Uniceps.navigation.Stores;
+using Uniceps.Commands.Player;
 using Uniceps.Core.Models.Authentication;
+using Uniceps.navigation;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.Views.AuthView;
 
 namespace Uniceps.ViewModels.Authentication
 {
     public class UserListItemViewModel : ViewModelBase
     {
         public User user;
-        private readonly NavigationStore _navigationStore;
         private readonly UsersDataStore _usersDataStore;
-        private readonly UsersListViewModel _usersListViewModel;
-        private readonly EmployeeStore _employeeStore;
         private readonly AuthenticationStore _authenticationStore;
         private int _order;
         public int Order
@@ -34,7 +31,7 @@ namespace Uniceps.ViewModels.Authentication
         public string? Role { get; set; }
         public string? Position => user.Position;
         public string? OwnerName => user.OwnerName;
-        public UserListItemViewModel(User user, NavigationStore navigationStore, UsersDataStore usersDataStore, UsersListViewModel usersListViewModel, EmployeeStore employeeStore, AuthenticationStore authenticationStore)
+        public UserListItemViewModel(User user, UsersDataStore usersDataStore,AuthenticationStore authenticationStore)
         {
             this.user = user;
             switch (user.Role)
@@ -52,21 +49,19 @@ namespace Uniceps.ViewModels.Authentication
                     Role = "محاسب";
                     break;
             }
-            _navigationStore = navigationStore;
             _usersDataStore = usersDataStore;
             _authenticationStore = authenticationStore;
-            _usersListViewModel = usersListViewModel;
-            _employeeStore = employeeStore;
-            EditUserCommand = new NavaigateCommand<EditUserViewModel>(new NavigationService<EditUserViewModel>(_navigationStore, () => CreateEditPlayerViewModel(_usersDataStore, _navigationStore, _usersListViewModel, _employeeStore)));
+            EditUserCommand = new RelayCommand(ExecuteEditUserCommand);
             DeleteUserCommand = new DeleteUserCommand(_usersDataStore, _authenticationStore);
         }
 
-        private EditUserViewModel CreateEditPlayerViewModel(UsersDataStore usersDataStore, NavigationStore navigatorStore, UsersListViewModel usersListViewModel, EmployeeStore employeeStore)
+        private void ExecuteEditUserCommand()
         {
-            return EditUserViewModel.loadViewModel(usersDataStore, navigatorStore, usersListViewModel, employeeStore);
+            EditUserViewModel addUserViewModel  = new  EditUserViewModel(_usersDataStore,this);
+            AddUserViewWindow addUserViewWindow = new AddUserViewWindow();
+            addUserViewWindow.DataContext = addUserViewModel;
+            addUserViewWindow.ShowDialog();
         }
-
-
         public void update(User user)
         {
             this.user = user;

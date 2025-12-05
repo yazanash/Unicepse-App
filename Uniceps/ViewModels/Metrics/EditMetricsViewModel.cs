@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.navigation;
 using Uniceps.Commands.Player;
-using Uniceps.utlis.common;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
 

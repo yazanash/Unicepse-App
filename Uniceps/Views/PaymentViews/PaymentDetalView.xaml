@@ -70,28 +70,23 @@
                             <Button Command="{Binding CancelCommand}" Style="{StaticResource ScFormButton}" Width="200"   Content="الغاء"/>
                         </StackPanel>
                     </Grid>
-                  
+
                 </DockPanel>
             </Border>
-            <!--<Border Background="#fff" CornerRadius="10" Grid.Column="0"  Grid.Row="0"  Padding="5"  Margin="5">
-                    <comp:SubscriptionCard/>
-            </Border>-->
             <Border Grid.Row="0" Grid.Column="0"  Margin="5" Style="{DynamicResource StaticCardBorderStyle}">
                 <DockPanel>
                     <TextBlock  Text="الاشتراكات الغير مدفوعة" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" Margin="5" DockPanel.Dock="Top"/>
-                    
                     <!--<ScrollViewer DockPanel.Dock="Top" >-->
                     <ListView ScrollViewer.CanContentScroll="True"
-                                    SelectedItem="{Binding SelectedSubscription,UpdateSourceTrigger=PropertyChanged}"
-                                  ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              Background="Transparent" BorderThickness="0" ItemsSource="{Binding SubscriptionList}" ItemContainerStyle="{DynamicResource SubscriptionListBoxItemContainerStyle1}" >
+                        SelectedItem="{Binding SelectedSubscription,UpdateSourceTrigger=PropertyChanged}"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderThickness="0"
+                  ItemsSource="{Binding SubscriptionList}" ItemContainerStyle="{DynamicResource SubscriptionListBoxItemContainerStyle1}" >
                     </ListView>
                     <!--</ScrollViewer>-->
 
                 </DockPanel>
             </Border>
-
         </Grid>
 
 

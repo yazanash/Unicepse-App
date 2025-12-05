@@ -22,54 +22,36 @@ namespace Uniceps.ViewModels.PlayersViewModels
 {
     public class AddPlayerViewModel : ErrorNotifyViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
-        private readonly PlayerProfileViewModel _playerProfileViewModel;
         public ObservableCollection<Year> years;
 
         public IEnumerable<Year> Years => years;
-        public AddPlayerViewModel(NavigationStore navigationStore, PlayerListViewModel playerListViewModel, PlayersDataStore playerStore, PlayerProfileViewModel playerProfileViewModel)
+        public AddPlayerViewModel( PlayersDataStore playerStore)
         {
             years = new ObservableCollection<Year>();
-            for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
+            for (int i = DateTime.Now.Year ; i < DateTime.Now.Year - 80; i--)
                 years.Add(new Year() { year = i });
             Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
-
-
-            _navigationStore = navigationStore;
             _playerStore = playerStore;
-
-            _playerProfileViewModel = playerProfileViewModel;
-
-            _playerStore.profile_loaded += _playerStore_profile_loaded;
             ScanAvailable = true;
-            OpenScanCommand = new GetProfileScanCommand(new ReadPlayerQrCodeViewModel(), _playerStore);
-            CancelCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigationStore, () => playerListViewModel));
             NavigationStore PlayerMainPageNavigation = new NavigationStore();
-            SubmitCommand = new SubmitCommand(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => _playerProfileViewModel), this, _playerStore);
+            SubmitCommand = new SubmitCommand( this, _playerStore);
         }
 
-        private void _playerStore_profile_loaded(Profile obj)
+        public Action? PlayerCreated;
+        internal void OnPlayerCreated()
         {
-            if (obj != null)
-            {
-                FullName = obj.FullName;
-                Phone = obj.Phone;
-                GenderMale = obj.GenderMale;
-                Year = years.FirstOrDefault(x => x.year == obj.BirthDate);
-                UID = obj.UID;
-            }
+            PlayerCreated?.Invoke();
         }
+
+        internal void ClearForm()
+        {
+            FullName ="";
+            Phone = "";
+        }
+
         public bool ScanAvailable { get; set; }
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore,
-            SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore,
-            PaymentDataStore paymentDataStore, MetricDataStore metricStore,
-            PlayersAttendenceStore playersAttendenceStore,   NavigationService<PlayerListViewModel> navigationService,
-            ExercisesDataStore exercisesDataStore)
-        {
-            return new PlayerProfileViewModel(navigatorStore, subscriptionDataStore, playersDataStore, sportDataStore, paymentDataStore, metricStore,
-                playersAttendenceStore,  navigationService, exercisesDataStore);
-        }
+        
 
         #region Properties
         public int Id { get; }

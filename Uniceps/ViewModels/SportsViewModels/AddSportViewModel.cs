@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using emp = Uniceps.Core.Models.Employee;
 using Uniceps.Commands.Player;
 using Uniceps.Commands.Sport;
 using Uniceps.navigation;
@@ -20,26 +19,29 @@ namespace Uniceps.ViewModels.SportsViewModels
 {
     public class AddSportViewModel : ListingViewModelBase, INotifyDataErrorInfo
     {
-        private readonly NavigationStore _navigationStore;
         private readonly SportDataStore _sportStore;
         private readonly EmployeeStore _trainerStore;
         private readonly ObservableCollection<TrainersListItemViewModel> trainerListItemViewModels;
         public IEnumerable<TrainersListItemViewModel> TrainerList => trainerListItemViewModels;
-        public AddSportViewModel(NavigationStore navigationStore, SportListViewModel sportListViewModel, SportDataStore sportStore, EmployeeStore trainerStore)
+        public Action? SportCreated;
+        public void OnSportCreated()
         {
-            _navigationStore = navigationStore;
+            SportCreated?.Invoke();
+        }
+        public AddSportViewModel(SportDataStore sportStore, EmployeeStore trainerStore)
+        {
             _sportStore = sportStore;
             _trainerStore = trainerStore;
-            CancelCommand = new NavaigateCommand<SportListViewModel>(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel));
-            SubmitCommand = new SubmitSportCommand(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel), this, _sportStore);
+            //CancelCommand = new NavaigateCommand<SportListViewModel>(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel));
+            SubmitCommand = new SubmitSportCommand(this, _sportStore);
             LoadTrainersCommand = new LoadTrainersForSportCommand(_trainerStore, this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             trainerListItemViewModels = new ObservableCollection<TrainersListItemViewModel>();
             _sportStore = sportStore;
             _trainerStore = trainerStore;
             _trainerStore.Loaded += _trainerStore_TrainersLoaded;
-            WeeklyTrainingDays = 1;
-            SubscribeLength = 1;
+            WeeklyTrainingDays = 6;
+            SubscribeLength = 30;
         }
 
 
@@ -122,21 +124,7 @@ namespace Uniceps.ViewModels.SportsViewModels
             OnPropertyChanged(nameof(CanSubmit));
         }
         public bool CanSubmit => !HasErrors;
-        private double _dailyPrice;
-        public double DailyPrice
-        {
-            get { return _dailyPrice; }
-            set
-            {
-                _dailyPrice = value; OnPropertyChanged(nameof(DailyPrice));
-                ClearError(nameof(DailyPrice));
-                if (MonthlyPrice < 0)
-                {
-                    AddError("لايمكن ان تكون القيمة اقل من 0", nameof(DailyPrice));
-                    OnErrorChanged(nameof(DailyPrice));
-                }
-            }
-        }
+       
         private int _weeklyTrainingDays;
         public int WeeklyTrainingDays
         {
@@ -181,13 +169,19 @@ namespace Uniceps.ViewModels.SportsViewModels
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
-        public static AddSportViewModel LoadViewModel(NavigationStore navigatorStore, SportListViewModel sportListViewModel, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        public static AddSportViewModel LoadViewModel(SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
-            AddSportViewModel viewModel = new AddSportViewModel(navigatorStore, sportListViewModel, sportDataStore, employeeStore);
+            AddSportViewModel viewModel = new AddSportViewModel(sportDataStore, employeeStore);
 
             viewModel.LoadTrainersCommand.Execute(null);
 
             return viewModel;
+        }
+
+        internal void ClearForm()
+        {
+            SportName = "";
+            MonthlyPrice = 0;
         }
     }
 }

@@ -23,13 +23,6 @@ namespace Uniceps.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
-
-                services.AddSingleton<IApiDataStore<Player>, PlayerApiDataStore>();
-                services.AddSingleton<IApiDataStore<Subscription>, SubscriptionApiDataStore>();
-                services.AddSingleton<IApiDataStore<Metric>, MetricApiDataStore>();
-                services.AddSingleton<IApiDataStore<PlayerPayment>, PaymentsApiDataStore>();
-                services.AddSingleton<IDeleteApiDataStore<PlayerPayment>, PaymentsApiDataStore>();
-                services.AddSingleton<IApiDataStore<DailyPlayerReport>, AttendanceApiDataStore>();
                 services.AddSingleton<SyncStore>();
             });
             return _hostBuilder;

@@ -10,10 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores.SportStores;
 using Uniceps.Core.Models.Sport;
+using Uniceps.Views.SportViews;
 
 namespace Uniceps.ViewModels.SportsViewModels
 {
@@ -30,7 +30,6 @@ namespace Uniceps.ViewModels.SportsViewModels
         public double Price => Sport.Price;
         public bool IsActive => Sport.IsActive;
         public int DaysInWeek => Sport.DaysInWeek;
-        public double DailyPrice => Sport.DailyPrice;
 
         public int DaysCount => Sport.DaysCount;
 
@@ -47,11 +46,17 @@ namespace Uniceps.ViewModels.SportsViewModels
             _sportListViewModel = sportListViewModel;
             _subscriptionDataStore = subscriptionDataStore;
 
-            EditCommand = new NavaigateCommand<EditSportViewModel>(new NavigationService<EditSportViewModel>(_navigationStore, () => CreateEditSportViewModel(_navigationStore, _sportListViewModel, _sportStore, _employeeStore)));
+            EditCommand = new RelayCommand(ExecuteEditSportCommand);
             DeleteCommand = new DeleteSportCommand(_sportStore);
             SubscriptionsCommand = new NavaigateCommand<SportSubscriptionsViewModel>(new NavigationService<SportSubscriptionsViewModel>(_navigationStore, () => SupscrtionSportViewModel(_sportStore, _subscriptionDataStore)));
         }
-
+        public void ExecuteEditSportCommand()
+        {
+            EditSportViewModel editSportViewModel = EditSportViewModel.LoadViewModel(_sportStore!, _employeeStore!);
+            SportDetailWindowView sportDetailWindowView = new SportDetailWindowView();
+            sportDetailWindowView.DataContext = editSportViewModel;
+            sportDetailWindowView.ShowDialog();
+        }
         public SportListItemViewModel(Sport sport)
         {
             Sport = sport;
@@ -61,11 +66,7 @@ namespace Uniceps.ViewModels.SportsViewModels
         {
             return SportSubscriptionsViewModel.LoadViewModel(sportStore, subscriptionDataStore);
         }
-        private EditSportViewModel CreateEditSportViewModel(NavigationStore navigationStore, SportListViewModel sportListViewModel, SportDataStore sportStore, EmployeeStore employeeStore)
-        {
-            return EditSportViewModel.LoadViewModel(navigationStore, sportListViewModel, sportStore, employeeStore);
-        }
-
+       
         public SportListItemViewModel(Sport sport, SportDataStore sportStore, NavigationStore navigationStore)
         {
             Sport = sport;

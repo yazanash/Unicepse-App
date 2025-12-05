@@ -26,21 +26,8 @@
                     <Border Style="{DynamicResource StaticCardBorderStyle}" Grid.Row="0" Margin="0 0 0 10" VerticalAlignment="Top">
                         
                     <StackPanel Orientation="Horizontal"  Margin="0 5"> 
-                        <Border FlowDirection="LeftToRight" Grid.Column="0" HorizontalAlignment="Left"
-    Margin="0 0 15 5"
-Padding="5" VerticalAlignment="Top"
- BorderThickness="0" >
-
-                            <Image Stretch="Uniform" Source="pack://application:,,,/Resources/Assets/Logo.png" 
-            RenderOptions.BitmapScalingMode="HighQuality"
-                        Height="100" Width="100"         RenderOptions.EdgeMode="Aliased"/>
-
-
-                        </Border>
+                        
                         <StackPanel>
-                            <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="يونيسيبس - لأدارة الاندية الرياضة" FontSize="22"/>
-                            <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="اهلا بك في نظام يونيسيبس للأعمال " TextWrapping="Wrap" FontSize="16"/>
-                            <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="هذا التطبيق مخصص لادارة الاعمال المختصة  بعالم الرياضة "  TextWrapping="Wrap" FontSize="14"/>
                             <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="هذه المعلومات تعتبر المعلومات التعريفية عن علامتك التجارية والتي ستظهر للاعبيين " TextWrapping="Wrap" FontSize="14"/>
                         </StackPanel>
 
@@ -50,6 +37,8 @@ Padding="5" VerticalAlignment="Top"
                     <Border Style="{DynamicResource CardBorderStyle}" Grid.Row="1">
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -77,16 +66,23 @@ FontSize="18"/>
 
 
                             </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
-                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="تاريخ الانشاء" 
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="اسم المالك" 
 Margin="0 0 0 8"
 FontSize="18"/>
                                 <!--<TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>-->
-                                <DatePicker 
- SelectedDate="{Binding BirthDate, UpdateSourceTrigger=PropertyChanged}"
-/>
+                                <TextBox Text="{Binding OwnerName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
                             </StackPanel>
 
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="العنوان" 
+Margin="0 0 0 8"
+FontSize="18"/>
+                                <!--<TextBox Text="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>-->
+                                <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                            </StackPanel>
 
 
                             <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Margin="0 20 0 0" HorizontalAlignment="Center">

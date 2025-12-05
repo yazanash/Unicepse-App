@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using emp = Uniceps.Core.Models.Employee;
+using Emp = Uniceps.Core.Models.Employee;
 using Uniceps.ViewModels;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
@@ -51,10 +51,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                 }
                 else
                 {
-                    if (DaysCounter)
+                    
                         SubscribeDays = SelectedSport!.DaysCount;
-                    else
-                        SubscribeDays = 1;
+                  
                     CountTotal();
                     OnPropertyChanged(nameof(Total));
                 }
@@ -95,7 +94,6 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             Offer = _subscriptionStore.SelectedSubscription!.OfferDes;
             OfferValue = _subscriptionStore.SelectedSubscription!.OfferValue;
             SubscribeDate = _subscriptionStore.SelectedSubscription!.RollDate;
-            DaysCounter = _subscriptionStore.SelectedSubscription.DaysCount == _subscriptionStore.SelectedSubscription.Sport!.DaysCount;
             SubscribeDays = _subscriptionStore.SelectedSubscription.DaysCount;
 
             _sportDataStore.Loaded += _sportDataStore_Loaded;
@@ -109,7 +107,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         private void _subscriptionStore_StateChanged(Sport? sport)
         {
             _trainerListItemViewModels.Clear();
-            AddTrainer(new emp.Employee() { FullName = "-----------" });
+            AddTrainer(new Emp.Employee() { FullName = "-----------" });
             if (sport != null)
             {
                 foreach (var trainer in sport!.Trainers!)
@@ -117,9 +115,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                     AddTrainer(trainer);
                 }
                 if (_subscriptionStore.SelectedSubscription != null)
-                    if (_subscriptionStore.SelectedSubscription.Sport != null && _subscriptionStore.SelectedSubscription!.Sport.Id == sport.Id)
-                        if (_subscriptionStore.SelectedSubscription!.Trainer != null)
-                            SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.Trainer!.Id);
+                    if ( _subscriptionStore.SelectedSubscription!.SportId == sport.Id)
+                        if (_subscriptionStore.SelectedSubscription!.TrainerId != null)
+                            SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.TrainerId);
             }
 
         }
@@ -127,10 +125,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         {
             if (SelectedSport != null)
             {
-                if (DaysCounter)
                     SportPrice = SelectedSport!.Price;
-                else
-                    SportPrice = SelectedSport!.DailyPrice * SubscribeDays;
 
                 Total = SportPrice - OfferValue;
                 ClearError(nameof(Total));
@@ -157,26 +152,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                 OnPropertyChanged(nameof(Total));
             }
         }
-        private bool _daysCounter = true;
-        public bool DaysCounter
-        {
-            get { return _daysCounter; }
-            set
-            {
-                _daysCounter = value;
-                CountTotal();
-                if (SelectedSport != null)
-                    if (DaysCounter)
-                        SubscribeDays = SelectedSport!.DaysCount;
-                    else if (_subscriptionStore.SelectedSubscription != null)
-                        SubscribeDays = _subscriptionStore.SelectedSubscription.DaysCount;
-
-                OnPropertyChanged(nameof(DaysCounter));
-                OnPropertyChanged(nameof(Total));
-
-            }
-        }
-
+      
         //private double? _total;
         public double? Total
         {
@@ -244,8 +220,8 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             {
                 AddSport(sport);
             }
-            if (_subscriptionStore.SelectedSubscription != null && _subscriptionStore.SelectedSubscription!.Sport != null)
-                SelectedSport = SportList.FirstOrDefault(x => x.Sport.Id == _subscriptionStore.SelectedSubscription!.Sport!.Id);
+            if (_subscriptionStore.SelectedSubscription != null)
+                SelectedSport = SportList.FirstOrDefault(x => x.Sport.Id == _subscriptionStore.SelectedSubscription!.SportId);
         }
         private void AddSport(Sport sport)
         {

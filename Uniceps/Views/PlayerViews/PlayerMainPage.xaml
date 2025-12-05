@@ -14,6 +14,7 @@
                 xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
+             FlowDirection="RightToLeft"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -31,32 +32,30 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <comp:PlayerMetricCard DataContext="{Binding PlayerSubscription,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0"/>
-        <comp:PlayerMetricCard DataContext="{Binding PlayerPayments,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Margin="10 0"/>
-        <comp:PlayerMetricCard DataContext="{Binding PlayerSubscriptionCount,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="2"/>
-
-        <!--<Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="#fff" Margin="5" CornerRadius="10" Padding="5">
-                        <DockPanel>
-                            <TextBlock Foreground="#C14E00" Text="التسجيلات" FontSize="18" FontWeight="Bold" Margin="0 0 0 5" DockPanel.Dock="Top"/>
-
-                            <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle1}" Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top" BorderBrush="#fff" ItemsSource="{Binding SelectedSportListingItemViewModel.TrainerList}" >
-
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <TextBlock Text="{Binding FullName}" Grid.Row="0" FontSize="15"  TextWrapping="Wrap" FontWeight="SemiBold" Foreground="#444"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </DockPanel>
-                    </Border>-->
-
         <Border Style="{DynamicResource StaticCardBorderStyle}" Grid.Row="1" Margin="0 10 0 0" Grid.Column="0" Grid.ColumnSpan="3" >
 
-            <DockPanel DockPanel.Dock="Top" >
-                <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Top"/>
-                <Grid  Grid.Row="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <TextBlock Text="الاشتراكات"  HorizontalAlignment="Left" Margin="10" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Top"/>
+                    <Button Grid.Column="0" Margin="10 0"  Command="{Binding AddSubscriptionCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Right">
+
+                        <StackPanel Orientation="Horizontal">
+
+                            <TextBlock Text="أضافة اشتراك" />
+                            <Icon:PackIconMaterial Kind="Plus"
+                 Width="11"
+                 Height="11"
+                 Margin="8 0 0 1"
+                 VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                    </Button>
+                </Grid>
+                <Grid  Grid.Row="1">
                     <custom:LoadingSpinner
                 IsLoading="{Binding IsLoading}"
                 Diameter="100" Thickness="3" Color="{DynamicResource Brush.Primary}" />
@@ -86,7 +85,7 @@
                                                         </Border>-->
                                                 <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding SportName}" VerticalAlignment="Center"/>
                                                 <TextBlock Margin="10 0 0 0" Text="{Binding Trainer}"
-                                                                  Foreground="#888" FontSize="13" VerticalAlignment="Center"/>
+                                                                  Foreground="{DynamicResource Brush.Foreground}" FontSize="13" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -107,42 +106,25 @@
                                     />
 
 
-                                <!--<DataGridTextColumn Header="الحسم" IsReadOnly="True"
-                                     Binding="{Binding OfferDes}"
-                                    Width="120"
-                                    />-->
+                              
                                         <DataGridTextColumn Header="الحسم" IsReadOnly="True"
-                                     Binding="{Binding OfferValue}"
+                                     Binding="{Binding OfferValue,Converter={StaticResource covNum}}"
                                     Width="auto"
                                     />
-                                <!--<DataGridTextColumn Header="الباقي" IsReadOnly="True"
-                                                    Foreground="{Binding RestColor,UpdateSourceTrigger=PropertyChanged}"
-                                     Binding="{Binding RestVal,Converter={StaticResource covNum}}"
-                                    Width="auto"
-                                    />-->
-                                <DataGridTemplateColumn Header="الباقي" Width="auto" IsReadOnly="True">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Margin="10 0 0 0" Text="{Binding RestVal,Converter={StaticResource covNum}}"
-                                            Foreground="{Binding RestColor,UpdateSourceTrigger=PropertyChanged}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="الباقي" IsReadOnly="True"
+ Binding="{Binding RestValue,Converter={StaticResource covNum}}"
+Width="auto"
+/>
 
-                              <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
+
+                                <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
                                      Binding="{Binding EndDate}"
                                     Width="*"
                                     />
-                                <DataGridTemplateColumn Header="الحالة" Width="100" IsReadOnly="True">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border  Padding="5 3" Margin="0 0 0 0" BorderThickness="1" BorderBrush="{Binding IsPaidColor}" CornerRadius="10">
-                                                <TextBlock HorizontalAlignment="Center" FontSize="11" Foreground="{Binding IsPaidColor}" Margin="0 0 0 0" Text="{Binding IsPaid}" VerticalAlignment="Center"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
+                                <DataGridTextColumn Header="كود الدخول" IsReadOnly="True"
+ Binding="{Binding Code}"
+Width="auto"
+/>
                                 <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -154,21 +136,22 @@
                                                 <!-- Popup control -->
                                                 <Popup StaysOpen="False" AllowsTransparency="True" Name="MyPopup" IsOpen="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
                                                     <!-- Customize the popup content here -->
-                                                    <Border Background="#fff" Padding="5"
-                                                            BorderThickness="1"
-                                                            BorderBrush="{DynamicResource Brush.Border}" CornerRadius="10">
+                                                    <Border Style="{DynamicResource StaticCardBorderStyle}">
 
                                                         <StackPanel>
                                                             <Button HorizontalAlignment="Stretch" Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
                                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                     <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                                                    <TextBlock Text="تعديل" FontSize="12" Foreground="#787878"/>
+                                                                    <TextBlock Text="تعديل" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
                                                                 </StackPanel>
                                                             </Button>
-                                                            <Button HorizontalAlignment="Stretch" Command="{Binding PrintCommand}" Style="{StaticResource GridEditBtn}">
+                                                            <Button HorizontalAlignment="Stretch"
+                                                                    Command="{Binding DataContext.PrintSubscriptionCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                    CommandParameter="{Binding}" 
+                                                                    Style="{StaticResource GridEditBtn}">
                                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                     <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Printer" Style="{StaticResource GridBtnIcon}"/>
-                                                                    <TextBlock Text="طباعة" FontSize="12" Foreground="#787878"/>
+                                                                    <TextBlock Text="طباعة" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
                                                                 </StackPanel>
                                                             </Button>
 
@@ -176,11 +159,17 @@
                                                             <Button  HorizontalAlignment="Stretch" Command="{Binding StopSubscriptionCommand}" Style="{StaticResource GridEditBtn}">
                                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                     <Icon:PackIconMaterial Margin="0 0 10 0" Kind="BookCancel" Style="{StaticResource GridBtnIcon}"/>
-                                                                    <TextBlock Text="ايقاف الاشتراك" FontSize="12" Foreground="#787878"/>
+                                                                    <TextBlock Text="ايقاف الاشتراك" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
 
                                                                 </StackPanel>
                                                             </Button>
-                                                            
+                                                            <Button HorizontalAlignment="Stretch" Command="{Binding DeleteCommand}"
+                                                                    CommandParameter="{Binding Id}" Style="{StaticResource GridEditBtn}">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="TrashCanOutline" Style="{StaticResource GridBtnIcon}"/>
+                                                                    <TextBlock Text="حذف" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
+                                                                </StackPanel>
+                                                            </Button>
                                                         </StackPanel>
 
                                                     </Border>
@@ -197,7 +186,7 @@
                         </Border>-->
                     </Grid>
                 </Grid>
-            </DockPanel>
+            </Grid>
         </Border>
 
 

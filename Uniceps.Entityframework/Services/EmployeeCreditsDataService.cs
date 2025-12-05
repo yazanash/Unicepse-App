@@ -12,7 +12,7 @@ using Uniceps.Entityframework.DbContexts;
 
 namespace Uniceps.Entityframework.Services
 {
-    public class EmployeeCreditsDataService : IDataService<Credit>
+    public class EmployeeCreditsDataService : IDataService<Credit>, IEmployeeTransaction<Credit>, IEmployeeMonthlyTransaction<Credit>
     {
         private readonly UnicepsDbContextFactory _contextFactory;
 
@@ -61,7 +61,22 @@ namespace Uniceps.Entityframework.Services
                 return entities;
             }
         }
-
+        public async Task<IEnumerable<Credit>> GetAll(Employee trainer)
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Where(x => x.EmpPerson!.Id == trainer.Id).ToListAsync();
+                return entities;
+            }
+        }
+        public async Task<IEnumerable<Credit>> GetAll(Employee trainer, DateTime date)
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Include(x => x.EmpPerson).AsNoTracking().Where(x => x.EmpPerson!.Id == trainer.Id && x.Date.Year == date.Year && x.Date.Month == date.Month).ToListAsync();
+                return entities;
+            }
+        }
         public async Task<Credit> Update(Credit entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();

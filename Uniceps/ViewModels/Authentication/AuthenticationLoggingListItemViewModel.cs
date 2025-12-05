@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Uniceps.Core.Models.Authentication;
-using Uniceps.utlis.common;
 
 namespace Uniceps.ViewModels.Authentication
 {

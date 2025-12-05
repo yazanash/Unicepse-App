@@ -16,25 +16,22 @@ namespace Uniceps.ViewModels.Expenses
     public class EditExpenseViewModel : ErrorNotifyViewModelBase
     {
         private readonly ExpensesDataStore _expensesDataStore;
-        private readonly NavigationStore _navigationStore;
-        private readonly ExpensesListViewModel _expensesListViewModel;
-
-        public EditExpenseViewModel(ExpensesDataStore expensesDataStore, NavigationStore navigationStore, ExpensesListViewModel expensesListViewModel)
+        public ExpensesListItemViewModel SelectedExpensesListItemViewModel;
+        public EditExpenseViewModel(ExpensesDataStore expensesDataStore, ExpensesListItemViewModel selectedExpensesListItemViewModel)
         {
             _expensesDataStore = expensesDataStore;
-            _expensesListViewModel = expensesListViewModel;
-            _navigationStore = navigationStore;
-            SubmitCommand = new EditExpensesCommand(_expensesDataStore, new NavigationService<ExpensesListViewModel>(_navigationStore, () => _expensesListViewModel), this);
-            CancelCommand = new NavaigateCommand<ExpensesListViewModel>(new NavigationService<ExpensesListViewModel>(_navigationStore, () => _expensesListViewModel));
-
-            ExpensesValue = _expensesDataStore.SelectedExpenses!.Value;
-            Descriptiones = _expensesDataStore.SelectedExpenses!.Description;
-            ExpensesDate = _expensesDataStore.SelectedExpenses!.date;
-
+            SelectedExpensesListItemViewModel = selectedExpensesListItemViewModel;
+            SubmitCommand = new EditExpensesCommand(_expensesDataStore, this);
+            ExpensesValue = SelectedExpensesListItemViewModel.Expenses!.Value;
+            Descriptiones = SelectedExpensesListItemViewModel.Expenses!.Description;
+            ExpensesDate = SelectedExpensesListItemViewModel.Expenses!.date;
         }
-        public ICommand CancelCommand { get; }
         public ICommand SubmitCommand { get; }
-
+        public Action? ExpensesUpdated;
+        public void OnExpensesUpdated()
+        {
+            ExpensesUpdated?.Invoke();
+        }
         #region Properties
         private double _expensesValue;
         public double ExpensesValue

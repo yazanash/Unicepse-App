@@ -1,4 +1,6 @@
-﻿namespace Uniceps.utlis.common
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Uniceps.utlis.common
 {
     public enum Filter
     {
@@ -34,5 +36,29 @@
         Calves = 7,
         Abs = 8,
     }
-
+    public enum SubscriptionStatus
+    {
+        [Display(Name = "الكل")]
+        None,
+        [Display(Name = "منتهي")]
+        Expired,
+        [Display(Name = "سينتهي")]
+        EndingSoon,
+        [Display(Name = "تم تجديده")]
+        Renewed,
+        [Display(Name = "فعال")]
+        Active
+    }
+    public enum FileTypes
+    {
+        [Display(Name = "Routine")]
+        Routine,
+    }
+    public enum FileFormatType
+    {
+        [Display(Name = "تصدير بصيغة PDF")]
+        PDF,
+        [Display(Name = "تصدير بصيغة Uni")]
+        UniFile,
+    }
 }

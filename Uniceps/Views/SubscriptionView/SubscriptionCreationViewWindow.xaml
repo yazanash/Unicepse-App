@@ -131,10 +131,15 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5">
-
-                                <TextBlock Text="الاشتراك" 
-Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+                            <StackPanel Orientation="Horizontal" Margin="0 0 0 8" VerticalAlignment="Center">
+                                <TextBlock Text="الاشتراك" VerticalAlignment="Center"
+ Foreground="{DynamicResource Brush.Foreground}"
 FontSize="16"/>
+                                <Button  Margin="10 0" Command="{Binding AddSportCommand}" Style="{StaticResource IconBtn}"  Grid.Column="0" Grid.Row="4">
+                                    <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center"/>
+                                </Button>
+                            </StackPanel>
+                              
                                 <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
          ItemsSource="{Binding SportList}"
    SelectedItem="{Binding SelectedSport,UpdateSourceTrigger=PropertyChanged}"
@@ -149,10 +154,18 @@ FontSize="16"/>
 
                             </StackPanel>
                             <StackPanel Grid.Row="0" Grid.Column="1"  VerticalAlignment="Center" Margin="5">
-
-                                <TextBlock Text="المدرب" 
-      Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
-      FontSize="16"/>
+                            <Grid  Margin="0 0 0 8" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="المدرب"  Foreground="{DynamicResource Brush.Foreground}" FontSize="16"/>
+                                    <Button Margin="10 0" HorizontalAlignment="Left" Command="{Binding AddTrainerCommand}" Style="{StaticResource IconBtn}"  Grid.Column="0" Grid.Row="4">
+                                        <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center"/>
+                                    </Button>
+                                </StackPanel>
+                                <Button HorizontalAlignment="Right" Margin="10 0" Visibility="{Binding IsClearAble,Converter={StaticResource BoolToVis}}" Command="{Binding ClearTrainerCommand}" Style="{StaticResource IconBtn}"  Grid.Column="0" Grid.Row="4">
+                                    <Icon:PackIconMaterial Kind="Close" VerticalAlignment="Center"/>
+                                </Button>
+                            </Grid>
+                                
                                 <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
                ItemsSource="{Binding TrainerList}"
          SelectedItem="{Binding SelectedTrainer,UpdateSourceTrigger=PropertyChanged}"
@@ -171,7 +184,7 @@ FontSize="16"/>
       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
       FontSize="13"/>
                                 <TextBox 
-    IsReadOnly="{Binding DaysCounter,UpdateSourceTrigger=PropertyChanged}"
+    IsReadOnly="True"
    Text="{Binding SubscribeDays, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
@@ -185,17 +198,8 @@ FontSize="16"/>
       />
                             </StackPanel>
 
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Margin="5">
-                                <TextBlock Text="طبيعة الاشتراك"  Foreground="{DynamicResource Brush.Foreground}"
-                      VerticalAlignment="Center"
-      Margin="0 0 10 0"
-      FontSize="13"/>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <RadioButton GroupName="ch" IsChecked="{Binding DaysCounter,UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك كامل"/>
-                                    <RadioButton GroupName="ch" IsChecked="True" Style="{DynamicResource RadioButtonStyle1}" Content="اشتراك يومي"/>
-                                </StackPanel>
-                            </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.Column="1" Margin="5 5">
+                           
+                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="5 5">
                                 <TextBlock Text="الاجمالي" 
       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
       FontSize="13"/>
@@ -224,7 +228,7 @@ FontSize="13"/>
                             <TextBlock Text="قيمة الدفعة"  Foreground="{DynamicResource Brush.Foreground}"
 Margin="0 0 0 5"
 FontSize="13"/>
-                            <TextBox Text="{Binding PaymentValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                            <TextBox Text="{Binding PaymentValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
                         </StackPanel>
                         <StackPanel Grid.Row="4" Grid.Column="1" Margin="5">

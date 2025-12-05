@@ -74,6 +74,7 @@
                         <compon:MetricCardArms DataContext="{Binding SelectedMetric,UpdateSourceTrigger=PropertyChanged}" />
                     </Border>
                 </Grid>
+                    
 
             </DockPanel>
             </Border>

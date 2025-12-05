@@ -10,7 +10,6 @@ using System.Windows.Data;
 using Uniceps.Commands;
 using Uniceps.ViewModels.PrintViewModels;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
 using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.Core.Models.Employee;
@@ -50,13 +49,13 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             TrainerMounthlyReportViewModel = new(obj!, _navigationStore, _employeeStore, _creditsDataStore, _creditListViewModel);
             OnPropertyChanged(nameof(TrainerMounthlyReportViewModel));
             _subscriptionListItemViewModels.Clear();
-            foreach (var item in _dausesDataStore.Payments.GroupBy(x => x.Subscription))
+            foreach (var item in _dausesDataStore.Subscriptions)
             {
-                if (item.Key != null)
+                if (item != null)
                 {
-                    if (_subscriptionListItemViewModels.Where(x => x.Id == item.Key.Id).Any())
+                    if (_subscriptionListItemViewModels.Where(x => x.Id == item.Id).Any())
                         continue;
-                    SubscriptionListItemViewModel subscriptionListItemViewModel = new(item.Key!);
+                    SubscriptionListItemViewModel subscriptionListItemViewModel = new(item!);
                     _subscriptionListItemViewModels.Add(subscriptionListItemViewModel);
                     subscriptionListItemViewModel.Order = _subscriptionListItemViewModels.Where(x => x.SportName == subscriptionListItemViewModel.SportName).Count();
                 }

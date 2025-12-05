@@ -1,16 +1,18 @@
-﻿using Uniceps.Commands;
-using Uniceps.Commands.ExpensesCommands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Exp = Uniceps.Core.Models.Expenses;
+using Uniceps.Commands;
+using Uniceps.Commands.ExpensesCommands;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
-using Uniceps.ViewModels;
-using Uniceps.Stores;
 using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.ViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views.Expenses;
+using Exp = Uniceps.Core.Models.Expenses;
 
 namespace Uniceps.ViewModels.Expenses
 {
@@ -23,6 +25,7 @@ namespace Uniceps.ViewModels.Expenses
         private readonly ObservableCollection<ExpensesListItemViewModel> expensesListItemViewModels;
         public IEnumerable<ExpensesListItemViewModel> ExpenseList => expensesListItemViewModels;
         public ICommand? AddExpensesCommand { get; }
+        public bool HasData => expensesListItemViewModels.Count > 0;
 
         public ExpensesListViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore)
         {
@@ -36,7 +39,14 @@ namespace Uniceps.ViewModels.Expenses
             _expensesStore.Created += _expensesStore_Created;
             _expensesStore.Updated += _expensesStore_Updated;
             _expensesStore.Deleted += _expensesStore_Deleted;
-            AddExpensesCommand = new NavaigateCommand<AddExpenseViewModel>(new NavigationService<AddExpenseViewModel>(_navigatorStore, () => new AddExpenseViewModel(_expensesStore, _navigatorStore, this)));
+            AddExpensesCommand = new RelayCommand(ExecuteAddExpensesCommand);
+        }
+        private void ExecuteAddExpensesCommand()
+        {
+            AddExpenseViewModel addExpenseViewModel = new AddExpenseViewModel(_expensesStore);
+            ExpenseDetailViewWinow expenseDetailViewWinow = new ExpenseDetailViewWinow();
+            expenseDetailViewWinow.DataContext = addExpenseViewModel;
+            expenseDetailViewWinow.ShowDialog();
         }
         public ExpensesListItemViewModel? SelectedExpenses
         {
@@ -60,6 +70,7 @@ namespace Uniceps.ViewModels.Expenses
             {
                 expensesListItemViewModels.Remove(itemViewModel);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _expensesStore_Updated(Core.Models.Expenses.Expenses obj)
@@ -71,6 +82,7 @@ namespace Uniceps.ViewModels.Expenses
             {
                 expensesViewModel.Update(obj);
             }
+            OnPropertyChanged(nameof(HasData));
         }
 
         private void _expensesStore_Created(Core.Models.Expenses.Expenses obj)
@@ -92,6 +104,7 @@ namespace Uniceps.ViewModels.Expenses
             ExpensesListItemViewModel itemViewModel =
                 new ExpensesListItemViewModel(expenses, _navigatorStore, _expensesStore, this);
             expensesListItemViewModels.Add(itemViewModel);
+            OnPropertyChanged(nameof(HasData));
         }
 
 

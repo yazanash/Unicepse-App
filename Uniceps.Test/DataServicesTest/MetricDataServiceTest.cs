@@ -85,7 +85,7 @@ namespace Uniceps.Test.DataServicesTest
             Metric expected_metrics = metricsFactory!.FakeMetric();
             expected_metrics.Player = await create_player();
             Metric actual_metrics = await metricDataService!.Create(expected_metrics);
-            Assert.AreEqual(expected_metrics.Wieght, actual_metrics.Wieght);
+            Assert.Equals(expected_metrics.Wieght, actual_metrics.Wieght);
         }
 
         [Test]
@@ -99,8 +99,8 @@ namespace Uniceps.Test.DataServicesTest
             Metric created_metric = await metricDataService!.Create(metric);
             Metric get_metric = await metricDataService!.Get(metric.Id);
             // Assert
-            Assert.AreEqual(created_metric.Wieght, get_metric.Wieght);
-            Assert.AreEqual(created_metric.Hieght, get_metric.Hieght);
+            Assert.Equals(created_metric.Wieght, get_metric.Wieght);
+            Assert.Equals(created_metric.Hieght, get_metric.Hieght);
 
         }
         [Test]
@@ -127,7 +127,7 @@ namespace Uniceps.Test.DataServicesTest
             get_metric.Chest = 30000;
             Metric updated_expenses = await metricDataService.Update(get_metric);
             // Assert
-            Assert.AreEqual(updated_expenses.Chest, 30000);
+            Assert.Equals(updated_expenses.Chest, 30000);
 
         }
 
@@ -182,7 +182,7 @@ namespace Uniceps.Test.DataServicesTest
             await create_metric(count);
             var expenses = await metricDataService!.GetAll();
             //Assert
-            Assert.AreEqual(expenses.Count(), count);
+            Assert.Equals(expenses.Count(), count);
 
         }
 

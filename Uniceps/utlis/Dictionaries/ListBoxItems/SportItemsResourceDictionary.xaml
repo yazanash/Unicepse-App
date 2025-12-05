@@ -16,7 +16,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
-                    <Border  FlowDirection="RightToLeft" x:Name="Bd" Margin="5" Background="{DynamicResource Brush.Card}">
+                    <Border  FlowDirection="RightToLeft" x:Name="Bd" Margin="5" Style="{DynamicResource StaticCardBorderStyle}">
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding SportName}" Foreground="{DynamicResource Brush.Foreground}" Grid.Row="0" FontSize="15" MaxHeight="30"
                            VerticalAlignment="Center"
@@ -34,7 +34,6 @@
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" TargetName="Bd" Value="{DynamicResource Brush.Card}"/>
-                            <Setter Property="BorderBrush" TargetName="Bd" Value="{DynamicResource Brush.Primary}"/>
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>

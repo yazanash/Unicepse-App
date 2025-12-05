@@ -12,18 +12,16 @@ namespace Uniceps.Commands.AccountantCommand
     public class LoadStatesCommand : AsyncCommandBase
     {
         private readonly AccountingStateViewModel _accountingStateViewModel;
-        private readonly ExpensesDataStore _expensesDataStore;
-        private readonly AccountantDailyStore _gymStore;
-        public LoadStatesCommand(AccountingStateViewModel accountingStateViewModel, ExpensesDataStore expensesDataStore, AccountantDailyStore gymStore)
+        private readonly DailyReportStore _dailyReportStore;
+        public LoadStatesCommand(AccountingStateViewModel accountingStateViewModel, DailyReportStore dailyReportStore)
         {
             _accountingStateViewModel = accountingStateViewModel;
-            _expensesDataStore = expensesDataStore;
-            _gymStore = gymStore;
+            _dailyReportStore = dailyReportStore;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            await _gymStore.GetStates(_accountingStateViewModel.Date);
+            await _dailyReportStore.GetStates(_accountingStateViewModel.Date);
         }
     }
 }

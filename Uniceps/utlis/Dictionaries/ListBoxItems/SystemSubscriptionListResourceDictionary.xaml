@@ -16,7 +16,7 @@
                     <Border Width="200"  x:Name="Bd" Margin="5" Style="{DynamicResource StaticCardBorderStyle}">
                         <StackPanel VerticalAlignment="Top">
                             <Border Padding="5" Margin="0 0 0 5">
-                                <TextBlock Text="{Binding Name}" TextAlignment="Center" Foreground="{DynamicResource Brush.OnPrimary}" FontSize="20" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Name}" TextAlignment="Center" Foreground="{DynamicResource Brush.Foreground}" FontSize="20" FontWeight="Bold" />
                             </Border>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding Price, StringFormat=' {0:C}'}" FontSize="18" TextAlignment="Center"/>

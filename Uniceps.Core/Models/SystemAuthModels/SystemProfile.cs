@@ -14,7 +14,10 @@ namespace Uniceps.Core.Models.SystemAuthModels
         public string DisplayName { get; set; } = "";
         public DateTime BirthDate { get; set; }
         public string PhoneNumber { get; set; } = "";
+        public string Address { get; set; } = "";
+        public string OwnerName { get; set; } = "";
         public string? ProfileImagePath { get; set; }
+        public string? LocalProfileImagePath { get; set; }
         public GenderType Gender { get; set; }
     }
 

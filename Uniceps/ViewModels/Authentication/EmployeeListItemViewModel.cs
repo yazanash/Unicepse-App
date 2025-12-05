@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Uniceps.utlis.common;
-using emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.Authentication
 {
     public class EmployeeListItemViewModel : ViewModelBase

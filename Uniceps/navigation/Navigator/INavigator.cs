@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.navigation.Stores;
-using Uniceps.utlis.common;
+using Uniceps.ViewModels;
 
 namespace Uniceps.navigation.Navigator
 {
     public enum ViewType
     {
         Home,
+        PlayersLog,
         Players,
         Expenses,
         Accounting,

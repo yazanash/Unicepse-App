@@ -19,7 +19,6 @@ namespace Uniceps.Test.Fakes
                   sport.Name = fake.Company.CompanyName();
                   sport.DaysCount = 30;
                   sport.DaysInWeek = 6;
-                  sport.DailyPrice = 2000;
                   sport.IsActive = true;
                   sport.Price = 30000;
               });

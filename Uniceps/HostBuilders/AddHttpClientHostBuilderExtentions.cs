@@ -23,14 +23,14 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton(new UnicepsePrepAPIKey(""));
                 services.AddHttpClient<UnicepseApiPrepHttpClient>(c =>
                 {
-                    c.Timeout = TimeSpan.FromSeconds(10);
+                    c.Timeout = TimeSpan.FromSeconds(30);
 
                     c.BaseAddress = new Uri(apiUrl!);
 
                 });
                 services.AddHttpClient<UnicepseApiClientV2>(c =>
                 {
-                    c.Timeout = TimeSpan.FromSeconds(10);
+                    c.Timeout = TimeSpan.FromSeconds(30);
 
                     c.BaseAddress = new Uri(apiUrl!);
 

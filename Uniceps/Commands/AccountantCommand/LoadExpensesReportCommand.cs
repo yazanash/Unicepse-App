@@ -7,18 +7,17 @@ using System.Windows;
 using Uniceps.Stores;
 using Uniceps.Commands;
 using Uniceps.ViewModels.Accountant;
-using Uniceps.Stores.AccountantStores;
 
 namespace Uniceps.Commands.AccountantCommand
 {
     public class LoadExpensesReportCommand : AsyncCommandBase
     {
-        private readonly ExpensesAccountantDataStore _expensesDataStore;
+        private readonly PeriodReportStore _periodReportStore;
         private readonly ExpensesReportViewModel _expensesReportViewModel;
 
-        public LoadExpensesReportCommand(ExpensesAccountantDataStore expensesDataStore, ExpensesReportViewModel expensesReportViewModel)
+        public LoadExpensesReportCommand(PeriodReportStore periodReportStore, ExpensesReportViewModel expensesReportViewModel)
         {
-            _expensesDataStore = expensesDataStore;
+            _periodReportStore = periodReportStore;
             _expensesReportViewModel = expensesReportViewModel;
         }
 
@@ -26,7 +25,7 @@ namespace Uniceps.Commands.AccountantCommand
         {
             try
             {
-                await _expensesDataStore.GetAll(_expensesReportViewModel.DateFrom, _expensesReportViewModel.DateTo);
+                await _periodReportStore.GetExpenses(_expensesReportViewModel.DateFrom, _expensesReportViewModel.DateTo);
             }
             catch (Exception ex)
             {

@@ -11,7 +11,6 @@ using Uniceps.navigation;
 using Uniceps.Core.Models.Player;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.Core.Models.DailyActivity;
@@ -20,30 +19,11 @@ namespace Uniceps.ViewModels.PlayersAttendenceViewModels
 {
     public class PlayerAttendenceListItemViewModel : ViewModelBase
     {
-        private readonly NavigationStore? _navigationStore;
         public DailyPlayerReport dailyPlayerReport { get; set; }
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly PlayerProfileViewModel? _playerProfileViewModel;
         public ICommand? OpenProfileCommand { get; }
 
 
-        public PlayerAttendenceListItemViewModel(DailyPlayerReport dailyPlayerReport, PlayersAttendenceStore playersAttendenceStore, NavigationStore navigationStore, PlayerProfileViewModel playerProfileViewModel)
-        {
-            _navigationStore = navigationStore;
-            _playerProfileViewModel = playerProfileViewModel;
-
-            NavigationStore PlayerMainPageNavigation = new NavigationStore();
-            _playersAttendenceStore = playersAttendenceStore;
-            this.dailyPlayerReport = dailyPlayerReport;
-            IsTakenKey = dailyPlayerReport.IsTakenKey;
-            Key = dailyPlayerReport.KeyNumber;
-            IsLogged = this.dailyPlayerReport.IsLogged;
-            logoutTime = dailyPlayerReport.IsLogged ? "لم يسجل خروج بعد" : dailyPlayerReport.logoutTime.ToShortTimeString();
-            IsLoggedBrush = IsLogged ? Brushes.Green : Brushes.Red;
-            LogoutCommand = new LogoutPlayerCommand(_playersAttendenceStore);
-            AddKeyCommand = new OpenAddKeyDialog(new KeyDialogViewModel(this.dailyPlayerReport.Player!.FullName!, _playersAttendenceStore));
-            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => _playerProfileViewModel));
-        }
         public PlayerAttendenceListItemViewModel(DailyPlayerReport dailyPlayerReport, PlayersAttendenceStore playersAttendenceStore)
         {
             _playersAttendenceStore = playersAttendenceStore;
@@ -54,9 +34,7 @@ namespace Uniceps.ViewModels.PlayersAttendenceViewModels
             logoutTime = dailyPlayerReport.IsLogged ? "لم يسجل خروج بعد" : dailyPlayerReport.logoutTime.ToShortTimeString();
             IsLoggedBrush = IsLogged ? Brushes.Green : Brushes.Red;
             LogoutCommand = new LogoutPlayerCommand(_playersAttendenceStore);
-            AddKeyCommand = new OpenAddKeyDialog(new KeyDialogViewModel(this.dailyPlayerReport.Player!.FullName!, _playersAttendenceStore));
-
-
+            AddKeyCommand = new OpenAddKeyDialog(new KeyDialogViewModel(this.dailyPlayerReport.PlayerName!, _playersAttendenceStore));
         }
 
         private int _idSort;
@@ -78,9 +56,9 @@ namespace Uniceps.ViewModels.PlayersAttendenceViewModels
             get { return _logoutTime; }
             set { _logoutTime = value; OnPropertyChanged(nameof(logoutTime)); }
         }
-        public string? PlayerName => dailyPlayerReport.Player!.FullName;
-        public double? Balance => dailyPlayerReport.Player!.Balance;
-        public string? SubscribeEndDate => dailyPlayerReport.Player!.SubscribeEndDate.ToShortDateString();
+        public string? PlayerName => dailyPlayerReport.PlayerName;
+        public string? SportName => dailyPlayerReport.SportName;
+        public string? Code => dailyPlayerReport.Code;
         private bool _isLogged;
         public bool IsLogged
         {
@@ -101,7 +79,6 @@ namespace Uniceps.ViewModels.PlayersAttendenceViewModels
                 OnPropertyChanged(nameof(IsLoggedBrush));
             }
         }
-        public Brush IsSubscribed => dailyPlayerReport.Player!.IsSubscribed ? Brushes.Green : Brushes.Red;
         public int Id => dailyPlayerReport.Id;
 
         private bool _isTakenKey;
@@ -125,7 +102,6 @@ namespace Uniceps.ViewModels.PlayersAttendenceViewModels
                 OnPropertyChanged(nameof(Key));
             }
         }
-        public Brush BalanceColor => Balance >= 0 ? Brushes.Green : Brushes.Red;
         public void Update(DailyPlayerReport obj)
         {
             dailyPlayerReport = obj;

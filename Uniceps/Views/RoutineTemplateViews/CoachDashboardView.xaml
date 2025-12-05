@@ -5,10 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uniceps.Views.RoutineTemplateViews"
              mc:Ignorable="d" 
+              xmlns:Comp="clr-namespace:Uniceps.utlis.Components"
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              FlowDirection="RightToLeft"
+             xmlns:Converters="clr-namespace:Uniceps.utlis.Converters"
                xmlns:cs="clr-namespace:Uniceps.Components"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Converters:EnumDisplayNameConverter x:Key="EnumToText"/>
+        <Converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+    </UserControl.Resources>
     <Border Padding="5">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -33,13 +39,13 @@
                         </Border>
                         <StackPanel Grid.Row="0" Grid.Column="1" Margin="5" Orientation="Horizontal"  VerticalAlignment="Center">
                             <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
-                               ItemsSource="{Binding MuscleGroupList,UpdateSourceTrigger=PropertyChanged}"
-                               SelectedItem="{Binding SelectedMuscle,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+                               ItemsSource="{Binding RoutineLevels,UpdateSourceTrigger=PropertyChanged}"
+                               SelectedItem="{Binding SelectedLevel,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
                                ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"
-                                      Tag="المستوى :">              
+                                      Tag="المستوى :">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Name}" FontSize="12"   />
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumToText}}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -70,7 +76,7 @@
                                 </DataGridTemplateColumn>
 
                                 <DataGridTextColumn Header="المستوى" IsReadOnly="True"
- Binding="{Binding Level}"
+ Binding="{Binding Level, Converter={StaticResource EnumToText}}"
 Width="auto"
 />
 
@@ -88,6 +94,8 @@ Width="auto"
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
+                    <Comp:CaptinUniForEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="2" Title="لا يوجد برامج رياضية بعد" 
+                        Caption="اضغط على زر اضافة برنامج تجيز البرامج الرياضية للاعبين"/>
                 </Grid>
             </Border>
         </Grid>

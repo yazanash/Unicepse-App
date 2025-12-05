@@ -13,7 +13,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Uniceps.navigation;
 using Uniceps.Stores;
-using Uniceps.utlis.common;
 using Uniceps.navigation.Stores;
 using Uniceps.Core.Models;
 
@@ -21,7 +20,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
 {
     public class EditPlayerViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        private readonly NavigationStore _navigationStore;
         private readonly PlayersDataStore _playerStore;
         public ObservableCollection<Year> years;
         public IEnumerable<Year> Years => years;
@@ -145,18 +143,14 @@ namespace Uniceps.ViewModels.PlayersViewModels
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
         }
 
-
-
-
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
 
-        public EditPlayerViewModel(NavigationStore navigationStore, PlayersDataStore playerStore, PlayerMainPageViewModel playerProfileViewModel)
+        public EditPlayerViewModel(PlayersDataStore playerStore)
         {
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             years = new ObservableCollection<Year>();
-            for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
+            for (int i = DateTime.Now.Year; i < DateTime.Now.Year - 80; i--)
                 years.Add(new Year() { year = i });
-            _navigationStore = navigationStore;
             _playerStore = playerStore;
             //_subscriptionDataStore = subscriptionDataStore;
             //_paymentDataStore = paymentDataStore;
@@ -172,13 +166,8 @@ namespace Uniceps.ViewModels.PlayersViewModels
             //_sportStore = sportStore;    
             //_licenseDataStore = licenseDataStore;
             ScanAvailable = false;
-            SubmitCommand = new EditPlayerCommand(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => playerProfileViewModel), this, _playerStore, _navigationStore);
-            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigationStore, () => playerProfileViewModel));
-
-        }
-        private static PlayerMainPageViewModel CreatePlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore)
-        {
-            return PlayerMainPageViewModel.LoadViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore);
+            SubmitCommand = new EditPlayerCommand( this, _playerStore);
+           
         }
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => PropertyNameToErrorsDictionary.Any();
@@ -212,7 +201,10 @@ namespace Uniceps.ViewModels.PlayersViewModels
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
         }
-
-
+        public Action? PlayerUpdated;
+        internal void OnPlayerUpdated()
+        {
+            PlayerUpdated?.Invoke();
+        }
     }
 }

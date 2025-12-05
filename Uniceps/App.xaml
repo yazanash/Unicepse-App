@@ -15,8 +15,6 @@
     <Application.Resources>
         <ResourceDictionary >
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Theme/BaseTheme.xaml"/>
-
                 <ResourceDictionary Source="utlis/Dictionaries/DataTemplate/DataTemplateResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/ButtonsStyleResourceDictionary.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/UtilsDict/CalendarStyleResourceDictionary.xaml"/>

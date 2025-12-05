@@ -98,7 +98,7 @@ namespace Uniceps.Test.DataServicesTest
         {
             Employee expected_employee = employeeFactory!.FakeEmployee();
             Employee actual_employee = await employeeDataService!.Create(expected_employee);
-            Assert.AreEqual(expected_employee.FullName, actual_employee.FullName);
+            Assert.Equals(expected_employee.FullName!, actual_employee.FullName!);
         }
         [Test]
         //it sholud create an employee and assert that it created
@@ -108,7 +108,7 @@ namespace Uniceps.Test.DataServicesTest
             Sport sport = await create_sport();
             expected_employee.Sports!.Add(sport);
             Employee actual_employee = await employeeDataService!.Create(expected_employee);
-            Assert.AreEqual(expected_employee.Sports.Count, actual_employee.Sports!.Count);
+            Assert.Equals(expected_employee.Sports.Count, actual_employee.Sports!.Count);
         }
         [Test]
         //it sholud try to create ana existed employee and throw confilct exception
@@ -130,7 +130,7 @@ namespace Uniceps.Test.DataServicesTest
             Employee test_employee = await employeeDataService!.Create(expected_employee);
             Employee actual_employee = await employeeDataService.Get(test_employee.Id);
             //Assert
-            Assert.AreEqual(expected_employee.FullName, actual_employee.FullName);
+            Assert.Equals(expected_employee.FullName!, actual_employee.FullName!);
         }
 
         [Test]
@@ -158,7 +158,7 @@ namespace Uniceps.Test.DataServicesTest
             actual_employee.FullName = "updated Name";
             Employee updated_player = await employeeDataService.Update(actual_employee);
             //Assert
-            Assert.AreEqual(actual_employee.FullName, updated_player.FullName);
+            Assert.Equals(actual_employee.FullName, updated_player.FullName!);
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace Uniceps.Test.DataServicesTest
             await create_employee(count);
             var employees = await employeeDataService!.GetAll();
             //Assert
-            Assert.AreEqual(employees.Count(), count);
+            Assert.Equals(employees.Count(), count);
         }
 
     }

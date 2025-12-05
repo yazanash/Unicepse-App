@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using emp = Uniceps.Core.Models.Employee;
+using Emp = Uniceps.Core.Models.Employee;
 using Uniceps.Commands;
 using Uniceps.navigation;
 using Uniceps.Stores;
@@ -14,13 +14,11 @@ namespace Uniceps.Commands.Employee
 {
     public class EditTrainerCommand : AsyncCommandBase
     {
-        private readonly NavigationService<TrainersListViewModel> navigationService;
         private readonly EmployeeStore _employeeStore;
         private EditTrainerViewModel _editTrainerViewModel;
 
-        public EditTrainerCommand(NavigationService<TrainersListViewModel> navigationService, EditTrainerViewModel editTrainerViewModel, EmployeeStore employeeStore)
+        public EditTrainerCommand( EditTrainerViewModel editTrainerViewModel, EmployeeStore employeeStore)
         {
-            this.navigationService = navigationService;
             _employeeStore = employeeStore;
             _editTrainerViewModel = editTrainerViewModel;
             _editTrainerViewModel.PropertyChanged += _editTrainerViewModel_PropertyChanged;
@@ -43,11 +41,11 @@ namespace Uniceps.Commands.Employee
         {
             try
             {
-                Core.Models.Employee.Employee employee = new emp.Employee()
+                Core.Models.Employee.Employee employee = new Emp.Employee()
                 {
                     Id = _employeeStore.SelectedEmployee!.Id,
                     FullName = _editTrainerViewModel.FullName,
-                    BirthDate = _editTrainerViewModel.Year!.year,
+                    BirthDate = _editTrainerViewModel.Year?.year ?? DateTime.Now.Year,
                     GenderMale = _editTrainerViewModel.GenderMale,
                     IsActive = true,
                     IsTrainer = true,
@@ -65,7 +63,8 @@ namespace Uniceps.Commands.Employee
                         employee.Sports!.Add(SportListItem.sport);
                 }
                 await _employeeStore.Update(employee);
-                navigationService.ReNavigate();
+                MessageBox.Show("تم التعديل بنجاح");
+                _editTrainerViewModel.OnTrainerUpdated();
             }
             catch (Exception ex)
             {

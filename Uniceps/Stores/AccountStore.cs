@@ -29,6 +29,7 @@ namespace Uniceps.Stores
 
         public event Action? StateChanged;
         public event Action? ProfileChanged;
+        public event Action? SubscriptionChanged;
         public event Action? UserContextChanged;
 
         private UserContextState _userContext;
@@ -56,6 +57,19 @@ namespace Uniceps.Stores
             {
                 _systemProfile = value;
                 ProfileChanged?.Invoke();
+            }
+        }
+        private SystemSubscription? systemSubscription;
+        public SystemSubscription? SystemSubscription
+        {
+            get
+            {
+                return systemSubscription;
+            }
+            set
+            {
+                systemSubscription = value;
+                SubscriptionChanged?.Invoke();
             }
         }
         private string? _businessId;

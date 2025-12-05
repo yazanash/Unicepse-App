@@ -53,16 +53,6 @@ namespace Uniceps.ViewModels.PaymentsViewModels
 
         private void _subscriptionDataStore_Loaded()
         {
-            _subscriptionListViewModel.Clear();
-            if (_paymentDataStore.SelectedPayment != null && _paymentDataStore.SelectedPayment.Subscription != null)
-            {
-                foreach (Subscription subscription in _subscriptionDataStore.Subscriptions.Where(x => !x.IsPaid || x.Id == _paymentDataStore.SelectedPayment!.Subscription!.Id))
-                {
-                    AddSubscriptiont(subscription);
-                }
-            }
-
-            SelectedSubscription = SubscriptionList.FirstOrDefault(x => x.Id == _paymentDataStore.SelectedPayment!.Subscription!.Id);
         }
 
         ICommand LoadSubscriptionCommand;
@@ -81,12 +71,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
                 ClearError(nameof(PaymentValue));
                 if (SelectedSubscription != null)
                 {
-                    if (PaymentValue > SelectedSubscription!.PriceAfterOffer - SelectedSubscription!.PaidValue + _paymentDataStore.SelectedPayment!.PaymentValue)
-                    {
-                        AddError("لا يمكن ان يكون المبلغ المدفوع اكبر من المستحق", nameof(PaymentValue));
-                        OnErrorChanged(nameof(PaymentValue));
-                    }
-                    else if (PaymentValue < 0)
+                    if (PaymentValue < 0)
                     {
                         AddError("لايمكن الدفع بقيمة اقل من 0", nameof(PaymentValue));
                         OnErrorChanged(nameof(PaymentValue));
@@ -139,11 +124,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
                 ClearError(nameof(PaymentValue));
                 if (SelectedSubscription != null)
                 {
-                    if (PaymentValue > SelectedSubscription!.PriceAfterOffer - SelectedSubscription!.PaidValue + _paymentDataStore.SelectedPayment!.PaymentValue)
-                    {
-                        AddError("لا يمكن ان يكون المبلغ المدفوع اكبر من المستحق", nameof(PaymentValue));
-                        OnErrorChanged(nameof(PaymentValue));
-                    }
+                  
                 }
 
                 else

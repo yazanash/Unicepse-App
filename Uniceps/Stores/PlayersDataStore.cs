@@ -14,6 +14,7 @@ using Uniceps.Core.Services;
 using Uniceps.Core.Models.Player;
 using Uniceps.Core.Common;
 using Uniceps.API.Services;
+using Uniceps.Services;
 
 namespace Uniceps.Stores
 {
@@ -22,9 +23,8 @@ namespace Uniceps.Stores
     {
         private readonly IDataService<Player> _playerDataService;
         private readonly IArchivedService<Player> _archivedService;
-        private readonly IPublicIdService<Player> _publicIdService;
-        private readonly IApiDataStore<Player> _apiDataStore;
-        private readonly PlayerApiDataService _playerApiDataService;
+        private readonly AccountStore _accountStore;
+        private readonly IExcelService<Player> _excelService;
         private readonly List<Player> _players;
         private readonly List<Player> _archivedPlayers;
         private readonly Lazy<Task> _initializeLazy;
@@ -38,33 +38,18 @@ namespace Uniceps.Stores
         public event Action<Player>? Player_update;
         public event Action<int>? Player_deleted;
         public event Action? ArchivedPlayers_loaded;
-        public event Action<Profile>? profile_loaded;
         public event Action<Filter?>? FilterChanged;
         public event Action<Player?>? PlayerChanged;
-        public PlayersDataStore(IDataService<Player> playerDataService, PlayerApiDataService playerApiDataService, ILogger<PlayersDataStore> logger, IArchivedService<Player> archivedService, IPublicIdService<Player> publicIdService, IApiDataStore<Player> apiDataStore)
+        public PlayersDataStore(IDataService<Player> playerDataService,  ILogger<PlayersDataStore> logger, IArchivedService<Player> archivedService,  IExcelService<Player> excelService, AccountStore accountStore)
         {
             _playerDataService = playerDataService;
             _archivedService = archivedService;
-            _publicIdService = publicIdService;
             _players = new List<Player>();
             _archivedPlayers = new List<Player>();
             _initializeLazy = new Lazy<Task>(Initialize);
-            _playerApiDataService = playerApiDataService;
             _logger = logger;
-            _apiDataStore = apiDataStore;
-        }
-
-        internal async Task<Player?> GetPlayerByUID(string? uid)
-        {
-            _logger.LogInformation(LogFlag + "get player by id");
-            Player? player = await _publicIdService.GetByUID(uid!);
-            if (player == null)
-            {
-                _logger.LogError(LogFlag + "invalid Player Id");
-                throw new NotExistException("هذا المستخدم لا يملك اي حساب مسجل");
-            }
-
-            return player;
+            _excelService = excelService;
+            _accountStore = accountStore;
         }
 
         private Player? _selectedPlayer;
@@ -110,10 +95,25 @@ namespace Uniceps.Stores
             }
         }
 
+
         public event Action<Player>? ArchivedPlayer_created;
         public event Action<Player>? ArchivedPlayer_restored;
 
         public event Action<Order?>? OrderChanged;
+
+        public List<Player> ImportFromExcel(string filePath)
+        {
+            //ImportStarted?.Invoke();
+            List<Player> players = _excelService.ImportFromExcel(filePath);
+            //DataImported?.Invoke(players.Count());
+            return players;
+        }
+        public void ExportToExcel(string filePath)
+        {
+            //ExportStarted?.Invoke();
+            _excelService.ExportToExcel(filePath, _players);
+            //DataExported?.Invoke(_players.Count);
+        }
         public async Task GetAll()
         {
             _logger.LogInformation(LogFlag + "get players");
@@ -124,110 +124,20 @@ namespace Uniceps.Stores
         public async Task GetArchivedPlayers()
         {
             _logger.LogInformation(LogFlag + "get archived players");
-            IEnumerable<Player> players = await _archivedService.GetAll();
+            IEnumerable<Player> players = await _archivedService.GetAllArchived();
             _archivedPlayers.Clear();
             _archivedPlayers.AddRange(players!);
             ArchivedPlayers_loaded?.Invoke();
         }
-        public async Task HandShakePlayer(Player player, string uid)
-        {
-            _logger.LogInformation(LogFlag + "handshake player");
-            Player? handSakePlayer = await _publicIdService.GetByUID(uid);
-            if (handSakePlayer != null)
-            {
-                _logger.LogInformation(LogFlag + "handshake exists");
-                throw new ConflictException("هذا المستخدم لديه حساب اخر موثق بالفعل ");
-            }
-
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
-            if (internetAvailable)
-            {
-                try
-                {
-                    _logger.LogInformation(LogFlag + "add player to api");
-                    int status = await _playerApiDataService.CreateHandShake(player, uid);
-                    if (status == 201 || status == 409)
-                    {
-                        player.UID = uid;
-                        _logger.LogInformation(LogFlag + "player handshake synced successfully with code {0}", status.ToString());
-                        await _playerDataService.Update(player);
-                        SelectedPlayer!.UID = player.UID;
-                        int currentIndex = _players.FindIndex(y => y.Id == player.Id);
-
-                        if (currentIndex != -1)
-                        {
-                            _players[currentIndex] = player;
-                        }
-                        else
-                        {
-                            _players.Add(player);
-                        }
-
-                        Player_update?.Invoke(player);
-                        //if(SelectedPlayer!=null && SelectedPlayer.Id == player.Id)
-                        //{
-                        //    SelectedPlayer.IsVerified = true;
-                        //}
-                    }
-                    else
-                    {
-                        _logger.LogError(LogFlag + "handshake creation failed with code {0}", status.ToString());
-                        throw new NotExistException("حساب هذه المستخدم غير متوفر لدينا يرجى التاكد من ان اللاعب قد قام بتحميل التطبيق الخاص بنا");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(LogFlag + "player synced failed with error {0}", ex.Message);
-                }
-
-            }
-            else
-            {
-                _logger.LogError(LogFlag + "failed to connect to internet");
-                throw new Exception("لا يوجد اتصال بالانترنت");
-            }
-        }
-        public async Task GetPlayerProfile(string uid)
-        {
-            Player? ExistedPlayer = await _publicIdService.GetByUID(uid);
-            if (ExistedPlayer != null)
-            {
-                _logger.LogError(LogFlag + "hand shake is exists");
-                throw new ConflictException("هذا المستخدم لديه حساب اخر موثق بالفعل ");
-
-            }
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            _logger.LogInformation(LogFlag + "check internet connection {0}", internetAvailable.ToString());
-            if (internetAvailable)
-            {
-                try
-                {
-                    _logger.LogInformation(LogFlag + "get player profile from api");
-                    Profile profile = await _playerApiDataService.GetProfile(uid);
-                    if (profile != null)
-                    {
-                        profile_loaded?.Invoke(profile);
-                    }
-                }
-                catch
-                {
-                    _logger.LogError(LogFlag + "failed to valid player id ");
-                    throw new Exception("خطا في التحقق من المستخدم");
-                }
-            }
-            else
-            {
-                _logger.LogError(LogFlag + "failed to connect to internet");
-                throw new Exception("لا يوجد اتصال بالانترنت");
-            }
-        }
+       
         public async Task AddPlayer(Player player)
         {
-            _logger.LogInformation(LogFlag + "add player");
+            if (_accountStore.SystemSubscription == null && _players.Count() + _archivedPlayers.Count() >= 50)
+                throw new FreeLimitException("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
+
+                _logger.LogInformation(LogFlag + "add player");
             player.DataStatus = DataStatus.ToCreate;
             await _playerDataService.Create(player);
-            await _apiDataStore.Create(player);
             _players.Add(player);
             Player_created?.Invoke(player);
         }
@@ -237,7 +147,6 @@ namespace Uniceps.Stores
             if (player.DataStatus != DataStatus.ToCreate)
                 player.DataStatus = DataStatus.ToUpdate;
             await _playerDataService.Update(player);
-            await _apiDataStore.Update(player);
             int currentIndex = _players.FindIndex(y => y.Id == player.Id);
 
             if (currentIndex != -1)
@@ -250,18 +159,35 @@ namespace Uniceps.Stores
             }
             Player_update?.Invoke(player);
         }
+        public void UpdatePlayerBalance(int playerId,double value)
+        {
+            Player? player = _players.FirstOrDefault(x=>x.Id==playerId);
+            if (player != null)
+            {
+                player.Balance += value;
+                int currentIndex = _players.FindIndex(y => y.Id == player.Id);
+                if (currentIndex != -1)
+                {
+                    _players[currentIndex] = player;
+                }
+                Player_update?.Invoke(_players[currentIndex]);
+            }
+           
+        }
         public async Task DeletePlayer(Player player)
         {
             _logger.LogInformation(LogFlag + "delete player");
             await _playerDataService.Update(player);
             int currentIndex = _players.FindIndex(y => y.Id == player.Id);
-            await _apiDataStore.Update(player);
             _players.RemoveAt(currentIndex);
             Player_deleted?.Invoke(player.Id);
             ArchivedPlayer_created?.Invoke(player);
         }
         public async Task ReactivePlayer(Player player)
         {
+            if (_accountStore.SystemSubscription == null && _players.Count() + _archivedPlayers.Count() >= 50)
+                throw new Exception("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
+
             _logger.LogInformation(LogFlag + "reactive player");
             await _playerDataService.Update(player);
             _players.Add(player);

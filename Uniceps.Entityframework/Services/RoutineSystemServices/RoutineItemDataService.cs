@@ -64,7 +64,7 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
 
-            IEnumerable<RoutineItemModel>? entities = await context.Set<RoutineItemModel>().Where(x => x.DayId == id)
+            IEnumerable<RoutineItemModel>? entities = await context.Set<RoutineItemModel>().Include(x=>x.Sets).Where(x => x.DayId == id)
                 .Include(x => x.Exercise).ToListAsync();
             return entities;
         }
@@ -72,19 +72,25 @@ namespace Uniceps.Entityframework.Services.RoutineSystemServices
         public async Task<RoutineItemModel> Update(RoutineItemModel entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            RoutineItemModel entityToUpdate = await Get(entity.Id);
+            RoutineItemModel? entityToUpdate = await context.Set<RoutineItemModel>().Include(x=>x.Sets).FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (entityToUpdate == null)
                 throw new NotExistException("هذا السجل غير موجود");
-            context.Set<RoutineItemModel>().Update(entity);
+            entityToUpdate.Order = entity.Order;
+            context.Set<RoutineItemModel>().Update(entityToUpdate);
             await context.SaveChangesAsync();
             return entity;
         }
-
         public async Task<IEnumerable<RoutineItemModel>> UpdateRange(List<RoutineItemModel> entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-
-            context.Set<RoutineItemModel>().UpdateRange(entity);
+            foreach(var item in entity)
+            {
+                RoutineItemModel? entityToUpdate = await context.Set<RoutineItemModel>().Include(x => x.Sets).FirstOrDefaultAsync(x => x.Id == item.Id);
+                if (entityToUpdate == null)
+                    throw new NotExistException("هذا السجل غير موجود");
+                entityToUpdate.Order = item.Order;
+                context.Set<RoutineItemModel>().Update(entityToUpdate);
+            }
             await context.SaveChangesAsync();
             return entity;
         }

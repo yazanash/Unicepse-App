@@ -29,6 +29,7 @@ using Uniceps.Stores;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.Stores.SystemAuthStores;
 using Uniceps.utlis.common;
+using Uniceps.ViewModels;
 using Uniceps.ViewModels.Authentication;
 using Uniceps.ViewModels.SystemAuthViewModels;
 using Uniceps.Views;
@@ -106,14 +107,14 @@ namespace Uniceps
         {
             MainWindow authen = _host.Services.GetRequiredService<MainWindow>();
             ResetHost();
-           //await  _host.Services.GetRequiredService<AuthViewModel>().openLog();
+            //await  _host.Services.GetRequiredService<AuthViewModel>().openLog();
             AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
             AuthViewModel authmod = _host.Services.GetRequiredService<AuthViewModel>();
             authmod.LoginAction += Auth_LoginAction;
             auth.Show();
             authen.Close();
         }
-       
+
         public void ResetHost()
         {
             _host.Dispose();
@@ -511,11 +512,41 @@ namespace Uniceps
                 //foreach (var pay in PaymentsList) { await _paymentsApiDataStore.Create(pay); }
                 //logger.LogInformation(LogFlag + "add pays to sync ended");
                 #endregion
+                SplashScreenViewModel splash = _host.Services.GetRequiredService<SplashScreenViewModel>();
                 logger.LogInformation(LogFlag + "database migrate successfully");
-                ExercisesDataStore exercisesDataStore = _host.Services.GetRequiredService<ExercisesDataStore>();
-                await exercisesDataStore.GetExcersisesWithMuscleGroups();
+                bool internetAvailable = InternetAvailability.IsInternetAvailable();
+                if (internetAvailable)
+                {
+                    try
+                    {
+
+                        ExercisesDataStore exercisesDataStore = _host.Services.GetRequiredService<ExercisesDataStore>();
+                        exercisesDataStore.MuscleGroupDownloaded += ExercisesDataStore_MuscleGroupDownloaded; ;
+                        exercisesDataStore.GotExercises += ExercisesDataStore_GotExercises;
+                        await exercisesDataStore.GetExcersisesWithMuscleGroups();
+                    }
+                    catch
+                    {
+                    }
+                }
             }
         }
+
+        private void ExercisesDataStore_MuscleGroupDownloaded(double obj)
+        {
+            SplashScreenViewModel splash = _host.Services.GetRequiredService<SplashScreenViewModel>();
+            ExCount = obj;
+            splash.Progress = 0;
+        }
+
+        public double ExCount = 0;
+        private void ExercisesDataStore_GotExercises(double obj)
+        {
+            SplashScreenViewModel splash = _host.Services.GetRequiredService<SplashScreenViewModel>();
+            splash.Message = "جاري تحميل التمارين";
+            splash.Progress = (obj / ExCount) * 100;
+        }
+
 
         public async Task OpenMainView()
         {
@@ -544,6 +575,7 @@ namespace Uniceps
         {
             try
             {
+                SplashScreenViewModel splash = _host.Services.GetRequiredService<SplashScreenViewModel>();
                 CheckForUpdates();
                 CheckOpenedApplication();
                 _host.Start();
@@ -551,34 +583,25 @@ namespace Uniceps
                 logger.LogInformation(LogFlag + "services started");
                 await PrepareDatabase();
                 logger.LogInformation(LogFlag + "get licenses");
-
                 SessionValidator sysStore = _host.Services.GetRequiredService<SessionValidator>();
                 UserFlowService userFlowService = _host.Services.GetRequiredService<UserFlowService>();
                 bool hasValidSession = await sysStore.HasValidSession();
-                if (hasValidSession)
-                {
-                    logger.LogInformation(LogFlag + "Token is valid. Opening main view...");
-                    await userFlowService.RefreshUserContextAsync();
-                }
-                else
-                {
-                    AccountStore accountStore=_host.Services.GetRequiredService<AccountStore>();
-                    if (accountStore.CurrentAccount == null)
-                    {
-                        accountStore.CurrentAccount = new Core.Models.Authentication.User()
-                        {
-                            OwnerName = "مستخدم غير مسجل",
-                            Role = Roles.Admin,
-                        };
-                    }
 
+                AccountStore accountStore = _host.Services.GetRequiredService<AccountStore>();
+                if (accountStore.CurrentAccount == null)
+                {
+                    accountStore.CurrentAccount = new Core.Models.Authentication.User()
+                    {
+                        OwnerName = "مستخدم غير مسجل",
+                        Role = Roles.Admin,
+                        UserName = "زائر",
+                        Position = "زائر",
+                    };
                 }
+                splash.Message = " التطبيق جاهز للعمل ...";
+                logger.LogInformation(LogFlag + "Token is valid. Opening main view...");
+                await userFlowService.RefreshUserContextAsync();
                 await OpenMainView();
-                //else
-                //{
-                //    logger.LogInformation(LogFlag + "Token invalid. Redirecting to login...");
-                //    OpenLoginView(); // ترجع المستخدم لتسجيل الدخول
-                //}
             }
             catch (Exception ex)
             {
@@ -598,6 +621,7 @@ namespace Uniceps
 
             // ثم تابع تحميل الواجهة
             splashScreen = new SplashScreenWindow();
+            splashScreen.DataContext = _host.Services.GetRequiredService<SplashScreenViewModel>();
             splashScreen.Show();
             EventManager.RegisterClassHandler(typeof(TextBox), TextBox.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(TextBox_PreviewMouseLeftButtonDown));
             await PerpareApp();
@@ -630,7 +654,6 @@ namespace Uniceps
                     if (SQLITE)
                         CONNECTION_STRING = hostContext.Configuration.GetConnectionString("sqlite");
                     services.AddSingleton(new UnicepsDbContextFactory(CONNECTION_STRING, SQLITE));
-
                 });
 
         private void BringExistingInstanceToFront()
