@@ -168,44 +168,29 @@ Width="auto"
 Width="auto"
 />
 
-                                    <DataGridTemplateColumn Header="عمليات" Width="80" IsReadOnly="True">
+                                    <DataGridTemplateColumn Header="عمليات" Width="*" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" x:Name="menu">
-                                                <CheckBox Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
+                                                    <Button  HorizontalAlignment="Stretch" 
+                                                            Command="{Binding DataContext.RenewCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                            CommandParameter="{Binding}" Style="{StaticResource BorderedIconBtn}">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                            <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Autorenew" Style="{DynamicResource GridBtnIcon}"/>
+                                                            <TextBlock Text="تجديد الاشتراك" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
 
-                                                    <Icon:PackIconMaterial Kind="Menu" Style="{StaticResource GridBtnIcon}"/>
-                                                </CheckBox>
-                                                <!-- Popup control -->
-                                                <Popup StaysOpen="False" AllowsTransparency="True" Name="MyPopup" IsOpen="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
-                                                    <!-- Customize the popup content here -->
-                                                    <Border Style="{DynamicResource StaticCardBorderStyle}">
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button  Margin="5 0" HorizontalAlignment="Stretch" 
+Command="{Binding DataContext.LoginCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+CommandParameter="{Binding}" Style="{StaticResource BorderedIconBtn}">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                            <Icon:PackIconMaterial Margin="0 0 10 0" Kind="{Binding IsLoggedIcon}" Foreground="{Binding IsLoggedBrush}" Style="{DynamicResource GridBtnIcon}"/>
+                                                            <TextBlock Text="{Binding IsLoggedString,UpdateSourceTrigger=PropertyChanged}" FontSize="12" Foreground="{Binding IsLoggedBrush}"/>
 
-                                                        <StackPanel>
-                                                               
-                                                                <Button  HorizontalAlignment="Stretch" 
-                                                                            Command="{Binding DataContext.RenewCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                            CommandParameter="{Binding}" Style="{StaticResource GridEditBtn}">
-                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                                    <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Autorenew" Style="{DynamicResource GridBtnIcon}"/>
-                                                                        <TextBlock Text="تجديد الاشتراك" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
-
-                                                                </StackPanel>
-                                                            </Button>
-                                                                <Button  HorizontalAlignment="Stretch" 
-                Command="{Binding DataContext.LoginCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                CommandParameter="{Binding}" Style="{StaticResource GridEditBtn}">
-                                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                                        <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Autorenew" Style="{DynamicResource GridBtnIcon}"/>
-                                                                        <TextBlock Text="تسجيل دخول اللاعب" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>
-
-                                                                    </StackPanel>
-                                                                </Button>
-                                                            </StackPanel>
-
-                                                    </Border>
-                                                </Popup>
-                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </Button>
+                                                </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

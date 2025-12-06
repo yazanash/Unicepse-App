@@ -23,7 +23,7 @@ namespace Uniceps.ViewModels.Authentication
             _authenticationStore = authenticationStore;
             _usersDataStore = usersDataStore;
 
-            _navigatorStore.CurrentViewModel =  LoginViewModel.LoadViewModel(this, _navigatorStore, _authenticationStore, _usersDataStore);
+           
 
             _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
         }

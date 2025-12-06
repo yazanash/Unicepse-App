@@ -23,18 +23,19 @@ using Uniceps.Views.SubscriptionView;
 
 namespace Uniceps.ViewModels.SubscriptionViewModel
 {
-    public class SubscriptionMainViewModel: ListingViewModelBase
+    public class SubscriptionMainViewModel : ListingViewModelBase
     {
         private readonly SubscriptionDataStore _dataStore;
         private readonly PlayersDataStore _playersDataStore;
-        private readonly SportDataStore  _sportDataStore;
-        private readonly PaymentDataStore  _paymentDataStore;
+        private readonly SportDataStore _sportDataStore;
+        private readonly PaymentDataStore _paymentDataStore;
         private readonly EmployeeStore _employeeStore;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly ObservableCollection<SubscriptionListItemViewModel> _subscriptionListItemViewModels;
         private readonly AccountStore _accountStore;
         public ICollectionView SubscriptionList { get; set; }
         public ICommand LoadSubscriptionCommand { get; }
+        public ICommand LoadPlayerLogCommand { get; }
         public ICommand AddCommand => new RelayCommand(OpenCreateSubscription);
         public ICommand LoginCommand => new RelayCommand<SubscriptionListItemViewModel>(ExecuteLoginCommand);
         public SearchBoxViewModel SearchBox { get; set; }
@@ -81,9 +82,14 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                     existed.logoutTime = DateTime.Now;
                     existed.IsLogged = false;
                     await _playersAttendenceStore.LogOutPlayer(existed);
+                    subscriptionListItemViewModel.IsLoggedIn = existed.IsLogged;
                 }
                 else
+                {
                     await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
+                    subscriptionListItemViewModel.IsLoggedIn = dailyPlayerReport.IsLogged;
+                }
+
             }
             else
             {
@@ -106,7 +112,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             _dataStore.Deleted += _subscriptionStore_Deleted;
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
+            _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
             LoadSubscriptionCommand = new LoadActiveSubscriptionCommand(_dataStore, this);
+            LoadPlayerLogCommand = new AsyncRelayCommand(GetLoggedPlayers);
             _playersDataStore = playersDataStore;
             _sportDataStore = sportDataStore;
             _accountStore = accountStore;
@@ -119,6 +127,19 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             _employeeStore = employeeStore;
         }
 
+        private void _playersAttendenceStore_Loaded()
+        {
+            foreach (var subscription in _subscriptionListItemViewModels)
+            {
+                subscription.IsLoggedIn = _playersAttendenceStore.PlayersAttendence.Any(x => x.Code == subscription.Code && x.IsLogged == true);
+            }
+        }
+
+        private async Task GetLoggedPlayers()
+        {
+            await _playersAttendenceStore.GetLoggedPlayers(DateTime.Now);
+
+        }
         private void SearchBox_SearchedText(string? obj)
         {
             SubscriptionFilter = obj!;
@@ -136,9 +157,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                     subscriptionListItemViewModel.Trainer!.Contains(SubscriptionFilter, StringComparison.OrdinalIgnoreCase) ||
                     subscriptionListItemViewModel.Code!.Contains(SubscriptionFilter, StringComparison.OrdinalIgnoreCase);
 
-                    bool matchStatus =
-            SelectedSubscriptionStatus == SubscriptionStatus.None || // إذا اختار None يعني الكل
-            subscriptionListItemViewModel.SubscriptionStatus == SelectedSubscriptionStatus;
+                bool matchStatus =
+        SelectedSubscriptionStatus == SubscriptionStatus.None || // إذا اختار None يعني الكل
+        subscriptionListItemViewModel.SubscriptionStatus == SelectedSubscriptionStatus;
 
 
 
@@ -146,7 +167,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             }
             return false;
         }
-        public bool HasData =>_subscriptionListItemViewModels.Count > 0;
+        public bool HasData => _subscriptionListItemViewModels.Count > 0;
         private string _subscriptionFilter = string.Empty;
         public string SubscriptionFilter
         {
@@ -207,7 +228,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         private void _dataStore_Loaded()
         {
             _subscriptionListItemViewModels.Clear();
-           foreach (Subscription subscription in _dataStore.AllSubscriptions)
+            foreach (Subscription subscription in _dataStore.AllSubscriptions)
             {
                 AddSubscription(subscription);
             }
@@ -219,13 +240,15 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                 new SubscriptionListItemViewModel(subscription);
             _subscriptionListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = _subscriptionListItemViewModels.Count();
+            itemViewModel.IsLoggedIn = _playersAttendenceStore.PlayersAttendence.Any(x => x.Code == itemViewModel.Code && x.IsLogged == true);
             OnPropertyChanged(nameof(HasData));
         }
-        public static SubscriptionMainViewModel LoadViewModel(SubscriptionDataStore dataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore,EmployeeStore employeeStore,PlayersAttendenceStore playersAttendenceStore,AccountStore accountStore)
+        public static SubscriptionMainViewModel LoadViewModel(SubscriptionDataStore dataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore, PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore)
         {
-            SubscriptionMainViewModel viewModel = new(dataStore, playersDataStore, sportDataStore,paymentDataStore, employeeStore, playersAttendenceStore, accountStore);
+            SubscriptionMainViewModel viewModel = new(dataStore, playersDataStore, sportDataStore, paymentDataStore, employeeStore, playersAttendenceStore, accountStore);
 
             viewModel.LoadSubscriptionCommand.Execute(null);
+            viewModel.LoadPlayerLogCommand.Execute(null);
 
             return viewModel;
         }

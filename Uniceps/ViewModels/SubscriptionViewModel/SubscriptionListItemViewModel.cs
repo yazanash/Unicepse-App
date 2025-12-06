@@ -47,7 +47,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public string? OfferDes => Subscription.OfferDes;
         public double PriceAfterOffer => Subscription.PriceAfterOffer;
         public double PaidValue => Subscription.TotalPaid;
-        public double RestValue => Subscription.PriceAfterOffer - Subscription.TotalPaid;
+        public double RestValue => Subscription.Remaining;
         public bool IsRenewed => Subscription.IsRenewed;
         //public double RestValue { get; set; }
         public string EndDate => Subscription.EndDate.ToShortDateString();
@@ -60,6 +60,20 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             set { _isOpen = value; OnPropertyChanged(nameof(IsOpen)); }
 
         }
+        private bool _isLoggedIn = false;
+        public bool IsLoggedIn
+        {
+            get { return _isLoggedIn; }
+            set { _isLoggedIn = value; OnPropertyChanged(nameof(IsLoggedIn));
+                OnPropertyChanged(nameof(IsLoggedBrush));
+                OnPropertyChanged(nameof(IsLoggedString));
+                OnPropertyChanged(nameof(IsLoggedIcon));
+            }
+
+        }
+        public Brush IsLoggedBrush => IsLoggedIn ? Brushes.Red : Brushes.Green;
+        public string? IsLoggedString=> IsLoggedIn ? "تسجيل خروج" : "تسجيل دخول";
+        public string? IsLoggedIcon => IsLoggedIn ? "Logout" : "Login";
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
         public ICommand? StopSubscriptionCommand { get; }

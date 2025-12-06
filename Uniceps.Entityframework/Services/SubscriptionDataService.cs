@@ -87,7 +87,7 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.EndDate >= DateTime.Now.AddDays(-2)).ToListAsync();
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.EndDate >= DateTime.Now.AddDays(-2)).Include(x=>x.Payments).ToListAsync();
                 return entities;
             }
         }
@@ -97,7 +97,7 @@ namespace Uniceps.Entityframework.Services
             {
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.SportId == sport.Id
                 && (x.RollDate.Month == date.Month && x.RollDate.Year == date.Year
-                || x.EndDate.Month == date.Month && x.EndDate.Year == date.Year)).ToListAsync();
+                || x.EndDate.Month == date.Month && x.EndDate.Year == date.Year)).Include(x => x.Payments).ToListAsync();
                 return entities;
             }
         }
@@ -118,7 +118,7 @@ namespace Uniceps.Entityframework.Services
 
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.TrainerId == trainer.Id
                 && x.RollDate <= monthEnd   // يبدأ قبل نهاية الشهر
-                && x.EndDate >= monthStart).ToListAsync();
+                && x.EndDate >= monthStart).Include(x => x.Payments).ToListAsync();
                 return entities;
             }
         }
@@ -126,7 +126,7 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.TrainerId == trainer.Id)
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.TrainerId == trainer.Id).Include(x => x.Payments)
                    .ToListAsync();
                 return entities;
             }
@@ -139,7 +139,22 @@ namespace Uniceps.Entityframework.Services
                 .FirstOrDefaultAsync((e) => e.Id == entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException("هذا السجل غير موجود");
-            
+            existed_subscription.PlayerId = entity.PlayerId;
+            existed_subscription.PlayerName = entity.PlayerName;
+            existed_subscription.SportId = entity.SportId;
+            existed_subscription.SportName = entity.SportName;
+            existed_subscription.TrainerId = entity.TrainerId;
+            existed_subscription.TrainerName = entity.TrainerName;
+            existed_subscription.RollDate = entity.RollDate;
+            existed_subscription.EndDate = entity.EndDate;
+            existed_subscription.Price = entity.Price;
+            existed_subscription.PriceAfterOffer = entity.PriceAfterOffer;
+            existed_subscription.OfferValue = entity.OfferValue;
+            existed_subscription.OfferDes = entity.OfferDes;
+            existed_subscription.Code = entity.Code;
+            existed_subscription.DaysCount = entity.DaysCount;
+            existed_subscription.IsStopped = entity.IsStopped;
+            existed_subscription.MonthCount = entity.MonthCount;
             context.Set<Subscription>().Update(entity);
             await context.SaveChangesAsync();
             return entity;
