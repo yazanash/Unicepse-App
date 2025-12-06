@@ -12,16 +12,18 @@
         <StackPanel>
             <!-- Header -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                <Image Source="/Resources/Assets/logo.png" Width="70"/>
+                <Image Source="{Binding GymLogo,UpdateSourceTrigger=PropertyChanged}" Width="70" Height="70" Stretch="UniformToFill"/>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10" Grid.Column="1">
-                    <TextBlock Text="تمت طباعة هذا الملف بواسطة برنامج يونيسيبس لادارة الاندية الرياضية " FontSize="14" VerticalAlignment="Center"  Foreground="#000"/>
-                    <TextBlock Text="UNICEPS جميع الحقوق محفوظة" FontSize="14" VerticalAlignment="Center"  Foreground="#000"/>
+                    <TextBlock Text="{Binding GymName}" FontSize="18" VerticalAlignment="Center"  Foreground="#000"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="{Binding RoutineName}" FontSize="24" FontWeight="Bold" Margin="0,0,0,5"/>
-                <TextBlock Text="تاريخ البرنامج:" FontSize="18"/>
-                <TextBlock Text="{Binding Date}" FontSize="18" Margin="0,0,0,5"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="تاريخ البرنامج:" FontSize="18"/>
+                    <TextBlock Text="{Binding Date}" FontSize="18" Margin="5 0"/>
+                </StackPanel>
+             
             </StackPanel>
           
             <!-- Days -->
@@ -81,6 +83,13 @@ VerticalAlignment="Center"
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <Image Source="/Resources/Assets/logo.png" Width="70"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10" Grid.Column="1">
+                    <TextBlock Text="تمت طباعة هذا الملف بواسطة برنامج يونيسيبس لادارة الاندية الرياضية " FontSize="14" VerticalAlignment="Center"  Foreground="#000"/>
+                    <TextBlock Text="UNICEPS جميع الحقوق محفوظة" FontSize="14" VerticalAlignment="Center"  Foreground="#000"/>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Border>
 </UserControl>

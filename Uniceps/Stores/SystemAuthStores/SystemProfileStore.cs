@@ -133,18 +133,25 @@ namespace Uniceps.Stores.SystemAuthStores
         {
             if (_accountStore.SystemProfile != null)
             {
-
-                var apiResponse = await _systemProfileApiDataService.UploadProfilePicture(filePath);
-                if (apiResponse.StatusCode == 201 || apiResponse.StatusCode == 200)
+                bool internetAvailable = InternetAvailability.IsInternetAvailable();
+                if (internetAvailable)
                 {
-                    string? imageName = apiResponse.Data?.ImageUrl;
-                    if (string.IsNullOrEmpty(imageName))
-                        throw new Exception("API did not return a valid image name.");
+                    var apiResponse = await _systemProfileApiDataService.UploadProfilePicture(filePath);
+                    if (apiResponse.StatusCode == 201 || apiResponse.StatusCode == 200)
+                    {
+                        string? imageName = apiResponse.Data?.ImageUrl;
+                        if (string.IsNullOrEmpty(imageName))
+                            throw new Exception("API did not return a valid image name.");
 
-                    // حفظ نسخة محلية.
+                        // حفظ نسخة محلية.
 
-                    _accountStore.SystemProfile.LocalProfileImagePath = await _systemProfileApiDataService.DownloadAndSaveProfilePicture(imageName);
-                    _accountStore.SystemProfile = await _profileDataService.Update(_accountStore.SystemProfile);
+                        _accountStore.SystemProfile.LocalProfileImagePath = await _systemProfileApiDataService.DownloadAndSaveProfilePicture(imageName);
+                        _accountStore.SystemProfile = await _profileDataService.Update(_accountStore.SystemProfile);
+                    }
+                }
+                else
+                {
+                    throw new Exception("لا يوجد اتصال بالانترنت .... حاول مرة اخرى");
                 }
             }
         }

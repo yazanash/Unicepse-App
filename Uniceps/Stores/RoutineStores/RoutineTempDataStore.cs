@@ -30,11 +30,13 @@ namespace Uniceps.Stores.RoutineStores
     {
         private readonly IDataService<RoutineModel> _dataService;
         private readonly List<RoutineModel> _routineModels;
+        private readonly AccountStore _accountStore;
         public IEnumerable<RoutineModel> Routines => _routineModels;
-        public RoutineTempDataStore(IDataService<RoutineModel> dataService)
+        public RoutineTempDataStore(IDataService<RoutineModel> dataService, AccountStore accountStore)
         {
             _dataService = dataService;
             _routineModels = new List<RoutineModel>();
+            _accountStore = accountStore;
         }
 
         public event Action<RoutineModel>? Created;
@@ -92,8 +94,13 @@ namespace Uniceps.Stores.RoutineStores
                     FileManager.Write(uniFile, uniFilePath);
                     break;
                 case FileFormatType.PDF:
-                    PlayerRoutinePrintViewModel vm = RoutineMapper.MapToPdf(routineModel, routineModel.Name??"");
-
+                    PlayerRoutinePrintViewModel vm = RoutineMapper.MapToPdf(routineModel, routineModel.Name ?? "");
+                    if (_accountStore.SystemProfile != null)
+                    {
+                        vm.GymName = _accountStore.SystemProfile.DisplayName;
+                        if (!string.IsNullOrEmpty(_accountStore.SystemProfile.LocalProfileImagePath))
+                            vm.GymLogo=_accountStore.SystemProfile.LocalProfileImagePath;
+                    }
                     var doc = BuildRoutineDocument.BuildDocument(vm);
                     var pd = new PrintDialog();
                     if (pd.ShowDialog() == true)
@@ -107,11 +114,11 @@ namespace Uniceps.Stores.RoutineStores
         }
         public string GetEnumString(FileTypes value)
         {
-           
-                var field = value.GetType().GetField(value.ToString());
-                var attr = field?.GetCustomAttribute<DisplayAttribute>();
-                return attr?.Name ?? value.ToString();
-           
+
+            var field = value.GetType().GetField(value.ToString());
+            var attr = field?.GetCustomAttribute<DisplayAttribute>();
+            return attr?.Name ?? value.ToString();
+
         }
 
         public async Task GetAll()

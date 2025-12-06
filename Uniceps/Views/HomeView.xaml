@@ -152,9 +152,7 @@ Width="*"
                                                         <Button ToolTip="اضافة مفتاح" Visibility="{Binding IsLogged,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}" Command="{Binding AddKeyCommand}" Style="{StaticResource GridremoveBtn}">
                                                             <Icon:PackIconMaterial Kind="KeyPlus"  Style="{StaticResource GridBtnIcon}"/>
                                                         </Button>
-                                                        <Button ToolTip="فتح الصفحة الرئيسية" Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
-                                                            <Icon:PackIconMaterial Kind="Account"  Style="{StaticResource GridBtnIcon}"/>
-                                                        </Button>
+                                                       
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
