@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>D:\Repo\Unicepse\Unicepse\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="utlis\Components\CaptinRoutineItemEmpty.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\CaptinUniForEmpty.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\CaptinUniTRainerForEmpty.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\NotificationBar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Controls\TopNavBar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\AddUserViewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\CameraReader.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\EmployeeDetailsWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\TrainerDetailsWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Expenses\ExpenseDetailViewWinow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\LicenseWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\PlayerDetailWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PremiumView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PremiumViewDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PrintWindowDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProgressWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\ExportDialogWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\RoutineComponent\ExercisesListViewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\RoutineComponent\RoutineItemModelCardWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SearchWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SplashScreenWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\EmployeeAccountantCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\EmployeePrintedCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\MetricItemRL.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\MonthlyEarnReportViewModel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\PlayerMetricCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Components\StatusBar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Controls\AppCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Controls\InfoCard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Controls\NavBar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Pages\PlayerRoutinePrintView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Pages\SubscriptionPrintView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="utlis\Pages\TrainerDetailedReport.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\AccountingState.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\CreditsCardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\ExpensesCardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\NetIncomeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\PaymentsCardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\SubscriptionsCardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ApplicationAboutView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AppViews\AboutApp.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AppViews\GymView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\AuthWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\RegisterView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\UserLogReportView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\CreditViews\CreditsListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\DausesViews\YearlyDausesListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\EmployeesListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\TrainerDuesesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\TrainerSubscriptionView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Expenses\ExpensesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Metrics\MetricsCardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PaymentViews\PaymentListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayersAttendenceViews\AttendanceKeyViewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayersAttendenceViews\PlayerAttendenceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayersAttendenceViews\PlayersAttendenceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\ArchivedPlayersView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\CoachDashboardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\RoutineComponent\DayGroupListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\RoutineComponent\RoutineItemsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\RoutineComponent\SelectedRoutineItemsBufferView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RoutineTemplateViews\RoutineItemTemplateView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SportViews\SportDetailWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SportViews\SportSubscriptionsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SubscriptionView\StopSubscriptionView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SubscriptionView\SubscriptionCreationViewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SubscriptionView\SubscriptionDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SubscriptionView\SubscriptionMainView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SystemAuthViews\CreateProfileViewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SystemAuthViews\SystemSubscriptionCreationView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SystemSubscriptionPaymentOptionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="utlis\Dictionaries\ListBoxItems\SystemSubscriptionListResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\CameraReader.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\LicenseWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PrintWindowDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProgressWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Theme\LightTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SearchWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SplashScreenWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\EmployeeAccountantCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\EmployeePrintedCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\MetricItemRL.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\MonthlyEarnReportViewModel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\PlayerMetricCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Components\StatusBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Controls\AppCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Controls\InfoCard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Controls\NavBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\DataTemplate\DataTemplateResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\GroupDaysSelectionListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\MetricItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\PaymentInvoiceItemResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\RoutineItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\RoutineListResource.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\SportItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\SubscriptionItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\ListBoxItems\TrainerItemsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\PagesStyle\LoginPageResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\ButtonsStyleResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\CalendarStyleResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\DataGridResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\DropDownResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\InputControlsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\ListViewResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Dictionaries\UtilsDict\ScrollViewerResouceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Pages\PlayerRoutinePrintView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Pages\SubscriptionPrintView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="utlis\Pages\TrainerDetailedReport.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\AccountingState.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\CreditsCardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\ExpensesCardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\NetIncomeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\PaymentsCardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountingViews\SubscriptionsCardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ApplicationAboutView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AppViews\AboutApp.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AppViews\GymView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AuthView\AuthWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AuthView\RegisterView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AuthView\UserLogReportView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\CreditViews\CreditsListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\DausesViews\YearlyDausesListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\EmployeesListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\TrainerDuesesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EmployeeViews\TrainerSubscriptionView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Expenses\ExpensesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Metrics\MetricsCardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PaymentViews\PaymentListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayersAttendenceViews\AttendanceKeyViewWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayersAttendenceViews\LogPlayerAttendenceView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayersAttendenceViews\PlayerAttendenceView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayersAttendenceViews\PlayersAttendenceView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerViews\ArchivedPlayersView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PlayerViews\PlayerMainPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineTemplateViews\CoachDashboardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineTemplateViews\RoutineComponent\DayGroupListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineTemplateViews\RoutineComponent\RoutineItemsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineTemplateViews\RoutineComponent\SelectedRoutineItemsBufferView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RoutineTemplateViews\RoutineItemTemplateView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SportViews\SportSubscriptionsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SubscriptionView\StopSubscriptionView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SubscriptionView\SubscriptionDetailView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SystemAuthViews\SystemSubscriptionCreationView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

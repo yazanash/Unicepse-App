@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="Uniceps.utlis.Pages.PlayerRoutinePrintView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uniceps.utlis.Pages"
+             mc:Ignorable="d" 
+             
+            MinWidth="793"
+             FlowDirection="RightToLeft" >
+    <Border Background="White" Padding="40">
+        <StackPanel>
+            <!-- Header -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <Image Source="{Binding GymLogo,UpdateSourceTrigger=PropertyChanged}" Width="70" Height="70" Stretch="UniformToFill"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10" Grid.Column="1">
+                    <TextBlock Text="{Binding GymName}" FontSize="18" VerticalAlignment="Center"  Foreground="#000"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="{Binding RoutineName}" FontSize="24" FontWeight="Bold" Margin="0,0,0,5"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="تاريخ البرنامج:" FontSize="18"/>
+                    <TextBlock Text="{Binding Date}" FontSize="18" Margin="5 0"/>
+                </StackPanel>
+             
+            </StackPanel>
+          
+            <!-- Days -->
+            <ItemsControl ItemsSource="{Binding Days}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,10,0,10">
+                            <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold"/>
+                            <ItemsControl ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,5,0,5">
+                                            <Grid Margin="5">
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <!-- صورة -->
+                                                    <ColumnDefinition Width="*"/>
+                                                    <!-- اسم -->
+                                                    <ColumnDefinition Width="200"/>
+                                                    <!-- الجولات -->
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0"
+Text="{Binding Order}"
+FontSize="16"
+VerticalAlignment="Center"
+/>
+                                                <!-- صورة التمرين -->
+                                                <Image Grid.Column="1"
+               Source="{Binding ExerciseUrl}"
+               Width="90" Height="90"
+               Stretch="UniformToFill"
+               Margin="5"/>
+
+                                                <!-- اسم التمرين -->
+                                                <TextBlock Grid.Column="2"
+                   Text="{Binding ExerciseName}"
+                   FontSize="16"
+                   VerticalAlignment="Center"
+                   Margin="10,0"/>
+
+                                                <!-- الجولات -->
+                                                <TextBlock Grid.Column="3"
+                   Text="{Binding SetsText}"
+                   FontSize="14"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Margin="10,0"/>
+                                            </Grid>
+                                        </StackPanel>
+                                            
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <Image Source="/Resources/Assets/logo.png" Width="70"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10" Grid.Column="1">
+                    <TextBlock Text="تمت طباعة هذا الملف بواسطة برنامج يونيسيبس لادارة الاندية الرياضية " FontSize="14" VerticalAlignment="Center"  Foreground="#000"/>
+                    <TextBlock Text="UNICEPS جميع الحقوق محفوظة" FontSize="14" VerticalAlignment="Center"  Foreground="#000"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,123 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    
+        xmlns:viewmodels="clr-namespace:Uniceps.utlis.common"
+        xmlns:vms="clr-namespace:Uniceps.ViewModels"
+        xmlns:viewapp="clr-namespace:Uniceps.Views.AppViews"
+        xmlns:authvmodels="clr-namespace:Uniceps.ViewModels.Authentication"
+        xmlns:logvms="clr-namespace:Uniceps.ViewModels.PlayersAttendenceViewModels"
+        xmlns:logvs="clr-namespace:Uniceps.Views.PlayersAttendenceViews"
+        xmlns:vmodels="clr-namespace:Uniceps.ViewModels.Accountant"
+        xmlns:views="clr-namespace:Uniceps.utlis.common"
+        xmlns:vis="clr-namespace:Uniceps.Views"
+        xmlns:vs="clr-namespace:Uniceps.Views.AccountingViews"
+        xmlns:sport_vms="clr-namespace:Uniceps.ViewModels.SportsViewModels"
+        xmlns:sport_views="clr-namespace:Uniceps.Views.SportViews"
+        xmlns:emp_vms="clr-namespace:Uniceps.ViewModels.Employee.TrainersViewModels"
+        xmlns:emp_evms="clr-namespace:Uniceps.ViewModels.Employee.TrainersViewModels"
+        xmlns:emp_views="clr-namespace:Uniceps.Views.TrainerViews"
+        xmlns:emp_eviews="clr-namespace:Uniceps.Views.EmployeeViews"
+        xmlns:login="clr-namespace:Uniceps.Views.AuthView"
+        xmlns:player_vms="clr-namespace:Uniceps.ViewModels.PlayersViewModels"
+        xmlns:player_subview="clr-namespace:Uniceps.Views.SubscriptionView"
+        xmlns:player_subvm="clr-namespace:Uniceps.ViewModels.SubscriptionViewModel"
+        xmlns:player_views="clr-namespace:Uniceps.Views.PlayerViews"
+        xmlns:authvms="clr-namespace:Uniceps.ViewModels.Authentication"
+        xmlns:authvs="clr-namespace:Uniceps.Views.AuthView"            
+        xmlns:home_vms="clr-namespace:Uniceps.ViewModels"
+        xmlns:home_logvms="clr-namespace:Uniceps.ViewModels.PlayersAttendenceViewModels"
+        xmlns:home_logvs="clr-namespace:Uniceps.Views.PlayersAttendenceViews"
+        xmlns:home_views="clr-namespace:Uniceps.Views"
+                    xmlns:routine_temp="clr-namespace:Uniceps.Views.RoutineTemplateViews"
+                    xmlns:routine_temp_vm="clr-namespace:Uniceps.ViewModels.RoutineTemplateViewModels"
+                    
+        xmlns:sys_auth="clr-namespace:Uniceps.Views.SystemAuthViews"
+        xmlns:sys_auth_vm="clr-namespace:Uniceps.ViewModels.SystemAuthViewModels"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <DataTemplate DataType="{x:Type player_subvm:SubscriptionMainViewModel }">
+        <!--<views:HomeView />-->
+        <player_subview:SubscriptionMainView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type sys_auth_vm:SystemProfileCreationViewModel }">
+        <!--<views:HomeView />-->
+        <sys_auth:CreateProfileView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type sys_auth_vm:SystemSubscriptionCreationViewModel }">
+        <!--<views:HomeView />-->
+        <sys_auth:SystemSubscriptionCreationView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type logvms:LogPlayerAttendenceViewModel }">
+        <logvs:LogPlayerAttendenceView/>
+    </DataTemplate>
+   
+    <DataTemplate DataType="{x:Type authvmodels:AuthViewModel }">
+        <!--<views:HomeView />-->
+        <login:LoginView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vmodels:AccountingViewModel }">
+        <vs:AccountnigView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vms:AppInfoViewModel }">
+        <viewapp:GymView/>
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type routine_temp_vm:RoutineDetailsViewModel }">
+        <routine_temp:RoutineItemTemplateView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type routine_temp_vm:RoutineListViewModel }">
+        <routine_temp:CoachDashboardView/>
+    </DataTemplate>
+    <!---->
+    <DataTemplate DataType="{x:Type home_vms:HomeViewModel }">
+        <home_views:HomeView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type home_vms:PremiumViewModel }">
+        <home_views:PremiumView />
+    </DataTemplate>
+    <!---->
+    <DataTemplate DataType="{x:Type player_vms:PlayerListViewModel }">
+        <player_views:PlayersListView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type player_subvm:SubscriptionDetailsViewModel }">
+        <player_subview:SubscriptionDetailView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type player_vms:PlayerProfileViewModel }">
+        <player_views:PlayerProfile/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type player_vms:ArchivedPlayersListViewModel }">
+        <player_views:ArchivedPlayersView/>
+    </DataTemplate>
+    <!---->
+    
+    <DataTemplate DataType="{x:Type sport_vms:SportListViewModel }">
+        <sport_views:SportListView/>
+    </DataTemplate>
+   
+    <DataTemplate DataType="{x:Type sport_vms:SportSubscriptionsViewModel }">
+        <sport_views:SportSubscriptionsView/>
+    </DataTemplate>
+    <!---->
+  
+    <DataTemplate DataType="{x:Type emp_vms:TrainersListViewModel }">
+        <emp_eviews:EmployeesListView/>
+    </DataTemplate>
+   
+    <DataTemplate DataType="{x:Type emp_evms:EmployeeAccountViewModel }">
+        <emp_eviews:TrainerDuesesView/>
+    </DataTemplate>
+    <!---->
+    <DataTemplate DataType="{x:Type authvms:UsersListViewModel}">
+        <authvs:UsersListView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type authvms:AddUserViewModel}">
+        <authvs:AddUserView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type authvms:AuthenticationLoggingList}">
+        <authvs:UserLogReportView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type authvms:EditUserViewModel}">
+        <authvs:AddUserView/>
+    </DataTemplate>
+</ResourceDictionary>

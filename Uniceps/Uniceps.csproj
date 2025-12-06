@@ -1,0 +1,296 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
+    <SignAssembly>False</SignAssembly>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyVersion>2.1.0.3</AssemblyVersion>
+    <FileVersion>2.1.0.3</FileVersion>
+    <SelfContained>true</SelfContained>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TransformXmlSource>App.config</TransformXmlSource>
+    <TransformXmlTransform>Debug.config</TransformXmlTransform>
+    <TransformXmlDestination>$(OutDir)\$(TargetFileName).config</TransformXmlDestination>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TransformXmlSource>Release.config</TransformXmlSource>
+    <TransformXmlTransform>App.config</TransformXmlTransform>
+    <TransformXmlDestination>$(OutDir)\$(TargetFileName).config</TransformXmlDestination>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Resources\Assets\Exercises\**" />
+    <Compile Remove="Resources\Assets\new_metric\**" />
+    <EmbeddedResource Remove="Resources\Assets\Exercises\**" />
+    <EmbeddedResource Remove="Resources\Assets\new_metric\**" />
+    <None Remove="Resources\Assets\Exercises\**" />
+    <None Remove="Resources\Assets\new_metric\**" />
+    <Page Remove="Resources\Assets\Exercises\**" />
+    <Page Remove="Resources\Assets\new_metric\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Assets\backimage.png" />
+    <None Remove="Resources\Assets\CaptinUni\captinIntro.png" />
+    <None Remove="Resources\Assets\CaptinUni\CaptinOffice.png" />
+    <None Remove="Resources\Assets\CaptinUni\CaptinOk.png" />
+    <None Remove="Resources\Assets\CaptinUni\CaptinTablet.png" />
+    <None Remove="Resources\Assets\CaptinUni\CaptinUp.png" />
+    <None Remove="Resources\Assets\gym_backgroud.jpg" />
+    <None Remove="Resources\Assets\logo.png" />
+    <None Remove="Resources\Assets\logo_black.png" />
+    <None Remove="Resources\Assets\logo_dark.png" />
+    <None Remove="Resources\Assets\logo_p.png" />
+    <None Remove="Resources\Assets\logo_white.png" />
+    <None Remove="Resources\Assets\Metric\body_front.png" />
+    <None Remove="Resources\Assets\Metric\Chest.png" />
+    <None Remove="Resources\Assets\Metric\ForeArm.png" />
+    <None Remove="Resources\Assets\Metric\ForeArmFlip.png" />
+    <None Remove="Resources\Assets\Metric\Height.png" />
+    <None Remove="Resources\Assets\Metric\hips.png" />
+    <None Remove="Resources\Assets\Metric\Leg.png" />
+    <None Remove="Resources\Assets\Metric\LegFlip.png" />
+    <None Remove="Resources\Assets\Metric\Neck.png" />
+    <None Remove="Resources\Assets\Metric\Shoulder.png" />
+    <None Remove="Resources\Assets\Metric\Thigh.png" />
+    <None Remove="Resources\Assets\Metric\ThighFlip.png" />
+    <None Remove="Resources\Assets\Metric\waist.png" />
+    <None Remove="Resources\Assets\Metric\Weight.png" />
+    <None Remove="Resources\Assets\p1.jpg" />
+    <None Remove="Resources\Assets\p3.jpg" />
+    <None Remove="Resources\Assets\pro-thump.png" />
+    <None Remove="Resources\Assets\trioverse.png" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Black.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-ExtraLight.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Light.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Medium.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-Regular.ttf" />
+    <None Remove="Resources\Fonts\Cairo\Cairo-SemiBold.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-Bold.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-Medium.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-Regular.ttf" />
+    <None Remove="Resources\Fonts\NotoNaskhArabic-SemiBold.ttf" />
+    <None Remove="Resources\Icons\logo.ico" />
+    <None Remove="Resources\Icons\logo_black.ico" />
+    <None Remove="Resources\Icons\logo_dark.ico" />
+    <None Remove="Resources\Icons\logo_light.ico" />
+    <None Remove="Resources\Icons\logo_white.ico" />
+    <None Remove="Resources\plans.json" />
+    <None Remove="Resources\sounds\beep.wav" />
+    <None Remove="Training.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\plans.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinIntro.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinOffice.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinOk.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinTablet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="uni_luncher.ico" />
+    <Content Include="Resources\Assets\Metric\body_front.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\Chest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\ForeArm.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\ForeArmFlip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\Height.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\hips.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\Leg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\LegFlip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\Neck.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\Shoulder.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\Thigh.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\ThighFlip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\waist.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\Metric\Weight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="6.2.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250507" />
+    <PackageReference Include="PdfSharpCore" Version="1.3.67" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.0" />
+    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
+    <PackageReference Include="ZXing.Net" Version="0.16.11" />
+    <PackageReference Include="ZXing.Net.Bindings.OpenCV.V4" Version="0.16.11" />
+    <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.14" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Uniceps.API\Uniceps.API.csproj" />
+    <ProjectReference Include="..\Uniceps.Core\Uniceps.Core.csproj" />
+    <ProjectReference Include="..\Uniceps.Entityframework\Uniceps.Entityframework.csproj" />
+    <ProjectReference Include="..\Uniceps.FileSystem\Uniceps.FileSystem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Assets\CaptinUni\CaptinUp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\logo.png" />
+    <Resource Include="Resources\Assets\logo_black.png" />
+    <Resource Include="Resources\Assets\logo_dark.png" />
+    <Resource Include="Resources\Assets\logo_white.png" />
+    <Resource Include="Resources\Assets\pro-thump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Assets\trioverse.png" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Black.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Bold.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-ExtraBold.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-ExtraLight.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Light.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Medium.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-Regular.ttf" />
+    <Resource Include="Resources\Fonts\Cairo\Cairo-SemiBold.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-Bold.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-Medium.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-Regular.ttf" />
+    <Resource Include="Resources\Fonts\NotoNaskhArabic-SemiBold.ttf" />
+    <Resource Include="Resources\Icons\logo.ico" />
+    <Resource Include="Resources\Icons\logo_black.ico" />
+    <Resource Include="Resources\Icons\logo_dark.ico" />
+    <Resource Include="Resources\Icons\logo_light.ico" />
+    <Resource Include="Resources\Icons\logo_white.ico" />
+    <EmbeddedResource Include="Resources\sounds\beep.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AccountingViews\AccountingView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\ExpensesReport.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\IncomeReportView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AccountingViews\SalariesReportView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\AddUserView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\LoginView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AuthView\UsersListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\TrainerDues.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Expenses\ExpansesDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Expenses\ExpansesListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Metrics\AddMetricDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PaymentViews\PaymentDetalView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\HomeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\PlayerProfile.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\PlayersListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SportViews\SportListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>

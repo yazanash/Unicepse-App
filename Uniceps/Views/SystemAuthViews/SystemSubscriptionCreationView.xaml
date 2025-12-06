@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="Uniceps.Views.SystemAuthViews.SystemSubscriptionCreationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uniceps.Views.SystemAuthViews"
+             mc:Ignorable="d" 
+             xmlns:Icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             FlowDirection="RightToLeft"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border Padding="5" >
+        
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="اشترك الان واحصل على جميع مميزات التي يقدمها نظامنا" 
+               FontSize="24" FontWeight="Bold" Foreground="{DynamicResource Brush.Foreground}"
+               HorizontalAlignment="Center" Margin="0 10"/>
+
+                <ListBox Background="Transparent" ItemsSource="{Binding SystemPlans}" SelectedItem="{Binding SelectedPlan}" ItemContainerStyle="{StaticResource SystemSubscriptionListBoxItemContainerStyle1}" Grid.Row="1" BorderThickness="0">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            <Border Style="{DynamicResource StaticCardBorderStyle}"  Grid.Row="2" Margin="5 10" Padding="10">
+
+                <!--<ListBox  ItemsSource="{Binding Features}" ItemContainerStyle="{StaticResource PlanFeatureListBoxItemContainerStyle1}" Background="Transparent" BorderThickness="0">
+                   
+                </ListBox>-->
+                <DataGrid   
+                                 FlowDirection="RightToLeft" ItemsSource="{Binding Features}" 
+                                 CanUserReorderColumns="True"
+                                 x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
+                                 CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" IsReadOnly="True"
+                                 Width="auto"
+                                 Binding="{Binding Order,UpdateSourceTrigger=PropertyChanged}"
+                                 CanUserResize="False"/>
+                        <DataGridTemplateColumn Header="الميزة" Width="auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding Feature}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="النسخة المجانية" Width="auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <Icons:PackIconMaterial HorizontalAlignment="Center" Foreground="{Binding FreeIconColor}" Width="20" Height="20" Kind="{Binding FreeIcon}"/>
+                                        <TextBlock Text="{Binding FreeLimitString}" HorizontalAlignment="Center" FontSize="14" Foreground="{DynamicResource Brush.Foreground}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="النسخة الدفوعة" Width="auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel >
+                                        <Icons:PackIconMaterial HorizontalAlignment="Center" Foreground="{Binding PremiumIconColor}" Width="20" Height="20" Kind="{Binding PremiumIcon}"/>
+                                        <TextBlock Text="{Binding PrimumLimitString}" HorizontalAlignment="Center" FontSize="14" Foreground="{DynamicResource Brush.Foreground}"/>
+                                    </StackPanel>
+                                    </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+            <Button Grid.Row="3" Content="اشترك الآن"  Style="{StaticResource FormButton}" Width="200"
+            Height="40" HorizontalAlignment="Center" 
+            Command="{Binding CreateSystemSubscriptionCommand}"  />
+            </Grid>
+    </Border>
+</UserControl>

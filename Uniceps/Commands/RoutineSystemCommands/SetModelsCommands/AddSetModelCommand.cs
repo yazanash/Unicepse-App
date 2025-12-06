@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Uniceps.Commands;
+using Uniceps.Core.Models.RoutineModels;
+using Uniceps.Stores.RoutineStores;
+using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
+
+namespace Uniceps.Commands.RoutineSystemCommands.SetModelsCommands
+{
+    public class AddSetModelCommand : AsyncCommandBase
+    {
+        private readonly SetsModelDataStore _setsModelDataStore;
+        public RoutineItemListItemViewModel SelectedRoutineItem;
+
+        public AddSetModelCommand(SetsModelDataStore setsModelDataStore, RoutineItemListItemViewModel selectedRoutineItem)
+        {
+            _setsModelDataStore = setsModelDataStore;
+            SelectedRoutineItem = selectedRoutineItem;
+        }
+
+        public override async Task ExecuteAsync(object? parameter)
+        {
+            int reps = _setsModelDataStore.SetModels.Count()>0?_setsModelDataStore.SetModels.LastOrDefault()!.Repetition:0;
+            SetModel setModel = new SetModel()
+            {
+                Repetition = reps,
+                RoundIndex = _setsModelDataStore.SetModels.Count()+1,
+                RoutineItemId = SelectedRoutineItem.RoutineItemModel!.Id,
+            };
+            await _setsModelDataStore.Add(setModel);
+        }
+    }
+}

@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="Uniceps.Views.PaymentViews.PaymentDetalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uniceps.Views.PaymentViews"
+             xmlns:comp="clr-namespace:Uniceps.utlis.Components"
+             mc:Ignorable="d" 
+             xmlns:conv="clr-namespace:Uniceps.utlis.Converters"
+             FlowDirection="RightToLeft"
+             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+
+        <conv:NumberFormatConverter x:Key="convertNum"/>
+
+    </UserControl.Resources>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border  Grid.Column="1"  Grid.Row="2" Style="{DynamicResource CardBorderStyle}"  Margin="5">
+                <DockPanel>
+
+                    <TextBlock Text="معلومات الدفع" Foreground="{DynamicResource Brush.Foreground}" Margin="5" FontSize="18" DockPanel.Dock="Top"/>
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions >
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                            <TextBlock Text="قيمة الدفعة" 
+                                   Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+                                   FontSize="13"/>
+                            <TextBox  Text="{Binding PaymentValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum }}" Style="{StaticResource textBoxStyle}"/>
+
+                        </StackPanel>
+                        <StackPanel  Grid.Row="0" Grid.Column="1" Margin="5">
+                            <TextBlock Text="البيان" Foreground="{DynamicResource Brush.Foreground}"
+                                   Margin="0 0 0 8"
+                                   FontSize="13"/>
+                            <TextBox Text="{Binding Descriptiones, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="0"  Margin="5">
+
+                            <TextBlock Text="تاريخ الدفعة" 
+                                   Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
+                                   FontSize="13"/>
+                            <DatePicker 
+                                    SelectedDate="{Binding PayDate, UpdateSourceTrigger=PropertyChanged}"
+                                   />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="2" Margin="0 20 0 0" HorizontalAlignment="Right">
+                            <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4"  Content="حفظ"  HorizontalAlignment="Right">
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Margin="0 20 0 0" HorizontalAlignment="Left">
+                            <Button Command="{Binding CancelCommand}" Style="{StaticResource ScFormButton}" Width="200"   Content="الغاء"/>
+                        </StackPanel>
+                    </Grid>
+
+                </DockPanel>
+            </Border>
+            <Border Grid.Row="0" Grid.Column="0"  Margin="5" Style="{DynamicResource StaticCardBorderStyle}">
+                <DockPanel>
+                    <TextBlock  Text="الاشتراكات الغير مدفوعة" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" Margin="5" DockPanel.Dock="Top"/>
+                    <!--<ScrollViewer DockPanel.Dock="Top" >-->
+                    <ListView ScrollViewer.CanContentScroll="True"
+                        SelectedItem="{Binding SelectedSubscription,UpdateSourceTrigger=PropertyChanged}"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderThickness="0"
+                  ItemsSource="{Binding SubscriptionList}" ItemContainerStyle="{DynamicResource SubscriptionListBoxItemContainerStyle1}" >
+                    </ListView>
+                    <!--</ScrollViewer>-->
+
+                </DockPanel>
+            </Border>
+        </Grid>
+
+
+
+    </Border>
+
+</UserControl>

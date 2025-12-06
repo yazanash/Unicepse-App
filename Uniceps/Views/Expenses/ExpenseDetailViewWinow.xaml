@@ -1,0 +1,80 @@
+﻿<Window x:Class="Uniceps.Views.Expenses.ExpenseDetailViewWinow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Uniceps.Views.Expenses"
+        mc:Ignorable="d"
+        Background="{DynamicResource Brush.Background}"
+        WindowStartupLocation="CenterScreen"
+              xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      FlowDirection="RightToLeft"
+        Title="أضافة مصروف" Height="450" Width="450">
+    <Window.Resources>
+        <converters:NumberFormatConverter x:Key="convertNum"/>
+    </Window.Resources>
+    <Border  Padding="5" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" >
+
+                <Border Grid.Column="0"  Grid.Row="0" Style="{DynamicResource CardBorderStyle}" Margin="5">
+                    <DockPanel >
+                        <DockPanel DockPanel.Dock="Top" >
+                            <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="معلومات المصروف"  FontSize="24" DockPanel.Dock="Left"/>
+                        </DockPanel>
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="5">
+                                <TextBlock Text="بيان المصروف" 
+                                 Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+                                 FontSize="18"/>
+                                <TextBox Text="{Binding Descriptiones, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1"  Grid.Column="0" Margin="5">
+                                <TextBlock Text="قيمة المصروف" 
+                                 Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+                                 FontSize="18"/>
+                                <TextBox Text="{Binding ExpensesValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum }}" Style="{StaticResource textBoxStyle}"/>
+
+                            </StackPanel>
+                            <StackPanel Grid.Row="2"  Grid.Column="1" Margin="5">
+                                <TextBlock Text="تاريخ المصروف" 
+                                 Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+                                 FontSize="18"/>
+                                <DatePicker 
+                                  SelectedDate="{Binding ExpensesDate, UpdateSourceTrigger=PropertyChanged}"
+                                 />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Margin="0 20 0 0" HorizontalAlignment="Center">
+                                <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4"  Content="حفظ"  HorizontalAlignment="Right">
+                                </Button>
+                            </StackPanel>
+                           
+                        </Grid>
+
+                    </DockPanel>
+                </Border>
+
+
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

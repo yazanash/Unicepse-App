@@ -1,0 +1,254 @@
+﻿using Uniceps.Commands.SubscriptionCommand;
+using Uniceps.Commands.Player;
+using Uniceps.navigation;
+using Uniceps.ViewModels.PaymentsViewModels;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Emp = Uniceps.Core.Models.Employee;
+using Uniceps.ViewModels;
+using Uniceps.Stores;
+using Uniceps.navigation.Stores;
+using Uniceps.ViewModels.SportsViewModels;
+using Uniceps.ViewModels.PlayersViewModels;
+using Uniceps.Core.Models.Sport;
+
+namespace Uniceps.ViewModels.SubscriptionViewModel
+{
+    public class EditSubscriptionViewModel : ErrorNotifyViewModelBase
+    {
+        //private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly SportDataStore _sportDataStore;
+        private readonly PlayerMainPageViewModel _playerMainPageView;
+        private readonly ObservableCollection<SportListItemViewModel> _sportListItemViewModels;
+        private readonly ObservableCollection<SubscriptionTrainerListItem> _trainerListItemViewModels;
+        private NavigationStore _navigatorStore;
+        private readonly SubscriptionDataStore _subscriptionStore;
+        private readonly PlayersDataStore _playerDataStore;
+        public IEnumerable<SportListItemViewModel> SportList => _sportListItemViewModels;
+        public IEnumerable<SubscriptionTrainerListItem> TrainerList => _trainerListItemViewModels;
+        public ICommand LoadSportsCommand { get; }
+        public SportListItemViewModel? SelectedSport
+        {
+            get
+            {
+                return SportList
+                    .FirstOrDefault(y => y?.Sport == _subscriptionStore.SelectedSport);
+            }
+            set
+            {
+                _subscriptionStore.SelectedSport = value?.Sport;
+                OnPropertyChanged(nameof(SelectedSport));
+                ClearError(nameof(SelectedSport));
+                if (SelectedSport == null)
+                {
+                    AddError(nameof(SelectedSport), "");
+                    OnErrorChanged(nameof(SelectedSport));
+                }
+                else
+                {
+                    
+                        SubscribeDays = SelectedSport!.DaysCount;
+                  
+                    CountTotal();
+                    OnPropertyChanged(nameof(Total));
+                }
+                //CountTotal();
+                //OnPropertyChanged(nameof(Total));
+
+            }
+        }
+
+        public SubscriptionTrainerListItem? SelectedTrainer
+        {
+            get
+            {
+                return TrainerList
+                    .FirstOrDefault(y => y?.trainer == _subscriptionStore.SelectedTrainer);
+            }
+            set
+            {
+                _subscriptionStore.SelectedTrainer = value?.trainer;
+                OnPropertyChanged(nameof(SelectedTrainer));
+            }
+        }
+        //private readonly PlayersDataStore _playersDataStore;
+
+        public EditSubscriptionViewModel(SportDataStore sportDataStore, NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PlayerMainPageViewModel playerMainPageView)
+        {
+            _sportListItemViewModels = new ObservableCollection<SportListItemViewModel>();
+            _trainerListItemViewModels = new ObservableCollection<SubscriptionTrainerListItem>();
+            _navigatorStore = navigatorStore;
+            _sportDataStore = sportDataStore;
+            _subscriptionStore = subscriptionStore;
+            _playerDataStore = playerDataStore;
+            _playerMainPageView = playerMainPageView;
+            LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
+
+            //Total = _subscriptionStore.SelectedSubscription!.Price;
+
+            Offer = _subscriptionStore.SelectedSubscription!.OfferDes;
+            OfferValue = _subscriptionStore.SelectedSubscription!.OfferValue;
+            SubscribeDate = _subscriptionStore.SelectedSubscription!.RollDate;
+            SubscribeDays = _subscriptionStore.SelectedSubscription.DaysCount;
+
+            _sportDataStore.Loaded += _sportDataStore_Loaded;
+            _subscriptionStore.StateChanged += _subscriptionStore_StateChanged;
+            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
+
+            SubmitCommand = new EditSubscriptionCommand(_subscriptionStore, this, _playerDataStore, new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
+        }
+
+
+        private void _subscriptionStore_StateChanged(Sport? sport)
+        {
+            _trainerListItemViewModels.Clear();
+            AddTrainer(new Emp.Employee() { FullName = "-----------" });
+            if (sport != null)
+            {
+                foreach (var trainer in sport!.Trainers!)
+                {
+                    AddTrainer(trainer);
+                }
+                if (_subscriptionStore.SelectedSubscription != null)
+                    if ( _subscriptionStore.SelectedSubscription!.SportId == sport.Id)
+                        if (_subscriptionStore.SelectedSubscription!.TrainerId != null)
+                            SelectedTrainer = TrainerList.FirstOrDefault(x => x.Id == _subscriptionStore.SelectedSubscription!.TrainerId);
+            }
+
+        }
+        private void CountTotal()
+        {
+            if (SelectedSport != null)
+            {
+                    SportPrice = SelectedSport!.Price;
+
+                Total = SportPrice - OfferValue;
+                ClearError(nameof(Total));
+                if (Total < 0)
+                {
+                    AddError("لا يمكن ان يكون الاشتراك اقل من 0", nameof(Total));
+                    OnErrorChanged(nameof(Total));
+                }
+            }
+
+        }
+
+        #region Properties
+        private double SportPrice { get; set; }
+        private int _subscribeDays;
+        public int SubscribeDays
+        {
+            get { return _subscribeDays; }
+            set
+            {
+                _subscribeDays = value;
+                OnPropertyChanged(nameof(SubscribeDays));
+                CountTotal();
+                OnPropertyChanged(nameof(Total));
+            }
+        }
+      
+        //private double? _total;
+        public double? Total
+        {
+            get;
+            set;
+        }
+
+
+        private string? _offer;
+        public string? Offer
+        {
+            get { return _offer; }
+            set { _offer = value; OnPropertyChanged(nameof(Offer)); }
+        }
+        private double _offerValue;
+        public double OfferValue
+        {
+            get { return _offerValue; }
+            set
+            {
+                _offerValue = value;
+                CountTotal();
+                OnPropertyChanged(nameof(OfferValue));
+                OnPropertyChanged(nameof(Total));
+            }
+        }
+        private bool _privateProvider;
+        public bool PrivateProvider
+        {
+            get { return _privateProvider; }
+            set
+            {
+                _privateProvider = value;
+                OnPropertyChanged(nameof(PrivateProvider));
+
+            }
+        }
+        private double _privatePrice;
+        public double PrivatePrice
+        {
+            get { return _privatePrice; }
+            set
+            {
+                _privatePrice = value; OnPropertyChanged(nameof(PrivatePrice));
+            }
+        }
+        private DateTime _subscribeDate = DateTime.Now.Date;
+        public DateTime SubscribeDate
+        {
+            get { return _subscribeDate; }
+            set { _subscribeDate = value; OnPropertyChanged(nameof(SubscribeDate)); }
+        }
+
+
+        public ICommand? SubmitCommand { get; }
+        public ICommand? CancelCommand { get; }
+        #endregion
+
+
+        private void _sportDataStore_Loaded()
+        {
+            _sportListItemViewModels.Clear();
+
+            foreach (Sport sport in _sportDataStore.Sports)
+            {
+                AddSport(sport);
+            }
+            if (_subscriptionStore.SelectedSubscription != null)
+                SelectedSport = SportList.FirstOrDefault(x => x.Sport.Id == _subscriptionStore.SelectedSubscription!.SportId);
+        }
+        private void AddSport(Sport sport)
+        {
+            SportListItemViewModel itemViewModel =
+                new SportListItemViewModel(sport, _sportDataStore, _navigatorStore);
+            _sportListItemViewModels.Add(itemViewModel);
+        }
+
+        private void AddTrainer(Core.Models.Employee.Employee trainer)
+        {
+            SubscriptionTrainerListItem itemViewModel =
+                new SubscriptionTrainerListItem(trainer);
+            _trainerListItemViewModels.Add(itemViewModel);
+        }
+        public static EditSubscriptionViewModel LoadViewModel(SportDataStore sportDataStore, NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel)
+        {
+            EditSubscriptionViewModel viewModel = new(sportDataStore, navigatorStore, subscriptionDataStore, playersDataStore, playerMainPageViewModel);
+
+            viewModel.LoadSportsCommand.Execute(null);
+
+            return viewModel;
+        }
+        public override void Dispose()
+        {
+            _subscriptionStore.StateChanged -= _subscriptionStore_StateChanged;
+            _subscriptionStore.Loaded -= _sportDataStore_Loaded;
+            base.Dispose();
+        }
+    }
+}

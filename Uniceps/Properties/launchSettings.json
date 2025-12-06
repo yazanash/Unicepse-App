@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Uniceps": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}

@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="Uniceps.utlis.Components.MonthlyEarnReportViewModel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uniceps.utlis.Components"
+             mc:Ignorable="d" 
+             FlowDirection="RightToLeft"
+              xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             d:DesignWidth="800">
+    <Border Style="{DynamicResource CardBorderStyle}">
+        <ScrollViewer>
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="اجمالي الايرادات" FontWeight="Bold" Grid.Column="0" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" Text="{Binding TotalIncome, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}"  Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="ايرادات محجوزة للشهر القادم" FontWeight="Bold" Grid.Row="1" Grid.Column="0" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" Text="{Binding IncomeForNextMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="ارباح مستحقة للشهر الحالي" FontWeight="Bold" Grid.Row="2" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding IncomeForThisMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="ايرادات محجوزة من الشهر السابق" FontWeight="Bold" Grid.Row="3" Grid.Column="0" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" Text="{Binding IncomeFromLastMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  FontSize="16" Text="صافي الايرادات" FontWeight="Bold" Grid.Row="4" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding EarnNet, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  FontSize="16" Text="مستحقات المدربين" FontWeight="Bold" Grid.Row="5" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding TrainerDauses, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  FontSize="16" Text="الرواتب والاجور" FontWeight="Bold" Grid.Row="6" Grid.Column="0" Margin="5"/>
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" Text="{Binding Salaries, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  FontSize="16" Text="المصاريف" FontWeight="Bold" Grid.Row="7" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding Expenses, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+
+                <TextBlock  Foreground="{DynamicResource Brush.Foreground}" FontSize="16" Text="الصافي" FontWeight="Bold" Grid.Row="8" Grid.Column="0" Margin="5"/>
+                <TextBlock Foreground="{DynamicResource Brush.Foreground}"  Text="{Binding NetIncome, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" Grid.Row="8" Grid.Column="2" FontWeight="Bold" FontSize="16" Margin="5"/>
+                <!--<StackPanel  Orientation="Horizontal" Grid.Row="9" Grid.ColumnSpan="2">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border  HorizontalAlignment="Left" Margin="5" Grid.Column="0" CornerRadius="10" Background="{StaticResource colors.secondry}">
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="5">
+                                <TextBlock FontSize="18" Text="الاجمالي" Foreground="{StaticResource colors.background.white}" FontWeight="Bold" Margin="5" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding FinalAmount, StringFormat={}{0:C0}, ConverterCulture=ar-SY,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Margin="5" Foreground="{StaticResource colors.background.white}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Button HorizontalAlignment="Left" Command="{Binding PrintCommand}" Grid.Column="1"  FlowDirection="LeftToRight"  Style="{StaticResource EditBtn}">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="اظهار التقرير التفصيلي" VerticalAlignment="Center"/>
+                                <icon:PackIconMaterial Kind="OpenInNew"
+                                       Width="11"
+                                       Height="11"
+                                       Margin="8 0 0 0"
+                                       VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                        </Button>
+                    </Grid>
+
+                </StackPanel>-->
+            </Grid>
+        </ScrollViewer>
+
+    </Border>
+</UserControl>

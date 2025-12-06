@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="Uniceps.utlis.Components.CaptinUniForEmpty"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uniceps.utlis.Components"
+             mc:Ignorable="d" 
+             x:Name="CaptinUniEmpty"
+             FlowDirection="RightToLeft"
+             Background="{DynamicResource Brush.Background}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" >
+            <Grid HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Width="300">
+                    <TextBlock FontSize="18" Margin="0 0 0 10" Foreground="{DynamicResource Brush.Foreground}" Text="{Binding ElementName=CaptinUniEmpty, Path=Title}"/>
+                    <TextBlock FontSize="16" Foreground="{DynamicResource Brush.Foreground}" TextWrapping="Wrap" Text="{Binding ElementName=CaptinUniEmpty, Path=Caption}"/>
+                </StackPanel>
+                <Image Grid.Row="1" Source="/Resources/Assets/CaptinUni/CaptinOffice.png" Height="300" Width="400" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
