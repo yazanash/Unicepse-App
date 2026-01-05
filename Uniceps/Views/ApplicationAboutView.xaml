@@ -164,12 +164,12 @@ Diameter="25" Thickness="2" Color="{DynamicResource Brush.OnPrimary}" />
                             <StackPanel >
                                 <TextBlock  Text="روابط الدعم" Foreground="{DynamicResource Brush.Foreground}" FontSize="18"  />
                                 <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Foreground}" FontSize="12" >
-                                    <Hyperlink  Foreground="{DynamicResource Brush.Foreground}" NavigateUri="https://uniceps.trio-verse.com/1" RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Hyperlink  Foreground="{DynamicResource Brush.Foreground}" NavigateUri="https://uniceps.trio-verse.com" RequestNavigate="Hyperlink_RequestNavigate">
                                         صفحة الدعم التقني
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock  FontWeight="Bold" Foreground="{DynamicResource Brush.Foreground}" FontSize="12">
-                                    <Hyperlink Foreground="{DynamicResource Brush.Foreground}" NavigateUri="https://uniceps.trio-verse.com/uniceps/1" RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Hyperlink Foreground="{DynamicResource Brush.Foreground}" NavigateUri="https://uniceps.trio-verse.com" RequestNavigate="Hyperlink_RequestNavigate">
                                        الاسئلة الشائعة
                                     </Hyperlink>
                                 </TextBlock>
@@ -182,7 +182,7 @@ Diameter="25" Thickness="2" Color="{DynamicResource Brush.OnPrimary}" />
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Foreground="{DynamicResource Brush.Foreground}" FontSize="12" FontWeight="Bold">
-                                    <Hyperlink Foreground="{DynamicResource Brush.Foreground}" NavigateUri="https://uniceps.trio-verse.com/uniceps/terms" RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Hyperlink Foreground="{DynamicResource Brush.Foreground}" NavigateUri="https://uniceps.trio-verse.com/terms" RequestNavigate="Hyperlink_RequestNavigate">
                                         سياسة الخصوصية
                                     </Hyperlink>
                                 </TextBlock>
