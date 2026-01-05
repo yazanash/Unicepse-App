@@ -46,6 +46,7 @@ namespace Uniceps.Commands.Employee.CreditsCommands
                 CreditValue = _creditDetailsViewModel.CreditValue,
                 Date = _creditDetailsViewModel.CreditDate,
                 Description = _creditDetailsViewModel.Description,
+                EmpPersonSyncId = _employeeStore.SelectedEmployee!.SyncId
             };
             credit.EmpPerson = new Core.Models.Employee.Employee() { Id = _employeeStore.SelectedEmployee!.Id };
 

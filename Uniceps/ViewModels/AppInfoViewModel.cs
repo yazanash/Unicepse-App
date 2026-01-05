@@ -12,9 +12,11 @@ using System.Windows.Media.Imaging;
 using Uniceps.Commands;
 using Uniceps.Commands.SystemAuthCommands;
 using Uniceps.Core.Models;
+using Uniceps.DataExporter;
 using Uniceps.Stores;
 using Uniceps.Stores.SystemAuthStores;
 using Uniceps.utlis.common;
+using Uniceps.Views;
 
 namespace Uniceps.ViewModels
 {
@@ -24,7 +26,12 @@ namespace Uniceps.ViewModels
         private AccountStore _accountStore;
         private IProfileDataStore _systemProfileStore;
         public event Action? ProfileUpdated;
-        public AppInfoViewModel(AccountStore accountStore, IProfileDataStore systemProfileStore)
+        private readonly DataExportStore _dataExportStore;
+        private readonly ISystemAuthStore _systemAuthStore;
+        public string LastBackupTime => Properties.Settings.Default.LastBackup == DateTime.MinValue
+        ? "لم يتم إجراء نسخ احتياطي بعد"
+        : Properties.Settings.Default.LastBackup.ToString("g");
+        public AppInfoViewModel(AccountStore accountStore, IProfileDataStore systemProfileStore, DataExportStore dataExportStore, ISystemAuthStore systemAuthStore)
         {
 
             Version = currentVersion;
@@ -35,7 +42,9 @@ namespace Uniceps.ViewModels
 
             LoadProfile();
             LoadSubscription();
-            UpdateProfileCommand = new UpdateProfileCommand(systemProfileStore,this);
+            UpdateProfileCommand = new UpdateProfileCommand(systemProfileStore, this);
+            _dataExportStore = dataExportStore;
+            _systemAuthStore = systemAuthStore;
         }
         private bool _hasProfile = false;
         public bool HasProfile
@@ -73,7 +82,29 @@ namespace Uniceps.ViewModels
         }
         public ICommand UploadProfilePictureCommand => new AsyncRelayCommand(ExecuteUploadProfilePictureCommand);
         public ICommand UpdateProfileCommand { get; set; }
-        
+
+        public ICommand LogoutCommand => new RelayCommand(ExecuteLogout);
+
+        private void ExecuteLogout()
+        {
+            if(MessageBox.Show("سيتم تسجيل الخروج من الحساب على هذا الجهاز ... سيتم اغلاق التطبيق , هل انت متاكد ؟","تنويه"
+                ,MessageBoxButton.YesNo,MessageBoxImage.Warning)== MessageBoxResult.Yes)
+            {
+                _systemAuthStore.Logout();
+                Application.Current.Shutdown();
+            }
+        }
+
+        public ICommand BackupAndRestore => new RelayCommand(ExecuteOpenBackup);
+
+        private void ExecuteOpenBackup()
+        {
+            BackupAndRestoreViewModel backupAndRestoreViewModel = new BackupAndRestoreViewModel(_dataExportStore);
+            BackupAndRestoreViewWindow backupAndRestoreViewWindow = new BackupAndRestoreViewWindow();
+            backupAndRestoreViewWindow.DataContext = backupAndRestoreViewModel;
+            backupAndRestoreViewWindow.ShowDialog();
+        }
+
         private async Task ExecuteUploadProfilePictureCommand()
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();

@@ -21,6 +21,7 @@ using Uniceps.Core.Models.DailyActivity;
 using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.Entityframework.Services.DataSyncServices;
 using Uniceps.Entityframework.Services;
+using Uniceps.Entityframework.DataExportProvider;
 
 namespace Uniceps.HostBuilders
 {
@@ -47,6 +48,8 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IDeleteConnectionService<Employee>, TrainerSportsDeleteConnection>();
                 services.AddSingleton<IArchivedService<Player>, PlayerDataService>();
                 services.AddSingleton<IPublicIdService<Player>, PlayerDataService>();
+                services.AddSingleton<IExportDataProvider, ExportDataProviderService>();
+                services.AddSingleton<IImportDataProvider, ImportDataProviderService>();
 
             });
             return _hostBuilder;

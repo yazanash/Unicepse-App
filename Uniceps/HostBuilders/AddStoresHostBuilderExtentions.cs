@@ -15,6 +15,7 @@ using Uniceps.Stores.SystemAuthStores;
 using Uniceps.Helpers;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services;
+using Uniceps.DataExporter;
 
 namespace Uniceps.HostBuilders
 {
@@ -57,6 +58,7 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<UserFlowService>();
                 services.AddSingleton<IProfileDataStore, SystemProfileStore>();
                 services.AddSingleton<SystemSubscriptionStore>();
+                services.AddSingleton<DataExportStore>();
             });
             return _hostBuilder;
         }

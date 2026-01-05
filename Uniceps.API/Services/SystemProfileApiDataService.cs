@@ -38,7 +38,9 @@ namespace Uniceps.API.Services
                 Name = systemProfile.DisplayName,
                 DateOfBirth = systemProfile.BirthDate,
                 Gender = systemProfile.Gender,
-                Phone = systemProfile.PhoneNumber
+                Phone = systemProfile.PhoneNumber,
+                Address = systemProfile.Address,
+                OwnerName = systemProfile.OwnerName,
             };
             return await _client.PutAsync<SystemProfileDto, SystemProfile>("Profile", systemProfileDto);
         }

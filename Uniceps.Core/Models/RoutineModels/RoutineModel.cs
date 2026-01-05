@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace Uniceps.Core.Models.RoutineModels
 {
-    public class RoutineModel
+    public class RoutineModel:DomainObject
     {
-        public int Id { get; set; }
         public string? Name { get; set; }
         public RoutineLevel Level { get; set; }
         public virtual List<DayGroup> Days { get; set; } = new List<DayGroup>();
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
 
     }
     public enum RoutineLevel

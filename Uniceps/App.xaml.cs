@@ -3,35 +3,25 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Markup;
-using Uniceps.API.Exercises;
-using Uniceps.API.Models;
 using Uniceps.BackgroundServices;
 using Uniceps.Core.Common;
-using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.Entityframework.DbContexts;
 using Uniceps.Helpers;
 using Uniceps.HostBuilders;
 using Uniceps.Stores;
 using Uniceps.Stores.RoutineStores;
-using Uniceps.Stores.SystemAuthStores;
-using Uniceps.utlis.common;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.Authentication;
-using Uniceps.ViewModels.SystemAuthViewModels;
 using Uniceps.Views;
 using Uniceps.Views.AuthView;
 
@@ -62,27 +52,19 @@ namespace Uniceps
         {
             try
             {
-                if (await Updater.CheckForUpdate())
+                var update = await Updater.CheckForUpdate();
+                if (update!=null)
                 {
-                    MessageBox.Show("تحديث جديد , سيتم تنزيل التحديث");
-                    var progressWindow = new ProgressWindow();
-                    progressWindow.Show();
-                    string? filename = await Updater.DownloadUpdate(progressWindow);
-                    progressWindow.Close();
-                    MessageBox.Show("تم تنزيل التحديث سيتم اغلاق التطبيق وتشغيل ملف التحديث");
-                    ApplyUpdate(filename);
+                    ProgressWindow progressWindow = new ProgressWindow();
+                    progressWindow.DataContext = new UpdateWindowViewModel(update);
+                    progressWindow.ShowDialog();
                 }
             }
             catch { }
 
         }
-        private void ApplyUpdate(string filename)
-        {
-            // Execute the installer
-            System.Diagnostics.Process.Start(filename);
-            // Shutdown the current application
-            Application.Current.Shutdown();
-        }
+      
+       
         private void Auth_LoginAction()
         {
             if (_host.Services.GetRequiredService<AccountStore>().CurrentAccount != null)
@@ -573,11 +555,12 @@ namespace Uniceps
 
         public async Task PerpareApp()
         {
-            try
-            {
+            //try
+            //{
                 SplashScreenViewModel splash = _host.Services.GetRequiredService<SplashScreenViewModel>();
                 CheckForUpdates();
                 CheckOpenedApplication();
+              
                 _host.Start();
                 var logger = _host.Services.GetRequiredService<ILogger<App>>();
                 logger.LogInformation(LogFlag + "services started");
@@ -602,13 +585,13 @@ namespace Uniceps
                 logger.LogInformation(LogFlag + "Token is valid. Opening main view...");
                 await userFlowService.RefreshUserContextAsync();
                 await OpenMainView();
-            }
-            catch (Exception ex)
-            {
-                var logger = _host.Services.GetRequiredService<ILogger<App>>();
-                logger.LogInformation(LogFlag + "exeption throw on app startup {0}", ex.Message);
-                MessageBox.Show(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    var logger = _host.Services.GetRequiredService<ILogger<App>>();
+            //    logger.LogInformation(LogFlag + "exeption throw on app startup {0}", ex.Message);
+            //    MessageBox.Show(ex.Message);
+            //}
         }
         protected async override void OnStartup(StartupEventArgs e)
         {

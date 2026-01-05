@@ -32,7 +32,6 @@ namespace Uniceps.Commands.Sport
                     await _sportStore.DeleteConnectedTrainers(_sportStore.SelectedSport!.Id);
                     await _sportStore.Delete(_sportStore.SelectedSport!);
 
-                    MessageBox.Show("تم حذف الرياضة بنجاح");
                 }
 
             }

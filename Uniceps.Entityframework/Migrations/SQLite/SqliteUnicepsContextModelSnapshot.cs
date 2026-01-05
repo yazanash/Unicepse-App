@@ -44,6 +44,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("LoginDateTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
@@ -83,6 +86,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<int>("Role")
                         .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
@@ -130,12 +136,21 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("PlayerSyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SportName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("SubscriptionId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("SubscriptionSyncId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
@@ -169,8 +184,14 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("EmpPersonId")
+                    b.Property<int>("EmpPersonId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("EmpPersonSyncId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
@@ -178,6 +199,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.HasKey("Id");
 
                     b.HasIndex("EmpPersonId");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
 
                     b.ToTable("Credit");
                 });
@@ -233,10 +257,16 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
 
                     b.ToTable("Employees");
                 });
@@ -256,6 +286,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<int?>("RecipientId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
@@ -271,6 +304,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.HasKey("Id");
 
                     b.HasIndex("RecipientId");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
 
                     b.ToTable("Expenses");
                 });
@@ -314,8 +350,11 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<double>("Nick")
                         .HasColumnType("REAL");
 
-                    b.Property<int?>("PlayerId")
+                    b.Property<int>("PlayerId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("PlayerSyncId")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("R_Arm")
                         .HasColumnType("REAL");
@@ -332,6 +371,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<double>("Shoulders")
                         .HasColumnType("REAL");
 
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
@@ -344,6 +386,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.HasKey("Id");
 
                     b.HasIndex("PlayerId");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
 
                     b.ToTable("Metrics");
                 });
@@ -364,6 +409,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("RefDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("SyncId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -408,8 +456,17 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<int>("PlayerId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid>("PlayerSyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("SubscriptionId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("SubscriptionSyncId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
@@ -419,6 +476,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.HasIndex("PlayerId");
 
                     b.HasIndex("SubscriptionId");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
 
                     b.ToTable("PlayerPayments");
                 });
@@ -462,6 +522,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("SubscribeEndDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UID")
                         .HasColumnType("TEXT");
 
@@ -472,6 +535,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
 
                     b.ToTable("Players");
                 });
@@ -537,10 +603,16 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
 
                     b.ToTable("RoutineModels");
                 });
@@ -591,10 +663,16 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
 
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
 
                     b.ToTable("Sports");
                 });
@@ -644,6 +722,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<string>("PlayerName")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("PlayerSyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
 
@@ -653,10 +734,19 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("RollDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("SportId")
+                    b.Property<int?>("SportId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("SportId1")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SportName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("SportSyncId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("SyncId")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("TrainerId")
@@ -665,16 +755,27 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<string>("TrainerName")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("TrainerSyncId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("PlayerId");
 
                     b.HasIndex("SportId");
+
+                    b.HasIndex("SportId1");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
 
                     b.ToTable("Subscriptions");
                 });
@@ -696,6 +797,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<int>("OperationType")
                         .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("TEXT");
@@ -865,7 +969,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                 {
                     b.HasOne("Uniceps.Core.Models.Employee.Employee", "EmpPerson")
                         .WithMany()
-                        .HasForeignKey("EmpPersonId");
+                        .HasForeignKey("EmpPersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("EmpPerson");
                 });
@@ -883,7 +989,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                 {
                     b.HasOne("Uniceps.Core.Models.Player.Player", "Player")
                         .WithMany()
-                        .HasForeignKey("PlayerId");
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Player");
                 });
@@ -976,10 +1084,13 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                         .IsRequired();
 
                     b.HasOne("Uniceps.Core.Models.Sport.Sport", null)
-                        .WithMany("PlayerTrainings")
+                        .WithMany()
                         .HasForeignKey("SportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Uniceps.Core.Models.Sport.Sport", null)
+                        .WithMany("PlayerTrainings")
+                        .HasForeignKey("SportId1");
                 });
 
             modelBuilder.Entity("Uniceps.Core.Models.Employee.Employee", b =>

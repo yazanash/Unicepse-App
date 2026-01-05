@@ -67,6 +67,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         {
             if (_accountStore.SystemSubscription != null)
             {
+                try
+                {
+
                 DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
                 {
                     loginTime = DateTime.Now,
@@ -89,6 +92,11 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                     await _playersAttendenceStore.LogInPlayer(dailyPlayerReport);
                     subscriptionListItemViewModel.IsLoggedIn = dailyPlayerReport.IsLogged;
                 }
+                }
+                catch(Exception ex) 
+                {
+                    MessageBox.Show(ex.Message);
+                }   
 
             }
             else
@@ -113,6 +121,8 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
+            _playersAttendenceStore.LoggedIn += _playersAttendenceStore_LoggedIn;
+            _playersAttendenceStore.LoggedOut += _playersAttendenceStore_LoggedOut;
             LoadSubscriptionCommand = new LoadActiveSubscriptionCommand(_dataStore, this);
             LoadPlayerLogCommand = new AsyncRelayCommand(GetLoggedPlayers);
             _playersDataStore = playersDataStore;
@@ -127,11 +137,28 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             _employeeStore = employeeStore;
         }
 
+        private void _playersAttendenceStore_LoggedOut(DailyPlayerReport obj)
+        {
+            SubscriptionListItemViewModel? subscriptionListItemViewModel = _subscriptionListItemViewModels.FirstOrDefault(x => x.Id == obj.SubscriptionId);
+            if (subscriptionListItemViewModel != null &&
+                obj.Date.Date == DateTime.Now.Date)
+                subscriptionListItemViewModel.IsLoggedIn = false;
+        }
+
+        private void _playersAttendenceStore_LoggedIn(DailyPlayerReport obj)
+        {
+            SubscriptionListItemViewModel? subscriptionListItemViewModel = _subscriptionListItemViewModels.FirstOrDefault(x => x.Id == obj.SubscriptionId);
+            if (subscriptionListItemViewModel != null &&
+                obj.Date.Date == DateTime.Now.Date)
+                subscriptionListItemViewModel.IsLoggedIn = true;
+        }
+
         private void _playersAttendenceStore_Loaded()
         {
             foreach (var subscription in _subscriptionListItemViewModels)
             {
-                subscription.IsLoggedIn = _playersAttendenceStore.PlayersAttendence.Any(x => x.Code == subscription.Code && x.IsLogged == true);
+                subscription.IsLoggedIn = _playersAttendenceStore.PlayersAttendence.Any(x => x.Code == subscription.Code && x.IsLogged == true&&
+                x.Date.Date == DateTime.Now.Date);
             }
         }
 
@@ -240,7 +267,8 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                 new SubscriptionListItemViewModel(subscription);
             _subscriptionListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = _subscriptionListItemViewModels.Count();
-            itemViewModel.IsLoggedIn = _playersAttendenceStore.PlayersAttendence.Any(x => x.Code == itemViewModel.Code && x.IsLogged == true);
+            itemViewModel.IsLoggedIn = _playersAttendenceStore.PlayersAttendence.Any(x => x.Code == itemViewModel.Code && x.IsLogged == true &&
+                x.Date.Date == DateTime.Now.Date);
             OnPropertyChanged(nameof(HasData));
         }
         public static SubscriptionMainViewModel LoadViewModel(SubscriptionDataStore dataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore, PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore)

@@ -8,11 +8,11 @@ using Uniceps.Stores;
 
 namespace Uniceps.Commands.ExpensesCommands
 {
-    public class DeleteExpaensesCommand : AsyncCommandBase
+    public class DeleteExpensesCommand : AsyncCommandBase
     {
         private readonly ExpensesDataStore _expensesDataStore;
 
-        public DeleteExpaensesCommand(ExpensesDataStore expensesDataStore)
+        public DeleteExpensesCommand(ExpensesDataStore expensesDataStore)
         {
             _expensesDataStore = expensesDataStore;
         }

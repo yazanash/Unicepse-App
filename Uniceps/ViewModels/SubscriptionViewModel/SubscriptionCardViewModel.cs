@@ -24,6 +24,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public double PriceAfterOffer => Subscription.PriceAfterOffer;
         public double PaidValue => Subscription.TotalPaid;
         public string EndDate => Subscription.EndDate.ToShortDateString();
+        public double Remaining => Subscription.Remaining;
 
         private bool _infoOpen;
         public bool InfoOpen

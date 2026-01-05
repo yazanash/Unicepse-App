@@ -112,6 +112,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
 
         private void _routineTempDataStore_Loaded()
         {
+            _routineTemplateListItemViewModels.Clear();
             foreach (RoutineModel routineModel in _routineTempDataStore.Routines)
             {
                 AddRoutine(routineModel);
@@ -121,6 +122,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         {
             RoutineTemplateListItemViewModel viewModel = new RoutineTemplateListItemViewModel(routineModel, _navigatorStore, _routineDetailsViewModel);
             _routineTemplateListItemViewModels.Add(viewModel);
+            viewModel.Order = _routineTemplateListItemViewModels.Count + 1;
             OnPropertyChanged(nameof(HasData));
         }
         public static RoutineListViewModel LoadViewModel(RoutineTempDataStore routineTempDataStore, NavigationStore navigatorStore, RoutineDetailsViewModel routineDetailsViewModel)

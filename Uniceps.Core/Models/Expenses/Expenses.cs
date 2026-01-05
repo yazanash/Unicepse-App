@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.Core.Models.Employee;
+using Uniceps.Core.Models.Metric;
 
 namespace Uniceps.Core.Models.Expenses
 {
@@ -15,5 +16,13 @@ namespace Uniceps.Core.Models.Expenses
         public DateTime date { get; set; }
         public bool isManager { get; set; }
         public virtual Employee.Employee? Recipient { get; set; }
+
+        public void MergeWith(Expenses expense)
+        {
+            Description = expense.Description;
+            Value = expense.Value;
+            date = expense.date;
+            SyncId = expense.SyncId;
+        }
     }
 }

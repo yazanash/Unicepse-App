@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
 using Uniceps.Commands.SystemAuthCommands;
 using Uniceps.Stores;
 using Uniceps.Stores.SystemAuthStores;
@@ -56,6 +57,13 @@ namespace Uniceps.ViewModels.SystemAuthViewModels
             set { _otp = value; OnPropertyChanged(nameof(OTP)); }
         }
         public ICommand? RequestOTPCommand { get; }
+        public ICommand ResetCommand => new RelayCommand(ExecuteReset);
+
+        private void ExecuteReset()
+        {
+            IsOTPRequested = false;
+
+        }
 
         public event Action? OTPVerifiedAction;
 

@@ -1,18 +1,20 @@
-﻿using Uniceps.Commands.Employee;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 using Uniceps.Commands;
-using Uniceps.ViewModels.PrintViewModels;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Commands.Employee;
 using Uniceps.Core.Models.Employee;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.ViewModels.PrintViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
@@ -40,26 +42,45 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
             GroupedTasks = new CollectionViewSource { Source = _subscriptionListItemViewModels };
             LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, _employeeStore, this);
-            PrintCommand = new PrintCommand(new PrintWindowViewModel(new TrainerDetiledReportViewModel(_employeeStore, _dausesDataStore, this), new NavigationStore()));
+
         }
 
-        public ICommand? PrintCommand { get; }
+        public ICommand PrintCommand => new AsyncRelayCommand(ExecuteExportToExcelCommand);
+        private async Task  ExecuteExportToExcelCommand()
+        {
+            var dialog = new SaveFileDialog
+            {
+                Filter = "Excel Files (*.xlsx)|*.xlsx",
+                Title = "احفظ الملف",
+                FileName = _employeeStore.SelectedEmployee?.FullName + DateTime.Now.ToString("dd-MM-yyyy _ HH-mm") + ".xlsx"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                var filePath = dialog.FileName;
+                if (string.IsNullOrWhiteSpace(filePath)) return;
+                try
+                {
+                    await _dausesDataStore.ExportMonthlyReport(_employeeStore.SelectedEmployee!, ReportDate, filePath);
+                    MessageBox.Show("تم التصدير بنجاح");
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("فشلت عملية التصدير :"+ex.Message);
+                }
+               
+            }
+            else
+            {
+                MessageBox.Show("تم الغاء العملية من قبل المستخدم");
+            }
+        }
+
         private void _dausesDataStore_StateChanged(TrainerDueses? obj)
         {
             TrainerMounthlyReportViewModel = new(obj!, _navigationStore, _employeeStore, _creditsDataStore, _creditListViewModel);
             OnPropertyChanged(nameof(TrainerMounthlyReportViewModel));
             _subscriptionListItemViewModels.Clear();
-            foreach (var item in _dausesDataStore.Subscriptions)
-            {
-                if (item != null)
-                {
-                    if (_subscriptionListItemViewModels.Where(x => x.Id == item.Id).Any())
-                        continue;
-                    SubscriptionListItemViewModel subscriptionListItemViewModel = new(item!);
-                    _subscriptionListItemViewModels.Add(subscriptionListItemViewModel);
-                    subscriptionListItemViewModel.Order = _subscriptionListItemViewModels.Where(x => x.SportName == subscriptionListItemViewModel.SportName).Count();
-                }
-            }
             GroupedTasks.Source = _subscriptionListItemViewModels;
             GroupedTasks.GroupDescriptions.Clear();
             GroupedTasks.GroupDescriptions.Add(new PropertyGroupDescription("SportName"));

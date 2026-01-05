@@ -31,6 +31,7 @@ namespace Uniceps.Commands.Payments
                                           MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 _playersDataStore.UpdatePlayerBalance(_paymentDataStore.SelectedPayment!.PlayerId, 0 - _paymentDataStore.SelectedPayment!.PaymentValue);
+                _subscriptionDataStore.RemoveSubscriptionPayments(_paymentDataStore.SelectedPayment!.SubscriptionId,_paymentDataStore.SelectedPayment!.Id);
                 await _paymentDataStore.Delete(_paymentDataStore.SelectedPayment!.Id);
                 MessageBox.Show("تم حذف الدفعة بنجاح");
             }

@@ -32,6 +32,7 @@ namespace Uniceps.Helpers
                 bool internetAvailable = InternetAvailability.IsInternetAvailable();
                 if (internetAvailable)
                 {
+                    
                     _apiKey.updateToken(session.Token, "");
                     var result = await _systemAuthApiService.VerifyToken();
                     if( result.StatusCode == 200)
@@ -48,7 +49,7 @@ namespace Uniceps.Helpers
             }
             catch
             {
-                return false;
+                return _sessionManager.IsLoggedIn();
             }
         }
     }

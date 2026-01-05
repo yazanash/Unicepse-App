@@ -77,7 +77,10 @@ namespace Uniceps.ViewModels.SportsViewModels
         {
             Sport = sport;
 
+            OnPropertyChanged(nameof(Sport));
             OnPropertyChanged(nameof(SportName));
+            OnPropertyChanged(nameof(Price));
+            OnPropertyChanged(nameof(DaysCount));
         }
     }
 }

@@ -46,10 +46,12 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <!--<Border CornerRadius="20" Margin="10 5"  Grid.Row="0"  Grid.Column="0"  VerticalAlignment="Top">
-                            <uc:CustomTextBox Hint="ادخل كود اللاعب"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
-                        </Border>-->
-                      
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="التاريخ" VerticalAlignment="Center" FontSize="15" Foreground="{DynamicResource Brush.Foreground}"/>
+                            <DatePicker VerticalAlignment="Center" SelectedDate="{Binding SelectedDate,UpdateSourceTrigger=PropertyChanged}" Margin="10 0"/>
+                        </StackPanel>
+                        
+
                         <Button Grid.Column="1" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
                             <StackPanel  Orientation="Horizontal">

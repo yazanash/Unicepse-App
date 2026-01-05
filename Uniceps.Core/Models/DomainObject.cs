@@ -9,7 +9,8 @@ namespace Uniceps.Core.Models
     public class DomainObject
     {
         public int Id { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public Guid SyncId { get; set; } = Guid.NewGuid();
     }
 }

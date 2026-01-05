@@ -56,7 +56,9 @@ namespace Uniceps.Commands.Payments
                     PaymentValue = _addPaymentViewModel.PaymentValue,
                     Des = _addPaymentViewModel.Descriptiones,
                     PlayerId = _playersDataStore.SelectedPlayer!.Id,
-                    SubscriptionId = _addPaymentViewModel.SelectedSubscription!.Id
+                    SubscriptionId = _addPaymentViewModel.SelectedSubscription!.Id,
+                    PlayerSyncId = _playersDataStore.SelectedPlayer!.SyncId,
+                    SubscriptionSyncId = _addPaymentViewModel.SelectedSubscription!.Subscription.SyncId
                 };
                 _playersDataStore.SelectedPlayer!.IsSubscribed = true;
                
@@ -65,7 +67,7 @@ namespace Uniceps.Commands.Payments
                 int daysCount = Convert.ToInt32(payment.PaymentValue / dayPrice);
 
                 await _paymentDataStore.Add(payment);
-                await _subscriptionDataStore.Update(_subscriptionDataStore.SelectedSubscription);
+                _subscriptionDataStore.UpdateSubscriptionPayments(payment.SubscriptionId,payment);
                 _playersDataStore.UpdatePlayerBalance(payment.PlayerId, payment.PaymentValue);
                 _navigationService.ReNavigate();
             }

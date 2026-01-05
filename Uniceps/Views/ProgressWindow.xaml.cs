@@ -23,10 +23,10 @@ namespace Uniceps.Views
         {
             InitializeComponent();
         }
-        public void UpdateProgress(int percentage)
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            progressBar.Value = percentage;
-            progressText.Text = $"{percentage}%";
+            this.Close();
         }
     }
 }

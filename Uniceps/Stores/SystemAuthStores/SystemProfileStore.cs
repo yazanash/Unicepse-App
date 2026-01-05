@@ -85,49 +85,61 @@ namespace Uniceps.Stores.SystemAuthStores
         public async Task<bool> CheckAndSyncProfileAsync(string businessId)
         {
             var localProfile = await _profileDataService.Get(businessId);
-
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            if (internetAvailable)
+            try
             {
-                var remoteProfile = await _systemProfileApiDataService.Get();
-                if (remoteProfile.Data != null && remoteProfile.StatusCode == 200 && remoteProfile.Data != null)
+                bool internetAvailable = InternetAvailability.IsInternetAvailable();
+                if (internetAvailable)
                 {
-                    SystemProfile profile = new SystemProfile()
+                    var remoteProfile = await _systemProfileApiDataService.Get();
+                    if (remoteProfile.Data != null && remoteProfile.StatusCode == 200 && remoteProfile.Data != null)
                     {
-                        BusinessId = businessId,
-                        PhoneNumber = remoteProfile.Data.Phone ?? "",
-                        DisplayName = remoteProfile.Data.Name ?? "",
-                        OwnerName = remoteProfile.Data.OwnerName ?? "",
-                        Address = remoteProfile.Data.Address ?? "",
-                        Gender = remoteProfile.Data.Gender,
-                        BirthDate = remoteProfile.Data.DateOfBirth,
-                        ProfileImagePath = remoteProfile.Data.PictureUrl
-                    };
-                    if (!string.IsNullOrEmpty(profile.ProfileImagePath))
-                    {
-                        profile.LocalProfileImagePath = await _systemProfileApiDataService.DownloadAndSaveProfilePicture(profile.ProfileImagePath);
+                        SystemProfile profile = new SystemProfile()
+                        {
+                            BusinessId = businessId,
+                            PhoneNumber = remoteProfile.Data.Phone ?? "",
+                            DisplayName = remoteProfile.Data.Name ?? "",
+                            OwnerName = remoteProfile.Data.OwnerName ?? "",
+                            Address = remoteProfile.Data.Address ?? "",
+                            Gender = remoteProfile.Data.Gender,
+                            BirthDate = remoteProfile.Data.DateOfBirth,
+                            ProfileImagePath = remoteProfile.Data.PictureUrl
+                        };
+                        if (!string.IsNullOrEmpty(profile.ProfileImagePath))
+                        {
+                            profile.LocalProfileImagePath = await _systemProfileApiDataService.DownloadAndSaveProfilePicture(profile.ProfileImagePath);
+                        }
+                        if (localProfile != null)
+                        {
+                            profile.Id = localProfile.Id;
+                            _accountStore.SystemProfile = await _profileDataService.Update(profile);
+
+                        }
+                        else
+                            _accountStore.SystemProfile = await _profileDataService.Create(profile);
+
+                        return true;
                     }
+                }
+                else
+                {
                     if (localProfile != null)
                     {
-                        profile.Id = localProfile.Id;
-                        _accountStore.SystemProfile = await _profileDataService.Update(profile);
-
+                        _accountStore.SystemProfile = localProfile;
+                        return true;
                     }
-                    else
-                        _accountStore.SystemProfile = await _profileDataService.Create(profile);
-
-                    return true;
                 }
+                return false;
             }
-            else
+            catch
             {
                 if (localProfile != null)
                 {
                     _accountStore.SystemProfile = localProfile;
                     return true;
+
                 }
+                return false;
             }
-            return false;
         }
         public async Task UploadProfilePicture(string filePath)
         {

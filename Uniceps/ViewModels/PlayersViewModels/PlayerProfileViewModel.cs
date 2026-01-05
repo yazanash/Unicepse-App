@@ -97,11 +97,15 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         private void _playersDataStore_PlayerChanged(Player? obj)
         {
-            _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore, _accountStore,_employeeStore);
-            Player = new PlayerListItemViewModel(_playersDataStore.SelectedPlayer!, _navigatorStore, _playersDataStore,
-               _navigationService, _playerMainPageViewModel);
-            _navigatorStore.CurrentViewModel = _playerMainPageViewModel;
-            OnPropertyChanged(nameof(Player));
+            if (obj != null)
+            {
+                _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore, _accountStore, _employeeStore);
+                Player = new PlayerListItemViewModel(_playersDataStore.SelectedPlayer!, _navigatorStore, _playersDataStore,
+                   _navigationService, _playerMainPageViewModel);
+                _navigatorStore.CurrentViewModel = _playerMainPageViewModel;
+                OnPropertyChanged(nameof(Player));
+            }
+         
         }
 
         private void NavigatorStore_CurrentViewModelChanged()

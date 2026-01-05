@@ -12,6 +12,6 @@ namespace Uniceps.Core.Services
         Task<SystemSubscription?> GetActiveSubscription();
         Task<SystemSubscription> Create(SystemSubscription entity);
         Task<SystemSubscription> Update(SystemSubscription entity);
-       
+        Task ClearOldSubscription();
     }
 }

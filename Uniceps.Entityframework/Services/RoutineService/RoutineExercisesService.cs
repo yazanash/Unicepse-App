@@ -43,6 +43,12 @@ namespace Uniceps.Entityframework.Services.RoutineService
             Exercises? exExercise = await _dbContext.Set<Exercises>().FirstOrDefaultAsync(x => x.Tid == exercises.Tid);
             if (exExercise != null)
             {
+                exExercise.Version = exercises.Version;
+                exExercise.MuscelEng = exercises.MuscelEng;
+                exExercise.MuscelAr= exercises.MuscelAr;
+                exExercise.ImageUrl = exercises.ImageUrl;
+                exercises.Name = exercises.Name;
+                _dbContext.Set<Exercises>().Update(exercises);
                 return exExercise;
             }
             EntityEntry<Exercises> CreatedResult = await _dbContext.Set<Exercises>().AddAsync(exercises);

@@ -59,6 +59,17 @@ namespace Uniceps.Entityframework.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Player>().HasIndex(x => x.SyncId).IsUnique();
+            modelBuilder.Entity<Sport>().HasIndex(x => x.SyncId).IsUnique();
+            modelBuilder.Entity<Employee>().HasIndex(x => x.SyncId).IsUnique();
+            modelBuilder.Entity<Subscription>().HasIndex(x => x.SyncId).IsUnique();
+            modelBuilder.Entity<PlayerPayment>().HasIndex(x => x.SyncId).IsUnique();
+            modelBuilder.Entity<RoutineModel>().HasIndex(x => x.SyncId).IsUnique();
+            modelBuilder.Entity<Expenses>().HasIndex(x => x.SyncId).IsUnique();
+            modelBuilder.Entity<Credit>().HasIndex(x => x.SyncId).IsUnique();
+            modelBuilder.Entity<Metric>().HasIndex(x => x.SyncId).IsUnique();
+
+            modelBuilder.Entity<Subscription>().HasIndex(x => x.Code).IsUnique();
             modelBuilder.Entity<Sport>()
               .HasMany(c => c.Trainers)
               .WithMany(e => e.Sports);
@@ -94,6 +105,12 @@ namespace Uniceps.Entityframework.DbContexts
     .WithMany(p => p.Subscriptions)
     .HasForeignKey(s => s.PlayerId)
     .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Subscription>()
+    .HasOne<Sport>()
+    .WithMany()
+    .HasForeignKey(s => s.SportId)
+    .OnDelete(DeleteBehavior.SetNull);
         }
     }
     public class SqliteUnicepsContext : UnicepsDbContext

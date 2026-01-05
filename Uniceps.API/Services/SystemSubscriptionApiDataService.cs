@@ -28,7 +28,7 @@ namespace Uniceps.API.Services
         }
         public async Task<ApiResponse<SystemSubscriptionResponse>> GetActiveSubscription()
         {
-            return await _client.GetAsync<SystemSubscriptionResponse>("Membership");
+            return await _client.GetAsync<SystemSubscriptionResponse>("Membership/1");
         }
         public async Task<ApiResponse<List<SystemPlanResponse>>> GetPlans()
         {

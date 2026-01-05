@@ -37,7 +37,7 @@ namespace Uniceps.ViewModels.Expenses
             _expensesListViewModel = expensesListViewModel;
 
             EditExpensesCommand = new RelayCommand(ExecuteEditExpensesCommand);
-            DeleteExpensesCommand = new DeleteExpaensesCommand(expensesDataStore);
+            DeleteExpensesCommand = new DeleteExpensesCommand(expensesDataStore);
         }
         public void ExecuteEditExpensesCommand()
         {

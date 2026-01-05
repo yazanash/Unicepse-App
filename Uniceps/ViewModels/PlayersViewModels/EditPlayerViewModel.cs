@@ -149,7 +149,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
         {
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
             years = new ObservableCollection<Year>();
-            for (int i = DateTime.Now.Year; i < DateTime.Now.Year - 80; i--)
+            for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 80; i--)
                 years.Add(new Year() { year = i });
             _playerStore = playerStore;
             //_subscriptionDataStore = subscriptionDataStore;

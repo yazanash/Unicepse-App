@@ -59,8 +59,8 @@ namespace Uniceps.Commands.MetricsCommand
                 L_Thigh = _editMetricsViewModel.L_Thigh,
                 R_Thigh = _editMetricsViewModel.R_Thigh,
                 //Player
-                Player = _playerDataStore.SelectedPlayer
-
+                Player = _playerDataStore.SelectedPlayer,
+                PlayerSyncId = _playerDataStore.SelectedPlayer!.SyncId
             };
             await _metricDataStore.Update(metric);
             _metricDataStore.SelectedMetric = _metricDataStore.Metrics.FirstOrDefault(x => x.Id == metric.Id);

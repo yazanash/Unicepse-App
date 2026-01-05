@@ -31,6 +31,11 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
 
         }
         public int Id => RoutineModel.Id;
+        private int _order = 0;
+        public int Order {
+            get { return _order; }
+            set {  _order = value; OnPropertyChanged(nameof(Order)); } 
+        }  
         public string? Name => RoutineModel.Name;
         public RoutineLevel Level => RoutineModel.Level;
         internal void Update(RoutineModel obj)

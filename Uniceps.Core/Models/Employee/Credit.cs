@@ -10,8 +10,20 @@ namespace Uniceps.Core.Models.Employee
     public class Credit : DomainObject
     {
         public virtual Employee? EmpPerson { get; set; }
+        public Guid EmpPersonSyncId { get; set; }
+        public int EmpPersonId { get; set; }
         public double CreditValue { get; set; }
         public DateTime Date { get; set; }
         public string? Description { get; set; }
+
+        public void MergeWith(Credit credit)
+        {
+            EmpPersonSyncId = credit.EmpPersonSyncId;
+            EmpPersonId = credit.EmpPersonId;
+            CreditValue = credit.CreditValue;
+            Date = credit.Date;
+            Description = credit.Description;
+            SyncId = credit.SyncId;
+        }
     }
 }

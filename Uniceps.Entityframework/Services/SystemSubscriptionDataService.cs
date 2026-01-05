@@ -19,6 +19,16 @@ namespace Uniceps.Entityframework.Services
         {
             _contextFactory = contextFactory;
         }
+
+        public async Task ClearOldSubscription()
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                await context.Set<SystemSubscription>().ExecuteDeleteAsync();
+                await context.SaveChangesAsync();
+            }
+        }
+
         public async Task<SystemSubscription> Create(SystemSubscription entity)
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
@@ -33,7 +43,7 @@ namespace Uniceps.Entityframework.Services
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
             SystemSubscription? entity = await context.Set<SystemSubscription>().AsNoTracking().FirstOrDefaultAsync(x =>
-            x.EndDate >= DateTime.Now && x.StartDate<=DateTime.Now);
+            x.EndDate >= DateTime.Now && x.StartDate <= DateTime.Now);
             return entity;
         }
 

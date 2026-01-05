@@ -72,7 +72,7 @@ namespace Uniceps.Stores.RoutineStores
             Deleted?.Invoke(entity_id);
         }
 
-        public async Task ExportRoutine(int entity_id, FileFormatType fileFormatType, string filePath)
+        public async Task<bool> ExportRoutine(int entity_id, FileFormatType fileFormatType, string filePath)
         {
             RoutineModel routineModel = await _dataService.Get(entity_id);
             switch (fileFormatType)
@@ -92,7 +92,7 @@ namespace Uniceps.Stores.RoutineStores
                     };
                     string uniFilePath = UniFileHelper.EnsureUniExtension(filePath);
                     FileManager.Write(uniFile, uniFilePath);
-                    break;
+                    return true;
                 case FileFormatType.PDF:
                     PlayerRoutinePrintViewModel vm = RoutineMapper.MapToPdf(routineModel, routineModel.Name ?? "");
                     if (_accountStore.SystemProfile != null)
@@ -107,9 +107,12 @@ namespace Uniceps.Stores.RoutineStores
                     {
                         pd.PrintTicket.PageMediaSize = new PageMediaSize(PageMediaSizeName.ISOA4);
                         pd.PrintDocument(doc.DocumentPaginator, "Routine PDF");
+                        return true;
                     }
 
-                    break;
+                    return false;
+                default:
+                    return false;
             }
         }
         public string GetEnumString(FileTypes value)

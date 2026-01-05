@@ -23,5 +23,15 @@ namespace Uniceps.Core.Models.Sport
         public ICollection<Emp.Employee>? Trainers { get; set; }
         public ICollection<Sub.Subscription>? PlayerTrainings { get; set; }
         public int DaysCount { get; set; }
+
+        public void MergeWith(Sport sport)
+        {
+            Name = sport.Name;
+            Price = sport.Price;
+            IsActive = sport.IsActive;
+            DaysInWeek = sport.DaysInWeek;
+            DaysCount = sport.DaysCount;
+            SyncId = sport.SyncId;
+        }
     }
 }

@@ -174,6 +174,22 @@ namespace Uniceps.Stores
             }
            
         }
+        public void UpdatePlayerDate(int playerId, DateTime value)
+        {
+            Player? player = _players.FirstOrDefault(x => x.Id == playerId);
+            if (player != null)
+            {
+                if (player.SubscribeEndDate<=value)
+                player.SubscribeEndDate = value;
+                int currentIndex = _players.FindIndex(y => y.Id == player.Id);
+                if (currentIndex != -1)
+                {
+                    _players[currentIndex] = player;
+                }
+                Player_update?.Invoke(_players[currentIndex]);
+            }
+
+        }
         public async Task DeletePlayer(Player player)
         {
             _logger.LogInformation(LogFlag + "delete player");
