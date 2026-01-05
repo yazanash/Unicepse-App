@@ -26,7 +26,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            int i = 1;
+            int i =0;
             foreach (var item in _exercisesViewModel._exercisesListItemViewModel.Where(x=>x.IsSelected).OrderBy(x=>x.SelectedAt).Select(x=>x.Exercises))
             {
                 RoutineItemModel routineItemModel = new()

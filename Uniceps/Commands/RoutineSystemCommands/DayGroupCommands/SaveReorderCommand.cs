@@ -27,7 +27,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.DayGroupCommands
             {
                 if (dayGroup != null)
                 {
-                    dayGroup.Order = reorderedList.IndexOf(dayGroup) + 1;
+                    dayGroup.Order = reorderedList.IndexOf(dayGroup);
                 }
             }
             await _dataStore.UpdateRange(reorderedList);

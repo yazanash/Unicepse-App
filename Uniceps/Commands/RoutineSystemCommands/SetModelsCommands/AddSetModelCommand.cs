@@ -27,7 +27,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.SetModelsCommands
             SetModel setModel = new SetModel()
             {
                 Repetition = reps,
-                RoundIndex = _setsModelDataStore.SetModels.Count()+1,
+                RoundIndex = _setsModelDataStore.SetModels.Count(),
                 RoutineItemId = SelectedRoutineItem.RoutineItemModel!.Id,
             };
             await _setsModelDataStore.Add(setModel);
