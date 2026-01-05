@@ -27,7 +27,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.SetModelsCommands
             {
                 if (setModel != null)
                 {
-                    setModel.RoundIndex = reorderedList.IndexOf(setModel)+1;
+                    setModel.RoundIndex = reorderedList.IndexOf(setModel);
                     _setModelItemsList.SetModelItems.SingleOrDefault(x => x.SetModel!.Id == setModel.Id)!.RoundIndex = setModel.RoundIndex;
                 }
             }

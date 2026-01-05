@@ -27,7 +27,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
             {
                 if (itemModel != null)
                 {
-                    itemModel.Order = reorderedList.IndexOf(itemModel)+1;
+                    itemModel.Order = reorderedList.IndexOf(itemModel);
                 }
             }
             await _dataStore.UpdateRange(reorderedList);
