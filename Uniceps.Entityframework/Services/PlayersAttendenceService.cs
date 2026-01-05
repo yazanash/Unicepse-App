@@ -31,6 +31,8 @@ namespace Uniceps.Entityframework.Services
                 if (subscription != null)
                 {
                     entity.PlayerId = subscription.PlayerId;
+                    entity.PlayerSyncId = subscription.PlayerSyncId;
+                    entity.SubscriptionSyncId = subscription.SyncId;
                     entity.PlayerName = subscription.PlayerName??"";
                     entity.SubscriptionId = subscription.Id;
                     entity.SportName = subscription.SportName ?? "";

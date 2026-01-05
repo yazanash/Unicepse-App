@@ -10,6 +10,7 @@ using Uniceps.API.ResponseModels;
 using Uniceps.API.Services;
 using Uniceps.Helpers;
 using Uniceps.Models;
+using Uniceps.Services;
 
 namespace Uniceps.Stores.SystemAuthStores
 {
@@ -28,18 +29,43 @@ namespace Uniceps.Stores.SystemAuthStores
         public event Action<bool>? OTPRequested;
         public event Action<bool>? OTPVerificationResult;
 
-        public async Task RequestOTP(string email)
+        public async Task<bool> RequestOTP(string email)
         {
-            ApiResponse<object> response = await _systemAuthApiService.RequestOTP(email);
-            if (response.StatusCode == 200)
+            try
             {
-                OTPRequested?.Invoke(true);
+
+                ApiResponse<object> response = await _systemAuthApiService.RequestOTP(email);
+                if (response.StatusCode == 200)
+                {
+                    OTPRequested?.Invoke(true);
+                    return true;
+                }
+                return false;
+            }
+            catch  
+            {
+                return false;
             }
         }
 
-        public async Task VerifyOTP(string email, string otp)
+        public async Task<bool> VerifyOTP(string email, string otp)
         {
-            ApiResponse<VerifyOtpResponse> response = await _systemAuthApiService.VerifyOTP(email, otp);
+            try
+            {
+
+            VerifyOTPDto verifyOTPDto = new VerifyOTPDto()
+            {
+                OTP = otp,
+                Email = email,
+                AppVersion = DeviceInfoService.AppVersion,
+                DeviceId = DeviceInfoService.DeviceId,
+                DeviceModel = DeviceInfoService.DeviceModel,
+                DeviceToken = DeviceInfoService.DeviceToken,
+                OsVersion = DeviceInfoService.OsVersion,
+                Platform = DeviceInfoService.Platform,
+
+            };
+            ApiResponse<VerifyOtpResponse> response = await _systemAuthApiService.VerifyOTP(verifyOTPDto);
             if (response.StatusCode == 200 || response.StatusCode == 201)
             {
                 var session = new SessionData
@@ -53,12 +79,18 @@ namespace Uniceps.Stores.SystemAuthStores
                 _apiKey.updateToken(session.Token, "");
                 OTPVerificationResult?.Invoke(true);
                 LoginStateChanged?.Invoke(true);
-
+                return true;
             }
             else
             {
                 OTPVerificationResult?.Invoke(false);
                 LoginStateChanged?.Invoke(false);
+                return true;
+            }
+            }
+            catch
+            {
+                return false;
             }
         }
         public void Logout()

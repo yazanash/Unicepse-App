@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.Commands;
+using Uniceps.Core.Models.Player;
+using Uniceps.Core.Models.Subscription;
 using Uniceps.navigation;
 using Uniceps.Stores;
-using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.ViewModels.PaymentsViewModels;
-using Uniceps.Core.Models.Subscription;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.Commands.SubscriptionCommand
 {
@@ -50,11 +51,14 @@ namespace Uniceps.Commands.SubscriptionCommand
                     /// subscription info
                     DaysCount = _addSubscriptionViewModel.SubscribeDays,
                     SportId = _subscriptionDataStore.SelectedSport!.Id,
+                    SportSyncId = _subscriptionDataStore.SelectedSport!.SyncId,
                     SportName = _subscriptionDataStore.SelectedSport!.Name,
                     LastCheck = _addSubscriptionViewModel.SubscribeDate,
                     TrainerId = _subscriptionDataStore.SelectedTrainer?.Id,
+                    TrainerSyncId = _subscriptionDataStore.SelectedTrainer?.SyncId,
                     TrainerName = _subscriptionDataStore.SelectedSport!.Name,
                     PlayerId = _playerDataStore.SelectedPlayer!.Id,
+                    PlayerSyncId = _playerDataStore.SelectedPlayer!.SyncId,
                     PlayerName = _subscriptionDataStore.SelectedSport!.Name,
                     RollDate = _addSubscriptionViewModel.SubscribeDate,
                     Price = _subscriptionDataStore.SelectedSport!.Price,
@@ -74,6 +78,7 @@ namespace Uniceps.Commands.SubscriptionCommand
                     _playerDataStore.SelectedPlayer!.SubscribeEndDate = subscription.EndDate;
                 _playerDataStore.SelectedPlayer!.IsSubscribed = true;
                 await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!);
+                _playerDataStore.UpdatePlayerDate(_playerDataStore.SelectedPlayer!.Id, subscription.EndDate);
                 _navigationService.ReNavigate();
             }
             catch (Exception ex)

@@ -70,6 +70,7 @@
                             </Grid>
                         </Grid>
                     </Button>
+                    <Button Style="{DynamicResource BorderedIconBtn}" Margin="10" Visibility="{Binding IsOTPRequested,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource boolToVis}}" Command="{Binding ResetCommand}"  Content="تغيير البريد الالكتروني"/>
                 </StackPanel>
             </Border>
         </Grid>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Uniceps.Commands;
@@ -93,7 +94,10 @@ namespace Uniceps.ViewModels
                 CurrentTheme = theme;
             }
 
-          
+            if (IsBackupNeeded())
+            {
+                MessageBox.Show("لقد مر يومين على اخر نسخ احتياطي ... لا تنسى عمل نسخ احتياطي للمحافظة على بياناتك");
+            }
         }
 
         private void _appInfoViewModel_ProfileUpdated()
@@ -121,7 +125,16 @@ namespace Uniceps.ViewModels
         {
             await _userFlowService.RefreshUserContextAsync() ;
         }
-
+        public bool IsBackupNeeded()
+        {
+            DateTime last = Uniceps.Properties.Settings.Default.LastBackup;
+            if(last == DateTime.MinValue)
+            {
+                Properties.Settings.Default.LastBackup = DateTime.Now;
+                return false;
+            }
+            return  (DateTime.Now - last).TotalDays >= 2;
+        }
         public ICommand ChangeThemeCommand => new RelayCommand(ChangeTheme);
 
         private void ChangeTheme()
@@ -169,6 +182,7 @@ namespace Uniceps.ViewModels
             }
             PrepareMainViewModel();
         }
+
         void PrepareMainViewModel()
         {
             if (_accountStore.CurrentAccount == null)

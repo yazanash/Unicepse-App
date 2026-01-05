@@ -6,27 +6,54 @@
         xmlns:local="clr-namespace:Uniceps.Views"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
+        FlowDirection="RightToLeft"
         Background="{DynamicResource Brush.Surface}"
-        Title="Updater" Width="500" >
-    <Border>
-        <StackPanel Margin="20 0">
-            <Border FlowDirection="LeftToRight" Grid.Column="0" HorizontalAlignment="Center"
-                            Margin="0 0 15 5"
-                        Padding="5"
-                         BorderThickness="0" >
+        Title="Updater" Width="450" Height="450" >
+    <Border  CornerRadius="10">
+        <StackPanel Margin="25">
+            
 
-                <Image Stretch="Uniform" Source="../Resources/Assets/logo.png" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                                Height="100" Width="100"         RenderOptions.EdgeMode="Aliased"/>
+            <TextBlock Text="إصدار جديد متاح!" 
+                   FontWeight="Bold" HorizontalAlignment="Center" 
+                   FontSize="22" Foreground="{DynamicResource Brush.Primary}"/>
 
-
+            <Border Background="{DynamicResource Brush.Primary}" HorizontalAlignment="Center" 
+                Padding="10 2" CornerRadius="5" Margin="0 10">
+                <TextBlock  Text="{Binding AppVersion}" Foreground="White" 
+                       FontWeight="Bold" FontSize="12"/>
             </Border>
-            <TextBlock Text="تطبيق يونيسيبس لادارة الاندية الرياضية" FontWeight="Bold" HorizontalAlignment="Center" FontSize="20" Foreground="{DynamicResource Brush.Primary}"/>
-            <TextBlock Text="Downloading update..." Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold" VerticalAlignment="Top" Margin="10"/>
-            <TextBlock Name="progressText" Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" VerticalAlignment="Bottom" Margin="5"/>
-            <ProgressBar Name="progressBar" Foreground="{DynamicResource Brush.Primary}" Minimum="0" Maximum="100" Height="10" VerticalAlignment="Center" Margin="10"/>
 
+            <Separator Background="{DynamicResource Brush.Border}" Margin="0 10"/>
+
+            <TextBlock Text="ما الجديد في هذا الإصدار:" 
+                   Foreground="{DynamicResource Brush.Foreground}" 
+                   FontSize="14" FontWeight="Bold" Margin="0 5"/>
+
+            <Border Style="{DynamicResource CardBorderStyle}"
+                CornerRadius="5" Height="150" Padding="10">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock Name="changeLogText" 
+                           Text="{Binding ChangeLog}" 
+                           Foreground="{DynamicResource Brush.Foreground}" 
+                           FontSize="13" TextWrapping="Wrap" LineHeight="20"
+                          />
+                </ScrollViewer>
+            </Border>
+
+            <Grid Margin="0 20 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="تحديث الآن" HorizontalAlignment="Stretch" Grid.Column="1" Margin="5 0"
+                    Style="{DynamicResource FormButton}" 
+                    Command="{Binding UpdateCommand}" Height="40"/>
+
+                <Button Content="لاحقاً" Grid.Column="0" Margin="5 0"
+                    Style="{DynamicResource ScFormButton}" 
+                    Click="Button_Click" Height="40"/>
+            </Grid>
         </StackPanel>
-       
     </Border>
 </Window>

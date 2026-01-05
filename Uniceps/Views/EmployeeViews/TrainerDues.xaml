@@ -81,22 +81,12 @@
                         <Grid  Grid.Row="3" >
 
                             <DataGrid  HorizontalAlignment="Stretch"
-                                    FlowDirection="RightToLeft" ItemsSource="{Binding  GroupedTasks.View,UpdateSourceTrigger=PropertyChanged}" 
+                                    FlowDirection="RightToLeft" ItemsSource="{Binding  TrainerMounthlyReportViewModel.Details,UpdateSourceTrigger=PropertyChanged}" 
                                     CanUserReorderColumns="True" AutoGenerateColumns="False"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" >
-                                <DataGrid.GroupStyle>
-                                    <GroupStyle>
-                                        <GroupStyle.HeaderTemplate>
-                                            <DataTemplate>
-                                                <!--<Border CornerRadius="10" BorderBrush="#aaa" BorderThickness="0.5" HorizontalAlignment="Stretch">-->
-                                                    <TextBlock Text="{Binding Name}"  Margin="5" FontWeight="Bold" HorizontalAlignment="Left" FontSize="16"/>
-                                                <!--</Border>-->
-                                            </DataTemplate>
-                                        </GroupStyle.HeaderTemplate>
-                                    </GroupStyle>
-                                </DataGrid.GroupStyle>
+                                
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
@@ -116,24 +106,31 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding RollDate}"
+                                <DataGridTextColumn Header="الاشتراك" IsReadOnly="True"
+                                     Binding="{Binding SportName}"
                                     Width="auto"
                                     />
-                                <DataGridTextColumn Header="السعر" IsReadOnly="True"
-                                     Binding="{Binding Price}"
+                                <DataGridTextColumn Header="الدفعة" IsReadOnly="True"
+                                     Binding="{Binding PaymentValue}"
                                     Width="auto"
                                     />
-                                <DataGridTextColumn Header="السعر بعد الحسم" IsReadOnly="True"
-                                     Binding="{Binding PriceAfterOffer}"
+                                <DataGridTextColumn Header="من تاريخ" IsReadOnly="True"
+                                     Binding="{Binding CoveredFrom}"
                                     Width="auto"
                                     />
 
-                                   
-                                    
-                                   
-                                    <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding EndDate}"
+
+                                <DataGridTextColumn Header="الى تاريخ" IsReadOnly="True"
+      Binding="{Binding CoveredTo}"
+     Width="auto"
+     />
+                                <DataGridTextColumn Header="عدد الايام" IsReadOnly="True"
+     Binding="{Binding Days}"
+    Width="auto"
+    />
+
+                                <DataGridTextColumn Header="المستحق" IsReadOnly="True"
+                                     Binding="{Binding AmountForMonth, StringFormat={}{0:C0}, ConverterCulture=ar-SY}"
                                     Width="auto"
                                     />
                                 </DataGrid.Columns>

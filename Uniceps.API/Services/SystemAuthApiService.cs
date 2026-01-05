@@ -23,18 +23,13 @@ namespace Uniceps.API.Services
             RequestOTPDto emailPost = new RequestOTPDto() { Email = email };
             return await _client.PostAsync<RequestOTPDto, object>("Authentication", emailPost);
         }
-        public async Task<ApiResponse<VerifyOtpResponse>> VerifyOTP(string email,string otp)
+        public async Task<ApiResponse<VerifyOtpResponse>> VerifyOTP(VerifyOTPDto verifyOTPDto)
         {
-            VerifyOTPDto verifyOTPDto = new()
-            {
-                Email = email,
-                OTP = otp,
-            };
             return await _client.PostAsync<VerifyOTPDto, VerifyOtpResponse>("Authentication/VerifyOtp", verifyOTPDto);
         }
         public async Task<ApiResponse<object>> VerifyToken()
         {
-            return await _client.GetAsync<object>("Authentication");
+            return await _client.GetAsync<object>("Authentication/VerifyConnection");
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 using Uniceps.Core.Models;
+using Uniceps.Core.Models.Expenses;
 
 namespace Uniceps.Core.Models.Employee
 {
@@ -29,6 +30,25 @@ namespace Uniceps.Core.Models.Employee
         {
             Sports = new HashSet<Sport.Sport>();
             PlayerTrainings = new HashSet<Subscription.Subscription>();
+        }
+
+        public void MergeWith(Employee employee)
+        {
+            FullName = employee.FullName;
+            Phone = employee.Phone;
+            BirthDate = employee.BirthDate;
+            GenderMale = employee.GenderMale;
+            Salary = employee.Salary;
+            Parcent = employee.Parcent;
+            SalaryValue = employee.SalaryValue;
+            ParcentValue = employee.ParcentValue;
+            IsSecrtaria = employee.IsSecrtaria;
+            Position = employee.Position;
+            StartDate = employee.StartDate;
+            Balance = employee.Balance;
+            IsActive = employee.IsActive;
+            IsTrainer = employee.IsTrainer;
+            SyncId = employee.SyncId;
         }
     }
 }

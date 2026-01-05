@@ -12,6 +12,7 @@ using Uniceps.Stores;
 using Uniceps.navigation.Stores;
 using Uniceps.ViewModels.Employee.CreditViewModels;
 using Uniceps.Core.Models.Employee;
+using System.Collections.ObjectModel;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
@@ -21,7 +22,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         private readonly EmployeeStore _employeeStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly CreditListViewModel _creditListViewModel;
-
+        public ObservableCollection<TrainerDuesDetailViewModel> Details { get; set; } = new ObservableCollection<TrainerDuesDetailViewModel>();
         public TrainerDueses trainerDueses;
         public int Id => trainerDueses.Id;
         public double TotalSubscriptions => trainerDueses.TotalSubscriptions;
@@ -29,8 +30,8 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public DateTime IssueDate => trainerDueses.IssueDate;
         public string IssueDateText => trainerDueses.IssueDate.ToShortDateString();
         public string Parcent => trainerDueses.Parcent * 100 + "%";
-        public double DausesFromParcent => trainerDueses.TotalSubscriptions * trainerDueses.Parcent;
-        public double TotalDause => trainerDueses.TotalSubscriptions * trainerDueses.Parcent + trainerDueses.Salary;
+        public double DausesFromParcent => trainerDueses.TotalSubscriptions;
+        public double TotalDause => trainerDueses.TotalSubscriptions + trainerDueses.Salary;
         public double Credits => trainerDueses.Credits;
         public double CreditsCount => trainerDueses.CreditsCount;
         public double FinalAmount => TotalDause - trainerDueses.Credits;
@@ -42,6 +43,11 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             _navigatorStore = navigatorStore;
             _creditsDataStore = creditsDataStore;
             _creditListViewModel = creditListViewModel;
+            foreach(var item in this.trainerDueses.Details)
+            {
+                Details.Add(new TrainerDuesDetailViewModel(item));
+            }
+           
             AddCreditCommand = new NavaigateCommand<CreditDetailsViewModel>(new NavigationService<CreditDetailsViewModel>(_navigatorStore, () => new CreditDetailsViewModel(_employeeStore, _creditsDataStore, _navigatorStore, _creditListViewModel, FinalAmount)));
 
         }
@@ -53,4 +59,5 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 
 
     }
+
 }

@@ -51,12 +51,15 @@ namespace Uniceps.Commands.SubscriptionCommand
                 /// subscription info
                 _subscriptionDataStore.SelectedSubscription!.Id = _subscriptionDataStore.SelectedSubscription!.Id;
                 _subscriptionDataStore.SelectedSubscription!.SportId = _subscriptionDataStore.SelectedSport!.Id;
+                _subscriptionDataStore.SelectedSubscription!.SportSyncId = _subscriptionDataStore.SelectedSport!.SyncId;
                 _subscriptionDataStore.SelectedSubscription!.SportName = _subscriptionDataStore.SelectedSport.Name;
                 _subscriptionDataStore.SelectedSubscription!.DaysCount = _editSubscriptionViewModel.SubscribeDays;
                 _subscriptionDataStore.SelectedSubscription!.LastCheck = _editSubscriptionViewModel.SubscribeDate;
                 _subscriptionDataStore.SelectedSubscription!.TrainerName = _subscriptionDataStore.SelectedTrainer?.FullName;
                 _subscriptionDataStore.SelectedSubscription!.TrainerId = _subscriptionDataStore.SelectedTrainer != null ? _subscriptionDataStore.SelectedTrainer.Id : null;
+                _subscriptionDataStore.SelectedSubscription!.TrainerSyncId = _subscriptionDataStore.SelectedTrainer != null ? _subscriptionDataStore.SelectedTrainer.SyncId : null;
                 _subscriptionDataStore.SelectedSubscription!.PlayerId = _playerDataStore.SelectedPlayer!.Id;
+                _subscriptionDataStore.SelectedSubscription!.PlayerSyncId = _playerDataStore.SelectedPlayer!.SyncId;
                 _subscriptionDataStore.SelectedSubscription!.PlayerName = _playerDataStore.SelectedPlayer!.FullName;
                 _subscriptionDataStore.SelectedSubscription!.RollDate = _editSubscriptionViewModel.SubscribeDate;
                 _subscriptionDataStore.SelectedSubscription!.Price = _subscriptionDataStore.SelectedSport!.Price;

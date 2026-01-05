@@ -45,10 +45,12 @@ namespace Uniceps.Commands.Payments
                 _paymentDataStore.SelectedPayment.Des = _editPaymentViewModel.Descriptiones;
                 _paymentDataStore.SelectedPayment.PlayerId = _playersDataStore.SelectedPlayer!.Id;
                 _paymentDataStore.SelectedPayment.SubscriptionId = _editPaymentViewModel.SelectedSubscription!.Id;
-
+                _paymentDataStore.SelectedPayment.PlayerSyncId = _playersDataStore.SelectedPlayer!.SyncId;
+                  _paymentDataStore.SelectedPayment.SubscriptionSyncId = _editPaymentViewModel.SelectedSubscription!.Subscription.SyncId;
                 _playersDataStore.SelectedPlayer!.Balance += _paymentDataStore.SelectedPayment.PaymentValue;
 
                 await _paymentDataStore.Update(_paymentDataStore.SelectedPayment!);
+                _subscriptionDataStore.UpdateSubscriptionPayments(_paymentDataStore.SelectedPayment.SubscriptionId, _paymentDataStore.SelectedPayment);
                 _playersDataStore.UpdatePlayerBalance(_paymentDataStore.SelectedPayment!.PlayerId, _paymentDataStore.SelectedPayment!.PaymentValue);
 
 

@@ -65,6 +65,7 @@ namespace Uniceps.Entityframework.Services.PlayerQueries
             IEnumerable<Player>? entities = await context.Set<Player>().Select(p => new Player
             {
                 Id = p.Id,
+                SyncId =p.SyncId,
                 FullName = p.FullName,
                 Phone = p.Phone,
                 BirthDate = p.BirthDate,

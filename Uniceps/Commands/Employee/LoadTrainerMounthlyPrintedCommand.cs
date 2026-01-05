@@ -22,9 +22,9 @@ namespace Uniceps.Commands.Employee
             _employeeStore = employeeStore;
         }
 
-        public async override Task ExecuteAsync(object? parameter)
+        public override Task ExecuteAsync(object? parameter)
         {
-            await _dausesDataStore.GetPrintedMonthlyReport(_employeeStore.SelectedEmployee!, _trainerDausesListViewModel.ReportDate);
+            throw new NotImplementedException();
         }
     }
 }

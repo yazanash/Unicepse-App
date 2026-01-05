@@ -69,11 +69,14 @@ namespace Uniceps.Commands.SubscriptionCommand
                 {
                     DaysCount = _addSubscriptionViewModel.SubscribeDays,
                     SportId = _addSubscriptionViewModel.SelectedSport!.Sport.Id,
+                    SportSyncId = _addSubscriptionViewModel.SelectedSport!.Sport.SyncId,
                     SportName = _addSubscriptionViewModel.SelectedSport!.SportName,
                     LastCheck = _addSubscriptionViewModel.SubscribeDate,
                     TrainerId = _addSubscriptionViewModel.SelectedTrainer?.trainer.Id,
+                    TrainerSyncId = _addSubscriptionViewModel.SelectedTrainer?.trainer.SyncId,
                     TrainerName = _addSubscriptionViewModel.SelectedTrainer?.TrainerName,
                     PlayerId = player!.Id,
+                    PlayerSyncId = player!.SyncId,
                     PlayerName = player!.FullName,
                     RollDate = _addSubscriptionViewModel.SubscribeDate,
                     OfferValue = _addSubscriptionViewModel.OfferValue,
@@ -104,6 +107,8 @@ namespace Uniceps.Commands.SubscriptionCommand
                 }
                 double value = subscription.TotalPaid - subscription.PriceAfterOffer;
                 _playerDataStore.UpdatePlayerBalance(player.Id, value);
+                _playerDataStore.UpdatePlayerDate(player.Id, subscription.EndDate);
+                
                 MessageBox.Show("تم الحفظ بنجاح");
                 _addSubscriptionViewModel.ClearForm();
             }

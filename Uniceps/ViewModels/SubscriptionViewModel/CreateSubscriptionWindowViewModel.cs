@@ -171,6 +171,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             LoadPlayersCommand = new LoadAllPlayersCommand(_playerDataStore);
             SubmitCommand = new CreateMainSubscriptionCommand(_subscriptionStore, this, _playerDataStore, _paymentDataStore);
             Code = null;
+            ClearForm();
         }
 
         private void _employeeStore_Created(Core.Models.Employee.Employee obj)
@@ -197,7 +198,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             IsRenewal = true;
             RenewedSubscriptionId = subscription.Id;
             RenewedSubscriptionPlayerId = subscription.PlayerId;
-            RenewedSubscriptionSportId = subscription.SportId;
+            RenewedSubscriptionSportId = subscription.SportId??0;
             RenewedSubscriptionTrainerId = subscription.PlayerId;
             Code = subscription.Code;
             if (_playerListItemViewModels.Count() > 0)

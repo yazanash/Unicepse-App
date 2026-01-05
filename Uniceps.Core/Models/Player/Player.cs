@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Uniceps.Core.Common;
 using Uniceps.Core.Models;
 using Uniceps.Core.Models.Payment;
+using Uniceps.Core.Models.Sport;
 using Sub = Uniceps.Core.Models.Subscription;
 
 namespace Uniceps.Core.Models.Player
@@ -36,6 +37,21 @@ namespace Uniceps.Core.Models.Player
             }
             return false;
         }
+
+        public void MergeWith(Player player)
+        {
+            FullName = player.FullName;
+            Phone = player.Phone;
+            BirthDate = player.BirthDate;
+            GenderMale = player.GenderMale;
+            Weight = player.Weight;
+            Hieght = player.Hieght;
+            SubscribeDate = player.SubscribeDate;
+            SubscribeEndDate = player.SubscribeEndDate;
+            IsSubscribed = player.IsSubscribed;
+            SyncId = player.SyncId;
+        }
+
         public virtual ICollection<Sub.Subscription> Subscriptions { get; set; }
         public virtual ICollection<PlayerPayment> Payments { get; set; }
 

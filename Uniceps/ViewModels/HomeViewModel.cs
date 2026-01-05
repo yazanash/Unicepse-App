@@ -58,7 +58,7 @@ namespace Uniceps.ViewModels
             set
             {
                 _playersAttendenceStore.SelectedDailyPlayerReport = value?.dailyPlayerReport;
-             
+
                 OnPropertyChanged(nameof(SelectedDailyPlayerReport));
             }
         }
@@ -102,14 +102,17 @@ namespace Uniceps.ViewModels
         }
         private void AddDailyPlayerLog(DailyPlayerReport dailyPlayerReport)
         {
-            PlayerAttendenceListItemViewModel itemViewModel =
-             new PlayerAttendenceListItemViewModel(dailyPlayerReport, _playersAttendenceStore);
-            _playerAttendenceListItemViewModels.Add(itemViewModel);
-            itemViewModel.IdSort = _playerAttendenceListItemViewModels.Count();
+            if (dailyPlayerReport.Date.Day == SelectedDate.Day && dailyPlayerReport.Date.Month == SelectedDate.Month && dailyPlayerReport.Date.Year == SelectedDate.Year)
+            {
+                PlayerAttendenceListItemViewModel itemViewModel =
+                 new PlayerAttendenceListItemViewModel(dailyPlayerReport, _playersAttendenceStore);
+                _playerAttendenceListItemViewModels.Add(itemViewModel);
+                itemViewModel.IdSort = _playerAttendenceListItemViewModels.Count();
+            }
         }
         public static HomeViewModel LoadViewModel(PlayersAttendenceStore playersAttendenceStore)
         {
-            HomeViewModel viewModel = new( playersAttendenceStore);
+            HomeViewModel viewModel = new(playersAttendenceStore);
 
             viewModel.LoadDailyReport.Execute(null);
             return viewModel;

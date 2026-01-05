@@ -80,9 +80,9 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" x:Name="menu">
-                                            <Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                            <!--<Button Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
                                                 <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
-                                            </Button>
+                                            </Button>-->
                                             <Button Command="{Binding DeleteCommand}" Style="{StaticResource GridEditBtn}">
                                                 <Icon:PackIconMaterial Kind="TrashCan" Style="{StaticResource GridBtnIcon}"/>
                                             </Button>

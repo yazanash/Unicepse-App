@@ -19,6 +19,7 @@ using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.utlis.common;
 using Uniceps.Helpers;
 using Uniceps.Services;
+using Uniceps.DataExporter;
 
 namespace Uniceps.HostBuilders
 {
@@ -63,6 +64,9 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IProfileDataService, SystemProfileDataService>();
                 services.AddSingleton<ISystemSubscriptionDataService, SystemSubscriptionDataService>();
                 services.AddSingleton<IExcelService<Player>, PlayersExcelService>();
+                services.AddSingleton<DataExportManager>();
+                services.AddSingleton<ImportManager>();
+                services.AddSingleton<TrainerDuesExcelService>();
             });
             return _hostBuilder;
         }

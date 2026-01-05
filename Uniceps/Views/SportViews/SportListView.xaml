@@ -83,7 +83,7 @@
 
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                        <DataGrid SelectedItem="{Binding SelectedSport,UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding SportList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+                        <DataGrid SelectedItem="{Binding SelectedSport,UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding SportList,UpdateSourceTrigger=PropertyChanged}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"
@@ -94,7 +94,7 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding SportName}" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding SportName,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -104,12 +104,12 @@
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="ايام التدريب الاسبوعية" IsReadOnly="True"
-                                     Binding="{Binding DaysInWeek}"
+                                     Binding="{Binding DaysInWeek,UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"
                                     />
                              
                                 <DataGridTextColumn Header="عدد ايام الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding DaysCount}"
+                                     Binding="{Binding DaysCount,UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"
                                     />
 

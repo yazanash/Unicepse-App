@@ -40,17 +40,19 @@ namespace Uniceps.Stores.SystemAuthStores
                 {
                     MembershipPayment membershipPayment = new MembershipPayment();
                     membershipPayment.RequirePayment = apiResponse.Data!.RequirePayment;
-                    membershipPayment.PaymentUrl= apiResponse.Data!.PaymentUrl;
+                    membershipPayment.PaymentUrl = apiResponse.Data!.PaymentUrl;
                     membershipPayment.CashPaymentUrl = apiResponse.Data!.CashPaymentUrl;
                     membershipPayment.Message = apiResponse.Data!.Message;
                     Created?.Invoke();
+                    if (!membershipPayment.RequirePayment)
+                        await CheckAndSyncSubscriptionAsync();
                     return membershipPayment;
-                
-                    
+
+
                 }
                 catch (Exception ex)
                 {
-                  throw new Exception("Unable to open browser: " + ex.Message);
+                    throw new Exception("Unable to open browser: " + ex.Message);
                 }
 
             }
@@ -90,35 +92,52 @@ namespace Uniceps.Stores.SystemAuthStores
         public async Task<bool> CheckAndSyncSubscriptionAsync()
         {
             var localsystemSubscription = await _systemSubscriptionDataService.GetActiveSubscription();
-
-            bool internetAvailable = InternetAvailability.IsInternetAvailable();
-            if (internetAvailable)
+            try
             {
-                var remotesystemSubscription = await _subscriptionApiDataService.GetActiveSubscription();
-                if (remotesystemSubscription.Data != null && remotesystemSubscription.StatusCode == 200)
+
+                bool internetAvailable = InternetAvailability.IsInternetAvailable();
+                if (internetAvailable)
                 {
-                    SystemSubscription systemSubscription = new SystemSubscription()
+                    var remotesystemSubscription = await _subscriptionApiDataService.GetActiveSubscription();
+                    if (remotesystemSubscription.Data != null && remotesystemSubscription.StatusCode == 200)
                     {
-                        PublicId = remotesystemSubscription.Data.Id,
-                        PlanName = remotesystemSubscription.Data.Plan,
-                        StartDate = remotesystemSubscription.Data.StartDate,
-                        EndDate = remotesystemSubscription.Data.EndDate,
-                        IsActive = remotesystemSubscription.Data.IsActive,
-                        IsGift = remotesystemSubscription.Data.IsGift,
-                        Price = remotesystemSubscription.Data.Price
-                    };
+                        SystemSubscription systemSubscription = new SystemSubscription()
+                        {
+                            PublicId = remotesystemSubscription.Data.Id,
+                            PlanName = remotesystemSubscription.Data.Plan,
+                            StartDate = remotesystemSubscription.Data.StartDate,
+                            EndDate = remotesystemSubscription.Data.EndDate,
+                            IsActive = remotesystemSubscription.Data.IsActive,
+                            IsGift = remotesystemSubscription.Data.IsGift,
+                            Price = remotesystemSubscription.Data.Price
+                        };
+                        if (localsystemSubscription != null)
+                        {
+                            systemSubscription.Id = localsystemSubscription.Id;
+                            _accountStore.SystemSubscription = await _systemSubscriptionDataService.Update(systemSubscription);
+                        }
+                        else
+                            _accountStore.SystemSubscription = await _systemSubscriptionDataService.Create(systemSubscription);
+
+                        return true;
+                    }
+                    else if (remotesystemSubscription.StatusCode == 404)
+                    {
+                        await _systemSubscriptionDataService.ClearOldSubscription();
+                        _accountStore.SystemSubscription = null;
+                        return false;
+                    }
+                }
+                else
+                {
                     if (localsystemSubscription != null)
                     {
-                        systemSubscription.Id = localsystemSubscription.Id;
-                        _accountStore.SystemSubscription = await _systemSubscriptionDataService.Update(systemSubscription);
+                        _accountStore.SystemSubscription = localsystemSubscription;
+                        return true;
                     }
-                    else
-                        _accountStore.SystemSubscription = await _systemSubscriptionDataService.Create(systemSubscription);
-
-                    return true;
                 }
             }
-            else
+            catch
             {
                 if (localsystemSubscription != null)
                 {

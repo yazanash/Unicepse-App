@@ -43,20 +43,41 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                Subscription existed_subscription = await CheckIfSubscriptionExist(entity);
+                Subscription? existed_subscription = await context.Set<Subscription>().AsNoTracking().FirstOrDefaultAsync((e) => e.PlayerId == entity.PlayerId &&
+            e.SportId == entity.SportId && e.EndDate >= entity.RollDate);
                 if (existed_subscription != null)
                     throw new ConflictException("هذا اللاعب مسجل في هذه الرياضة مسبقا ");
-           
+
+                if (string.IsNullOrEmpty(entity.Code))
+                {
+                    bool isUnique = false;
+                    string newCode = "";
+                    int attempt = 0;
+                    // حلقة تكرار تضمن أن الكود المولد غير موجود مسبقاً في القاعدة
+                    while (!isUnique)
+                    {
+                        newCode = entity.GenerateSubscriptionCode(attempt);
+
+                        // نتحقق إذا كان الكود موجوداً في جدول الاشتراكات
+                        bool codeExists = await context.Set<Subscription>()
+                                                      .AnyAsync(x => x.Code == newCode);
+
+                        if (!codeExists)
+                            isUnique = true;
+                        else
+                        {
+                            attempt++;
+                        }
+
+                        if (attempt > 1000) throw new Exception("تعذر توليد كود فريد");
+                    }
+
+                    entity.Code = newCode;
+                }
 
                 EntityEntry<Subscription> CreatedResult = await context.Set<Subscription>().AddAsync(entity);
                 await context.SaveChangesAsync();
-                if (string.IsNullOrEmpty(CreatedResult.Entity.Code))
-                {
-                    string code = CreatedResult.Entity.GenerateSubscriptionCode();
-                    CreatedResult.Entity.Code = code;
-                }
-                context.Set<Subscription>().Update(CreatedResult.Entity);
-                await context.SaveChangesAsync();
+
                 return CreatedResult.Entity;
             }
         }
@@ -87,7 +108,7 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.EndDate >= DateTime.Now.AddDays(-2)).Include(x=>x.Payments).ToListAsync();
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.RollDate<=DateTime.Now && x.EndDate >= DateTime.Now.AddDays(-2)).Include(x=>x.Payments).ToListAsync();
                 return entities;
             }
         }

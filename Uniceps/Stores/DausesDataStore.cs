@@ -11,21 +11,20 @@ using Uniceps.Core.Models.Payment;
 using Uniceps.Core.Models.Subscription;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services;
+using Uniceps.Services;
 
 namespace Uniceps.Stores
 {
     public class DausesDataStore
     {
-        public List<Subscription> _subscriptions;
-        public IEnumerable<Subscription> Subscriptions => _subscriptions;
         private readonly ITrainerRevenueService _trainerRevenueService;
         public TrainerDueses? MonthlyTrainerDause { get; set; }
+       private readonly TrainerDuesExcelService _excelService;
         public event Action<TrainerDueses?>? StateChanged;
-        public event Action<TrainerDueses?>? ReportLoaded;
-        public DausesDataStore( ITrainerRevenueService trainerRevenueService)
+        public DausesDataStore(ITrainerRevenueService trainerRevenueService, TrainerDuesExcelService excelService)
         {
-            _subscriptions = new List<Subscription>();
             _trainerRevenueService = trainerRevenueService;
+            _excelService = excelService;
         }
         public async Task GetMonthlyReport(Employee trainer, DateTime date)
         {
@@ -33,10 +32,10 @@ namespace Uniceps.Stores
             MonthlyTrainerDause = await _trainerRevenueService.GetTrainerDuesAsync(trainer, date.Year,date.Month);
               StateChanged?.Invoke(MonthlyTrainerDause);
         }
-        public async Task GetPrintedMonthlyReport(Employee trainer, DateTime date)
+        public async Task ExportMonthlyReport(Employee trainer, DateTime date,string filePath)
         {
             MonthlyTrainerDause = await _trainerRevenueService.GetTrainerDuesAsync(trainer, date.Year, date.Month);
-            ReportLoaded?.Invoke(MonthlyTrainerDause);
+            _excelService.ExportToExcel(filePath, MonthlyTrainerDause);
         }
     }
 }

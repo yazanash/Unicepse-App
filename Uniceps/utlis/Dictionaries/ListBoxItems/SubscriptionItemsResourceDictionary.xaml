@@ -39,7 +39,7 @@
                                     <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="المدفوع" VerticalAlignment="Center"  FontSize="15" DockPanel.Dock="Left"/>
                                 </DockPanel>
                                 <DockPanel >
-                                    <TextBlock Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" Text="{Binding RestValue,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                                    <TextBlock Foreground="{DynamicResource Brush.Foreground}" HorizontalAlignment="Center" Text="{Binding Remaining,StringFormat={}{0:C0}, ConverterCulture=ar-SY}" FontSize="18" VerticalAlignment="Center" DockPanel.Dock="Right"/>
                                     <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="الباقي" VerticalAlignment="Center"  FontSize="15" DockPanel.Dock="Left"/>
                                 </DockPanel>
 

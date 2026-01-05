@@ -29,10 +29,15 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
                 var fullPath = Path.Combine(folder, fileName);
                 if (_routineTempDataStore.SelectedRoutine != null)
                 {
-                    await _routineTempDataStore.ExportRoutine(_routineTempDataStore.SelectedRoutine.Id,
+                  bool exported =  await _routineTempDataStore.ExportRoutine(_routineTempDataStore.SelectedRoutine.Id,
                        _exportDialogViewModel.FileFormat, fullPath);
-                    MessageBox.Show("تم التصدير بنجاح");
-                    _exportDialogViewModel.OnRoutineExported();
+                    if (exported) {
+                        MessageBox.Show("تم التصدير بنجاح");
+                        _exportDialogViewModel.OnRoutineExported();
+
+                    }
+                    else
+                        MessageBox.Show("تم الغاء عملية التصدير");
 
                 }
             }

@@ -58,7 +58,7 @@ namespace Uniceps.utlis.common
     {
         [Display(Name = "تصدير بصيغة PDF")]
         PDF,
-        [Display(Name = "تصدير بصيغة Uni")]
+        [Display(Name = "تصدير بصيغة Unx")]
         UniFile,
     }
 }

@@ -58,7 +58,8 @@ namespace Uniceps.Commands.MetricsCommand
                 L_Thigh = _addMetricsViewModel.L_Thigh,
                 R_Thigh = _addMetricsViewModel.R_Thigh,
                 //Player
-                Player = _playerDataStore.SelectedPlayer!
+                Player = _playerDataStore.SelectedPlayer!,
+                PlayerSyncId = _playerDataStore.SelectedPlayer!.SyncId
 
             };
             if (!_playerDataStore.SelectedPlayer!.IsSubscribed)

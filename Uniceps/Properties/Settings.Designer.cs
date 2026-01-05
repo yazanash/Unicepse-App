@@ -46,5 +46,28 @@ namespace Uniceps.Properties {
                 this["ExportFolderPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackupPath {
+            get {
+                return ((string)(this["BackupPath"]));
+            }
+            set {
+                this["BackupPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LastBackup {
+            get {
+                return ((global::System.DateTime)(this["LastBackup"]));
+            }
+            set {
+                this["LastBackup"] = value;
+            }
+        }
     }
 }

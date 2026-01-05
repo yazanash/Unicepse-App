@@ -10,8 +10,8 @@ namespace Uniceps.Stores.SystemAuthStores
     {
         public event Action<bool>? OTPRequested;
         public event Action<bool>? OTPVerificationResult;
-        public Task RequestOTP(string email);
-        public Task VerifyOTP(string email,string otp);
+        public Task<bool> RequestOTP(string email);
+        public Task<bool> VerifyOTP(string email,string otp);
         public event Action<bool>? LoginStateChanged;
         void Logout();
     }

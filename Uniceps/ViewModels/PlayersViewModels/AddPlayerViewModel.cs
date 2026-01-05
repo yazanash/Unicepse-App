@@ -29,7 +29,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
         public AddPlayerViewModel( PlayersDataStore playerStore)
         {
             years = new ObservableCollection<Year>();
-            for (int i = DateTime.Now.Year ; i < DateTime.Now.Year - 80; i--)
+            for (int i = DateTime.Now.Year ; i > DateTime.Now.Year - 80; i--)
                 years.Add(new Year() { year = i });
             Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
             _playerStore = playerStore;

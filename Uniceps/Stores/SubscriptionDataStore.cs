@@ -158,8 +158,6 @@ namespace Uniceps.Stores
             _logger.LogInformation(LogFlag + "update Subscription");
             await _subscriptionDataService.Update(entity);
 
-
-
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
 
             if (currentIndex != -1)
@@ -175,6 +173,48 @@ namespace Uniceps.Stores
             Updated?.Invoke(entity);
             SelectedTrainer = null;
             SelectedSport = null;
+        }
+        public void UpdateSubscriptionPayments(int entityId,PlayerPayment playerPayment)
+        {
+            _logger.LogInformation(LogFlag + "update Subscription");
+
+            Subscription? currentSubscription = _subscriptions.FirstOrDefault(y => y.Id == entityId);
+
+            if (currentSubscription != null)
+            {
+                PlayerPayment? existPayment = currentSubscription.Payments?.FirstOrDefault(x => x.Id == playerPayment.Id);
+                if (existPayment != null)
+                {
+                    existPayment = playerPayment;
+                }
+                else
+                {
+                    currentSubscription.Payments?.Add(playerPayment);
+                }
+
+                Updated?.Invoke(currentSubscription);
+
+            }
+           
+        }
+        public void RemoveSubscriptionPayments(int entityId, int playerPaymentId)
+        {
+            _logger.LogInformation(LogFlag + "update Subscription");
+
+            Subscription? currentSubscription = _subscriptions.FirstOrDefault(y => y.Id == entityId);
+
+            if (currentSubscription != null)
+            {
+                PlayerPayment? existPayment = currentSubscription.Payments?.FirstOrDefault(x => x.Id == playerPaymentId);
+                if (existPayment != null)
+                {
+                    currentSubscription.Payments?.Remove(existPayment);
+                }
+
+                Updated?.Invoke(currentSubscription);
+
+            }
+
         }
         public async Task Stop(Subscription entity, DateTime stopDate)
         {

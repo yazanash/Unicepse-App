@@ -59,7 +59,7 @@
         <vs:AccountnigView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type vms:AppInfoViewModel }">
-        <viewapp:GymView/>
+        <vis:ApplicationAboutView/>
     </DataTemplate>
 
 

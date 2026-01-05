@@ -27,7 +27,9 @@ namespace Uniceps.Commands.Employee
                                          MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 try
                 {
-                    await _employeeStore.Delete(_employeeStore.SelectedEmployee!);
+                    if (_employeeStore.SelectedEmployee!.IsTrainer)
+                        await _employeeStore.DeleteConnectedSports(_employeeStore.SelectedEmployee!.Id);
+                    await _employeeStore.Delete(_employeeStore.SelectedEmployee!.Id);
                     _navigationService.ReNavigate();
                 }
                 catch (Exception ex)
