@@ -91,6 +91,15 @@ namespace Uniceps.ViewModels.PlayersViewModels
             DeleteCommand = new DeletePlayerCommand(_navigationService, _playersDataStore);
             ReactivePlayerCommand = new ReactivePlayerCommand(_playersDataStore);
         }
+        public PlayerListItemViewModel(Player player,
+          PlayersDataStore playersDataStore )
+        {
+            Player = player;
+            IsVerified = Player.UID != null;
+            IsActive = Player.IsSubscribed;
+            _playersDataStore = playersDataStore;
+            ReactivePlayerCommand = new ReactivePlayerCommand(_playersDataStore);
+        }
 
         public PlayerListItemViewModel(Player player, NavigationStore navigationStore, PlayerProfileViewModel playerProfileViewModel)
         {

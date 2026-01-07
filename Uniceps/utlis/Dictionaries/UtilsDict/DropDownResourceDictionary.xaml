@@ -232,7 +232,7 @@
                          Margin="{TemplateBinding Padding}"
                          Background="Transparent"
                          BorderThickness="0"
-                         Foreground="{TemplateBinding Foreground}"
+                         Foreground="{DynamicResource Brush.Foreground }"
                          Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -301,6 +301,8 @@
             <Trigger Property="IsEditable" Value="True">
                 <Setter TargetName="contentPresenter" Property="Visibility" Value="Hidden"/>
                 <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+
+                <Setter TargetName="PART_EditableTextBox" Property="CaretBrush" Value="{DynamicResource Brush.Foreground}"/>
             </Trigger>
 
             <!-- لو ما في عناصر ضب ارتفاع الـ dropdown لعرض رسالة صغيرة -->

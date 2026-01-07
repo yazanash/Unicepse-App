@@ -40,9 +40,9 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -188,8 +188,8 @@
                                                 <!--<Button Command="{Binding TrainingProgramCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="Dumbbell"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>-->
-                                                <Button Command="{Binding OpenProfileCommand}" Style="{StaticResource GridremoveBtn}">
-                                                    <TextBlock Text="عرض الصفحة الشخصية" FontSize="12"/>
+                                                <Button Command="{Binding ReactivePlayerCommand}" CommandParameter="{Binding Id}" Style="{StaticResource GridremoveBtn}">
+                                                    <TextBlock Text="استرجاع" FontSize="12"/>
                                                 </Button>
                                             </StackPanel>
                                         </DataTemplate>

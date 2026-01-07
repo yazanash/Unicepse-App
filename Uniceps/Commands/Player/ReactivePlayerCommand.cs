@@ -24,9 +24,17 @@ namespace Uniceps.Commands.Player
         {
             try
             {
-                Core.Models.Player.Player player = _playerStore.SelectedPlayer!;
-                player.IsSubscribed = true;
-                await _playerStore.ReactivePlayer(player);
+                if (parameter != null)
+                {
+                    int playerId = Convert.ToInt32(parameter);
+                    if (playerId > 0)
+                    {
+                        Core.Models.Player.Player player = _playerStore.ArchivedPlayers.FirstOrDefault(x=>x.Id == playerId)!;
+                        player.IsSubscribed = true;
+                        await _playerStore.ReactivePlayer(player);
+                    }
+                }
+                
             }
             catch (NotExistException ex)
             {

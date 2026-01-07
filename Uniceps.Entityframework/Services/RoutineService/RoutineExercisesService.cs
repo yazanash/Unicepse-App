@@ -40,7 +40,7 @@ namespace Uniceps.Entityframework.Services.RoutineService
         public async Task<Exercises> GetOrCreate(Exercises exercises)
         {
             using UnicepsDbContext _dbContext = _contextFactory.CreateDbContext();
-            Exercises? exExercise = await _dbContext.Set<Exercises>().FirstOrDefaultAsync(x => x.Tid == exercises.Tid);
+            Exercises? exExercise = await _dbContext.Set<Exercises>().FirstOrDefaultAsync(x => x.Tid == exercises.Tid || x.Name == exercises.Name);
             if (exExercise != null)
             {
                 exExercise.Version = exercises.Version;

@@ -800,9 +800,7 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasFilter("[Code] IS NOT NULL");
+                    b.HasIndex("Code");
 
                     b.HasIndex("EmployeeId");
 

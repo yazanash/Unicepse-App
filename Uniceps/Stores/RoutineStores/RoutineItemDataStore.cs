@@ -108,7 +108,9 @@ namespace Uniceps.Stores.RoutineStores
                 {
                     _routineItemModels.Add(entity);
                 }
+                Updated?.Invoke(entity);
             }
+           
 
         }
     }

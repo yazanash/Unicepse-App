@@ -31,6 +31,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
                 RoutineLevels.Add((RoutineLevel)item);
             }
             SubmitCommand = new CreateRoutineModelCommand(_routineTempDataStore, this);
+            Name = "";
         }
 
 

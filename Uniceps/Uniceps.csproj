@@ -10,8 +10,8 @@
     <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
     <SignAssembly>False</SignAssembly>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AssemblyVersion>2.1.1.4</AssemblyVersion>
-    <FileVersion>2.1.1.4</FileVersion>
+    <AssemblyVersion>2.1.1.6</AssemblyVersion>
+    <FileVersion>2.1.1.6</FileVersion>
     <SelfContained>true</SelfContained>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>

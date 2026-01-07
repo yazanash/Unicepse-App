@@ -7,7 +7,11 @@
              mc:Ignorable="d" 
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             d:DesignHeight="450" d:DesignWidth="800"
+               xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
              FlowDirection="RightToLeft">
+    <UserControl.Resources>
+        <converters:NumberFormatConverter x:Key="covNum"/>
+    </UserControl.Resources>
     <Border Background="#fff" Padding="30" CornerRadius="10">
 
             <Grid>
@@ -39,8 +43,8 @@
                     <TextBlock Text="وصل اشتراك" FontSize="22" VerticalAlignment="Center"  Foreground="{DynamicResource Brush.Primary}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10" Grid.Column="2">
-                    <TextBlock Text="رقم الاشتراك :" FontSize="18" VerticalAlignment="Center"  Foreground="{DynamicResource Brush.Primary}"/>
-                    <TextBlock Text="{Binding Id}" FontSize="18" VerticalAlignment="Center"  Foreground="{DynamicResource Brush.Primary}"/>
+                    <TextBlock Text="كود الاشتراك :" FontSize="18" VerticalAlignment="Center"  Foreground="{DynamicResource Brush.Primary}"/>
+                    <TextBlock Text="{Binding Code}" FontSize="18" VerticalAlignment="Center"  Foreground="{DynamicResource Brush.Primary}"/>
                 </StackPanel>
             </Grid>
                 
@@ -77,9 +81,6 @@
                             <TextBlock Text="اسم اللاعب :" Margin="0 5 8 0"  Grid.Column="0" FontWeight="Bold" FontSize="16"/>
                             <TextBlock Text="{Binding PlayerName}" Margin="0 5 8 0" Grid.Column="1" FontWeight="SemiBold" FontSize="16"/>
 
-                            <!--Row 2-->
-                            <TextBlock Text="رصيد الحساب :" Margin="0 5 8 0"  Grid.Column="0" Grid.Row="1" FontWeight="Bold" FontSize="16"/>
-                            <TextBlock Text="{Binding PlayerBalance}" Margin="0 5 8 0" Grid.Column="1" FontWeight="SemiBold" Grid.Row="1" FontSize="16"/>
                         </Grid>
                     </StackPanel>
 
@@ -171,7 +172,7 @@
 
                             <!--Row 2-->
                             <TextBlock Text="قيمة الحسم :" Margin="0 5 5 5"  Grid.Row="1" Grid.Column="0" FontWeight="Bold" FontSize="16"/>
-                            <TextBlock Text="{Binding OfferValue}" Grid.Column="1"   Grid.Row="1" FontWeight="SemiBold" FontSize="16"/>
+                            <TextBlock Text="{Binding OfferValue,Converter={StaticResource covNum}}" Grid.Column="1"   Grid.Row="1" FontWeight="SemiBold" FontSize="16"/>
 
                         </Grid>
                     </StackPanel>
@@ -191,7 +192,7 @@
 
 
                                 <TextBlock Text="الاجمالي : "  Foreground="White" FontSize="18" FontWeight="Bold" />
-                                <TextBlock Text="{Binding PriceAfterOffer}" Grid.Row="0" VerticalAlignment="Center" Foreground="White" Grid.Column="1" FontSize="18" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding PriceAfterOffer,Converter={StaticResource covNum}}" Grid.Row="0" VerticalAlignment="Center" Foreground="White" Grid.Column="1" FontSize="18" FontWeight="SemiBold" />
                             </Grid>
                         </Border>
 
@@ -212,13 +213,9 @@
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="#" IsReadOnly="True"
-                                    Width="auto"
-                                    Binding="{Binding Id}"
-                                    CanUserResize="False"/>
-
+                                  
                                     <DataGridTextColumn Header="قيمة الدفعة" IsReadOnly="True"
-                                     Binding="{Binding Value}"
+                                     Binding="{Binding Value,Converter={StaticResource covNum}}"
                                     Width="auto"
                                     />
                                     <DataGridTextColumn Header="تاريخ الدفعة" IsReadOnly="True"

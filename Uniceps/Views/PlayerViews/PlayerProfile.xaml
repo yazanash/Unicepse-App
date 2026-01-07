@@ -85,7 +85,7 @@
             <Border Grid.ColumnSpan="2" >
                 <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                     <RadioButton
-                         IsChecked="True"   
+                         IsChecked="{Binding IsPersonal}"   
                             Command="{Binding PlayerHomeCommand}"
                             Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
@@ -95,6 +95,7 @@
                     </RadioButton>
                   
                     <RadioButton
+                        IsChecked="{Binding IsPayments}"  
                             Command="{Binding PaymentCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal" >
@@ -104,6 +105,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
+                        IsChecked="{Binding IsMetrics}"  
                             Command="{Binding MetricsCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
@@ -114,6 +116,7 @@
                     </RadioButton>
 
                     <RadioButton
+                             IsChecked="{Binding IsLog}"  
                             Command="{Binding PlayerAttendenceCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">

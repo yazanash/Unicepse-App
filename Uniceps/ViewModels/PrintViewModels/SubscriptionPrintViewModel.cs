@@ -63,7 +63,7 @@ namespace Uniceps.ViewModels.PrintViewModels
         }
         public int Id => Subscription.Id;
         public string? PlayerName => Subscription.PlayerName;
-        //public double PlayerBalance => Subscription.Player!.Balance;
+        public string? Code => Subscription.Code;
         public string? SportName => Subscription.SportName;
         public int SubDays => Subscription.DaysCount;
         public DateTime LastCheck => Subscription.LastCheck;

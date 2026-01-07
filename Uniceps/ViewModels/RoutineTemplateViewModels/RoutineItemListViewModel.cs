@@ -205,6 +205,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         private void _routineItemDataStore_Created(RoutineItemModel obj)
         {
             AddRoutineItem(obj);
+            SaveNewOrderCommand.Execute(null);
         }
 
         public void ExecuteAddSetsCommand(RoutineItemListItemViewModel routineItemListItemViewModel)
@@ -221,6 +222,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             {
                 AddRoutineItem(routineItemModel);
             }
+           
         }
         protected void AddRoutineItem(RoutineItemModel routineItemModel)
         {

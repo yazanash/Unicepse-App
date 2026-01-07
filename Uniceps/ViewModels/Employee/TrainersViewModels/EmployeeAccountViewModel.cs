@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using Uniceps.Stores.EmployeeStores;
 using Uniceps.ViewModels.Accountant;
 using Uniceps.ViewModels.Employee.CreditViewModels;
 using Uniceps.ViewModels.Expenses;
+using Uniceps.ViewModels.PlayersViewModels;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
@@ -65,7 +67,8 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             get { return _isTrainer; }
             set { _isTrainer = value; OnPropertyChanged(nameof(IsTrainer)); }
         }
-
+        public bool IsCredit { get; set; }
+        public bool IsPlayers { get; set; }
         private CreditListViewModel LoadEmployeeCredit(NavigationStore navigatorStore, EmployeeStore employeeStore, CreditsDataStore creditsDataStore)
         {
             return CreditListViewModel.LoadViewModel(employeeStore, creditsDataStore, navigatorStore);
@@ -82,6 +85,9 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 
         private void NavigatorStore_CurrentViewModelChanged()
         {
+            IsTrainer = CurrentEmployeeViewModel is EmployeeAccountantPageViewModel;
+            IsCredit = CurrentEmployeeViewModel is TrainerSubscriptionViewModel;
+            IsPlayers = CurrentEmployeeViewModel is PlayerMainPageViewModel;
             OnPropertyChanged(nameof(CurrentEmployeeViewModel));
         }
 

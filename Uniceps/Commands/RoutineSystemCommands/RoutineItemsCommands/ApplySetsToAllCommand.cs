@@ -25,9 +25,10 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
         public async override Task ExecuteAsync(object? parameter)
         {
             var selected = _routineItemListViewModel.SelectedRoutineItem;
-            if (selected != null)
+            if (selected != null && selected.RoutineItemModel.Sets.Count > 0)
             {
                 List<RoutineItemModel>? reorderedList = _routineItemListViewModel.RoutineItems.Where(x => x.Id != selected.Id).Select(x => x.RoutineItemModel!).ToList();
+
                 foreach (RoutineItemModel itemModel in reorderedList)
                 {
                     if (itemModel != null)
@@ -48,7 +49,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
                 }
             }
             else
-                MessageBox.Show("يجب تحديد العنصر المراد تطبيق جولاته");
+                MessageBox.Show("يجب تحديد العنصر المراد تطبيق جولاته وتاكد من انه يحتوي على جولات");
         }
     }
 }

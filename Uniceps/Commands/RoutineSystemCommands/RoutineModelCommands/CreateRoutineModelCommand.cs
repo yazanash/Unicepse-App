@@ -8,6 +8,7 @@ using Uniceps.Commands;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.navigation;
 using Uniceps.Stores.RoutineStores;
+using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.ViewModels.RoutineTemplateViewModels;
 
 namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
@@ -20,8 +21,21 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
         {
             _routineTempDataStore = routineTempDataStore;
             _createRoutineViewModel = createRoutineViewModel;
+            _createRoutineViewModel.PropertyChanged += _createRoutineViewModel_PropertyChanged;
         }
 
+        private void _createRoutineViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_createRoutineViewModel.CanSubmit))
+            {
+                OnCanExecutedChanged();
+            }
+        }
+        public override bool CanExecute(object? parameter)
+        {
+
+            return _createRoutineViewModel.CanSubmit && !string.IsNullOrEmpty(_createRoutineViewModel.Name) && base.CanExecute(null);
+        }
         public override async Task ExecuteAsync(object? parameter)
         {
             RoutineModel routineModel = new()

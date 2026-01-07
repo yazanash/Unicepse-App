@@ -277,7 +277,6 @@ namespace Uniceps.Entityframework.DataExportProvider
                     }
                     else
                     {
-                        sport.Id = 0;
                         Sport newSport = new Sport();
                         newSport.MergeWith(sport);
                         await context.Set<Sport>().AddAsync(newSport);
@@ -367,7 +366,7 @@ namespace Uniceps.Entityframework.DataExportProvider
             {
                 if (item.Exercise != null)
                 {
-                    Exercises? exercises = await context.Set<Exercises>().FirstOrDefaultAsync(x => x.Tid == item.Exercise.Tid);
+                    Exercises? exercises = await context.Set<Exercises>().FirstOrDefaultAsync(x => x.Tid == item.Exercise.Tid&&x.Name == item.Exercise.Name);
                     if (exercises != null)
                     {
                         item.ExerciseId = exercises.Id;

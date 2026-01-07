@@ -26,7 +26,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private readonly NavigationStore _navigatorStore;
         private readonly PlayersDataStore _playerStore;
         private readonly PlayerProfileViewModel _playerProfileViewModel;
-
+        private readonly NavigationService<PlayerListViewModel> _navigationService;
         public SearchBoxViewModel SearchBox { get; set; }
         public IEnumerable<PlayerListItemViewModel> PlayerList => playerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
@@ -63,7 +63,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             get
             {
                 return PlayerList
-                    .FirstOrDefault(x => x.Player.Id == _playerStore.SelectedPlayer!.Id);
+                    .FirstOrDefault(x => x.Player.Id == _playerStore.SelectedPlayer?.Id);
             }
             set
             {
@@ -119,7 +119,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _navigatorStore = navigatorStore;
             _playerStore = playerStore;
             LoadPlayersCommand = new LoadArchivedPlayersCommand(this, _playerStore);
-
+            _navigationService = new NavigationService<PlayerListViewModel>(_navigatorStore, () => playerListViewModel);
             playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
 
 
@@ -146,7 +146,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.SubscribeEnd, 7, "منتهي الاشتراك"));
             filtersItemViewModel.Add(new FiltersItemViewModel(utlis.common.Filter.HaveDebt, 8, "ديون"));
             SelectedFilter = filtersItemViewModel.FirstOrDefault(x => x.Id == 6);
-            BackCommand = new NavaigateCommand<PlayerListViewModel>(new NavigationService<PlayerListViewModel>(_navigatorStore, () => playerListViewModel));
+            BackCommand = new NavaigateCommand<PlayerListViewModel>(_navigationService);
             _playerProfileViewModel = playerProfileViewModel;
         }
 
@@ -292,7 +292,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private void AddPlayer(Player player)
         {
             PlayerListItemViewModel itemViewModel =
-                 new(player, _navigatorStore, _playerProfileViewModel);
+                 new(player,_playerStore);
             playerListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = playerListItemViewModels.Count();
         }

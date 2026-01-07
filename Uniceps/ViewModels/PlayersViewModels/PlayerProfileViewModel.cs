@@ -77,7 +77,10 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
             }
         }
-
+        public bool IsPersonal {get;set;}
+        public bool IsMetrics { get; set; }
+        public bool IsPayments { get; set; }
+        public bool IsLog { get; set; }
         private void _playersDataStore_Player_update(Player obj)
         {
             if (Player != null && Player.Player.Id == obj.Id)
@@ -110,6 +113,10 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         private void NavigatorStore_CurrentViewModelChanged()
         {
+            IsPersonal = CurrentPlayerViewModel is PlayerMainPageViewModel;
+            IsMetrics = CurrentPlayerViewModel is MetricReportViewModel|| CurrentPlayerViewModel is PremiumViewModel;
+            IsPayments = CurrentPlayerViewModel is PaymentListViewModel;
+            IsLog = CurrentPlayerViewModel is PlayerAttendenceViewModel;
             OnPropertyChanged(nameof(CurrentPlayerViewModel));
         }
         private PlayerMainPageViewModel LoadPlayerMainPageViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, SubscriptionDataStore subscriptionDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore,AccountStore accountStore,EmployeeStore employeeStore)

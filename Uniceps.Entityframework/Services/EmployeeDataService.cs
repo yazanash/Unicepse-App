@@ -35,17 +35,33 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                Employee existed_sport = await CheckIfExistByName(entity.FullName!);
-                if (existed_sport != null)
-                    throw new ConflictException("هذا الموظف غير موجود");
-                foreach (Sport sport in entity.Sports!)
-                {
-                    context.Entry(sport).State = EntityState.Detached;
-                    context.Attach(sport);
-                }
-                EntityEntry<Employee> CreatedResult = await context.Set<Employee>().AddAsync(entity);
+                var exists = await context.Set<Employee>().AnyAsync(x => x.FullName == entity.FullName);
+                if (exists) throw new ConflictException("الموظف موجود مسبقاً");
+
+                Employee entityToCreate = new();
+                entityToCreate.MergeWith(entity);
+
+                entityToCreate.Sports = new List<Sport>();
+
+                await context.Set<Employee>().AddAsync(entityToCreate);
                 await context.SaveChangesAsync();
-                return CreatedResult.Entity;
+
+                if (entity.Sports?.Count > 0)
+                {
+                    var sportIds = entity.Sports.Select(s => s.Id).ToList();
+                    var existingSports = await context.Set<Sport>()
+                        .Where(s => sportIds.Contains(s.Id))
+                        .ToListAsync();
+
+                    foreach (var sport in existingSports)
+                    {
+                        entityToCreate.Sports.Add(sport);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+                 
+                return entity;
             }
         }
 

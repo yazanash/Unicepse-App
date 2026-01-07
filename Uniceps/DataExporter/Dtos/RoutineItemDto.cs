@@ -12,6 +12,7 @@ namespace Uniceps.DataExporter.Dtos
     {
         public int ExerciseTId { get; set; }
         public int Order { get; set; }
+        public string ExerciseName{ get; set; }
         public virtual List<SetDto> Sets { get; set; } = new List<SetDto>();
     }
 }
