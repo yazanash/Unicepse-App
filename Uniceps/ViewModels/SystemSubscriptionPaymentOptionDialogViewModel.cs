@@ -16,6 +16,7 @@ namespace Uniceps.ViewModels
         {
             PaymentCardUrl = paymentCardUrl;
             PaymentCashUrl = paymentCashUrl;
+            OnPropertyChanged(nameof(CanCardExecute));
         }
         public event Action? PaymentChose;
 
@@ -41,7 +42,7 @@ namespace Uniceps.ViewModels
             });
             OnPaymentChose();
         }
-
+        bool CanCardExecute => !string.IsNullOrEmpty(PaymentCardUrl);
         internal void OnPaymentChose()
         {
             PaymentChose?.Invoke();

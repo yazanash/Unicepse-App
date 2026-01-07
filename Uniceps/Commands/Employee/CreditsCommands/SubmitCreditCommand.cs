@@ -46,9 +46,9 @@ namespace Uniceps.Commands.Employee.CreditsCommands
                 CreditValue = _creditDetailsViewModel.CreditValue,
                 Date = _creditDetailsViewModel.CreditDate,
                 Description = _creditDetailsViewModel.Description,
-                EmpPersonSyncId = _employeeStore.SelectedEmployee!.SyncId
+                EmpPersonSyncId = _employeeStore.SelectedEmployee!.SyncId,
+                EmpPersonId = _employeeStore.SelectedEmployee!.Id,
             };
-            credit.EmpPerson = new Core.Models.Employee.Employee() { Id = _employeeStore.SelectedEmployee!.Id };
 
             await _creditsDataStore.Add(credit);
             navigationService.ReNavigate();

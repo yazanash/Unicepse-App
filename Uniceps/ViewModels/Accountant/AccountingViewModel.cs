@@ -31,6 +31,14 @@ namespace Uniceps.ViewModels.Accountant
         public ICommand StatesReportCommand { get; }
         //public ICommand PaymentReportCommand;
         public ICommand MonthlyIncomeReportCommand { get; }
+
+
+        public bool IsDaily { get; set; }
+        public bool IsExpenses { get; set; }
+        public bool IsExpensesReport { get; set; }
+        public bool IsIncomeReport { get; set; }
+        //public ICommand PaymentReportCommand;
+        public bool IsIncomeFinal { get; set; }
         public AccountingViewModel(ExpensesDataStore expensesStore, GymStore gymStore, DailyReportStore dailyReportStore, PeriodReportStore periodReportStore, AccountStore accountStore)
         {
             _navigatorStore = new NavigationStore();
@@ -66,6 +74,11 @@ namespace Uniceps.ViewModels.Accountant
         }
         private void NavigatorStore_CurrentViewModelChanged()
         {
+            IsDaily = CurrentViewModel is AccountingStateViewModel;
+            IsExpenses = CurrentViewModel is ExpensesListViewModel;
+            IsExpensesReport = CurrentViewModel is ExpensesReportViewModel;
+            IsIncomeReport = CurrentViewModel is IncomeReportViewModel;
+            IsIncomeFinal = CurrentViewModel is MounthlyReportViewModel;
             OnPropertyChanged(nameof(CurrentViewModel));
         }
         public void ResetSelection()

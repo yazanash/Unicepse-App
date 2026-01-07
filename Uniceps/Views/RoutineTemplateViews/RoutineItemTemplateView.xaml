@@ -33,7 +33,7 @@
                             <TextBlock Text="عودة" VerticalAlignment="Center" Margin="10 0" HorizontalAlignment="Center" FontSize="16" />
                         </StackPanel>
                     </Button>
-                    <TextBox Text="{Binding Name}" Margin="10 0" Width="200" Style="{DynamicResource textBoxStyle}"/>
+                    <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}" Margin="10 0" Width="200" Style="{DynamicResource textBoxStyle}"/>
                     <ComboBox Width="150" Style="{DynamicResource ComboBoxStyle1}" 
   ItemsSource="{Binding RoutineLevels,UpdateSourceTrigger=PropertyChanged}" Tag="المستوى"
   SelectedItem="{Binding Level,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"

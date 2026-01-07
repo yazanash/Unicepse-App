@@ -69,7 +69,7 @@ namespace Uniceps.Entityframework.DbContexts
             modelBuilder.Entity<Credit>().HasIndex(x => x.SyncId).IsUnique();
             modelBuilder.Entity<Metric>().HasIndex(x => x.SyncId).IsUnique();
 
-            modelBuilder.Entity<Subscription>().HasIndex(x => x.Code).IsUnique();
+            modelBuilder.Entity<Subscription>().HasIndex(x => x.Code);
             modelBuilder.Entity<Sport>()
               .HasMany(c => c.Trainers)
               .WithMany(e => e.Sports);

@@ -48,7 +48,7 @@ namespace Uniceps
             auth.LoginAction += Auth_LoginAction;
         }
 
-        private async void CheckForUpdates()
+        private async Task CheckForUpdates()
         {
             try
             {
@@ -57,6 +57,7 @@ namespace Uniceps
                 {
                     ProgressWindow progressWindow = new ProgressWindow();
                     progressWindow.DataContext = new UpdateWindowViewModel(update);
+                    progressWindow.Topmost = true;
                     progressWindow.ShowDialog();
                 }
             }
@@ -558,7 +559,7 @@ namespace Uniceps
             //try
             //{
                 SplashScreenViewModel splash = _host.Services.GetRequiredService<SplashScreenViewModel>();
-                CheckForUpdates();
+               await CheckForUpdates();
                 CheckOpenedApplication();
               
                 _host.Start();
@@ -653,30 +654,9 @@ namespace Uniceps
         }
         protected override void OnExit(ExitEventArgs e)
         {
-            //BackUp();
-            //_host.Services.GetRequiredService<AuthenticationStore>().Logout();
+            _host.Services.GetRequiredService<AuthenticationStore>().Logout();
             _host.Dispose();
             base.OnExit(e);
         }
-        protected void BackUp()
-        {
-            UnicepsDbContextFactory platinumGymDbContextFactory = _host.Services.GetRequiredService<UnicepsDbContextFactory>();
-            using (UnicepsDbContext platinumGymDbContext = platinumGymDbContextFactory.CreateDbContext())
-            {
-                string folderName = "Backups";
-                string folderPath = Path.Combine(@"C:\", folderName);
-
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
-                string filename = "Uniceps" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-t");
-                string filePath = Path.Combine(folderName, filename + ".bak");
-                string backupPath = @"C:\Backups\Uniceps.bak";
-                var backupCommand = $"BACKUP DATABASE [{platinumGymDbContext.Database.GetDbConnection().Database}] TO DISK = '{backupPath}'";
-                platinumGymDbContext.Database.ExecuteSqlRaw(backupCommand);
-            }
-        }
-
     }
 }

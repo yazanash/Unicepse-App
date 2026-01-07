@@ -53,7 +53,6 @@ namespace Uniceps.Entityframework.Services
                     bool isUnique = false;
                     string newCode = "";
                     int attempt = 0;
-                    // حلقة تكرار تضمن أن الكود المولد غير موجود مسبقاً في القاعدة
                     while (!isUnique)
                     {
                         newCode = entity.GenerateSubscriptionCode(attempt);

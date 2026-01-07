@@ -38,7 +38,7 @@ namespace Uniceps.Entityframework.Services
                     entity.SportName = subscription.SportName ?? "";
                 }
                 else
-                    throw new Exception("هذا الكود غير فعال");
+                    throw new Exception("هذا الكود غير فعال او الاشتراك منتهي");
                     EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
                 DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x =>
                 x.PlayerId == entity.PlayerId &&

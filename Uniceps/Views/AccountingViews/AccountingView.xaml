@@ -47,7 +47,7 @@
             <DockPanel>
                 <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                     <RadioButton
-                         IsChecked="True"   
+                         IsChecked="{Binding IsDaily,UpdateSourceTrigger=PropertyChanged}"   
                            Command="{Binding StatesReportCommand}"
                             Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
@@ -56,6 +56,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
+                        IsChecked="{Binding IsExpenses,UpdateSourceTrigger=PropertyChanged}"   
                     Command="{Binding ExpensesCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
@@ -64,6 +65,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
+                         IsChecked="{Binding IsExpensesReport,UpdateSourceTrigger=PropertyChanged}"
                     Command="{Binding ExpensesReportCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
@@ -72,6 +74,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
+                         IsChecked="{Binding IsIncomeReport,UpdateSourceTrigger=PropertyChanged}"
                             Command="{Binding IncomeReportCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal" >
@@ -81,6 +84,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
+                         IsChecked="{Binding IsIncomeFinal,UpdateSourceTrigger=PropertyChanged}"
                             Command="{Binding MonthlyIncomeReportCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">

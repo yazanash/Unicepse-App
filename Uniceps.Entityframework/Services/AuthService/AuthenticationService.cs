@@ -48,18 +48,22 @@ namespace Uniceps.Entityframework.Services.AuthService
                 LoginDateTime = DateTime.Now,
                 status = true
             };
-            //_accountService.AuthenticationLogging(log);
+            _accountService.AuthenticationLogging(log);
             return storedAccount;
         }
         public void Logout(User user)
         {
-            AuthenticationLog log = new AuthenticationLog()
+            if (user.Id > 0)
             {
-                User = user,
-                LoginDateTime = DateTime.Now,
-                status = false
-            };
-            //_accountService.AuthenticationLogging(log);
+                AuthenticationLog log = new AuthenticationLog()
+                {
+                    User = user,
+                    LoginDateTime = DateTime.Now,
+                    status = false
+                };
+                _accountService.AuthenticationLogging(log);
+            }
+          
         }
 
         public async Task<RegistrationResult> Register(string username, string password, string confirmPassword, Roles role)

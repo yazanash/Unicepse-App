@@ -9,7 +9,7 @@
         FlowDirection="RightToLeft"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource Brush.Background}"
-        Title="انشاء برنامج رياضي جديد" Height="350" Width="400">
+        Title="انشاء برنامج رياضي جديد" Height="400" Width="400">
     <Window.Resources>
         <Converters:EnumDisplayNameConverter x:Key="EnumToText"/>
     </Window.Resources>

@@ -64,7 +64,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
-                            IsChecked="True"
+                            IsChecked="{Binding IsCredit,UpdateSourceTrigger=PropertyChanged}"
                     Command="{Binding EmployeeCreditsCommand}"
                                 Style="{StaticResource BarButtonRD}" >
                             <StackPanel Orientation="Horizontal">
@@ -73,6 +73,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
+                              IsChecked="{Binding IsPlayers,UpdateSourceTrigger=PropertyChanged}"
                             Visibility="{Binding IsTrainer,Converter={StaticResource BoolToVis}}"
                             Command="{Binding TrainerPlayersCommand}"
                                 Style="{StaticResource BarButtonRD}" >

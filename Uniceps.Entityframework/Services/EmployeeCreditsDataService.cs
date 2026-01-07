@@ -25,9 +25,12 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                EntityEntry<Credit> CreatedResult = await context.Set<Credit>().AddAsync(entity);
                 if (entity.EmpPerson != null)
-                    context.Attach(entity.EmpPerson);
+                {
+                    entity.EmpPersonId = entity.EmpPerson.Id;
+                    entity.EmpPerson = null;
+                }
+                EntityEntry<Credit> CreatedResult = await context.Set<Credit>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
             }

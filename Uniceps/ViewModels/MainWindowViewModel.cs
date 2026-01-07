@@ -86,7 +86,7 @@ namespace Uniceps.ViewModels
             _backgroundServiceStore.SyncStatus += _backgroundServiceStore_SyncStatus;
             _usersDataStore.Updated += _usersDataStore_Updated;
             _accountStore.UserContextChanged += _accountStore_UserContextChanged;
-            _appInfoViewModel.ProfileUpdated += _appInfoViewModel_ProfileUpdated;
+            _appInfoViewModel.Profile_Updated += _appInfoViewModel_ProfileUpdated;
             ValidateUserContext();
             var savedTheme = Properties.Settings.Default.AppTheme;
             if (Enum.TryParse(savedTheme, out AppTheme theme))
@@ -98,6 +98,7 @@ namespace Uniceps.ViewModels
             {
                 MessageBox.Show("لقد مر يومين على اخر نسخ احتياطي ... لا تنسى عمل نسخ احتياطي للمحافظة على بياناتك");
             }
+            PrepareMainViewModel();
         }
 
         private void _appInfoViewModel_ProfileUpdated()
@@ -161,13 +162,6 @@ namespace Uniceps.ViewModels
                     NotificationBarViewModel.HasNotification = true;
                     NotificationBarViewModel.NotificationCommand = new OpenAuthCommand(_systemLoginViewModel);
                     break;
-                case UserContextState.NoProfile:
-                    NotificationBarViewModel.Notification = "قم باضافة معلومات علاماتك التجارية ودع الامر لنا ";
-                    NotificationBarViewModel.NotificationBarColor = Brushes.Blue;
-                    NotificationBarViewModel.ActionTitle = "اضافة الملف التعريفي";
-                    NotificationBarViewModel.HasNotification = true;
-                    NotificationBarViewModel.NotificationCommand = OpenProfileCommand;
-                    break;
                 case UserContextState.NoSubscription:
                     NavigationService<SubscriptionMainViewModel> _navigationService = new NavigationService<SubscriptionMainViewModel>(_navigationStore, () => _subscriptionMainViewModel);
                     NotificationBarViewModel.Notification = "اشترك باحدى باقاتنا المميزة واحصل على المزيد من الميزات";
@@ -180,7 +174,7 @@ namespace Uniceps.ViewModels
 
                     break;
             }
-            PrepareMainViewModel();
+           
         }
 
         void PrepareMainViewModel()

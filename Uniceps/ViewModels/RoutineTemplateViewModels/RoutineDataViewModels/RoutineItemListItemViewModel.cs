@@ -29,7 +29,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
         public int Id => RoutineItemModel.Id;
         public string? ExerciseImage => RoutineItemModel.Exercise!.ImagePath;
         public string? ExerciseName => RoutineItemModel.Exercise!.Name;
-        public int Order => RoutineItemModel.Order;
+        public int Order => RoutineItemModel.Order +1;
         public string? SetsString => string.Join(" × ", RoutineItemModel.Sets.Select(x=>x.Repetition));
         internal void Update(RoutineItemModel obj)
         {
@@ -37,6 +37,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
 
             OnPropertyChanged(nameof(SetsString));
             OnPropertyChanged(nameof(ExerciseName));
+            OnPropertyChanged(nameof(Order));
         }
         internal void UpdateSets(SetModel obj)
         {

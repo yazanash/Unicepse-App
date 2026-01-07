@@ -25,7 +25,7 @@ namespace Uniceps.ViewModels
         private static readonly string currentVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
         private AccountStore _accountStore;
         private IProfileDataStore _systemProfileStore;
-        public event Action? ProfileUpdated;
+        public event Action? Profile_Updated;
         private readonly DataExportStore _dataExportStore;
         private readonly ISystemAuthStore _systemAuthStore;
         public string LastBackupTime => Properties.Settings.Default.LastBackup == DateTime.MinValue
@@ -118,6 +118,7 @@ namespace Uniceps.ViewModels
                     IsLoading = true;
                      await _systemProfileStore.UploadProfilePicture(localFilePath);
                     IsLoading = false;
+                    MessageBox.Show("تم تحديث الصورة بنجاح");
                 }
                 catch (Exception ex)
                 {
@@ -179,7 +180,7 @@ namespace Uniceps.ViewModels
 
         internal void OnProfileUpdated()
         {
-           ProfileUpdated?.Invoke();
+            Profile_Updated?.Invoke();
         }
 
         public ICommand? LoadLicensesCommand { get; }

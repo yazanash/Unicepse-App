@@ -45,9 +45,9 @@ namespace Uniceps.Commands.Employee.CreditsCommands
                 Id = _creditsDataStore.SelectedCredit!.Id,
                 CreditValue = _creditDetailsViewModel.CreditValue,
                 Date = _creditDetailsViewModel.CreditDate,
-                EmpPerson = _employeeStore.SelectedEmployee!,
                 Description = _creditDetailsViewModel.Description,
-                EmpPersonSyncId = _employeeStore.SelectedEmployee!.SyncId
+                EmpPersonSyncId = _employeeStore.SelectedEmployee!.SyncId,
+                EmpPersonId = _employeeStore.SelectedEmployee!.Id,
             };
 
             await _creditsDataStore.Update(credit);
