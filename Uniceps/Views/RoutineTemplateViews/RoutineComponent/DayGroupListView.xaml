@@ -86,11 +86,11 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
-                                    <Border  MinWidth="100" x:Name="Bd" Margin="5" Style="{DynamicResource StaticCardBorderStyle}">
+                                    <Border  MinWidth="100" MaxWidth="150" x:Name="Bd" Margin="5" Style="{DynamicResource StaticCardBorderStyle}">
 
                                         <StackPanel Orientation="Horizontal">
 
-                                            <TextBlock FontSize="16" Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
+                                            <TextBlock FontSize="16" MaxWidth="100" TextWrapping="WrapWithOverflow"  Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
                                    Text="{Binding DayGroupName,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"  HorizontalAlignment="Center"></TextBlock>
                                             <CheckBox 
                                                       VerticalAlignment="Center"  Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
@@ -108,7 +108,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
 
-                                                            <TextBox Name="EditTextBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                                            <TextBox MaxWidth="100" Name="EditTextBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
 
                                                         </StackPanel>

@@ -29,11 +29,11 @@ namespace Uniceps.ViewModels.PrintViewModels
             {
                 _paymentListItemViewModels.Add(new PaymentListItemViewModel(item));
             }
-            if (_accountStore.SystemProfile != null)
-            {
-                GymName = _accountStore.SystemProfile.DisplayName;
-                LoadProfileImage(_accountStore.SystemProfile.LocalProfileImagePath);
-            }
+            //if (_accountStore.SystemProfile != null)
+            //{
+            //    GymName = _accountStore.SystemProfile.DisplayName;
+            //    LoadProfileImage(_accountStore.SystemProfile.LocalProfileImagePath);
+            //}
         }
         private void LoadProfileImage(string? localPath)
         {

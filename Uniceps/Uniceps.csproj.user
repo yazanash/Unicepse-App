@@ -42,9 +42,6 @@
     <Compile Update="Views\Expenses\ExpenseDetailViewWinow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\LicenseWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\PlayerViews\PlayerDetailWindowView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -222,12 +219,6 @@
     <Compile Update="Views\SubscriptionView\SubscriptionMainView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\SystemAuthViews\CreateProfileViewWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\SystemAuthViews\SystemSubscriptionCreationView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\SystemSubscriptionPaymentOptionDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -237,9 +228,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\CameraReader.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\LicenseWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PrintWindowDialog.xaml">
@@ -447,9 +435,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SubscriptionView\SubscriptionDetailView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SystemAuthViews\SystemSubscriptionCreationView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

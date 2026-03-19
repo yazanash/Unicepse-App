@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <DefineConstants Condition="'$(Configuration)' == 'Test'">$(DefineConstants);TEST</DefineConstants>
+    <DefineConstants Condition="'$(Configuration)' == 'Release'">$(DefineConstants);RELEASE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Test' AND ('$(OutputType)' == 'WinExe' OR '$(OutputType)' == 'Exe')">
+    <AssemblyName>$(MSBuildProjectName)_Test</AssemblyName>
+  </PropertyGroup>
+</Project>

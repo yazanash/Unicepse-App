@@ -305,6 +305,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                 }
 
                 await context.SaveChangesAsync();
+                context.ChangeTracker.Clear();
 
                 foreach (Sport incomingSport in sports)
                 {
@@ -321,8 +322,11 @@ namespace Uniceps.Entityframework.DataExportProvider
                                 var trainerInDb = await context.Set<Employee>()
                                     .FirstOrDefaultAsync(e => e.SyncId == incomingTrainer.SyncId);
 
-                                if (trainerInDb != null)
+                                if (trainerInDb != null) 
+                                {
                                     existingSport.Trainers!.Add(trainerInDb);
+                                    context.Set<Sport>().Update(existingSport);
+                                }
                             }
                         }
                     }

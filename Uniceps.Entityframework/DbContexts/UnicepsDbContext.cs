@@ -23,7 +23,6 @@ using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Sport;
 using Uniceps.Core.Models.Metric;
 using Uniceps.Core.Models.SyncModel;
-using Uniceps.Core.Models.SystemAuthModels;
 
 namespace Uniceps.Entityframework.DbContexts
 {
@@ -50,8 +49,6 @@ namespace Uniceps.Entityframework.DbContexts
         public DbSet<Metric>? Metrics { get; set; }
         public DbSet<AuthenticationLog>? authenticationLogs { get; set; }
         public DbSet<SyncObject>? SyncObjects { get; set; }
-        public DbSet<SystemProfile>? SystemProfiles { get; set; }
-        public DbSet<SystemSubscription>? SystemSubscriptions { get; set; }
         public DbSet<RoutineModel>? RoutineModels { get; set; }
         public DbSet<DayGroup>? DayGroups { get; set; }
         public DbSet<RoutineItemModel>? RoutineItemModels { get; set; }

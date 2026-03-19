@@ -65,7 +65,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         }
         private async void ExecuteLoginCommand(SubscriptionListItemViewModel subscriptionListItemViewModel)
         {
-            if (_accountStore.SystemSubscription != null)
+            if (_accountStore != null)
             {
                 try
                 {

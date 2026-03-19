@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -29,7 +30,16 @@ namespace Uniceps.API.Exercises
             using (HttpClient client = new HttpClient())
             {
                 byte[] imageBytes = await client.GetByteArrayAsync(imageUrl);
-                await File.WriteAllBytesAsync(localPath, imageBytes);
+                using (var bitmap = SKBitmap.Decode(imageBytes))
+                {
+                    if (bitmap == null) return; // فشل في قراءة الصورة
+
+                    using (var image = SKImage.FromBitmap(bitmap))
+                    using (var encoded = image.Encode(SKEncodedImageFormat.Png, 100)) 
+                    {
+                        await File.WriteAllBytesAsync(localPath, encoded.ToArray());
+                    }
+                }
             }
         }
         public async Task<ApiResponse<List<MuscleGroupDto>>> FetchMuscleGroup()

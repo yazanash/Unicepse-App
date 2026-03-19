@@ -29,8 +29,11 @@ namespace Uniceps
         {
             InitializeComponent();
 
-            string buildName = ConfigurationManager.AppSettings["BuildName"]!; 
-            this.Title = $"Uniceps : {currentVersion} - {buildName} ";
+            string buildName = ConfigurationManager.AppSettings["BuildName"]!;
+
+            string displayBuild = (buildName == "Release") ? "" : $" - [{buildName}]";
+
+            this.Title = $"Uniceps : {currentVersion}{displayBuild}";
 
         }
 

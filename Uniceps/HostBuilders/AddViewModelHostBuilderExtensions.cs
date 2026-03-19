@@ -17,7 +17,6 @@ using Uniceps.ViewModels.Accountant;
 using Uniceps.Stores.SportStores;
 using Uniceps.navigation.Navigator;
 using Uniceps.Views;
-using Uniceps.ViewModels.SystemAuthViewModels;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
 
@@ -33,8 +32,6 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<AuthViewModel>();
                 services.AddSingleton<AppInfoViewModel>();
                 services.AddSingleton<SplashScreenViewModel>();
-                services.AddSingleton<SystemProfileCreationViewModel>();
-                services.AddSingleton<SystemLoginViewModel>();
                 services.AddTransient<RoutineItemListViewModel>();
                 services.AddTransient<RoutineItemsBufferListViewModel>();
                 services.AddSingleton<RoutineDayGroupViewModel>();
@@ -66,10 +63,6 @@ namespace Uniceps.HostBuilders
                 {
                     DataContext = s.GetRequiredService<AuthViewModel>(),
                 });
-                services.AddSingleton(s => new LicenseWindow()
-                {
-                    DataContext = s.GetRequiredService<SystemLoginViewModel>(),
-                });
             });
             return _hostBuilder;
         }
@@ -99,7 +92,8 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<DausesDataStore>(),
                 services.GetRequiredService<CreditsDataStore>(),
                 services.GetRequiredService<EmployeeSubscriptionDataStore>(),
-                 services.GetRequiredService<AccountStore>());
+                 services.GetRequiredService<AccountStore>(),
+                  services.GetRequiredService<LicenseStore>());
         }
         private static UsersListViewModel CreateUserListingViewModel(IServiceProvider services)
         {
@@ -153,7 +147,8 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
                 services.GetRequiredService<ExercisesDataStore>(),
                  services.GetRequiredService<AccountStore>(),
-                   services.GetRequiredService<EmployeeStore>());
+                   services.GetRequiredService<EmployeeStore>(),
+                   services.GetRequiredService<LicenseStore>());
         }
     }
 }

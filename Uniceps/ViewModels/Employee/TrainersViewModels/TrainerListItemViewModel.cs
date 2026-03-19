@@ -27,6 +27,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         private readonly CreditsDataStore? _creditsDataStore;
         private readonly EmployeeSubscriptionDataStore? _employeeSubscriptionDataStore;
         private readonly AccountStore?   _accountStore;
+        private readonly LicenseStore? _licenseStore;
         public int Id => Trainer.Id;
         public string? FullName => Trainer.FullName;
         public double SalaryValue => Trainer.SalaryValue;
@@ -41,7 +42,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public ICommand? OpenAccountCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public TrainerListItemViewModel(Core.Models.Employee.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, DausesDataStore? dausesDataStore, CreditsDataStore? creditsDataStore, EmployeeSubscriptionDataStore? employeeSubscriptionDataStore, AccountStore accountStore)
+        public TrainerListItemViewModel(Core.Models.Employee.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, DausesDataStore? dausesDataStore, CreditsDataStore? creditsDataStore, EmployeeSubscriptionDataStore? employeeSubscriptionDataStore, AccountStore accountStore,LicenseStore licenseStore)
         {
             Trainer = trainer;
             _employeeStore = employeeStore;
@@ -52,7 +53,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             _creditsDataStore = creditsDataStore;
             _employeeSubscriptionDataStore = employeeSubscriptionDataStore;
             _accountStore = accountStore;
-
+            _licenseStore = licenseStore;
             NavigationStore EmployeeAccountPageNavigation = new NavigationStore();
             if (trainer.IsTrainer)
                 EditCommand = new RelayCommand(ExecuteEditTrainerCommand);
@@ -60,7 +61,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
                 EditCommand = new RelayCommand(ExecuteEditEmployeeCommand);
             DeleteCommand = new DeleteEmployeeCommand(_employeeStore, new NavigationService<TrainersListViewModel>(_navigationStore, () => _trainersListViewModel));
 
-            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!, this, _employeeSubscriptionDataStore!, _accountStore)));
+            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!, this, _employeeSubscriptionDataStore!, _licenseStore)));
         }
         public void ExecuteEditTrainerCommand()
         {

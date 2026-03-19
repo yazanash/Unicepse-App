@@ -18,8 +18,6 @@ namespace Uniceps.API
         {
             _client = client;
             _apiKey = apiKey;
-            _client = client;
-            _apiKey = apiKey;
             if (!_client.DefaultRequestHeaders.Contains("Authorization"))
             {
                 if (!string.IsNullOrEmpty(_apiKey.Key))

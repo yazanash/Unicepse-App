@@ -82,7 +82,7 @@ namespace Uniceps.Stores.RoutineStores
                     string folder_path = Path.Combine(appFolder, exerciseDto.muscleGroupId.ToString());
                     Directory.CreateDirectory(folder_path);
                     string originalExtension = Path.GetExtension(exerciseDto.imageUrl)!;
-                    string localPath = Path.Combine(folder_path, $"exercise_{exerciseDto.name}{originalExtension}");
+                    string localPath = Path.Combine(folder_path, $"exercise_{exerciseDto.name}.png");
                     Exercises exercises = new()
                     {
                         ImagePath = localPath,

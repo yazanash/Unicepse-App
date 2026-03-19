@@ -126,7 +126,7 @@ namespace Uniceps.Commands.Player
                         }
                         break;
                     case ViewType.PlayersLog:
-                        if (_accountStore.SystemSubscription != null)
+                        if (_accountStore != null)
                         {
                             if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
                                 _navigationStore.CurrentViewModel = _homeNavViewModel;
@@ -147,7 +147,7 @@ namespace Uniceps.Commands.Player
                             _navigationStore.CurrentViewModel = _trainersViewModel;
                         break;
                     case ViewType.Exercises:
-                        if (_accountStore.SystemSubscription != null)
+                        if (_accountStore != null)
                         {
                             if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor )
                                 _navigationStore.CurrentViewModel = _routineListViewModel;
@@ -157,7 +157,7 @@ namespace Uniceps.Commands.Player
 
                         break;
                     case ViewType.Users:
-                        if (_accountStore.SystemSubscription != null)
+                        if (_accountStore != null)
                         {
                             if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin)
                                 _navigationStore.CurrentViewModel = _usersViewModel;

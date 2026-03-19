@@ -95,12 +95,12 @@ namespace Uniceps.Stores.RoutineStores
                     return true;
                 case FileFormatType.PDF:
                     PlayerRoutinePrintViewModel vm = RoutineMapper.MapToPdf(routineModel, routineModel.Name ?? "");
-                    if (_accountStore.SystemProfile != null)
-                    {
-                        vm.GymName = _accountStore.SystemProfile.DisplayName;
-                        if (!string.IsNullOrEmpty(_accountStore.SystemProfile.LocalProfileImagePath))
-                            vm.GymLogo=_accountStore.SystemProfile.LocalProfileImagePath;
-                    }
+                    //if (_accountStore.SystemProfile != null)
+                    //{
+                    //    vm.GymName = _accountStore.SystemProfile.DisplayName;
+                    //    if (!string.IsNullOrEmpty(_accountStore.SystemProfile.LocalProfileImagePath))
+                    //        vm.GymLogo=_accountStore.SystemProfile.LocalProfileImagePath;
+                    //}
                     var doc = BuildRoutineDocument.BuildDocument(vm);
                     var pd = new PrintDialog();
                     if (pd.ShowDialog() == true)

@@ -5,27 +5,51 @@
     <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <PlatformTarget>x64</PlatformTarget>
-    <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
+    <!--<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <PlatformTarget>x86</PlatformTarget>-->
     <SignAssembly>False</SignAssembly>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AssemblyVersion>2.1.1.6</AssemblyVersion>
-    <FileVersion>2.1.1.6</FileVersion>
+    <!--<AssemblyVersion>2.1.1.8</AssemblyVersion>-->
+    <!--<FileVersion>2.1.1.8</FileVersion>-->
     <SelfContained>true</SelfContained>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <Configurations>Debug;Release;Test</Configurations>
+
+    <VersionPrefix>2.1.1</VersionPrefix>
+
+    <BuildRevision>$([System.DateTime]::Now.ToString("MMdd"))</BuildRevision>
+
+    <Version>$(VersionPrefix).$(BuildRevision)</Version>
+    <AssemblyVersion>$(VersionPrefix).$(BuildRevision)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+
+    <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
+
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TransformXmlSource>App.config</TransformXmlSource>
-    <TransformXmlTransform>Debug.config</TransformXmlTransform>
-    <TransformXmlDestination>$(OutDir)\$(TargetFileName).config</TransformXmlDestination>
+  <PropertyGroup Condition="'$(Configuration)' == 'Test'">
+    <AssemblyName>Uniceps_Test</AssemblyName>
+    <ApplicationIcon>Resources\Icons\logo_test.ico</ApplicationIcon>
+    <DefineConstants>$(DefineConstants);TEST</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <TransformXmlSource>Release.config</TransformXmlSource>
-    <TransformXmlTransform>App.config</TransformXmlTransform>
-    <TransformXmlDestination>$(OutDir)\$(TargetFileName).config</TransformXmlDestination>
+    <AssemblyName>Uniceps</AssemblyName>
+    <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Update="appsettings.*.json" CopyToPublishDirectory="Never" />
+    <None Update="app.*.config" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+
+  <Target Name="ApplyEnvConfig" BeforeTargets="Build;Publish">
+    <Message Importance="high" Text="Applying $(Configuration) Config Files..." />
+
+    <Copy Condition="Exists('appsettings.$(Configuration).json')" SourceFiles="appsettings.$(Configuration).json" DestinationFiles="appsettings.json" OverwriteReadOnlyFiles="true" />
+
+    <Copy Condition="Exists('app.$(Configuration).config')" SourceFiles="app.$(Configuration).config" DestinationFiles="App.config" OverwriteReadOnlyFiles="true" />
+  </Target>
 
   <ItemGroup>
     <Compile Remove="Resources\Assets\Exercises\**" />
@@ -86,6 +110,7 @@
     <None Remove="Resources\Icons\logo_dark.ico" />
     <None Remove="Resources\Icons\logo_light.ico" />
     <None Remove="Resources\Icons\logo_white.ico" />
+    <None Remove="Resources\Icons\logo_test.ico" />
     <None Remove="Resources\plans.json" />
     <None Remove="Resources\sounds\beep.wav" />
     <None Remove="Training.json" />
@@ -168,6 +193,7 @@
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageReference Include="SkiaSharp" Version="3.119.2-preview.1" />
     <PackageReference Include="System.Drawing.Common" Version="10.0.0" />
     <PackageReference Include="System.Management" Version="10.0.1" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
@@ -180,6 +206,7 @@
     <ProjectReference Include="..\Uniceps.Core\Uniceps.Core.csproj" />
     <ProjectReference Include="..\Uniceps.Entityframework\Uniceps.Entityframework.csproj" />
     <ProjectReference Include="..\Uniceps.FileSystem\Uniceps.FileSystem.csproj" />
+    <ProjectReference Include="..\Uniceps.LicenseManager\Uniceps.LicenseManager.csproj" />
   </ItemGroup>
 
   <ItemGroup>

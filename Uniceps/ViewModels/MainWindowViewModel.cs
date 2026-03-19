@@ -9,21 +9,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Uniceps.Commands;
 using Uniceps.Commands.Player;
-using Uniceps.Commands.SystemAuthCommands;
 using Uniceps.Core.Common;
 using Uniceps.Helpers;
 using Uniceps.navigation;
 using Uniceps.navigation.Navigator;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
-using Uniceps.Stores.SystemAuthStores;
 using Uniceps.utlis.ComponentsViewModels;
 using Uniceps.ViewModels.Accountant;
 using Uniceps.ViewModels.Authentication;
 using Uniceps.ViewModels.SubscriptionViewModel;
-using Uniceps.ViewModels.SystemAuthViewModels;
 using Uniceps.Views;
-using Uniceps.Views.SystemAuthViews;
 
 namespace Uniceps.ViewModels
 {
@@ -37,12 +33,9 @@ namespace Uniceps.ViewModels
         private readonly BackgroundServiceStore _backgroundServiceStore;
         private readonly AuthenticationStore _authenticationStore;
         private readonly AccountStore _accountStore;
-        private readonly SystemProfileCreationViewModel _systemProfileCreationViewModel;
-        private readonly SystemSubscriptionStore _systemSubscriptionStore;
-        private readonly SystemLoginViewModel _systemLoginViewModel;
         private readonly SubscriptionMainViewModel _subscriptionMainViewModel;
-        private readonly UserFlowService _userFlowService;
         private readonly AppInfoViewModel _appInfoViewModel;
+        private readonly LicenseStore _licenseStore;
         public StatusBarViewModel? StatusBarViewModel { get; set; }
         public NotificationBarViewModel NotificationBarViewModel { get; set; }
         private readonly NavigationStore _navigationStore;
@@ -59,73 +52,61 @@ namespace Uniceps.ViewModels
             }
         }
 
-        public MainWindowViewModel(UsersDataStore usersDataStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, INavigator navigator, AccountingViewModel accountingViewModel, HomeViewModel homeNavViewModel, AccountStore accountStore, SystemProfileCreationViewModel systemProfileCreationViewModel, SystemSubscriptionStore systemSubscriptionStore, NavigationStore navigationStore, SystemLoginViewModel systemLoginViewModel, SubscriptionMainViewModel subscriptionMainViewModel, UserFlowService userFlowService, AppInfoViewModel appInfoViewModel)
+        public MainWindowViewModel(UsersDataStore usersDataStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, INavigator navigator, AccountingViewModel accountingViewModel, HomeViewModel homeNavViewModel, AccountStore accountStore, NavigationStore navigationStore, SubscriptionMainViewModel subscriptionMainViewModel, AppInfoViewModel appInfoViewModel, LicenseStore licenseStore)
         {
             Navigator = navigator;
             _navigationStore = navigationStore;
-            _systemLoginViewModel = systemLoginViewModel;
-            _systemLoginViewModel.OTPVerifiedAction += _systemLoginViewModel_OTPVerifiedAction;
             _accountingViewModel = accountingViewModel;
             _homeNavViewModel = homeNavViewModel;
             _usersDataStore = usersDataStore;
             _authenticationStore = authenticationStore;
             _backgroundServiceStore = backgroundServiceStore;
             _accountStore = accountStore;
-            _systemProfileCreationViewModel = systemProfileCreationViewModel;
-            _userFlowService = userFlowService;
             _appInfoViewModel = appInfoViewModel;
-            _systemProfileCreationViewModel.ProfileCreatedAction += _systemProfileCreationViewModel_ProfileCreatedAction;
-
-            _systemSubscriptionStore = systemSubscriptionStore;
-            _systemSubscriptionStore.Created += _systemSubscriptionStore_Created;
-
             _subscriptionMainViewModel = subscriptionMainViewModel;
-
             NotificationBarViewModel = new NotificationBarViewModel();
             _backgroundServiceStore.StateChanged += _backgroundServiceStore_StateChanged;
             _backgroundServiceStore.SyncStatus += _backgroundServiceStore_SyncStatus;
             _usersDataStore.Updated += _usersDataStore_Updated;
-            _accountStore.UserContextChanged += _accountStore_UserContextChanged;
-            _appInfoViewModel.Profile_Updated += _appInfoViewModel_ProfileUpdated;
-            ValidateUserContext();
             var savedTheme = Properties.Settings.Default.AppTheme;
             if (Enum.TryParse(savedTheme, out AppTheme theme))
             {
                 CurrentTheme = theme;
             }
-
             if (IsBackupNeeded())
             {
                 MessageBox.Show("لقد مر يومين على اخر نسخ احتياطي ... لا تنسى عمل نسخ احتياطي للمحافظة على بياناتك");
             }
+
             PrepareMainViewModel();
+            _licenseStore = licenseStore;
+            _licenseStore.LicenseChanged += _licenseStore_LicenseChanged;
+            if (!_licenseStore.Current.IsFullVersion)
+            {
+                NotificationBarViewModel.ActionTitle = "اشترك الان";
+                NotificationBarViewModel.Notification = "نسخة uniceps التجريبية";
+                NotificationBarViewModel.HasNotification = true;
+            }
+            else
+            {
+                NotificationBarViewModel.HasNotification = false;
+            }
         }
 
-        private void _appInfoViewModel_ProfileUpdated()
+        private void _licenseStore_LicenseChanged()
         {
-            RefreshUserContext.Execute(null);
+            if (!_licenseStore.Current.IsFullVersion)
+            {
+                NotificationBarViewModel.ActionTitle = "اشترك الان";
+                NotificationBarViewModel.Notification = "نسخة uniceps التجريبية";
+                NotificationBarViewModel.HasNotification = true;
+            }
+            else
+            {
+                NotificationBarViewModel.HasNotification = false;
+            }
         }
 
-        private void _systemSubscriptionStore_Created()
-        {
-            RefreshUserContext.Execute(null);
-        }
-
-        private void _systemLoginViewModel_OTPVerifiedAction()
-        {
-            RefreshUserContext.Execute(null);
-        }
-
-        private void _systemProfileCreationViewModel_ProfileCreatedAction()
-        {
-            RefreshUserContext.Execute(null);
-        }
-        public ICommand RefreshUserContext => new AsyncRelayCommand(Refresh);
-
-        public async Task Refresh()
-        {
-            await _userFlowService.RefreshUserContextAsync() ;
-        }
         public bool IsBackupNeeded()
         {
             DateTime last = Uniceps.Properties.Settings.Default.LastBackup;
@@ -145,36 +126,6 @@ namespace Uniceps.ViewModels
             else
                 CurrentTheme = AppTheme.Light;
             ThemeService.ApplyTheme(CurrentTheme);
-        }
-        private void _accountStore_UserContextChanged()
-        {
-            ValidateUserContext();
-        }
-        void ValidateUserContext()
-        {
-            switch (_accountStore.UserContext)
-            {
-                case UserContextState.UnAuthenticated:
-
-                    NotificationBarViewModel.Notification = "قم بتسجيل الدخول وانضم الى مجتمعنا ";
-                    NotificationBarViewModel.NotificationBarColor = Brushes.Yellow;
-                    NotificationBarViewModel.ActionTitle = "سجل الان";
-                    NotificationBarViewModel.HasNotification = true;
-                    NotificationBarViewModel.NotificationCommand = new OpenAuthCommand(_systemLoginViewModel);
-                    break;
-                case UserContextState.NoSubscription:
-                    NavigationService<SubscriptionMainViewModel> _navigationService = new NavigationService<SubscriptionMainViewModel>(_navigationStore, () => _subscriptionMainViewModel);
-                    NotificationBarViewModel.Notification = "اشترك باحدى باقاتنا المميزة واحصل على المزيد من الميزات";
-                    NotificationBarViewModel.NotificationBarColor = Brushes.Green;
-                    NotificationBarViewModel.ActionTitle = "اشترك الان";
-                    NotificationBarViewModel.HasNotification = true;
-                    NotificationBarViewModel.NotificationCommand = new NavaigateCommand<SystemSubscriptionCreationViewModel>(new NavigationService<SystemSubscriptionCreationViewModel>(_navigationStore, () => SystemSubscriptionCreationViewModel.LoadViewModel(_systemSubscriptionStore, _navigationService)));
-                    break;
-                case UserContextState.Ready:
-
-                    break;
-            }
-           
         }
 
         void PrepareMainViewModel()
@@ -222,19 +173,7 @@ namespace Uniceps.ViewModels
             StatusBarViewModel.BackMessage = _backgroundServiceStore.BackMessage;
             StatusBarViewModel.Connection = _backgroundServiceStore.Connection ? Brushes.Green : Brushes.Red;
 
-            //if (_accountStore.CurrentLicense != null)
-            //{
-            //    DaysLeft = (int)_licenseDataStore.CurrentLicense.SubscribeEndDate.Subtract(DateTime.Now).TotalDays;
-            //    IsExpired = DaysLeft <= 5;
-            //}
         }
-        public ICommand OpenProfileCommand => new RelayCommand(ProfileCreation);
-        public void ProfileCreation()
-        {
-            CreateProfileViewWindow createProfileViewWindow = new CreateProfileViewWindow() { DataContext = _systemProfileCreationViewModel };
-            createProfileViewWindow.ShowDialog();
-        }
-       
         private void _usersDataStore_Updated(Core.Models.Authentication.User obj)
         {
             if (StatusBarViewModel != null && _accountStore.CurrentAccount!.Id == obj.Id)

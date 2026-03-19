@@ -32,6 +32,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         private readonly CreditsDataStore _creditsDataStore;
         private readonly EmployeeSubscriptionDataStore? _employeeSubscriptionDataStore;
         private readonly AccountStore _accountStore;
+        private readonly LicenseStore _licenseStore;
         public bool HasData => trainerListItemViewModels.Count > 0;
         public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
         public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
@@ -66,7 +67,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             }
         }
         public SearchBoxViewModel SearchBox { get; set; }
-        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, EmployeeSubscriptionDataStore? employeeSubscriptionDataStore, AccountStore accountStore)
+        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, EmployeeSubscriptionDataStore? employeeSubscriptionDataStore, AccountStore accountStore, LicenseStore licenseStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
@@ -99,6 +100,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             filtersItemViewModel.Add(new FiltersItemViewModel(Filter.Employee, 3, "الموظفين"));
 
             _employeeStore.FilterChanged += _employeeStore_FilterChanged;
+            _licenseStore = licenseStore;
         }
 
         private void _employeeStore_FilterChanged(Filter? filter)
@@ -211,13 +213,13 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         private void AddTrainer(Core.Models.Employee.Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this, _dausesDataStore, _creditsDataStore, _employeeSubscriptionDataStore, _accountStore);
+                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this, _dausesDataStore, _creditsDataStore, _employeeSubscriptionDataStore, _accountStore, _licenseStore);
             trainerListItemViewModels.Add(itemViewModel);
             OnPropertyChanged(nameof(HasData));
         }
-        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, EmployeeSubscriptionDataStore employeeSubscriptionDataStore,AccountStore accountStore)
+        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, EmployeeSubscriptionDataStore employeeSubscriptionDataStore,AccountStore accountStore,LicenseStore licenseStore)
         {
-            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore, dausesDataStore, creditsDataStore, employeeSubscriptionDataStore, accountStore);
+            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore, dausesDataStore, creditsDataStore, employeeSubscriptionDataStore, accountStore, licenseStore);
 
             viewModel.LoadTrainerCommand.Execute(null);
 

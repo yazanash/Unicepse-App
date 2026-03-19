@@ -10,11 +10,9 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Uniceps.Commands;
-using Uniceps.Commands.SystemAuthCommands;
 using Uniceps.Core.Models;
 using Uniceps.DataExporter;
 using Uniceps.Stores;
-using Uniceps.Stores.SystemAuthStores;
 using Uniceps.utlis.common;
 using Uniceps.Views;
 
@@ -24,27 +22,22 @@ namespace Uniceps.ViewModels
     {
         private static readonly string currentVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
         private AccountStore _accountStore;
-        private IProfileDataStore _systemProfileStore;
         public event Action? Profile_Updated;
         private readonly DataExportStore _dataExportStore;
-        private readonly ISystemAuthStore _systemAuthStore;
         public string LastBackupTime => Properties.Settings.Default.LastBackup == DateTime.MinValue
         ? "لم يتم إجراء نسخ احتياطي بعد"
         : Properties.Settings.Default.LastBackup.ToString("g");
-        public AppInfoViewModel(AccountStore accountStore, IProfileDataStore systemProfileStore, DataExportStore dataExportStore, ISystemAuthStore systemAuthStore)
+        public AppInfoViewModel(AccountStore accountStore, DataExportStore dataExportStore)
         {
 
             Version = currentVersion;
             _accountStore = accountStore;
-            _accountStore.ProfileChanged += _accountStore_ProfileChanged;
-            _accountStore.SubscriptionChanged += _accountStore_SubscriptionChanged;
-            _systemProfileStore = systemProfileStore;
+            //_accountStore.ProfileChanged += _accountStore_ProfileChanged;
+         
 
             LoadProfile();
-            LoadSubscription();
-            UpdateProfileCommand = new UpdateProfileCommand(systemProfileStore, this);
+          
             _dataExportStore = dataExportStore;
-            _systemAuthStore = systemAuthStore;
         }
         private bool _hasProfile = false;
         public bool HasProfile
@@ -73,27 +66,15 @@ namespace Uniceps.ViewModels
 
             var bitmap = new BitmapImage();
             bitmap.BeginInit();
-            bitmap.CacheOption = BitmapCacheOption.OnLoad; // مهم لتجنب قفل الملف
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.UriSource = new Uri(localPath);
             bitmap.EndInit();
-            bitmap.Freeze(); // إذا ستستخدمه من thread آخر
+            bitmap.Freeze(); 
             ProfilePicture = bitmap;
             HasProfilePicture = true;
         }
         public ICommand UploadProfilePictureCommand => new AsyncRelayCommand(ExecuteUploadProfilePictureCommand);
-        public ICommand UpdateProfileCommand { get; set; }
-
-        public ICommand LogoutCommand => new RelayCommand(ExecuteLogout);
-
-        private void ExecuteLogout()
-        {
-            if(MessageBox.Show("سيتم تسجيل الخروج من الحساب على هذا الجهاز ... سيتم اغلاق التطبيق , هل انت متاكد ؟","تنويه"
-                ,MessageBoxButton.YesNo,MessageBoxImage.Warning)== MessageBoxResult.Yes)
-            {
-                _systemAuthStore.Logout();
-                Application.Current.Shutdown();
-            }
-        }
+        public ICommand? UpdateProfileCommand { get; set; }
 
         public ICommand BackupAndRestore => new RelayCommand(ExecuteOpenBackup);
 
@@ -116,7 +97,7 @@ namespace Uniceps.ViewModels
                 try
                 {
                     IsLoading = true;
-                     await _systemProfileStore.UploadProfilePicture(localFilePath);
+                    await Task.Delay(0);
                     IsLoading = false;
                     MessageBox.Show("تم تحديث الصورة بنجاح");
                 }
@@ -128,49 +109,7 @@ namespace Uniceps.ViewModels
         }
         private void LoadProfile()
         {
-            if (_accountStore.SystemProfile != null)
-            {
-                Name = _accountStore.SystemProfile.DisplayName;
-                Phone = _accountStore.SystemProfile.PhoneNumber;
-                OwnerName = _accountStore.SystemProfile.OwnerName;
-                Address = _accountStore.SystemProfile.Address;
-                if (!string.IsNullOrEmpty( _accountStore.SystemProfile.LocalProfileImagePath))
-                {
-                    LoadProfileImage(_accountStore.SystemProfile.LocalProfileImagePath);
-                }
-                HasProfile = true;
-            }
-            else
-            {
-                Name = "غير محدد";
-                Phone = "غير محدد";
-                OwnerName = "غير محدد";
-                Address = "غير محدد";
-                HasProfile = false;
-            }
-        }
-        private void LoadSubscription()
-        {
-            if (_accountStore.SystemSubscription != null)
-            {
-                PlanName = _accountStore.SystemSubscription.PlanName;
-                Price = _accountStore.SystemSubscription.Price;
-                StartDate = _accountStore.SystemSubscription.StartDate.ToShortDateString();
-                EndDate = _accountStore.SystemSubscription.EndDate.ToShortDateString();
-                DaysLeft =Convert.ToInt32( _accountStore.SystemSubscription.EndDate.Subtract(DateTime.Now).TotalDays);
-            }
-            else
-            {
-                PlanName = "نسخة تجريبية";
-                Price = 0;
-                StartDate ="---";
-                EndDate = "---";
-                DaysLeft = 0;
-            }
-        }
-        private void _accountStore_SubscriptionChanged()
-        {
-            LoadSubscription();
+           
         }
 
         private void _accountStore_ProfileChanged()
