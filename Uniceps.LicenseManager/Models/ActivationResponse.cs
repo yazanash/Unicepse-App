@@ -11,6 +11,7 @@ namespace Uniceps.LicenseManager.Models
         public bool Success { get; set; }
         public string Token { get; set; } = "";
         public DateTime ActivatedAt { get; set; }
+        public DateTime? ExpiredAt { get; set; }
         public string Message { get; set; } = "";
     }
 }

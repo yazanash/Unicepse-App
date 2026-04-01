@@ -12,10 +12,9 @@
     <!--<AssemblyVersion>2.1.1.8</AssemblyVersion>-->
     <!--<FileVersion>2.1.1.8</FileVersion>-->
     <SelfContained>true</SelfContained>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <Configurations>Debug;Release;Test</Configurations>
-
-    <VersionPrefix>2.1.1</VersionPrefix>
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <VersionPrefix>2.5.1</VersionPrefix>
 
     <BuildRevision>$([System.DateTime]::Now.ToString("MMdd"))</BuildRevision>
 
@@ -25,7 +24,7 @@
 
     <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
 
-    <Platforms>AnyCPU;x64;x86</Platforms>
+    <Platforms>AnyCPU;x64:x86</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Test'">
@@ -40,15 +39,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Update="appsettings.*.json" CopyToPublishDirectory="Never" />
-    <None Update="app.*.config" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <Target Name="ApplyEnvConfig" BeforeTargets="Build;Publish">
     <Message Importance="high" Text="Applying $(Configuration) Config Files..." />
 
     <Copy Condition="Exists('appsettings.$(Configuration).json')" SourceFiles="appsettings.$(Configuration).json" DestinationFiles="appsettings.json" OverwriteReadOnlyFiles="true" />
-
-    <Copy Condition="Exists('app.$(Configuration).config')" SourceFiles="app.$(Configuration).config" DestinationFiles="App.config" OverwriteReadOnlyFiles="true" />
   </Target>
 
   <ItemGroup>
@@ -133,57 +129,20 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="uni_luncher.ico" />
-    <Content Include="Resources\Assets\Metric\body_front.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Chest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\ForeArm.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\ForeArmFlip.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Height.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\hips.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Leg.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\LegFlip.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Neck.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Shoulder.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Thigh.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\ThighFlip.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\waist.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Weight.png">
+    <Content Include="Resources\Assets\Metric\*.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="6.2.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.11.0.20250507" />
@@ -193,7 +152,6 @@
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
-    <PackageReference Include="SkiaSharp" Version="3.119.2-preview.1" />
     <PackageReference Include="System.Drawing.Common" Version="10.0.0" />
     <PackageReference Include="System.Management" Version="10.0.1" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
@@ -319,6 +277,10 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\DashboardViews\" />
   </ItemGroup>
 
 </Project>

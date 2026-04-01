@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Uniceps.SystemServices;
 
 namespace Uniceps.Helpers
 {
@@ -35,8 +36,8 @@ namespace Uniceps.Helpers
             {
                 Source = new Uri(themePath, UriKind.Relative)
             });
-            Properties.Settings.Default.AppTheme = theme.ToString();
-            Properties.Settings.Default.Save();
+            SettingsManager.Current.AppTheme = theme.ToString();
+            SettingsManager.Save();
 
         }
 

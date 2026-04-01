@@ -21,7 +21,8 @@ namespace Uniceps.navigation.Navigator
         Users,
         About,
         Logout,
-        Exercises
+        Exercises,
+        Dashboard
     }
     public interface INavigator
     {

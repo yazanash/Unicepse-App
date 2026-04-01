@@ -14,11 +14,11 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
 {
     public class ExercisesListItemViewModel : ViewModelBase
     {
-        public Exercises Exercises;
+        public ExerciseV2 Exercises;
         public string? ExerciseImage => Exercises.ImagePath;
         public string? ExerciseName => Exercises.Name;
         public string? Group { get; set; }
-        public int Id => Exercises.Id;
+        public string Id => Exercises.ExerciseId;
         private bool _isChecked;
         public bool IsChecked
         {
@@ -38,33 +38,33 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
         private readonly RoutineItemDataStore _routineItemDataStore;
         private readonly DayGroupDataStore _dayGroupDataStore;
         private readonly ExercisesListViewModel exercisesListViewModel;
-        public ExercisesListItemViewModel(Exercises exercises, RoutineItemDataStore routineItemDataStore, DayGroupDataStore dayGroupDataStore, ExercisesListViewModel exercisesListViewModel)
+        public ExercisesListItemViewModel(ExerciseV2 exercises, RoutineItemDataStore routineItemDataStore, DayGroupDataStore dayGroupDataStore, ExercisesListViewModel exercisesListViewModel)
         {
             Exercises = exercises;
-            switch (Exercises.MuscleGroupId)
-            {
-                case (int)EMuscleGroup.Abs:
-                    Group = "معدة";
-                    break;
-                case (int)EMuscleGroup.Back:
-                    Group = "ظهر";
-                    break;
-                case (int)EMuscleGroup.Triceps:
-                    Group = "ترايسبس";
-                    break;
-                case (int)EMuscleGroup.Biceps:
-                    Group = "بايسيبس";
-                    break;
-                case (int)EMuscleGroup.Shoulders:
-                    Group = "الأكتاف";
-                    break;
-                case (int)EMuscleGroup.Legs:
-                    Group = "الارجل";
-                    break;
-                case (int)EMuscleGroup.Calves:
-                    Group = "بطات الارجل";
-                    break;
-            }
+            //switch (Exercises.MuscleGroupCode)
+            //{
+            //    case (int)EMuscleGroup.Abs:
+            //        Group = "معدة";
+            //        break;
+            //    case (int)EMuscleGroup.Back:
+            //        Group = "ظهر";
+            //        break;
+            //    case (int)EMuscleGroup.Triceps:
+            //        Group = "ترايسبس";
+            //        break;
+            //    case (int)EMuscleGroup.Biceps:
+            //        Group = "بايسيبس";
+            //        break;
+            //    case (int)EMuscleGroup.Shoulders:
+            //        Group = "الأكتاف";
+            //        break;
+            //    case (int)EMuscleGroup.Legs:
+            //        Group = "الارجل";
+            //        break;
+            //    case (int)EMuscleGroup.Calves:
+            //        Group = "بطات الارجل";
+            //        break;
+            //}
             _routineItemDataStore = routineItemDataStore;
             _dayGroupDataStore = dayGroupDataStore;
             this.exercisesListViewModel = exercisesListViewModel;

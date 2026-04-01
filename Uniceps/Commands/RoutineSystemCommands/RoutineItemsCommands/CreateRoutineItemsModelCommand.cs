@@ -26,7 +26,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            int i =0;
+            int i =_routineItemDataStore.RoutineItems.Count();
             foreach (var item in _exercisesViewModel._exercisesListItemViewModel.Where(x=>x.IsSelected).OrderBy(x=>x.SelectedAt).Select(x=>x.Exercises))
             {
                 RoutineItemModel routineItemModel = new()
@@ -34,7 +34,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
                     Day = _dayGroupDataStore.SelectedDayGroup!,
                     DayId = _dayGroupDataStore.SelectedDayGroup!.Id,
                     Exercise = item,
-                    ExerciseId = item.Id,
+                    ExerciseV2Id = item.ExerciseId,
                     Order = i++,
                 };
                 await _routineItemDataStore.Add(routineItemModel);

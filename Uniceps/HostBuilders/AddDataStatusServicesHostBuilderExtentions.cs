@@ -50,7 +50,7 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IPublicIdService<Player>, PlayerDataService>();
                 services.AddSingleton<IExportDataProvider, ExportDataProviderService>();
                 services.AddSingleton<IImportDataProvider, ImportDataProviderService>();
-
+                services.AddSingleton<IDashboardAnalyticsDataService, DashboardAnalyticsDataService>();
             });
             return _hostBuilder;
         }

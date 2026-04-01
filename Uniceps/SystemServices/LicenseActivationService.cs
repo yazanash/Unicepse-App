@@ -25,7 +25,6 @@ namespace Uniceps.SystemServices
 
         public async Task RequestLicenseFile()
         {
-            MessageBox.Show("البرنامج غير مفعل. يرجى اختيار ملف الترخيص الخاص بك (.unxlic)", "تفعيل Uniceps");
 
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {

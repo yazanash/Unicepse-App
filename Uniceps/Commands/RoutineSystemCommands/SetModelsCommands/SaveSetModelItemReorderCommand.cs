@@ -23,11 +23,12 @@ namespace Uniceps.Commands.RoutineSystemCommands.SetModelsCommands
         public override async Task ExecuteAsync(object? parameter)
         {
             List<SetModel>? reorderedList = _setModelItemsList.SetModelItems.Select(x => x.SetModel!).ToList();
+            int order = 1;
             foreach (SetModel? setModel in reorderedList)
             {
                 if (setModel != null)
                 {
-                    setModel.RoundIndex = reorderedList.IndexOf(setModel);
+                    setModel.RoundIndex = order++;
                     _setModelItemsList.SetModelItems.SingleOrDefault(x => x.SetModel!.Id == setModel.Id)!.RoundIndex = setModel.RoundIndex;
                 }
             }

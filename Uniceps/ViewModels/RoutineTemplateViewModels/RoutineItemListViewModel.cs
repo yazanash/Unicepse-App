@@ -79,6 +79,10 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             {
                 _routineItemListItemViewModels.Clear();
             }
+            if (_routineItemDataStore.RoutineItems.Any(x => x.DayId == obj))
+            {
+                _routineItemDataStore.ClearItems();
+            }
             OnPropertyChanged(nameof(HasData));
         }
 

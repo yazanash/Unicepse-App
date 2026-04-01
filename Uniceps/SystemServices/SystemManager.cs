@@ -41,7 +41,7 @@ namespace Uniceps.SystemServices
         }
         public static void ApplyTheme()
         {
-            var savedTheme = Uniceps.Properties.Settings.Default.AppTheme;
+            var savedTheme = SettingsManager.Current.AppTheme;
             if (Enum.TryParse(savedTheme, out AppTheme theme))
             {
                 ThemeService.ApplyTheme(theme);

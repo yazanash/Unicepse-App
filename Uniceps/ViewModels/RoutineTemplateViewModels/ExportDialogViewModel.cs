@@ -11,6 +11,7 @@ using Uniceps.Commands;
 using Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.Stores.RoutineStores;
+using Uniceps.SystemServices;
 using Uniceps.utlis.common;
 namespace Uniceps.ViewModels.RoutineTemplateViewModels
 {
@@ -34,13 +35,13 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             {
                 FileFormats.Add((FileFormatType)item);
             }
-            string savedPath = Properties.Settings.Default.ExportFolderPath;
+            string savedPath = SettingsManager.Current.ExportFolderPath;
             if (string.IsNullOrEmpty(savedPath))
             {
                 string defaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-                Properties.Settings.Default.ExportFolderPath = defaultPath;
-                Properties.Settings.Default.Save();
+                SettingsManager.Current.ExportFolderPath = defaultPath;
+                SettingsManager.Save();
 
                 FolderPath = defaultPath;
             }
@@ -59,8 +60,8 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
 
             if (dialog.ShowDialog() == true)
             {
-                Properties.Settings.Default.ExportFolderPath = dialog.FolderName;
-                Properties.Settings.Default.Save();
+                SettingsManager.Current.ExportFolderPath = dialog.FolderName;
+                SettingsManager.Save();
                 FolderPath = dialog.FolderName;
             }
         }

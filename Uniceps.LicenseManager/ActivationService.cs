@@ -51,8 +51,12 @@ namespace Uniceps.LicenseManager
                     using var doc = JsonDocument.Parse(responseBody);
                     string token = doc.RootElement.GetProperty("token").GetString()!;
                     DateTime activatedAt = doc.RootElement.GetProperty("activatedAt").GetDateTime();
-
-                    SaveActivationInfo(licenseData.Id, token, activatedAt.Ticks);
+                    DateTime? expiryDate = null;
+                    if (doc.RootElement.TryGetProperty("expiryDate", out var expProp) && expProp.ValueKind != JsonValueKind.Null)
+                    {
+                        expiryDate = expProp.GetDateTime();
+                    }
+                    SaveActivationInfo(licenseData.Id, token, activatedAt.Ticks, expiryDate);
 
                     return "تم التفعيل بنجاح! يمكنك الآن استخدام البرنامج.";
                 }
@@ -85,7 +89,7 @@ namespace Uniceps.LicenseManager
             }
             catch { return false; }
         }
-        private void SaveActivationInfo(Guid licenseId, string token, long ticks)
+        private void SaveActivationInfo(Guid licenseId, string token, long ticks, DateTime? expiryDate)
         {
             var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Uniceps");
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
@@ -97,7 +101,8 @@ namespace Uniceps.LicenseManager
                 Lid = licenseId,
                 Key = token,
                 Mid = HardwareFingerprint.GetId(),
-                Time = ticks 
+                Time = ticks,
+                Exp = expiryDate?.Ticks
             };
 
             File.WriteAllText(path, JsonSerializer.Serialize(data));
@@ -117,7 +122,7 @@ namespace Uniceps.LicenseManager
                 string savedKey = root.GetProperty("Key").GetString()!;
                 string savedMid = root.GetProperty("Mid").GetString()!;
                 long savedTime = root.GetProperty("Time").GetInt64();
-
+                if (DateTime.Now < new DateTime(savedTime)) return false;
                 if (savedMid != HardwareFingerprint.GetId()) return false;
 
                 string rawData = $"{savedLid}|{savedMid}|{savedTime}";
@@ -143,14 +148,28 @@ namespace Uniceps.LicenseManager
                 var json = File.ReadAllText(path);
                 using var doc = JsonDocument.Parse(json);
                 var root = doc.RootElement;
-
+                DateTime? expiryDate = null;
+                if (root.TryGetProperty("Exp", out var expProp) && expProp.ValueKind != JsonValueKind.Null)
+                {
+                    expiryDate = new DateTime(expProp.GetInt64());
+                }
+                if (expiryDate.HasValue && expiryDate.Value < DateTime.Now)
+                {
+                    return new LicenseStatus
+                    {
+                        PlanName = "Expired",
+                        IsFullVersion = false,
+                        ExpiryDate = expiryDate
+                    };
+                }
                 long savedTicks = root.GetProperty("Time").GetInt64();
                 DateTime activatedAt = new DateTime(savedTicks);
 
                 return new LicenseStatus
                 {
-                    PlanName = "Full Version", 
+                    PlanName = expiryDate.HasValue ? "Subscription Plan" : "Lifetime Plan",
                     IsFullVersion = true,
+                    ExpiryDate = expiryDate,
                     MachineId = root.GetProperty("Mid").GetString()!
                 };
             }

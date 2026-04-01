@@ -29,7 +29,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private readonly PlayersDataStore _playersDataStore;
         private readonly SportDataStore _sportDataStore;
         private readonly EmployeeStore _employeeStore;
-        private readonly AccountStore _accountStore;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => subscriptionListItemViewModels;
         public SubscriptionListItemViewModel? SelectedSubscription
@@ -47,14 +46,13 @@ namespace Uniceps.ViewModels.PlayersViewModels
         }
 
 
-        public PlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore, PaymentDataStore paymentStore, SportDataStore sportDataStore, AccountStore accountStore, EmployeeStore employeeStore)
+        public PlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore, PaymentDataStore paymentStore, SportDataStore sportDataStore, EmployeeStore employeeStore)
         {
             _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
             _playersDataStore = playersDataStore;
             _paymentStore = paymentStore;
             _sportDataStore = sportDataStore;
-            _accountStore = accountStore;
             _employeeStore = employeeStore;
 
             LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _playersDataStore);
@@ -75,7 +73,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
         {
             string filename = subscriptionListItemViewModel.SportName + "_" + subscriptionListItemViewModel.RollDate;
             PrintWindowDialog printWindowDialog = new PrintWindowDialog(filename);
-            printWindowDialog.DataContext = new PrintWindowViewModel(new SubscriptionPrintViewModel(subscriptionListItemViewModel.Subscription,_accountStore),new NavigationStore());
+            printWindowDialog.DataContext = new PrintWindowViewModel(new SubscriptionPrintViewModel(subscriptionListItemViewModel.Subscription),new NavigationStore());
             printWindowDialog.ShowDialog();
         }
         public ICommand AddSubscriptionCommand => new RelayCommand(ExecuteAddSubscriptionCommand);
@@ -145,9 +143,9 @@ namespace Uniceps.ViewModels.PlayersViewModels
             itemViewModel.Order = subscriptionListItemViewModels.Count();
         }
 
-        public static PlayerMainPageViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore,AccountStore accountStore,EmployeeStore employeeStore)
+        public static PlayerMainPageViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore,EmployeeStore employeeStore)
         {
-            PlayerMainPageViewModel viewModel = new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore, accountStore, employeeStore);
+            PlayerMainPageViewModel viewModel = new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore, employeeStore);
             viewModel.LoadSubscriptionCommand.Execute(null);
             viewModel.LoadPaymentCommand.Execute(null);
             return viewModel;

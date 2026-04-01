@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Serilog;
 using System;
 using System.Diagnostics;
@@ -137,7 +138,7 @@ namespace Uniceps
             base.OnStartup(e);
 
             SystemManager.InitializeSystem();
-
+            CustomLiveChartsExtensions.AddLiveChartsAppSettings();
             var activationService = _host.Services.GetRequiredService<ActivationService>();
             LicenseActivationService licenseActivationService = _host.Services.GetRequiredService<LicenseActivationService>();
             if (e.Args.Length > 0 && Path.GetExtension(e.Args[0]).ToLower() == ".unxlic")
@@ -164,6 +165,18 @@ namespace Uniceps
             splash.Message = " التطبيق جاهز للعمل ...";
             await OpenMainView();
             splashScreen.Close();
+            ToastNotificationManagerCompat.OnActivated += toastArgs =>
+            {
+                ToastArguments args = ToastArguments.Parse(toastArgs.Argument);
+                if (args.Contains("action") && args["action"] == "runBackup")
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var appViewModel = _host.Services.GetRequiredService<AppInfoViewModel>();
+                        appViewModel.BackupAndRestore.Execute(null);
+                    });
+                }
+            };
         }
         protected override void OnExit(ExitEventArgs e)
         {

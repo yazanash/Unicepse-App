@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Uniceps.BackgroundServices;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.ViewModels;
@@ -38,12 +39,12 @@ namespace Uniceps.SystemServices
         {
             if (InternetAvailability.IsInternetAvailable())
             {
-                try
-                {
+                //try
+                //{
+                    await _store.GetAndVerifyMuscleGroups();
                     await _store.GetExcersisesWithMuscleGroups();
-
-                }
-                catch { }
+                //}
+                //catch (Exception ex) { MessageBox.Show(ex.Message); }
             }
         }
        

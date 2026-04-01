@@ -19,6 +19,7 @@ using Uniceps.navigation.Navigator;
 using Uniceps.Views;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.ViewModels.DashboardViewModels;
 
 namespace Uniceps.HostBuilders
 {
@@ -48,11 +49,12 @@ namespace Uniceps.HostBuilders
                 services.AddTransient((s) => CreatePlayerProfileViewModel(s));
                 services.AddTransient((s) => CreateExercisesViewModel(s));
                 services.AddTransient((s) => CreateSubscriptionListingViewModel(s));
+                services.AddTransient((s) => CreateDashboard(s));
                 services.AddSingleton<AccountingViewModel>();
                 services.AddTransient<Func<PlayerListViewModel>>(services => () => services.GetRequiredService<PlayerListViewModel>());
                 services.AddTransient<NavigationService<PlayerListViewModel>>();
                 services.AddSingleton<INavigator, Navigator>();
-
+                services.AddTransient<SystemSubscriptionPaymentOptionDialogViewModel>();
                 services.AddTransient<Func<RoutineListViewModel>>(services => () => services.GetRequiredService<RoutineListViewModel>());
                 services.AddTransient<NavigationService<RoutineListViewModel>>();
                 services.AddSingleton(s => new MainWindow()
@@ -65,6 +67,12 @@ namespace Uniceps.HostBuilders
                 });
             });
             return _hostBuilder;
+        }
+        private static DashboardViewModel CreateDashboard(IServiceProvider services)
+        {
+            return DashboardViewModel.LoadViewModel(
+                services.GetRequiredService<GymStore>()
+                );
         }
         private static PlayerListViewModel CreatePlayerListingViewModel(IServiceProvider services)
         {
@@ -145,8 +153,6 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<MetricDataStore>(),
                 services.GetRequiredService<PlayersAttendenceStore>(),
                 services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
-                services.GetRequiredService<ExercisesDataStore>(),
-                 services.GetRequiredService<AccountStore>(),
                    services.GetRequiredService<EmployeeStore>(),
                    services.GetRequiredService<LicenseStore>());
         }

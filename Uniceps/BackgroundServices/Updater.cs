@@ -15,7 +15,6 @@ using System.Xml;
 using Uniceps.Services;
 using Uniceps.ViewModels;
 using Uniceps.Views;
-using Windows.Media.Protection.PlayReady;
 
 namespace Uniceps.BackgroundServices
 {

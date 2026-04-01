@@ -20,31 +20,37 @@ namespace Uniceps.API.Exercises
         {
             _client = client;
         }
-        public async Task<ApiResponse<List<ExerciseDtoModel>>> FetchExercises(int id)
+        public async Task<ApiResponse<List<ExerciseDtoModel>>> FetchExercises()
         {
-            return await _client.GetAsync<List<ExerciseDtoModel>>($"Exercise?id={id}");
+            return await _client.GetAsync<List<ExerciseDtoModel>>($"ExerciseV2");
         }
 
-        public async Task DownloadImage(string imageUrl, string localPath)
+        public async Task DownloadImage(string exerciseId, string localPath)
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                byte[] imageBytes = await client.GetByteArrayAsync(imageUrl);
+                byte[] imageBytes = await _client.DownloadImage($"ExerciseV2/get-image/{exerciseId}");
+                if (imageBytes == null || imageBytes.Length == 0) return;
                 using (var bitmap = SKBitmap.Decode(imageBytes))
                 {
-                    if (bitmap == null) return; // فشل في قراءة الصورة
+                    if (bitmap == null) return;
 
                     using (var image = SKImage.FromBitmap(bitmap))
-                    using (var encoded = image.Encode(SKEncodedImageFormat.Png, 100)) 
+                    using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
                     {
-                        await File.WriteAllBytesAsync(localPath, encoded.ToArray());
+                        using (var stream = File.Create(localPath))
+                        {
+                            data.SaveTo(stream);
+                        }
                     }
                 }
             }
+            catch { }
+          
         }
-        public async Task<ApiResponse<List<MuscleGroupDto>>> FetchMuscleGroup()
+        public async Task<ApiResponse<EssentialsReponse>> FetchEssentials()
         {
-            return await _client.GetAsync<List<MuscleGroupDto>>($"MuscleGroup");
+            return await _client.GetAsync<EssentialsReponse>($"ExerciseV2/GetEssentials");
         }
 
     }

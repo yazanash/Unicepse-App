@@ -86,20 +86,22 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
-                                    <Border  MinWidth="100" MaxWidth="150" x:Name="Bd" Margin="5" Style="{DynamicResource StaticCardBorderStyle}">
+                                    <Border  x:Name="Bd" Margin="5" Width="200" Style="{DynamicResource StaticCardBorderStyle}">
 
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Vertical">
 
-                                            <TextBlock FontSize="16" MaxWidth="100" TextWrapping="WrapWithOverflow"  Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
+                                            <TextBlock FontSize="16"  TextWrapping="Wrap"  Foreground="{DynamicResource Brush.Foreground}" FontWeight="Bold"
                                    Text="{Binding DayGroupName,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"  HorizontalAlignment="Center"></TextBlock>
+                                            <StackPanel Orientation="Horizontal">
                                             <CheckBox 
-                                                      VerticalAlignment="Center"  Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
+                                                      VerticalAlignment="Center"  Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="2">
 
                                                 <Icon:PackIconMaterial Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                             </CheckBox>
-                                            <Button Command="{Binding DeleteCommand}" Style="{StaticResource IconBtn}" FontSize="12"  Grid.Column="0" Grid.Row="4"  HorizontalAlignment="Center">
+                                            <Button Command="{Binding DeleteCommand}" Style="{StaticResource IconBtn}" FontSize="12"  Grid.Column="0" Grid.Row="4"  VerticalAlignment="Center">
                                                 <Icon:PackIconMaterial Kind="TrashCan" Foreground="red" Style="{StaticResource GridBtnIcon}"/>
                                             </Button>
+                                            </StackPanel>
                                             <!-- Popup for Editing -->
                                             <Popup Opened="MyPopup_Opened"  StaysOpen="False" AllowsTransparency="True" Name="MyPopup" IsOpen="{Binding IsEditing,UpdateSourceTrigger=PropertyChanged}" PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
                                                 <!-- Customize the popup content here -->
@@ -108,7 +110,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
 
-                                                            <TextBox MaxWidth="100" Name="EditTextBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                                                            <TextBox  Name="EditTextBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
 
                                                         </StackPanel>

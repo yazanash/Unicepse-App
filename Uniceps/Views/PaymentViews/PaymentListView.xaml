@@ -103,9 +103,10 @@
                             
                         </Border>-->
                 </Grid>
+                <Comp:CaptinUniForEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="4" Title="لا يوجد دفعات لهذا اللاعب" 
+              Caption=""/>
             </Grid>
-            <Comp:CaptinUniForEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="4" Title="لا يوجد دفعات لهذا اللاعب" 
-                          Caption=""/>
+            
         </DockPanel>
     </Border>
 </UserControl>

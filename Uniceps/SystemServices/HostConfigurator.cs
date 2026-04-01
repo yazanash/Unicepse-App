@@ -38,20 +38,7 @@ namespace Uniceps.SystemServices
               .AddCommands()
               .AddStores()
               .AddHttpClient()
-              .ConfigureServices((hostContext, services) =>
-              {
-                  services.AddHostedService<DataSyncService>();
-                  string? CONNECTION_STRING = hostContext.Configuration.GetConnectionString("default");
-                  bool SQLITE = hostContext.Configuration.GetValue<bool>("UseSqlite");
-                  if (SQLITE)
-                      CONNECTION_STRING = hostContext.Configuration.GetConnectionString("sqlite");
-                  services.AddSingleton(new UnicepsDbContextFactory(CONNECTION_STRING, SQLITE));
-
-                  var baseUrl = hostContext.Configuration["LicenseSettings:BaseUrl"] ?? "";
-                  string publicKey = hostContext.Configuration["LicenseSettings:PublicKey"] ?? "";
-
-                  services.AddSingleton(new ActivationService(baseUrl, publicKey));
-              }).Build();
+              .Build();
 
     }
 }

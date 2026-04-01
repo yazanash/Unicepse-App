@@ -19,7 +19,7 @@
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                   <DoubleAnimation 
+                                    <DoubleAnimation 
                                                             Storyboard.TargetProperty="Width"
                                                         To="200" Duration="0:0:0.2" />
                                 </Storyboard>
@@ -38,8 +38,8 @@
                 </Style.Triggers>
             </Style>
         </Border.Style>
-            <DockPanel >
-                <!--Logo-->
+        <DockPanel >
+            <!--Logo-->
 
             <!--Menu Buttons-->
             <StackPanel DockPanel.Dock="Top" >
@@ -56,6 +56,7 @@
                         <TextBlock  Text="الرئيسية"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                     </StackPanel>
                 </RadioButton>
+              
                 <RadioButton GroupName="nav"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static nav:ViewType.PlayersLog}" 
@@ -65,6 +66,7 @@
                         <TextBlock  Text="دخول/خروج اللاعبين"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
                     </StackPanel>
                 </RadioButton>
+              
                 <RadioButton GroupName="nav"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Players}" 
@@ -136,9 +138,18 @@
 
                     </StackPanel>
                 </RadioButton>
+                <RadioButton GroupName="nav"
+Command="{Binding UpdateCurrentViewModelCommand}"
+CommandParameter="{x:Static nav:ViewType.Dashboard}" 
+Style="{StaticResource MenuButtonRD}" >
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartBarStacked"/>
+                        <TextBlock  Text="الاحصائيات"  Visibility="{Binding IsOpen , Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </RadioButton>
             </StackPanel>
         </DockPanel>
-        </Border>
-    
+    </Border>
+
 
 </UserControl>

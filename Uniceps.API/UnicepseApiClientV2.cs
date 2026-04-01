@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Uniceps.API
                     _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey.Key);
                 }
             }
+            _client.DefaultRequestHeaders.Add("Accept-Language", "ar");
         }
         private void EnsureAuthHeader()
         {
@@ -210,6 +212,12 @@ namespace Uniceps.API
             }
 
             return apiResponse;
+        }
+        public async Task<byte[]> DownloadImage(string imageUrl)
+        {
+           
+            byte[] imageBytes = await _client.GetByteArrayAsync(imageUrl);
+            return imageBytes;
         }
     }
 }

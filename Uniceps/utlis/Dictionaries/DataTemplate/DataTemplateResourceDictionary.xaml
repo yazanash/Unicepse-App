@@ -29,9 +29,14 @@
         xmlns:home_views="clr-namespace:Uniceps.Views"
                     xmlns:routine_temp="clr-namespace:Uniceps.Views.RoutineTemplateViews"
                     xmlns:routine_temp_vm="clr-namespace:Uniceps.ViewModels.RoutineTemplateViewModels"
-                    
+                    xmlns:dashboard_views="clr-namespace:Uniceps.Views.DashboardViews"
+                    xmlns:dashboard_vms="clr-namespace:Uniceps.ViewModels.DashboardViewModels"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+    <DataTemplate DataType="{x:Type dashboard_vms:DashboardViewModel }">
+        <!--<views:HomeView />-->
+        <dashboard_views:DashboardView/>
+    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type player_subvm:SubscriptionMainViewModel }">
         <!--<views:HomeView />-->
         <player_subview:SubscriptionMainView/>

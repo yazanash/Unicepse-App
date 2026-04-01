@@ -5,41 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Uniceps.Views"
         mc:Ignorable="d"
+          xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
+         xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
         xmlns:Icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Background="{DynamicResource Brush.Background}"
         FlowDirection="RightToLeft"
         WindowStartupLocation="CenterScreen"
-        Title="خيارات الدفع" Height="400" Width="400">
+        Title="خيارات الدفع" Height="300" Width="500">
+    <Window.Resources>
+        <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+    </Window.Resources>
     <Grid>
         <Border Style="{DynamicResource CardBorderStyle}">
-            <StackPanel>
-                <Grid>
-                    
-                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <TextBlock  Margin="0 0 0 5" Text="تم تسجيل الاشتراك بنجاح " Foreground="{DynamicResource Brush.Foreground}"
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel HorizontalAlignment="Left" Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock  Margin="0 0 0 15" FontWeight="Bold" Text="اهلا بك في نظامنا" Foreground="{DynamicResource Brush.Foreground}"
               FontSize="18"/>
-                        <TextBlock Text="اختر طريقة الدفع" Foreground="{DynamicResource Brush.Foreground}"
-FontSize="16"/>
-                    </StackPanel>
-                    <Image Source="/Resources/Assets/CaptinUni/CaptinTablet.png" HorizontalAlignment="Right" Height="200" Width="200"/>
-                </Grid>
-               
-                <StackPanel Margin="0 10 0 0" Orientation="Vertical">
-                    <Button IsEnabled="{Binding CanCardExecute}" Command="{Binding PayWithCardCommand}" Margin="5" Style="{DynamicResource FormButton}"  HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal">
-                            <Icons:PackIconMaterial Kind="CreditCardCheckOutline" VerticalAlignment="Center" Width="30" Height="30"/>
-                            <TextBlock Text="الدفع عن طريق البطاقة" Margin="10 0" VerticalAlignment="Center"/>
-                        </StackPanel>
+                    <TextBlock Text="قم باختيار ملف الترخيص لتفعيل نسختك من التطبيق" TextWrapping="Wrap" Foreground="{DynamicResource Brush.Foreground}"
+FontSize="14"  Margin="0 0 0 15"/>
+                    <Button  Command="{Binding GetLicenseCommand}" Margin="5 10" Style="{DynamicResource FormButton}"  HorizontalAlignment="Left" >
+                        <Grid>
+
+                            <custom:LoadingSpinner
+IsLoading="{Binding IsLoading}"
+Diameter="25" Thickness="2" Color="{DynamicResource Brush.OnPrimary}" />
+                            <Grid Visibility="{Binding IsLoading ,Converter={StaticResource InverseBooleanToVisibalityConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icons:PackIconMaterial Kind="CreditCardCheckOutline" VerticalAlignment="Center" Width="30" Height="30"/>
+                                    <TextBlock Text="اختر ملف الترخيص" Margin="10 0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                       
                     </Button>
-                    <Button Command="{Binding PayWithCashCommand}" Margin="5" Style="{DynamicResource FormButton}"  HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal">
-                            <Icons:PackIconMaterial Kind="CashMultiple" VerticalAlignment="Center" Width="30" Height="30"/>
-                            <TextBlock Text="الدفع عن طريق الكاش" Margin="10 0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
+                 
                 </StackPanel>
-            </StackPanel>
-        
+                <Image Source="/Resources/Assets/CaptinUni/CaptinTablet.png" Grid.Column="1" Height="200" Width="200"/>
+                <TextBlock Text="* اذا لم يكن لديك ملف الترخيص تواصل مع فريق uniceps" TextWrapping="Wrap" Foreground="{DynamicResource Brush.Foreground}"
+FontSize="12"  Margin="0 0 0 15" Grid.Column="0" VerticalAlignment="Bottom"/>
+            </Grid>
         </Border>
         
     </Grid>

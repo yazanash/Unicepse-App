@@ -605,6 +605,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ExerciseV2Id")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
@@ -612,7 +615,7 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.HasIndex("DayId");
 
-                    b.HasIndex("ExerciseId");
+                    b.HasIndex("ExerciseV2Id");
 
                     b.ToTable("RoutineItemModels");
                 });
@@ -850,6 +853,83 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.ToTable("SyncObjects");
                 });
 
+            modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.Equipment", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("Equipment");
+                });
+
+            modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.ExerciseV2", b =>
+                {
+                    b.Property<string>("ExerciseId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EquipmentCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLegacy")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Mechanism")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MuscleAux1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MuscleAux2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MuscleAux3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MuscleGroupCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("MuscleHeadCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExerciseId");
+
+                    b.HasIndex("EquipmentCode");
+
+                    b.HasIndex("MuscleGroupCode");
+
+                    b.HasIndex("MuscleHeadCode");
+
+                    b.ToTable("ExercisesV2");
+                });
+
             modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.Exercises", b =>
                 {
                     b.Property<int>("Id")
@@ -907,6 +987,40 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.HasKey("Id");
 
                     b.ToTable("MuscleGroups");
+                });
+
+            modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("MuscleGroupsV2");
+                });
+
+            modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.MuscleHead", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("MuscleGroupCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Code");
+
+                    b.HasIndex("MuscleGroupCode");
+
+                    b.ToTable("MuscleHeads");
                 });
 
             modelBuilder.Entity("EmployeeSport", b =>
@@ -1017,11 +1131,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Uniceps.Core.Models.TrainingProgram.Exercises", "Exercise")
+                    b.HasOne("Uniceps.Core.Models.TrainingProgram.ExerciseV2", "Exercise")
                         .WithMany()
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExerciseV2Id");
 
                     b.Navigation("Day");
 
@@ -1061,6 +1173,44 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                         .HasForeignKey("SportId1");
                 });
 
+            modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.ExerciseV2", b =>
+                {
+                    b.HasOne("Uniceps.Core.Models.TrainingProgram.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", "MuscleGroupV2")
+                        .WithMany()
+                        .HasForeignKey("MuscleGroupCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleHead", "MuscleHead")
+                        .WithMany()
+                        .HasForeignKey("MuscleHeadCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("MuscleGroupV2");
+
+                    b.Navigation("MuscleHead");
+                });
+
+            modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.MuscleHead", b =>
+                {
+                    b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", "Group")
+                        .WithMany("Heads")
+                        .HasForeignKey("MuscleGroupCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("Uniceps.Core.Models.Employee.Employee", b =>
                 {
                     b.Navigation("PlayerTrainings");
@@ -1096,6 +1246,11 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
             modelBuilder.Entity("Uniceps.Core.Models.Subscription.Subscription", b =>
                 {
                     b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", b =>
+                {
+                    b.Navigation("Heads");
                 });
 #pragma warning restore 612, 618
         }

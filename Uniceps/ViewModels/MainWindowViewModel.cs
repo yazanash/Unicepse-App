@@ -15,12 +15,13 @@ using Uniceps.navigation;
 using Uniceps.navigation.Navigator;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
+using Uniceps.SystemServices;
 using Uniceps.utlis.ComponentsViewModels;
 using Uniceps.ViewModels.Accountant;
 using Uniceps.ViewModels.Authentication;
 using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.Views;
-
+using Microsoft.Toolkit.Uwp.Notifications;
 namespace Uniceps.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
@@ -36,6 +37,7 @@ namespace Uniceps.ViewModels
         private readonly SubscriptionMainViewModel _subscriptionMainViewModel;
         private readonly AppInfoViewModel _appInfoViewModel;
         private readonly LicenseStore _licenseStore;
+        SystemSubscriptionPaymentOptionDialogViewModel _systemSubscription;
         public StatusBarViewModel? StatusBarViewModel { get; set; }
         public NotificationBarViewModel NotificationBarViewModel { get; set; }
         private readonly NavigationStore _navigationStore;
@@ -52,7 +54,7 @@ namespace Uniceps.ViewModels
             }
         }
 
-        public MainWindowViewModel(UsersDataStore usersDataStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, INavigator navigator, AccountingViewModel accountingViewModel, HomeViewModel homeNavViewModel, AccountStore accountStore, NavigationStore navigationStore, SubscriptionMainViewModel subscriptionMainViewModel, AppInfoViewModel appInfoViewModel, LicenseStore licenseStore)
+        public MainWindowViewModel(UsersDataStore usersDataStore, BackgroundServiceStore backgroundServiceStore, AuthenticationStore authenticationStore, INavigator navigator, AccountingViewModel accountingViewModel, HomeViewModel homeNavViewModel, AccountStore accountStore, NavigationStore navigationStore, SubscriptionMainViewModel subscriptionMainViewModel, AppInfoViewModel appInfoViewModel, LicenseStore licenseStore, SystemSubscriptionPaymentOptionDialogViewModel systemSubscription)
         {
             Navigator = navigator;
             _navigationStore = navigationStore;
@@ -64,20 +66,21 @@ namespace Uniceps.ViewModels
             _accountStore = accountStore;
             _appInfoViewModel = appInfoViewModel;
             _subscriptionMainViewModel = subscriptionMainViewModel;
+            _systemSubscription = systemSubscription;
+
             NotificationBarViewModel = new NotificationBarViewModel();
             _backgroundServiceStore.StateChanged += _backgroundServiceStore_StateChanged;
             _backgroundServiceStore.SyncStatus += _backgroundServiceStore_SyncStatus;
             _usersDataStore.Updated += _usersDataStore_Updated;
-            var savedTheme = Properties.Settings.Default.AppTheme;
+            var savedTheme = SettingsManager.Current.AppTheme;
             if (Enum.TryParse(savedTheme, out AppTheme theme))
             {
                 CurrentTheme = theme;
             }
             if (IsBackupNeeded())
             {
-                MessageBox.Show("لقد مر يومين على اخر نسخ احتياطي ... لا تنسى عمل نسخ احتياطي للمحافظة على بياناتك");
+                NotificationManager.SendBackupNeededNotification();
             }
-
             PrepareMainViewModel();
             _licenseStore = licenseStore;
             _licenseStore.LicenseChanged += _licenseStore_LicenseChanged;
@@ -86,11 +89,13 @@ namespace Uniceps.ViewModels
                 NotificationBarViewModel.ActionTitle = "اشترك الان";
                 NotificationBarViewModel.Notification = "نسخة uniceps التجريبية";
                 NotificationBarViewModel.HasNotification = true;
+                NotificationBarViewModel.NotificationCommand = new RelayCommand(ExecuteOpenLicensePickerCommand);
             }
             else
             {
                 NotificationBarViewModel.HasNotification = false;
             }
+
         }
 
         private void _licenseStore_LicenseChanged()
@@ -100,19 +105,26 @@ namespace Uniceps.ViewModels
                 NotificationBarViewModel.ActionTitle = "اشترك الان";
                 NotificationBarViewModel.Notification = "نسخة uniceps التجريبية";
                 NotificationBarViewModel.HasNotification = true;
+                NotificationBarViewModel.NotificationCommand = new RelayCommand(ExecuteOpenLicensePickerCommand);
             }
             else
             {
                 NotificationBarViewModel.HasNotification = false;
             }
         }
+        private void ExecuteOpenLicensePickerCommand()
+        {
+            SystemSubscriptionPaymentOptionDialog systemSubscriptionPaymentOptionDialog = new SystemSubscriptionPaymentOptionDialog();
+            systemSubscriptionPaymentOptionDialog.DataContext = _systemSubscription;
+            systemSubscriptionPaymentOptionDialog.ShowDialog();
 
+        }
         public bool IsBackupNeeded()
         {
-            DateTime last = Uniceps.Properties.Settings.Default.LastBackup;
+            DateTime last = SettingsManager.Current.LastBackupDate??DateTime.MinValue;
             if(last == DateTime.MinValue)
             {
-                Properties.Settings.Default.LastBackup = DateTime.Now;
+                SettingsManager.Current.LastBackupDate = DateTime.Now;
                 return false;
             }
             return  (DateTime.Now - last).TotalDays >= 2;

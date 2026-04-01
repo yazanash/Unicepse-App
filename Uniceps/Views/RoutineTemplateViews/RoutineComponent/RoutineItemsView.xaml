@@ -118,8 +118,12 @@ Width="auto"
  Binding="{Binding SetsString}"
 Width="*"
 />
-                       
-                </DataGrid.Columns>
+                        <DataGridTextColumn Header="" IsReadOnly="True"
+Width="auto"
+Binding="{Binding IsLegcyMessage}"
+CanUserResize="False"/>
+
+                    </DataGrid.Columns>
             </DataGrid>
             </Border>
             <Comp:CaptinRoutineItemEmpty Visibility="{Binding HasData,Converter={StaticResource InverseBooleanToVisibalityConverter}}" Grid.Row="2" Title="لا يوجد تمارين بعد" 

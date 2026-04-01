@@ -40,10 +40,13 @@ namespace Uniceps.Entityframework.DbContexts
         public DbSet<Credit>? Credit { get; set; }
         public DbSet<DailyPlayerReport>? DailyPlayerReport { get; set; }
         public DbSet<Expenses>? Expenses { get; set; }
-        //public DbSet<Offer>? Offer { get; set; }
         public DbSet<PayReferance>? PayReferance { get; set; }
         public DbSet<Sport>? Sports { get; set; }
         public DbSet<Exercises>? Exercises { get; set; }
+        public DbSet<ExerciseV2>? ExercisesV2 { get; set; }
+        public DbSet<MuscleGroupV2>? MuscleGroupsV2 { get; set; }
+        public DbSet<MuscleHead>? MuscleHeads { get; set; }
+        public DbSet<Equipment>? Equipment { get; set; }
         public DbSet<MuscleGroup>? MuscleGroups { get; set; }
         public DbSet<User>? Users { get; set; }
         public DbSet<Metric>? Metrics { get; set; }
@@ -90,7 +93,7 @@ namespace Uniceps.Entityframework.DbContexts
     .HasOne(p => p.Subscription)
     .WithMany(s => s.Payments)
     .HasForeignKey(p => p.SubscriptionId)
-    .OnDelete(DeleteBehavior.Restrict); // الحل
+    .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PlayerPayment>()
                 .HasOne(p => p.Player)

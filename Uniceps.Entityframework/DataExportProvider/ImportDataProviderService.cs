@@ -211,7 +211,6 @@ namespace Uniceps.Entityframework.DataExportProvider
 
             if (existingSubscription != null)
             {
-                // التحديث فقط إذا كان ملف الاستيراد أحدث
                 if (existingSubscription.UpdatedAt <= incomingSubscription.UpdatedAt)
                 {
                     existingSubscription.MergeWith(incomingSubscription);
@@ -283,6 +282,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                     }
                 }
 
+                context.ChangeTracker.Clear();
                 foreach (Employee emp in employees)
                 {
                     var existingEmp = await context.Set<Employee>().FirstOrDefaultAsync(e => e.SyncId == emp.SyncId);
@@ -309,14 +309,16 @@ namespace Uniceps.Entityframework.DataExportProvider
 
                 foreach (Sport incomingSport in sports)
                 {
+                    context.ChangeTracker.Clear();
                     var existingSport = await context.Set<Sport>()
-                        .Include(s => s.Trainers)
+                        .Include(s => s.Trainers).AsNoTracking()
                         .FirstOrDefaultAsync(s => s.SyncId == incomingSport.SyncId);
 
                     if (existingSport != null && incomingSport.Trainers != null)
                     {
                         foreach (var incomingTrainer in incomingSport.Trainers)
                         {
+                            context.ChangeTracker.Clear();
                             if (!existingSport.Trainers!.Any(t => t.SyncId == incomingTrainer.SyncId))
                             {
                                 var trainerInDb = await context.Set<Employee>()
@@ -370,10 +372,10 @@ namespace Uniceps.Entityframework.DataExportProvider
             {
                 if (item.Exercise != null)
                 {
-                    Exercises? exercises = await context.Set<Exercises>().FirstOrDefaultAsync(x => x.Tid == item.Exercise.Tid&&x.Name == item.Exercise.Name);
+                    ExerciseV2? exercises = await context.Set<ExerciseV2>().FirstOrDefaultAsync(x => x.ExerciseId == item.Exercise.ExerciseId && x.Name == item.Exercise.Name);
                     if (exercises != null)
                     {
-                        item.ExerciseId = exercises.Id;
+                        item.ExerciseV2Id = exercises.ExerciseId;
                         item.Exercise = null;
                     }
                        
