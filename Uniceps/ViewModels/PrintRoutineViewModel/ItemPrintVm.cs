@@ -11,7 +11,7 @@ namespace Uniceps.ViewModels.PrintRoutineViewModel
     {
         public int Order { get; set; }
         public string ExerciseName { get; set; } = "";
-        public int ExerciseId { get; set; }
+        public string ExerciseId { get; set; } = "";
         public string ExerciseUrl { get; set; } = "";
         public string Muscle { get; set; } = "";
         public List<SetPrintVm> Sets { get; set; } = new();

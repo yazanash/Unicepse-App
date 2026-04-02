@@ -5,27 +5,47 @@
     <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <PlatformTarget>x64</PlatformTarget>
-    <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
+    <!--<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <PlatformTarget>x86</PlatformTarget>-->
     <SignAssembly>False</SignAssembly>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AssemblyVersion>2.1.1.6</AssemblyVersion>
-    <FileVersion>2.1.1.6</FileVersion>
+    <!--<AssemblyVersion>2.1.1.8</AssemblyVersion>-->
+    <!--<FileVersion>2.1.1.8</FileVersion>-->
     <SelfContained>true</SelfContained>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <Configurations>Debug;Release;Test</Configurations>
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <VersionPrefix>2.5.1</VersionPrefix>
+
+    <BuildRevision>$([System.DateTime]::Now.ToString("MMdd"))</BuildRevision>
+
+    <Version>$(VersionPrefix).$(BuildRevision)</Version>
+    <AssemblyVersion>$(VersionPrefix).$(BuildRevision)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+
+    <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
+
+    <Platforms>AnyCPU;x64:x86</Platforms>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TransformXmlSource>App.config</TransformXmlSource>
-    <TransformXmlTransform>Debug.config</TransformXmlTransform>
-    <TransformXmlDestination>$(OutDir)\$(TargetFileName).config</TransformXmlDestination>
+  <PropertyGroup Condition="'$(Configuration)' == 'Test'">
+    <AssemblyName>Uniceps_Test</AssemblyName>
+    <ApplicationIcon>Resources\Icons\logo_test.ico</ApplicationIcon>
+    <DefineConstants>$(DefineConstants);TEST</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <TransformXmlSource>Release.config</TransformXmlSource>
-    <TransformXmlTransform>App.config</TransformXmlTransform>
-    <TransformXmlDestination>$(OutDir)\$(TargetFileName).config</TransformXmlDestination>
+    <AssemblyName>Uniceps</AssemblyName>
+    <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Update="appsettings.*.json" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+
+  <Target Name="ApplyEnvConfig" BeforeTargets="Build;Publish">
+    <Message Importance="high" Text="Applying $(Configuration) Config Files..." />
+
+    <Copy Condition="Exists('appsettings.$(Configuration).json')" SourceFiles="appsettings.$(Configuration).json" DestinationFiles="appsettings.json" OverwriteReadOnlyFiles="true" />
+  </Target>
 
   <ItemGroup>
     <Compile Remove="Resources\Assets\Exercises\**" />
@@ -86,6 +106,7 @@
     <None Remove="Resources\Icons\logo_dark.ico" />
     <None Remove="Resources\Icons\logo_light.ico" />
     <None Remove="Resources\Icons\logo_white.ico" />
+    <None Remove="Resources\Icons\logo_test.ico" />
     <None Remove="Resources\plans.json" />
     <None Remove="Resources\sounds\beep.wav" />
     <None Remove="Training.json" />
@@ -108,57 +129,20 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="uni_luncher.ico" />
-    <Content Include="Resources\Assets\Metric\body_front.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Chest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\ForeArm.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\ForeArmFlip.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Height.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\hips.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Leg.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\LegFlip.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Neck.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Shoulder.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Thigh.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\ThighFlip.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\waist.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Assets\Metric\Weight.png">
+    <Content Include="Resources\Assets\Metric\*.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="6.2.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.11.0.20250507" />
@@ -180,6 +164,7 @@
     <ProjectReference Include="..\Uniceps.Core\Uniceps.Core.csproj" />
     <ProjectReference Include="..\Uniceps.Entityframework\Uniceps.Entityframework.csproj" />
     <ProjectReference Include="..\Uniceps.FileSystem\Uniceps.FileSystem.csproj" />
+    <ProjectReference Include="..\Uniceps.LicenseManager\Uniceps.LicenseManager.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -292,6 +277,10 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\DashboardViews\" />
   </ItemGroup>
 
 </Project>

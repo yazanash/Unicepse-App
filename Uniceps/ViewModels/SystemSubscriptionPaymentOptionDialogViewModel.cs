@@ -4,45 +4,59 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Uniceps.API.common;
 using Uniceps.Commands;
+using Uniceps.LicenseManager;
+using Uniceps.Stores;
+using ZXing;
 
 namespace Uniceps.ViewModels
 {
-    public class SystemSubscriptionPaymentOptionDialogViewModel:ViewModelBase
+    public class SystemSubscriptionPaymentOptionDialogViewModel : ViewModelBase
     {
-        public SystemSubscriptionPaymentOptionDialogViewModel(string paymentCardUrl, string paymentCashUrl)
+        private readonly ActivationService _activationService;
+        private readonly LicenseStore _licenseStore;
+        public SystemSubscriptionPaymentOptionDialogViewModel(ActivationService activationService, LicenseStore licenseStore)
         {
-            PaymentCardUrl = paymentCardUrl;
-            PaymentCashUrl = paymentCashUrl;
-            OnPropertyChanged(nameof(CanCardExecute));
+            _activationService = activationService;
+            _licenseStore = licenseStore;
         }
         public event Action? PaymentChose;
+       private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set {  _isLoading = value; OnPropertyChanged(nameof(IsLoading)); }
+        }
+        public ICommand GetLicenseCommand => new AsyncRelayCommand(ExecuteGetLicenseCommand);
+        private async Task ExecuteGetLicenseCommand()
+        {
+            IsLoading = true;
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Uniceps License (*.unxlic)|*.unxlic",
+                Title = "اختر ملف الترخيص"
+            };
 
-        public string PaymentCardUrl { get; set; }
-        public string PaymentCashUrl { get; set; }
-        public ICommand PayWithCardCommand => new RelayCommand(ExecutePayWithCardCommand);
-        private void ExecutePayWithCardCommand()
-        {
-            Process.Start(new ProcessStartInfo
+            if (openFileDialog.ShowDialog() == true)
             {
-                FileName = PaymentCardUrl,
-                UseShellExecute = true // This ensures it opens in the default browser
-            });
-            OnPaymentChose();
+                var result = await _activationService.ActivateFromLicenseFile(openFileDialog.FileName);
+                _licenseStore.Update(_activationService.GetCurrentLicenseStatus());
+                IsLoading = false;
+                if (_licenseStore.Current.IsFullVersion)
+                {
+                    MessageBox.Show(result, "نتيجة التفعيل");
+                    OnPaymentChose();
+                    MessageBox.Show("قم باعادة تشغيل التطبيق لفعيل الترخيص", "تنويه");
+                    Application.Current.Shutdown();
+                }
+
+
+            }
+            IsLoading = false;
         }
-        public ICommand PayWithCashCommand => new RelayCommand(ExecutePayWithCashCommand);
-        private void ExecutePayWithCashCommand()
-        {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = PaymentCashUrl,
-                UseShellExecute = true // This ensures it opens in the default browser
-            });
-            OnPaymentChose();
-        }
-        bool CanCardExecute => !string.IsNullOrEmpty(PaymentCardUrl);
         internal void OnPaymentChose()
         {
             PaymentChose?.Invoke();

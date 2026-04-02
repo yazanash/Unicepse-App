@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.Stores.RoutineStores;
+using Uniceps.SystemServices;
 using Uniceps.ViewModels.RoutineTemplateViewModels;
 
 namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
@@ -22,7 +23,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            var folder = Properties.Settings.Default.ExportFolderPath;
+            var folder = SettingsManager.Current.ExportFolderPath;
             var fileName = _exportDialogViewModel.FileName!;
             if (!string.IsNullOrEmpty(fileName))
             {
@@ -37,7 +38,7 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
 
                     }
                     else
-                        MessageBox.Show("تم الغاء عملية التصدير");
+                        MessageBox.Show("تم الغاء عملية التصدير ... تاكد من عدم وجود تمارين من النظام القديم");
 
                 }
             }

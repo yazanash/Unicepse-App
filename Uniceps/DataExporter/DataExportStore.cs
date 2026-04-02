@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Commands;
+using Uniceps.SystemServices;
 
 namespace Uniceps.DataExporter
 {
@@ -27,7 +28,7 @@ namespace Uniceps.DataExporter
         {
             try
             {
-                string folderPath = Properties.Settings.Default.BackupPath;
+                string folderPath = SettingsManager.Current.BackupPath;
 
                 if (string.IsNullOrWhiteSpace(folderPath))
                 {
@@ -57,8 +58,8 @@ namespace Uniceps.DataExporter
 
                 if (success)
                 {
-                    Properties.Settings.Default.LastBackup = DateTime.Now;
-                    Properties.Settings.Default.Save(); 
+                    SettingsManager.Current.LastBackupDate = DateTime.Now;
+                    SettingsManager.Save(); 
 
                     ExportFinished?.Invoke(true, "تمت عملية النسخ الاحتياطي بنجاح.");
                 }

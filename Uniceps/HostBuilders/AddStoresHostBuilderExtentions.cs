@@ -11,7 +11,6 @@ using Uniceps.Stores.RoutineStores;
 using Uniceps.Stores.SportStores;
 using Uniceps.Core.Models.Authentication;
 using Uniceps.navigation.Stores;
-using Uniceps.Stores.SystemAuthStores;
 using Uniceps.Helpers;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services;
@@ -52,13 +51,8 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<RoutineTempDataStore>();
                 services.AddSingleton<SetsModelDataStore>();
 
-                services.AddSingleton<ISystemAuthStore,SystemAuthStore>();
-                services.AddSingleton<SessionValidator>();
-                services.AddSingleton<UserContextValidator>();
-                services.AddSingleton<UserFlowService>();
-                services.AddSingleton<IProfileDataStore, SystemProfileStore>();
-                services.AddSingleton<SystemSubscriptionStore>();
                 services.AddSingleton<DataExportStore>();
+                services.AddSingleton<LicenseStore>();
             });
             return _hostBuilder;
         }

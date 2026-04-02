@@ -27,7 +27,7 @@ namespace Uniceps.DataExporter.Mappers
                 Order = d.Order,
                 RoutineItems = d.RoutineItems.Select(x => new RoutineItemModel
                 {
-                    Exercise = new Core.Models.TrainingProgram.Exercises { Tid = x.ExerciseTId ,Name = x.ExerciseName ?? "" },
+                    Exercise = new Core.Models.TrainingProgram.ExerciseV2 { ExerciseId = x.ExerciseId, Name = x.ExerciseName ?? "" },
                     Order = x.Order,
                     Sets = x.Sets.Select(s => new SetModel
                     {
@@ -59,7 +59,7 @@ namespace Uniceps.DataExporter.Mappers
                 // نبدأ هنا بتعبئة قائمة العناصر
                 RoutineItems = d.RoutineItems.Select(x => new RoutineItemDto
                 {
-                    ExerciseTId = x.Exercise?.Tid ?? 0,
+                    ExerciseId = x.Exercise?.ExerciseId??"",
                     ExerciseName = x.Exercise?.Name??"",
                     Order = x.Order,
                     Sets = x.Sets.Select(s => new SetDto

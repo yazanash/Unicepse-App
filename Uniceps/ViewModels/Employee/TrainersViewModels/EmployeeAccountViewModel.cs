@@ -25,11 +25,11 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         private readonly DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly EmployeeSubscriptionDataStore _employeeSubscriptionDataStore;
-        private readonly AccountStore _accountStore;
+        private readonly LicenseStore _licenseStore;
         public TrainerListItemViewModel? Employee { get; set; }
         public ViewModelBase? CurrentEmployeeViewModel => _navigatorStore.CurrentViewModel;
 
-        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, TrainerListItemViewModel? employee, EmployeeSubscriptionDataStore employeeSubscriptionDataStore, AccountStore accountStore)
+        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, TrainerListItemViewModel? employee, EmployeeSubscriptionDataStore employeeSubscriptionDataStore, LicenseStore licenseStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
@@ -37,10 +37,10 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             _creditsDataStore = creditsDataStore;
             Employee = employee;
             _employeeSubscriptionDataStore = employeeSubscriptionDataStore;
-            _accountStore = accountStore;
+            _licenseStore = licenseStore;
 
             IsTrainer = _employeeStore.SelectedEmployee!.IsTrainer;
-            if (_accountStore.SystemSubscription != null)
+            if (_licenseStore.Current.IsFullVersion)
             {
                 if (_employeeStore.SelectedEmployee!.IsTrainer)
                     navigatorStore.CurrentViewModel = LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _navigatorStore, _creditsDataStore, LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore));
@@ -56,7 +56,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
                 navigatorStore.CurrentViewModel = LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore);
                 navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
                 EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore)));
-                TrainerPlayersCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () =>new PremiumViewModel()));
+                TrainerPlayersCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
                 TrainerDusesCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
             }
 

@@ -29,24 +29,19 @@
         xmlns:home_views="clr-namespace:Uniceps.Views"
                     xmlns:routine_temp="clr-namespace:Uniceps.Views.RoutineTemplateViews"
                     xmlns:routine_temp_vm="clr-namespace:Uniceps.ViewModels.RoutineTemplateViewModels"
-                    
-        xmlns:sys_auth="clr-namespace:Uniceps.Views.SystemAuthViews"
-        xmlns:sys_auth_vm="clr-namespace:Uniceps.ViewModels.SystemAuthViewModels"
+                    xmlns:dashboard_views="clr-namespace:Uniceps.Views.DashboardViews"
+                    xmlns:dashboard_vms="clr-namespace:Uniceps.ViewModels.DashboardViewModels"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+    <DataTemplate DataType="{x:Type dashboard_vms:DashboardViewModel }">
+        <!--<views:HomeView />-->
+        <dashboard_views:DashboardView/>
+    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type player_subvm:SubscriptionMainViewModel }">
         <!--<views:HomeView />-->
         <player_subview:SubscriptionMainView/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type sys_auth_vm:SystemProfileCreationViewModel }">
-        <!--<views:HomeView />-->
-        <sys_auth:CreateProfileView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type sys_auth_vm:SystemSubscriptionCreationViewModel }">
-        <!--<views:HomeView />-->
-        <sys_auth:SystemSubscriptionCreationView/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type logvms:LogPlayerAttendenceViewModel }">
         <logvs:LogPlayerAttendenceView/>
     </DataTemplate>

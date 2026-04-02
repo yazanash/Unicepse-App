@@ -13,8 +13,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml;
 using Uniceps.Services;
+using Uniceps.ViewModels;
 using Uniceps.Views;
-using Windows.Media.Protection.PlayReady;
 
 namespace Uniceps.BackgroundServices
 {
@@ -22,17 +22,30 @@ namespace Uniceps.BackgroundServices
     {
         public int Id { get; set; }
         public string Version { get; set; } = "";
-        public int TargetOS { get; set; } // Enum Windows = 1
+        public int TargetOS { get; set; } 
         public string DownloadUrl { get; set; } = "";
         public string ChangeLog { get; set; } = "";
         public string ChangeLogAr { get; set; } = "";
-        // أضف أي حقول أخرى تحتاجها للعرض
     }
     public static class Updater
     {
-        // استبدل الرابط برابط السيرفر الحقيقي و الـ ProductId المناسب
         private const string UpdateUrl = "Release/app/1/latest/1";
+        public static async Task RunUpdater()
+        {
+            try
+            {
+                var update = await Updater.CheckForUpdate();
+                if (update != null)
+                {
+                    ProgressWindow progressWindow = new ProgressWindow();
+                    progressWindow.DataContext = new UpdateWindowViewModel(update);
+                    progressWindow.Topmost = true;
+                    progressWindow.ShowDialog();
+                }
+            }
+            catch { }
 
+        }
         public static async Task<ReleaseDto?> CheckForUpdate()
         {
             try
@@ -76,7 +89,8 @@ namespace Uniceps.BackgroundServices
         {
             try
             {
-                string trackingUrl = $"https://uniceps.runasp.net/api/Release/download/{releaseId}";
+                string? apiUrl = ConfigurationManager.AppSettings["ApiUrl"];
+                string trackingUrl =  $"{apiUrl}Release/download/{releaseId}";
 
                 Process.Start(new ProcessStartInfo
                 {

@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.DataExporter;
 using Uniceps.Stores.ApiDataStores;
+using Uniceps.SystemServices;
 
 namespace Uniceps.ViewModels
 {
@@ -36,7 +37,7 @@ namespace Uniceps.ViewModels
             _dataExportStore.StatusChanged += _dataExportStore_StatusChanged;
             _dataExportStore.ExportFinished += _dataExportStore_ExportFinished;
             _dataExportStore.ImportFinished += _dataExportStore_ImportFinished;
-            FolderPath = Properties.Settings.Default.BackupPath;
+            FolderPath = SettingsManager.Current.BackupPath;
         }
 
         private void _dataExportStore_ImportFinished(bool arg1, string arg2)
@@ -58,8 +59,8 @@ namespace Uniceps.ViewModels
 
             if (dialog.ShowDialog() == true)
             {
-                Properties.Settings.Default.BackupPath = dialog.FolderName;
-                Properties.Settings.Default.Save();
+               SettingsManager.Current.BackupPath = dialog.FolderName;
+                SettingsManager.Save();
                 FolderPath = dialog.FolderName;
             }
         }

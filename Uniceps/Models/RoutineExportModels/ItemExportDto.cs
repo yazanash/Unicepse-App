@@ -10,7 +10,7 @@ namespace Uniceps.Models.RoutineExportModels
     {
         public int Order { get; set; }
         public string ExerciseName { get; set; } = string.Empty;
-        public int ExerciseId { get; set; }
+        public string ExerciseId { get; set; } = string.Empty;
         public string ExerciseUrl { get; set; } = string.Empty;
         public MuscleExportDto Muscle { get; set; } = new();
         public List<SetExportDto> Sets { get; set; } = new();

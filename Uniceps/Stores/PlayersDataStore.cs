@@ -13,7 +13,6 @@ using Uniceps.BackgroundServices;
 using Uniceps.Core.Services;
 using Uniceps.Core.Models.Player;
 using Uniceps.Core.Common;
-using Uniceps.API.Services;
 using Uniceps.Services;
 
 namespace Uniceps.Stores
@@ -23,7 +22,7 @@ namespace Uniceps.Stores
     {
         private readonly IDataService<Player> _playerDataService;
         private readonly IArchivedService<Player> _archivedService;
-        private readonly AccountStore _accountStore;
+        private readonly LicenseStore _licenseStore;
         private readonly IExcelService<Player> _excelService;
         private readonly List<Player> _players;
         private readonly List<Player> _archivedPlayers;
@@ -40,7 +39,7 @@ namespace Uniceps.Stores
         public event Action? ArchivedPlayers_loaded;
         public event Action<Filter?>? FilterChanged;
         public event Action<Player?>? PlayerChanged;
-        public PlayersDataStore(IDataService<Player> playerDataService,  ILogger<PlayersDataStore> logger, IArchivedService<Player> archivedService,  IExcelService<Player> excelService, AccountStore accountStore)
+        public PlayersDataStore(IDataService<Player> playerDataService, ILogger<PlayersDataStore> logger, IArchivedService<Player> archivedService, IExcelService<Player> excelService, LicenseStore licenseStore)
         {
             _playerDataService = playerDataService;
             _archivedService = archivedService;
@@ -49,7 +48,7 @@ namespace Uniceps.Stores
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
             _excelService = excelService;
-            _accountStore = accountStore;
+            _licenseStore = licenseStore;
         }
 
         private Player? _selectedPlayer;
@@ -132,7 +131,7 @@ namespace Uniceps.Stores
        
         public async Task AddPlayer(Player player)
         {
-            if (_accountStore.SystemSubscription == null && _players.Count() + _archivedPlayers.Count() >= 50)
+            if (!_licenseStore.Current.IsFullVersion && _players.Count() + _archivedPlayers.Count() >= 50)
                 throw new FreeLimitException("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
 
                 _logger.LogInformation(LogFlag + "add player");
@@ -201,8 +200,8 @@ namespace Uniceps.Stores
         }
         public async Task ReactivePlayer(Player player)
         {
-            if (_accountStore.SystemSubscription == null && _players.Count() + _archivedPlayers.Count() >= 50)
-                throw new Exception("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
+            //if (_accountStore.SystemSubscription == null && _players.Count() + _archivedPlayers.Count() >= 50)
+            //    throw new Exception("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
 
             _logger.LogInformation(LogFlag + "reactive player");
             await _playerDataService.Update(player);

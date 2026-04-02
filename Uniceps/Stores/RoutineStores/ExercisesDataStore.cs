@@ -21,11 +21,14 @@ namespace Uniceps.Stores.RoutineStores
         private readonly IGetExercisesService _getExercisesService;
         private readonly GetExercisesService _getExercisesApiService;
         private readonly ILogger<ExercisesDataStore> _logger;
-        private readonly List<Exercises> _exercises;
-        public IEnumerable<Exercises> Exercises => _exercises;
+        private readonly List<ExerciseV2> _exercises;
+        public IEnumerable<ExerciseV2> Exercises => _exercises;
 
-        private readonly List<MuscleGroup> _muscleGroups;
-        public IEnumerable<MuscleGroup> MuscleGroups => _muscleGroups;
+        private readonly List<MuscleGroupV2> _muscleGroups;
+        public IEnumerable<MuscleGroupV2> MuscleGroups => _muscleGroups;
+
+        private readonly List<Equipment> _equipments;
+        public IEnumerable<Equipment> Equipments => _equipments;
         public event Action? ExercisesLoaded;
         public event Action? MuscleGroupsLoaded;
         public event Action? SelectedMuscleChanged;
@@ -34,8 +37,8 @@ namespace Uniceps.Stores.RoutineStores
         public event Action<double>? MuscleGroupDownloaded;
         public event Action<double>? GotExercises;
 
-        private MuscleGroup? _selectedMuscle;
-        public MuscleGroup? SelectedMuscle
+        private MuscleGroupV2? _selectedMuscle;
+        public MuscleGroupV2? SelectedMuscle
         {
             get { return _selectedMuscle; }
             set { _selectedMuscle = value; SelectedMuscleChanged?.Invoke(); }
@@ -44,8 +47,9 @@ namespace Uniceps.Stores.RoutineStores
         {
             _getExercisesService = getExercisesService;
             _logger = logger;
-            _exercises = new List<Exercises>();
-            _muscleGroups = new List<MuscleGroup>();
+            _exercises = new List<ExerciseV2>();
+            _muscleGroups = new List<MuscleGroupV2>();
+            _equipments = new List<Equipment>();
             _getExercisesApiService = getExercisesApiService;
         }
 
@@ -53,7 +57,7 @@ namespace Uniceps.Stores.RoutineStores
         public async Task GetAll()
         {
             _logger.LogInformation(LogFlag + "get all exercises");
-            IEnumerable<Exercises> routines = await _getExercisesService.GetAll();
+            IEnumerable<ExerciseV2> routines = await _getExercisesService.GetAll();
             _exercises.Clear();
             _exercises.AddRange(routines);
             ExercisesLoaded?.Invoke();
@@ -62,66 +66,96 @@ namespace Uniceps.Stores.RoutineStores
         public async Task GetAllMuscleGroups()
         {
             _logger.LogInformation(LogFlag + "get all muscel groups");
-            IEnumerable<MuscleGroup> routines = await _getExercisesService.GetAllMuscleGroups();
+            IEnumerable<MuscleGroupV2> routines = await _getExercisesService.GetAllMuscleGroups();
+            IEnumerable<Equipment> equipment = await _getExercisesService.GetAllEquipments();
             _muscleGroups.Clear();
             _muscleGroups.AddRange(routines);
+            _equipments.Clear();
+            _equipments.AddRange(equipment);
             MuscleGroupsLoaded?.Invoke();
         }
         public async Task GetExcersisesWithMuscleGroups()
         {
-            List<MuscleGroup> muscles = await GetAndVerifyMuscleGroups();
-            foreach (var mg in muscles)
+            int count = 0;
+            ApiResponse<List<ExerciseDtoModel>> exerciseDtoResponse = await _getExercisesApiService.FetchExercises();
+            MuscleGroupDownloaded?.Invoke(exerciseDtoResponse.Data!.Count());
+            string appDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Uniceps");
+            string imagesFolder = Path.Combine(appDataFolder, "ImagesV2");
+            if (!Directory.Exists(imagesFolder))
+                Directory.CreateDirectory(imagesFolder);
+            foreach (var exerciseDto in exerciseDtoResponse.Data!)
             {
-                int count = 0;
-                ApiResponse<List<ExerciseDtoModel>> exerciseDtoResponse= await _getExercisesApiService.FetchExercises(mg.PublicId);
-                MuscleGroupDownloaded?.Invoke(exerciseDtoResponse.Data!.Count());
-                string appFolder = AppDomain.CurrentDomain.BaseDirectory + "Images\\";
-                Directory.CreateDirectory(appFolder); // Ensure the folder exists
-                foreach (var exerciseDto in exerciseDtoResponse.Data!)
+                string muscleFolder = Path.Combine(imagesFolder, exerciseDto.MuscleHeadCode.ToString());
+                if (!Directory.Exists(muscleFolder))
+                    Directory.CreateDirectory(muscleFolder);
+
+                Directory.CreateDirectory(muscleFolder);
+                string originalExtension = Path.GetExtension(exerciseDto.ImageUrl)!;
+                string localPath = Path.Combine(muscleFolder, $"{exerciseDto.ExerciseId}.png");
+                ExerciseV2 exercises = new()
                 {
-                    string folder_path = Path.Combine(appFolder, exerciseDto.muscleGroupId.ToString());
-                    Directory.CreateDirectory(folder_path);
-                    string originalExtension = Path.GetExtension(exerciseDto.imageUrl)!;
-                    string localPath = Path.Combine(folder_path, $"exercise_{exerciseDto.name}{originalExtension}");
-                    Exercises exercises = new()
-                    {
-                        ImagePath = localPath,
-                        MuscleGroupId = exerciseDto.muscleGroupId,
-                        Name = exerciseDto.name,
-                        Tid = exerciseDto.id,
-                        MuscelAr = mg.Name,
-                        MuscelEng = mg.EngName,
-                        Version = 0,
-                         ImageUrl= exerciseDto.imageUrl
-                    };
+                    ImagePath = localPath,
+                    MuscleGroupCode = exerciseDto.MuscleGroupCode,
+                    Name = exerciseDto.Name,
+                    ExerciseId = exerciseDto.ExerciseId,
+                    MuscleHeadCode = exerciseDto.MuscleHeadCode,
+                    MuscleAux1 = exerciseDto.MuscleAux1,
+                    MuscleAux2 = exerciseDto.MuscleAux2,
+                    MuscleAux3 = exerciseDto.MuscleAux3,
+                    Description = exerciseDto.Implementation ?? "N/A",
+                    EquipmentCode = exerciseDto.EquipmentCode,
+                    IsActive = true,
+                    IsLegacy = false,
+                    Mechanism = GetExerciseMechanisim(exerciseDto.Mechanism ?? ""),
+                    LastUpdated = exerciseDto.LastUpdated,
+                    Version = exerciseDto.Version,
+                };
+                int oldVersion = await _getExercisesService.GetExerciseVersion(exercises.ExerciseId);
 
-                    await _getExercisesService.GetOrCreate(exercises);
-                    if (!File.Exists(localPath))
-                    {
-                        await _getExercisesApiService.DownloadImage(exerciseDto.imageUrl!, localPath);
-                    }
+                await _getExercisesService.GetOrCreate(exercises);
 
-                    GotExercises?.Invoke(++count);
+                if (oldVersion < exerciseDto.Version|| !File.Exists(localPath))
+                {
+                    if (File.Exists(localPath)) File.Delete(localPath);
+                    await _getExercisesApiService.DownloadImage(exerciseDto.ExerciseId!, localPath);
                 }
-
+                GotExercises?.Invoke(++count);
             }
         }
-        public async Task<List<MuscleGroup>> GetAndVerifyMuscleGroups()
+        private ExerciseMechanism GetExerciseMechanisim(string uniBi)
         {
-            List<MuscleGroup> muscleGroups = new List<MuscleGroup>();
-            ApiResponse<List<MuscleGroupDto>> apiMuscleGroups = await _getExercisesApiService.FetchMuscleGroup();
-            foreach(var musGroup in apiMuscleGroups.Data!)
+            foreach (var item in Enum.GetValues(typeof(ExerciseMechanism)))
             {
-                MuscleGroup muscleGroup = new()
+                if (uniBi.Trim().ToLower().Equals(item.ToString()?.Trim().ToLower()))
+                {
+                    return (ExerciseMechanism)item;
+                }
+            }
+            return ExerciseMechanism.Bi;
+        }
+        public async Task GetAndVerifyMuscleGroups()
+        {
+            ApiResponse<EssentialsReponse> apiMuscleGroups = await _getExercisesApiService.FetchEssentials();
+            foreach (var musGroup in apiMuscleGroups.Data!.MuscleGroups)
+            {
+                MuscleGroupV2 muscleGroup = new()
                 {
                     Name = musGroup.Name,
-                    EngName = musGroup.EngName,
-                    PublicId = musGroup.Id
+                    Code = musGroup.Code,
                 };
+                muscleGroup.Heads = musGroup.MuscleHeads.Select(x => new MuscleHead { Code = x.Code, MuscleGroupCode = x.MuscleGroupCode, Name = x.Name }).ToList();
                 await _getExercisesService.GetOrCreateMuscleGroup(muscleGroup);
-                muscleGroups.Add(muscleGroup);
             }
-            return muscleGroups;
+            foreach (var equip in apiMuscleGroups.Data!.Equipments)
+            {
+                Equipment equipment = new()
+                {
+                    Name = equip.Name,
+                    Code = equip.Code,
+                };
+                await _getExercisesService.GetOrCreateEquipments(equipment);
+            }
         }
+
     }
 }

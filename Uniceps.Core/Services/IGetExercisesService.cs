@@ -9,10 +9,13 @@ namespace Uniceps.Core.Services
 {
     public interface IGetExercisesService
     {
-        Task<IEnumerable<Exercises>> GetAll();
-        Task<IEnumerable<MuscleGroup>> GetAllMuscleGroups();
-        Task<Exercises> GetOrCreate(Exercises exercises);
-        Task<MuscleGroup> GetOrCreateMuscleGroup(MuscleGroup muscleGroup);
-        Task<Exercises> Update(Exercises exercises);
+        Task<IEnumerable<ExerciseV2>> GetAll();
+        Task<IEnumerable<MuscleGroupV2>> GetAllMuscleGroups();
+        Task<IEnumerable<Equipment>> GetAllEquipments();
+        Task<ExerciseV2> GetOrCreate(ExerciseV2 exercises);
+        Task<MuscleGroupV2> GetOrCreateMuscleGroup(MuscleGroupV2 muscleGroup);
+        Task<Equipment> GetOrCreateEquipments(Equipment equipment);
+        Task<ExerciseV2> Update(ExerciseV2 exercises);
+        Task<int> GetExerciseVersion(string exerciseId);
     }
 }

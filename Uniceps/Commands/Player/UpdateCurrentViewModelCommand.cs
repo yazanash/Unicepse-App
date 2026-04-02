@@ -13,6 +13,7 @@ using Uniceps.Stores;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.Accountant;
 using Uniceps.ViewModels.Authentication;
+using Uniceps.ViewModels.DashboardViewModels;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
 using Uniceps.ViewModels.Expenses;
 using Uniceps.ViewModels.PlayersViewModels;
@@ -37,11 +38,13 @@ namespace Uniceps.Commands.Player
         private readonly AccountStore _accountStore;
         private readonly SubscriptionMainViewModel _subscriptionMainViewModel;
         private readonly PremiumViewModel _premiumViewModel = new PremiumViewModel();
+
+        private readonly DashboardViewModel _dashboardViewModel;
         public UpdateCurrentViewModelCommand(NavigationStore navigationStore, AuthenticationStore? authenticationStore,
             HomeViewModel homeNavViewModel, PlayerListViewModel playersPageViewModel,
             SportListViewModel sportsViewModel, TrainersListViewModel trainersViewModel,
             UsersListViewModel usersViewModel, AccountingViewModel accountingViewModel,
-           RoutineListViewModel routineListViewModel, AppInfoViewModel appInfoViewModel, SubscriptionMainViewModel subscriptionMainViewModel, AccountStore accountStore)
+           RoutineListViewModel routineListViewModel, AppInfoViewModel appInfoViewModel, SubscriptionMainViewModel subscriptionMainViewModel, AccountStore accountStore, DashboardViewModel dashboardViewModel)
         {
             _navigationStore = navigationStore;
             _authenticationStore = authenticationStore;
@@ -55,6 +58,7 @@ namespace Uniceps.Commands.Player
             _appInfoViewModel = appInfoViewModel;
             _subscriptionMainViewModel = subscriptionMainViewModel;
             _accountStore = accountStore;
+            _dashboardViewModel = dashboardViewModel;
         }
         public override bool CanExecute(object? parameter)
         {
@@ -65,6 +69,10 @@ namespace Uniceps.Commands.Player
                 ViewType viewType = (ViewType)parameter;
                 switch (viewType)
                 {
+                    case ViewType.Dashboard:
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin)
+                            isAble = true;
+                        break;
                     case ViewType.Home:
                         if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
                             isAble = true;
@@ -116,6 +124,13 @@ namespace Uniceps.Commands.Player
                 ViewType viewType = (ViewType)parameter;
                 switch (viewType)
                 {
+                    case ViewType.Dashboard:
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin){
+                             _dashboardViewModel.LoadAnalyticsCommand.Execute(null);
+                            _navigationStore.CurrentViewModel = _dashboardViewModel;
+
+                        }
+                        break;
                     case ViewType.Home:
                         if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
                             _navigationStore.CurrentViewModel = _subscriptionMainViewModel;
@@ -126,7 +141,7 @@ namespace Uniceps.Commands.Player
                         }
                         break;
                     case ViewType.PlayersLog:
-                        if (_accountStore.SystemSubscription != null)
+                        if (_accountStore != null)
                         {
                             if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
                                 _navigationStore.CurrentViewModel = _homeNavViewModel;
@@ -147,7 +162,7 @@ namespace Uniceps.Commands.Player
                             _navigationStore.CurrentViewModel = _trainersViewModel;
                         break;
                     case ViewType.Exercises:
-                        if (_accountStore.SystemSubscription != null)
+                        if (_accountStore != null)
                         {
                             if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor )
                                 _navigationStore.CurrentViewModel = _routineListViewModel;
@@ -157,7 +172,7 @@ namespace Uniceps.Commands.Player
 
                         break;
                     case ViewType.Users:
-                        if (_accountStore.SystemSubscription != null)
+                        if (_accountStore != null)
                         {
                             if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin)
                                 _navigationStore.CurrentViewModel = _usersViewModel;

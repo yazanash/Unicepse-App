@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
@@ -21,6 +22,7 @@ using Uniceps.Helpers.Mappers;
 using Uniceps.Models.RoutineExportModels;
 using Uniceps.Stores;
 using Uniceps.Stores.ApiDataStores;
+using Uniceps.SystemServices;
 using Uniceps.utlis.common;
 using Uniceps.ViewModels.PrintRoutineViewModel;
 
@@ -78,13 +80,17 @@ namespace Uniceps.Stores.RoutineStores
             switch (fileFormatType)
             {
                 case FileFormatType.UniFile:
+                    if (routineModel.Days.Any(x => x.RoutineItems.Any(x => x.Exercise?.IsLegacy ?? true)))
+                    {
+                        return false;
+                    }
                     RoutineExportDto routineExportDto = RoutineMapper.Map(routineModel);
                     var uniFile = new UniFile
                     {
                         Meta = new MetaData
                         {
                             Source = "MyApp",
-                            SchemaVersion = 1,
+                            SchemaVersion = 2,
                             CreatedAt = DateTime.UtcNow,
                             FileType = GetEnumString(FileTypes.Routine)
                         },
@@ -95,11 +101,11 @@ namespace Uniceps.Stores.RoutineStores
                     return true;
                 case FileFormatType.PDF:
                     PlayerRoutinePrintViewModel vm = RoutineMapper.MapToPdf(routineModel, routineModel.Name ?? "");
-                    if (_accountStore.SystemProfile != null)
+                    if (SettingsManager.Current != null)
                     {
-                        vm.GymName = _accountStore.SystemProfile.DisplayName;
-                        if (!string.IsNullOrEmpty(_accountStore.SystemProfile.LocalProfileImagePath))
-                            vm.GymLogo=_accountStore.SystemProfile.LocalProfileImagePath;
+                        vm.GymName = SettingsManager.Current.GymName;
+                        if (!string.IsNullOrEmpty(SettingsManager.Current.LogoPath))
+                            vm.GymLogo = SettingsManager.Current.LogoPath;
                     }
                     var doc = BuildRoutineDocument.BuildDocument(vm);
                     var pd = new PrintDialog();

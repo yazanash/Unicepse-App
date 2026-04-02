@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Uniceps.API.Services;
 using Uniceps.BackgroundServices;
 using Microsoft.Extensions.Logging;
 using Uniceps.Stores.ApiDataStores;

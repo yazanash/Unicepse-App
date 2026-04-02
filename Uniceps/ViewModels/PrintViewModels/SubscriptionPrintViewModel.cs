@@ -9,19 +9,18 @@ using Uniceps.Stores;
 using Uniceps.ViewModels.PaymentsViewModels;
 using Uniceps.Core.Models.Subscription;
 using System.IO;
+using Uniceps.SystemServices;
 
 namespace Uniceps.ViewModels.PrintViewModels
 {
     public class SubscriptionPrintViewModel : ViewModelBase
     {
-        private readonly AccountStore _accountStore;
         public Subscription Subscription;
         private readonly ObservableCollection<PaymentListItemViewModel> _paymentListItemViewModels;
         public IEnumerable<PaymentListItemViewModel> PaymentsList => _paymentListItemViewModels;
-        public SubscriptionPrintViewModel(Subscription subscription, AccountStore accountStore)
+        public SubscriptionPrintViewModel(Subscription subscription)
         {
             Subscription = subscription;
-            _accountStore = accountStore;
 
             _paymentListItemViewModels = new ObservableCollection<PaymentListItemViewModel>();
 
@@ -29,11 +28,8 @@ namespace Uniceps.ViewModels.PrintViewModels
             {
                 _paymentListItemViewModels.Add(new PaymentListItemViewModel(item));
             }
-            if (_accountStore.SystemProfile != null)
-            {
-                GymName = _accountStore.SystemProfile.DisplayName;
-                LoadProfileImage(_accountStore.SystemProfile.LocalProfileImagePath);
-            }
+            GymName = SettingsManager.Current.GymName;
+            LoadProfileImage(SettingsManager.Current.LogoPath);
         }
         private void LoadProfileImage(string? localPath)
         {
@@ -42,10 +38,10 @@ namespace Uniceps.ViewModels.PrintViewModels
 
             var bitmap = new BitmapImage();
             bitmap.BeginInit();
-            bitmap.CacheOption = BitmapCacheOption.OnLoad; // مهم لتجنب قفل الملف
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.UriSource = new Uri(localPath);
             bitmap.EndInit();
-            bitmap.Freeze(); // إذا ستستخدمه من thread آخر
+            bitmap.Freeze();
             GymLogo = bitmap;
         }
         private string? _gymName;

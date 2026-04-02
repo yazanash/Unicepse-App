@@ -158,7 +158,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         {
             RoutineTemplateListItemViewModel viewModel = new RoutineTemplateListItemViewModel(routineModel, _navigatorStore, _routineDetailsViewModel);
             _routineTemplateListItemViewModels.Add(viewModel);
-            viewModel.Order = _routineTemplateListItemViewModels.Count + 1;
+            viewModel.Order = _routineTemplateListItemViewModels.Count;
             OnPropertyChanged(nameof(HasData));
         }
         public static RoutineListViewModel LoadViewModel(RoutineTempDataStore routineTempDataStore, NavigationStore navigatorStore, RoutineDetailsViewModel routineDetailsViewModel)

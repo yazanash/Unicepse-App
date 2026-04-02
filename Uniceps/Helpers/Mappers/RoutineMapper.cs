@@ -24,13 +24,7 @@ namespace Uniceps.Helpers.Mappers
                     {
                         Order = i.Order,
                         ExerciseName = i.Exercise?.Name ?? string.Empty,
-                        ExerciseId = i.Exercise?.Tid??0,
-                        ExerciseUrl = i.Exercise?.ImageUrl ?? string.Empty,
-                        Muscle = new MuscleExportDto
-                        {
-                            Ar = i.Exercise?.MuscelAr ?? string.Empty,
-                            En = i.Exercise?.MuscelEng ?? string.Empty
-                        },
+                        ExerciseId = i.Exercise?.ExerciseId??"",
                         Sets = i.Sets.Select(s => new SetExportDto
                         {
                             Order = s.RoundIndex,
@@ -60,9 +54,9 @@ namespace Uniceps.Helpers.Mappers
                             {
                                 Order = i.Order,
                                 ExerciseName = i.Exercise?.Name??"اسم التمرين",
-                                ExerciseId = i.ExerciseId,
+                                ExerciseId = i.ExerciseV2Id??"",
                                 ExerciseUrl = i.Exercise?.ImagePath??"",
-                                Muscle = i.Exercise?.MuscelAr??"اسم العضلة",
+                                //Muscle = i.Exercise?.MuscelAr??"اسم العضلة",
                                 Sets = i.Sets
                                     .OrderBy(s => s.RoundIndex)
                                     .Select(s => new SetPrintVm { Order = s.RoundIndex, Repetition = s.Repetition })

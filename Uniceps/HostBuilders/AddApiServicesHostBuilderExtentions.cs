@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.API.Exercises;
-using Uniceps.API.Services;
 using Uniceps.Core.Models.SyncModel;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services.DataSyncServices;
@@ -20,11 +19,7 @@ namespace Uniceps.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
-                services.AddSingleton<PlayerApiDataService>();
                 services.AddSingleton<GetExercisesService>();
-                services.AddSingleton<SystemAuthApiService>();
-                services.AddSingleton<SystemProfileApiDataService>();
-                services.AddSingleton<SystemSubscriptionApiDataService>();
                 services.AddSingleton<IDataService<SyncObject>, SyncDataService>();
             });
             return _hostBuilder;

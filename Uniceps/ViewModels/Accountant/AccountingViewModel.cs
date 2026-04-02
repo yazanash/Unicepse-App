@@ -23,7 +23,7 @@ namespace Uniceps.ViewModels.Accountant
         private readonly GymStore _gymStore;
         private readonly DailyReportStore _dailyReportStore;
         private readonly PeriodReportStore _periodReportStore;
-        private readonly AccountStore _accountStore;
+
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public ICommand ExpensesCommand { get; }
         public ICommand IncomeReportCommand { get; }
@@ -38,16 +38,18 @@ namespace Uniceps.ViewModels.Accountant
         public bool IsExpensesReport { get; set; }
         public bool IsIncomeReport { get; set; }
         //public ICommand PaymentReportCommand;
+        private readonly LicenseStore _licenseStore;
         public bool IsIncomeFinal { get; set; }
-        public AccountingViewModel(ExpensesDataStore expensesStore, GymStore gymStore, DailyReportStore dailyReportStore, PeriodReportStore periodReportStore, AccountStore accountStore)
+        public AccountingViewModel(ExpensesDataStore expensesStore, GymStore gymStore, DailyReportStore dailyReportStore, PeriodReportStore periodReportStore, LicenseStore licenseStore)
         {
             _navigatorStore = new NavigationStore();
             _dailyReportStore = dailyReportStore;
             _expensesStore = expensesStore;
             _gymStore = gymStore;
-            _accountStore = accountStore;
             _periodReportStore = periodReportStore;
-            if (_accountStore.SystemSubscription != null)
+            _licenseStore = licenseStore;
+
+            if (_licenseStore.Current.IsFullVersion)
             {
                 _navigatorStore.CurrentViewModel = CreateStatesViewModel(_dailyReportStore);
                 _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
@@ -83,7 +85,7 @@ namespace Uniceps.ViewModels.Accountant
         }
         public void ResetSelection()
         {
-            if (_accountStore.SystemSubscription != null)
+            if (_licenseStore.Current.IsFullVersion)
             {
                 _navigatorStore.CurrentViewModel = CreateStatesViewModel(_dailyReportStore);
             }

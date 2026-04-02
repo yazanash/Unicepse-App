@@ -37,7 +37,8 @@
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/RoutineListResource.xaml"/>
                 <ResourceDictionary Source="utlis/Dictionaries/ListBoxItems/SystemSubscriptionListResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-         
+          
         </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

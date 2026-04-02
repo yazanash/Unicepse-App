@@ -70,6 +70,11 @@ namespace Uniceps.Stores.RoutineStores
             throw new NotImplementedException();
         }
 
+        public void ClearItems()
+        {
+            _routineItemModels.Clear();
+        }
+
         public async Task Update(RoutineItemModel entity)
         {
             await _dataService.Update(entity);

@@ -27,9 +27,10 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
             OnPropertyChanged(nameof(SetsString));
         }
         public int Id => RoutineItemModel.Id;
+        public string IsLeagcyMessage => RoutineItemModel.Exercise!.IsLegacy? "هذا التمرين قديم ولن يتم تصديره يرجى استبدالهن من التمارين الموجودة حاليا":"";
         public string? ExerciseImage => RoutineItemModel.Exercise!.ImagePath;
         public string? ExerciseName => RoutineItemModel.Exercise!.Name;
-        public int Order => RoutineItemModel.Order +1;
+        public int Order => RoutineItemModel.Order ;
         public string? SetsString => string.Join(" × ", RoutineItemModel.Sets.Select(x=>x.Repetition));
         internal void Update(RoutineItemModel obj)
         {

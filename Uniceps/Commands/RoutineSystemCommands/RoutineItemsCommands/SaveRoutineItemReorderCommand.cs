@@ -23,11 +23,12 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands
         public async override Task ExecuteAsync(object? parameter)
         {
             List<RoutineItemModel>? reorderedList = _routineItemListViewModel.RoutineItems.Select(x => x.RoutineItemModel!).ToList();
+            int order = 1;
             foreach (RoutineItemModel itemModel in reorderedList)
             {
                 if (itemModel != null)
                 {
-                    itemModel.Order = reorderedList.IndexOf(itemModel);
+                    itemModel.Order = order++;
                 }
             }
             await _dataStore.UpdateRange(reorderedList);

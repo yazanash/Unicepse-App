@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Uniceps.Core.Models.TrainingProgram;
 
 namespace Uniceps.API.Models
 {
     public class MuscleGroupDto
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? EngName { get; set; }
+        public string Code { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public List<MuscleHeadResponse> MuscleHeads { get; set; } = new List<MuscleHeadResponse>();
+
     }
 }

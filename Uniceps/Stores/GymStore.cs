@@ -21,12 +21,18 @@ namespace Uniceps.Stores
         private readonly IMonthlyReportService _monthlyReportService;
         private readonly ILogger<GymStore> _logger;
         public event Action<MonthlyReport>? ReportLoaded;
-        public GymStore(ILogger<GymStore> logger, IDataService<Employee> employeeDataService, ITrainerRevenueService trainerRevenueService, IMonthlyReportService monthlyReportService)
+        private readonly IDashboardAnalyticsDataService _dashboardAnalyticsDataService;
+
+        public DashboardAnalyticsModel DashboardAnalyticsModel = new DashboardAnalyticsModel();
+
+        public event Action? AnalyticsLoaded;
+        public GymStore(ILogger<GymStore> logger, IDataService<Employee> employeeDataService, ITrainerRevenueService trainerRevenueService, IMonthlyReportService monthlyReportService, IDashboardAnalyticsDataService dashboardAnalyticsDataService)
         {
             _logger = logger;
             _employeeDataService = employeeDataService;
             _trainerRevenueService = trainerRevenueService;
             _monthlyReportService = monthlyReportService;
+            _dashboardAnalyticsDataService = dashboardAnalyticsDataService;
         }
         public async Task GetReport(DateTime date)
         {
@@ -34,7 +40,7 @@ namespace Uniceps.Stores
             var employees = await _employeeDataService.GetAll();
             report.Salaries = employees.Sum(e => e.SalaryValue);
 
-            var trainers = employees.Where(e => e.IsTrainer&&e.ParcentValue>0).ToList();
+            var trainers = employees.Where(e => e.IsTrainer && e.ParcentValue > 0).ToList();
             double totalDues = 0;
 
             foreach (var t in trainers)
@@ -52,6 +58,11 @@ namespace Uniceps.Stores
          - report.TrainerDauses
          - report.Expenses;
             ReportLoaded?.Invoke(report);
+        }
+        public async Task GetAnalytics()
+        {
+            DashboardAnalyticsModel = await _dashboardAnalyticsDataService.GetDashboardAnalytics();
+            AnalyticsLoaded?.Invoke();
         }
     }
 }

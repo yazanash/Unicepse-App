@@ -34,12 +34,13 @@ namespace Uniceps.Stores
         private readonly IDeleteConnectionService<Employee> _deleteConnectionService;
         private readonly List<Employee> _employee;
         private readonly Lazy<Task> _initializeLazy;
+        private readonly LicenseStore _licenseStore;
         public IEnumerable<Employee> Employees => _employee;
         private readonly List<Sport> _sports;
         public IEnumerable<Sport> Sports => _sports;
-        private readonly AccountStore _accountStore;
 
-        public EmployeeStore(IDataService<Employee> employeeDataService, ILogger<EmployeeStore> logger, IDeleteConnectionService<Employee> deleteConnectionService, AccountStore accountStore)
+
+        public EmployeeStore(IDataService<Employee> employeeDataService, ILogger<EmployeeStore> logger, IDeleteConnectionService<Employee> deleteConnectionService, LicenseStore licenseStore)
         {
             _employeeDataService = employeeDataService;
             _employee = new List<Employee>();
@@ -47,7 +48,7 @@ namespace Uniceps.Stores
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
             _deleteConnectionService = deleteConnectionService;
-            _accountStore = accountStore;
+            _licenseStore = licenseStore;
         }
 
 
@@ -108,7 +109,7 @@ namespace Uniceps.Stores
         {
             int empcount = _employee.Where(x => !x.IsTrainer).Count();
             int trcount = _employee.Where(x => x.IsTrainer).Count();
-            if (_accountStore.SystemSubscription == null && (empcount >= 2|| trcount >= 2))
+            if (!_licenseStore.Current.IsFullVersion && (empcount >= 2 || trcount >= 2))
                 throw new FreeLimitException("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
             _logger.LogInformation(LogFlag + "Add employee");
             await _employeeDataService.Create(entity);
