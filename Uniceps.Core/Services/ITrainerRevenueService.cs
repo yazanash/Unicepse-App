@@ -9,6 +9,9 @@ namespace Uniceps.Core.Services
 {
     public interface ITrainerRevenueService
     {
-        Task<TrainerDueses> GetTrainerDuesAsync(Employee trainer, int year, int month);
+        Task<TrainerDueses> GetTrainerDuesAsync(Employee trainer,DateTime reportDate);
+
+        Task<double> GetTrainersAndEmployeesCredits(int year, int month);
+        Task<bool> CloseTrainerAccountAsync(TrainerDueses finalDues);
     }
 }

@@ -112,9 +112,9 @@ namespace Uniceps.Stores
             if (!_licenseStore.Current.IsFullVersion && (empcount >= 2 || trcount >= 2))
                 throw new FreeLimitException("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
             _logger.LogInformation(LogFlag + "Add employee");
-            await _employeeDataService.Create(entity);
-            _employee.Add(entity);
-            Created?.Invoke(entity);
+            Employee creetedEntity =  await _employeeDataService.Create(entity);
+            _employee.Add(creetedEntity);
+            Created?.Invoke(creetedEntity);
         }
 
         public async Task Delete(Employee employee)

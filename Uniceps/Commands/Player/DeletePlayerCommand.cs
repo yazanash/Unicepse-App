@@ -14,11 +14,9 @@ namespace Uniceps.Commands.Player
 {
     public class DeletePlayerCommand : AsyncCommandBase
     {
-        private readonly NavigationService<PlayerListViewModel> navigationService;
         private readonly PlayersDataStore _playerStore;
-        public DeletePlayerCommand(NavigationService<PlayerListViewModel> navigationService, PlayersDataStore playerStore)
+        public DeletePlayerCommand( PlayersDataStore playerStore)
         {
-            this.navigationService = navigationService;
             _playerStore = playerStore;
         }
 
@@ -32,7 +30,6 @@ namespace Uniceps.Commands.Player
                     player.SubscribeEndDate = DateTime.Now;
                     player.IsSubscribed = false;
                     await _playerStore.DeletePlayer(player);
-                    navigationService.Navigate();
                 }
                 catch (NotExistException ex)
                 {

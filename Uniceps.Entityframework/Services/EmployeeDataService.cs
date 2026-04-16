@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Uniceps.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Uniceps.Core.Exceptions;
 using Uniceps.Core.Models.Employee;
-using Uniceps.Core.Services;
 using Uniceps.Core.Models.Sport;
+using Uniceps.Core.Models.Subscription;
+using Uniceps.Core.Services;
 using Uniceps.Entityframework.DbContexts;
 
 namespace Uniceps.Entityframework.Services
@@ -61,7 +62,7 @@ namespace Uniceps.Entityframework.Services
                     await context.SaveChangesAsync();
                 }
                  
-                return entity;
+                return entityToCreate;
             }
         }
 
@@ -99,7 +100,6 @@ namespace Uniceps.Entityframework.Services
             Employee existed_employee = await Get(entity.Id);
             if (existed_employee == null)
                 throw new NotExistException("هذا الموظف غير موجود");
-            //context.Attach(entity);
             foreach (Sport sport in entity.Sports!)
             {
                 context.Entry(sport).State = EntityState.Detached;
@@ -111,6 +111,11 @@ namespace Uniceps.Entityframework.Services
             if (context.Entry(entity).State == EntityState.Detached)
                 context.Entry(entity).State = EntityState.Modified;
             context.Set<Employee>().Update(entity);
+
+            await context.Set<Subscription>()
+       .Where(s => s.TrainerId == entity.Id)
+       .ExecuteUpdateAsync(setter => setter
+           .SetProperty(s => s.TrainerName, entity.FullName));
             await context.SaveChangesAsync();
             return entity;
         }

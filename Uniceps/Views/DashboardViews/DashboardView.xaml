@@ -70,14 +70,14 @@
                 <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Margin="0,0,10,0" Height="300">
                     <Grid Margin="15">
                         <TextBlock Text="توزيع المشتركين (جنس)" Foreground="{DynamicResource Brush.Foreground}" FontWeight="SemiBold" VerticalAlignment="Top"/>
-                        <lvc:PieChart Series="{Binding GenderSeries}" FlowDirection="LeftToRight" Margin="0,25,0,0" LegendPosition="Bottom"/>
+                        <lvc:PieChart LegendTextPaint="{Binding LabelPaint}" Series="{Binding GenderSeries}" Foreground="{DynamicResource Brush.Foreground}" FlowDirection="LeftToRight" Margin="0,25,0,0" LegendPosition="Bottom"/>
                     </Grid>
                 </Border>
 
                 <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}" Margin="10,0,0,0" Height="300">
                     <Grid Margin="15">
                         <TextBlock Text="الرياضات الأكثر طلباً" Foreground="{DynamicResource Brush.Foreground}" FontWeight="SemiBold" VerticalAlignment="Top"/>
-                        <lvc:PieChart Series="{Binding SportPopularitySeries}" FlowDirection="LeftToRight" Margin="0,25,0,0" LegendPosition="Bottom"/>
+                        <lvc:PieChart LegendTextPaint="{Binding LabelPaint}" Series="{Binding SportPopularitySeries}" Foreground="{DynamicResource Brush.Foreground}" FlowDirection="LeftToRight" Margin="0,25,0,0" LegendPosition="Bottom"/>
                     </Grid>
                 </Border>
             </Grid>
@@ -85,12 +85,13 @@
             <Border Grid.Row="2" Style="{DynamicResource CardBorderStyle}" Margin="0,0,0,20">
                 <Grid Margin="15">
                     <TextBlock Text="ساعات الذروة (متوسط أسبوعي - ذكر/أنثى)" Foreground="{DynamicResource Brush.Foreground}" FontWeight="SemiBold" VerticalAlignment="Top"/>
-                    <lvc:CartesianChart Series="{Binding PeakHoursSeries}" 
+                    <lvc:CartesianChart Series="{Binding PeakHoursSeries}"  Foreground="{DynamicResource Brush.Foreground}"
                     XAxes="{Binding XAxesPeak}" 
                     YAxes="{Binding YAxesInteger}"
                     LegendPosition="Right"
                     TooltipPosition="Top" 
                     FlowDirection="LeftToRight"
+                                        LegendTextPaint="{Binding LabelPaint}"
                     Margin="0,30,0,0"/>
                 </Grid>
             </Border>
@@ -99,17 +100,18 @@
                     <TextBlock Text="إحصائية الحضور خلال أيام الأسبوع (ذكر/أنثى)" Foreground="{DynamicResource Brush.Foreground}" FontWeight="SemiBold" VerticalAlignment="Top"/>
                     <lvc:CartesianChart Series="{Binding WeeklyDaysSeries}" 
                                     XAxes="{Binding XAxesDays}" 
-                                    YAxes="{Binding YAxesInteger}"
+                                    YAxes="{Binding YAxesInteger}" Foreground="{DynamicResource Brush.Foreground}"
                                     LegendPosition="Right"
                                     TooltipPosition="Top" 
                                     FlowDirection="LeftToRight"
+                                        LegendTextPaint="{Binding LabelPaint}"
                                     Margin="0,30,0,0"/>
                 </Grid>
             </Border>
             <Border Grid.Row="4" Style="{DynamicResource CardBorderStyle}">
                 <Grid Margin="15">
                     <TextBlock Text="التدفق المالي (6 أشهر)" Foreground="{DynamicResource Brush.Foreground}" FontWeight="SemiBold" VerticalAlignment="Top"/>
-                    <lvc:CartesianChart Series="{Binding FinancialSeries}" FlowDirection="LeftToRight" XAxes="{Binding XAxesFinancial}" LegendPosition="Bottom" Margin="0,30,0,0"/>
+                    <lvc:CartesianChart LegendTextPaint="{Binding LabelPaint}" Series="{Binding FinancialSeries}" Foreground="{DynamicResource Brush.Foreground}" FlowDirection="LeftToRight" XAxes="{Binding XAxesFinancial}" LegendPosition="Bottom" Margin="0,30,0,0"/>
                 </Grid>
             </Border>
         </Grid>

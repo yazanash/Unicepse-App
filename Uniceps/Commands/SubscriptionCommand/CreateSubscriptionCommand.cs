@@ -60,6 +60,7 @@ namespace Uniceps.Commands.SubscriptionCommand
                     PlayerId = _playerDataStore.SelectedPlayer!.Id,
                     PlayerSyncId = _playerDataStore.SelectedPlayer!.SyncId,
                     PlayerName = _subscriptionDataStore.SelectedSport!.Name,
+                    PlayerPhone = _playerDataStore.SelectedPlayer!.Phone,
                     RollDate = _addSubscriptionViewModel.SubscribeDate,
                     Price = _subscriptionDataStore.SelectedSport!.Price,
                     OfferValue = _addSubscriptionViewModel.OfferValue,

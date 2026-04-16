@@ -91,13 +91,23 @@ namespace Uniceps.ViewModels
             get => SettingsManager.Current.OwnerName;
             set { SettingsManager.Current.OwnerName = value ?? ""; OnPropertyChanged(nameof(OwnerName)); }
         }
+        public int BackupRemainderDays
+        {
+            get => SettingsManager.Current.BackupRemainderDays;
+            set { SettingsManager.Current.BackupRemainderDays = value; OnPropertyChanged(nameof(BackupRemainderDays)); }
+        }
+        public int SubscriptionRemainderDays
+        {
+            get => SettingsManager.Current.SubscriptionRemainderDays;
+            set { SettingsManager.Current.SubscriptionRemainderDays = value; OnPropertyChanged(nameof(SubscriptionRemainderDays)); }
+        }
 
         public ICommand UpdateProfileCommand => new RelayCommand(() =>
         {
             SettingsManager.Save();
             MessageBox.Show("تم حفظ البيانات بنجاح في AppData");
         });
-
+      
         private void ExecuteUploadProfilePictureCommand()
         {
             var dlg = new Microsoft.Win32.OpenFileDialog { Filter = "Image Files|*.png;*.jpg;*.jpeg" };
@@ -119,6 +129,7 @@ namespace Uniceps.ViewModels
                     LoadProfileImage(destPath);
                 }
                 finally { IsLoading = false; }
+                 
             }
         }
         public string LastBackupTime => SettingsManager.Current.LastBackupDate == null

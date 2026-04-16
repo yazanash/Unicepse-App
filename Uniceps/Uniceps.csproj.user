@@ -33,7 +33,13 @@
     <Compile Update="Views\CameraReader.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\EmployeeViews\CreditViews\CreateCreditWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\EmployeeViews\EmployeeDetailsWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EmployeeViews\TrainerDauseDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\EmployeeViews\TrainerDetailsWindowView.xaml.cs">
@@ -43,6 +49,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayerViews\PlayerDetailWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\PlayerProfileWindowView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PremiumView.xaml.cs">
@@ -139,9 +148,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\AuthView\UserLogReportView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\EmployeeViews\CreditViews\CreditsListView.xaml.cs">
@@ -366,9 +372,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\UserLogReportView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\EmployeeViews\CreditViews\CreditDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EmployeeViews\CreditViews\CreditsListView.xaml">

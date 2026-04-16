@@ -16,5 +16,6 @@ namespace Uniceps.Core.Models.Employee
         public DateTime CoveredTo { get; set; }
         public double AmountForMonth { get; set; }
         public bool IsLatePayment { get; set; } = false;
+        public double EarnedUntilNow { get; set; }
     }
 }

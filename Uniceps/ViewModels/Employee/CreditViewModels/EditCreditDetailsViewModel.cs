@@ -18,19 +18,19 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
     {
         private readonly EmployeeStore _employeeStore;
         private readonly CreditsDataStore _creditDataStore;
-        private NavigationStore _navigatorStore;
-        private readonly CreditListViewModel _creditListViewModel;
-        public EditCreditDetailsViewModel(EmployeeStore employeeStore, CreditsDataStore creditDataStore, NavigationStore navigatorStore, CreditListViewModel creditListViewModel)
+        public EditCreditDetailsViewModel(EmployeeStore employeeStore, CreditsDataStore creditDataStore)
         {
             _employeeStore = employeeStore;
             _creditDataStore = creditDataStore;
-            _navigatorStore = navigatorStore;
-            _creditListViewModel = creditListViewModel;
             CreditDate = _creditDataStore.SelectedCredit!.Date;
             CreditValue = _creditDataStore.SelectedCredit!.CreditValue;
             Description = _creditDataStore.SelectedCredit!.Description;
-            SubmitCommand = new EditCreditCommand(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel), _employeeStore, _creditDataStore, this);
-            CancelCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel));
+            SubmitCommand = new EditCreditCommand( _employeeStore, _creditDataStore, this);
+        }
+        public Action? CreditUpdated;
+        internal void OnCreditUpdated()
+        {
+            CreditUpdated?.Invoke();
         }
         private double _creditValue;
         public double CreditValue
@@ -65,6 +65,5 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
             set { _description = value; OnPropertyChanged(nameof(Description)); }
         }
         public ICommand SubmitCommand { get; }
-        public ICommand CancelCommand { get; }
     }
 }

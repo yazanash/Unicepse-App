@@ -1,43 +1,38 @@
-﻿using Uniceps.Commands;
-using Uniceps.Commands.Employee.CreditsCommands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands.Employee.CreditsCommands;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
-using Uniceps.Stores;
-using Uniceps.ViewModels;
 using Uniceps.navigation.Stores;
+using Uniceps.Stores;
 
 namespace Uniceps.ViewModels.Employee.CreditViewModels
 {
-    public class CreditDetailsViewModel : ErrorNotifyViewModelBase
+    public class CreateCreditViewModelWindow : ErrorNotifyViewModelBase
     {
         private readonly EmployeeStore _employeeStore;
         private readonly CreditsDataStore _creditDataStore;
-        private NavigationStore _navigatorStore;
-        private readonly CreditListViewModel _creditListViewModel;
-        public CreditDetailsViewModel(EmployeeStore employeeStore, CreditsDataStore creditDataStore, NavigationStore navigatorStore, CreditListViewModel creditListViewModel)
+        public CreateCreditViewModelWindow(EmployeeStore employeeStore, CreditsDataStore creditDataStore)
         {
             _employeeStore = employeeStore;
             _creditDataStore = creditDataStore;
-            _navigatorStore = navigatorStore;
-            _creditListViewModel = creditListViewModel;
-            SubmitCommand = new SubmitCreditCommand(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel), _employeeStore, _creditDataStore, this);
-            CancelCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel));
+            SubmitCommand = new SubmitCreditCommand(_employeeStore, _creditDataStore, this);
         }
-        public CreditDetailsViewModel(EmployeeStore employeeStore, CreditsDataStore creditDataStore, NavigationStore navigatorStore, CreditListViewModel creditListViewModel, double amount)
+        public CreateCreditViewModelWindow(EmployeeStore employeeStore, CreditsDataStore creditDataStore, double amount)
         {
             _employeeStore = employeeStore;
             _creditDataStore = creditDataStore;
-            _navigatorStore = navigatorStore;
-            _creditListViewModel = creditListViewModel;
-            SubmitCommand = new SubmitCreditCommand(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel), _employeeStore, _creditDataStore, this);
-            CancelCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => _creditListViewModel));
+            SubmitCommand = new SubmitCreditCommand( _employeeStore, _creditDataStore, this);
             CreditValue = amount;
+        }
+        public Action? CreditCreated;
+        internal void OnCreditCreated()
+        {
+            CreditCreated?.Invoke();
         }
         private double _creditValue;
         public double CreditValue
@@ -68,6 +63,5 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
             set { _description = value; OnPropertyChanged(nameof(Description)); }
         }
         public ICommand SubmitCommand { get; }
-        public ICommand CancelCommand { get; }
     }
 }

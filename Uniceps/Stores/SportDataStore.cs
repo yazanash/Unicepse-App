@@ -140,6 +140,7 @@ namespace Uniceps.Stores
             {
                 _sports.Add(entity);
             }
+            
             Updated?.Invoke(entity);
         }
     }

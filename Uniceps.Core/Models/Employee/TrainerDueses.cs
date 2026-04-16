@@ -19,6 +19,12 @@ namespace Uniceps.Core.Models.Employee
         public double Credits { get; set; }
         public double Salary { get; set; }
         public double CreditsCount { get; set; }
+        public double BalanceForward { get; set; } 
+        public double FinalBalance => BalanceForward + Salaries + TotalSubscriptions - Credits;
+        public double Salaries { get; set; }
         public List<TrainerDuesDetail> Details { get; set; } = new List<TrainerDuesDetail>();
+        public List<Credit> CreditDetails { get; set; } = new List<Credit>();
+        public List<SalaryDetail> SalaryDetails { get; set; } = new List<SalaryDetail>();
+        public double TotalSalaryDebt { get; set; }
     }
 }

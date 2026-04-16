@@ -24,11 +24,12 @@ namespace Uniceps.ViewModels
     {
         private readonly ObservableCollection<PlayerAttendenceListItemViewModel> _playerAttendenceListItemViewModels;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
+        private readonly AccountStore _accountStore;
         public IEnumerable<PlayerAttendenceListItemViewModel> PlayerAttendence => _playerAttendenceListItemViewModels;
         public ICommand LoadDailyReport { get; }
         public ICommand OpenScanCommand { get; }
         public SearchBoxViewModel SearchBox { get; set; }
-        public HomeViewModel(PlayersAttendenceStore playersAttendenceStore)
+        public HomeViewModel(PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore)
         {
             _playersAttendenceStore = playersAttendenceStore;
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
@@ -38,7 +39,21 @@ namespace Uniceps.ViewModels
             _playerAttendenceListItemViewModels = new ObservableCollection<PlayerAttendenceListItemViewModel>();
             LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore, this);
             SearchBox = new SearchBoxViewModel();
-
+            _accountStore = accountStore;
+            if (_accountStore.CurrentAccount != null)
+            {
+                HasPermission = _accountStore.CurrentAccount.Role == Core.Common.Roles.Admin || _accountStore.CurrentAccount.Role == Core.Common.Roles.Supervisor;
+            }
+            else
+            {
+                HasPermission = true;
+            }
+        }
+        private bool _hasPermission = false;
+        public bool HasPermission
+        {
+            get => _hasPermission;
+            set { _hasPermission = value; OnPropertyChanged(nameof(HasPermission)); }
         }
         public override void Dispose()
         {
@@ -88,7 +103,12 @@ namespace Uniceps.ViewModels
             _playerAttendenceListItemViewModels.Clear();
             foreach (var i in _playersAttendenceStore.PlayersAttendence.OrderByDescending(x => x.IsLogged).ThenByDescending(x => x.loginTime))
             {
+                if (!HasPermission&&!i.IsLogged)
+                {
+                    continue;
+                }
                 AddDailyPlayerLog(i);
+
             }
         }
         private void _playersAttendenceStore_LoggedIn(DailyPlayerReport dailyPlayerReport)
@@ -110,9 +130,9 @@ namespace Uniceps.ViewModels
                 itemViewModel.IdSort = _playerAttendenceListItemViewModels.Count();
             }
         }
-        public static HomeViewModel LoadViewModel(PlayersAttendenceStore playersAttendenceStore)
+        public static HomeViewModel LoadViewModel(PlayersAttendenceStore playersAttendenceStore ,AccountStore accountStore)
         {
-            HomeViewModel viewModel = new(playersAttendenceStore);
+            HomeViewModel viewModel = new(playersAttendenceStore, accountStore);
 
             viewModel.LoadDailyReport.Execute(null);
             return viewModel;

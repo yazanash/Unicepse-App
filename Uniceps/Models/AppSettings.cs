@@ -15,6 +15,8 @@ namespace Uniceps.Models
         public string BackupPath { get; set; } = "";
         public string ExportFolderPath { get; set; } = "";
         public DateTime? LastBackupDate { get; set; }
-        public string AppTheme { get; set; } = "Light"; 
+        public string AppTheme { get; set; } = "Light";
+        public int SubscriptionRemainderDays { get; set; } = 2;
+        public int BackupRemainderDays = 2;
     }
 }

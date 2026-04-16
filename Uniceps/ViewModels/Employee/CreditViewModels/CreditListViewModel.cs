@@ -13,6 +13,7 @@ using Uniceps.ViewModels;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
 using Uniceps.Core.Models.Employee;
+using Uniceps.Views.EmployeeViews.CreditViews;
 
 namespace Uniceps.ViewModels.Employee.CreditViewModels
 {
@@ -47,7 +48,6 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
             _creditDataStore.Deleted += _creditDataStore_Deleted;
             _creditListItemViewModels = new ObservableCollection<CreditListItemViewModel>();
             LoadCreditsCommand = new LoadCreditsCommand(_employeeStore, _creditDataStore);
-            CreateCreditsCommand = new NavaigateCommand<CreditDetailsViewModel>(new NavigationService<CreditDetailsViewModel>(_navigatorStore, () => new CreditDetailsViewModel(_employeeStore, _creditDataStore, _navigatorStore, this)));
         }
 
         private void _creditDataStore_Deleted(int obj)
@@ -91,7 +91,7 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
         private void AddCredit(Credit credit)
         {
             CreditListItemViewModel itemViewModel =
-                new CreditListItemViewModel(credit, _employeeStore, _creditDataStore, _navigatorStore, this);
+                new CreditListItemViewModel(credit, _employeeStore, _creditDataStore);
             _creditListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = _creditListItemViewModels.Count();
         }
@@ -105,7 +105,15 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
 
         }
         public ICommand LoadCreditsCommand { get; }
-        public ICommand CreateCreditsCommand { get; }
+        public ICommand CreateCreditsCommand => new RelayCommand(ExecuteCreateCreditsCommand);
+
+        private void ExecuteCreateCreditsCommand()
+        {
+            CreateCreditViewModelWindow createCreditViewModelWindow = new CreateCreditViewModelWindow(_employeeStore, _creditDataStore);
+            CreateCreditWindowView createCreditWindowView = new CreateCreditWindowView();
+            createCreditWindowView.DataContext = createCreditViewModelWindow;
+            createCreditWindowView.ShowDialog();
+        }
 
         public static CreditListViewModel LoadViewModel(EmployeeStore employeeStore, CreditsDataStore creditsDataStore, NavigationStore navigatorStore)
         {

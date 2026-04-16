@@ -129,7 +129,7 @@ Width="auto"
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" x:Name="menu">
-                                                <CheckBox Click="CheckBox_Click"   Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
+                                                <CheckBox    Style="{StaticResource MenuTopBtn}" IsChecked="{Binding IsOpen,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="left" Grid.Row="0" Grid.Column="2">
 
                                                     <Icon:PackIconMaterial Kind="Menu" Style="{StaticResource GridBtnIcon}"/>
                                                 </CheckBox>

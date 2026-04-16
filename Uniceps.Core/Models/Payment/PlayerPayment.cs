@@ -26,7 +26,7 @@ namespace Uniceps.Core.Models.Payment
         public Sub.Subscription? Subscription { get; set; }
         public DateTime CoveredFrom { get; set; }
         public DateTime CoveredTo { get; set; }
-        public int CoveredDays => (CoveredTo - CoveredFrom).Days + 1;
+        public int CoveredDays => (CoveredTo - CoveredFrom).Days;
 
         public void MergeWith(PlayerPayment playerPayment)
         {

@@ -9,13 +9,16 @@ using Uniceps.Commands;
 using Uniceps.Commands.Player;
 using Uniceps.Commands.PlayerAttendenceCommands;
 using Uniceps.Commands.SubscriptionCommand;
+using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Subscription;
 using Uniceps.navigation;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
+using Uniceps.SystemServices;
 using Uniceps.utlis.common;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.ViewModels.PrintViewModels;
+using Uniceps.Views.PlayerViews;
 
 namespace Uniceps.ViewModels.SubscriptionViewModel
 {
@@ -29,6 +32,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         private readonly PlayersDataStore? _playersDataStore;
         private readonly PaymentDataStore? _paymentDataStore;
         private readonly PlayerMainPageViewModel? _playerMainPageViewModel;
+
         public int Id => Subscription.Id;
         private int _order;
         public int Order
@@ -38,6 +42,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         }
         public string? PlayerName => Subscription.PlayerName;
         public string? SportName => Subscription.SportName;
+        public string? PlayerPhone => Subscription.PlayerPhone;
         public DateTime LastCheck => Subscription.LastCheck;
         public string? Trainer => Subscription.TrainerName ?? "بدون مدرب";
         public string RollDate => Subscription.RollDate.ToShortDateString();
@@ -49,10 +54,10 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public double PaidValue => Subscription.TotalPaid;
         public double RestValue => Subscription.Remaining;
         public bool IsRenewed => Subscription.IsRenewed;
-        //public double RestValue { get; set; }
+        public DateTime EndDateFull => Subscription.EndDate;
+        public DateTime RollDateFull => Subscription.RollDate;
         public string EndDate => Subscription.EndDate.ToShortDateString();
-        //public DateTime LastPaid => Subscription
-
+        public int RestDays => (int) Subscription.EndDate.Subtract(DateTime.Now).TotalDays;
         private bool _isOpen;
         public bool IsOpen
         {
@@ -97,6 +102,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         }
         private void CheckSubscriptionStatus()
         {
+            int reminderDays = SettingsManager.Current.SubscriptionRemainderDays;
             if (Subscription.IsRenewed)
             {
                 SubscriptionStatus = SubscriptionStatus.Renewed;
@@ -105,7 +111,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             {
                 SubscriptionStatus = SubscriptionStatus.Expired;
             }
-            else if (Subscription.EndDate.Subtract(DateTime.Now).TotalDays <= 2)
+            else if (Subscription.EndDate.Subtract(DateTime.Now).TotalDays <= reminderDays)
             {
                 SubscriptionStatus = SubscriptionStatus.EndingSoon;
             }
@@ -116,7 +122,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             switch (SubscriptionStatus)
             {
                 case SubscriptionStatus.EndingSoon:
-                    SubscriptionStatusString = "سينتهي خلال يومين";
+                    SubscriptionStatusString = $"سينتهي خلال {reminderDays} يوم";
                     SubscriptionStatusColor = Brushes.Yellow;
                     SubscriptionStatusIcon = "AlertOutline";
                     break;
@@ -147,7 +153,6 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         }
         public ICommand? LogInCommand { get; }
 
-
         public void Update(Subscription subscription)
         {
             Subscription = subscription;
@@ -156,6 +161,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             CheckSubscriptionStatus();
            
         }
+      
         public static EditSubscriptionViewModel EditSubscription(SportDataStore sportDataStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel)
         {
             return EditSubscriptionViewModel.LoadViewModel(sportDataStore, navigationStore, subscriptionDataStore, playersDataStore, playerMainPageViewModel);

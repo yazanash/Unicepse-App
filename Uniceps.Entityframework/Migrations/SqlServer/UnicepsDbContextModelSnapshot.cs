@@ -251,6 +251,12 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<bool>("IsTrainer")
                         .HasColumnType("bit");
 
+                    b.Property<double>("LastClosingBalance")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("LastClosingDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("Parcent")
                         .HasColumnType("bit");
 
@@ -284,6 +290,54 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                         .IsUnique();
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("Uniceps.Core.Models.Employee.EmployeeAccountClosing", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("BalanceForwarded")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("ClosingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReportDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("TotalCommissions")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TotalCredits")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TotalSalaries")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeAccounts");
                 });
 
             modelBuilder.Entity("Uniceps.Core.Models.Expenses.Expenses", b =>
@@ -762,6 +816,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<string>("PlayerName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PlayerPhone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("PlayerSyncId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1056,6 +1113,17 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                         .IsRequired();
 
                     b.Navigation("EmpPerson");
+                });
+
+            modelBuilder.Entity("Uniceps.Core.Models.Employee.EmployeeAccountClosing", b =>
+                {
+                    b.HasOne("Uniceps.Core.Models.Employee.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Uniceps.Core.Models.Expenses.Expenses", b =>

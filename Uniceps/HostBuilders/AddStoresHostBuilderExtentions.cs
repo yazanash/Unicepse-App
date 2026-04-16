@@ -53,6 +53,7 @@ namespace Uniceps.HostBuilders
 
                 services.AddSingleton<DataExportStore>();
                 services.AddSingleton<LicenseStore>();
+                services.AddSingleton<DataSyncService>();
             });
             return _hostBuilder;
         }

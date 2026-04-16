@@ -25,9 +25,5 @@ namespace Uniceps.Views.PlayerViews
             InitializeComponent();
         }
 
-        private void CheckBox_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

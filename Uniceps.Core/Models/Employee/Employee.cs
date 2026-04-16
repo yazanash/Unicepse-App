@@ -23,6 +23,9 @@ namespace Uniceps.Core.Models.Employee
         public double Balance { get; set; }
         public bool IsActive { get; set; }
         public bool IsTrainer { get; set; }
+
+        public double LastClosingBalance { get; set; }
+        public DateTime? LastClosingDate { get; set; } 
         public ICollection<Sport.Sport>? Sports { get; set; }
         public ICollection<Subscription.Subscription>? PlayerTrainings { get; set; }
 

@@ -20,29 +20,32 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
     public class EmployeeAccountantPageViewModel : ViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
         private readonly EmployeeStore _employeeStore;
         private readonly CreditsDataStore _creditsDataStore;
         private readonly DausesDataStore _dausesDataStore;
-        private readonly CreditViewModels.CreditListViewModel _creditListViewModel;
         ObservableCollection<SubscriptionListItemViewModel> _subscriptionListItemViewModels;
         public CollectionViewSource GroupedTasks { get; set; }
 
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionsList => _subscriptionListItemViewModels;
         public TrainerMounthlyReportViewModel? TrainerMounthlyReportViewModel { get; set; }
-        public EmployeeAccountantPageViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, NavigationStore navigationStore, CreditsDataStore creditsDataStore, CreditViewModels.CreditListViewModel creditListViewModel)
+        public EmployeeAccountantPageViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
         {
             _employeeStore = employeeStore;
             _dausesDataStore = dausesDataStore;
-            _navigationStore = navigationStore;
             _creditsDataStore = creditsDataStore;
-            _creditListViewModel = creditListViewModel;
 
             _subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
+            _dausesDataStore.Closed += _dausesDataStore_Closed;
             GroupedTasks = new CollectionViewSource { Source = _subscriptionListItemViewModels };
             LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, _employeeStore, this);
 
+        }
+
+        private void _dausesDataStore_Closed(bool obj)
+        {
+            if (obj) MessageBox.Show("تم ترصيد الحساب بنجاح");
+            else MessageBox.Show("فشل ترصيد الحساب");
         }
 
         public ICommand PrintCommand => new AsyncRelayCommand(ExecuteExportToExcelCommand);
@@ -61,7 +64,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
                 if (string.IsNullOrWhiteSpace(filePath)) return;
                 try
                 {
-                    await _dausesDataStore.ExportMonthlyReport(_employeeStore.SelectedEmployee!, ReportDate, filePath);
+                    await _dausesDataStore.ExportMonthlyReport(_employeeStore.SelectedEmployee!, filePath, ReportDate);
                     MessageBox.Show("تم التصدير بنجاح");
                 }
                 catch(Exception ex)
@@ -78,7 +81,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 
         private void _dausesDataStore_StateChanged(TrainerDueses? obj)
         {
-            TrainerMounthlyReportViewModel = new(obj!, _navigationStore, _employeeStore, _creditsDataStore, _creditListViewModel);
+            TrainerMounthlyReportViewModel = new(obj!, _employeeStore, _creditsDataStore,_dausesDataStore);
             OnPropertyChanged(nameof(TrainerMounthlyReportViewModel));
             _subscriptionListItemViewModels.Clear();
             GroupedTasks.Source = _subscriptionListItemViewModels;

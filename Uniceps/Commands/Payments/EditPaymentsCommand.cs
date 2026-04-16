@@ -34,32 +34,40 @@ namespace Uniceps.Commands.Payments
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            if (_editPaymentViewModel.PaymentValue > 0)
+            try
             {
-                _playersDataStore.SelectedPlayer!.Balance -= _paymentDataStore.SelectedPayment!.PaymentValue;
+                if (_editPaymentViewModel.PaymentValue > 0)
+                {
+                    _playersDataStore.SelectedPlayer!.Balance -= _paymentDataStore.SelectedPayment!.PaymentValue;
 
-                _playersDataStore.UpdatePlayerBalance(_paymentDataStore.SelectedPayment!.PlayerId, 0 - _paymentDataStore.SelectedPayment!.PaymentValue);
-                _paymentDataStore.SelectedPayment.Id = _paymentDataStore.SelectedPayment!.Id;
-                _paymentDataStore.SelectedPayment.PayDate = _editPaymentViewModel.PayDate;
-                _paymentDataStore.SelectedPayment.PaymentValue = _editPaymentViewModel.PaymentValue;
-                _paymentDataStore.SelectedPayment.Des = _editPaymentViewModel.Descriptiones;
-                _paymentDataStore.SelectedPayment.PlayerId = _playersDataStore.SelectedPlayer!.Id;
-                _paymentDataStore.SelectedPayment.SubscriptionId = _editPaymentViewModel.SelectedSubscription!.Id;
-                _paymentDataStore.SelectedPayment.PlayerSyncId = _playersDataStore.SelectedPlayer!.SyncId;
-                  _paymentDataStore.SelectedPayment.SubscriptionSyncId = _editPaymentViewModel.SelectedSubscription!.Subscription.SyncId;
-                _playersDataStore.SelectedPlayer!.Balance += _paymentDataStore.SelectedPayment.PaymentValue;
+                    _playersDataStore.UpdatePlayerBalance(_paymentDataStore.SelectedPayment!.PlayerId, 0 - _paymentDataStore.SelectedPayment!.PaymentValue);
+                    _paymentDataStore.SelectedPayment.Id = _paymentDataStore.SelectedPayment!.Id;
+                    _paymentDataStore.SelectedPayment.PayDate = _editPaymentViewModel.PayDate;
+                    _paymentDataStore.SelectedPayment.PaymentValue = _editPaymentViewModel.PaymentValue;
+                    _paymentDataStore.SelectedPayment.Des = _editPaymentViewModel.Descriptiones;
+                    _paymentDataStore.SelectedPayment.PlayerId = _playersDataStore.SelectedPlayer!.Id;
+                    _paymentDataStore.SelectedPayment.SubscriptionId = _editPaymentViewModel.SelectedSubscription!.Id;
+                    _paymentDataStore.SelectedPayment.PlayerSyncId = _playersDataStore.SelectedPlayer!.SyncId;
+                    _paymentDataStore.SelectedPayment.SubscriptionSyncId = _editPaymentViewModel.SelectedSubscription!.Subscription.SyncId;
+                    _playersDataStore.SelectedPlayer!.Balance += _paymentDataStore.SelectedPayment.PaymentValue;
 
-                await _paymentDataStore.Update(_paymentDataStore.SelectedPayment!);
-                _subscriptionDataStore.UpdateSubscriptionPayments(_paymentDataStore.SelectedPayment.SubscriptionId, _paymentDataStore.SelectedPayment);
-                _playersDataStore.UpdatePlayerBalance(_paymentDataStore.SelectedPayment!.PlayerId, _paymentDataStore.SelectedPayment!.PaymentValue);
+                    await _paymentDataStore.Update(_paymentDataStore.SelectedPayment!);
+                    _subscriptionDataStore.UpdateSubscriptionPayments(_paymentDataStore.SelectedPayment.SubscriptionId, _paymentDataStore.SelectedPayment);
+                    _playersDataStore.UpdatePlayerBalance(_paymentDataStore.SelectedPayment!.PlayerId, _paymentDataStore.SelectedPayment!.PaymentValue);
 
 
-                _navigationService.ReNavigate();
+                    _navigationService.ReNavigate();
+                }
+                else
+                {
+                    MessageBox.Show("لا يمكن ادخال قيمة 0");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("لا يمكن ادخال قيمة 0");
+                MessageBox.Show(ex.Message);
             }
+         
         }
     }
 }

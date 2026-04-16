@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Uniceps.Commands;
+using Uniceps.Core.Models.Employee;
 using Uniceps.navigation;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.CreditViewModels;
-using Uniceps.Core.Models.Employee;
 
 namespace Uniceps.Commands.Employee.CreditsCommands
 {
     public class SubmitCreditCommand : AsyncCommandBase
     {
-        private readonly NavigationService<CreditListViewModel> navigationService;
         private readonly EmployeeStore _employeeStore;
         private readonly CreditsDataStore _creditsDataStore;
-        private CreditDetailsViewModel _creditDetailsViewModel;
+        private CreateCreditViewModelWindow _creditDetailsViewModel;
 
-        public SubmitCreditCommand(NavigationService<CreditListViewModel> navigationService, EmployeeStore employeeStore, CreditsDataStore creditsDataStore, CreditDetailsViewModel creditDetailsViewModel)
+        public SubmitCreditCommand(EmployeeStore employeeStore, CreditsDataStore creditsDataStore, CreateCreditViewModelWindow creditDetailsViewModel)
         {
-            this.navigationService = navigationService;
             _employeeStore = employeeStore;
             _creditsDataStore = creditsDataStore;
             _creditDetailsViewModel = creditDetailsViewModel;
@@ -41,17 +40,25 @@ namespace Uniceps.Commands.Employee.CreditsCommands
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            Credit credit = new Credit()
+            try
             {
-                CreditValue = _creditDetailsViewModel.CreditValue,
-                Date = _creditDetailsViewModel.CreditDate,
-                Description = _creditDetailsViewModel.Description,
-                EmpPersonSyncId = _employeeStore.SelectedEmployee!.SyncId,
-                EmpPersonId = _employeeStore.SelectedEmployee!.Id,
-            };
+                Credit credit = new Credit()
+                {
+                    CreditValue = _creditDetailsViewModel.CreditValue,
+                    Date = _creditDetailsViewModel.CreditDate,
+                    Description = _creditDetailsViewModel.Description,
+                    EmpPersonSyncId = _employeeStore.SelectedEmployee!.SyncId,
+                    EmpPersonId = _employeeStore.SelectedEmployee!.Id,
+                };
 
-            await _creditsDataStore.Add(credit);
-            navigationService.ReNavigate();
+                await _creditsDataStore.Add(credit);
+                _creditDetailsViewModel.OnCreditCreated();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+          
         }
 
     }

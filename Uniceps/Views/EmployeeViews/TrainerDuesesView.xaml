@@ -32,12 +32,6 @@
         <DataTemplate DataType="{x:Type cvms:CreditListViewModel}">
             <cvs:CreditsListView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type cvms:CreditDetailsViewModel}">
-            <cvs:CreditDetailView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type cvms:EditCreditDetailsViewModel}">
-            <cvs:CreditDetailView/>
-        </DataTemplate>
     </UserControl.Resources>
     <Border >
         <Grid>
@@ -54,7 +48,7 @@
                 <DockPanel>
                     <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                         <RadioButton
-                            IsChecked="{Binding IsTrainer,NotifyOnTargetUpdated=False,Mode=OneWay}"
+                            IsChecked="{Binding IsTrainerPage,NotifyOnTargetUpdated=False,Mode=OneWay}"
                             Visibility="{Binding IsTrainer,Converter={StaticResource BoolToVis}}"
                             Command="{Binding TrainerDusesCommand}"
                             Style="{StaticResource BarButtonRD}" >

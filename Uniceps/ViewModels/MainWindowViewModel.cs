@@ -127,7 +127,8 @@ namespace Uniceps.ViewModels
                 SettingsManager.Current.LastBackupDate = DateTime.Now;
                 return false;
             }
-            return  (DateTime.Now - last).TotalDays >= 2;
+
+            return  (DateTime.Now - last).TotalDays >= SettingsManager.Current.BackupRemainderDays; 
         }
         public ICommand ChangeThemeCommand => new RelayCommand(ChangeTheme);
 

@@ -43,13 +43,13 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             if (_licenseStore.Current.IsFullVersion)
             {
                 if (_employeeStore.SelectedEmployee!.IsTrainer)
-                    navigatorStore.CurrentViewModel = LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _navigatorStore, _creditsDataStore, LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore));
+                    navigatorStore.CurrentViewModel = LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _creditsDataStore);
                 else
                     navigatorStore.CurrentViewModel = LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore);
                 navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
                 EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore)));
                 TrainerPlayersCommand = new NavaigateCommand<TrainerSubscriptionViewModel>(new NavigationService<TrainerSubscriptionViewModel>(_navigatorStore, () => LoadTrainerSubscriptions(_employeeStore, _employeeSubscriptionDataStore)));
-                TrainerDusesCommand = new NavaigateCommand<EmployeeAccountantPageViewModel>(new NavigationService<EmployeeAccountantPageViewModel>(_navigatorStore, () => LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _navigatorStore, _creditsDataStore, LoadEmployeeCredit(_navigatorStore, _employeeStore, _creditsDataStore))));
+                TrainerDusesCommand = new NavaigateCommand<EmployeeAccountantPageViewModel>(new NavigationService<EmployeeAccountantPageViewModel>(_navigatorStore, () => LoadEmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _creditsDataStore)));
             }
             else
             {
@@ -67,6 +67,12 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             get { return _isTrainer; }
             set { _isTrainer = value; OnPropertyChanged(nameof(IsTrainer)); }
         }
+        private bool _isTrainerPage;
+        public bool IsTrainerPage
+        {
+            get { return _isTrainerPage; }
+            set { _isTrainerPage = value; OnPropertyChanged(nameof(IsTrainerPage)); }
+        }
         public bool IsCredit { get; set; }
         public bool IsPlayers { get; set; }
         private CreditListViewModel LoadEmployeeCredit(NavigationStore navigatorStore, EmployeeStore employeeStore, CreditsDataStore creditsDataStore)
@@ -77,15 +83,15 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         {
             return TrainerSubscriptionViewModel.LoadViewModel(employeeStore, subscriptionDataStore);
         }
-        private EmployeeAccountantPageViewModel LoadEmployeeAccountantPageViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, NavigationStore navigationStore
-            , CreditsDataStore creditsDataStore, CreditListViewModel creditListViewModel)
+        private EmployeeAccountantPageViewModel LoadEmployeeAccountantPageViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore
+            , CreditsDataStore creditsDataStore)
         {
-            return new EmployeeAccountantPageViewModel(employeeStore, dausesDataStore, navigationStore, creditsDataStore, creditListViewModel);
+            return new EmployeeAccountantPageViewModel(employeeStore, dausesDataStore,  creditsDataStore);
         }
 
         private void NavigatorStore_CurrentViewModelChanged()
         {
-            IsTrainer = CurrentEmployeeViewModel is EmployeeAccountantPageViewModel;
+            IsTrainerPage = CurrentEmployeeViewModel is EmployeeAccountantPageViewModel;
             IsCredit = CurrentEmployeeViewModel is TrainerSubscriptionViewModel;
             IsPlayers = CurrentEmployeeViewModel is PlayerMainPageViewModel;
             OnPropertyChanged(nameof(CurrentEmployeeViewModel));
