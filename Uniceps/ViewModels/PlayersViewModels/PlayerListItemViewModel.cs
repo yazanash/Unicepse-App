@@ -21,12 +21,8 @@ namespace Uniceps.ViewModels.PlayersViewModels
     public class PlayerListItemViewModel : ViewModelBase
     {
         public Player Player;
-        private readonly NavigationStore? _navigationStore;
         private readonly PlayersDataStore? _playersDataStore;
-        private readonly PlayersAttendenceStore? _playersAttendenceStore;
-        private readonly NavigationService<PlayerListViewModel>? _navigationService;
-        private readonly HomeViewModel? _homeViewModel;
-        private readonly PlayerMainPageViewModel? _playerMainPageViewModel;
+        private readonly PlayerProfileViewModel? _playerProfileViewModel;
         public int Id => Player.Id;
 
         private int _order;
@@ -69,7 +65,20 @@ namespace Uniceps.ViewModels.PlayersViewModels
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
         public ICommand? TrainingProgramCommand { get; }
-        public ICommand? OpenProfileCommand { get; }
+        public ICommand? OpenProfileCommand => new RelayCommand(ExecuteOpenPlayerProfile);
+
+        private void ExecuteOpenPlayerProfile()
+        {
+            if (_playerProfileViewModel != null)
+            {
+                PlayerProfileWindowView playerProfileWindowView = new PlayerProfileWindowView();
+                _playerProfileViewModel.LoadPlayer(Player);
+                playerProfileWindowView.DataContext = _playerProfileViewModel;
+                playerProfileWindowView.ShowDialog();
+            }
+          
+        }
+
         public ICommand? LogInCommand { get; }
         public ICommand? ReactivePlayerCommand { get; }
         public ICommand? VerifyAccountCommand { get; }
@@ -82,13 +91,10 @@ namespace Uniceps.ViewModels.PlayersViewModels
             IsVerified = Player.UID != null;
             IsActive = Player.IsSubscribed;
             _playersDataStore = playersDataStore;
-            _navigationStore = navigationStore;
-            _navigationService = navigationService;
-            _playerMainPageViewModel = playerMainPageViewModel;
 
 
             EditCommand = new RelayCommand(ExecuteOpenEditCommand);
-            DeleteCommand = new DeletePlayerCommand(_navigationService, _playersDataStore);
+            DeleteCommand = new DeletePlayerCommand(_playersDataStore);
             ReactivePlayerCommand = new ReactivePlayerCommand(_playersDataStore);
         }
         public PlayerListItemViewModel(Player player,
@@ -106,8 +112,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             Player = player;
             IsVerified = Player.UID != null;
             IsActive = Player.IsSubscribed;
-            _navigationStore = navigationStore;
-            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => playerProfileViewModel));
+            _playerProfileViewModel = playerProfileViewModel;
 
         }
         public void ExecuteOpenEditCommand()
@@ -128,12 +133,8 @@ namespace Uniceps.ViewModels.PlayersViewModels
             Player = player;
             IsVerified = Player.UID != null;
             IsActive = Player.IsSubscribed;
-            _navigationStore = navigationStore;
-            _playersAttendenceStore = playersAttendenceStore;
             _playersDataStore = playersDataStore;
-            _homeViewModel = homeViewModel;
-            OpenProfileCommand = new NavaigateCommand<PlayerProfileViewModel>(new NavigationService<PlayerProfileViewModel>(_navigationStore, () => playerProfileViewModel));
-
+            _playerProfileViewModel = playerProfileViewModel;
         }
 
 

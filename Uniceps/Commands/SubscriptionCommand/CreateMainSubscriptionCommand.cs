@@ -7,10 +7,14 @@ using System.Windows;
 using Uniceps.Core.Models.Payment;
 using Uniceps.Core.Models.Subscription;
 using Uniceps.navigation;
+using Uniceps.navigation.Stores;
 using Uniceps.Stores;
+using Uniceps.ViewModels;
 using Uniceps.ViewModels.PaymentsViewModels;
 using Uniceps.ViewModels.PlayersViewModels;
+using Uniceps.ViewModels.PrintViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views;
 using playerModel = Uniceps.Core.Models.Player;
 
 namespace Uniceps.Commands.SubscriptionCommand
@@ -40,7 +44,7 @@ namespace Uniceps.Commands.SubscriptionCommand
         public override bool CanExecute(object? parameter)
         {
 
-            return _addSubscriptionViewModel.CanSubmit &&  base.CanExecute(null);
+            return _addSubscriptionViewModel.CanSubmit && base.CanExecute(null);
         }
         public async override Task ExecuteAsync(object? parameter)
         {
@@ -56,7 +60,7 @@ namespace Uniceps.Commands.SubscriptionCommand
                     player = new playerModel.Player()
                     {
                         FullName = _addSubscriptionViewModel.PlayerName,
-                        BirthDate = _addSubscriptionViewModel.Year?.year??DateTime.Now.Year,
+                        BirthDate = _addSubscriptionViewModel.Year?.year ?? DateTime.Now.Year,
                         GenderMale = _addSubscriptionViewModel.GenderMale,
                         Phone = _addSubscriptionViewModel.Phone,
                         SubscribeDate = _addSubscriptionViewModel.SubscribeDate,
@@ -78,12 +82,13 @@ namespace Uniceps.Commands.SubscriptionCommand
                     PlayerId = player!.Id,
                     PlayerSyncId = player!.SyncId,
                     PlayerName = player!.FullName,
+                    PlayerPhone = player!.Phone,
                     RollDate = _addSubscriptionViewModel.SubscribeDate,
                     OfferValue = _addSubscriptionViewModel.OfferValue,
                     OfferDes = _addSubscriptionViewModel.Offer,
                     Price = _addSubscriptionViewModel.SelectedSport!.Price,
                     EndDate = _addSubscriptionViewModel.SubscribeDate.AddDays(_addSubscriptionViewModel.SubscribeDays),
-                    PriceAfterOffer= _addSubscriptionViewModel.Total??0,
+                    PriceAfterOffer = _addSubscriptionViewModel.Total ?? 0,
                     Code = _addSubscriptionViewModel.Code
                 };
                 await _subscriptionDataStore.Add(subscription);
@@ -102,14 +107,20 @@ namespace Uniceps.Commands.SubscriptionCommand
                         PlayerId = player.Id,
                         SubscriptionId = subscription.Id
                     };
-                   await _paymentDataStore.Add(payment);
+                    await _paymentDataStore.Add(payment);
                     subscription.Payments?.Add(payment);
                 }
                 double value = subscription.TotalPaid - subscription.PriceAfterOffer;
                 _playerDataStore.UpdatePlayerBalance(player.Id, value);
                 _playerDataStore.UpdatePlayerDate(player.Id, subscription.EndDate);
-                
-                MessageBox.Show("تم الحفظ بنجاح");
+
+                if (MessageBox.Show(" تم الحفظ بنجاح هل تريد طباعة وصل الاشتراك ؟", "تم الحفظ", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                {
+                    string filename = subscription.SportName + "_" + subscription.RollDate;
+                    PrintWindowDialog printWindowDialog = new PrintWindowDialog(filename);
+                    printWindowDialog.DataContext = new PrintWindowViewModel(new SubscriptionPrintViewModel(subscription), new NavigationStore());
+                    printWindowDialog.ShowDialog();
+                }
                 _addSubscriptionViewModel.ClearForm();
             }
             catch (Exception ex)

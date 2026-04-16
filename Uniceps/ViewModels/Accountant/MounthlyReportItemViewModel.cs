@@ -17,8 +17,11 @@ namespace Uniceps.ViewModels.Accountant
         public double EarnNet => monthlyReport.TotalIncome - monthlyReport.IncomeForNextMonth + monthlyReport.IncomeFromLastMonth;
         public double TrainerDauses => monthlyReport.TrainerDauses;
         public double Salaries => monthlyReport.Salaries;
+
         public double Expenses => monthlyReport.Expenses;
         public double NetIncome => monthlyReport.NetIncome;
+        public double PaidSalaries => monthlyReport.PaidSalaries;
+        public double ActualNetIncome => monthlyReport.ActualNetIncome;
         public MounthlyReportItemViewModel(MonthlyReport monthlyReport)
         {
             this.monthlyReport = monthlyReport;

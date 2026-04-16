@@ -35,7 +35,7 @@ namespace Uniceps.Stores
         private readonly ISubscriptionRenewService _subscriptionRenewService;
         private readonly List<Subscription> _subscriptions;
         private readonly Lazy<Task> _initializeLazy;
-
+        private readonly DataSyncService _dataSyncService;
         public IEnumerable<Subscription> Subscriptions => _subscriptions;
 
         private readonly List<Subscription> _allSubscriptions;
@@ -89,7 +89,7 @@ namespace Uniceps.Stores
         }
 
         public event Action<Subscription?>? SubscriptionChanged;
-        public SubscriptionDataStore(IDataService<Subscription> subscriptionDataService, ILogger<SubscriptionDataStore> logger, IGetPlayerTransactionService<Subscription> getPlayerTransactionService,ISubscriptionRenewService subscriptionRenewService)
+        public SubscriptionDataStore(IDataService<Subscription> subscriptionDataService, ILogger<SubscriptionDataStore> logger, IGetPlayerTransactionService<Subscription> getPlayerTransactionService, ISubscriptionRenewService subscriptionRenewService, DataSyncService dataSyncService)
         {
             _subscriptionDataService = subscriptionDataService;
             _subscriptions = new List<Subscription>();
@@ -98,6 +98,41 @@ namespace Uniceps.Stores
             _logger = logger;
             _getPlayerTransactionService = getPlayerTransactionService;
             _subscriptionRenewService = subscriptionRenewService;
+            _dataSyncService = dataSyncService;
+            _dataSyncService.PlayerUpdated += _dataSyncService_PlayerUpdated;
+            _dataSyncService.SportUpdated += _dataSyncService_SportUpdated;
+            _dataSyncService.TrainerUpdated += _dataSyncService_TrainerUpdated;
+        }
+
+        private void _dataSyncService_TrainerUpdated(Employee obj)
+        {
+            var subsToUpdate = _allSubscriptions.Where(x => x.TrainerId == obj.Id).ToList();
+            foreach (var sub in subsToUpdate)
+            {
+                sub.TrainerName = obj.FullName;
+                RefreshUi(sub);
+            }
+        }
+
+        private void _dataSyncService_SportUpdated(Sport obj)
+        {
+            var subsToUpdate = _allSubscriptions.Where(x => x.SportId == obj.Id).ToList();
+            foreach (var sub in subsToUpdate)
+            {
+                sub.SportName = obj.Name;
+                RefreshUi(sub);
+            }
+        }
+
+        private void _dataSyncService_PlayerUpdated(Player obj)
+        {
+            var subsToUpdate = _allSubscriptions.Where(x => x.PlayerId == obj.Id).ToList();
+            foreach(var sub in subsToUpdate)
+            {
+                sub.PlayerName = obj.FullName;
+                sub.PlayerPhone = obj.Phone;
+                RefreshUi(sub);
+            }
         }
 
         public async Task Add(Subscription entity)
@@ -157,6 +192,12 @@ namespace Uniceps.Stores
             _logger.LogInformation(LogFlag + "update Subscription");
             await _subscriptionDataService.Update(entity);
 
+            RefreshUi(entity);
+            SelectedTrainer = null;
+            SelectedSport = null;
+        }
+        private void RefreshUi(Subscription entity)
+        {
             int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
 
             if (currentIndex != -1)
@@ -170,8 +211,6 @@ namespace Uniceps.Stores
                 _allSubscriptions.Add(entity);
             }
             Updated?.Invoke(entity);
-            SelectedTrainer = null;
-            SelectedSport = null;
         }
         public void UpdateSubscriptionPayments(int entityId,PlayerPayment playerPayment)
         {

@@ -1,16 +1,17 @@
-﻿using Uniceps.ViewModels;
-using Uniceps.ViewModels.PlayersViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.Commands;
+using Uniceps.Core.Models.Employee;
+using Uniceps.Core.Models.Payment;
 using Uniceps.navigation;
 using Uniceps.Stores;
+using Uniceps.ViewModels;
 using Uniceps.ViewModels.PaymentsViewModels;
-using Uniceps.Core.Models.Payment;
+using Uniceps.ViewModels.PlayersViewModels;
 
 namespace Uniceps.Commands.Payments
 {
@@ -47,34 +48,42 @@ namespace Uniceps.Commands.Payments
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            DateTime payd = Convert.ToDateTime(_addPaymentViewModel.PayDate.ToShortDateString());
-            if (_addPaymentViewModel.PaymentValue > 0)
+            try
             {
-                PlayerPayment payment = new PlayerPayment()
+                DateTime payd = Convert.ToDateTime(_addPaymentViewModel.PayDate.ToShortDateString());
+                if (_addPaymentViewModel.PaymentValue > 0)
                 {
-                    PayDate = _addPaymentViewModel.PayDate,
-                    PaymentValue = _addPaymentViewModel.PaymentValue,
-                    Des = _addPaymentViewModel.Descriptiones,
-                    PlayerId = _playersDataStore.SelectedPlayer!.Id,
-                    SubscriptionId = _addPaymentViewModel.SelectedSubscription!.Id,
-                    PlayerSyncId = _playersDataStore.SelectedPlayer!.SyncId,
-                    SubscriptionSyncId = _addPaymentViewModel.SelectedSubscription!.Subscription.SyncId
-                };
-                _playersDataStore.SelectedPlayer!.IsSubscribed = true;
-               
-                int sportDays = _subscriptionDataStore.SelectedSubscription!.DaysCount;
-                double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / sportDays;
-                int daysCount = Convert.ToInt32(payment.PaymentValue / dayPrice);
+                    PlayerPayment payment = new PlayerPayment()
+                    {
+                        PayDate = _addPaymentViewModel.PayDate,
+                        PaymentValue = _addPaymentViewModel.PaymentValue,
+                        Des = _addPaymentViewModel.Descriptiones,
+                        PlayerId = _playersDataStore.SelectedPlayer!.Id,
+                        SubscriptionId = _addPaymentViewModel.SelectedSubscription!.Id,
+                        PlayerSyncId = _playersDataStore.SelectedPlayer!.SyncId,
+                        SubscriptionSyncId = _addPaymentViewModel.SelectedSubscription!.Subscription.SyncId
+                    };
+                    _playersDataStore.SelectedPlayer!.IsSubscribed = true;
 
-                await _paymentDataStore.Add(payment);
-                _subscriptionDataStore.UpdateSubscriptionPayments(payment.SubscriptionId,payment);
-                _playersDataStore.UpdatePlayerBalance(payment.PlayerId, payment.PaymentValue);
-                _navigationService.ReNavigate();
+                    int sportDays = _subscriptionDataStore.SelectedSubscription!.DaysCount;
+                    double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / sportDays;
+                    int daysCount = Convert.ToInt32(payment.PaymentValue / dayPrice);
+
+                    await _paymentDataStore.Add(payment);
+                    _subscriptionDataStore.UpdateSubscriptionPayments(payment.SubscriptionId, payment);
+                    _playersDataStore.UpdatePlayerBalance(payment.PlayerId, payment.PaymentValue);
+                    _navigationService.ReNavigate();
+                }
+                else
+                {
+                    MessageBox.Show("لا يمكن ادخال قيمة 0");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("لا يمكن ادخال قيمة 0");
+                MessageBox.Show(ex.Message);
             }
+          
         }
     }
 }

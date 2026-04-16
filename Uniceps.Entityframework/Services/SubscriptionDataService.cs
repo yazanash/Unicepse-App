@@ -159,22 +159,7 @@ namespace Uniceps.Entityframework.Services
                 .FirstOrDefaultAsync((e) => e.Id == entity.Id);
             if (existed_subscription == null)
                 throw new NotExistException("هذا السجل غير موجود");
-            existed_subscription.PlayerId = entity.PlayerId;
-            existed_subscription.PlayerName = entity.PlayerName;
-            existed_subscription.SportId = entity.SportId;
-            existed_subscription.SportName = entity.SportName;
-            existed_subscription.TrainerId = entity.TrainerId;
-            existed_subscription.TrainerName = entity.TrainerName;
-            existed_subscription.RollDate = entity.RollDate;
-            existed_subscription.EndDate = entity.EndDate;
-            existed_subscription.Price = entity.Price;
-            existed_subscription.PriceAfterOffer = entity.PriceAfterOffer;
-            existed_subscription.OfferValue = entity.OfferValue;
-            existed_subscription.OfferDes = entity.OfferDes;
-            existed_subscription.Code = entity.Code;
-            existed_subscription.DaysCount = entity.DaysCount;
-            existed_subscription.IsStopped = entity.IsStopped;
-            existed_subscription.MonthCount = entity.MonthCount;
+            existed_subscription.MergeWith(entity);
             context.Set<Subscription>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

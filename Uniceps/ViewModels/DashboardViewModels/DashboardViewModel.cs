@@ -4,14 +4,17 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Core.Models;
+using Uniceps.Models;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
+using Uniceps.SystemServices;
 using Uniceps.ViewModels.PlayersViewModels;
 
 namespace Uniceps.ViewModels.DashboardViewModels
@@ -24,6 +27,9 @@ namespace Uniceps.ViewModels.DashboardViewModels
         {
             _gymStore = gymStore;
             _gymStore.AnalyticsLoaded += _gymStore_AnalyticsLoaded;
+            SettingsManager.ThemeChanged += () => {
+                LoadData(_gymStore.DashboardAnalyticsModel);
+            };
         }
 
         private void _gymStore_AnalyticsLoaded()
@@ -48,9 +54,18 @@ namespace Uniceps.ViewModels.DashboardViewModels
         public int CurrentPresentPlayers { get; set; }
         public ISeries[]? WeeklyDaysSeries { get; set; }
         public Axis[]? XAxesDays { get; set; }
-        private void LoadData(DashboardAnalyticsModel data)
+        public SolidColorPaint? LabelPaint { get; set; }
+        private void UpdateThemeColors()
         {
 
+            bool isDark = SettingsManager.Current.AppTheme != "Light";
+
+            SKColor color = isDark ? SKColors.White : SKColors.Black;
+            LabelPaint = new SolidColorPaint(color);
+        }
+        private void LoadData(DashboardAnalyticsModel data)
+        {
+            UpdateThemeColors();
             GenderSeries = new ISeries[]
             {
                 new PieSeries<int>
@@ -70,8 +85,6 @@ namespace Uniceps.ViewModels.DashboardViewModels
             {
                 Values = new[] { sport.Value },
                 Name = sport.Key,
-                //DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                //DataLabelsPaint = new SolidColorPaint(SKColors.White),
             }).ToArray();
             var hoursRange = Enumerable.Range(7, 17).ToList();
             PeakHoursSeries = new ISeries[]
@@ -82,6 +95,7 @@ namespace Uniceps.ViewModels.DashboardViewModels
                     Name = "ذكور",
                     Fill = new SolidColorPaint(SKColors.DeepSkyBlue.WithAlpha(200)),
                     Padding = 2
+
                 },
                 new ColumnSeries<int>
                 {
@@ -96,12 +110,15 @@ namespace Uniceps.ViewModels.DashboardViewModels
             {
                 new Axis {
                     Labels = hoursRange.Select(h => $"{h:D2}:00").ToArray(),
+                    
+                    LabelsPaint = LabelPaint // إضافة هذه
                 }
             };
             YAxesInteger = new Axis[] {
                 new Axis {
                     MinStep = 1,
-                    Labeler = val => val.ToString("N0")
+                    Labeler = val => val.ToString("N0"),
+                    LabelsPaint = LabelPaint // إضافة هذه
                 }
             };
             FinancialSeries = new ISeries[]
@@ -116,7 +133,7 @@ namespace Uniceps.ViewModels.DashboardViewModels
                 new LineSeries<double>
                 {
                     Values = data.FinancialHistory.Select(x => x.Expenses).ToArray(),
-                    Name = "مصاريف",
+                    Name = "مدفوعات (مصاريف واجور)",
                     Fill = new SolidColorPaint(SKColors.Tomato.WithAlpha(100)),
                     GeometrySize = 10
                 }
@@ -124,7 +141,8 @@ namespace Uniceps.ViewModels.DashboardViewModels
 
             XAxesFinancial = new Axis[]
             {
-                new Axis { Labels = data.FinancialHistory.Select(x => x.Month).ToArray() }
+                new Axis { Labels = data.FinancialHistory.Select(x => x.Month).ToArray(),
+                    LabelsPaint = LabelPaint }
             };
             WeeklyDaysSeries = new ISeries[]
             {
@@ -148,7 +166,8 @@ namespace Uniceps.ViewModels.DashboardViewModels
             {
                 new Axis
                 {
-                    Labels = data.WeeklyAttendance.Select(x => x.Date.ToString("dddd")).ToArray()
+                    Labels = data.WeeklyAttendance.Select(x => x.Date.ToString("dddd")).ToArray(),
+                    LabelsPaint = LabelPaint
                 }
             };
             TodayRevenue = data.TotalPaymentsToday;

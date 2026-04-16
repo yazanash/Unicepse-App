@@ -7,7 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.RoutineModels;
+using Uniceps.Core.Models.Subscription;
 using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.Entityframework.DbContexts;
 
@@ -23,6 +25,7 @@ namespace Uniceps.SystemServices
             await db.Database.MigrateAsync();
             await MigrateLegacyExercisesAsync();
             await DeleteUnusedExercisesAsync();
+            await MigratePhoneNumbers();
         }
         public async Task MigrateLegacyExercisesAsync()
         {
@@ -82,6 +85,27 @@ namespace Uniceps.SystemServices
             db.Set<Exercises>().RemoveRange(oldExercisesList);
             await db.SaveChangesAsync();
         }
+        public async Task MigratePhoneNumbers()
+        {
+            using var db = _dbFactory.CreateDbContext();
+            var subscriptionsWithoutPhone = await db.Set<Subscription>()
+                .Where(r => string.IsNullOrEmpty(r.PlayerPhone))
+                .ToListAsync();
 
+            if (!subscriptionsWithoutPhone.Any()) return;
+
+            foreach (var item in subscriptionsWithoutPhone)
+            {
+                var player = await db.Set<Player>().FirstOrDefaultAsync(x => x.Id == item.PlayerId);
+                if (player == null) continue;
+
+                item.PlayerPhone = player.Phone;
+                db.Set<Subscription>().Update(item);
+            }
+
+            await db.SaveChangesAsync();
+
+
+        }
     }
 }

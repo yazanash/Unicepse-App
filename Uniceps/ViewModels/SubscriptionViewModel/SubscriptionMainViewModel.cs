@@ -12,13 +12,17 @@ using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.SubscriptionCommand;
 using Uniceps.Core.Models.DailyActivity;
+using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.Core.Models.Subscription;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.utlis.common;
 using Uniceps.ViewModels.PlayersViewModels;
+using Uniceps.ViewModels.PrintViewModels;
 using Uniceps.ViewModels.SportsViewModels;
+using Uniceps.Views;
+using Uniceps.Views.PlayerViews;
 using Uniceps.Views.SubscriptionView;
 
 namespace Uniceps.ViewModels.SubscriptionViewModel
@@ -33,6 +37,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly ObservableCollection<SubscriptionListItemViewModel> _subscriptionListItemViewModels;
         private readonly AccountStore _accountStore;
+        private readonly PlayerProfileViewModel? _playerProfileViewModel;
         public ICollectionView SubscriptionList { get; set; }
         public ICommand LoadSubscriptionCommand { get; }
         public ICommand LoadPlayerLogCommand { get; }
@@ -62,6 +67,15 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             {
                 MessageBox.Show("لا يمكن تجديد هذا الاشتراك .. الاشتراك مجدد مسبقا");
             }
+        }
+        public ICommand PrintSubscriptionCommand => new RelayCommand<SubscriptionListItemViewModel>(ExecutePrintSubscriptionCommand);
+
+        public void ExecutePrintSubscriptionCommand(SubscriptionListItemViewModel subscriptionListItemViewModel)
+        {
+            string filename = subscriptionListItemViewModel.SportName + "_" + subscriptionListItemViewModel.RollDate;
+            PrintWindowDialog printWindowDialog = new PrintWindowDialog(filename);
+            printWindowDialog.DataContext = new PrintWindowViewModel(new SubscriptionPrintViewModel(subscriptionListItemViewModel.Subscription), new NavigationStore());
+            printWindowDialog.ShowDialog();
         }
         private async void ExecuteLoginCommand(SubscriptionListItemViewModel subscriptionListItemViewModel)
         {
@@ -105,7 +119,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             }
 
         }
-        public SubscriptionMainViewModel(SubscriptionDataStore dataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore, PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore)
+        public SubscriptionMainViewModel(SubscriptionDataStore dataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore, PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore, PlayerProfileViewModel? playerProfileViewModel)
         {
             _dataStore = dataStore;
             _paymentDataStore = paymentDataStore;
@@ -114,6 +128,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             _subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             SubscriptionList = CollectionViewSource.GetDefaultView(_subscriptionListItemViewModels);
             SubscriptionList.Filter = CheckSubscriptionFilter;
+            SubscriptionList.SortDescriptions.Add(new SortDescription("RollDateFull", ListSortDirection.Descending));
             _dataStore.AllLoaded += _dataStore_Loaded;
             _dataStore.Created += _subscriptionStore_Created;
             _dataStore.Updated += _subscriptionStore_Updated;
@@ -135,6 +150,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             }
 
             _employeeStore = employeeStore;
+            _playerProfileViewModel = playerProfileViewModel;
         }
 
         private void _playersAttendenceStore_LoggedOut(DailyPlayerReport obj)
@@ -271,14 +287,27 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                 x.Date.Date == DateTime.Now.Date);
             OnPropertyChanged(nameof(HasData));
         }
-        public static SubscriptionMainViewModel LoadViewModel(SubscriptionDataStore dataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore, PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore)
+        public static SubscriptionMainViewModel LoadViewModel(SubscriptionDataStore dataStore, PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore, PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore, PlayerProfileViewModel? playerProfileViewModel)
         {
-            SubscriptionMainViewModel viewModel = new(dataStore, playersDataStore, sportDataStore, paymentDataStore, employeeStore, playersAttendenceStore, accountStore);
+            SubscriptionMainViewModel viewModel = new(dataStore, playersDataStore, sportDataStore, paymentDataStore, employeeStore, playersAttendenceStore, accountStore, playerProfileViewModel);
 
             viewModel.LoadSubscriptionCommand.Execute(null);
             viewModel.LoadPlayerLogCommand.Execute(null);
 
             return viewModel;
+        }
+        public ICommand OpenProfileCommand => new RelayCommand<SubscriptionListItemViewModel>(ExecuteOpenPlayerProfile);
+
+        public void ExecuteOpenPlayerProfile(SubscriptionListItemViewModel subscriptionListItemViewModel)
+        {
+            if (_playerProfileViewModel != null)
+            {
+                PlayerProfileWindowView playerProfileWindowView = new PlayerProfileWindowView();
+                _playersDataStore.SelectedPlayer = _playersDataStore.Players.FirstOrDefault(x => x.Id == subscriptionListItemViewModel.Subscription.PlayerId);
+                 _playerProfileViewModel.LoadPlayer(_playersDataStore.SelectedPlayer);
+                playerProfileWindowView.DataContext = _playerProfileViewModel;
+                playerProfileWindowView.ShowDialog();
+            }
         }
 
     }

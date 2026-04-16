@@ -30,6 +30,12 @@ namespace Uniceps.Entityframework.Services
                     entity.EmpPersonId = entity.EmpPerson.Id;
                     entity.EmpPerson = null;
                 }
+                var trainer = await context.Set<Employee>().FindAsync(entity.EmpPersonId);
+                if (trainer == null) throw new Exception("هذا المدرب غير موجود");
+                if (entity.Date < (trainer.LastClosingDate ?? trainer.StartDate))
+                {
+                    throw new Exception("التاريخ المدخل يقع ضمن فترة مالية مغلقة ومؤرشفة.");
+                }
                 EntityEntry<Credit> CreatedResult = await context.Set<Credit>().AddAsync(entity);
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
@@ -86,6 +92,12 @@ namespace Uniceps.Entityframework.Services
             Credit existed_employee = await Get(entity.Id);
             if (existed_employee == null)
                 throw new NotExistException("هذه الدفعة غير موجودة");
+            var trainer = await context.Set<Employee>().FindAsync(entity.EmpPersonId);
+            if (trainer == null) throw new Exception("هذا المدرب غير موجود");
+            if (entity.Date < (trainer.LastClosingDate ?? trainer.StartDate))
+            {
+                throw new Exception("التاريخ المدخل يقع ضمن فترة مالية مغلقة ومؤرشفة.");
+            }
             context.Set<Credit>().Update(entity);
             await context.SaveChangesAsync();
             return entity;

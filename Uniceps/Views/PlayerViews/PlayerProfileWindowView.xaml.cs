@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Uniceps.Views.PlayerViews
 {
     /// <summary>
-    /// Interaction logic for PlayerProfile.xaml
+    /// Interaction logic for PlayerProfileWindowView.xaml
     /// </summary>
-    public partial class PlayerProfile : UserControl
+    public partial class PlayerProfileWindowView : Window
     {
-        public PlayerProfile()
+        public PlayerProfileWindowView()
         {
             InitializeComponent();
         }

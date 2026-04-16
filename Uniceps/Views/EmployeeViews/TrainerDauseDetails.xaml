@@ -1,0 +1,208 @@
+﻿<Window x:Class="Uniceps.Views.EmployeeViews.TrainerDauseDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Uniceps.Views.EmployeeViews"
+        mc:Ignorable="d"
+                   xmlns:con="clr-namespace:Uniceps.utlis.Converters"
+xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+xmlns:comp="clr-namespace:Uniceps.utlis.Components"
+        
+xmlns:uc="clr-namespace:Uniceps.Components"
+xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+FlowDirection="RightToLeft"
+      Background="{DynamicResource Brush.Background}"
+      WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+      Title="تفاصيل الحساب" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="ModernTabItemStyle" TargetType="TabItem">
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" 
+                         CornerRadius="0"
+                         BorderThickness="0,0,0,3"
+                         Margin="0 0 5 0"
+                Style="{DynamicResource CardBorderStyle}">
+                            <ContentPresenter x:Name="ContentSite"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             ContentSource="Header" />
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource Brush.Surface}" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Brush.Primary}" />
+                                <Setter TargetName="Border" Property="BorderThickness" Value="0,0,0,3" />
+                            </Trigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#10FFFFFF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+            <TextBlock Text="كشف الحساب التفصيلي" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Brush.Primary}"/>
+            <TextBlock Text="مراجعة شاملة للنسب، الرواتب، والعمليات المالية للفترة الحالية" FontSize="12" Foreground="#888"/>
+        </StackPanel>
+
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
+
+            <TabItem Style="{StaticResource ModernTabItemStyle}" Header="عمولات الاشتراكات">
+                
+                <Border Style="{DynamicResource StaticCardBorderStyle}" Margin="0,10,0,0" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="تفاصيل الحصص المالية من اشتراكات اللاعبين" Margin="5,10" Foreground="{DynamicResource Brush.Primary}" FontSize="14" FontWeight="Bold"/>
+
+                        <DataGrid Grid.Row="1"
+                              ItemsSource="{Binding Details, UpdateSourceTrigger=PropertyChanged}" 
+                              Style="{DynamicResource DataGridStyle1}"
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              RowStyle="{DynamicResource DataGridRowStyle1}"
+                              AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
+
+                            <DataGrid.Columns>
+                               
+                                <DataGridTemplateColumn Header="اللاعب" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <icon:PackIconMaterial Kind="Account" Width="12" Foreground="#888" Margin="5,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding PlayerName}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn Header="الرياضة" Binding="{Binding SportName}" Width="*"/>
+                                <DataGridTextColumn Header="قيمة الدفعة" Binding="{Binding PaymentValue, StringFormat={}{0:N0}}" Width="auto"/>
+
+                                <DataGridTextColumn Header="من تاريخ" Binding="{Binding CoveredFrom, StringFormat=yyyy/MM/dd}" Width="auto"/>
+                                <DataGridTextColumn Header="إلى تاريخ" Binding="{Binding CoveredTo, StringFormat=yyyy/MM/dd}" Width="auto"/>
+
+                                <DataGridTextColumn Header="نصيب المدرب" Binding="{Binding AmountForMonth, StringFormat={}{0:N0}}" Width="auto" FontWeight="Bold"/>
+
+                                <DataGridTemplateColumn Header="المستحق الآن" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#E67E22" CornerRadius="4" Padding="8,3" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding EarnedUntilNow, StringFormat={}{0:N0}}" Foreground="White" FontWeight="Bold" FontSize="11"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </TabItem>
+
+            <TabItem Style="{StaticResource ModernTabItemStyle}" Header="تفاصيل الرواتب">
+                <Border Style="{DynamicResource StaticCardBorderStyle}" Margin="0,10,0,0" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="تفاصيل الحصص المالية من الراتب" Margin="5,10" Foreground="{DynamicResource Brush.Primary}" FontSize="14" FontWeight="Bold"/>
+
+                        <DataGrid Grid.Row="1"
+                ItemsSource="{Binding SalaryDetails, UpdateSourceTrigger=PropertyChanged}" 
+                Style="{DynamicResource DataGridStyle1}"
+                CellStyle="{DynamicResource DataGridCellStyle1}" 
+                ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                RowStyle="{DynamicResource DataGridRowStyle1}"
+                AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
+
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="الشهر" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding MonthName}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn Header="الراتب" Binding="{Binding BaseSalary, StringFormat={}{0:N0}}" Width="auto"/>
+
+                                <DataGridTextColumn Header="المستحق" Binding="{Binding EarnedAmount, StringFormat={}{0:N0}}" Width="auto"/>
+
+                                <DataGridTemplateColumn Header="المستحق الفعلي" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#E67E22" CornerRadius="4" Padding="8,3" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding ActualDue, StringFormat={}{0:N0}}" Foreground="White" FontWeight="Bold" FontSize="11"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="ملاحظات" Binding="{Binding Note}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </TabItem>
+
+            <TabItem Style="{StaticResource ModernTabItemStyle}" Header="سجل المسحوبات">
+                <Border Style="{DynamicResource StaticCardBorderStyle}" Margin="0,10,0,0" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="تفاصيل حركة السحب المالي " Margin="5,10" Foreground="{DynamicResource Brush.Primary}" FontSize="14" FontWeight="Bold"/>
+
+                        <DataGrid Grid.Row="1"
+  ItemsSource="{Binding CreditsDetails, UpdateSourceTrigger=PropertyChanged}" 
+  Style="{DynamicResource DataGridStyle1}"
+  CellStyle="{DynamicResource DataGridCellStyle1}" 
+  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+  RowStyle="{DynamicResource DataGridRowStyle1}"
+  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
+
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="البيان" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Description}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn Header="قيمة السحب" Binding="{Binding CreditValue, StringFormat={}{0:N0}}" Width="auto"/>
+                                <DataGridTextColumn Header="السحب تاريخ" Binding="{Binding Date, StringFormat=yyyy/MM/dd}" Width="auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>

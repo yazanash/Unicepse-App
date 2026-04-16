@@ -39,13 +39,13 @@ namespace Uniceps.Stores
             var report = await _monthlyReportService.GenerateMonthlyBaseReport(date.Year, date.Month);
             var employees = await _employeeDataService.GetAll();
             report.Salaries = employees.Sum(e => e.SalaryValue);
-
+            report.PaidSalaries = await _trainerRevenueService.GetTrainersAndEmployeesCredits(date.Year, date.Month);
             var trainers = employees.Where(e => e.IsTrainer && e.ParcentValue > 0).ToList();
             double totalDues = 0;
 
             foreach (var t in trainers)
             {
-                var dues = await _trainerRevenueService.GetTrainerDuesAsync(t, date.Year, date.Month);
+                var dues = await _trainerRevenueService.GetTrainerDuesAsync(t, date);
                 totalDues += (dues.TotalSubscriptions - dues.Credits); // مثال حساب النهائي
             }
             report.TrainerDauses = totalDues;
@@ -57,6 +57,14 @@ namespace Uniceps.Stores
          - report.Salaries
          - report.TrainerDauses
          - report.Expenses;
+
+            report.ActualNetIncome =
+         report.TotalIncome
+       - report.IncomeForNextMonth
+       + report.IncomeFromLastMonth
+       - report.PaidSalaries
+       - report.Expenses;
+
             ReportLoaded?.Invoke(report);
         }
         public async Task GetAnalytics()

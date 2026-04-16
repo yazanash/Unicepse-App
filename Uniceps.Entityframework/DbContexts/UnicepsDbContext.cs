@@ -56,6 +56,7 @@ namespace Uniceps.Entityframework.DbContexts
         public DbSet<DayGroup>? DayGroups { get; set; }
         public DbSet<RoutineItemModel>? RoutineItemModels { get; set; }
         public DbSet<SetModel>? SetModels { get; set; }
+        public DbSet<EmployeeAccountClosing>? EmployeeAccounts{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

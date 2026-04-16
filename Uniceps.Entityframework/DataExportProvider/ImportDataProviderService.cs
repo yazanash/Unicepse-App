@@ -35,11 +35,14 @@ namespace Uniceps.Entityframework.DataExportProvider
                 context.ChangeTracker.Clear();
                 foreach (Credit credit in credits)
                 {
-                    Employee? emp =await context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync((e) => e.SyncId == credit.EmpPersonSyncId);
-                    if(emp!=null)
+                    Employee? emp = await context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync((e) => e.SyncId == credit.EmpPersonSyncId);
+                    if (emp == null) {
+                        continue;
+                    }
                     credit.EmpPersonId = emp.Id;
+
                     Credit? entity = await context.Set<Credit>().AsNoTracking().FirstOrDefaultAsync((e) => e.SyncId == credit.SyncId);
-                    if (entity != null )
+                    if (entity != null)
                     {
                         if (entity.UpdatedAt <= credit.UpdatedAt)
                         {
@@ -56,14 +59,14 @@ namespace Uniceps.Entityframework.DataExportProvider
                 foreach (Expenses expense in expenses)
                 {
                     Expenses? entity = await context.Set<Expenses>().AsNoTracking().FirstOrDefaultAsync((e) => e.SyncId == expense.SyncId);
-                    if (entity != null )
+                    if (entity != null)
                     {
                         if (entity.UpdatedAt <= expense.UpdatedAt)
                         {
                             entity.MergeWith(expense);
                             context.Set<Expenses>().Update(entity);
                         }
-                     
+
 
                     }
                     else
@@ -84,8 +87,8 @@ namespace Uniceps.Entityframework.DataExportProvider
                 foreach (Metric metric in metrics)
                 {
                     Player? player = await context.Set<Player>().AsNoTracking().FirstOrDefaultAsync((e) => e.SyncId == metric.PlayerSyncId);
-                    if(player!=null)
-                    metric.PlayerId = player.Id;
+                    if (player != null)
+                        metric.PlayerId = player.Id;
                     Metric? entity = await context.Set<Metric>().AsNoTracking().FirstOrDefaultAsync((e) => e.SyncId == metric.SyncId);
                     if (entity != null)
                     {
@@ -94,7 +97,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                             entity.MergeWith(metric);
                             context.Set<Metric>().Update(entity);
                         }
-                        
+
 
                     }
                     else
@@ -109,9 +112,13 @@ namespace Uniceps.Entityframework.DataExportProvider
                     if (player != null)
                         dailyPlayerReport.PlayerId = player.Id;
                     Subscription? subscription = await context.Set<Subscription>().AsNoTracking().FirstOrDefaultAsync((e) => e.SyncId == dailyPlayerReport.SubscriptionSyncId);
+                    dailyPlayerReport.Code = "";
                     if (subscription != null)
+                    {
                         dailyPlayerReport.SubscriptionId = subscription.Id;
-                    dailyPlayerReport.Code = subscription!.Code ?? "";
+                        dailyPlayerReport.Code = subscription.Code ?? "";
+                    }
+
                     DailyPlayerReport? entity = await context.Set<DailyPlayerReport>().AsNoTracking().FirstOrDefaultAsync((e) => e.SyncId == dailyPlayerReport.SyncId);
                     if (entity != null)
                     {
@@ -120,7 +127,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                             entity.MergeWith(dailyPlayerReport);
                             context.Set<DailyPlayerReport>().Update(entity);
                         }
-                      
+
 
                     }
                     else
@@ -168,7 +175,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                     existingPlayer.MergeWith(incomingPlayer);
                     context.Set<Player>().Update(existingPlayer);
                     await context.SaveChangesAsync();
-                  
+
                 }
                 return existingPlayer.Id;
             }
@@ -181,29 +188,29 @@ namespace Uniceps.Entityframework.DataExportProvider
                 await context.SaveChangesAsync();
                 return newPlayer.Id;
             }
-          
+
 
         }
-        private async Task ValidateSubscriptionsForPlayer(UnicepsDbContext context,int localPlayerId, List<Subscription> subscriptions)
+        private async Task ValidateSubscriptionsForPlayer(UnicepsDbContext context, int localPlayerId, List<Subscription> subscriptions)
         {
             foreach (var incomingSubscription in subscriptions)
             {
-              int localSubscriptionId = await SyncSubscription(context, localPlayerId, incomingSubscription);
+                int localSubscriptionId = await SyncSubscription(context, localPlayerId, incomingSubscription);
                 if (incomingSubscription.Payments != null && incomingSubscription.Payments.Count() > 0)
                     await SyncPayments(context, localPlayerId, localSubscriptionId, incomingSubscription.Payments);
 
             }
         }
-        private async Task<int> SyncSubscription(UnicepsDbContext context,int localPlayerId ,Subscription incomingSubscription)
+        private async Task<int> SyncSubscription(UnicepsDbContext context, int localPlayerId, Subscription incomingSubscription)
         {
             var existingSubscription = await context.Set<Subscription>().AsNoTracking()
                    .FirstOrDefaultAsync(p => p.SyncId == incomingSubscription.SyncId);
 
             incomingSubscription.PlayerId = localPlayerId;
-            Sport? sport =await context.Set<Sport>().FirstOrDefaultAsync(x => x.SyncId == incomingSubscription.SportSyncId);
+            Sport? sport = await context.Set<Sport>().FirstOrDefaultAsync(x => x.SyncId == incomingSubscription.SportSyncId);
             if (sport != null)
                 incomingSubscription.SportId = sport.Id;
-               Employee? trainer = await context.Set<Employee>().FirstOrDefaultAsync(x => x.SyncId == incomingSubscription.TrainerSyncId);
+            Employee? trainer = await context.Set<Employee>().FirstOrDefaultAsync(x => x.SyncId == incomingSubscription.TrainerSyncId);
             if (trainer != null)
                 incomingSubscription.TrainerId = trainer.Id;
 
@@ -216,7 +223,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                     existingSubscription.MergeWith(incomingSubscription);
                     context.Set<Subscription>().Update(existingSubscription);
                     await context.SaveChangesAsync();
-                   
+
                 }
                 return existingSubscription.Id;
             }
@@ -229,9 +236,9 @@ namespace Uniceps.Entityframework.DataExportProvider
                 await context.SaveChangesAsync();
                 return newSubscription.Id;
             }
-        
+
         }
-        private async Task SyncPayments(UnicepsDbContext context,int localPlayerId,int localSubscriptionId, List<PlayerPayment> payments)
+        private async Task SyncPayments(UnicepsDbContext context, int localPlayerId, int localSubscriptionId, List<PlayerPayment> payments)
         {
             foreach (var incomingPay in payments)
             {
@@ -272,7 +279,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                             existingSport.MergeWith(sport);
                             context.Set<Sport>().Update(existingSport);
                         }
-                          
+
                     }
                     else
                     {
@@ -281,7 +288,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                         await context.Set<Sport>().AddAsync(newSport);
                     }
                 }
-
+                await context.SaveChangesAsync();
                 context.ChangeTracker.Clear();
                 foreach (Employee emp in employees)
                 {
@@ -293,7 +300,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                             existingEmp.MergeWith(emp);
                             context.Set<Employee>().Update(existingEmp);
                         }
-                           
+
                     }
                     else
                     {
@@ -324,7 +331,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                                 var trainerInDb = await context.Set<Employee>()
                                     .FirstOrDefaultAsync(e => e.SyncId == incomingTrainer.SyncId);
 
-                                if (trainerInDb != null) 
+                                if (trainerInDb != null)
                                 {
                                     existingSport.Trainers!.Add(trainerInDb);
                                     context.Set<Sport>().Update(existingSport);
@@ -345,7 +352,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                 context.ChangeTracker.Clear();
                 foreach (RoutineModel routine in routines)
                 {
-                   foreach(var day in routine.Days)
+                    foreach (var day in routine.Days)
                     {
                         await GetItemsExercise(context, day.RoutineItems);
                     }
@@ -378,7 +385,7 @@ namespace Uniceps.Entityframework.DataExportProvider
                         item.ExerciseV2Id = exercises.ExerciseId;
                         item.Exercise = null;
                     }
-                       
+
                 }
             }
         }

@@ -38,7 +38,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
         public PlayerListItemViewModel? Player { get; set; }
         public ViewModelBase? CurrentPlayerViewModel => _navigatorStore.CurrentViewModel;
 
-        public PlayerProfileViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore,
+        public PlayerProfileViewModel( SubscriptionDataStore subscriptionStore,
             PlayersDataStore playersDataStore, SportDataStore sportDataStore, PaymentDataStore paymentDataStore, MetricDataStore metricDataStore, PlayersAttendenceStore playersAttendenceStore,
             NavigationService<PlayerListViewModel> navigationService, EmployeeStore employeeStore, LicenseStore licenseStore)
         {
@@ -98,6 +98,10 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         private void _playersDataStore_PlayerChanged(Player? obj)
         {
+            LoadPlayer(obj);
+        }
+        public void LoadPlayer(Player? obj)
+        {
             if (obj != null)
             {
                 _playerMainPageViewModel = LoadPlayerMainPageViewModel(_navigatorStore, _playersDataStore, _subscriptionStore, _paymentDataStore, _sportDataStore, _employeeStore);
@@ -106,7 +110,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
                 _navigatorStore.CurrentViewModel = _playerMainPageViewModel;
                 OnPropertyChanged(nameof(Player));
             }
-         
         }
 
         private void NavigatorStore_CurrentViewModelChanged()
@@ -139,6 +142,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
         {
             return PlayerAttendenceViewModel.LoadViewModel(playersAttendenceStore, playerDataStore);
         }
+        
         public ICommand? PlayerHomeCommand { get; }
         public ICommand? SubscriptionCommand { get; }
         public ICommand? PaymentCommand { get; }

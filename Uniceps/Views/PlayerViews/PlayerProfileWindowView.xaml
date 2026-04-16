@@ -1,31 +1,32 @@
-﻿<UserControl x:Class="Uniceps.Views.PlayerViews.PlayerProfile"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Uniceps.Views.PlayerViews"
-             xmlns:ctrl="clr-namespace:Uniceps.Controls"
-             xmlns:cdr="clr-namespace:Uniceps.Components"
-             xmlns:ctrls="clr-namespace:Uniceps.utlis.Controls"
-             xmlns:comp="clr-namespace:Uniceps.utlis.Components"
-                xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
-             xmlns:vms="clr-namespace:Uniceps.ViewModels.PlayersViewModels"
-             xmlns:view="clr-namespace:Uniceps.Views.PlayerViews"
-              xmlns:subsvms="clr-namespace:Uniceps.ViewModels.SubscriptionViewModel"
-             xmlns:subsview="clr-namespace:Uniceps.Views.SubscriptionView"
-             xmlns:payvms="clr-namespace:Uniceps.ViewModels.PaymentsViewModels"
-             xmlns:payview="clr-namespace:Uniceps.Views.PaymentViews"
-              xmlns:attenvms="clr-namespace:Uniceps.ViewModels.PlayersAttendenceViewModels"
-             xmlns:attenview="clr-namespace:Uniceps.Views.PlayersAttendenceViews"
-              xmlns:metricvms="clr-namespace:Uniceps.ViewModels.Metrics"
-             xmlns:metricview="clr-namespace:Uniceps.Views.Metrics"
-             xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
-             mc:Ignorable="d" 
-             FlowDirection="RightToLeft"
-             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             Background="Transparent"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
+﻿<Window x:Class="Uniceps.Views.PlayerViews.PlayerProfileWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Uniceps.Views.PlayerViews"
+        mc:Ignorable="d"
+            xmlns:ctrl="clr-namespace:Uniceps.Controls"
+    xmlns:cdr="clr-namespace:Uniceps.Components"
+    xmlns:ctrls="clr-namespace:Uniceps.utlis.Controls"
+    xmlns:comp="clr-namespace:Uniceps.utlis.Components"
+       xmlns:converters="clr-namespace:Uniceps.utlis.Converters"
+    xmlns:vms="clr-namespace:Uniceps.ViewModels.PlayersViewModels"
+    xmlns:view="clr-namespace:Uniceps.Views.PlayerViews"
+     xmlns:subsvms="clr-namespace:Uniceps.ViewModels.SubscriptionViewModel"
+    xmlns:subsview="clr-namespace:Uniceps.Views.SubscriptionView"
+    xmlns:payvms="clr-namespace:Uniceps.ViewModels.PaymentsViewModels"
+    xmlns:payview="clr-namespace:Uniceps.Views.PaymentViews"
+     xmlns:attenvms="clr-namespace:Uniceps.ViewModels.PlayersAttendenceViewModels"
+    xmlns:attenview="clr-namespace:Uniceps.Views.PlayersAttendenceViews"
+     xmlns:metricvms="clr-namespace:Uniceps.ViewModels.Metrics"
+    xmlns:metricview="clr-namespace:Uniceps.Views.Metrics"
+    xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+    FlowDirection="RightToLeft"
+    xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    Background="{DynamicResource Brush.Background}"
+        WindowState="Maximized"
+        Title="صفحة اللاعب" Height="450" Width="800">
+    <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
 
@@ -38,7 +39,7 @@
         <DataTemplate DataType="{x:Type subsvms:StopSubscriptionViewModel}">
             <subsview:StopSubscriptionView />
         </DataTemplate>
-       
+
         <DataTemplate DataType="{x:Type subsvms:EditSubscriptionViewModel }">
             <subsview:SubscriptionDetailView />
         </DataTemplate>
@@ -65,18 +66,18 @@
         </DataTemplate>
 
 
-    
-       
-       
 
-        
-    </UserControl.Resources>
+
+
+
+
+    </Window.Resources>
     <Border>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
-                
+
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -85,19 +86,19 @@
             <Border Grid.ColumnSpan="2" >
                 <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
                     <RadioButton
-                         IsChecked="{Binding IsPersonal}"   
-                            Command="{Binding PlayerHomeCommand}"
-                            Style="{StaticResource BarButtonRD}" >
+                       IsChecked="{Binding IsPersonal}"   
+                          Command="{Binding PlayerHomeCommand}"
+                          Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Account"/>
                             <TextBlock  Text="الصفحة الشخصية" />
                         </StackPanel>
                     </RadioButton>
-                  
+
                     <RadioButton
-                        IsChecked="{Binding IsPayments}"  
-                            Command="{Binding PaymentCommand}"
-                                Style="{StaticResource BarButtonRD}" >
+                      IsChecked="{Binding IsPayments}"  
+                          Command="{Binding PaymentCommand}"
+                              Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal" >
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
                             <TextBlock Text="اضافة دفعة"  />
@@ -105,9 +106,9 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
-                        IsChecked="{Binding IsMetrics}"  
-                            Command="{Binding MetricsCommand}"
-                                Style="{StaticResource BarButtonRD}" >
+                      IsChecked="{Binding IsMetrics}"  
+                          Command="{Binding MetricsCommand}"
+                              Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartArc" />
                             <TextBlock Text="القياسات"  />
@@ -116,9 +117,9 @@
                     </RadioButton>
 
                     <RadioButton
-                             IsChecked="{Binding IsLog}"  
-                            Command="{Binding PlayerAttendenceCommand}"
-                                Style="{StaticResource BarButtonRD}" >
+                           IsChecked="{Binding IsLog}"  
+                          Command="{Binding PlayerAttendenceCommand}"
+                              Style="{StaticResource BarButtonRD}" >
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartBarStacked" />
                             <TextBlock Text="جدول الدوام" />
@@ -131,9 +132,9 @@
                 </StackPanel>
             </Border>
 
-            
 
-                <ctrl:InfoCard Grid.Column="1" Grid.RowSpan="2" Grid.Row="0"  DataContext="{Binding Player,UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ctrl:InfoCard Grid.Column="1" Grid.RowSpan="2" Grid.Row="0"  DataContext="{Binding Player,UpdateSourceTrigger=PropertyChanged}"/>
 
 
 
@@ -144,4 +145,4 @@
 
         </Grid>
     </Border>
-</UserControl>
+</Window>

@@ -18,8 +18,10 @@ namespace Uniceps.SystemServices
         private static string _filePath = Path.Combine(_directoryPath, "user.settings");
 
         public static AppSettings Current { get; private set; } = new AppSettings();
-        public static string AppDataPath = _directoryPath;
+        public static Action? ThemeChanged;
 
+        public static string AppDataPath = _directoryPath;
+        
         static SettingsManager()
         {
             if (!Directory.Exists(_directoryPath))
@@ -30,6 +32,7 @@ namespace Uniceps.SystemServices
         }
         public static void Save()
         {
+            ThemeChanged?.Invoke();
             string json = JsonSerializer.Serialize(Current, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(_filePath, json);
         }

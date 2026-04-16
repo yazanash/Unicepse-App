@@ -28,13 +28,24 @@ namespace Uniceps.Entityframework.Services
         public async Task<PlayerPayment> Create(PlayerPayment entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
+
             var subscription = await context.Set<Subscription>()
        .Include(s => s.Payments)
        .FirstOrDefaultAsync(s => s.Id == entity.SubscriptionId);
 
+         
             if (subscription == null)
                 throw new NotExistException("الاشتراك غير موجود");
-
+            if (subscription.TrainerId.HasValue)
+            {
+                var trainer = await context.Set<Employee>().FindAsync(subscription.TrainerId);
+                if (trainer == null) throw new Exception("هذا المدرب غير موجود");
+                if (entity.PayDate < (trainer.LastClosingDate ?? trainer.StartDate))
+                {
+                    throw new Exception("التاريخ المدخل يقع ضمن فترة مالية مغلقة ومؤرشفة.");
+                }
+            }
+         
             // نحسب بداية التغطية
             var lastPayment = subscription.Payments?
                 .OrderByDescending(p => p.CoveredTo)
@@ -114,6 +125,15 @@ namespace Uniceps.Entityframework.Services
             if (subscription == null)
                 throw new NotExistException("الاشتراك غير موجود");
 
+            if (subscription.TrainerId.HasValue)
+            {
+                var trainer = await context.Set<Employee>().FindAsync(subscription.TrainerId);
+                if (trainer == null) throw new Exception("هذا المدرب غير موجود");
+                if (entity.PayDate < (trainer.LastClosingDate ?? trainer.StartDate))
+                {
+                    throw new Exception("التاريخ المدخل يقع ضمن فترة مالية مغلقة ومؤرشفة.");
+                }
+            }
             var payments = subscription.Payments!
                 .OrderBy(p => p.CoveredFrom)
                 .ToList();

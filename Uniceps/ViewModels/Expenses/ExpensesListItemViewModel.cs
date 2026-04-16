@@ -67,6 +67,10 @@ namespace Uniceps.ViewModels.Expenses
         public void Update(Core.Models.Expenses.Expenses obj)
         {
             Expenses = obj;
+            OnPropertyChanged(nameof(Expenses));
+            OnPropertyChanged(nameof(Description));
+            OnPropertyChanged(nameof(Value));
+            OnPropertyChanged(nameof(date));
         }
     }
 }

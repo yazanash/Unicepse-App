@@ -1,28 +1,28 @@
-﻿using Uniceps.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.ViewModels.PrintViewModels;
+using Uniceps.Commands;
 using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.Employee.CreditViewModels;
 using Uniceps.Core.Models.Employee;
-using System.Collections.ObjectModel;
+using Uniceps.navigation;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.ViewModels.Employee.CreditViewModels;
+using Uniceps.ViewModels.PrintViewModels;
+using Uniceps.Views.EmployeeViews;
+using Uniceps.Views.EmployeeViews.CreditViews;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
     public class TrainerMounthlyReportViewModel : ViewModelBase
     {
-        private readonly NavigationStore _navigatorStore;
         private readonly EmployeeStore _employeeStore;
         private readonly CreditsDataStore _creditsDataStore;
-        private readonly CreditListViewModel _creditListViewModel;
-        public ObservableCollection<TrainerDuesDetailViewModel> Details { get; set; } = new ObservableCollection<TrainerDuesDetailViewModel>();
+        private readonly DausesDataStore _dausesDataStore;
         public TrainerDueses trainerDueses;
         public int Id => trainerDueses.Id;
         public double TotalSubscriptions => trainerDueses.TotalSubscriptions;
@@ -36,28 +36,51 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public double CreditsCount => trainerDueses.CreditsCount;
         public double FinalAmount => TotalDause - trainerDueses.Credits;
         public double Salary => trainerDueses.Salary;
-        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses, NavigationStore navigatorStore, EmployeeStore employeeStore, CreditsDataStore creditsDataStore, CreditListViewModel creditListViewModel)
+        public double BalanceForward => trainerDueses.BalanceForward;
+        public double TotalEarnedUntilNow => trainerDueses.Details.Sum(d => d.EarnedUntilNow);
+        public double ActualFairBalance => BalanceForward + TotalSalaryDebt + TotalEarnedUntilNow - Credits;
+        public double FinalBalance => trainerDueses.FinalBalance;
+
+        public double Salaries => trainerDueses.Salaries;
+        public double TotalSalaryDebt => trainerDueses.TotalSalaryDebt;
+        public DateTime LastClosingDate => trainerDueses.Trainer?.LastClosingDate ?? trainerDueses.Trainer?.StartDate??DateTime.Now;
+        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses, EmployeeStore employeeStore, CreditsDataStore creditsDataStore, DausesDataStore dausesDataStore)
         {
             this.trainerDueses = trainerDueses;
             _employeeStore = employeeStore;
-            _navigatorStore = navigatorStore;
             _creditsDataStore = creditsDataStore;
-            _creditListViewModel = creditListViewModel;
-            foreach(var item in this.trainerDueses.Details)
-            {
-                Details.Add(new TrainerDuesDetailViewModel(item));
-            }
            
-            AddCreditCommand = new NavaigateCommand<CreditDetailsViewModel>(new NavigationService<CreditDetailsViewModel>(_navigatorStore, () => new CreditDetailsViewModel(_employeeStore, _creditsDataStore, _navigatorStore, _creditListViewModel, FinalAmount)));
-
+            _dausesDataStore = dausesDataStore;
         }
-        public ICommand AddCreditCommand { get; }
+        public ICommand AddCreditCommand => new RelayCommand(ExecuteCreateCreditsCommand);
+
+        private void ExecuteCreateCreditsCommand()
+        {
+            CreateCreditViewModelWindow createCreditViewModelWindow = new CreateCreditViewModelWindow(_employeeStore, _creditsDataStore,FinalAmount);
+            CreateCreditWindowView createCreditWindowView = new CreateCreditWindowView();
+            createCreditWindowView.DataContext = createCreditViewModelWindow;
+            createCreditWindowView.ShowDialog();
+        }
+
         internal void Update(TrainerDueses obj)
         {
             trainerDueses = obj;
         }
+        public ICommand ViewDetailCommand => new RelayCommand(ExecuteViewDetailCommand);
 
+        private void ExecuteViewDetailCommand()
+        {
+            TrainerDauseDetailsViewModel trainerDauseDetailsViewModel = new TrainerDauseDetailsViewModel(trainerDueses);
+            TrainerDauseDetails trainerDauseDetails = new TrainerDauseDetails();
+            trainerDauseDetails.DataContext = trainerDauseDetailsViewModel;
+            trainerDauseDetails.ShowDialog();
+        }
+        public ICommand CloseTrainerAccountCommand => new AsyncRelayCommand(ExecuteCloseTrainerAccountCommand);
 
+        private async Task ExecuteCloseTrainerAccountCommand()
+        {
+          await _dausesDataStore.CloseTrainerAccountAsync();
+        }
     }
 
 }

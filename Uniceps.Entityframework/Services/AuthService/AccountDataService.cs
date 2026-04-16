@@ -45,26 +45,39 @@ namespace Uniceps.Entityframework.Services.AuthService
         public async Task<bool> Delete(int id)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            User entityToDelete = await Get(id);
+
+            User? entityToDelete = await context.Set<User>().FirstOrDefaultAsync(u => u.Id == id);
+
             if (entityToDelete == null)
                 throw new NotExistException();
-            if (context.Users!.Count() < 2)
-            {
-                throw new Exception("لا يمكن حذف مستخدم في حال عدم وجود مستخدمين اخرين");
 
+            int totalUsers = await context.Set<User>().CountAsync();
+            if (totalUsers < 2)
+            {
+                throw new Exception("لا يمكن حذف مستخدم في حال عدم وجود مستخدمين آخرين.");
             }
+
             if (entityToDelete.Role == Roles.Admin)
             {
-                if (context.Users!.Where(x => x.Role == Roles.Admin).Count() < 2)
+                int adminCount = await context.Set<User>().CountAsync(x => x.Role == Roles.Admin);
+                if (adminCount < 2)
                 {
-                    throw new Exception("يجب ان يكون هناك على الاقل مدير واحد للنظام");
-
+                    throw new Exception("يجب أن يكون هناك على الأقل مدير واحد للنظام.");
                 }
             }
 
-            User? entity = await context.Set<User>().FirstOrDefaultAsync((e) => e.Id == id);
-            context.Set<User>().Remove(entity!);
+            var logs = await context.Set<AuthenticationLog>()
+                                    .Where(e => e.User != null && e.User.Id == id)
+                                    .ToListAsync();
+
+            context.Set<AuthenticationLog>().RemoveRange(logs);
             await context.SaveChangesAsync();
+            // 5. حذف المستخدم
+            context.Set<User>().Remove(entityToDelete);
+
+            // 6. حفظ جميع التغييرات في عملية واحدة (Transaction)
+            await context.SaveChangesAsync();
+
             return true;
         }
 

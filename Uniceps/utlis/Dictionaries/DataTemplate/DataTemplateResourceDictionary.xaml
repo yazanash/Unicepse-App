@@ -78,9 +78,6 @@
     <DataTemplate DataType="{x:Type player_subvm:SubscriptionDetailsViewModel }">
         <player_subview:SubscriptionDetailView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type player_vms:PlayerProfileViewModel }">
-        <player_views:PlayerProfile/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type player_vms:ArchivedPlayersListViewModel }">
         <player_views:ArchivedPlayersView/>
     </DataTemplate>

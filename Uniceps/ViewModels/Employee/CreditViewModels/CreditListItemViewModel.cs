@@ -1,16 +1,17 @@
-﻿using Uniceps.Commands;
-using Uniceps.Commands.Employee.CreditsCommands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
+using Uniceps.Commands.Employee.CreditsCommands;
 using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
 using Uniceps.Core.Models.Employee;
+using Uniceps.navigation;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.Views.EmployeeViews.CreditViews;
 
 namespace Uniceps.ViewModels.Employee.CreditViewModels
 {
@@ -18,8 +19,6 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
     {
         private readonly EmployeeStore? _employeeStore;
         private readonly CreditsDataStore? _creditsDataStore;
-        private readonly NavigationStore? _navigationStore;
-        private readonly CreditListViewModel? _creditListViewModel;
         public Credit credit;
         private int _order;
         public int Order
@@ -32,14 +31,11 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
         public double CreditValue => credit.CreditValue;
         public string? Date => credit.Date.ToShortDateString();
         public string? Description => credit.Description;
-        public CreditListItemViewModel(Credit credit, EmployeeStore employeeStore, CreditsDataStore creditsDataStore, NavigationStore navigationStore, CreditListViewModel creditListViewModel)
+        public CreditListItemViewModel(Credit credit, EmployeeStore employeeStore, CreditsDataStore creditsDataStore)
         {
             this.credit = credit;
             _employeeStore = employeeStore;
             _creditsDataStore = creditsDataStore;
-            _navigationStore = navigationStore;
-            _creditListViewModel = creditListViewModel;
-            EditCommand = new NavaigateCommand<EditCreditDetailsViewModel>(new NavigationService<EditCreditDetailsViewModel>(_navigationStore, () => new EditCreditDetailsViewModel(_employeeStore, _creditsDataStore, _navigationStore, _creditListViewModel)));
             DeleteCommand = new DeleteCreditsCommand(_creditsDataStore);
         }
         public CreditListItemViewModel(Credit credit)
@@ -47,7 +43,20 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
             this.credit = credit;
 
         }
-        public ICommand? EditCommand { get; }
+        public ICommand EditCommand => new RelayCommand(ExecuteCreateCreditsCommand);
+
+        private void ExecuteCreateCreditsCommand()
+        {
+            if (_employeeStore != null && _creditsDataStore != null)
+            {
+                EditCreditDetailsViewModel editCreditDetailsViewModel = new EditCreditDetailsViewModel(_employeeStore, _creditsDataStore);
+                CreateCreditWindowView createCreditWindowView = new CreateCreditWindowView();
+                createCreditWindowView.DataContext = editCreditDetailsViewModel;
+                createCreditWindowView.ShowDialog();
+            }
+        
+        }
+
         public ICommand? DeleteCommand { get; }
         public void Update(Credit obj)
         {

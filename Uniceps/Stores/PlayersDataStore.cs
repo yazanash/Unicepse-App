@@ -29,7 +29,7 @@ namespace Uniceps.Stores
         private readonly Lazy<Task> _initializeLazy;
         string LogFlag = "[Players] ";
         private readonly ILogger<PlayersDataStore> _logger;
-
+        private readonly DataSyncService _dataSyncService;
         public IEnumerable<Player> Players => _players;
         public IEnumerable<Player> ArchivedPlayers => _archivedPlayers;
         public event Action<Player>? Player_created;
@@ -39,7 +39,7 @@ namespace Uniceps.Stores
         public event Action? ArchivedPlayers_loaded;
         public event Action<Filter?>? FilterChanged;
         public event Action<Player?>? PlayerChanged;
-        public PlayersDataStore(IDataService<Player> playerDataService, ILogger<PlayersDataStore> logger, IArchivedService<Player> archivedService, IExcelService<Player> excelService, LicenseStore licenseStore)
+        public PlayersDataStore(IDataService<Player> playerDataService, ILogger<PlayersDataStore> logger, IArchivedService<Player> archivedService, IExcelService<Player> excelService, LicenseStore licenseStore, DataSyncService dataSyncService)
         {
             _playerDataService = playerDataService;
             _archivedService = archivedService;
@@ -49,6 +49,7 @@ namespace Uniceps.Stores
             _logger = logger;
             _excelService = excelService;
             _licenseStore = licenseStore;
+            _dataSyncService = dataSyncService;
         }
 
         private Player? _selectedPlayer;
@@ -156,6 +157,7 @@ namespace Uniceps.Stores
             {
                 _players.Add(player);
             }
+            _dataSyncService.NotifyPlayerUpdated(player);
             Player_update?.Invoke(player);
         }
         public void UpdatePlayerBalance(int playerId,double value)

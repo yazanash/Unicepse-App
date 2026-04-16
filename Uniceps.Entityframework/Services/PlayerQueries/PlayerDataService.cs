@@ -1,16 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Uniceps.Core.Exceptions;
-using Uniceps.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.Core.Common;
-using System.ComponentModel.DataAnnotations.Schema;
-using Uniceps.Core.Services;
+using Uniceps.Core.Exceptions;
+using Uniceps.Core.Models;
 using Uniceps.Core.Models.Player;
+using Uniceps.Core.Models.Subscription;
+using Uniceps.Core.Services;
 using Uniceps.Entityframework.DbContexts;
 
 namespace Uniceps.Entityframework.Services.PlayerQueries
@@ -123,7 +124,15 @@ namespace Uniceps.Entityframework.Services.PlayerQueries
             existedPlayer.Phone = entity.Phone;
             existedPlayer.BirthDate = entity.BirthDate;
             existedPlayer.GenderMale = entity.GenderMale;
+
+
+            await context.Set<Subscription>()
+            .Where(s => s.PlayerId == entity.Id)
+            .ExecuteUpdateAsync(setter => setter
+                .SetProperty(s => s.PlayerName, entity.FullName)
+                .SetProperty(s => s.PlayerPhone, entity.Phone));
             context.Set<Player>().Update(existedPlayer);
+
             await context.SaveChangesAsync();
             return entity;
 

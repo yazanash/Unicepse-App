@@ -122,7 +122,7 @@ namespace Uniceps.HostBuilders
         }
         private static HomeViewModel CreateHomeListingViewModel(IServiceProvider services)
         {
-            return HomeViewModel.LoadViewModel(services.GetRequiredService<PlayersAttendenceStore>());
+            return HomeViewModel.LoadViewModel(services.GetRequiredService<PlayersAttendenceStore>(), services.GetRequiredService<AccountStore>());
         }
         private static SubscriptionMainViewModel CreateSubscriptionListingViewModel(IServiceProvider services)
         {
@@ -133,7 +133,8 @@ namespace Uniceps.HostBuilders
                    services.GetRequiredService<PaymentDataStore>(),
                    services.GetRequiredService<EmployeeStore>(), 
                    services.GetRequiredService<PlayersAttendenceStore>(),
-                   services.GetRequiredService<AccountStore>());
+                   services.GetRequiredService<AccountStore>(),
+                    services.GetRequiredService<PlayerProfileViewModel>());
         }
         private static RoutineListViewModel CreateRoutineListingViewModel(IServiceProvider services)
         {
@@ -145,7 +146,6 @@ namespace Uniceps.HostBuilders
         private static PlayerProfileViewModel CreatePlayerProfileViewModel(IServiceProvider services)
         {
             return new PlayerProfileViewModel(
-                services.GetRequiredService<NavigationStore>(),
                 services.GetRequiredService<SubscriptionDataStore>(),
                 services.GetRequiredService<PlayersDataStore>(),
                 services.GetRequiredService<SportDataStore>(),

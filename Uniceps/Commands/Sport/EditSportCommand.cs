@@ -36,9 +36,9 @@ namespace Uniceps.Commands.Sport
         }
         public override async Task ExecuteAsync(object? parameter)
         {
-            //try
-            //{
-            Core.Models.Sport.Sport sport = new Sp.Sport()
+            try
+            {
+                Core.Models.Sport.Sport sport = new Sp.Sport()
             {
                 Id = _sportStore.SelectedSport!.Id,
                 Name = _editSportViewModel.SportName,
@@ -54,15 +54,16 @@ namespace Uniceps.Commands.Sport
                 if (TrainerListItem.IsSelected)
                     sport.Trainers!.Add(TrainerListItem.trainer);
             }
+            _sportStore.SelectedSport = sport;
             await _sportStore.Update(sport);
 
             MessageBox.Show("تم التعديل بنجاح");
             _editSportViewModel.OnSportUpdated();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
 

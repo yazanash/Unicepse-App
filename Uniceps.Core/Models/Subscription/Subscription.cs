@@ -38,7 +38,7 @@ namespace Uniceps.Core.Models.Subscription
         public double TotalPaid => Payments?.Sum(p => p.PaymentValue) ?? 0;
         public double Remaining => PriceAfterOffer - TotalPaid;
         public string? Code { get; set; }
-
+        public string? PlayerPhone { get; set; } = string.Empty;
         public string GenerateSubscriptionCode(int attempt = 0)
         {
             byte[] bytes = SyncId.ToByteArray();
@@ -75,6 +75,7 @@ namespace Uniceps.Core.Models.Subscription
             EndDate = subscription.EndDate;
             IsRenewed = subscription.IsRenewed;
             Code = subscription.Code;
+            PlayerPhone = subscription.PlayerPhone;
             SyncId = subscription.SyncId;
         }
     }

@@ -46,9 +46,9 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" >
                             <TextBlock Text="التاريخ" VerticalAlignment="Center" FontSize="15" Foreground="{DynamicResource Brush.Foreground}"/>
-                            <DatePicker VerticalAlignment="Center" SelectedDate="{Binding SelectedDate,UpdateSourceTrigger=PropertyChanged}" Margin="10 0"/>
+                            <DatePicker IsEnabled="{Binding HasPermission,Converter={StaticResource BoolToVis}}" VerticalAlignment="Center" SelectedDate="{Binding SelectedDate,UpdateSourceTrigger=PropertyChanged}" Margin="10 0"/>
                         </StackPanel>
                         
 
@@ -83,13 +83,8 @@
                                 <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
                                 <DataGrid  SelectedItem="{Binding SelectedDailyPlayerReport,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding PlayerAttendence,UpdateSourceTrigger=PropertyChanged}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3" Margin="0,16,0,-6">
-                                  
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="#" IsReadOnly="True"
-                                    Width="auto"
-                                    Binding="{Binding IdSort}"
-                                    CanUserResize="False"/>
 
+                                    <DataGrid.Columns>
                                         <DataGridTemplateColumn  Width="auto" IsReadOnly="True">
                                             <DataGridTemplateColumn.HeaderTemplate>
                                                 <DataTemplate>
@@ -120,7 +115,7 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
 
-
+                                
 
                                         <DataGridTextColumn Header="اسم الاشتراك" IsReadOnly="True"
                                      Binding="{Binding SportName,UpdateSourceTrigger=PropertyChanged}"

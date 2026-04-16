@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Uniceps.Views.EmployeeViews.CreditViews
+namespace Uniceps.Views.EmployeeViews
 {
     /// <summary>
-    /// Interaction logic for CreditDetailView.xaml
+    /// Interaction logic for TrainerDauseDetails.xaml
     /// </summary>
-    public partial class CreditDetailView : UserControl
+    public partial class TrainerDauseDetails : Window
     {
-        public CreditDetailView()
+        public TrainerDauseDetails()
         {
             InitializeComponent();
         }
