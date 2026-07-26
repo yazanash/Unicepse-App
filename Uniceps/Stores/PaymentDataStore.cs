@@ -1,5 +1,5 @@
-﻿using Uniceps.Core.Models.Employee;
-using Uniceps.Entityframework.Services;
+﻿using DocumentFormat.OpenXml.Vml.Office;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.BackgroundServices;
-using Microsoft.Extensions.Logging;
-using Uniceps.Stores.ApiDataStores;
-using Uniceps.Core.Models.Payment;
-using Uniceps.Core.Services;
-using Uniceps.Core.Models.Player;
 using Uniceps.Core.Common;
+using Uniceps.Core.Models.Employee;
+using Uniceps.Core.Models.Payment;
+using Uniceps.Core.Models.Player;
+using Uniceps.Core.Services;
+using Uniceps.Entityframework.Services;
+using Uniceps.MessengerSystem;
+using Uniceps.MessengerSystem.Events;
+using Uniceps.Stores.ApiDataStores;
 
 namespace Uniceps.Stores
 {
@@ -38,24 +41,16 @@ namespace Uniceps.Stores
         private readonly List<PlayerPayment> _payments;
         public IEnumerable<PlayerPayment> Payments => _payments;
 
-        private PlayerPayment? _selectedPayment;
-        public PlayerPayment? SelectedPayment
-        {
-            get
-            {
-                return _selectedPayment;
-            }
-            set
-            {
-                _selectedPayment = value;
-                _logger.LogInformation(LogFlag + "selected payments changed");
-            }
-        }
         public async Task Add(PlayerPayment entity)
         {
             _logger.LogInformation(LogFlag + "add payment");
             await _paymentDataService.Create(entity);
             _payments.Add(entity);
+            Messenger.Default.Send(new PaymentCreated(
+            SubscriptionId: entity.SubscriptionId,
+            AmountPaid: entity.PaymentValue,
+            DatePaid: entity.PayDate
+        ));
             Created?.Invoke(entity);
             SumUpdated?.Invoke();
         }
@@ -63,15 +58,23 @@ namespace Uniceps.Stores
         {
             _logger.LogInformation(LogFlag + "force delete payment");
             bool deleted = await _paymentDataService.Delete(entity_id);
+          
             int currentIndex = _payments.FindIndex(y => y.Id == entity_id);
+            PlayerPayment entity = _payments[currentIndex];
+            Messenger.Default.Send(new PaymentDeleted(
+           SubscriptionId: entity.SubscriptionId,
+           AmountPaid: entity.PaymentValue
+       ));
             _payments.RemoveAt(currentIndex);
+
             Deleted?.Invoke(entity_id);
             SumUpdated?.Invoke();
+
         }
-        public async Task GetPlayerPayments(Player player)
+        public async Task GetAllByPlayer(int playerId)
         {
             _logger.LogInformation(LogFlag + "get player payments");
-            IEnumerable<PlayerPayment> subscriptions = await _getPlayerTransactionService.GetAll(player);
+            IEnumerable<PlayerPayment> subscriptions = await _getPlayerTransactionService.GetAllByPlayer(playerId);
             _payments.Clear();
             _payments.AddRange(subscriptions);
             Loaded?.Invoke();

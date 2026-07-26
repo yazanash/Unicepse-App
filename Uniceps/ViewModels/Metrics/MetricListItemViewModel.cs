@@ -19,7 +19,6 @@ namespace Uniceps.ViewModels.Metrics
         private readonly MetricDataStore _metricDataStore;
         private readonly NavigationStore _navigationStore;
         private readonly MetricReportViewModel _metricReportViewModel;
-        private readonly PlayersDataStore _playerDataStore;
 
         public Metric Metric;
 
@@ -39,22 +38,16 @@ namespace Uniceps.ViewModels.Metrics
         public double Chest => (int)Metric.Chest;
         public double Hips => (int)Metric.Hips;
         public string? CheckDate => Metric.CheckDate.ToShortDateString();
-        public MetricListItemViewModel(Metric metric, MetricDataStore metricDataStore, NavigationStore navigationStore, MetricReportViewModel metricReportViewModel, PlayersDataStore playerDataStore)
+        public MetricListItemViewModel(Metric metric, MetricDataStore metricDataStore, NavigationStore navigationStore, MetricReportViewModel metricReportViewModel)
         {
             _metricDataStore = metricDataStore;
             _navigationStore = navigationStore;
             _metricReportViewModel = metricReportViewModel;
-            _playerDataStore = playerDataStore;
             Metric = metric;
-            EditCommand = new NavaigateCommand<EditMetricsViewModel>(new NavigationService<EditMetricsViewModel>(_navigationStore, () => EditMetrics()));
+            EditCommand = new NavaigateCommand<AddMetricsViewModel>(new NavigationService<AddMetricsViewModel>(_navigationStore, () => new AddMetricsViewModel(Metric.PlayerId, Metric, _metricDataStore, _navigationStore, _metricReportViewModel)));
 
         }
 
-        private EditMetricsViewModel EditMetrics()
-        {
-            _metricDataStore.SelectedMetric = Metric;
-            return new EditMetricsViewModel(_metricDataStore, _navigationStore, _metricReportViewModel, _playerDataStore);
-        }
 
         public ICommand EditCommand { get; }
         public void Update(Metric metric)

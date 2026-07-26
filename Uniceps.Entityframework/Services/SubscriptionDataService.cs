@@ -107,7 +107,28 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.RollDate<=DateTime.Now && x.EndDate >= DateTime.Now.AddDays(-2)).Include(x=>x.Payments).ToListAsync();
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Where(x => x.RollDate<=DateTime.Now && x.EndDate >= DateTime.Now).Include(x=>x.Payments).ToListAsync();
+                foreach(var entity in entities)
+                {
+                    entity.GetTotal();
+                }
+                return entities;
+            }
+        }
+        public async Task<IEnumerable<Subscription>> GetAll(int daysPastEnd = 0)
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                DateTime thresholdDate = DateTime.Now.AddDays(-daysPastEnd);
+
+                IEnumerable<Subscription> entities = await context.Set<Subscription>()
+                    .Where(x => x.RollDate <= DateTime.Now && x.EndDate >= thresholdDate)
+                    .Include(x => x.Payments)
+                    .ToListAsync();
+                foreach (var entity in entities)
+                {
+                    entity.GetTotal();
+                }
                 return entities;
             }
         }
@@ -118,27 +139,39 @@ namespace Uniceps.Entityframework.Services
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.SportId == sport.Id
                 && (x.RollDate.Month == date.Month && x.RollDate.Year == date.Year
                 || x.EndDate.Month == date.Month && x.EndDate.Year == date.Year)).Include(x => x.Payments).ToListAsync();
+                foreach (var entity in entities)
+                {
+                    entity.GetTotal();
+                }
                 return entities;
             }
         }
-        public async Task<IEnumerable<Subscription>> GetAll(Player player)
+        public async Task<IEnumerable<Subscription>> GetAllByPlayer(int playerId)
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Include(x => x.Payments).AsNoTracking().Where(x => x.PlayerId == player.Id).ToListAsync();
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().Include(x => x.Payments).AsNoTracking().Where(x => x.PlayerId == playerId).ToListAsync();
+                foreach (var entity in entities)
+                {
+                    entity.GetTotal();
+                }
                 return entities;
             }
         }
-        public async Task<IEnumerable<Subscription>> GetAll(Employee trainer, DateTime date)
+        public async Task<IEnumerable<Subscription>> GetAll(int trainerId, DateTime date)
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
                 var monthStart = new DateTime(date.Year, date.Month, 1);
                 var monthEnd = monthStart.AddMonths(1).AddDays(-1);
 
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.TrainerId == trainer.Id
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.TrainerId == trainerId
                 && x.RollDate <= monthEnd   // يبدأ قبل نهاية الشهر
                 && x.EndDate >= monthStart).Include(x => x.Payments).ToListAsync();
+                foreach (var entity in entities)
+                {
+                    entity.GetTotal();
+                }
                 return entities;
             }
         }
@@ -148,6 +181,10 @@ namespace Uniceps.Entityframework.Services
             {
                 IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.TrainerId == trainer.Id).Include(x => x.Payments)
                    .ToListAsync();
+                foreach (var entity in entities)
+                {
+                    entity.GetTotal();
+                }
                 return entities;
             }
         }
@@ -162,6 +199,14 @@ namespace Uniceps.Entityframework.Services
             existed_subscription.MergeWith(entity);
             context.Set<Subscription>().Update(entity);
             await context.SaveChangesAsync();
+            Subscription? returnEntity = await context.Set<Subscription>().Include(x=>x.Payments)
+                .FirstOrDefaultAsync((e) => e.Id == entity.Id);
+            if (returnEntity != null)
+            {
+                returnEntity.GetTotal();
+                return returnEntity;
+            }
+            entity.GetTotal();
             return entity;
         }
         public async Task<bool> MarkAsRenewed(int entityId)

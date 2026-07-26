@@ -70,19 +70,19 @@ namespace Uniceps.Entityframework.Services
                 return entities;
             }
         }
-        public async Task<IEnumerable<Credit>> GetAll(Employee trainer)
+        public async Task<IEnumerable<Credit>> GetAll(int trainerId)
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Where(x => x.EmpPerson!.Id == trainer.Id).ToListAsync();
+                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Where(x => x.EmpPerson!.Id == trainerId).ToListAsync();
                 return entities;
             }
         }
-        public async Task<IEnumerable<Credit>> GetAll(Employee trainer, DateTime date)
+        public async Task<IEnumerable<Credit>> GetAll(int trainerId, DateTime date)
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Include(x => x.EmpPerson).AsNoTracking().Where(x => x.EmpPerson!.Id == trainer.Id && x.Date.Year == date.Year && x.Date.Month == date.Month).ToListAsync();
+                IEnumerable<Credit>? entities = await context.Set<Credit>().AsNoTracking().Include(x => x.EmpPerson).AsNoTracking().Where(x => x.EmpPerson!.Id == trainerId && x.Date.Year == date.Year && x.Date.Month == date.Month).ToListAsync();
                 return entities;
             }
         }

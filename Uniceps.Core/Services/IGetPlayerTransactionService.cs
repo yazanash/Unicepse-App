@@ -9,7 +9,7 @@ namespace Uniceps.Core.Services
 {
     public interface IGetPlayerTransactionService<T>
     {
-        Task<IEnumerable<T>> GetAll(Player player);
+        Task<IEnumerable<T>> GetAllByPlayer(int playerId);
     }
 
 }

@@ -57,7 +57,6 @@ namespace Uniceps.DataExporter.Mappers
                 BirthDate = data.BirthDate,
                 Phone = data.Phone,
             };
-            employeeDto.SportsIds = data.Sports?.Select(x => x.SyncId).ToList();
             return employeeDto;
         }
     }

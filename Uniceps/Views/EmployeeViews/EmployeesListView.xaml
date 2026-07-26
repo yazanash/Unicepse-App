@@ -15,6 +15,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:NumberFormatConverter x:Key="convertNum"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
+        <converters:EnumDisplayNameConverter x:Key="EnumToText"/>
     </UserControl.Resources>
 
     <Border  Padding="10">
@@ -50,7 +51,7 @@
                                Tag="التصنيف حسب" Grid.Row="1" Grid.Column="1" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Content}" FontSize="12"   />
+                                <TextBlock Text="{Binding Converter={StaticResource EnumToText}}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -122,7 +123,7 @@
 
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
-                        <DataGrid SelectedItem="{Binding SelectedEmployee}" Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding TrainerList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
+                        <DataGrid  Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}"  FlowDirection="RightToLeft" ItemsSource="{Binding TrainerList}" x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True"
                                     Width="auto"

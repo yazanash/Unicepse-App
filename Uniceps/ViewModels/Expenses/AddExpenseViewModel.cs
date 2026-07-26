@@ -10,17 +10,29 @@ using Uniceps.navigation;
 using Uniceps.ViewModels;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
-
+using Exp = Uniceps.Core.Models.Expenses;
 namespace Uniceps.ViewModels.Expenses
 {
     public class AddExpenseViewModel : ErrorNotifyViewModelBase
     {
         private readonly ExpensesDataStore _expensesDataStore;
-
+        public Exp.Expenses? Expenses;
+        public bool IsEditMode = false;
         public AddExpenseViewModel(ExpensesDataStore expensesDataStore)
         {
             _expensesDataStore = expensesDataStore;
             SubmitCommand = new SubmitExpensesCommand(_expensesDataStore, this);
+
+        }
+        public AddExpenseViewModel(ExpensesDataStore expensesDataStore, Exp.Expenses expenses)
+        {
+            _expensesDataStore = expensesDataStore;
+            SubmitCommand = new SubmitExpensesCommand(_expensesDataStore, this);
+            Expenses = expenses;
+            IsEditMode = true;
+            ExpensesValue = expenses.Value;
+            Descriptiones = expenses.Description;
+            ExpensesDate = expenses.date;
 
         }
         public Action? ExpensesCreated;

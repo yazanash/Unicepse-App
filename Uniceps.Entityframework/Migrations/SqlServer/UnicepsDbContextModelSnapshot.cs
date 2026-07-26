@@ -22,21 +22,6 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("EmployeeSport", b =>
-                {
-                    b.Property<int>("SportsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrainersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SportsId", "TrainersId");
-
-                    b.HasIndex("TrainersId");
-
-                    b.ToTable("EmployeeSport");
-                });
-
             modelBuilder.Entity("Uniceps.Core.Models.Authentication.AuthenticationLog", b =>
                 {
                     b.Property<int>("Id")
@@ -466,6 +451,49 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.ToTable("Metrics");
                 });
 
+            modelBuilder.Entity("Uniceps.Core.Models.OtherRevenue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Service")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
+
+                    b.ToTable("OtherRevenues");
+                });
+
             modelBuilder.Entity("Uniceps.Core.Models.Payment.PayReferance", b =>
                 {
                     b.Property<int>("Id")
@@ -577,20 +605,23 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("FingerprintData")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("GenderMale")
                         .HasColumnType("bit");
 
-                    b.Property<double>("Hieght")
-                        .HasColumnType("float");
-
                     b.Property<bool>("IsSubscribed")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsTakenContainer")
                         .HasColumnType("bit");
+
+                    b.Property<string>("MediclStatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
@@ -609,9 +640,6 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -1078,21 +1106,6 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.HasIndex("MuscleGroupCode");
 
                     b.ToTable("MuscleHeads");
-                });
-
-            modelBuilder.Entity("EmployeeSport", b =>
-                {
-                    b.HasOne("Uniceps.Core.Models.Sport.Sport", null)
-                        .WithMany()
-                        .HasForeignKey("SportsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Uniceps.Core.Models.Employee.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("TrainersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Uniceps.Core.Models.Authentication.AuthenticationLog", b =>

@@ -31,7 +31,13 @@ namespace Uniceps.Commands.ExpensesCommands
                 Value = _addExpenseViewModel.ExpensesValue,
 
             };
-            await _expensesDataStore.Add(expenses);
+            if (_addExpenseViewModel.IsEditMode && _addExpenseViewModel.Expenses != null)
+            {
+                expenses.Id = _addExpenseViewModel.Expenses.Id;
+                await _expensesDataStore.Update(expenses);
+            }
+            else
+                await _expensesDataStore.Add(expenses);
             _addExpenseViewModel.OnExpenseCreated();
         }
     }

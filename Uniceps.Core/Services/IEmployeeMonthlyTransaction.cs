@@ -10,6 +10,6 @@ namespace Uniceps.Core.Services
 {
     public interface IEmployeeMonthlyTransaction<T>
     {
-        Task<IEnumerable<T>> GetAll(Employee trainer, DateTime date);
+        Task<IEnumerable<T>> GetAll(int trainerId, DateTime date);
     }
 }

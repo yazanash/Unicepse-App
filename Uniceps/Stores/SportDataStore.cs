@@ -10,6 +10,8 @@ using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Sport;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services;
+using Uniceps.MessengerSystem;
+using Uniceps.MessengerSystem.Events;
 
 namespace Uniceps.Stores
 {
@@ -20,7 +22,6 @@ namespace Uniceps.Stores
         public event Action<Sport>? Updated;
         public event Action<int>? Deleted;
         public event Action<Employee?>? TrainerChanged;
-        private readonly IDeleteConnectionService<Sport> _deleteConnectionService;
         private readonly IDataService<Sport> _sportDataService;
         private readonly List<Sport> _sports;
         private readonly List<Employee> _trainers;
@@ -32,14 +33,13 @@ namespace Uniceps.Stores
         public IEnumerable<Employee> Trainers => _trainers;
         string LogFlag = "[Sport] ";
         private readonly ILogger<SportDataStore> _logger;
-        public SportDataStore(IDataService<Sport> sportDataService, ILogger<SportDataStore> logger, IDeleteConnectionService<Sport> deleteConnectionService, LicenseStore licenseStore)
+        public SportDataStore(IDataService<Sport> sportDataService, ILogger<SportDataStore> logger, LicenseStore licenseStore)
         {
             _sportDataService = sportDataService;
             _sports = new List<Sport>();
             _trainers = new List<Employee>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
-            _deleteConnectionService = deleteConnectionService;
             _licenseStore = licenseStore;
         }
         private Sport? _selectedSport;
@@ -57,7 +57,6 @@ namespace Uniceps.Stores
                 {
                     _trainers.Add(new Employee() { Id = -1, FullName = "الكل" });
                     _trainers.Add(new Employee() { Id = -2, FullName = "بدون مدرب" });
-                    _trainers.AddRange(SelectedSport.Trainers!);
 
                 }
                 StateChanged?.Invoke(SelectedSport);
@@ -82,9 +81,9 @@ namespace Uniceps.Stores
             if (!_licenseStore.Current.IsFullVersion && _sports.Count() >= 2)
                 throw new FreeLimitException("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
             _logger.LogInformation(LogFlag + "add sport");
-            await _sportDataService.Create(entity);
-            _sports.Add(entity);
-            Created?.Invoke(entity);
+          var sport =   await _sportDataService.Create(entity);
+            _sports.Add(sport);
+            Created?.Invoke(sport);
         }
 
         public async Task Delete(int entity_id)
@@ -120,12 +119,6 @@ namespace Uniceps.Stores
             _sports.Clear();
             _sports.AddRange(sports);
         }
-        public async Task DeleteConnectedTrainers(int Id)
-        {
-            _logger.LogInformation(LogFlag + "delete all linked trainers");
-            await _deleteConnectionService.DeleteConnection(Id);
-
-        }
         public async Task Update(Sport entity)
         {
             _logger.LogInformation(LogFlag + "update sport");
@@ -140,7 +133,7 @@ namespace Uniceps.Stores
             {
                 _sports.Add(entity);
             }
-            
+            Messenger.Default.Send(new EntityUpdated<Sport>(entity));
             Updated?.Invoke(entity);
         }
     }

@@ -2,20 +2,15 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <!--<RuntimeIdentifier>win-x86</RuntimeIdentifier>
-    <PlatformTarget>x86</PlatformTarget>-->
     <SignAssembly>False</SignAssembly>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <!--<AssemblyVersion>2.1.1.8</AssemblyVersion>-->
-    <!--<FileVersion>2.1.1.8</FileVersion>-->
     <SelfContained>true</SelfContained>
-    <Configurations>Debug;Release;Test</Configurations>
+    <Configurations>Debug;Release</Configurations>
     <NoWarn>$(NoWarn);NU1701</NoWarn>
     <VersionPrefix>2.5.1</VersionPrefix>
-
+    <Platforms>AnyCPU;x64</Platforms>
     <BuildRevision>$([System.DateTime]::Now.ToString("MMdd"))</BuildRevision>
 
     <Version>$(VersionPrefix).$(BuildRevision)</Version>
@@ -24,18 +19,24 @@
 
     <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
 
-    <Platforms>AnyCPU;x64:x86</Platforms>
-  </PropertyGroup>
+  <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.Extensions.Configuration.Binder.SourceGeneration</InterceptorsNamespaces>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Test'">
-    <AssemblyName>Uniceps_Test</AssemblyName>
-    <ApplicationIcon>Resources\Icons\logo_test.ico</ApplicationIcon>
-    <DefineConstants>$(DefineConstants);TEST</DefineConstants>
+  <StartupObject></StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <AssemblyName>Uniceps</AssemblyName>
     <ApplicationIcon>uni_luncher.ico</ApplicationIcon>
-    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+  <SelfContained>true</SelfContained>
+  <PublishSingleFile>true</PublishSingleFile>
+  <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+  
+  <!-- تعطيل التريمينغ ليتوافق مع WPF -->
+  <PublishTrimmed>false</PublishTrimmed>
+  
+  <!-- إزالة ملفات الـ PDB الضخمة مثل libSkiaSharp.pdb -->
+  <DebugType>none</DebugType>
+  <DebugSymbols>false</DebugSymbols>
+  <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
   <ItemGroup>
     <Content Update="appsettings.*.json" CopyToPublishDirectory="Never" />
@@ -138,6 +139,7 @@
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="6.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.9" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
@@ -237,16 +239,10 @@
     <Compile Update="Views\EmployeeViews\TrainerDues.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Expenses\ExpansesDetailView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Expenses\ExpansesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Metrics\AddMetricDetailView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PaymentViews\PaymentDetalView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\HomeView.xaml.cs">
@@ -280,5 +276,11 @@
   <ItemGroup>
     <Folder Include="Views\DashboardViews\" />
   </ItemGroup>
-
+  <Target Name="RemovePdbFilesFromPublish" AfterTargets="Publish">
+    <Message Importance="high" Text="Cleaning up PDB files from publish output..." />
+    <ItemGroup>
+      <PdbFilesToDelete Include="$(PublishDir)**\*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(PdbFilesToDelete)" />
+  </Target>
 </Project>

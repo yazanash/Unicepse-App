@@ -50,4 +50,80 @@ namespace Uniceps.Commands
 
         }
     }
+    public class AsyncRelayCommand<T> : ICommand
+    {
+        private readonly Func<T?, Task> _executeAsync;
+        private readonly Func<T?, bool>? _canExecute;
+        private bool _isExecuting;
+
+        public AsyncRelayCommand(Func<T?, Task> executeAsync, Func<T?, bool>? canExecute = null)
+        {
+            _executeAsync = executeAsync ?? throw new ArgumentNullException(nameof(executeAsync));
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(object? parameter)
+        {
+            // نتحقق أولاً إذا كان الكوماند قيد التنفيذ لمنع الضغط المتكرر
+            if (_isExecuting) return false;
+
+            if (_canExecute == null) return true;
+
+            // تحويل الباراميتر بأمان إلى النوع المطلق T
+            T? typedParameter = CastParameter(parameter);
+            return _canExecute(typedParameter);
+        }
+
+        public async void Execute(object? parameter)
+        {
+            _isExecuting = true;
+            RaiseCanExecuteChanged();
+
+            try
+            {
+                T? typedParameter = CastParameter(parameter);
+                await _executeAsync(typedParameter);
+            }
+            finally
+            {
+                _isExecuting = false;
+                RaiseCanExecuteChanged();
+            }
+        }
+
+        public event EventHandler? CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        // دالة مساعدة لتحويل الـ object القادم من الواجهة إلى النوع المحدد T بأمان
+        private static T? CastParameter(object? parameter)
+        {
+            if (parameter is T typedParam)
+            {
+                return typedParam;
+            }
+
+            // إذا كان الباراميتر عبارة عن تغيير نوع رقمي (مثلاً تمرير string من الواجهة لـ int)
+            if (parameter != null && typeof(T) != typeof(object))
+            {
+                try
+                {
+                    return (T)Convert.ChangeType(parameter, typeof(T));
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+
+            return default;
+        }
+    }
 }

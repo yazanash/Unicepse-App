@@ -17,6 +17,8 @@ using Uniceps.navigation.Stores;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
 using Uniceps.ViewModels.PlayersAttendenceViewModels;
 using Uniceps.Core.Models.DailyActivity;
+using System.Windows;
+using Uniceps.Views.PlayerViews;
 
 namespace Uniceps.ViewModels
 {
@@ -25,19 +27,19 @@ namespace Uniceps.ViewModels
         private readonly ObservableCollection<PlayerAttendenceListItemViewModel> _playerAttendenceListItemViewModels;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly AccountStore _accountStore;
+        private readonly Func<int,PlayerProfileViewModel> _playerProfileFactory;
         public IEnumerable<PlayerAttendenceListItemViewModel> PlayerAttendence => _playerAttendenceListItemViewModels;
         public ICommand LoadDailyReport { get; }
-        public ICommand OpenScanCommand { get; }
         public SearchBoxViewModel SearchBox { get; set; }
-        public HomeViewModel(PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore)
+        public HomeViewModel(PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore, Func<int, PlayerProfileViewModel> playerProfileFactory)
         {
             _playersAttendenceStore = playersAttendenceStore;
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
             _playersAttendenceStore.LoggedIn += _playersAttendenceStore_LoggedIn;
             _playersAttendenceStore.LoggedOut += _playersAttendenceStore_LoggedOut;
-            OpenScanCommand = new LoginPlayerScanCommand(new ReadPlayerQrCodeViewModel(), _playersAttendenceStore);
             _playerAttendenceListItemViewModels = new ObservableCollection<PlayerAttendenceListItemViewModel>();
             LoadDailyReport = new GetLoggedPlayerCommand(_playersAttendenceStore, this);
+
             SearchBox = new SearchBoxViewModel();
             _accountStore = accountStore;
             if (_accountStore.CurrentAccount != null)
@@ -48,6 +50,8 @@ namespace Uniceps.ViewModels
             {
                 HasPermission = true;
             }
+            LoadDailyReport.Execute(null);
+            _playerProfileFactory = playerProfileFactory;
         }
         private bool _hasPermission = false;
         public bool HasPermission
@@ -130,12 +134,14 @@ namespace Uniceps.ViewModels
                 itemViewModel.IdSort = _playerAttendenceListItemViewModels.Count();
             }
         }
-        public static HomeViewModel LoadViewModel(PlayersAttendenceStore playersAttendenceStore ,AccountStore accountStore)
-        {
-            HomeViewModel viewModel = new(playersAttendenceStore, accountStore);
+        public ICommand OpenProfileCommand => new RelayCommand<PlayerAttendenceListItemViewModel>(ExecuteOpenPlayerProfile);
 
-            viewModel.LoadDailyReport.Execute(null);
-            return viewModel;
+        public void ExecuteOpenPlayerProfile(PlayerAttendenceListItemViewModel playerAttendenceListItemViewModel)
+        {
+                PlayerProfileWindowView playerProfileWindowView = new PlayerProfileWindowView();
+                playerProfileWindowView.DataContext = _playerProfileFactory(playerAttendenceListItemViewModel.Id);
+                playerProfileWindowView.ShowDialog();
         }
+      
     }
 }

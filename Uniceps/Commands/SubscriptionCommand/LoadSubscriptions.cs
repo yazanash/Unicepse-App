@@ -15,14 +15,12 @@ namespace Uniceps.Commands.SubscriptionCommand
     {
         private readonly SubscriptionDataStore _subscriptionStore;
         private readonly ListingViewModelBase _subscriptionListing;
-        private readonly PlayersDataStore _playersDataStore;
 
 
-        public LoadSubscriptions(ListingViewModelBase subscriptionListing, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore)
+        public LoadSubscriptions(ListingViewModelBase subscriptionListing, SubscriptionDataStore subscriptionStore)
         {
             _subscriptionStore = subscriptionStore;
             _subscriptionListing = subscriptionListing;
-            _playersDataStore = playersDataStore;
         }
 
         public override async Task ExecuteAsync(object? parameter)
@@ -32,8 +30,8 @@ namespace Uniceps.Commands.SubscriptionCommand
 
             try
             {
-                if (_playersDataStore.SelectedPlayer != null)
-                    await _subscriptionStore.GetAll(_playersDataStore.SelectedPlayer);
+                if(parameter is int playerId)
+                    await _subscriptionStore.GetAllByPlayer(playerId);
             }
             catch (Exception)
             {

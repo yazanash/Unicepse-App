@@ -39,7 +39,6 @@
 
             <Grid Grid.Row="1" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="250"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Border  Grid.Column="1"  Grid.Row="0"  Style="{DynamicResource CardBorderStyle}"  Margin="10 0 0 0">
@@ -83,16 +82,8 @@
                                 <TextBlock Text="سنة الميلاد" 
                                    Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                    FontSize="18"/>
-                                <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
-                                          ItemsSource="{Binding Years,UpdateSourceTrigger=PropertyChanged}"
-                                          SelectedItem="{Binding Year,UpdateSourceTrigger=PropertyChanged}"
-                                          ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding year}" FontSize="12"   />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
+                                <TextBox Text="{Binding Year, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
                             </StackPanel>
 
                             <StackPanel  Grid.Row="1" Grid.Column="3" Margin="5">
@@ -169,19 +160,7 @@
                     </DockPanel>
                 </Border>
 
-                <Border  Grid.Column="0"  Grid.Row="1"  Style="{DynamicResource StaticCardBorderStyle}"  >
-                    <DockPanel>
-                        <TextBlock  Text="الرياضات" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Brush.Foreground}" Margin="0 0 0 5" DockPanel.Dock="Top"/>
-                        <ListBox ItemsPanel="{DynamicResource ListBoxItemsPanel1}" 
-                                 ItemContainerStyle="{StaticResource SportsItemContainerStyle1}"
-                                 Style="{DynamicResource ListBoxStyle1}" DockPanel.Dock="Top"
-                                 VirtualizingPanel.ScrollUnit="Pixel" BorderThickness="0"
-                               ItemsSource="{Binding SportList}" >
-
-
-                        </ListBox>
-                    </DockPanel>
-                </Border>
+               
             </Grid>
         </Grid>
     </Border>

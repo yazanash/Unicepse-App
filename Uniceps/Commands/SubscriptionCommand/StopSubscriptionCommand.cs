@@ -45,24 +45,16 @@ namespace Uniceps.Commands.SubscriptionCommand
         {
             try
             {
-                if (!_subscriptionDataStore.SelectedSubscription!.IsStopped)
+                if (!_stopSubscription.SelectedSubscription!.IsStopped)
                 {
-                    _playerDataStore.SelectedPlayer!.Balance += _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
-                    _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer -= _stopSubscription.ReturnCash;
+                    _stopSubscription.SelectedSubscription!.PriceAfterOffer -= _stopSubscription.ReturnCash;
                     
-                    int days = Convert.ToInt32((_stopSubscription.SubscribeStopDate - _subscriptionDataStore.SelectedSubscription!.RollDate).TotalDays);
-                    double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / _subscriptionDataStore.SelectedSubscription!.DaysCount;
-                    _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer = dayPrice * days;
-                    _playerDataStore.SelectedPlayer!.Balance -= _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer;
-                    await _subscriptionDataStore.Stop(_subscriptionDataStore.SelectedSubscription!, _stopSubscription.SubscribeStopDate);
-                    Subscription? subscription = _subscriptionDataStore.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault(x => x.Id != _subscriptionDataStore.SelectedSubscription.Id);
-                    if (subscription != null && subscription.EndDate >= _subscriptionDataStore.SelectedSubscription.EndDate)
-                    {
-                        _playerDataStore.SelectedPlayer!.SubscribeEndDate = subscription.EndDate;
-                    }
-                    else
-                        _playerDataStore.SelectedPlayer!.SubscribeEndDate = _subscriptionDataStore.SelectedSubscription.EndDate;
-                    await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer);
+                    int days = Convert.ToInt32((_stopSubscription.SubscribeStopDate - _stopSubscription.SelectedSubscription!.RollDate).TotalDays);
+                    double dayPrice = _stopSubscription.SelectedSubscription!.PriceAfterOffer / _stopSubscription.SelectedSubscription!.DaysCount;
+                    _stopSubscription.SelectedSubscription!.PriceAfterOffer = dayPrice * days;
+              
+                    await _subscriptionDataStore.Stop(_stopSubscription.SelectedSubscription!, _stopSubscription.SubscribeStopDate);
+                    Subscription? subscription = _subscriptionDataStore.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault(x => x.Id != _stopSubscription.SelectedSubscription.Id);
                     _navigationService.ReNavigate();
                 }
                 else

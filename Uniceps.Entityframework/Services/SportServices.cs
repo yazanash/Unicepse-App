@@ -57,31 +57,11 @@ namespace Uniceps.Entityframework.Services
             {
                 var exists = await context.Set<Sport>().AnyAsync(x => x.Name == entity.Name);
                 if (exists) throw new ConflictException("الاشتراك موجود مسبقا");
-
                 Sport entityToCreate = new();
                 entityToCreate.MergeWith(entity);
-
-                entityToCreate.Trainers = new List<Employee>();
-
-                await context.Set<Sport>().AddAsync(entityToCreate);
+                EntityEntry<Sport> CreatedResult = await context.Set<Sport>().AddAsync(entity);
                 await context.SaveChangesAsync();
-
-                if (entity.Trainers?.Count > 0)
-                {
-                    var trainerIds = entity.Trainers.Select(s => s.Id).ToList();
-                    var existingEmployees = await context.Set<Employee>()
-                        .Where(s => trainerIds.Contains(s.Id))
-                        .ToListAsync();
-
-                    foreach (var trainer in existingEmployees)
-                    {
-                        entityToCreate.Trainers.Add(trainer);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-
-                return entity;
+                return CreatedResult.Entity;
             }
         }
         public async Task<bool> Delete(int id)
@@ -107,7 +87,7 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Sport>? entities = await context.Set<Sport>().AsNoTracking().Include(x => x.Trainers).AsNoTracking().Where(x => x.IsActive).AsNoTracking().ToListAsync();
+                IEnumerable<Sport>? entities = await context.Set<Sport>().AsNoTracking().AsNoTracking().Where(x => x.IsActive).AsNoTracking().ToListAsync();
                 return entities;
             }
         }
@@ -118,12 +98,7 @@ namespace Uniceps.Entityframework.Services
             Sport existed_sport = await Get(entity.Id);
             if (existed_sport == null)
                 throw new NotExistException("هذه الرياضة غير موجودة");
-            foreach (var trainer in entity.Trainers!)
-            {
-                context.Entry(trainer).State = EntityState.Detached;
-                if (context.Entry(trainer).State == EntityState.Detached)
-                    context.Entry(trainer).State = EntityState.Modified;
-            }
+           
             context.Entry(entity).State = EntityState.Detached;
             if (context.Entry(entity).State == EntityState.Detached)
                 context.Entry(entity).State = EntityState.Modified;

@@ -56,7 +56,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 
         private void ExecuteCreateCreditsCommand()
         {
-            CreateCreditViewModelWindow createCreditViewModelWindow = new CreateCreditViewModelWindow(_employeeStore, _creditsDataStore,FinalAmount);
+            CreateCreditViewModelWindow createCreditViewModelWindow = new CreateCreditViewModelWindow(_creditsDataStore,FinalAmount,trainerDueses.Trainer!);
             CreateCreditWindowView createCreditWindowView = new CreateCreditWindowView();
             createCreditWindowView.DataContext = createCreditViewModelWindow;
             createCreditWindowView.ShowDialog();

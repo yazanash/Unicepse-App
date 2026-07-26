@@ -11,13 +11,11 @@ namespace Uniceps.Commands.Payments
 {
     public class LoadPaymentsCommand : AsyncCommandBase
     {
-        private readonly PlayersDataStore _playersDataStore;
         private readonly PaymentDataStore _paymentDataStore;
 
 
-        public LoadPaymentsCommand(PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore)
+        public LoadPaymentsCommand(PaymentDataStore paymentDataStore)
         {
-            _playersDataStore = playersDataStore;
             _paymentDataStore = paymentDataStore;
         }
 
@@ -25,8 +23,8 @@ namespace Uniceps.Commands.Payments
         {
             try
             {
-                if(_playersDataStore.SelectedPlayer!=null)
-                await _paymentDataStore.GetPlayerPayments(_playersDataStore.SelectedPlayer!);
+                if (parameter is int playerId)
+                    await _paymentDataStore.GetAllByPlayer(playerId);
             }
             catch (Exception)
             {

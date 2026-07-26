@@ -56,8 +56,9 @@ namespace Uniceps.Entityframework.DbContexts
         public DbSet<DayGroup>? DayGroups { get; set; }
         public DbSet<RoutineItemModel>? RoutineItemModels { get; set; }
         public DbSet<SetModel>? SetModels { get; set; }
-        public DbSet<EmployeeAccountClosing>? EmployeeAccounts{ get; set; }
+        public DbSet<EmployeeAccountClosing>? EmployeeAccounts { get; set; }
 
+        public DbSet<OtherRevenue>? OtherRevenues { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>().HasIndex(x => x.SyncId).IsUnique();
@@ -69,11 +70,10 @@ namespace Uniceps.Entityframework.DbContexts
             modelBuilder.Entity<Expenses>().HasIndex(x => x.SyncId).IsUnique();
             modelBuilder.Entity<Credit>().HasIndex(x => x.SyncId).IsUnique();
             modelBuilder.Entity<Metric>().HasIndex(x => x.SyncId).IsUnique();
+            modelBuilder.Entity<OtherRevenue>().HasIndex(x => x.SyncId).IsUnique();
 
             modelBuilder.Entity<Subscription>().HasIndex(x => x.Code);
-            modelBuilder.Entity<Sport>()
-              .HasMany(c => c.Trainers)
-              .WithMany(e => e.Sports);
+
 
 
             modelBuilder.Entity<User>()
@@ -112,6 +112,7 @@ namespace Uniceps.Entityframework.DbContexts
     .WithMany()
     .HasForeignKey(s => s.SportId)
     .OnDelete(DeleteBehavior.SetNull);
+
         }
     }
     public class SqliteUnicepsContext : UnicepsDbContext

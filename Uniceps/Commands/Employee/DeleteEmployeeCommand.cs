@@ -23,19 +23,20 @@ namespace Uniceps.Commands.Employee
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            if (MessageBox.Show("سيتم حذف هذا المدرب , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
-                                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                try
-                {
-                    if (_employeeStore.SelectedEmployee!.IsTrainer)
-                        await _employeeStore.DeleteConnectedSports(_employeeStore.SelectedEmployee!.Id);
-                    await _employeeStore.Delete(_employeeStore.SelectedEmployee!.Id);
-                    _navigationService.ReNavigate();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+            if (parameter is int employeeId)
+            {
+                if (MessageBox.Show("سيتم حذف هذا المدرب , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
+                                             MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    try
+                    {
+                        await _employeeStore.Delete(employeeId);
+                        _navigationService.ReNavigate();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+            }
         }
     }
 }

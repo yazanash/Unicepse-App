@@ -60,7 +60,7 @@ namespace Uniceps.Commands.SubscriptionCommand
                     player = new playerModel.Player()
                     {
                         FullName = _addSubscriptionViewModel.PlayerName,
-                        BirthDate = _addSubscriptionViewModel.Year?.year ?? DateTime.Now.Year,
+                        BirthDate = _addSubscriptionViewModel.Year,
                         GenderMale = _addSubscriptionViewModel.GenderMale,
                         Phone = _addSubscriptionViewModel.Phone,
                         SubscribeDate = _addSubscriptionViewModel.SubscribeDate,
@@ -69,13 +69,16 @@ namespace Uniceps.Commands.SubscriptionCommand
                     };
                     await _playerDataStore.AddPlayer(player);
                 }
+                DateTime startDateOnly = _addSubscriptionViewModel.SubscribeDate.Date;
+
+                DateTime calculatedEndDate = startDateOnly.AddDays(_addSubscriptionViewModel.SubscribeDays).AddSeconds(-1);
                 Subscription subscription = new()
                 {
                     DaysCount = _addSubscriptionViewModel.SubscribeDays,
                     SportId = _addSubscriptionViewModel.SelectedSport!.Sport.Id,
                     SportSyncId = _addSubscriptionViewModel.SelectedSport!.Sport.SyncId,
                     SportName = _addSubscriptionViewModel.SelectedSport!.SportName,
-                    LastCheck = _addSubscriptionViewModel.SubscribeDate,
+                    LastCheck = startDateOnly,
                     TrainerId = _addSubscriptionViewModel.SelectedTrainer?.trainer.Id,
                     TrainerSyncId = _addSubscriptionViewModel.SelectedTrainer?.trainer.SyncId,
                     TrainerName = _addSubscriptionViewModel.SelectedTrainer?.TrainerName,
@@ -83,45 +86,52 @@ namespace Uniceps.Commands.SubscriptionCommand
                     PlayerSyncId = player!.SyncId,
                     PlayerName = player!.FullName,
                     PlayerPhone = player!.Phone,
-                    RollDate = _addSubscriptionViewModel.SubscribeDate,
+                    RollDate = startDateOnly,
                     OfferValue = _addSubscriptionViewModel.OfferValue,
                     OfferDes = _addSubscriptionViewModel.Offer,
                     Price = _addSubscriptionViewModel.SelectedSport!.Price,
-                    EndDate = _addSubscriptionViewModel.SubscribeDate.AddDays(_addSubscriptionViewModel.SubscribeDays),
+                    EndDate = calculatedEndDate,
                     PriceAfterOffer = _addSubscriptionViewModel.Total ?? 0,
                     Code = _addSubscriptionViewModel.Code
                 };
-                await _subscriptionDataStore.Add(subscription);
-                if (_addSubscriptionViewModel.IsRenewal)
+                if (_addSubscriptionViewModel.IsEditMode && _addSubscriptionViewModel.ExistedSubscription != null)
                 {
-                    await _subscriptionDataStore.MarkAsRenewed(_addSubscriptionViewModel.RenewedSubscriptionId);
+                    subscription.Id = _addSubscriptionViewModel.ExistedSubscription.Id;
+                    await _subscriptionDataStore.Update(subscription);
+                    MessageBox.Show(" تم تعديل الاشتراك", "تم الحفظ");
                 }
-                DateTime payd = Convert.ToDateTime(_addSubscriptionViewModel.SubscribeDate.ToShortDateString());
-                if (_addSubscriptionViewModel.PaymentValue > 0)
+                else
                 {
-                    PlayerPayment payment = new PlayerPayment()
+                    await _subscriptionDataStore.Add(subscription);
+                    if (_addSubscriptionViewModel.IsRenewal && _addSubscriptionViewModel.ExistedSubscription != null)
                     {
-                        PayDate = payd,
-                        PaymentValue = _addSubscriptionViewModel.PaymentValue,
-                        Des = _addSubscriptionViewModel.Descriptiones,
-                        PlayerId = player.Id,
-                        SubscriptionId = subscription.Id
-                    };
-                    await _paymentDataStore.Add(payment);
-                    subscription.Payments?.Add(payment);
+                        await _subscriptionDataStore.MarkAsRenewed(_addSubscriptionViewModel.ExistedSubscription.Id);
+                    }
+                    DateTime payd = Convert.ToDateTime(_addSubscriptionViewModel.SubscribeDate.ToShortDateString());
+                    if (_addSubscriptionViewModel.PaymentValue > 0)
+                    {
+                        PlayerPayment payment = new PlayerPayment()
+                        {
+                            PayDate = payd,
+                            PaymentValue = _addSubscriptionViewModel.PaymentValue,
+                            Des = _addSubscriptionViewModel.Descriptiones,
+                            PlayerId = player.Id,
+                            SubscriptionId = subscription.Id
+                        };
+                        await _paymentDataStore.Add(payment);
+                        subscription.Payments?.Add(payment);
+                    }
+                    double value = subscription.TotalPaid - subscription.PriceAfterOffer;
+                    if (MessageBox.Show(" تم الحفظ بنجاح هل تريد طباعة وصل الاشتراك ؟", "تم الحفظ", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
+                        string filename = subscription.SportName + "_" + subscription.RollDate;
+                        PrintWindowDialog printWindowDialog = new PrintWindowDialog(filename);
+                        printWindowDialog.DataContext = new PrintWindowViewModel(new SubscriptionPrintViewModel(subscription), new NavigationStore());
+                        printWindowDialog.ShowDialog();
+                    }
+                    _addSubscriptionViewModel.ClearForm();
                 }
-                double value = subscription.TotalPaid - subscription.PriceAfterOffer;
-                _playerDataStore.UpdatePlayerBalance(player.Id, value);
-                _playerDataStore.UpdatePlayerDate(player.Id, subscription.EndDate);
-
-                if (MessageBox.Show(" تم الحفظ بنجاح هل تريد طباعة وصل الاشتراك ؟", "تم الحفظ", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-                {
-                    string filename = subscription.SportName + "_" + subscription.RollDate;
-                    PrintWindowDialog printWindowDialog = new PrintWindowDialog(filename);
-                    printWindowDialog.DataContext = new PrintWindowViewModel(new SubscriptionPrintViewModel(subscription), new NavigationStore());
-                    printWindowDialog.ShowDialog();
-                }
-                _addSubscriptionViewModel.ClearForm();
+            
             }
             catch (Exception ex)
             {

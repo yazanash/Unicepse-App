@@ -1,16 +1,27 @@
-﻿using Uniceps.Core.Models.Player;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Media;
+using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 using Uniceps.BackgroundServices;
-using Microsoft.Extensions.Logging;
-using Uniceps.Core.Services;
-using Uniceps.Stores.ApiDataStores;
-using Uniceps.Core.Models.DailyActivity;
 using Uniceps.Core.Common;
+using Uniceps.Core.Models.DailyActivity;
+using Uniceps.Core.Models.Player;
+using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services;
+using Uniceps.Stores.ApiDataStores;
+using Uniceps.SystemServices;
+using Windows.UI.Notifications;
+using static Uniceps.Stores.PlayersDataStore;
 
 namespace Uniceps.Stores
 {
@@ -28,7 +39,6 @@ namespace Uniceps.Stores
             _playersAttendence = new List<DailyPlayerReport>();
             _logger = logger;
         }
-
         private readonly PlayersAttendenceService _playersAttendenceService;
         private readonly List<DailyPlayerReport> _playersAttendence;
         public IEnumerable<DailyPlayerReport> PlayersAttendence => _playersAttendence;
@@ -47,13 +57,20 @@ namespace Uniceps.Stores
             }
         }
 
-
         public async Task LogInPlayer(DailyPlayerReport entity)
         {
             _logger.LogInformation(LogFlag + "login player");
             entity.DataStatus = DataStatus.ToCreate;
             await _playersAttendenceService.LogInPlayer(entity);
 
+            _playersAttendence.Add(entity);
+            LoggedIn?.Invoke(entity);
+        }
+
+        public async Task LogInPlayerWithId(DailyPlayerReport entity)
+        {
+            _logger.LogInformation(LogFlag + "login player");
+            await _playersAttendenceService.LogInPlayerWithId(entity);
             _playersAttendence.Add(entity);
             LoggedIn?.Invoke(entity);
         }
@@ -121,5 +138,6 @@ namespace Uniceps.Stores
 
         }
 
+        
     }
 }

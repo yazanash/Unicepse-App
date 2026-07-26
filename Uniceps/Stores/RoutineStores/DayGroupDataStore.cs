@@ -9,7 +9,7 @@ using Uniceps.Stores;
 
 namespace Uniceps.Stores.RoutineStores
 {
-    public class DayGroupDataStore : IDataStore<DayGroup>, IGetAllByIdDataStore<DayGroup>
+    public class DayGroupDataStore : IDataStore<DayGroup>
     {
         private readonly IDataService<DayGroup> _dataService;
         private readonly IGetAllById<DayGroup> _getAllDataService;

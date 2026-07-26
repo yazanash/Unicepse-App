@@ -32,7 +32,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         private readonly PlayersDataStore? _playersDataStore;
         private readonly PaymentDataStore? _paymentDataStore;
         private readonly PlayerMainPageViewModel? _playerMainPageViewModel;
-
+        private readonly EmployeeStore? _employeeStore;
         public int Id => Subscription.Id;
         private int _order;
         public int Order
@@ -57,7 +57,17 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public DateTime EndDateFull => Subscription.EndDate;
         public DateTime RollDateFull => Subscription.RollDate;
         public string EndDate => Subscription.EndDate.ToShortDateString();
-        public int RestDays => (int) Subscription.EndDate.Subtract(DateTime.Now).TotalDays;
+        public double RestDays
+        {
+            get
+            {
+                DateTime absoluteEndDate = Subscription.EndDate.Date.AddDays(1).AddSeconds(-1);
+
+                double totalDays = absoluteEndDate.Subtract(DateTime.Now).TotalDays;
+
+                return totalDays > 0 ? (int)Math.Ceiling(totalDays) : 0;
+            }
+        }
         private bool _isOpen;
         public bool IsOpen
         {
@@ -86,7 +96,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public string? SubscriptionStatusString { get; set; }
         public Brush? SubscriptionStatusColor { get; set; }
         public string? SubscriptionStatusIcon { get; set; }
-        public SubscriptionListItemViewModel(Subscription subscription, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel, PaymentDataStore paymentDataStore)
+        public SubscriptionListItemViewModel(Subscription subscription, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel, PaymentDataStore paymentDataStore,EmployeeStore employeeStore)
         {
             Subscription = subscription;
             _sportDataStore = sportDataStore;
@@ -95,9 +105,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             _paymentDataStore = paymentDataStore;
             _playersDataStore = playersDataStore;
             _playerMainPageViewModel = playerMainPageViewModel;
+            _employeeStore = employeeStore;
             DeleteCommand = new DeleteSubscriptionCommand(_subscriptionDataStore);
-            EditCommand = new NavaigateCommand<EditSubscriptionViewModel>(new NavigationService<EditSubscriptionViewModel>(_navigationStore, () => EditSubscription(_sportDataStore, _navigationStore, _subscriptionDataStore, _playersDataStore, _playerMainPageViewModel)));
-            StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _playerMainPageViewModel)));
+            StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _playerMainPageViewModel,Subscription)));
             CheckSubscriptionStatus();
         }
         private void CheckSubscriptionStatus()
@@ -107,7 +117,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             {
                 SubscriptionStatus = SubscriptionStatus.Renewed;
             }
-            else if (Subscription.EndDate < DateTime.Now)
+            else if (Subscription.EndDate < DateTime.Now.Date)
             {
                 SubscriptionStatus = SubscriptionStatus.Expired;
             }
@@ -156,16 +166,14 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public void Update(Subscription subscription)
         {
             Subscription = subscription;
+            OnPropertyChanged(nameof(Subscription));
             OnPropertyChanged(nameof(SportName));
-
+            OnPropertyChanged(nameof(PlayerName));
+            OnPropertyChanged(nameof(PlayerPhone));
+            OnPropertyChanged(nameof(PaidValue));
+            OnPropertyChanged(nameof(RestValue));
             CheckSubscriptionStatus();
            
-        }
-      
-        public static EditSubscriptionViewModel EditSubscription(SportDataStore sportDataStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel)
-        {
-            return EditSubscriptionViewModel.LoadViewModel(sportDataStore, navigationStore, subscriptionDataStore, playersDataStore, playerMainPageViewModel);
-
         }
 
     }

@@ -6,10 +6,12 @@ using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.ExpensesCommands;
 using Uniceps.Commands.Player;
+using Uniceps.Commands.RevenueCommands;
 using Uniceps.navigation;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
+using Uniceps.ViewModels.OtherRevenueViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.Views.Expenses;
 using Exp = Uniceps.Core.Models.Expenses;
@@ -119,7 +121,7 @@ namespace Uniceps.ViewModels.Expenses
 
             return viewModel;
         }
-
+       
         public override void Dispose()
         {
             _expensesStore.Loaded -= _expensesStore_Loaded;

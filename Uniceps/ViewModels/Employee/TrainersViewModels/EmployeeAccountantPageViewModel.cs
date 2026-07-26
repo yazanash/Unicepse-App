@@ -15,7 +15,7 @@ using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels.PrintViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
-
+using Emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
     public class EmployeeAccountantPageViewModel : ViewModelBase
@@ -28,18 +28,19 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionsList => _subscriptionListItemViewModels;
         public TrainerMounthlyReportViewModel? TrainerMounthlyReportViewModel { get; set; }
-        public EmployeeAccountantPageViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore)
+        public Emp.Employee SelectedEmployee { get; set; }
+        public EmployeeAccountantPageViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, Emp.Employee selectedEmployee)
         {
             _employeeStore = employeeStore;
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
+            SelectedEmployee = selectedEmployee;
 
             _subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
             _dausesDataStore.Closed += _dausesDataStore_Closed;
             GroupedTasks = new CollectionViewSource { Source = _subscriptionListItemViewModels };
-            LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, _employeeStore, this);
-
+            LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, this);
         }
 
         private void _dausesDataStore_Closed(bool obj)
@@ -55,7 +56,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             {
                 Filter = "Excel Files (*.xlsx)|*.xlsx",
                 Title = "احفظ الملف",
-                FileName = _employeeStore.SelectedEmployee?.FullName + DateTime.Now.ToString("dd-MM-yyyy _ HH-mm") + ".xlsx"
+                FileName = SelectedEmployee?.FullName + DateTime.Now.ToString("dd-MM-yyyy _ HH-mm") + ".xlsx"
             };
 
             if (dialog.ShowDialog() == true)
@@ -64,7 +65,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
                 if (string.IsNullOrWhiteSpace(filePath)) return;
                 try
                 {
-                    await _dausesDataStore.ExportMonthlyReport(_employeeStore.SelectedEmployee!, filePath, ReportDate);
+                    await _dausesDataStore.ExportMonthlyReport(SelectedEmployee!.Id, filePath, ReportDate);
                     MessageBox.Show("تم التصدير بنجاح");
                 }
                 catch(Exception ex)

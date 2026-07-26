@@ -54,7 +54,7 @@ namespace Uniceps.Entityframework.DataExportProvider
         public async Task<IEnumerable<Employee>> GetEmployeesAsync()
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            IEnumerable<Employee>? entities = await context.Set<Employee>().Include(x => x.Sports).AsNoTracking().ToListAsync();
+            IEnumerable<Employee>? entities = await context.Set<Employee>().AsNoTracking().ToListAsync();
             return entities;
         }
 
@@ -68,7 +68,7 @@ namespace Uniceps.Entityframework.DataExportProvider
         public async Task<IEnumerable<Sport>> GetSportsWithTrainersAsync()
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            IEnumerable<Sport>? entities = await context.Set<Sport>().Include(x=>x.Trainers).AsNoTracking().ToListAsync();
+            IEnumerable<Sport>? entities = await context.Set<Sport>().AsNoTracking().ToListAsync();
             return entities;
         }
 

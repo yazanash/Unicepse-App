@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Uniceps.Commands;
 using Uniceps.Core.Exceptions;
-using Uniceps.navigation;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
 using Uniceps.Views;
@@ -47,7 +42,7 @@ namespace Uniceps.Commands.Employee
                 {
                     FullName = _addEmployeeViewModel.FullName,
                     Balance = _addEmployeeViewModel.Balance,
-                    BirthDate = _addEmployeeViewModel.Year?.year ?? DateTime.Now.Year,
+                    BirthDate = _addEmployeeViewModel.Year,
                     GenderMale = _addEmployeeViewModel.GenderMale,
                     IsActive = true,
                     IsTrainer = false,
@@ -59,14 +54,24 @@ namespace Uniceps.Commands.Employee
                     StartDate = _addEmployeeViewModel.StartDate,
                     Position = _addEmployeeViewModel.Position,
                 };
-
-                await _employeeStore.Add(employee);
-               if( MessageBox.Show("تم اضافة الموظف بنجاح ... هل تريد اضافة موظف اخر؟","تم بنجاح",MessageBoxButton.YesNo,MessageBoxImage.Information)
-                    == MessageBoxResult.Yes)
+                if (_addEmployeeViewModel.IsEditMode && _addEmployeeViewModel.Employee != null)
                 {
-                    _addEmployeeViewModel.ClearForm();
-                }else
+                    employee.Id = _addEmployeeViewModel.Employee.Id;
+                    await _employeeStore.Update(employee);
                     _addEmployeeViewModel.OnEmployeeCreated();
+                }
+                else
+                {
+                    await _employeeStore.Add(employee);
+                    if (MessageBox.Show("تم اضافة الموظف بنجاح ... هل تريد اضافة موظف اخر؟", "تم بنجاح", MessageBoxButton.YesNo, MessageBoxImage.Information)
+                         == MessageBoxResult.Yes)
+                    {
+                        _addEmployeeViewModel.ClearForm();
+                    }
+                    else
+                        _addEmployeeViewModel.OnEmployeeCreated();
+                }
+              
             }
             catch (FreeLimitException)
             {

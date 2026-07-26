@@ -29,7 +29,6 @@ namespace Uniceps.Commands.Sport
                 if (MessageBox.Show("سيتم حذف هذه الرياضة , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
                                          MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    await _sportStore.DeleteConnectedTrainers(_sportStore.SelectedSport!.Id);
                     await _sportStore.Delete(_sportStore.SelectedSport!);
 
                 }

@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.Core.Exceptions;
+using Uniceps.Core.Models;
 using Uniceps.Core.Models.Employee;
 using Uniceps.Core.Models.Sport;
 using Uniceps.Core.Models.Subscription;
@@ -41,27 +43,8 @@ namespace Uniceps.Entityframework.Services
 
                 Employee entityToCreate = new();
                 entityToCreate.MergeWith(entity);
-
-                entityToCreate.Sports = new List<Sport>();
-
                 await context.Set<Employee>().AddAsync(entityToCreate);
                 await context.SaveChangesAsync();
-
-                if (entity.Sports?.Count > 0)
-                {
-                    var sportIds = entity.Sports.Select(s => s.Id).ToList();
-                    var existingSports = await context.Set<Sport>()
-                        .Where(s => sportIds.Contains(s.Id))
-                        .ToListAsync();
-
-                    foreach (var sport in existingSports)
-                    {
-                        entityToCreate.Sports.Add(sport);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-                 
                 return entityToCreate;
             }
         }
@@ -90,7 +73,7 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Employee>? entities = await context.Set<Employee>().AsNoTracking().Include(x => x.Sports).AsNoTracking().Where(x => x.IsActive == true).ToListAsync();
+                IEnumerable<Employee>? entities = await context.Set<Employee>().AsNoTracking().AsNoTracking().Where(x => x.IsActive == true).ToListAsync();
                 return entities;
             }
         }
@@ -100,13 +83,7 @@ namespace Uniceps.Entityframework.Services
             Employee existed_employee = await Get(entity.Id);
             if (existed_employee == null)
                 throw new NotExistException("هذا الموظف غير موجود");
-            foreach (Sport sport in entity.Sports!)
-            {
-                context.Entry(sport).State = EntityState.Detached;
-                if (context.Entry(sport).State == EntityState.Detached)
-                    context.Entry(sport).State = EntityState.Modified;
-            }
-
+            
             context.Entry(entity).State = EntityState.Detached;
             if (context.Entry(entity).State == EntityState.Detached)
                 context.Entry(entity).State = EntityState.Modified;

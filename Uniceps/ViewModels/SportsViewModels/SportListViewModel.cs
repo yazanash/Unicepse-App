@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Commands;
-using Uniceps.Commands.Player;
 using Uniceps.Commands.Sport;
 using Uniceps.Core.Models.Sport;
-using Uniceps.navigation;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
-using Uniceps.Stores.SportStores;
-using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.Views.SportViews;
 
 namespace Uniceps.ViewModels.SportsViewModels
@@ -21,11 +14,7 @@ namespace Uniceps.ViewModels.SportsViewModels
     public class SportListViewModel : ViewModelBase
     {
         private readonly ObservableCollection<SportListItemViewModel> sportListItemViewModels;
-
-        private NavigationStore _navigatorStore;
         private SportDataStore _sportStore;
-        private EmployeeStore _trainerStore;
-        private SportSubscriptionDataStore _subscriptionDataStore;
         public IEnumerable<SportListItemViewModel> SportList => sportListItemViewModels;
         public SearchBoxViewModel SearchBox { get; set; }
         public bool HasData => sportListItemViewModels.Count > 0;
@@ -62,11 +51,9 @@ namespace Uniceps.ViewModels.SportsViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ICommand LoadSportsCommand { get; }
-        public SportListViewModel(NavigationStore navigatorStore, SportDataStore sportStore, EmployeeStore trainerStore, SportSubscriptionDataStore subscriptionDataStore)
+        public SportListViewModel(SportDataStore sportStore)
         {
-            _navigatorStore = navigatorStore;
             _sportStore = sportStore;
-            _trainerStore = trainerStore;
             LoadSportsCommand = new LoadSportsCommand(this, _sportStore);
             AddSportCommand = new RelayCommand(ExecuteAddSportCommand);
             sportListItemViewModels = new ObservableCollection<SportListItemViewModel>();
@@ -76,11 +63,11 @@ namespace Uniceps.ViewModels.SportsViewModels
             _sportStore.Created += _sportStore_SportAdded;
             _sportStore.Updated += _sportStore_SportUpdated;
             _sportStore.Deleted += _sportStore_SportDeleted;
-            _subscriptionDataStore = subscriptionDataStore;
+            LoadSportsCommand.Execute(null);
         }
         private void ExecuteAddSportCommand()
         {
-            AddSportViewModel addSportViewModel = AddSportViewModel.LoadViewModel(_sportStore, _trainerStore);
+            AddSportViewModel addSportViewModel = new AddSportViewModel(_sportStore);
             SportDetailWindowView sportDetailWindow = new SportDetailWindowView();
             sportDetailWindow.DataContext = addSportViewModel;
             sportDetailWindow.ShowDialog();
@@ -163,23 +150,9 @@ namespace Uniceps.ViewModels.SportsViewModels
         private void AddSport(Sport sport)
         {
             SportListItemViewModel itemViewModel =
-                new SportListItemViewModel(sport, _sportStore, _navigatorStore, _trainerStore, this, _subscriptionDataStore);
+                new SportListItemViewModel(sport, _sportStore);
             sportListItemViewModels.Add(itemViewModel);
             OnPropertyChanged(nameof(HasData));
-        }
-        public static SportListViewModel LoadViewModel(NavigationStore navigatorStore, SportDataStore sportStore, EmployeeStore employeeStore, SportSubscriptionDataStore subscriptionDataStore)
-        {
-            SportListViewModel viewModel = new SportListViewModel(navigatorStore, sportStore, employeeStore, subscriptionDataStore);
-
-            viewModel.LoadSportsCommand.Execute(null);
-
-            return viewModel;
-        }
-
-
-        private AddSportViewModel CreateAddSportViewModel(SportDataStore sportDataStore, EmployeeStore employeeStore)
-        {
-            return AddSportViewModel.LoadViewModel(sportDataStore, employeeStore);
         }
     }
 }

@@ -34,21 +34,6 @@ namespace Uniceps.Stores
             _logger = logger;
             _getPlayerTransactionService = getPlayerTransactionService;
         }
-        private Metric? _selectedMetric;
-        public Metric? SelectedMetric
-        {
-            get
-            {
-                return _selectedMetric;
-            }
-            set
-            {
-                _selectedMetric = value;
-                _logger.LogInformation(LogFlag + "selected metrics changed");
-                StateChanged?.Invoke(SelectedMetric);
-            }
-        }
-        public event Action<Metric?>? StateChanged;
         public async Task Add(Metric entity)
         {
             _logger.LogInformation(LogFlag + "add metrics");
@@ -75,10 +60,10 @@ namespace Uniceps.Stores
             _metrics.AddRange(subscriptions);
             Loaded?.Invoke();
         }
-        public async Task GetAll(Player player)
+        public async Task GetAllByPlayer(int playerId)
         {
             _logger.LogInformation(LogFlag + "get all player metrics");
-            IEnumerable<Metric> metric = await _getPlayerTransactionService.GetAll(player);
+            IEnumerable<Metric> metric = await _getPlayerTransactionService.GetAllByPlayer(playerId);
             _metrics.Clear();
             _metrics.AddRange(metric);
             Loaded?.Invoke();

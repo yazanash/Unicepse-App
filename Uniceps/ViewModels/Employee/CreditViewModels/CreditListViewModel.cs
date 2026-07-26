@@ -14,12 +14,11 @@ using Uniceps.Stores;
 using Uniceps.navigation.Stores;
 using Uniceps.Core.Models.Employee;
 using Uniceps.Views.EmployeeViews.CreditViews;
-
+using Emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.Employee.CreditViewModels
 {
     public class CreditListViewModel : ListingViewModelBase
     {
-        private readonly EmployeeStore _employeeStore;
         private readonly CreditsDataStore _creditDataStore;
         private NavigationStore _navigatorStore;
         private readonly ObservableCollection<CreditListItemViewModel> _creditListItemViewModels;
@@ -37,9 +36,9 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
 
             }
         }
-        public CreditListViewModel(EmployeeStore employeeStore, CreditsDataStore creditDataStore, NavigationStore navigatorStore)
+        public Emp.Employee Employee;
+        public CreditListViewModel( CreditsDataStore creditDataStore, NavigationStore navigatorStore, Emp.Employee employee)
         {
-            _employeeStore = employeeStore;
             _creditDataStore = creditDataStore;
             _navigatorStore = navigatorStore;
             _creditDataStore.Created += _creditDataStore_Created;
@@ -47,7 +46,10 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
             _creditDataStore.Loaded += _creditDataStore_Loaded;
             _creditDataStore.Deleted += _creditDataStore_Deleted;
             _creditListItemViewModels = new ObservableCollection<CreditListItemViewModel>();
-            LoadCreditsCommand = new LoadCreditsCommand(_employeeStore, _creditDataStore);
+            LoadCreditsCommand = new LoadCreditsCommand(_creditDataStore);
+            Employee = employee;
+
+            LoadCreditsCommand.Execute(Employee.Id);
         }
 
         private void _creditDataStore_Deleted(int obj)
@@ -91,7 +93,7 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
         private void AddCredit(Credit credit)
         {
             CreditListItemViewModel itemViewModel =
-                new CreditListItemViewModel(credit, _employeeStore, _creditDataStore);
+                new CreditListItemViewModel(credit, _creditDataStore);
             _creditListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = _creditListItemViewModels.Count();
         }
@@ -109,19 +111,12 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
 
         private void ExecuteCreateCreditsCommand()
         {
-            CreateCreditViewModelWindow createCreditViewModelWindow = new CreateCreditViewModelWindow(_employeeStore, _creditDataStore);
+            CreateCreditViewModelWindow createCreditViewModelWindow = new CreateCreditViewModelWindow(_creditDataStore,Employee);
             CreateCreditWindowView createCreditWindowView = new CreateCreditWindowView();
             createCreditWindowView.DataContext = createCreditViewModelWindow;
             createCreditWindowView.ShowDialog();
         }
 
-        public static CreditListViewModel LoadViewModel(EmployeeStore employeeStore, CreditsDataStore creditsDataStore, NavigationStore navigatorStore)
-        {
-            CreditListViewModel viewModel = new CreditListViewModel(employeeStore, creditsDataStore, navigatorStore);
-
-            viewModel.LoadCreditsCommand.Execute(null);
-
-            return viewModel;
-        }
+      
     }
 }

@@ -9,25 +9,37 @@ using Uniceps.Commands.Player;
 using Uniceps.navigation;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
-
+using Emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.Employee.CreditViewModels
 {
     public class CreateCreditViewModelWindow : ErrorNotifyViewModelBase
     {
-        private readonly EmployeeStore _employeeStore;
         private readonly CreditsDataStore _creditDataStore;
-        public CreateCreditViewModelWindow(EmployeeStore employeeStore, CreditsDataStore creditDataStore)
+        public Emp.Employee? SelectedEmployee;
+        public Emp.Credit? Credit;
+        public bool IsEditMode = false;
+        public CreateCreditViewModelWindow(CreditsDataStore creditDataStore, Emp.Employee selectedEmployee)
         {
-            _employeeStore = employeeStore;
             _creditDataStore = creditDataStore;
-            SubmitCommand = new SubmitCreditCommand(_employeeStore, _creditDataStore, this);
+            SubmitCommand = new SubmitCreditCommand(_creditDataStore, this);
+            SelectedEmployee = selectedEmployee;
         }
-        public CreateCreditViewModelWindow(EmployeeStore employeeStore, CreditsDataStore creditDataStore, double amount)
+        public CreateCreditViewModelWindow( CreditsDataStore creditDataStore, Emp.Credit credit)
         {
-            _employeeStore = employeeStore;
             _creditDataStore = creditDataStore;
-            SubmitCommand = new SubmitCreditCommand( _employeeStore, _creditDataStore, this);
+            SubmitCommand = new SubmitCreditCommand(_creditDataStore, this);
+            Credit = credit;
+            IsEditMode = true;
+            CreditValue = Credit.CreditValue;
+            CreditDate = credit.Date;
+            Description = credit.Description;
+        }
+        public CreateCreditViewModelWindow(CreditsDataStore creditDataStore, double amount, Emp.Employee selectedEmployee)
+        {
+            _creditDataStore = creditDataStore;
+            SubmitCommand = new SubmitCreditCommand(_creditDataStore, this);
             CreditValue = amount;
+            SelectedEmployee = selectedEmployee;
         }
         public Action? CreditCreated;
         internal void OnCreditCreated()

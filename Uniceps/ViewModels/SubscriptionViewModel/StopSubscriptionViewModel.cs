@@ -11,6 +11,7 @@ using Uniceps.ViewModels;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
+using Uniceps.Core.Models.Subscription;
 
 namespace Uniceps.ViewModels.SubscriptionViewModel
 {
@@ -21,16 +22,19 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         private readonly PlayersDataStore _playerDataStore;
         private readonly PaymentDataStore _paymentDataStore;
         private readonly PlayerMainPageViewModel _playerMainPageView;
+        public Subscription SelectedSubscription;
         public SubscriptionCardViewModel? Subscription { get; set; }
-        public StopSubscriptionViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore, PlayerMainPageViewModel playerMainPageView)
+        public StopSubscriptionViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore, PlayerMainPageViewModel playerMainPageView, Subscription selectedSubscription)
         {
             _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
             _playerDataStore = playerDataStore;
             _paymentDataStore = paymentDataStore;
             _playerMainPageView = playerMainPageView;
+            SelectedSubscription = selectedSubscription;
+
             FromRef = true;
-            Subscription = new SubscriptionCardViewModel(_subscriptionStore.SelectedSubscription!);
+            Subscription = new SubscriptionCardViewModel(SelectedSubscription);
             CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
 
             SubmitCommand = new StopSubscriptionCommand(_subscriptionStore, _playerDataStore, new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView), this);
@@ -38,23 +42,23 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
 
         private void CountCoast()
         {
-            SubscribeDays = Convert.ToInt32((SubscribeStopDate - Convert.ToDateTime(_subscriptionStore.SelectedSubscription!.RollDate)).TotalDays);
-            DuesCash = _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount * SubscribeDays;
+            SubscribeDays = Convert.ToInt32((SubscribeStopDate - Convert.ToDateTime(SelectedSubscription.RollDate)).TotalDays);
+            DuesCash = SelectedSubscription.PriceAfterOffer / SelectedSubscription.DaysCount * SubscribeDays;
             //ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
         }
         private void CountCoastFromDays()
         {
-            SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
-            DuesCash = _subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount * SubscribeDays;
+            SubscribeStopDate = SelectedSubscription.RollDate.AddDays(SubscribeDays);
+            DuesCash = SelectedSubscription.PriceAfterOffer / SelectedSubscription.DaysCount * SubscribeDays;
             //ReturnCash = _subscriptionStore.SelectedSubscription!.PaidValue - DuesCash;
         }
         private void CountCoastFromRef()
         {
             //SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
-            int Price = Convert.ToInt32(_subscriptionStore.SelectedSubscription!.PriceAfterOffer / _subscriptionStore.SelectedSubscription!.DaysCount);
+            int Price = Convert.ToInt32(SelectedSubscription.PriceAfterOffer / SelectedSubscription.DaysCount);
             //DuesCash = _subscriptionStore.SelectedSubscription!.PaidValue - ReturnCash;
             SubscribeDays = Convert.ToInt32(DuesCash / Price);
-            SubscribeStopDate = _subscriptionStore.SelectedSubscription!.RollDate.AddDays(SubscribeDays);
+            SubscribeStopDate = SelectedSubscription.RollDate.AddDays(SubscribeDays);
         }
         #region Properties 
         private int _subscribeDays;
@@ -78,12 +82,12 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                 _subscribeStopDate = value;
                 OnPropertyChanged(nameof(SubscribeStopDate));
                 ClearError(nameof(SubscribeStopDate));
-                if (SubscribeStopDate < _subscriptionStore.SelectedSubscription!.RollDate)
+                if (SubscribeStopDate < SelectedSubscription.RollDate)
                 {
                     AddError("لا يمكن ان يكون تاريخ ايقاف الاشتراك اصغر من تاريخ الاشتراك", nameof(SubscribeStopDate));
                     OnErrorChanged(nameof(SubscribeStopDate));
                 }
-                else if (SubscribeStopDate >= _subscriptionStore.SelectedSubscription!.EndDate)
+                else if (SubscribeStopDate >= SelectedSubscription.EndDate)
                 {
                     AddError("لا يمكن ان يكون تاريخ ايقاف الاشتراك اكبر من تاريخ نهاية الاشتراك", nameof(SubscribeStopDate));
                     OnErrorChanged(nameof(SubscribeStopDate));

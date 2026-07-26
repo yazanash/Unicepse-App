@@ -31,9 +31,7 @@ namespace Uniceps.Views.EmployeeViews
             var vm = DataContext as AddEmployeeViewModel;
             if (vm != null)
                 vm.EmployeeCreated += () => this.Close();
-            var editVm = DataContext as EditEmployeeViewModel;
-            if (editVm != null)
-                editVm.EmployeeUpdated += () => this.Close();
+          
         }
     }
 }

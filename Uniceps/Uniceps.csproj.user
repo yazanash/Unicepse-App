@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_LastSelectedProfileId>D:\Repo\Unicepse\Unicepse\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+    <_LastSelectedProfileId>D:\Repo\Uniceps\Uniceps\Properties\PublishProfiles\ClickOnceProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
@@ -48,6 +48,15 @@
     <Compile Update="Views\Expenses\ExpenseDetailViewWinow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\OtherRevenueViews\RevenueDetailViewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\OtherRevenueViews\RevenueListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PaymentViews\PaymentDetailWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PlayerViews\PlayerDetailWindowView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -73,9 +82,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\RoutineTemplateViews\RoutineComponent\RoutineItemModelCardWindowView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\SearchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SplashScreenWindow.xaml.cs">
@@ -138,9 +144,6 @@
     <Compile Update="Views\ApplicationAboutView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AppViews\AboutApp.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\AuthView\AuthWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -153,19 +156,10 @@
     <Compile Update="Views\EmployeeViews\CreditViews\CreditsListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EmployeeViews\DausesViews\YearlyDausesListView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\EmployeeViews\EmployeesListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\EmployeeViews\TrainerDuesesView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\EmployeeViews\TrainerSubscriptionView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Expenses\ExpensesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Metrics\MetricsCardView.xaml.cs">
@@ -184,9 +178,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayersAttendenceViews\PlayersAttendenceView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PlayerViews\ArchivedPlayersView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayerViews\PlayerMainPage.xaml.cs">
@@ -210,16 +201,10 @@
     <Compile Update="Views\SportViews\SportDetailWindowView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\SportViews\SportSubscriptionsView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\SubscriptionView\StopSubscriptionView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SubscriptionView\SubscriptionCreationViewWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\SubscriptionView\SubscriptionDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SubscriptionView\SubscriptionMainView.xaml.cs">
@@ -243,9 +228,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Theme\LightTheme.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SearchWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SplashScreenWindow.xaml">
@@ -362,9 +344,6 @@
     <Page Update="Views\ApplicationAboutView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AppViews\AboutApp.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\AuthView\AuthWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -377,19 +356,10 @@
     <Page Update="Views\EmployeeViews\CreditViews\CreditsListView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\EmployeeViews\DausesViews\YearlyDausesListView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\EmployeeViews\EmployeesListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EmployeeViews\TrainerDuesesView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\EmployeeViews\TrainerSubscriptionView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Expenses\ExpensesView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Metrics\MetricsCardView.xaml">
@@ -410,9 +380,6 @@
     <Page Update="Views\PlayersAttendenceViews\PlayersAttendenceView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PlayerViews\ArchivedPlayersView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\PlayerViews\PlayerMainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -431,13 +398,7 @@
     <Page Update="Views\RoutineTemplateViews\RoutineItemTemplateView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\SportViews\SportSubscriptionsView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\SubscriptionView\StopSubscriptionView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SubscriptionView\SubscriptionDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

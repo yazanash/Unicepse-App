@@ -10,7 +10,7 @@ using Uniceps.Stores;
 
 namespace Uniceps.Stores.RoutineStores
 {
-    public class RoutineItemDataStore : IDataStore<RoutineItemModel>, IGetAllByIdDataStore<RoutineItemModel>
+    public class RoutineItemDataStore : IDataStore<RoutineItemModel>
     {
         private readonly IDataService<RoutineItemModel> _dataService;
         private readonly IGetAllById<RoutineItemModel> _getAllDataService;

@@ -69,8 +69,7 @@ namespace Uniceps.Services
             Set(sheet, row, "FullName", b.FullName);
             Set(sheet, row, "Phone", b.Phone);
             Set(sheet, row, "BirthDate", b.BirthDate);
-            Set(sheet, row, "Weight", b.Weight);
-            Set(sheet, row, "Hieght", b.Hieght);
+            Set(sheet, row, "MediclStatus", b.MediclStatus);
             Set(sheet, row, "SubscribeDate", b.SubscribeDate.ToShortDateString());
             Set(sheet, row, "SubscribeEndDate", b.SubscribeEndDate.ToShortDateString());
             Set(sheet, row, "Balance", b.Balance);
@@ -122,8 +121,7 @@ namespace Uniceps.Services
                 Phone = row.Cell(columnMap["Phone"]).GetString(),
                 BirthDate = TryGetInt(row, columnMap, "BirthDate"),
                 GenderMale = TryGetBool(row, columnMap, "Gender"),
-                Weight = TryGetInt(row, columnMap, "Weight"),
-                Hieght = TryGetInt(row, columnMap, "Hieght"),
+                MediclStatus = row.Cell(columnMap["MediclStatus"]).GetString(),
                 SubscribeDate = TryGetDate(row, columnMap, "SubscribeDate") ?? DateTime.Now,
                 SubscribeEndDate = TryGetDate(row, columnMap, "SubscribeEndDate") ?? DateTime.Now
             };

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.Commands;
 using Uniceps.Core.Exceptions;
+using Uniceps.Core.Models;
 using Uniceps.Core.Models.Employee;
 using Uniceps.navigation;
 using Uniceps.Stores;
@@ -52,20 +53,24 @@ namespace Uniceps.Commands.Sport
                     IsActive = true
 
                 };
-                foreach (var TrainerListItem in _addSportViewModel.TrainerList)
+                if (_addSportViewModel.IsEditMode && _addSportViewModel.Sport != null)
                 {
-                    if (TrainerListItem.IsSelected)
-                        sport.Trainers!.Add(TrainerListItem.trainer);
-                }
-                await _sportStore.Add(sport);
-
-                if (MessageBox.Show("تم اضافة الرياضة بنجاح ... هل تريد اضافة رياضة اخرى؟", "تم بنجاح", MessageBoxButton.YesNo, MessageBoxImage.Information)
-               == MessageBoxResult.Yes)
-                {
-                    _addSportViewModel.ClearForm();
+                    sport.Id = _addSportViewModel.Sport.Id;
+                    await _sportStore.Update(sport);
+                    _addSportViewModel.OnSportCreated();
                 }
                 else
-                _addSportViewModel.OnSportCreated();
+                {
+                    await _sportStore.Add(sport);
+                    if (MessageBox.Show("تم اضافة الرياضة بنجاح ... هل تريد اضافة رياضة اخرى؟", "تم بنجاح", MessageBoxButton.YesNo, MessageBoxImage.Information)
+                   == MessageBoxResult.Yes)
+                    {
+                        _addSportViewModel.ClearForm();
+                    }
+                    else
+                        _addSportViewModel.OnSportCreated();
+                }
+                   
             }
             catch (FreeLimitException)
             {

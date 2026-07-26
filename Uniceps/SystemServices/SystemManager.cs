@@ -41,11 +41,15 @@ namespace Uniceps.SystemServices
         }
         public static void ApplyTheme()
         {
-            var savedTheme = SettingsManager.Current.AppTheme;
-            if (Enum.TryParse(savedTheme, out AppTheme theme))
+            try
             {
-                ThemeService.ApplyTheme(theme);
+                var savedTheme = SettingsManager.Current.AppTheme;
+                if (Enum.TryParse(savedTheme, out AppTheme theme))
+                {
+                    ThemeService.ApplyTheme(theme);
+                }
             }
+            catch { }
         }
         public static void InitializeSystem()
         {

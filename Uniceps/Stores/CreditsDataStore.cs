@@ -70,10 +70,10 @@ namespace Uniceps.Stores
             _credits.AddRange(employees);
             Loaded?.Invoke();
         }
-        public async Task GetAll(Employee employee)
+        public async Task GetAll(int employeeId)
         {
             _logger.LogInformation(LogFlag + "get all employee credit started");
-            IEnumerable<Credit> employees = await _employeeTransaction.GetAll(employee);
+            IEnumerable<Credit> employees = await _employeeTransaction.GetAll(employeeId);
             _credits.Clear();
             _credits.AddRange(employees);
             Loaded?.Invoke();

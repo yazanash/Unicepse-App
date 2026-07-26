@@ -11,7 +11,6 @@ using Uniceps.Commands.Player;
 using Uniceps.navigation;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
-using Uniceps.Stores.EmployeeStores;
 using Uniceps.Views.EmployeeViews;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
@@ -21,11 +20,9 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public Core.Models.Employee.Employee Trainer;
         private readonly EmployeeStore? _employeeStore;
         private readonly DausesDataStore? _dausesDataStore;
-        private readonly SportDataStore? _sportDataStore;
         private readonly TrainersListViewModel? _trainersListViewModel;
         private readonly NavigationStore? _navigationStore;
         private readonly CreditsDataStore? _creditsDataStore;
-        private readonly EmployeeSubscriptionDataStore? _employeeSubscriptionDataStore;
         private readonly AccountStore?   _accountStore;
         private readonly LicenseStore? _licenseStore;
         public int Id => Trainer.Id;
@@ -42,16 +39,14 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public ICommand? OpenAccountCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public TrainerListItemViewModel(Core.Models.Employee.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, SportDataStore sportDataStore, TrainersListViewModel trainersListViewModel, DausesDataStore? dausesDataStore, CreditsDataStore? creditsDataStore, EmployeeSubscriptionDataStore? employeeSubscriptionDataStore, AccountStore accountStore,LicenseStore licenseStore)
+        public TrainerListItemViewModel(Core.Models.Employee.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, TrainersListViewModel trainersListViewModel, DausesDataStore? dausesDataStore, CreditsDataStore? creditsDataStore, AccountStore accountStore,LicenseStore licenseStore)
         {
             Trainer = trainer;
             _employeeStore = employeeStore;
-            _sportDataStore = sportDataStore;
             _trainersListViewModel = trainersListViewModel;
             _dausesDataStore = dausesDataStore;
             _navigationStore = navigationStore;
             _creditsDataStore = creditsDataStore;
-            _employeeSubscriptionDataStore = employeeSubscriptionDataStore;
             _accountStore = accountStore;
             _licenseStore = licenseStore;
             NavigationStore EmployeeAccountPageNavigation = new NavigationStore();
@@ -61,18 +56,18 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
                 EditCommand = new RelayCommand(ExecuteEditEmployeeCommand);
             DeleteCommand = new DeleteEmployeeCommand(_employeeStore, new NavigationService<TrainersListViewModel>(_navigationStore, () => _trainersListViewModel));
 
-            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!, this, _employeeSubscriptionDataStore!, _licenseStore)));
+            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!, this, _licenseStore,Trainer)));
         }
         public void ExecuteEditTrainerCommand()
         {
-            EditTrainerViewModel editTrainerViewModel = EditTrainerViewModel.LoadViewModel(_sportDataStore!, _employeeStore!);
+            AddTrainerViewModel editTrainerViewModel = new AddTrainerViewModel(_employeeStore!,Trainer);
             TrainerDetailsWindowView trainerDetailsWindowView = new TrainerDetailsWindowView();
             trainerDetailsWindowView.DataContext = editTrainerViewModel;
             trainerDetailsWindowView.ShowDialog();
         }
         public void ExecuteEditEmployeeCommand()
         {
-            EditEmployeeViewModel editEmployeeViewModel = new EditEmployeeViewModel(_employeeStore!);
+            AddEmployeeViewModel editEmployeeViewModel = new AddEmployeeViewModel(_employeeStore!, Trainer);
             EmployeeDetailsWindowView employeeDetailsWindowView = new EmployeeDetailsWindowView();
             employeeDetailsWindowView.DataContext = editEmployeeViewModel;
             employeeDetailsWindowView.ShowDialog();

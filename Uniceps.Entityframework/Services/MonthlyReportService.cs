@@ -31,6 +31,9 @@ namespace Uniceps.Entityframework.Services
             var payments = await context.Set<PlayerPayment>()
                 .Where(p => p.PayDate >= monthStart && p.PayDate <= monthEnd)
                 .ToListAsync();
+            var otherRevenue = await context.Set<OtherRevenue>()
+              .Where(p => p.Date >= monthStart && p.Date <= monthEnd)
+              .ToListAsync();
 
             // كل المصاريف
             var expenses = await context.Set<Expenses>()
@@ -66,6 +69,7 @@ namespace Uniceps.Entityframework.Services
                 TotalIncome = totalIncome,
                 IncomeForNextMonth = incomeNextMonth,
                 IncomeFromLastMonth = incomeFromLastMonth,
+                OtherRevenue = Convert.ToDouble( otherRevenue.Sum(x=>x.Amount)),
                 Expenses = expenses.Sum(x => x.Value)
             };
         }

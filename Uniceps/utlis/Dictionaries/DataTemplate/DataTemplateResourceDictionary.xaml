@@ -2,7 +2,6 @@
                     
         xmlns:viewmodels="clr-namespace:Uniceps.utlis.common"
         xmlns:vms="clr-namespace:Uniceps.ViewModels"
-        xmlns:viewapp="clr-namespace:Uniceps.Views.AppViews"
         xmlns:authvmodels="clr-namespace:Uniceps.ViewModels.Authentication"
         xmlns:logvms="clr-namespace:Uniceps.ViewModels.PlayersAttendenceViewModels"
         xmlns:logvs="clr-namespace:Uniceps.Views.PlayersAttendenceViews"
@@ -36,16 +35,12 @@
         <!--<views:HomeView />-->
         <dashboard_views:DashboardView/>
     </DataTemplate>
-    
+
     <DataTemplate DataType="{x:Type player_subvm:SubscriptionMainViewModel }">
         <!--<views:HomeView />-->
         <player_subview:SubscriptionMainView/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type logvms:LogPlayerAttendenceViewModel }">
-        <logvs:LogPlayerAttendenceView/>
-    </DataTemplate>
-   
     <DataTemplate DataType="{x:Type authvmodels:AuthViewModel }">
         <!--<views:HomeView />-->
         <login:LoginView/>
@@ -75,21 +70,14 @@
     <DataTemplate DataType="{x:Type player_vms:PlayerListViewModel }">
         <player_views:PlayersListView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type player_subvm:SubscriptionDetailsViewModel }">
-        <player_subview:SubscriptionDetailView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type player_vms:ArchivedPlayersListViewModel }">
-        <player_views:ArchivedPlayersView/>
-    </DataTemplate>
+   
+    
     <!---->
     
     <DataTemplate DataType="{x:Type sport_vms:SportListViewModel }">
         <sport_views:SportListView/>
     </DataTemplate>
-   
-    <DataTemplate DataType="{x:Type sport_vms:SportSubscriptionsViewModel }">
-        <sport_views:SportSubscriptionsView/>
-    </DataTemplate>
+  
     <!---->
   
     <DataTemplate DataType="{x:Type emp_vms:TrainersListViewModel }">

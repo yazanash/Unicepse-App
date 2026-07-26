@@ -12,15 +12,10 @@ namespace Uniceps.Core.Models.Sport
 {
     public class Sport : DomainObject
     {
-        public Sport()
-        {
-            Trainers = new HashSet<Emp.Employee>();
-        }
         public string? Name { get; set; }
         public double Price { get; set; }
         public bool IsActive { get; set; }
         public int DaysInWeek { get; set; }
-        public ICollection<Emp.Employee>? Trainers { get; set; }
         public ICollection<Sub.Subscription>? PlayerTrainings { get; set; }
         public int DaysCount { get; set; }
 

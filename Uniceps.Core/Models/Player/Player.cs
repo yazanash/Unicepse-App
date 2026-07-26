@@ -19,8 +19,6 @@ namespace Uniceps.Core.Models.Player
             Subscriptions = new HashSet<Sub.Subscription>();
             Payments = new HashSet<PlayerPayment>();
         }
-        public double Weight { get; set; }
-        public double Hieght { get; set; }
         public DateTime SubscribeDate { get; set; }
         public DateTime SubscribeEndDate { get; set; }
         public bool IsTakenContainer { get; set; }
@@ -29,6 +27,8 @@ namespace Uniceps.Core.Models.Player
         public double Balance { get; set; }
         public string? UID { get; set; }
         public DataStatus DataStatus { get; set; }
+        public string? FingerprintData { get; set; }
+        public string? MediclStatus { get; set; }
         public bool Conflicts(Player player)
         {
             if (player.FullName == FullName)
@@ -44,12 +44,11 @@ namespace Uniceps.Core.Models.Player
             Phone = player.Phone;
             BirthDate = player.BirthDate;
             GenderMale = player.GenderMale;
-            Weight = player.Weight;
-            Hieght = player.Hieght;
             SubscribeDate = player.SubscribeDate;
             SubscribeEndDate = player.SubscribeEndDate;
             IsSubscribed = player.IsSubscribed;
             SyncId = player.SyncId;
+            MediclStatus = player.MediclStatus;
         }
 
         public virtual ICollection<Sub.Subscription> Subscriptions { get; set; }

@@ -15,7 +15,6 @@ using Uniceps.Core.Models.Sport;
 using Uniceps.Core.Models.Subscription;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services.PlayerQueries;
-using Uniceps.Entityframework.Services.RelationService;
 using Uniceps.Entityframework.Services.RoutineService;
 using Uniceps.Core.Models.DailyActivity;
 using Uniceps.Core.Models.TrainingProgram;
@@ -44,9 +43,6 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IEmployeeTransaction<Subscription>, SubscriptionDataService>();
                 services.AddSingleton<ISportMonthlyTransactions<Subscription>, SubscriptionDataService>();
                 services.AddSingleton<IGetExercisesService, RoutineExercisesService>();
-                services.AddSingleton<IDeleteConnectionService<Sport>, SportTrainersDeleteConnection>();
-                services.AddSingleton<IDeleteConnectionService<Employee>, TrainerSportsDeleteConnection>();
-                services.AddSingleton<IArchivedService<Player>, PlayerDataService>();
                 services.AddSingleton<IPublicIdService<Player>, PlayerDataService>();
                 services.AddSingleton<IExportDataProvider, ExportDataProviderService>();
                 services.AddSingleton<IImportDataProvider, ImportDataProviderService>();

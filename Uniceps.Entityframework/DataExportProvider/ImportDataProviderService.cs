@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uniceps.Core.Exceptions;
+using Uniceps.Core.Models;
 using Uniceps.Core.Models.DailyActivity;
 using Uniceps.Core.Models.Employee;
 using Uniceps.Core.Models.Expenses;
@@ -308,36 +309,6 @@ namespace Uniceps.Entityframework.DataExportProvider
                         newEmp.MergeWith(emp);
 
                         await context.Set<Employee>().AddAsync(newEmp);
-                    }
-                }
-
-                await context.SaveChangesAsync();
-                context.ChangeTracker.Clear();
-
-                foreach (Sport incomingSport in sports)
-                {
-                    context.ChangeTracker.Clear();
-                    var existingSport = await context.Set<Sport>()
-                        .Include(s => s.Trainers).AsNoTracking()
-                        .FirstOrDefaultAsync(s => s.SyncId == incomingSport.SyncId);
-
-                    if (existingSport != null && incomingSport.Trainers != null)
-                    {
-                        foreach (var incomingTrainer in incomingSport.Trainers)
-                        {
-                            context.ChangeTracker.Clear();
-                            if (!existingSport.Trainers!.Any(t => t.SyncId == incomingTrainer.SyncId))
-                            {
-                                var trainerInDb = await context.Set<Employee>()
-                                    .FirstOrDefaultAsync(e => e.SyncId == incomingTrainer.SyncId);
-
-                                if (trainerInDb != null)
-                                {
-                                    existingSport.Trainers!.Add(trainerInDb);
-                                    context.Set<Sport>().Update(existingSport);
-                                }
-                            }
-                        }
                     }
                 }
 

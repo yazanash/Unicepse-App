@@ -1,29 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Serilog;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using Uniceps.BackgroundServices;
 using Uniceps.Core.Common;
-using Uniceps.Entityframework.DbContexts;
+using Uniceps.Core.Models.Player;
+using Uniceps.Core.Services;
+using Uniceps.Entityframework.Services.PlayerQueries;
 using Uniceps.Helpers;
-using Uniceps.HostBuilders;
 using Uniceps.LicenseManager;
-using Uniceps.Services;
 using Uniceps.Stores;
-using Uniceps.Stores.RoutineStores;
 using Uniceps.SystemServices;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.Authentication;
@@ -42,11 +34,12 @@ namespace Uniceps
         public App()
         {
 
-            _host = HostConfigurator.Build(); 
+            _host = HostConfigurator.Build();
             AuthViewModel auth = _host.Services.GetRequiredService<AuthViewModel>();
             auth.LoginAction += Auth_LoginAction;
-            //SetupGlobalExceptions();
+            SetupGlobalExceptions();
         }
+      
         private void EnsureGuestAccount()
         {
             var accountStore = _host.Services.GetRequiredService<AccountStore>();
@@ -64,15 +57,21 @@ namespace Uniceps
 
         private void SetupGlobalExceptions()
         {
-            this.DispatcherUnhandledException += (s, e) => {
+            this.DispatcherUnhandledException += (s, e) =>
+            {
                 LogAndShowException(e.Exception, "UI Thread Exception");
                 e.Handled = true;
+                Application.Current.Shutdown();
+
             };
-            AppDomain.CurrentDomain.UnhandledException += (s, e) => {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
                 LogAndShowException((Exception)e.ExceptionObject, "Non-UI Exception");
+                Application.Current.Shutdown();
+
             };
         }
-
+       
         private void LogAndShowException(Exception ex, string type)
         {
             _host.Services.GetRequiredService<ILogger<App>>().LogCritical(ex, type);
@@ -115,7 +114,7 @@ namespace Uniceps
             _host = HostConfigurator.Build();
             _host.Start();
         }
-    
+
         public async Task OpenMainView()
         {
             AuthenticationStore authenticationStore = _host.Services.GetRequiredService<AuthenticationStore>();
@@ -151,6 +150,8 @@ namespace Uniceps
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.DataContext = _host.Services.GetRequiredService<SplashScreenViewModel>();
             splashScreen.Show();
+
+
             SplashScreenViewModel splash = _host.Services.GetRequiredService<SplashScreenViewModel>();
             await Updater.RunUpdater();
             var logger = _host.Services.GetRequiredService<ILogger<App>>();
@@ -160,23 +161,23 @@ namespace Uniceps
             ExerciseSyncService exerciseSyncService = _host.Services.GetRequiredService<ExerciseSyncService>();
             await exerciseSyncService.SyncIfConnectedAsync();
             _host.Start();
-
+         
             EnsureGuestAccount();
             splash.Message = " التطبيق جاهز للعمل ...";
             await OpenMainView();
             splashScreen.Close();
-            ToastNotificationManagerCompat.OnActivated += toastArgs =>
-            {
-                ToastArguments args = ToastArguments.Parse(toastArgs.Argument);
-                if (args.Contains("action") && args["action"] == "runBackup")
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        var appViewModel = _host.Services.GetRequiredService<AppInfoViewModel>();
-                        appViewModel.BackupAndRestore.Execute(null);
-                    });
-                }
-            };
+            //ToastNotificationManagerCompat.OnActivated += toastArgs =>
+            //{
+            //    ToastArguments args = ToastArguments.Parse(toastArgs.Argument);
+            //    if (args.Contains("action") && args["action"] == "runBackup")
+            //    {
+            //        Application.Current.Dispatcher.Invoke(() =>
+            //        {
+            //            var appViewModel = _host.Services.GetRequiredService<AppInfoViewModel>();
+            //            appViewModel.BackupAndRestore.Execute(null);
+            //        });
+            //    }
+            //};
         }
         protected override void OnExit(ExitEventArgs e)
         {

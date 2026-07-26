@@ -2,26 +2,43 @@
 
 namespace Uniceps.utlis.common
 {
+    public enum PlayerFilter
+    {
+        [Display(Name = "ذكور")]
+        GenderMale,
+        [Display(Name = "اناث")]
+        GenderFemale,
+        [Display(Name = "ديون")]
+        HaveDebt,
+        [Display(Name = "منتهي الاشتراك")]
+        SubscribeEnd,
+        [Display(Name = "فعال")]
+        Active,
+        [Display(Name = "غير فعال")]
+        InActive,
+        [Display(Name = "بدون مدرب")]
+        WithoutTrainer,
+        [Display(Name = "الكل")]
+        All
+    }
     public enum Filter
     {
-        GenderMale,
-        GenderFemale,
-        HaveDebt,
-        SubscribeEnd,
-        Active,
-        InActive,
-        WithoutTrainer,
-
-
+        [Display(Name = "موظف")]
         Employee,
+        [Display(Name = "مدرب")]
         Trainer,
+        [Display(Name = "سكرتارية")]
         Secretary,
+        [Display(Name = "الكل")]
         All
     }
     public enum Order
     {
+        [Display(Name = "الاسم")]
         ByName,
+        [Display(Name = "الديون")]
         ByDebt,
+        [Display(Name = "نهاية الاشتراك")]
         BySubscribeEnd
     }
 
@@ -47,7 +64,9 @@ namespace Uniceps.utlis.common
         [Display(Name = "تم تجديده")]
         Renewed,
         [Display(Name = "فعال")]
-        Active
+        Active,
+        [Display(Name = "الديون")]
+        HasDebt,
     }
     public enum FileTypes
     {

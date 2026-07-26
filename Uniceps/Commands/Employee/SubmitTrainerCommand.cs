@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.Commands;
 using Uniceps.Core.Exceptions;
+using Uniceps.Core.Models;
 using Uniceps.navigation;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
@@ -49,7 +50,7 @@ namespace Uniceps.Commands.Employee
                 {
                     FullName = _addTrainerViewModel.FullName,
                     Balance = _addTrainerViewModel.Balance,
-                    BirthDate = _addTrainerViewModel.Year?.year ?? DateTime.Now.Year,
+                    BirthDate = _addTrainerViewModel.Year,
                     GenderMale = _addTrainerViewModel.GenderMale,
                     IsActive = true,
                     IsTrainer = true,
@@ -60,19 +61,25 @@ namespace Uniceps.Commands.Employee
                     StartDate = _addTrainerViewModel.StartDate,
                     Position = _addTrainerViewModel.Position,
                 };
-                foreach (var SportListItem in _addTrainerViewModel.SportList)
+                if (_addTrainerViewModel.IsEditMode && _addTrainerViewModel.Employee != null)
                 {
-                    if (SportListItem.IsSelected)
-                        employee.Sports!.Add(SportListItem.sport);
-                }
-                await _employeeStore.Add(employee);
-                if (MessageBox.Show("تم اضافة المدرب بنجاح ... هل تريد اضافة مدرب اخر؟", "تم بنجاح", MessageBoxButton.YesNo, MessageBoxImage.Information)
-                   == MessageBoxResult.Yes)
-                {
-                    _addTrainerViewModel.ClearForm();
+                    employee.Id = _addTrainerViewModel.Employee.Id;
+                    await _employeeStore.Update(employee);
+                    _addTrainerViewModel.OnTrainerCreated();
                 }
                 else
-                _addTrainerViewModel.OnTrainerCreated();
+                {
+                    await _employeeStore.Add(employee);
+                    if (MessageBox.Show("تم اضافة المدرب بنجاح ... هل تريد اضافة مدرب اخر؟", "تم بنجاح", MessageBoxButton.YesNo, MessageBoxImage.Information)
+                       == MessageBoxResult.Yes)
+                    {
+                        _addTrainerViewModel.ClearForm();
+                    }
+                    else
+                        _addTrainerViewModel.OnTrainerCreated();
+                }
+
+
             }
             catch (FreeLimitException)
             {

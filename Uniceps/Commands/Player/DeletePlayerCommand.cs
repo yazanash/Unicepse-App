@@ -26,10 +26,8 @@ namespace Uniceps.Commands.Player
                                           MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 try
                 {
-                    Core.Models.Player.Player player = _playerStore.SelectedPlayer!;
-                    player.SubscribeEndDate = DateTime.Now;
-                    player.IsSubscribed = false;
-                    await _playerStore.DeletePlayer(player);
+                    if(parameter is int PlayerId)
+                    await _playerStore.DeletePlayer(PlayerId);
                 }
                 catch (NotExistException ex)
                 {
