@@ -17,6 +17,8 @@ namespace Uniceps.Models
         public DateTime? LastBackupDate { get; set; }
         public string AppTheme { get; set; } = "Light";
         public int SubscriptionRemainderDays { get; set; } = 2;
+        public int SubscriptionRemainderExpirationDays { get;  set; } = 2;
+
         public int BackupRemainderDays = 2;
     }
 }

@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.Employee;
-using Uniceps.Commands.Player;
-using Uniceps.navigation;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
-using Uniceps.Stores.EmployeeStores;
 using Uniceps.utlis.common;
-using Uniceps.ViewModels;
-using Uniceps.ViewModels.PlayersViewModels;
-using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.Views.EmployeeViews;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
@@ -24,22 +18,20 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
     {
 
         private readonly ObservableCollection<TrainerListItemViewModel> trainerListItemViewModels;
-        private readonly ObservableCollection<FiltersItemViewModel> filtersItemViewModel;
         private NavigationStore _navigatorStore;
         private EmployeeStore _employeeStore;
         private SportDataStore _sportDataStore;
         private DausesDataStore _dausesDataStore;
         private readonly CreditsDataStore _creditsDataStore;
-        private readonly EmployeeSubscriptionDataStore? _employeeSubscriptionDataStore;
         private readonly AccountStore _accountStore;
         private readonly LicenseStore _licenseStore;
         public bool HasData => trainerListItemViewModels.Count > 0;
-        public IEnumerable<TrainerListItemViewModel> TrainerList => trainerListItemViewModels;
-        public IEnumerable<FiltersItemViewModel> FiltersList => filtersItemViewModel;
+        public ICollectionView TrainerList { get; set; }
+        public List<Filter> FiltersList { get; set; } = new();
         public ICommand AddTrainerCommand { get; }
         private void ExecuteAddTrainerCommand()
         {
-            AddTrainerViewModel addTrainerViewModel = AddTrainerViewModel.LoadViewModel(_sportDataStore, _employeeStore);
+            AddTrainerViewModel addTrainerViewModel = new AddTrainerViewModel(_employeeStore);
             TrainerDetailsWindowView trainerDetailsWindow = new TrainerDetailsWindowView();
             trainerDetailsWindow.DataContext = addTrainerViewModel;
             trainerDetailsWindow.ShowDialog();
@@ -53,37 +45,39 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         }
         public ICommand AddEmployeeCommand { get; }
         public ICommand LoadTrainerCommand { get; }
-        public FiltersItemViewModel? SelectedFilter
+        public Filter? _selectedFilter;
+        public Filter? SelectedFilter
         {
             get
             {
-                return filtersItemViewModel
-                    .FirstOrDefault(y => y?.Filter == _employeeStore.SelectedFilter);
+                return _selectedFilter;
             }
             set
             {
-                _employeeStore.SelectedFilter = value?.Filter;
-
+                _selectedFilter = value;
+                TrainerList.Refresh();
             }
         }
         public SearchBoxViewModel SearchBox { get; set; }
-        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, EmployeeSubscriptionDataStore? employeeSubscriptionDataStore, AccountStore accountStore, LicenseStore licenseStore)
+        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, AccountStore accountStore, LicenseStore licenseStore)
         {
             _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
             _sportDataStore = sportDataStore;
             _dausesDataStore = dausesDataStore;
             _creditsDataStore = creditsDataStore;
-            _employeeSubscriptionDataStore = employeeSubscriptionDataStore;
             _accountStore = accountStore;
 
             LoadTrainerCommand = new LoadTrainersCommand(_employeeStore, this);
             AddTrainerCommand = new RelayCommand(ExecuteAddTrainerCommand);
             AddEmployeeCommand = new RelayCommand(ExecuteAddEmployeeCommand);
             trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
-
-
-
+            TrainerList = CollectionViewSource.GetDefaultView(trainerListItemViewModels);
+            TrainerList.Filter = FilterTrainers;
+            foreach (var item in Enum.GetValues<Filter>())
+            {
+                FiltersList.Add(item);
+            }
             _employeeStore.Loaded += _trainerStore_TrainersLoaded;
             _employeeStore.Created += _trainerStore_TrainerAdded;
             _employeeStore.Updated += _trainerStore_TrainerUpdated;
@@ -91,71 +85,45 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
 
-
-            filtersItemViewModel = new();
-
-            filtersItemViewModel.Add(new FiltersItemViewModel(Filter.All, 1, "الكل"));
-            filtersItemViewModel.Add(new FiltersItemViewModel(Filter.Trainer, 2, "المدربين"));
-            filtersItemViewModel.Add(new FiltersItemViewModel(Filter.Secretary, 3, "السكرتارية"));
-            filtersItemViewModel.Add(new FiltersItemViewModel(Filter.Employee, 3, "الموظفين"));
-
-            _employeeStore.FilterChanged += _employeeStore_FilterChanged;
             _licenseStore = licenseStore;
+            LoadTrainerCommand.Execute(null);
         }
-
-        private void _employeeStore_FilterChanged(Filter? filter)
+        private bool FilterTrainers(object item)
         {
-
-            switch (filter)
+            if (item is TrainerListItemViewModel playerVM)
             {
-                case Filter.All:
-                    LoadEmployees(_employeeStore.Employees);
-                    break;
-                case Filter.Trainer:
-                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsTrainer == true));
-                    break;
-                case Filter.Secretary:
-                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsSecrtaria == true));
-                    break;
-                case Filter.Employee:
-                    LoadEmployees(_employeeStore.Employees.Where(x => x.IsSecrtaria == false && x.IsTrainer == false));
-                    break;
+                // أولاً: فحص نص البحث بـ SearchBox
+                if (!string.IsNullOrWhiteSpace(SearchBox.SearchText))
+                {
+                    bool matchesSearch = playerVM.FullName != null &&
+                                         playerVM.FullName.Contains(SearchBox.SearchText, StringComparison.OrdinalIgnoreCase);
 
+                    if (!matchesSearch) return false;
+                }
 
+                if (SelectedFilter != null)
+                {
+                    if (playerVM.Trainer == null) return false;
+
+                    var filterType = SelectedFilter.Value;
+
+                    if (filterType == Filter.Employee && (playerVM.Trainer.IsSecrtaria || playerVM.Trainer.IsTrainer))
+                        return false;
+
+                    if (filterType == Filter.Trainer && !playerVM.Trainer.IsTrainer)
+                        return false;
+
+                    if (filterType == Filter.Secretary && !playerVM.Trainer.IsSecrtaria)
+                        return false;
+                }
+                return true;
             }
+            return false;
         }
-        void LoadEmployees(IEnumerable<Core.Models.Employee.Employee> employees)
-        {
-            trainerListItemViewModels.Clear();
-
-            foreach (Core.Models.Employee.Employee employee in employees)
-            {
-                AddTrainer(employee);
-            }
-
-
-        }
-        public TrainerListItemViewModel? SelectedEmployee
-        {
-            get
-            {
-                return TrainerList
-                    .FirstOrDefault(y => y?.Trainer == _employeeStore.SelectedEmployee);
-            }
-            set
-            {
-                _employeeStore.SelectedEmployee = value?.Trainer;
-
-            }
-        }
+       
         private void SearchBox_SearchedText(string? obj)
         {
-            trainerListItemViewModels.Clear();
-
-            foreach (Core.Models.Employee.Employee employee in _employeeStore.Employees.Where(x => x.FullName!.ToLower().Contains(obj!.ToLower())))
-            {
-                AddTrainer(employee);
-            }
+            TrainerList.Refresh();
         }
 
         private void _trainerStore_TrainerDeleted(int id)
@@ -206,28 +174,13 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             base.Dispose();
         }
 
-
-
-
-
         private void AddTrainer(Core.Models.Employee.Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, _sportDataStore, this, _dausesDataStore, _creditsDataStore, _employeeSubscriptionDataStore, _accountStore, _licenseStore);
+                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, this, _dausesDataStore, _creditsDataStore, _accountStore, _licenseStore);
             trainerListItemViewModels.Add(itemViewModel);
             OnPropertyChanged(nameof(HasData));
         }
-        public static TrainersListViewModel LoadViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, EmployeeSubscriptionDataStore employeeSubscriptionDataStore,AccountStore accountStore,LicenseStore licenseStore)
-        {
-            TrainersListViewModel viewModel = new TrainersListViewModel(navigatorStore, employeeStore, sportDataStore, dausesDataStore, creditsDataStore, employeeSubscriptionDataStore, accountStore, licenseStore);
-
-            viewModel.LoadTrainerCommand.Execute(null);
-
-            return viewModel;
-        }
-        private AddTrainerViewModel CreateAddTrainerViewModel( SportDataStore sportDataStore, EmployeeStore employeeStore)
-        {
-            return AddTrainerViewModel.LoadViewModel(sportDataStore, employeeStore);
-        }
+       
     }
 }

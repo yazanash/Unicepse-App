@@ -1,25 +1,26 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using Uniceps.Views.AuthView;
 using Microsoft.Extensions.Logging;
-using Uniceps.Stores;
+using System;
 using Uniceps.navigation;
-using Uniceps.ViewModels.RoutineTemplateViewModels;
-using Uniceps.Stores.RoutineStores;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.SportsViewModels;
-using Uniceps.ViewModels.Employee.TrainersViewModels;
-using Uniceps.Stores.EmployeeStores;
-using Uniceps.ViewModels.PlayersViewModels;
-using Uniceps.ViewModels.Authentication;
-using Uniceps.ViewModels.Accountant;
-using Uniceps.Stores.SportStores;
 using Uniceps.navigation.Navigator;
-using Uniceps.Views;
+using Uniceps.navigation.Stores;
+using Uniceps.Stores;
+using Uniceps.Stores.RoutineStores;
 using Uniceps.ViewModels;
-using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.ViewModels.Accountant;
+using Uniceps.ViewModels.Authentication;
 using Uniceps.ViewModels.DashboardViewModels;
+using Uniceps.ViewModels.Employee.TrainersViewModels;
+using Uniceps.ViewModels.Metrics;
+using Uniceps.ViewModels.PaymentsViewModels;
+using Uniceps.ViewModels.PlayersAttendenceViewModels;
+using Uniceps.ViewModels.PlayersViewModels;
+using Uniceps.ViewModels.RoutineTemplateViewModels;
+using Uniceps.ViewModels.SportsViewModels;
+using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views;
+using Uniceps.Views.AuthView;
 
 namespace Uniceps.HostBuilders
 {
@@ -37,18 +38,73 @@ namespace Uniceps.HostBuilders
                 services.AddTransient<RoutineItemsBufferListViewModel>();
                 services.AddSingleton<RoutineDayGroupViewModel>();
                 services.AddSingleton<RoutineDetailsViewModel>();
-                services.AddSingleton<SetModelItemsListViewModel>(); 
+                services.AddSingleton<SetModelItemsListViewModel>();
                 services.AddSingleton<Func<RoutineDetailsViewModel>>((s) => () => s.GetRequiredService<RoutineDetailsViewModel>());
                 services.AddSingleton<NavigationService<RoutineDetailsViewModel>>();
+
                 services.AddTransient((s) => CreateRoutineListingViewModel(s));
-                services.AddTransient((s) => CreateHomeListingViewModel(s));
-                services.AddTransient((s) => CreatePlayerListingViewModel(s));
-                services.AddTransient((s) => CreateSportListingViewModel(s));
-                services.AddTransient((s) => CreateEmployeeListingViewModel(s));
+                services.AddTransient<HomeViewModel>();
+                services.AddTransient<PlayerListViewModel>(provider =>
+                new PlayerListViewModel(
+                    provider.GetRequiredService<NavigationStore>(),
+                    provider.GetRequiredService<PlayersDataStore>(),
+                    provider.GetRequiredService<ILogger<PlayerListViewModel>>(),
+                    provider.GetRequiredService<Func<int, PlayerProfileViewModel>>()
+                ));
+
+                services.AddTransient<SportListViewModel>();
+                services.AddTransient<TrainersListViewModel>();
                 services.AddTransient((s) => CreateUserListingViewModel(s));
-                services.AddTransient((s) => CreatePlayerProfileViewModel(s));
+                services.AddSingleton<Func<int, PlayerProfileViewModel>>(provider => playerId =>
+    CreatePlayerProfileViewModel(provider, playerId));
+
+                services.AddSingleton<Func<int, PlayerMainPageViewModel>>(provider => playerId =>
+                new PlayerMainPageViewModel(
+                    playerId,
+                    provider.GetRequiredService<NavigationStore>(),
+                    provider.GetRequiredService<SubscriptionDataStore>(),
+                    provider.GetRequiredService<PlayersDataStore>(),
+                    provider.GetRequiredService<PaymentDataStore>(),
+                    provider.GetRequiredService<SportDataStore>(),
+                    provider.GetRequiredService<EmployeeStore>(),
+                    provider.GetRequiredService<Func<int, CreateSubscriptionWindowViewModel>>())
+                );
+
+                services.AddSingleton<Func<int, CreateSubscriptionWindowViewModel>>(provider => playerId =>
+              new CreateSubscriptionWindowViewModel(
+                  playerId,
+                  provider.GetRequiredService<SportDataStore>(),
+                  provider.GetRequiredService<SubscriptionDataStore>(),
+                  provider.GetRequiredService<PlayersDataStore>(),
+                  provider.GetRequiredService<PaymentDataStore>(),
+                  provider.GetRequiredService<EmployeeStore>())
+              );
+
+                services.AddSingleton<Func<int, PaymentListViewModel>>(provider => playerId =>
+            new PaymentListViewModel(
+                playerId,
+                provider.GetRequiredService<PaymentDataStore>(),
+                provider.GetRequiredService<SubscriptionDataStore>())
+            );
+
+                services.AddSingleton<Func<int, MetricReportViewModel>>(provider => playerId=>
+                new MetricReportViewModel(
+                    playerId,
+            provider.GetRequiredService<MetricDataStore>(),
+             provider.GetRequiredService<NavigationStore>())
+        );
+
+                services.AddSingleton<Func<int, PlayerAttendenceViewModel>>(provider => playerId =>
+             new PlayerAttendenceViewModel(
+                 playerId,
+         provider.GetRequiredService<PlayersAttendenceStore>())
+     );
+                services.AddSingleton<Func<PremiumViewModel>>(provider => ()=>
+             new PremiumViewModel()
+     );
+
                 services.AddTransient((s) => CreateExercisesViewModel(s));
-                services.AddTransient((s) => CreateSubscriptionListingViewModel(s));
+                services.AddTransient<SubscriptionMainViewModel>();
                 services.AddTransient((s) => CreateDashboard(s));
                 services.AddSingleton<AccountingViewModel>();
                 services.AddTransient<Func<PlayerListViewModel>>(services => () => services.GetRequiredService<PlayerListViewModel>());
@@ -74,35 +130,6 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<GymStore>()
                 );
         }
-        private static PlayerListViewModel CreatePlayerListingViewModel(IServiceProvider services)
-        {
-            return PlayerListViewModel.LoadViewModel(
-                services.GetRequiredService<NavigationStore>(),
-                services.GetRequiredService<PlayersDataStore>(),
-                services.GetRequiredService<ILogger<PlayerListViewModel>>(),
-                services.GetRequiredService<PlayerProfileViewModel>()
-                );
-        }
-        private static SportListViewModel CreateSportListingViewModel(IServiceProvider services)
-        {
-            return SportListViewModel.LoadViewModel(
-                services.GetRequiredService<NavigationStore>(),
-                services.GetRequiredService<SportDataStore>(),
-                services.GetRequiredService<EmployeeStore>(),
-                services.GetRequiredService<SportSubscriptionDataStore>());
-        }
-        private static TrainersListViewModel CreateEmployeeListingViewModel(IServiceProvider services)
-        {
-            return TrainersListViewModel.LoadViewModel(
-                services.GetRequiredService<NavigationStore>(),
-                services.GetRequiredService<EmployeeStore>(),
-                services.GetRequiredService<SportDataStore>(),
-                services.GetRequiredService<DausesDataStore>(),
-                services.GetRequiredService<CreditsDataStore>(),
-                services.GetRequiredService<EmployeeSubscriptionDataStore>(),
-                 services.GetRequiredService<AccountStore>(),
-                  services.GetRequiredService<LicenseStore>());
-        }
         private static UsersListViewModel CreateUserListingViewModel(IServiceProvider services)
         {
             return UsersListViewModel.LoadViewModel(
@@ -118,23 +145,7 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<RoutineItemDataStore>(),
                 services.GetRequiredService<NavigationStore>(),
                 services.GetRequiredService<NavigationService<RoutineDetailsViewModel>>(),
-                  services.GetRequiredService < RoutineItemsBufferListViewModel > ());
-        }
-        private static HomeViewModel CreateHomeListingViewModel(IServiceProvider services)
-        {
-            return HomeViewModel.LoadViewModel(services.GetRequiredService<PlayersAttendenceStore>(), services.GetRequiredService<AccountStore>());
-        }
-        private static SubscriptionMainViewModel CreateSubscriptionListingViewModel(IServiceProvider services)
-        {
-            return SubscriptionMainViewModel.LoadViewModel(
-                services.GetRequiredService<SubscriptionDataStore>(),
-                 services.GetRequiredService<PlayersDataStore>(),
-                  services.GetRequiredService<SportDataStore>(),
-                   services.GetRequiredService<PaymentDataStore>(),
-                   services.GetRequiredService<EmployeeStore>(), 
-                   services.GetRequiredService<PlayersAttendenceStore>(),
-                   services.GetRequiredService<AccountStore>(),
-                    services.GetRequiredService<PlayerProfileViewModel>());
+                  services.GetRequiredService<RoutineItemsBufferListViewModel>());
         }
         private static RoutineListViewModel CreateRoutineListingViewModel(IServiceProvider services)
         {
@@ -143,18 +154,18 @@ namespace Uniceps.HostBuilders
                 services.GetRequiredService<NavigationStore>(),
                 services.GetRequiredService<RoutineDetailsViewModel>());
         }
-        private static PlayerProfileViewModel CreatePlayerProfileViewModel(IServiceProvider services)
+        private static PlayerProfileViewModel CreatePlayerProfileViewModel(IServiceProvider services, int playerId)
         {
             return new PlayerProfileViewModel(
-                services.GetRequiredService<SubscriptionDataStore>(),
-                services.GetRequiredService<PlayersDataStore>(),
-                services.GetRequiredService<SportDataStore>(),
-                services.GetRequiredService<PaymentDataStore>(),
-                services.GetRequiredService<MetricDataStore>(),
-                services.GetRequiredService<PlayersAttendenceStore>(),
-                services.GetRequiredService<NavigationService<PlayerListViewModel>>(),
-                   services.GetRequiredService<EmployeeStore>(),
-                   services.GetRequiredService<LicenseStore>());
+         playerId,
+         services.GetRequiredService<PlayersDataStore>(),
+         services.GetRequiredService<LicenseStore>(),
+         services.GetRequiredService<Func<int, PlayerMainPageViewModel>>(),
+         services.GetRequiredService<Func<int, PaymentListViewModel>>(),
+         services.GetRequiredService<Func<int, MetricReportViewModel>>(),
+         services.GetRequiredService<Func<int, PlayerAttendenceViewModel>>(),
+         services.GetRequiredService<Func<PremiumViewModel>>()
+     );
         }
     }
 }

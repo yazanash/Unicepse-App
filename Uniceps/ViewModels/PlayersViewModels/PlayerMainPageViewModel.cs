@@ -29,39 +29,43 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private readonly PlayersDataStore _playersDataStore;
         private readonly SportDataStore _sportDataStore;
         private readonly EmployeeStore _employeeStore;
+        public int PlayerId;
+        private readonly Func<int, CreateSubscriptionWindowViewModel> _createSubscriptionFactory ;
         public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionList => subscriptionListItemViewModels;
+
+        private SubscriptionListItemViewModel? _selectedSubscription;
         public SubscriptionListItemViewModel? SelectedSubscription
         {
             get
             {
-                return SubscriptionList
-                    .FirstOrDefault(y => y?.Subscription == _subscriptionStore.SelectedSubscription);
+                return _selectedSubscription;
             }
             set
             {
-                _subscriptionStore.SelectedSubscription = value?.Subscription;
+                _selectedSubscription = value;
 
             }
         }
-
-
-        public PlayerMainPageViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore, PaymentDataStore paymentStore, SportDataStore sportDataStore, EmployeeStore employeeStore)
+        public PlayerMainPageViewModel(int playerId, NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playersDataStore, PaymentDataStore paymentStore, SportDataStore sportDataStore, EmployeeStore employeeStore, Func<int, CreateSubscriptionWindowViewModel> createSubscriptionFactory)
         {
+            PlayerId = playerId;
             _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
             _playersDataStore = playersDataStore;
             _paymentStore = paymentStore;
             _sportDataStore = sportDataStore;
             _employeeStore = employeeStore;
-
-            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore, _playersDataStore);
-            LoadPaymentCommand = new LoadPaymentsCommand(_playersDataStore, _paymentStore);
+            _createSubscriptionFactory = createSubscriptionFactory;
+            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionStore);
+            LoadPaymentCommand = new LoadPaymentsCommand(_paymentStore);
             subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             _subscriptionStore.Loaded += _subscriptionStore_Loaded;
             _subscriptionStore.Created += _subscriptionStore_Created;
             _subscriptionStore.Updated += _subscriptionStore_Updated;
             _subscriptionStore.Deleted += _subscriptionStore_Deleted;
+            LoadSubscriptionCommand.Execute(PlayerId);
+            LoadPaymentCommand.Execute(PlayerId);
         }
 
         public ICommand LoadSubscriptionCommand { get; }
@@ -80,9 +84,17 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         public void ExecuteAddSubscriptionCommand()
         {
-            CreateSubscriptionWindowViewModel createSubscriptionWindowViewModel = CreateSubscriptionWindowViewModel.LoadViewModel(_sportDataStore, _subscriptionStore, _playersDataStore, _paymentStore, _employeeStore);
-            createSubscriptionWindowViewModel.SetPlayer(_playersDataStore.SelectedPlayer!);
             SubscriptionCreationViewWindow subscriptionCreationViewWindow = new SubscriptionCreationViewWindow();
+            subscriptionCreationViewWindow.DataContext = _createSubscriptionFactory(PlayerId);
+            subscriptionCreationViewWindow.Show();
+        }
+        public ICommand EditSubscriptionCommand => new RelayCommand<SubscriptionListItemViewModel>(ExecuteEditSubscriptionCommand);
+
+        public void ExecuteEditSubscriptionCommand(SubscriptionListItemViewModel subscriptionListItemViewModel)
+        {
+            SubscriptionCreationViewWindow subscriptionCreationViewWindow = new SubscriptionCreationViewWindow();
+            CreateSubscriptionWindowViewModel createSubscriptionWindowViewModel = _createSubscriptionFactory(PlayerId);
+            createSubscriptionWindowViewModel.ApplySubscriptionEdit(subscriptionListItemViewModel.Subscription);
             subscriptionCreationViewWindow.DataContext = createSubscriptionWindowViewModel;
             subscriptionCreationViewWindow.Show();
         }
@@ -138,17 +150,10 @@ namespace Uniceps.ViewModels.PlayersViewModels
         private void AddSubscription(Subscription subscription)
         {
             SubscriptionListItemViewModel itemViewModel =
-                new SubscriptionListItemViewModel(subscription, _navigatorStore, _subscriptionStore, _sportDataStore, _playersDataStore, this, _paymentStore);
+                new SubscriptionListItemViewModel(subscription, _navigatorStore, _subscriptionStore, _sportDataStore, _playersDataStore, this, _paymentStore, _employeeStore);
             subscriptionListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = subscriptionListItemViewModels.Count();
         }
-
-        public static PlayerMainPageViewModel LoadViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, SportDataStore sportDataStore,EmployeeStore employeeStore)
-        {
-            PlayerMainPageViewModel viewModel = new PlayerMainPageViewModel(navigatorStore, subscriptionDataStore, playersDataStore, paymentDataStore, sportDataStore, employeeStore);
-            viewModel.LoadSubscriptionCommand.Execute(null);
-            viewModel.LoadPaymentCommand.Execute(null);
-            return viewModel;
-        }
+     
     }
 }

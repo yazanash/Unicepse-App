@@ -59,45 +59,30 @@ namespace Uniceps.Views
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //PrintDialog printDialog = new PrintDialog();
-            //if (printDialog.ShowDialog() == true)
-            //{
-            //    myscroll.ScrollToTop();
-            //    myscroll.UpdateLayout();
-
-            //    System.Printing.PrintCapabilities capabilities = printDialog.PrintQueue.GetPrintCapabilities(printDialog.PrintTicket);
-
-            //    Size pageSize = new Size(794, 280);
-
-            //    print.Measure(pageSize);
-            //    print.Arrange(new Rect(0, 0, pageSize.Width, pageSize.Height));
-
-            //    printDialog.PrintTicket.PageMediaSize = new System.Printing.PageMediaSize(794, 280);
-
-            //    // 5. تنفيذ الطباعة
-            //    printDialog.PrintVisual(print, fileName);
-
-            //    this.Close();
-            //}
             PrintDialog printDialog = new PrintDialog();
+
             if (printDialog.ShowDialog() == true)
             {
-                myscroll.ScrollToTop();
-                myscroll.UpdateLayout();
+                double targetWidth = 190;
 
-                // 1. ضبط التوجيه للعرض (Landscape)
-                printDialog.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
+                print.HorizontalAlignment = HorizontalAlignment.Right;
+                print.VerticalAlignment = VerticalAlignment.Top;
+                print.Margin = new Thickness(0);
+                print.Padding = new Thickness(0);
 
-                // 2. تحديد حجم الورقة المخصص (العرض 794 والارتفاع 280)
-                printDialog.PrintTicket.PageMediaSize = new System.Printing.PageMediaSize(794, 280);
+                print.Measure(new Size(targetWidth, double.PositiveInfinity));
 
-                // 3. المعالجة والترتيب (المهمة جداً لضبط الهوامش)
-                Size pageSize = new Size(794, 280);
-                print.Measure(pageSize);
-                print.Arrange(new Rect(0, 0, pageSize.Width, pageSize.Height));
+                print.Arrange(new Rect(new Point(0, 0), new Size(targetWidth, print.DesiredSize.Height)));
+                print.UpdateLayout();
 
-                // 4. تنفيذ الطباعة
-                printDialog.PrintVisual(print, fileName);
+                try
+                {
+                    printDialog.PrintVisual(print, "Uniceps Receipt");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("خطأ: " + ex.Message);
+                }
 
                 this.Close();
             }

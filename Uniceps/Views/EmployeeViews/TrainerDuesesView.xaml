@@ -23,12 +23,7 @@
         <DataTemplate DataType="{x:Type vms:EmployeeAccountantPageViewModel}">
             <vs:TrainerDues/>
         </DataTemplate>
-        <!--<DataTemplate DataType="{x:Type vms:DausesDetailsViewModel}">
-            <dvs:TrainerDues/>
-        </DataTemplate>-->
-        <DataTemplate DataType="{x:Type pvms:TrainerSubscriptionViewModel}">
-            <pvs:TrainerSubscriptionView/>
-        </DataTemplate>
+      
         <DataTemplate DataType="{x:Type cvms:CreditListViewModel}">
             <cvs:CreditsListView/>
         </DataTemplate>
@@ -66,17 +61,7 @@
                                 <TextBlock  Text="المسحوبات" />
                             </StackPanel>
                         </RadioButton>
-                        <RadioButton
-                              IsChecked="{Binding IsPlayers,UpdateSourceTrigger=PropertyChanged}"
-                            Visibility="{Binding IsTrainer,Converter={StaticResource BoolToVis}}"
-                            Command="{Binding TrainerPlayersCommand}"
-                                Style="{StaticResource BarButtonRD}" >
-                            <StackPanel Orientation="Horizontal" >
-                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountGroup" />
-                                <TextBlock Text="اللاعبين"  />
-
-                            </StackPanel>
-                        </RadioButton>
+                      
                   
 
 

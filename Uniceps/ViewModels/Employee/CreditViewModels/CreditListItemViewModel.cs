@@ -17,7 +17,6 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
 {
     public class CreditListItemViewModel : ViewModelBase
     {
-        private readonly EmployeeStore? _employeeStore;
         private readonly CreditsDataStore? _creditsDataStore;
         public Credit credit;
         private int _order;
@@ -31,10 +30,9 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
         public double CreditValue => credit.CreditValue;
         public string? Date => credit.Date.ToShortDateString();
         public string? Description => credit.Description;
-        public CreditListItemViewModel(Credit credit, EmployeeStore employeeStore, CreditsDataStore creditsDataStore)
+        public CreditListItemViewModel(Credit credit, CreditsDataStore creditsDataStore)
         {
             this.credit = credit;
-            _employeeStore = employeeStore;
             _creditsDataStore = creditsDataStore;
             DeleteCommand = new DeleteCreditsCommand(_creditsDataStore);
         }
@@ -43,13 +41,13 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
             this.credit = credit;
 
         }
-        public ICommand EditCommand => new RelayCommand(ExecuteCreateCreditsCommand);
+        public ICommand EditCommand => new RelayCommand(ExecuteEditCreditsCommand);
 
-        private void ExecuteCreateCreditsCommand()
+        private void ExecuteEditCreditsCommand()
         {
-            if (_employeeStore != null && _creditsDataStore != null)
+            if ( _creditsDataStore != null)
             {
-                EditCreditDetailsViewModel editCreditDetailsViewModel = new EditCreditDetailsViewModel(_employeeStore, _creditsDataStore);
+                CreateCreditViewModelWindow editCreditDetailsViewModel = new CreateCreditViewModelWindow(_creditsDataStore,credit);
                 CreateCreditWindowView createCreditWindowView = new CreateCreditWindowView();
                 createCreditWindowView.DataContext = editCreditDetailsViewModel;
                 createCreditWindowView.ShowDialog();

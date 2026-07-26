@@ -12,7 +12,7 @@
     xmlns:comp="clr-namespace:Uniceps.Components"
     xmlns:con="clr-namespace:Uniceps.utlis.Converters"
    xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="اشتراك جديد"  Width="800">
+        Title="اشتراك جديد"  Width="800" Height="700">
     <Window.Resources>
         <con:ErrorsConverter x:Key="conv"/>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -20,21 +20,17 @@
     </Window.Resources>
 
     <Border  Padding="10">
-        <StackPanel >
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Border Style="{DynamicResource CardBorderStyle}" >
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Style="{DynamicResource CardBorderStyle}" >
+                <ScrollViewer>
+
+
+                    <StackPanel>
+
                         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5">
 
                             <TextBlock Text="اللاعب" 
@@ -70,16 +66,7 @@
                             <TextBlock Text="سنة الميلاد" 
        Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
        FontSize="18"/>
-                            <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
-              ItemsSource="{Binding Years,UpdateSourceTrigger=PropertyChanged}"
-              SelectedItem="{Binding Year,UpdateSourceTrigger=PropertyChanged}"
-              ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding year}" FontSize="12"   />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                            <TextBox Text="{Binding Year, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Row="3" Grid.Column="2" Margin="5">
@@ -112,145 +99,152 @@
                                 </RadioButton>
                             </StackPanel>
                         </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" Margin="5">
+                            <TextBlock Text="التاريخ المرضي (اختياري)" 
+Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
+FontSize="18"/>
+                            <TextBox Text="{Binding MediclStatus, UpdateSourceTrigger=PropertyChanged}" MinLines="5" Style="{StaticResource textBoxStyle}"/>
 
-                    </Grid>
-                </Border>
 
-                 <Border Style="{DynamicResource CardBorderStyle}" Grid.Row="0" Grid.Column="1" Margin=" 10 0 0 0 ">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5">
-                            <StackPanel Orientation="Horizontal" Margin="0 0 0 8" VerticalAlignment="Center">
-                                <TextBlock Text="الاشتراك" VerticalAlignment="Center"
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <Border Style="{DynamicResource CardBorderStyle}" Grid.Row="0" Grid.Column="1" Margin=" 10 0 0 0 ">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5">
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 8" VerticalAlignment="Center">
+                            <TextBlock Text="الاشتراك" VerticalAlignment="Center"
  Foreground="{DynamicResource Brush.Foreground}"
 FontSize="16"/>
-                                <Button  Margin="10 0" Command="{Binding AddSportCommand}" Style="{StaticResource IconBtn}"  Grid.Column="0" Grid.Row="4">
-                                    <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center"/>
-                                </Button>
-                            </StackPanel>
-                              
-                                <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+                            <Button  Margin="10 0" Command="{Binding AddSportCommand}" Style="{StaticResource IconBtn}"  Grid.Column="0" Grid.Row="4">
+                                <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center"/>
+                            </Button>
+                        </StackPanel>
+
+                        <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
          ItemsSource="{Binding SportList}"
    SelectedItem="{Binding SelectedSport,UpdateSourceTrigger=PropertyChanged}"
    ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                        <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding SportName}" FontSize="12"   />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding SportName}" FontSize="12"   />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
 
-                                </ComboBox>
+                        </ComboBox>
 
-                            </StackPanel>
-                            <StackPanel Grid.Row="0" Grid.Column="1"  VerticalAlignment="Center" Margin="5">
-                            <Grid  Margin="0 0 0 8" VerticalAlignment="Center">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="المدرب"  Foreground="{DynamicResource Brush.Foreground}" FontSize="16"/>
-                                    <Button Margin="10 0" HorizontalAlignment="Left" Command="{Binding AddTrainerCommand}" Style="{StaticResource IconBtn}"  Grid.Column="0" Grid.Row="4">
-                                        <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center"/>
-                                    </Button>
-                                </StackPanel>
-                                <Button HorizontalAlignment="Right" Margin="10 0" Visibility="{Binding IsClearAble,Converter={StaticResource BoolToVis}}" Command="{Binding ClearTrainerCommand}" Style="{StaticResource IconBtn}"  Grid.Column="0" Grid.Row="4">
-                                    <Icon:PackIconMaterial Kind="Close" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="1"  VerticalAlignment="Center" Margin="5">
+                        <Grid  Margin="0 0 0 8" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="المدرب"  Foreground="{DynamicResource Brush.Foreground}" FontSize="16"/>
+                                <Button Margin="10 0" HorizontalAlignment="Left" Command="{Binding AddTrainerCommand}" Style="{StaticResource IconBtn}"  Grid.Column="0" Grid.Row="4">
+                                    <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center"/>
                                 </Button>
-                            </Grid>
-                                
-                                <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+                            </StackPanel>
+                            <Button HorizontalAlignment="Right" Margin="10 0" Visibility="{Binding IsClearAble,Converter={StaticResource BoolToVis}}" Command="{Binding ClearTrainerCommand}" Style="{StaticResource IconBtn}"  Grid.Column="0" Grid.Row="4">
+                                <Icon:PackIconMaterial Kind="Close" VerticalAlignment="Center"/>
+                            </Button>
+                        </Grid>
+
+                        <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
                ItemsSource="{Binding TrainerList}"
          SelectedItem="{Binding SelectedTrainer,UpdateSourceTrigger=PropertyChanged}"
          ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding TrainerName}" FontSize="12"   />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{DynamicResource Brush.Foreground}" Text="{Binding TrainerName}" FontSize="12"   />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
 
-                                </ComboBox>
+                        </ComboBox>
 
-                            </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5">
-                                <TextBlock Text="عدد ايام الاشتراك" 
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5">
+                        <TextBlock Text="عدد ايام الاشتراك" 
       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
       FontSize="13"/>
-                                <TextBox 
+                        <TextBox 
     IsReadOnly="True"
    Text="{Binding SubscribeDays, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
-                            </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
 
-                                <TextBlock Text="تاريخ الاشتراك" 
+                        <TextBlock Text="تاريخ الاشتراك" 
       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
       FontSize="13"/>
-                                <DatePicker
+                        <DatePicker
        SelectedDate="{Binding SubscribeDate, UpdateSourceTrigger=PropertyChanged}"
       
       />
-                            </StackPanel>
+                    </StackPanel>
 
-                           
-                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="5 5">
-                                <TextBlock Text="الاجمالي" 
+
+                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="5 5">
+                        <TextBlock Text="الاجمالي" 
       Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
       FontSize="13"/>
-                                <TextBox IsReadOnly="True" Text="{Binding Total, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
-                            </StackPanel>
+                        <TextBox IsReadOnly="True" Text="{Binding Total, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
+                    </StackPanel>
 
 
-                        <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
-                            <TextBlock Text="قيمة الحسم" 
+                    <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
+                        <TextBlock Text="قيمة الحسم" 
 Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
 FontSize="13"/>
-                            <TextBox Text="{Binding OfferValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
+                        <TextBox Text="{Binding OfferValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
-                        </StackPanel>
-                        <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
-                            <TextBlock Text="البيان"  Foreground="{DynamicResource Brush.Foreground}"
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
+                        <TextBlock Text="البيان"  Foreground="{DynamicResource Brush.Foreground}"
 Margin="0 0 0 5"
 FontSize="13"/>
-                            <TextBox Text="{Binding Offer, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+                        <TextBox Text="{Binding Offer, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
 
-                        </StackPanel>
-                        
+                    </StackPanel>
 
 
-                        <StackPanel Grid.Row="4"  Margin="5">
-                            <TextBlock Text="قيمة الدفعة"  Foreground="{DynamicResource Brush.Foreground}"
+
+                    <StackPanel Grid.Row="4"  Margin="5">
+                        <TextBlock Text="قيمة الدفعة"  Foreground="{DynamicResource Brush.Foreground}"
 Margin="0 0 0 5"
 FontSize="13"/>
-                            <TextBox Text="{Binding PaymentValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
+                        <TextBox Text="{Binding PaymentValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
-                        </StackPanel>
-                        <StackPanel Grid.Row="4" Grid.Column="1" Margin="5">
-                            <TextBlock Text="بيان الدفع" 
+                    </StackPanel>
+                    <StackPanel Grid.Row="4" Grid.Column="1" Margin="5">
+                        <TextBlock Text="بيان الدفع" 
 Margin="0 0 0 5" Foreground="{DynamicResource Brush.Foreground}"
 FontSize="13"/>
-                            <TextBox Text="{Binding Descriptiones, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
+                        <TextBox Text="{Binding Descriptiones, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
-                        </StackPanel>
-
-
-                        <StackPanel Margin="0 0 0 5" Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-                            <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="150" Grid.Column="0" Grid.Row="4"   Content="حفظ"  HorizontalAlignment="Right">
-                            </Button>
-                        </StackPanel>
-                       
-                    </Grid>
-                    </Border>
+                    </StackPanel>
 
 
-            </Grid>
-        </StackPanel>
+                    <StackPanel Margin="0 0 0 5" Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                        <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="150" Grid.Column="0" Grid.Row="4"   Content="حفظ"  HorizontalAlignment="Right">
+                        </Button>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+
+        </Grid>
     </Border>
 
 </Window>

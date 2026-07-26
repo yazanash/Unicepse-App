@@ -9,6 +9,7 @@ using Uniceps.Commands.Player;
 using Uniceps.navigation;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
+using Uniceps.Core.Models.Metric;
 
 namespace Uniceps.ViewModels.Metrics
 {
@@ -17,14 +18,43 @@ namespace Uniceps.ViewModels.Metrics
         private readonly MetricDataStore _metricDataStore;
         private readonly NavigationStore _navigationStore;
         private readonly MetricReportViewModel _metricReportViewModel;
-        private readonly PlayersDataStore _playerDataStore;
-        public AddMetricsViewModel(MetricDataStore metricDataStore, NavigationStore navigationStore, MetricReportViewModel metricReportViewModel, PlayersDataStore playerDataStore)
+        public bool IsEditMode = false;
+        public int _metricId = -1; 
+        public AddMetricsViewModel(int playerId,MetricDataStore metricDataStore, NavigationStore navigationStore, MetricReportViewModel metricReportViewModel)
         {
+            PlayerId = playerId;
             _metricDataStore = metricDataStore;
             _navigationStore = navigationStore;
             _metricReportViewModel = metricReportViewModel;
-            _playerDataStore = playerDataStore;
-            SubmitCommand = new AddMetricsCommand(_metricDataStore, this, _playerDataStore, new NavigationService<MetricReportViewModel>(_navigationStore, () => _metricReportViewModel));
+            SubmitCommand = new AddMetricsCommand(_metricDataStore, this, new NavigationService<MetricReportViewModel>(_navigationStore, () => _metricReportViewModel));
+            CancelCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigationStore, () => _metricReportViewModel));
+
+        }
+        public AddMetricsViewModel(int playerId,Metric metric, MetricDataStore metricDataStore, NavigationStore navigationStore, MetricReportViewModel metricReportViewModel)
+        {
+            PlayerId = playerId;
+            CheckDate = metric.CheckDate;
+            Wieght = metric.Wieght;
+            Hieght = metric.Hieght;
+            Chest = metric.Chest;
+            Hips = metric.Hips;
+            Nick = metric.Nick;
+            Shoulders = metric.Shoulders;
+            Waist = metric.Waist;
+            L_Arm = metric.L_Arm;
+            R_Arm = metric.R_Arm;
+            L_Humerus = metric.L_Humerus;
+            R_Humerus = metric.R_Humerus;
+            L_Leg = metric.L_Leg;
+            R_Leg = metric.R_Leg;
+            L_Thigh = metric.L_Thigh;
+            R_Thigh = metric.R_Thigh;
+            _metricId = metric.Id;
+            IsEditMode = true;
+            _metricDataStore = metricDataStore;
+            _navigationStore = navigationStore;
+            _metricReportViewModel = metricReportViewModel;
+            SubmitCommand = new AddMetricsCommand(_metricDataStore, this, new NavigationService<MetricReportViewModel>(_navigationStore, () => _metricReportViewModel));
             CancelCommand = new NavaigateCommand<MetricReportViewModel>(new NavigationService<MetricReportViewModel>(_navigationStore, () => _metricReportViewModel));
 
         }
@@ -211,6 +241,8 @@ namespace Uniceps.ViewModels.Metrics
                 OnPropertyChanged(nameof(CheckDate));
             }
         }
+
+        public int PlayerId;
 
         #endregion
     }

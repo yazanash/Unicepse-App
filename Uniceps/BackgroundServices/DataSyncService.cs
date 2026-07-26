@@ -1,17 +1,11 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using Uniceps.Stores;
 using Uniceps.API;
-
 namespace Uniceps.BackgroundServices
 {
     public class InternetAvailability

@@ -1,16 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Uniceps.Core.Models;
 using Uniceps.Core.Models.Employee;
 using Uniceps.Core.Models.Payment;
-using Uniceps.Core.Models.Subscription;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.DbContexts;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Uniceps.Entityframework.Services
 {
@@ -23,10 +15,10 @@ namespace Uniceps.Entityframework.Services
             _contextFactory = contextFactory;
         }
 
-        public async Task<TrainerDueses> GetTrainerDuesAsync(Employee emp, DateTime reportDate)
+        public async Task<TrainerDueses> GetTrainerDuesAsync(int empId, DateTime reportDate)
         {
             using var context = _contextFactory.CreateDbContext();
-            var trainer = await context.Set<Employee>().FindAsync(emp.Id);
+            var trainer = await context.Set<Employee>().FindAsync(empId);
             if (trainer == null) throw new Exception("هذا الموظف غير موجود");
             if (reportDate < (trainer.LastClosingDate ?? trainer.StartDate))
             {

@@ -12,6 +12,7 @@ using Uniceps.Core.Common;
 using Uniceps.Core.Models.DailyActivity;
 using Uniceps.Entityframework.DbContexts;
 using Uniceps.Core.Models.Subscription;
+using Uniceps.Core.Models.Player;
 
 namespace Uniceps.Entityframework.Services
 {
@@ -40,6 +41,45 @@ namespace Uniceps.Entityframework.Services
                 else
                     throw new Exception("هذا الكود غير فعال او الاشتراك منتهي");
                     EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
+                DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x =>
+                x.PlayerId == entity.PlayerId &&
+                x.Date.Month == entity.Date.Month &&
+                x.Date.Year == entity.Date.Year &&
+                x.Date.Day == entity.Date.Day &&
+                x.IsLogged
+                ).SingleOrDefault();
+                if (dailyPlayerReport != null)
+                {
+                    throw new PlayerConflictException("هذا اللاعب تم تسجيل دخوله بالفعل ولم يسجل خروجه بعد");
+                }
+
+                await context.SaveChangesAsync();
+                return CreatedResult.Entity;
+            }
+        }
+        public async Task<DailyPlayerReport> LogInPlayerWithId(DailyPlayerReport entity)
+        {
+            using (UnicepsDbContext context = _contextFactory.CreateDbContext())
+            {
+                Player? player = await context.Set<Player>().FirstOrDefaultAsync(x => x.Id == entity.PlayerId);
+                if (player != null) 
+                {
+                    Subscription? subscription = await context.Set<Subscription>().FirstOrDefaultAsync(x => x.PlayerId == entity.PlayerId && x.EndDate >= DateTime.Now);
+                    if (subscription != null)
+                    {
+                        entity.PlayerId = subscription.PlayerId;
+                        entity.PlayerSyncId = subscription.PlayerSyncId;
+                        entity.SubscriptionSyncId = subscription.SyncId;
+                        entity.PlayerName = subscription.PlayerName ?? "";
+                        entity.SubscriptionId = subscription.Id;
+                        entity.SportName = subscription.SportName ?? "";
+                    }
+                    else
+                        throw new Exception("هذا اللاعب منتهي الاشتراك");
+                }
+                else
+                    throw new Exception("هذا اللاعب غير موجود");
+                EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
                 DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x =>
                 x.PlayerId == entity.PlayerId &&
                 x.Date.Month == entity.Date.Month &&
@@ -107,6 +147,17 @@ namespace Uniceps.Entityframework.Services
 
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
             DailyPlayerReport? Getentity = await context.Set<DailyPlayerReport>().FirstOrDefaultAsync(x => x.Code == entity.Code &&
+                                x.Date.Month == entity.Date.Month &&
+                                x.Date.Year == entity.Date.Year &&
+                                x.Date.Day == entity.Date.Day &&
+                                x.IsLogged);
+            return Getentity;
+        }
+        public async Task<DailyPlayerReport?> GetByPlayerId(DailyPlayerReport entity)
+        {
+
+            using UnicepsDbContext context = _contextFactory.CreateDbContext();
+            DailyPlayerReport? Getentity = await context.Set<DailyPlayerReport>().FirstOrDefaultAsync(x =>  x.PlayerId == entity.PlayerId &&
                                 x.Date.Month == entity.Date.Month &&
                                 x.Date.Year == entity.Date.Year &&
                                 x.Date.Day == entity.Date.Day &&

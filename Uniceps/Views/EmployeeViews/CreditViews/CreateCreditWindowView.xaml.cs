@@ -32,9 +32,7 @@ namespace Uniceps.Views.EmployeeViews.CreditViews
             var vm = DataContext as CreateCreditViewModelWindow;
             if (vm != null)
                 vm.CreditCreated += () => this.Close();
-            var editVm = DataContext as EditCreditDetailsViewModel;
-            if (editVm != null)
-                editVm.CreditUpdated += () => this.Close();
+           
         }
 
     }

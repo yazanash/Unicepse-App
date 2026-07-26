@@ -11,6 +11,7 @@ using Uniceps.Core.Models.Sport;
 using Uniceps.Entityframework.Services;
 using Uniceps.Entityframework.DbContexts;
 using Uniceps.Test.Fakes;
+using Uniceps.Core.Models;
 
 namespace Uniceps.Test.DataServicesTest
 {
@@ -106,9 +107,7 @@ namespace Uniceps.Test.DataServicesTest
         {
             Employee expected_employee = employeeFactory!.FakeEmployee();
             Sport sport = await create_sport();
-            expected_employee.Sports!.Add(sport);
             Employee actual_employee = await employeeDataService!.Create(expected_employee);
-            Assert.Equals(expected_employee.Sports.Count, actual_employee.Sports!.Count);
         }
         [Test]
         //it sholud try to create ana existed employee and throw confilct exception

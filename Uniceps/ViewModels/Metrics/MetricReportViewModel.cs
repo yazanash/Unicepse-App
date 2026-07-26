@@ -19,40 +19,40 @@ namespace Uniceps.ViewModels.Metrics
     public class MetricReportViewModel : ListingViewModelBase
     {
         private readonly MetricDataStore _metricDataStore;
-        private readonly PlayersDataStore _playerDataStore;
         private readonly NavigationStore _navigationStore;
         private ObservableCollection<MetricListItemViewModel> _metricListItemViewModels;
-
+        public int PlayerId;
         public IEnumerable<MetricListItemViewModel> Metrics => _metricListItemViewModels;
+        private MetricListItemViewModel? _selectedMetric;
         public MetricListItemViewModel? SelectedMetric
         {
             get
             {
-                return Metrics
-                    .FirstOrDefault(y => y?.Metric == _metricDataStore.SelectedMetric);
+                return _selectedMetric;
             }
             set
             {
-                _metricDataStore.SelectedMetric = value?.Metric;
+                _selectedMetric = value;
                 OnPropertyChanged(nameof(SelectedMetric));
 
             }
         }
         public ICommand LoadMetricCommand { get; }
         public ICommand AddMetricsCommand { get; }
-        public MetricReportViewModel(MetricDataStore metricDataStore, PlayersDataStore playerDataStore, NavigationStore navigationStore)
+        public MetricReportViewModel(int playerId,MetricDataStore metricDataStore, NavigationStore navigationStore)
         {
+            PlayerId = playerId;
             _metricDataStore = metricDataStore;
-            _playerDataStore = playerDataStore;
             _navigationStore = navigationStore;
             _metricListItemViewModels = new ObservableCollection<MetricListItemViewModel>();
             _metricDataStore.Loaded += _metricDataStore_Loaded;
             _metricDataStore.Created += _metricDataStore_Created;
             _metricDataStore.Updated += _metricDataStore_Updated;
             _metricDataStore.Deleted += _metricDataStore_Deleted;
-            LoadMetricCommand = new LoadMetricsCommand(this, _metricDataStore, _playerDataStore);
-            AddMetricsCommand = new NavaigateCommand<AddMetricsViewModel>(new NavigationService<AddMetricsViewModel>(_navigationStore, () => new AddMetricsViewModel(_metricDataStore, _navigationStore, this, _playerDataStore)));
-            SelectedMetric = _metricListItemViewModels.FirstOrDefault();
+            LoadMetricCommand = new LoadMetricsCommand(this, _metricDataStore);
+            AddMetricsCommand = new NavaigateCommand<AddMetricsViewModel>(new NavigationService<AddMetricsViewModel>(_navigationStore, () => new AddMetricsViewModel(PlayerId,_metricDataStore, _navigationStore, this)));
+            LoadMetricCommand.Execute(PlayerId);
+
         }
 
         private void _metricDataStore_Deleted(int id)
@@ -94,17 +94,9 @@ namespace Uniceps.ViewModels.Metrics
         public bool IsSelected = true;
         private void AddMetric(Metric metric)
         {
-            MetricListItemViewModel viewmodel = new(metric, _metricDataStore, _navigationStore, this, _playerDataStore);
+            MetricListItemViewModel viewmodel = new(metric, _metricDataStore, _navigationStore, this);
             _metricListItemViewModels.Add(viewmodel);
         }
 
-        public static MetricReportViewModel LoadViewModel(MetricDataStore metricDataStore, PlayersDataStore playerDataStore, NavigationStore navigationStore)
-        {
-            MetricReportViewModel viewModel = new(metricDataStore, playerDataStore, navigationStore);
-
-            viewModel.LoadMetricCommand.Execute(null);
-
-            return viewModel;
-        }
     }
 }

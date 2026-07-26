@@ -16,14 +16,12 @@ namespace Uniceps.Commands.MetricsCommand
     {
         private readonly MetricDataStore _metricDataStore;
         private readonly AddMetricsViewModel _addMetricsViewModel;
-        private readonly PlayersDataStore _playerDataStore;
         private readonly NavigationService<MetricReportViewModel> _navigationService;
 
-        public AddMetricsCommand(MetricDataStore metricDataStore, AddMetricsViewModel addMetricsViewModel, PlayersDataStore playerDataStore, NavigationService<MetricReportViewModel> navigationService)
+        public AddMetricsCommand(MetricDataStore metricDataStore, AddMetricsViewModel addMetricsViewModel, NavigationService<MetricReportViewModel> navigationService)
         {
             _metricDataStore = metricDataStore;
             _addMetricsViewModel = addMetricsViewModel;
-            _playerDataStore = playerDataStore;
             _navigationService = navigationService;
         }
 
@@ -58,21 +56,16 @@ namespace Uniceps.Commands.MetricsCommand
                 L_Thigh = _addMetricsViewModel.L_Thigh,
                 R_Thigh = _addMetricsViewModel.R_Thigh,
                 //Player
-                Player = _playerDataStore.SelectedPlayer!,
-                PlayerSyncId = _playerDataStore.SelectedPlayer!.SyncId
+                PlayerId = _addMetricsViewModel.PlayerId,
 
             };
-            if (!_playerDataStore.SelectedPlayer!.IsSubscribed)
+            if (_addMetricsViewModel.IsEditMode && _addMetricsViewModel._metricId != -1)
             {
-                _playerDataStore.SelectedPlayer!.IsSubscribed = true;
-                await _playerDataStore.UpdatePlayer(_playerDataStore.SelectedPlayer!);
-                //if (_playerDataStore.SelectedPlayer != null)
-                //{
-                //    _playerDataStore.SelectedPlayer.IsActive = true;
-                //}
+                metric.Id = _addMetricsViewModel._metricId;
+                await _metricDataStore.Update(metric);
             }
-            await _metricDataStore.Add(metric);
-            _metricDataStore.SelectedMetric = _metricDataStore.Metrics.FirstOrDefault(x => x.Id == metric.Id);
+            else
+                await _metricDataStore.Add(metric);
             _navigationService.ReNavigate();
         }
     }

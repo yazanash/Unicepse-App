@@ -124,9 +124,6 @@
                                                 <Button ToolTip="حذف الرياضية" Command="{Binding DeleteCommand}" Style="{StaticResource GridremoveBtn}">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline"  Style="{StaticResource GridBtnIcon}"/>
                                                 </Button>
-                                                <Button ToolTip="عرض لاعبين الرياضية" Command="{Binding SubscriptionsCommand}" Style="{StaticResource GridremoveBtn}">
-                                                    <Icon:PackIconMaterial Kind="AccountGroup"  Style="{StaticResource GridBtnIcon}"/>
-                                                </Button>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

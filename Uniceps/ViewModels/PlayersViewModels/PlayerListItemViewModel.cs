@@ -22,7 +22,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
     {
         public Player Player;
         private readonly PlayersDataStore? _playersDataStore;
-        private readonly PlayerProfileViewModel? _playerProfileViewModel;
+        private readonly Func<int, PlayerProfileViewModel>? _playerProfileFactory;
         public int Id => Player.Id;
 
         private int _order;
@@ -37,8 +37,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
         public int BirthDate => Player.BirthDate;
         public string Gendertext => Player.GenderMale ? "ذكر" : "انثى";
         public bool GenderMale => Player.GenderMale;
-        public double Weight => Player.Weight;
-        public double Hieght => Player.Hieght;
+        public string? MediclStatus => Player.MediclStatus;
         public string? SubscribeDate => Player.SubscribeDate.ToShortDateString();
         public string? SubscribeEndDate => Player.SubscribeEndDate.ToShortDateString();
         public bool IsTakenContainer => Player.IsTakenContainer;
@@ -55,6 +54,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         public double Balance => Player.Balance;
 
+
         private bool _isVerified;
         public bool IsVerified
         {
@@ -64,60 +64,48 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         public ICommand? EditCommand { get; }
         public ICommand? DeleteCommand { get; }
-        public ICommand? TrainingProgramCommand { get; }
         public ICommand? OpenProfileCommand => new RelayCommand(ExecuteOpenPlayerProfile);
-
+        public ICommand? CatchFingerPrint { get; }
         private void ExecuteOpenPlayerProfile()
         {
-            if (_playerProfileViewModel != null)
+            if (_playerProfileFactory != null)
             {
                 PlayerProfileWindowView playerProfileWindowView = new PlayerProfileWindowView();
-                _playerProfileViewModel.LoadPlayer(Player);
-                playerProfileWindowView.DataContext = _playerProfileViewModel;
+                playerProfileWindowView.DataContext = _playerProfileFactory(Id);
                 playerProfileWindowView.ShowDialog();
             }
-          
+
         }
-
-        public ICommand? LogInCommand { get; }
-        public ICommand? ReactivePlayerCommand { get; }
-        public ICommand? VerifyAccountCommand { get; }
-
-        public PlayerListItemViewModel(Player player, NavigationStore navigationStore,
-           PlayersDataStore playersDataStore,
-           NavigationService<PlayerListViewModel> navigationService, PlayerMainPageViewModel playerMainPageViewModel)
+        public PlayerListItemViewModel(Player player, 
+           PlayersDataStore playersDataStore)
         {
             Player = player;
             IsVerified = Player.UID != null;
             IsActive = Player.IsSubscribed;
             _playersDataStore = playersDataStore;
-
-
             EditCommand = new RelayCommand(ExecuteOpenEditCommand);
             DeleteCommand = new DeletePlayerCommand(_playersDataStore);
-            ReactivePlayerCommand = new ReactivePlayerCommand(_playersDataStore);
-        }
-        public PlayerListItemViewModel(Player player,
-          PlayersDataStore playersDataStore )
-        {
-            Player = player;
-            IsVerified = Player.UID != null;
-            IsActive = Player.IsSubscribed;
-            _playersDataStore = playersDataStore;
-            ReactivePlayerCommand = new ReactivePlayerCommand(_playersDataStore);
+
         }
 
-        public PlayerListItemViewModel(Player player, NavigationStore navigationStore, PlayerProfileViewModel playerProfileViewModel)
+        private bool _fingerDataAvailable = true;
+        public bool FingerDataAvailable
+        {
+            get => _fingerDataAvailable;
+            set { _fingerDataAvailable = value; OnPropertyChanged(nameof(FingerDataAvailable)); }
+        }
+
+        public PlayerListItemViewModel(Player player, Func<int, PlayerProfileViewModel> playerProfileFactory)
         {
             Player = player;
             IsVerified = Player.UID != null;
             IsActive = Player.IsSubscribed;
-            _playerProfileViewModel = playerProfileViewModel;
+            _playerProfileFactory = playerProfileFactory;
 
         }
         public void ExecuteOpenEditCommand()
         {
-            EditPlayerViewModel editPlayerViewModel = new EditPlayerViewModel(_playersDataStore!);
+            AddPlayerViewModel editPlayerViewModel = new AddPlayerViewModel(Player,_playersDataStore!);
             PlayerDetailWindowView playerDetailWindowView = new PlayerDetailWindowView();
             playerDetailWindowView.DataContext = editPlayerViewModel;
             playerDetailWindowView.ShowDialog();
@@ -127,14 +115,13 @@ namespace Uniceps.ViewModels.PlayersViewModels
             Player = player;
 
         }
-        public PlayerListItemViewModel(Player player, NavigationStore navigationStore
-           , PlayerProfileViewModel playerProfileViewModel, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, HomeViewModel homeViewModel)
+        public PlayerListItemViewModel(Player player , Func<int, PlayerProfileViewModel> playerProfileFactory, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, HomeViewModel homeViewModel)
         {
             Player = player;
             IsVerified = Player.UID != null;
             IsActive = Player.IsSubscribed;
             _playersDataStore = playersDataStore;
-            _playerProfileViewModel = playerProfileViewModel;
+            _playerProfileFactory = playerProfileFactory;
         }
 
 

@@ -27,9 +27,9 @@ namespace Uniceps.Stores
             _trainerRevenueService = trainerRevenueService;
             _excelService = excelService;
         }
-        public async Task GetMonthlyReport(Employee trainer,DateTime reportDate)
+        public async Task GetMonthlyReport(int trainerId,DateTime reportDate)
         {
-            MonthlyTrainerDause = await _trainerRevenueService.GetTrainerDuesAsync(trainer, reportDate);
+            MonthlyTrainerDause = await _trainerRevenueService.GetTrainerDuesAsync(trainerId, reportDate);
               StateChanged?.Invoke(MonthlyTrainerDause);
         }
         public async Task CloseTrainerAccountAsync()
@@ -42,10 +42,14 @@ namespace Uniceps.Stores
             bool closed = await _trainerRevenueService.CloseTrainerAccountAsync(MonthlyTrainerDause);
             Closed?.Invoke(closed);
         }
-        public async Task ExportMonthlyReport(Employee trainer,string filePath, DateTime reportDate)
+        public async Task ExportMonthlyReport(int trainerId,string filePath, DateTime reportDate)
         {
-            MonthlyTrainerDause = await _trainerRevenueService.GetTrainerDuesAsync(trainer, reportDate);
-            _excelService.ExportToExcel(filePath, MonthlyTrainerDause);
+            if (MonthlyTrainerDause == null || (MonthlyTrainerDause.Trainer!=null && MonthlyTrainerDause.Trainer.Id != trainerId))
+            {
+                await GetMonthlyReport(trainerId, reportDate);
+            }
+
+            _excelService.ExportToExcel(filePath, MonthlyTrainerDause??new TrainerDueses());
         }
     }
 }

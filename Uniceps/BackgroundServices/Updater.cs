@@ -1,18 +1,11 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Xml;
-using Uniceps.Services;
 using Uniceps.ViewModels;
 using Uniceps.Views;
 
@@ -55,7 +48,6 @@ namespace Uniceps.BackgroundServices
                 client.BaseAddress = new Uri(apiUrl!);
                 client.DefaultRequestHeaders.Add("User-Agent", "Uniceps-WPF-Client");
 
-                // استخدام خيارات تجاهل حالة الأحرف
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
                 HttpResponseMessage response = await client.GetAsync(UpdateUrl);

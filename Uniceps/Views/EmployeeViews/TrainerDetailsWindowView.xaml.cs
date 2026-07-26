@@ -32,9 +32,7 @@ namespace Uniceps.Views.EmployeeViews
             var vm = DataContext as AddTrainerViewModel;
             if (vm != null)
                 vm.TrainerCreated += () => this.Close();
-            var editVm = DataContext as EditTrainerViewModel;
-            if (editVm != null)
-                editVm.TrainerUpdated += () => this.Close();
+          
         }
     }
 }

@@ -18,17 +18,16 @@ namespace Uniceps.ViewModels.PlayersAttendenceViewModels
 
 
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly PlayersDataStore _playersDataStore;
         public IEnumerable<PlayerAttendenceListItemViewModel> PlayerAttendence => _playerAttendenceListItemViewModels;
-
-        public PlayerAttendenceViewModel(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore)
+        public int PlayerId;
+        public PlayerAttendenceViewModel(int playerId,PlayersAttendenceStore playersAttendenceStore)
         {
+            PlayerId = playerId;    
             _playersAttendenceStore = playersAttendenceStore;
-            _playersDataStore = playersDataStore;
-
             _playerAttendenceListItemViewModels = new ObservableCollection<PlayerAttendenceListItemViewModel>();
             _playersAttendenceStore.PlayerLoggingLoaded += _playersAttendenceStore_Loaded;
-            LoadDailyReport = new GetPlayerLoggingCommand(_playersAttendenceStore, _playersDataStore);
+            LoadDailyReport = new GetPlayerLoggingCommand(_playersAttendenceStore);
+            LoadDailyReport.Execute(PlayerId);
         }
         public ICommand LoadDailyReport { get; }
         private void _playersAttendenceStore_Loaded()
@@ -46,13 +45,6 @@ namespace Uniceps.ViewModels.PlayersAttendenceViewModels
              new PlayerAttendenceListItemViewModel(dailyPlayerReport, _playersAttendenceStore);
             _playerAttendenceListItemViewModels.Add(itemViewModel);
             itemViewModel.IdSort = _playerAttendenceListItemViewModels.Count();
-        }
-        public static PlayerAttendenceViewModel LoadViewModel(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore)
-        {
-            PlayerAttendenceViewModel viewModel = new(playersAttendenceStore, playersDataStore);
-
-            viewModel.LoadDailyReport.Execute(null);
-            return viewModel;
         }
         public override void Dispose()
         {

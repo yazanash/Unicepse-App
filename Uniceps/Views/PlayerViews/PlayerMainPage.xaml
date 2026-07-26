@@ -139,7 +139,10 @@ Width="auto"
                                                     <Border Style="{DynamicResource StaticCardBorderStyle}">
 
                                                         <StackPanel>
-                                                            <Button HorizontalAlignment="Stretch" Command="{Binding EditCommand}" Style="{StaticResource GridEditBtn}">
+                                                            <Button HorizontalAlignment="Stretch"
+                                                                     Command="{Binding DataContext.EditSubscriptionCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                    CommandParameter="{Binding}" 
+                                                                    Style="{StaticResource GridEditBtn}">
                                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                     <Icon:PackIconMaterial Margin="0 0 10 0" Kind="Pencil" Style="{StaticResource GridBtnIcon}"/>
                                                                     <TextBlock Text="تعديل" FontSize="12" Foreground="{DynamicResource Brush.Foreground}"/>

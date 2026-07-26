@@ -45,7 +45,7 @@ namespace Uniceps.Stores
 
             foreach (var t in trainers)
             {
-                var dues = await _trainerRevenueService.GetTrainerDuesAsync(t, date);
+                var dues = await _trainerRevenueService.GetTrainerDuesAsync(t.Id, date);
                 totalDues += (dues.TotalSubscriptions - dues.Credits); // مثال حساب النهائي
             }
             report.TrainerDauses = totalDues;
@@ -54,6 +54,7 @@ namespace Uniceps.Stores
            report.TotalIncome
          - report.IncomeForNextMonth
          + report.IncomeFromLastMonth
+          + report.OtherRevenue
          - report.Salaries
          - report.TrainerDauses
          - report.Expenses;
@@ -62,6 +63,7 @@ namespace Uniceps.Stores
          report.TotalIncome
        - report.IncomeForNextMonth
        + report.IncomeFromLastMonth
+        + report.OtherRevenue
        - report.PaidSalaries
        - report.Expenses;
 

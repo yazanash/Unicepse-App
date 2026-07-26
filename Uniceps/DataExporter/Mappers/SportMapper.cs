@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Uniceps.Core.Models;
 using Uniceps.Core.Models.Sport;
 using Uniceps.DataExporter.Dtos;
 
@@ -23,7 +24,6 @@ namespace Uniceps.DataExporter.Mappers
                 DaysInWeek = data.DaysInWeek,
                 DaysCount = data.DaysCount,
             };
-            sport.Trainers = data.Trainers.Select(x => new Core.Models.Employee.Employee { SyncId = x }).ToList();
             return sport;
         }
 
@@ -40,7 +40,6 @@ namespace Uniceps.DataExporter.Mappers
                 DaysInWeek = data.DaysInWeek,
                 DaysCount = data.DaysCount,
             };
-            sportDto.Trainers = data.Trainers?.Select(x => x.SyncId).ToList()??new();
             return sportDto;
         }
     }

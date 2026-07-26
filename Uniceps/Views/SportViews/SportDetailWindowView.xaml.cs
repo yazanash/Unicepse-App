@@ -31,9 +31,7 @@ namespace Uniceps.Views.SportViews
             var vm = DataContext as AddSportViewModel;
             if (vm != null)
                 vm.SportCreated += () => this.Close();
-            var editVm = DataContext as EditSportViewModel;
-            if (editVm != null)
-                editVm.SportUpdated += () => this.Close();
+          
         }
     }
 }

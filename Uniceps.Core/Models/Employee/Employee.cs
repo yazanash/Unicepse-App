@@ -25,13 +25,11 @@ namespace Uniceps.Core.Models.Employee
         public bool IsTrainer { get; set; }
 
         public double LastClosingBalance { get; set; }
-        public DateTime? LastClosingDate { get; set; } 
-        public ICollection<Sport.Sport>? Sports { get; set; }
+        public DateTime? LastClosingDate { get; set; }
         public ICollection<Subscription.Subscription>? PlayerTrainings { get; set; }
 
         public Employee()
         {
-            Sports = new HashSet<Sport.Sport>();
             PlayerTrainings = new HashSet<Subscription.Subscription>();
         }
 

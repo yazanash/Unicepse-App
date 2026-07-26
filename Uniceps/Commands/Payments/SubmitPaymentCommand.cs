@@ -17,19 +17,13 @@ namespace Uniceps.Commands.Payments
 {
     public class SubmitPaymentCommand : AsyncCommandBase
     {
-        private readonly NavigationService<PaymentListViewModel> _navigationService;
-        private readonly PlayersDataStore _playersDataStore;
         private readonly PaymentDataStore _paymentDataStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
         private AddPaymentViewModel _addPaymentViewModel;
-        public SubmitPaymentCommand(NavigationService<PaymentListViewModel> navigationService, PaymentDataStore paymentDataStore, AddPaymentViewModel addPaymentViewModel, PlayersDataStore playersDataStore, SubscriptionDataStore subscriptionDataStore)
+        public SubmitPaymentCommand(PaymentDataStore paymentDataStore, AddPaymentViewModel addPaymentViewModel)
         {
-            _navigationService = navigationService;
             _paymentDataStore = paymentDataStore;
-            _playersDataStore = playersDataStore;
             _addPaymentViewModel = addPaymentViewModel;
             _addPaymentViewModel.PropertyChanged += _addPaymentViewModel_PropertyChanged;
-            _subscriptionDataStore = subscriptionDataStore;
         }
 
         private void _addPaymentViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -39,9 +33,6 @@ namespace Uniceps.Commands.Payments
                 OnCanExecutedChanged();
             }
         }
-
-
-
         public override bool CanExecute(object? parameter)
         {
             return _addPaymentViewModel.CanSubmit && _addPaymentViewModel.SelectedSubscription != null && base.CanExecute(null);
@@ -58,21 +49,24 @@ namespace Uniceps.Commands.Payments
                         PayDate = _addPaymentViewModel.PayDate,
                         PaymentValue = _addPaymentViewModel.PaymentValue,
                         Des = _addPaymentViewModel.Descriptiones,
-                        PlayerId = _playersDataStore.SelectedPlayer!.Id,
+                        PlayerId = _addPaymentViewModel.PlayerId,
                         SubscriptionId = _addPaymentViewModel.SelectedSubscription!.Id,
-                        PlayerSyncId = _playersDataStore.SelectedPlayer!.SyncId,
                         SubscriptionSyncId = _addPaymentViewModel.SelectedSubscription!.Subscription.SyncId
                     };
-                    _playersDataStore.SelectedPlayer!.IsSubscribed = true;
-
-                    int sportDays = _subscriptionDataStore.SelectedSubscription!.DaysCount;
-                    double dayPrice = _subscriptionDataStore.SelectedSubscription!.PriceAfterOffer / sportDays;
+                   
+                    int sportDays = _addPaymentViewModel.SelectedSubscription!.DaysCount;
+                    double dayPrice = _addPaymentViewModel.SelectedSubscription!.PriceAfterOffer / sportDays;
                     int daysCount = Convert.ToInt32(payment.PaymentValue / dayPrice);
+                    if (_addPaymentViewModel.IsEditMode)
+                    {
+                        payment.Id = _addPaymentViewModel.Id;
+                        await _paymentDataStore.Update(payment);
+                    }
+                    else
+                        await _paymentDataStore.Add(payment);
 
-                    await _paymentDataStore.Add(payment);
-                    _subscriptionDataStore.UpdateSubscriptionPayments(payment.SubscriptionId, payment);
-                    _playersDataStore.UpdatePlayerBalance(payment.PlayerId, payment.PaymentValue);
-                    _navigationService.ReNavigate();
+                    _addPaymentViewModel.OnRequestClose();
+
                 }
                 else
                 {

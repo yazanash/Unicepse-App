@@ -1,69 +1,44 @@
-﻿using Uniceps.Commands;
-using Uniceps.Commands.SubscriptionCommand;
-using Uniceps.ViewModels.SportsViewModels;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Input;
-using Uniceps.Commands.Player;
 using Uniceps.Commands.Employee;
-using Uniceps.navigation;
 using Uniceps.Stores;
-using Uniceps.ViewModels;
-using Uniceps.navigation.Stores;
-using Uniceps.Core.Models;
-using Uniceps.Core.Models.Sport;
-
+using Emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
     public class AddTrainerViewModel : ErrorNotifyViewModelBase
     {
-        private readonly ObservableCollection<SportTrainerListItemViewModel> _sportListItemViewModels;
-        private readonly SportDataStore _sportDataStore;
         private readonly EmployeeStore _employeeStore;
-        public IEnumerable<SportTrainerListItemViewModel> SportList => _sportListItemViewModels;
-        public ObservableCollection<Year> years;
+     
         public Action? TrainerCreated;
         public void OnTrainerCreated()
         {
             TrainerCreated?.Invoke();
         }
-        public IEnumerable<Year> Years => years;
-        public AddTrainerViewModel(SportDataStore sportDataStore, EmployeeStore employeeStore)
+        public Emp.Employee? Employee;
+        public bool IsEditMode= false;
+        public AddTrainerViewModel(EmployeeStore employeeStore)
         {
-            years = new ObservableCollection<Year>();
-            for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
-                years.Add(new Year() { year = i });
-            Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
-            _sportDataStore = sportDataStore;
             _employeeStore = employeeStore;
-            _sportListItemViewModels = new();
-            _sportDataStore.Loaded += _sportDataStore_Loaded;
-            //CancelCommand = new NavaigateCommand<TrainersListViewModel>(new NavigationService<TrainersListViewModel>(_navigationStore, () => _trinersListViewModel));
             SubmitCommand = new SubmitTrainerCommand( this, _employeeStore);
-            LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
         }
-
-        private void _sportDataStore_Loaded()
+        public AddTrainerViewModel(EmployeeStore employeeStore, Emp.Employee employee)
         {
-            _sportListItemViewModels.Clear();
-            foreach (var sport in _sportDataStore.Sports)
-            {
-                AddSport(sport);
-            }
+            _employeeStore = employeeStore;
+            Employee = employee;
+            IsEditMode = true;
+            FullName = Employee.FullName;
+            Phone = Employee.Phone;
+            Year = Employee.BirthDate;
+            GenderMale = Employee.GenderMale;
+            SalaryValue = Employee.SalaryValue;
+            ParcentValue = Employee.ParcentValue;
+            Position = Employee.Position;
+            StartDate = Employee.StartDate;
+
+            SubmitCommand = new SubmitTrainerCommand(this, _employeeStore);
         }
 
-        private void AddSport(Sport sport)
-        {
-            SportTrainerListItemViewModel sportListItemViewModel = new(sport);
-            _sportListItemViewModels.Add(sportListItemViewModel);
-        }
-
+       
         private string? _fullName;
         public string? FullName
         {
@@ -98,8 +73,8 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             }
         }
 
-        private Year? _year;
-        public Year? Year
+        private int _year = DateTime.Now.Year;
+        public int Year
         {
             get { return _year; }
             set
@@ -194,17 +169,6 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 
 
         public ICommand? SubmitCommand { get; }
-        public ICommand? CancelCommand { get; }
-        public ICommand LoadSportsCommand { get; }
-
-        public static AddTrainerViewModel LoadViewModel( SportDataStore sportDataStore, EmployeeStore employeeStore)
-        {
-            AddTrainerViewModel viewModel = new AddTrainerViewModel( sportDataStore, employeeStore);
-
-            viewModel.LoadSportsCommand.Execute(null);
-
-            return viewModel;
-        }
 
         public void ClearForm()
         {

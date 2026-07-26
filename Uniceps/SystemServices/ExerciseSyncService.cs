@@ -39,12 +39,12 @@ namespace Uniceps.SystemServices
         {
             if (InternetAvailability.IsInternetAvailable())
             {
-                //try
-                //{
+                try
+                {
                     await _store.GetAndVerifyMuscleGroups();
                     await _store.GetExcersisesWithMuscleGroups();
-                //}
-                //catch (Exception ex) { MessageBox.Show(ex.Message); }
+                }
+                catch  { }
             }
         }
        

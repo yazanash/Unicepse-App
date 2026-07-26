@@ -32,9 +32,12 @@
 
             </StackPanel>
 
-            <ScrollViewer  CanContentScroll="True" x:Name="myscroll" Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+            <ScrollViewer Grid.Row="1" 
+                          x:Name="myscroll" 
+                          HorizontalScrollBarVisibility="Disabled" 
+                          VerticalScrollBarVisibility="Auto">
 
-                <ContentControl Grid.Row="1" x:Name="print" Content="{Binding CurrentPrint}" />
+                <ContentControl Margin="0" Padding="0" HorizontalAlignment="Center" Grid.Row="1" x:Name="print" Content="{Binding CurrentPrint}" />
              
             </ScrollViewer>
             <!--<FlowDocumentScrollViewer  Grid.Row="1">

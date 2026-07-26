@@ -1,66 +1,82 @@
-﻿using Uniceps.Core.Models.Sport;
-using Uniceps.Commands;
-using Uniceps.Commands.AuthCommands;
-using Uniceps.Commands.Payments;
-using Uniceps.Commands.SubscriptionCommand;
-using Uniceps.ViewModels.PlayersViewModels;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Uniceps.ViewModels;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Commands.Payments;
+using Uniceps.Commands.SubscriptionCommand;
+using Uniceps.Core.Models.Payment;
 using Uniceps.Core.Models.Subscription;
+using Uniceps.Stores;
+using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.ViewModels.PaymentsViewModels
 {
     public class AddPaymentViewModel : ListingViewModelBase, INotifyDataErrorInfo
     {
         private readonly PaymentDataStore _paymentDataStore;
-        private readonly NavigationStore _navigatorStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
-        private readonly PlayersDataStore _playersDataStore;
-        private readonly PaymentListViewModel _paymentListViewModel;
         private readonly ObservableCollection<SubscriptionCardViewModel> _subscriptionListViewModel;
         public IEnumerable<SubscriptionCardViewModel> SubscriptionList => _subscriptionListViewModel;
-        public AddPaymentViewModel(PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore, PaymentListViewModel paymentListViewModel)
+        public int PlayerId;
+        public int Id;
+        public int SubscriptionId;
+        public bool IsEditMode;
+
+        public Action? RequestClose;
+        public void OnRequestClose()
         {
+            RequestClose?.Invoke();
+        }
+        public AddPaymentViewModel(int playerId, PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore)
+        {
+            PlayerId = playerId;
             _paymentDataStore = paymentDataStore;
             _subscriptionDataStore = subscriptionDataStore;
-            _playersDataStore = playersDataStore;
-            _navigatorStore = navigatorStore;
-            _paymentListViewModel = paymentListViewModel;
             _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
-            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore, _playersDataStore);
+            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore);
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
-            SubmitCommand = new SubmitPaymentCommand(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel), _paymentDataStore, this, _playersDataStore, _subscriptionDataStore);
-            CancelCommand = new NavaigateCommand<PaymentListViewModel>(new NavigationService<PaymentListViewModel>(_navigatorStore, () => _paymentListViewModel));
+            SubmitCommand = new SubmitPaymentCommand(_paymentDataStore, this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
+            LoadSubscriptionCommand.Execute(PlayerId);
+        }
+        public AddPaymentViewModel(PlayerPayment playerPayment, PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore)
+        {
+            PlayerId = playerPayment.PlayerId;
+            SubscriptionId = playerPayment.SubscriptionId;
+            Id = playerPayment.Id;
+            PaymentValue = playerPayment.PaymentValue;
+            PayDate = playerPayment.PayDate;
+            Descriptiones = playerPayment.Des;
+            _paymentDataStore = paymentDataStore;
+            _subscriptionDataStore = subscriptionDataStore;
+            _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
+            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore);
+            _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
+            SubmitCommand = new SubmitPaymentCommand(_paymentDataStore, this);
+            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
+            LoadSubscriptionCommand.Execute(PlayerId);
         }
 
         private void _subscriptionDataStore_Loaded()
         {
             _subscriptionListViewModel.Clear();
 
-            foreach (Subscription subscription in _subscriptionDataStore.Subscriptions.Where(x=>x.TotalPaid<x.PriceAfterOffer))
+            foreach (Subscription subscription in _subscriptionDataStore.Subscriptions.Where(x => x.TotalPaid < x.PriceAfterOffer))
             {
                 AddSubscriptiont(subscription);
+            }
+            if (SubscriptionId > 0)
+            {
+                SelectedSubscription = _subscriptionListViewModel.FirstOrDefault(x => x.Id == SubscriptionId);
             }
         }
 
         ICommand LoadSubscriptionCommand;
 
         public ICommand SubmitCommand { get; }
-        public ICommand CancelCommand { get; }
         //ICommand CancelCommand;
         #region Properties
         private double _paymentValue;
@@ -79,7 +95,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
                         AddError("لايمكن الدفع بقيمة اقل من 0", nameof(PaymentValue));
                         OnErrorChanged(nameof(PaymentValue));
                     }
-                    if(PaymentValue>SelectedSubscription.Subscription.PriceAfterOffer- SelectedSubscription.Subscription.TotalPaid)
+                    if (PaymentValue > SelectedSubscription.Subscription.PriceAfterOffer - SelectedSubscription.Subscription.TotalPaid)
                     {
                         AddError("لايمكن الدفع بقيمة اكثر من المستحق", nameof(PaymentValue));
                         OnErrorChanged(nameof(PaymentValue));
@@ -120,21 +136,21 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             }
         }
         #endregion
+        public SubscriptionCardViewModel? _selectedSubscription;
         public SubscriptionCardViewModel? SelectedSubscription
         {
             get
             {
-                return SubscriptionList
-                    .FirstOrDefault(y => y?.Subscription == _subscriptionDataStore.SelectedSubscription);
+                return _selectedSubscription;
             }
             set
             {
-                _subscriptionDataStore.SelectedSubscription = value?.Subscription;
+                _selectedSubscription = value;
                 OnPropertyChanged(nameof(SelectedSubscription));
                 ClearError(nameof(PaymentValue));
                 if (SelectedSubscription != null)
                 {
-                    
+
                 }
 
                 else
@@ -158,14 +174,6 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             SubscriptionCardViewModel itemViewModel =
                 new SubscriptionCardViewModel(subscription);
             _subscriptionListViewModel.Add(itemViewModel);
-        }
-        public static AddPaymentViewModel LoadViewModel(PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, PaymentListViewModel paymentListViewModel)
-        {
-            AddPaymentViewModel viewModel = new(paymentDataStore, subscriptionDataStore, playersDataStore, navigationStore, paymentListViewModel);
-
-            viewModel.LoadSubscriptionCommand.Execute(null);
-
-            return viewModel;
         }
 
         #region errors

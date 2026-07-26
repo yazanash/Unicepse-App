@@ -2,72 +2,83 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.Payments;
 using Uniceps.Commands.Player;
-using Uniceps.Commands.SubscriptionCommand;
 using Uniceps.Core.Models.Payment;
-using Uniceps.Core.Models.Subscription;
 using Uniceps.navigation;
 using Uniceps.navigation.Stores;
 using Uniceps.Stores;
-using Uniceps.ViewModels;
-using Uniceps.ViewModels.PlayersViewModels;
-using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views.PaymentViews;
 
 namespace Uniceps.ViewModels.PaymentsViewModels
 {
     public class PaymentListViewModel : ListingViewModelBase
     {
         private readonly PaymentDataStore _paymentDataStore;
-        private readonly PlayersDataStore _playersDataStore;
-        private readonly NavigationStore _navigationStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
         private readonly ObservableCollection<PaymentListItemViewModel> _paymentListItemViewModels;
         public IEnumerable<PaymentListItemViewModel> PaymentList => _paymentListItemViewModels;
         public CollectionViewSource GroupedTasks { get; set; }
         public bool HasData => _paymentListItemViewModels.Count > 0;
         public ICommand LoadPaymentsCommand { get; }
-        public ICommand AddPaymentsCommand { get; }
+        public ICommand AddPaymentsCommand => new RelayCommand(ExecuteAddPayment);
 
-        public PaymentListViewModel(PaymentDataStore paymentDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
+        public ICommand UpdatePaymentsCommand => new RelayCommand<PaymentListItemViewModel>(ExecuteUpdatePayment);
+
+        public ICommand DeletePaymentsCommand => new AsyncRelayCommand<PaymentListItemViewModel>(ExecuteDeletePayment);
+
+        private async Task ExecuteDeletePayment(PaymentListItemViewModel? model)
         {
-            _paymentDataStore = paymentDataStore;
-            _playersDataStore = playersDataStore;
-            _navigationStore = navigationStore;
-            _subscriptionDataStore = subscriptionDataStore;
+            if (model != null)
+            {
+                if (MessageBox.Show("سيتم حذف هذا الدفعة , هل انت متاكد", "تنبيه", MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    await _paymentDataStore.Delete(model.payment.Id);
+                    MessageBox.Show("تم حذف الدفعة بنجاح");
+                }
+            }
+           
+        }
 
-            AddPaymentsCommand = new NavaigateCommand<AddPaymentViewModel>(new NavigationService<AddPaymentViewModel>(navigationStore, () => LoadAddPaymentViewModel(_paymentDataStore, _subscriptionDataStore, _playersDataStore, _navigationStore, this)));
+        private void ExecuteUpdatePayment(PaymentListItemViewModel paymentListItemViewModel)
+        {
+            AddPaymentViewModel paymentViewModel = new AddPaymentViewModel(paymentListItemViewModel.payment, _paymentDataStore, _subscriptionDataStore);
+            PaymentDetailWindowView paymentDetailWindowView = new PaymentDetailWindowView();
+            paymentDetailWindowView.DataContext = paymentViewModel;
+            paymentDetailWindowView.ShowDialog();
+        }
+
+        private void ExecuteAddPayment()
+        {
+            AddPaymentViewModel paymentViewModel = new AddPaymentViewModel(PlayerId, _paymentDataStore, _subscriptionDataStore);
+            PaymentDetailWindowView paymentDetailWindowView = new PaymentDetailWindowView();
+            paymentDetailWindowView.DataContext = paymentViewModel;
+            paymentDetailWindowView.ShowDialog();
+        }
+
+        public int PlayerId;
+
+        public PaymentListViewModel(int playerId,PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore)
+        {
+            PlayerId = playerId;
+            _paymentDataStore = paymentDataStore;
+            _subscriptionDataStore = subscriptionDataStore;
             _paymentListItemViewModels = new ObservableCollection<PaymentListItemViewModel>();
             GroupedTasks = new CollectionViewSource { Source = _paymentListItemViewModels };
             _paymentDataStore.Loaded += _paymentDataStore_Loaded;
             _paymentDataStore.Created += _paymentDataStore_Created;
             _paymentDataStore.Updated += _paymentDataStore_Updated;
             _paymentDataStore.Deleted += _paymentDataStore_Deleted;
+            LoadPaymentsCommand = new LoadPaymentsCommand(_paymentDataStore);
+            LoadPaymentsCommand.Execute(PlayerId);
 
-            LoadPaymentsCommand = new LoadPaymentsCommand(_playersDataStore, _paymentDataStore);
         }
-
-        public PaymentListItemViewModel? SelectedPayment
-        {
-            get
-            {
-                return PaymentList
-                    .FirstOrDefault(y => y?.payment == _paymentDataStore.SelectedPayment);
-            }
-            set
-            {
-                _paymentDataStore.SelectedPayment = value?.payment;
-                OnPropertyChanged(nameof(SelectedPayment));
-            }
-        }
-
-
-
 
         private void _paymentDataStore_Deleted(int id)
         {
@@ -101,7 +112,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
         private void AddPayment(PlayerPayment payment)
         {
             PaymentListItemViewModel itemViewModel =
-             new PaymentListItemViewModel(payment, _paymentDataStore, _subscriptionDataStore, _playersDataStore, _navigationStore, this);
+             new PaymentListItemViewModel(payment);
             _paymentListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = _paymentListItemViewModels.Count();
             OnPropertyChanged(nameof(HasData));
@@ -130,15 +141,6 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             _paymentDataStore.Deleted -= _paymentDataStore_Deleted;
             base.Dispose();
         }
-        private AddPaymentViewModel LoadAddPaymentViewModel(PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, NavigationStore navigatorStore, PaymentListViewModel paymentListViewModel)
-        {
-            return AddPaymentViewModel.LoadViewModel(paymentDataStore, subscriptionDataStore, playersDataStore, navigatorStore, paymentListViewModel);
-        }
-        public static PaymentListViewModel LoadViewModel(PaymentDataStore paymentDataStore, PlayersDataStore playersDataStore, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore)
-        {
-            PaymentListViewModel viewModel = new PaymentListViewModel(paymentDataStore, playersDataStore, navigationStore, subscriptionDataStore);
-            viewModel.LoadPaymentsCommand.Execute(null);
-            return viewModel;
-        }
+      
     }
 }

@@ -52,17 +52,7 @@
                         </StackPanel>
                         
 
-                        <Button Grid.Column="1" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
-
-                            <StackPanel  Orientation="Horizontal">
-                                <TextBlock  FlowDirection="RightToLeft" Text="مسح QR Code" />
-                                <Icon:PackIconMaterial Kind="QrcodeScan"
-                                       Margin="8 0 0 1"
-                                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
-                            </StackPanel>
-
-                        </Button>
+                       
                     </Grid>
                 </Border>
                 <Border Style="{DynamicResource CardBorderStyle}" Grid.ColumnSpan="3" Grid.Row="3" Margin="5" >
@@ -137,7 +127,7 @@ Width="*"
                                      Binding="{Binding logoutTime,UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"
                                     />
-                                        <DataGridTemplateColumn Header="عمليات" Width="140" IsReadOnly="True">
+                                        <DataGridTemplateColumn Header="عمليات" Width="auto" IsReadOnly="True">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
 
@@ -146,10 +136,13 @@ Width="*"
                                                         <Button ToolTip="تسجيل خروج اللاعب" Visibility="{Binding IsLogged,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}" Command="{Binding LogoutCommand}" Style="{StaticResource GridremoveBtn}">
                                                             <Icon:PackIconMaterial Kind="LogoutVariant"  Style="{StaticResource GridBtnIcon}"/>
                                                         </Button>
+                                                        <Button ToolTip="عرض الصفحة الشخصية" Command="{Binding DataContext.OpenProfileCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+CommandParameter="{Binding}"  Style="{StaticResource GridremoveBtn}">
+                                                            <Icon:PackIconMaterial Kind="Account"  Style="{StaticResource GridBtnIcon}"/>
+                                                        </Button>
                                                         <Button ToolTip="اضافة مفتاح" Visibility="{Binding IsLogged,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}" Command="{Binding AddKeyCommand}" Style="{StaticResource GridremoveBtn}">
                                                             <Icon:PackIconMaterial Kind="KeyPlus"  Style="{StaticResource GridBtnIcon}"/>
                                                         </Button>
-                                                       
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>

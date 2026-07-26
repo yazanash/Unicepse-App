@@ -33,34 +33,24 @@
         <DataTemplate DataType="{x:Type vms:PlayerMainPageViewModel }">
             <view:PlayerMainPage />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type subsvms:SubscriptionDetailsViewModel }">
-            <subsview:SubscriptionDetailView />
-        </DataTemplate>
+       
         <DataTemplate DataType="{x:Type subsvms:StopSubscriptionViewModel}">
             <subsview:StopSubscriptionView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type subsvms:EditSubscriptionViewModel }">
-            <subsview:SubscriptionDetailView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type payvms:AddPaymentViewModel}">
-            <payview:PaymentDetalView />
-        </DataTemplate>
+      
+      
         <DataTemplate DataType="{x:Type payvms:PaymentListViewModel}">
             <payview:PaymentListView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type payvms:EditPaymentViewModel}">
-            <payview:PaymentDetalView/>
-        </DataTemplate>
+       
         <DataTemplate DataType="{x:Type metricvms:MetricReportViewModel}">
             <metricview:MetricsCardView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type metricvms:AddMetricsViewModel}">
             <metricview:AddMetricDetailView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type metricvms:EditMetricsViewModel}">
-            <metricview:AddMetricDetailView />
-        </DataTemplate>
+       
         <DataTemplate DataType="{x:Type attenvms:PlayerAttendenceViewModel}">
             <attenview:PlayerAttendenceView />
         </DataTemplate>

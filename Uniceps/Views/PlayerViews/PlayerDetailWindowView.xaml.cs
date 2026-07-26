@@ -32,9 +32,6 @@ namespace Uniceps.Views.PlayerViews
             var vm = DataContext as AddPlayerViewModel;
             if (vm != null)
                 vm.PlayerCreated += () => this.Close();
-            var editVm = DataContext as EditPlayerViewModel;
-            if (editVm != null)
-                editVm.PlayerUpdated += () => this.Close();
         }
     }
 }

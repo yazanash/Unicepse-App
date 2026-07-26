@@ -32,9 +32,6 @@ namespace Uniceps.Views.Expenses
             var vm = DataContext as AddExpenseViewModel;
             if (vm != null)
                 vm.ExpensesCreated += () => this.Close();
-            var editVm = DataContext as EditExpenseViewModel;
-            if (editVm != null)
-                editVm.ExpensesUpdated += () => this.Close();
         }
     }
 }

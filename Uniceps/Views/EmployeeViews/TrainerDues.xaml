@@ -30,7 +30,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Command="{Binding LoadMounthlyReport}" Style="{StaticResource AddBtn}" Margin="10,0" Padding="15,0">
+                    <Button Command="{Binding LoadMounthlyReport}" CommandParameter="{Binding SelectedEmployee.Id}" Style="{StaticResource AddBtn}" Margin="10,0" Padding="15,0">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="تحضير التقرير" FontWeight="Bold"/>
                             <Icon:PackIconMaterial Kind="Refresh" Width="14" Height="14" Margin="8,0,0,0" VerticalAlignment="Center"/>

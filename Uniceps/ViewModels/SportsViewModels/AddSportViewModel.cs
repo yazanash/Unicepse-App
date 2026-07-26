@@ -14,57 +14,44 @@ using Uniceps.navigation;
 using Uniceps.ViewModels;
 using Uniceps.Stores;
 using Uniceps.navigation.Stores;
+using Uniceps.Core.Models.Sport;
 
 namespace Uniceps.ViewModels.SportsViewModels
 {
     public class AddSportViewModel : ListingViewModelBase, INotifyDataErrorInfo
     {
         private readonly SportDataStore _sportStore;
-        private readonly EmployeeStore _trainerStore;
-        private readonly ObservableCollection<TrainersListItemViewModel> trainerListItemViewModels;
-        public IEnumerable<TrainersListItemViewModel> TrainerList => trainerListItemViewModels;
         public Action? SportCreated;
         public void OnSportCreated()
         {
             SportCreated?.Invoke();
         }
-        public AddSportViewModel(SportDataStore sportStore, EmployeeStore trainerStore)
+        public Sport? Sport;
+        public bool IsEditMode;
+        public AddSportViewModel(SportDataStore sportStore)
         {
             _sportStore = sportStore;
-            _trainerStore = trainerStore;
-            //CancelCommand = new NavaigateCommand<SportListViewModel>(new NavigationService<SportListViewModel>(_navigationStore, () => sportListViewModel));
             SubmitCommand = new SubmitSportCommand(this, _sportStore);
-            LoadTrainersCommand = new LoadTrainersForSportCommand(_trainerStore, this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
-            trainerListItemViewModels = new ObservableCollection<TrainersListItemViewModel>();
             _sportStore = sportStore;
-            _trainerStore = trainerStore;
-            _trainerStore.Loaded += _trainerStore_TrainersLoaded;
             WeeklyTrainingDays = 6;
             SubscribeLength = 30;
         }
-
-
-
-        private void _trainerStore_TrainersLoaded()
+        public AddSportViewModel(SportDataStore sportStore, Sport sport)
         {
-            trainerListItemViewModels.Clear();
-
-            foreach (Core.Models.Employee.Employee trainer in _trainerStore.Employees.Where(x => x.IsTrainer))
-            {
-                AddTrainer(trainer);
-            }
+            _sportStore = sportStore;
+            SubmitCommand = new SubmitSportCommand(this, _sportStore);
+            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
+            _sportStore = sportStore;
+            WeeklyTrainingDays = 6;
+            SubscribeLength = 30;
+            Sport = sport;
+            IsEditMode = true;
+            SportName = Sport.Name;
+            MonthlyPrice = Sport.Price;
+            WeeklyTrainingDays = Sport.DaysInWeek;
+            SubscribeLength = Sport.DaysCount;
         }
-        private void AddTrainer(Core.Models.Employee.Employee trainer)
-        {
-            TrainersListItemViewModel itemViewModel =
-                new TrainersListItemViewModel(trainer);
-            trainerListItemViewModels.Add(itemViewModel);
-        }
-
-
-
-
 
         public int Id { get; }
 
@@ -158,8 +145,6 @@ namespace Uniceps.ViewModels.SportsViewModels
             }
         }
         public ICommand? SubmitCommand { get; }
-        public ICommand? CancelCommand { get; }
-        public ICommand LoadTrainersCommand { get; }
 
         public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
@@ -168,14 +153,6 @@ namespace Uniceps.ViewModels.SportsViewModels
         public IEnumerable GetErrors(string? propertyName)
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
-        }
-        public static AddSportViewModel LoadViewModel(SportDataStore sportDataStore, EmployeeStore employeeStore)
-        {
-            AddSportViewModel viewModel = new AddSportViewModel(sportDataStore, employeeStore);
-
-            viewModel.LoadTrainersCommand.Execute(null);
-
-            return viewModel;
         }
 
         internal void ClearForm()

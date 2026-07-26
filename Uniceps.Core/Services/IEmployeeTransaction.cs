@@ -9,6 +9,6 @@ namespace Uniceps.Core.Services
 {
     public interface IEmployeeTransaction<T>
     {
-        Task<IEnumerable<T>> GetAll(Employee trainer);
+        Task<IEnumerable<T>> GetAll(int trainerId);
     }
 }

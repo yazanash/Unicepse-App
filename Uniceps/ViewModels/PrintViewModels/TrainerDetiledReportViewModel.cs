@@ -12,7 +12,7 @@ using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.Core.Models.Employee;
-
+using Emp= Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.PrintViewModels
 {
     public class TrainerDetiledReportViewModel : ViewModelBase
@@ -24,7 +24,8 @@ namespace Uniceps.ViewModels.PrintViewModels
         public IEnumerable<SubscriptionListItemViewModel> Subscriptions => _subscriptionListItemViewModels;
         public EmployeeAccountantPageViewModel _employeeAccountantPageViewModel;
         public PrintedTrainerMounthlyReportViewModel? TrainerMounthlyReportViewModel { get; set; }
-        public TrainerDetiledReportViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel employeeAccountantPageViewModel)
+        public Emp.Employee Employee;
+        public TrainerDetiledReportViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, EmployeeAccountantPageViewModel employeeAccountantPageViewModel, Emp.Employee employee)
         {
             _employeeStore = employeeStore;
             _dausesDataStore = dausesDataStore;
@@ -33,9 +34,8 @@ namespace Uniceps.ViewModels.PrintViewModels
             _subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             GroupedTasks = new CollectionViewSource();
             ReportDate = _employeeAccountantPageViewModel.ReportDate.ToShortDateString();
-            FullName = _employeeStore.SelectedEmployee!.FullName;
-            
-            
+            Employee = employee;
+            FullName = Employee!.FullName;
         }
         private string? _gymName;
         public string? GymName

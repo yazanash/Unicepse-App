@@ -104,6 +104,10 @@ namespace Uniceps.Entityframework.Services
                     .Where(p => p.PayDate >= sixMonthsAgo)
                     .ToListAsync();
 
+                var otherRevenue = await context.Set<OtherRevenue>()
+                  .Where(p => p.Date >= sixMonthsAgo)
+                  .ToListAsync();
+
                 var expenses = await context.Set<Expenses>()
                     .Where(e => e.date >= sixMonthsAgo)
                     .ToListAsync();
@@ -122,6 +126,9 @@ namespace Uniceps.Entityframework.Services
                     var monthlyRevenue = payments
                         .Where(p => p.PayDate.Year == year && p.PayDate.Month == month)
                         .Sum(p => p.PaymentValue);
+                    var monthlyOtherRevenue = otherRevenue
+                        .Where(p => p.Date.Year == year && p.Date.Month == month)
+                        .Sum(p => p.Amount);
 
                     var monthlyExpenses = expenses
                         .Where(e => e.date.Year == year && e.date.Month == month)
@@ -134,7 +141,7 @@ namespace Uniceps.Entityframework.Services
                     financialHistory.Add(new FinancialHistoryDto
                     {
                         Month = $"{month}/{year}",
-                        Revenue = monthlyRevenue,
+                        Revenue = monthlyRevenue + monthlyRevenue,
                         Expenses = monthlyExpenses + monthlyCredits
                     });
                 }

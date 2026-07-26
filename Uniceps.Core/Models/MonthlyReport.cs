@@ -17,5 +17,6 @@ namespace Uniceps.Core.Models
         public double NetIncome { get; set; }
         public double PaidSalaries { get; set; }
         public double ActualNetIncome { get; set; }
+        public double OtherRevenue { get; set; }
     }
 }

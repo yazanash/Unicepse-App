@@ -63,11 +63,11 @@ namespace Uniceps.Entityframework.Services
             }
         }
 
-        public async Task<IEnumerable<Metric>> GetAll(Player player)
+        public async Task<IEnumerable<Metric>> GetAllByPlayer(int playerId)
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Metric>? entities = await context.Set<Metric>().Where(x => x.Player!.Id == player.Id).Include(x => x.Player)
+                IEnumerable<Metric>? entities = await context.Set<Metric>().Where(x => x.Player!.Id == playerId).Include(x => x.Player)
                     .ToListAsync();
                 return entities;
             }

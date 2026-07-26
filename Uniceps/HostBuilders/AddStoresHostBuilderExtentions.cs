@@ -1,19 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Uniceps.Stores;
-using Uniceps.Stores.EmployeeStores;
 using Uniceps.Stores.RoutineStores;
-using Uniceps.Stores.SportStores;
-using Uniceps.Core.Models.Authentication;
 using Uniceps.navigation.Stores;
-using Uniceps.Helpers;
-using Uniceps.Core.Services;
-using Uniceps.Entityframework.Services;
 using Uniceps.DataExporter;
 
 namespace Uniceps.HostBuilders
@@ -40,8 +29,6 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<ExpensesDataStore>();
                 services.AddSingleton<MetricDataStore>();
                 services.AddSingleton<AuthenticationStore>();
-                services.AddSingleton<EmployeeSubscriptionDataStore>();
-                services.AddSingleton<SportSubscriptionDataStore>();
                 services.AddSingleton<DailyReportStore>();
                 services.AddSingleton<ExercisesDataStore>();
                 services.AddSingleton<PeriodReportStore>();
@@ -53,7 +40,7 @@ namespace Uniceps.HostBuilders
 
                 services.AddSingleton<DataExportStore>();
                 services.AddSingleton<LicenseStore>();
-                services.AddSingleton<DataSyncService>();
+                services.AddSingleton<OtherRevenuesDataStore>();
             });
             return _hostBuilder;
         }

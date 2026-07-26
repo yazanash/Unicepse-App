@@ -1,21 +1,7 @@
-﻿using Uniceps.Commands;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Input;
 using Uniceps.Commands.Player;
-using Uniceps.navigation;
 using Uniceps.Stores;
-using Uniceps.ViewModels;
-using Uniceps.Stores.RoutineStores;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.PlayersViewModels;
-using Uniceps.Core.Models;
 using Uniceps.Core.Models.Player;
 
 namespace Uniceps.ViewModels.PlayersViewModels
@@ -23,21 +9,26 @@ namespace Uniceps.ViewModels.PlayersViewModels
     public class AddPlayerViewModel : ErrorNotifyViewModelBase
     {
         private readonly PlayersDataStore _playerStore;
-        public ObservableCollection<Year> years;
-
-        public IEnumerable<Year> Years => years;
-        public AddPlayerViewModel( PlayersDataStore playerStore)
+        public int PlayerId;
+        public bool IsEditMode;
+        public AddPlayerViewModel(PlayersDataStore playerStore)
         {
-            years = new ObservableCollection<Year>();
-            for (int i = DateTime.Now.Year ; i > DateTime.Now.Year - 80; i--)
-                years.Add(new Year() { year = i });
-            Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
             _playerStore = playerStore;
-            ScanAvailable = true;
-            NavigationStore PlayerMainPageNavigation = new NavigationStore();
-            SubmitCommand = new SubmitCommand( this, _playerStore);
+            SubmitCommand = new SubmitCommand(this, _playerStore);
         }
-
+        public AddPlayerViewModel(Player player,PlayersDataStore playerStore)
+        {
+            PlayerId= player.Id;
+            FullName = player.FullName;
+            Phone = player.Phone;
+            Year = player.BirthDate;
+            GenderMale = player.GenderMale;
+            SubscribeDate = player.SubscribeDate;
+            MediclStatus = player.MediclStatus;
+            IsEditMode = true;
+            _playerStore = playerStore;
+            SubmitCommand = new SubmitCommand(this, _playerStore);
+        }
         public Action? PlayerCreated;
         internal void OnPlayerCreated()
         {
@@ -46,12 +37,20 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         internal void ClearForm()
         {
-            FullName ="";
+            FullName = "";
             Phone = "";
+
         }
 
-        public bool ScanAvailable { get; set; }
-        
+        private bool _scanAvailable = true;
+        public bool ScanAvailable
+        {
+            get => _scanAvailable;
+            set { _scanAvailable = value; OnPropertyChanged(nameof(ScanAvailable)); }
+        }
+
+        public bool UIDCatched => !string.IsNullOrEmpty(UID);
+
 
         #region Properties
         public int Id { get; }
@@ -99,8 +98,8 @@ namespace Uniceps.ViewModels.PlayersViewModels
             }
         }
 
-        private Year? _year;
-        public Year? Year
+        private int _year;
+        public int Year
         {
             get { return _year; }
             set
@@ -116,36 +115,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
             get { return _genderMale; }
             set { _genderMale = value; OnPropertyChanged(nameof(GenderMale)); }
         }
-        private double _weight;
-        public double Weight
-        {
-            get { return _weight; }
-            set
-            {
-                _weight = value; OnPropertyChanged(nameof(Weight));
-                ClearError(nameof(Weight));
-                if (string.IsNullOrEmpty(Weight.ToString()))
-                {
-                    AddError("لا يمكن ان يكون هذا الحقل فارغا", nameof(Weight));
-                    OnErrorChanged(nameof(Weight));
-                }
-            }
-        }
-        private double _hieght;
-        public double Hieght
-        {
-            get { return _hieght; }
-            set
-            {
-                _hieght = value; OnPropertyChanged(nameof(Hieght));
-                ClearError(nameof(Hieght));
-                if (string.IsNullOrEmpty(Hieght.ToString()))
-                {
-                    AddError("لا يمكن ان يكون هذا الحقل فارغا", nameof(Hieght));
-                    OnErrorChanged(nameof(Hieght));
-                }
-            }
-        }
         private DateTime _subscribeDate = DateTime.Now.Date;
         public DateTime SubscribeDate
         {
@@ -157,7 +126,17 @@ namespace Uniceps.ViewModels.PlayersViewModels
 
         public ICommand? SubmitCommand { get; }
         public ICommand? CancelCommand { get; }
-        #endregion
 
+        private string? _mediclStatus;
+        public string? MediclStatus
+        {
+            get { return _mediclStatus; }
+            set { _mediclStatus = value; OnPropertyChanged(nameof(MediclStatus)); }
+        }
+        #endregion
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
     }
 }

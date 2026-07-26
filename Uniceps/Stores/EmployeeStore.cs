@@ -10,6 +10,8 @@ using Uniceps.Core.Models.Employee;
 using Uniceps.Core.Models.Sport;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services;
+using Uniceps.MessengerSystem;
+using Uniceps.MessengerSystem.Events;
 using Uniceps.utlis.common;
 
 namespace Uniceps.Stores
@@ -27,11 +29,8 @@ namespace Uniceps.Stores
         public event Action? Loaded;
         public event Action<Employee>? Updated;
         public event Action<int>? Deleted;
-        public event Action<Filter?>? FilterChanged;
-        public event Action<Sport?>? SportChanged;
         private readonly ILogger<EmployeeStore> _logger;
         private readonly IDataService<Employee> _employeeDataService;
-        private readonly IDeleteConnectionService<Employee> _deleteConnectionService;
         private readonly List<Employee> _employee;
         private readonly Lazy<Task> _initializeLazy;
         private readonly LicenseStore _licenseStore;
@@ -40,69 +39,14 @@ namespace Uniceps.Stores
         public IEnumerable<Sport> Sports => _sports;
 
 
-        public EmployeeStore(IDataService<Employee> employeeDataService, ILogger<EmployeeStore> logger, IDeleteConnectionService<Employee> deleteConnectionService, LicenseStore licenseStore)
+        public EmployeeStore(IDataService<Employee> employeeDataService, ILogger<EmployeeStore> logger, LicenseStore licenseStore)
         {
             _employeeDataService = employeeDataService;
             _employee = new List<Employee>();
             _sports = new List<Sport>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
-            _deleteConnectionService = deleteConnectionService;
             _licenseStore = licenseStore;
-        }
-
-
-        private Employee? _selectedEmployee;
-        public Employee? SelectedEmployee
-        {
-            get
-            {
-                return _selectedEmployee;
-            }
-            set
-            {
-                _selectedEmployee = value;
-                _sports.Clear();
-                if (SelectedEmployee != null)
-                {
-                    _sports.Add(new Sport() { Id = -1, Name = "الكل" });
-                    _sports.AddRange(SelectedEmployee.Sports!);
-
-                }
-                StateChanged?.Invoke(SelectedEmployee);
-            }
-        }
-
-
-        private Sport? _selectedSport;
-        public Sport? SelectedSport
-        {
-            get
-            {
-                return _selectedSport;
-            }
-            set
-            {
-                _selectedSport = value;
-
-                SportChanged?.Invoke(SelectedSport);
-            }
-        }
-
-        public event Action<Employee?>? StateChanged;
-
-        private Filter? _selectedFilter;
-        public Filter? SelectedFilter
-        {
-            get
-            {
-                return _selectedFilter;
-            }
-            set
-            {
-                _selectedFilter = value;
-                FilterChanged?.Invoke(_selectedFilter);
-            }
         }
 
         public async Task Add(Employee entity)
@@ -112,7 +56,7 @@ namespace Uniceps.Stores
             if (!_licenseStore.Current.IsFullVersion && (empcount >= 2 || trcount >= 2))
                 throw new FreeLimitException("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
             _logger.LogInformation(LogFlag + "Add employee");
-            Employee creetedEntity =  await _employeeDataService.Create(entity);
+            Employee creetedEntity = await _employeeDataService.Create(entity);
             _employee.Add(creetedEntity);
             Created?.Invoke(creetedEntity);
         }
@@ -164,6 +108,8 @@ namespace Uniceps.Stores
             {
                 _employee.Add(entity);
             }
+            if (entity.IsTrainer)
+                Messenger.Default.Send(new EntityUpdated<Employee>(entity));
             Updated?.Invoke(entity);
         }
 
@@ -190,12 +136,6 @@ namespace Uniceps.Stores
                     Loaded?.Invoke();
                     break;
             }
-
-        }
-        public async Task DeleteConnectedSports(int Id)
-        {
-            _logger.LogInformation(LogFlag + "delete trainer sports connection started");
-            await _deleteConnectionService.DeleteConnection(Id);
 
         }
     }

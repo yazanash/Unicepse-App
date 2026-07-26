@@ -9,7 +9,6 @@ using Uniceps.LicenseManager.Models;
 
 namespace Uniceps.LicenseManager
 {
-    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public class ActivationService
     {
         private readonly HttpClient _httpClient;
@@ -91,10 +90,7 @@ namespace Uniceps.LicenseManager
         }
         private void SaveActivationInfo(Guid licenseId, string token, long ticks, DateTime? expiryDate)
         {
-            var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Uniceps");
-            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-
-            var path = Path.Combine(folder, "activation.conf");
+            var filePath = GetConfigPath(); 
 
             var data = new
             {
@@ -105,13 +101,13 @@ namespace Uniceps.LicenseManager
                 Exp = expiryDate?.Ticks
             };
 
-            File.WriteAllText(path, JsonSerializer.Serialize(data));
+            File.WriteAllText(filePath, JsonSerializer.Serialize(data));
         }
         public bool IsActivationValid()
         {
             try
             {
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Uniceps", "activation.conf");
+                var path = GetConfigPath();
                 if (!File.Exists(path)) return false;
 
                 var json = File.ReadAllText(path);
@@ -144,7 +140,7 @@ namespace Uniceps.LicenseManager
                 if (!IsActivationValid())
                     return LicenseStatus.DefaultTrial();
 
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Uniceps", "activation.conf");
+                var path = GetConfigPath();
                 var json = File.ReadAllText(path);
                 using var doc = JsonDocument.Parse(json);
                 var root = doc.RootElement;
@@ -177,6 +173,12 @@ namespace Uniceps.LicenseManager
             {
                 return LicenseStatus.DefaultTrial();
             }
+        }
+        private string GetConfigPath()
+        {
+            var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Uniceps");
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+            return Path.Combine(folder, "activation.conf");
         }
     }
 }

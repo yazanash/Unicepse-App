@@ -17,21 +17,6 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.11");
 
-            modelBuilder.Entity("EmployeeSport", b =>
-                {
-                    b.Property<int>("SportsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TrainersId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("SportsId", "TrainersId");
-
-                    b.HasIndex("TrainersId");
-
-                    b.ToTable("EmployeeSport");
-                });
-
             modelBuilder.Entity("Uniceps.Core.Models.Authentication.AuthenticationLog", b =>
                 {
                     b.Property<int>("Id")
@@ -445,6 +430,47 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.ToTable("Metrics");
                 });
 
+            modelBuilder.Entity("Uniceps.Core.Models.OtherRevenue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Service")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("SyncId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SyncId")
+                        .IsUnique();
+
+                    b.ToTable("OtherRevenues");
+                });
+
             modelBuilder.Entity("Uniceps.Core.Models.Payment.PayReferance", b =>
                 {
                     b.Property<int>("Id")
@@ -550,20 +576,23 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<int>("DataStatus")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("FingerprintData")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("FullName")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("GenderMale")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Hieght")
-                        .HasColumnType("REAL");
-
                     b.Property<bool>("IsSubscribed")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsTakenContainer")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("MediclStatus")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT");
@@ -582,9 +611,6 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1033,21 +1059,6 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.HasIndex("MuscleGroupCode");
 
                     b.ToTable("MuscleHeads");
-                });
-
-            modelBuilder.Entity("EmployeeSport", b =>
-                {
-                    b.HasOne("Uniceps.Core.Models.Sport.Sport", null)
-                        .WithMany()
-                        .HasForeignKey("SportsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Uniceps.Core.Models.Employee.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("TrainersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Uniceps.Core.Models.Authentication.AuthenticationLog", b =>

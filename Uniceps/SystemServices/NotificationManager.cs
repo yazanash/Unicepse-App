@@ -22,5 +22,19 @@ namespace Uniceps.SystemServices
               .SetBackgroundActivation())
           .Show();
         }
+
+        public static void SendNotification(string playerName,string status,string Message)
+        {
+            new ToastContentBuilder()
+          .AddHeader("6221", "تسجيل دخول لاعب", "")
+          .AddText(status)
+          .AddText(Message)
+          .AddAttributionText("نظام Uniceps الذكي")
+          .AddButton(new ToastButton()
+              .SetContent("عرض")
+              .AddArgument("action", "openLogs")
+              .SetBackgroundActivation())
+          .Show();
+        }
     }
 }

@@ -30,8 +30,7 @@ namespace Uniceps.Test.Fakes
                    player.IsSubscribed = fake.Random.Bool();
                    player.IsTakenContainer = fake.Random.Bool();
                    player.Balance = Convert.ToDouble(fake.Commerce.Price(10, 100));
-                   player.Hieght = fake.Random.Number(100, 210);
-                   player.Weight = fake.Random.Number(100, 210);
+                   player.MediclStatus ="";
 
                });
             return faker;
@@ -52,8 +51,7 @@ namespace Uniceps.Test.Fakes
                    player.IsSubscribed = fake.Random.Bool();
                    player.IsTakenContainer = fake.Random.Bool();
                    player.Balance = Convert.ToDouble(fake.Commerce.Price(10, 100));
-                   player.Hieght = fake.Random.Number(100, 210);
-                   player.Weight = fake.Random.Number(100, 210);
+                   player.MediclStatus = "";
 
                });
             return faker;

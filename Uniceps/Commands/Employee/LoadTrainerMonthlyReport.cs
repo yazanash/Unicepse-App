@@ -14,21 +14,20 @@ namespace Uniceps.Commands.Employee
     public class LoadTrainerMonthlyReport : AsyncCommandBase
     {
         private readonly DausesDataStore _dausesDataStore;
-        private readonly EmployeeStore _employeeStore;
         private readonly EmployeeAccountantPageViewModel _trainerDausesListViewModel;
 
-        public LoadTrainerMonthlyReport(DausesDataStore dausesDataStore, EmployeeStore employeeStore, EmployeeAccountantPageViewModel trainerDausesListViewModel)
+        public LoadTrainerMonthlyReport(DausesDataStore dausesDataStore,  EmployeeAccountantPageViewModel trainerDausesListViewModel)
         {
             _dausesDataStore = dausesDataStore;
             _trainerDausesListViewModel = trainerDausesListViewModel;
-            _employeeStore = employeeStore;
         }
 
         public async override Task ExecuteAsync(object? parameter)
         {
             try
             {
-                await _dausesDataStore.GetMonthlyReport(_employeeStore.SelectedEmployee!, _trainerDausesListViewModel.ReportDate);
+                if(parameter is int trainerId)
+                await _dausesDataStore.GetMonthlyReport(trainerId, _trainerDausesListViewModel.ReportDate);
 
             }
             catch (Exception ex)

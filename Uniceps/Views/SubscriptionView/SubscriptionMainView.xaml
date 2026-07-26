@@ -42,7 +42,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="الاشتراكات" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" Foreground="{DynamicResource Brush.Foreground}" FontSize="18" DockPanel.Dock="Top"/>
                         <Border Grid.Column="1" CornerRadius="{DynamicResource Radius.Small}" Margin="10 5"  Grid.Row="0"  VerticalAlignment="Center">
@@ -71,6 +72,17 @@
  Height="11"
  Margin="8 0 0 1"
  VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                        </Button>
+                        <Button Grid.Column="5" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+
+                            <StackPanel  Orientation="Horizontal">
+                                <TextBlock  FlowDirection="RightToLeft" Text="مسح QR Code" />
+                                <Icon:PackIconMaterial Kind="QrcodeScan"
+                Margin="8 0 0 1"
+                                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
                             </StackPanel>
 
                         </Button>
@@ -126,11 +138,18 @@
                                   Binding="{Binding Trainer}"
                                  Width="*"
                                  />-->
-
-                                    <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
-                                  Binding="{Binding RollDate}"
-                                 Width="auto"
-                                 />
+                                    <DataGridTemplateColumn Header="تاريخ الاشتراك" Width="auto" IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock Margin="10 0 0 0"  FontSize="15"  Text="{Binding RollDate}" VerticalAlignment="Center"/>
+                                                    <TextBlock Margin="10 0 0 0" Text="{Binding EndDate}"
+                           Foreground="#888" FontSize="13" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                
 
                                     <DataGridTemplateColumn Header="السعر" Width="auto" IsReadOnly="True">
                                         <DataGridTemplateColumn.CellTemplate>

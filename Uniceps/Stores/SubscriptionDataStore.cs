@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Vml.Office;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,11 @@ using Uniceps.Core.Models.Sport;
 using Uniceps.Core.Models.Subscription;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services;
+using Uniceps.MessengerSystem;
+using Uniceps.MessengerSystem.Events;
+using Uniceps.Models;
 using Uniceps.Stores.ApiDataStores;
+using Uniceps.SystemServices;
 using Uniceps.ViewModels.SportsViewModels;
 
 namespace Uniceps.Stores
@@ -35,61 +40,12 @@ namespace Uniceps.Stores
         private readonly ISubscriptionRenewService _subscriptionRenewService;
         private readonly List<Subscription> _subscriptions;
         private readonly Lazy<Task> _initializeLazy;
-        private readonly DataSyncService _dataSyncService;
         public IEnumerable<Subscription> Subscriptions => _subscriptions;
 
         private readonly List<Subscription> _allSubscriptions;
         public IEnumerable<Subscription> AllSubscriptions => _allSubscriptions;
 
-        private Sport? _selectedSport;
-        public Sport? SelectedSport
-        {
-            get
-            {
-                return _selectedSport;
-            }
-            set
-            {
-                _selectedSport = value;
-
-                StateChanged?.Invoke(SelectedSport);
-            }
-        }
-
-        public event Action<Sport?>? StateChanged;
-        private Employee? _selectedTrainer;
-        public Employee? SelectedTrainer
-        {
-            get
-            {
-                return _selectedTrainer;
-            }
-            set
-            {
-                _selectedTrainer = value;
-                TrainerChanged?.Invoke(SelectedTrainer);
-            }
-        }
-
-        public event Action<Employee?>? TrainerChanged;
-
-
-        private Subscription? _selectedSubscription;
-        public Subscription? SelectedSubscription
-        {
-            get
-            {
-                return _selectedSubscription;
-            }
-            set
-            {
-                _selectedSubscription = value;
-                SubscriptionChanged?.Invoke(SelectedSubscription);
-            }
-        }
-
-        public event Action<Subscription?>? SubscriptionChanged;
-        public SubscriptionDataStore(IDataService<Subscription> subscriptionDataService, ILogger<SubscriptionDataStore> logger, IGetPlayerTransactionService<Subscription> getPlayerTransactionService, ISubscriptionRenewService subscriptionRenewService, DataSyncService dataSyncService)
+        public SubscriptionDataStore(IDataService<Subscription> subscriptionDataService, ILogger<SubscriptionDataStore> logger, IGetPlayerTransactionService<Subscription> getPlayerTransactionService, ISubscriptionRenewService subscriptionRenewService)
         {
             _subscriptionDataService = subscriptionDataService;
             _subscriptions = new List<Subscription>();
@@ -98,43 +54,67 @@ namespace Uniceps.Stores
             _logger = logger;
             _getPlayerTransactionService = getPlayerTransactionService;
             _subscriptionRenewService = subscriptionRenewService;
-            _dataSyncService = dataSyncService;
-            _dataSyncService.PlayerUpdated += _dataSyncService_PlayerUpdated;
-            _dataSyncService.SportUpdated += _dataSyncService_SportUpdated;
-            _dataSyncService.TrainerUpdated += _dataSyncService_TrainerUpdated;
+
+            Messenger.Default.Register<PaymentCreated>(this, OnPaymentCreated);
+            Messenger.Default.Register<PaymentDeleted>(this, OnPaymentDeleted);
+
+            Messenger.Default.Register<EntityUpdated<Player>>(this, OnPlayerUpdated);
+            Messenger.Default.Register<EntityUpdated<Sport>>(this, OnSportUpdated);
+            Messenger.Default.Register<EntityUpdated<Employee>>(this, OnTrainerUpdated);
         }
 
-        private void _dataSyncService_TrainerUpdated(Employee obj)
+        private void OnTrainerUpdated(EntityUpdated<Employee> updated)
         {
-            var subsToUpdate = _allSubscriptions.Where(x => x.TrainerId == obj.Id).ToList();
+            var subsToUpdate = _allSubscriptions.Where(x => x.TrainerId == updated.Entity.Id).ToList();
             foreach (var sub in subsToUpdate)
             {
-                sub.TrainerName = obj.FullName;
+                sub.TrainerName = updated.Entity.FullName;
                 RefreshUi(sub);
             }
         }
 
-        private void _dataSyncService_SportUpdated(Sport obj)
+        private void OnSportUpdated(EntityUpdated<Sport> updated)
         {
-            var subsToUpdate = _allSubscriptions.Where(x => x.SportId == obj.Id).ToList();
+            var subsToUpdate = _allSubscriptions.Where(x => x.SportId == updated.Entity.Id).ToList();
             foreach (var sub in subsToUpdate)
             {
-                sub.SportName = obj.Name;
+                sub.SportName = updated.Entity.Name;
                 RefreshUi(sub);
             }
         }
 
-        private void _dataSyncService_PlayerUpdated(Player obj)
+        private void OnPlayerUpdated(EntityUpdated<Player> updated)
         {
-            var subsToUpdate = _allSubscriptions.Where(x => x.PlayerId == obj.Id).ToList();
-            foreach(var sub in subsToUpdate)
+            var subsToUpdate = _allSubscriptions.Where(x => x.PlayerId == updated.Entity.Id).ToList();
+            foreach (var sub in subsToUpdate)
             {
-                sub.PlayerName = obj.FullName;
-                sub.PlayerPhone = obj.Phone;
+                sub.PlayerName = updated.Entity.FullName;
+                sub.PlayerPhone = updated.Entity.Phone;
                 RefreshUi(sub);
             }
         }
 
+        private void OnPaymentDeleted(PaymentDeleted deleted)
+        {
+            Subscription? currentSubscription = _subscriptions.FirstOrDefault(y => y.Id == deleted.SubscriptionId);
+            if (currentSubscription != null)
+            {
+                currentSubscription.TotalPaid -= deleted.AmountPaid;
+                Updated?.Invoke(currentSubscription);
+            }
+        }
+
+        private void OnPaymentCreated(PaymentCreated created)
+        {
+            _logger.LogInformation(LogFlag + "update Subscription");
+
+            Subscription? currentSubscription = _subscriptions.FirstOrDefault(y => y.Id == created.SubscriptionId);
+            if (currentSubscription != null)
+            {
+                currentSubscription.TotalPaid += created.AmountPaid;
+                Updated?.Invoke(currentSubscription);
+            }
+        }
         public async Task Add(Subscription entity)
         {
             _logger.LogInformation(LogFlag + "add subscription");
@@ -142,8 +122,6 @@ namespace Uniceps.Stores
             _subscriptions.Add(entity);
             _allSubscriptions.Add(entity);
             Created?.Invoke(entity);
-            SelectedTrainer = null;
-            SelectedSport = null;
         }
         public async Task Delete(int entity_id)
         {
@@ -155,10 +133,10 @@ namespace Uniceps.Stores
             Deleted?.Invoke(entity_id);
         }
 
-        public async Task GetAll(Player player)
+        public async Task GetAllByPlayer(int playerId)
         {
             _logger.LogInformation(LogFlag + "get all subscription");
-            IEnumerable<Subscription> subscriptions = await _getPlayerTransactionService.GetAll(player);
+            IEnumerable<Subscription> subscriptions = await _getPlayerTransactionService.GetAllByPlayer(playerId);
             _subscriptions.Clear();
             _subscriptions.AddRange(subscriptions);
             Loaded?.Invoke();
@@ -173,8 +151,9 @@ namespace Uniceps.Stores
         }
         public async Task GetAllActive()
         {
+            int days = SettingsManager.Current.SubscriptionRemainderExpirationDays;
             _logger.LogInformation(LogFlag + "get all active subscription");
-            IEnumerable<Subscription> subscriptions = await _subscriptionDataService.GetAll();
+            IEnumerable<Subscription> subscriptions = await _subscriptionRenewService.GetAll(days);
             _allSubscriptions.Clear();
             _allSubscriptions.AddRange(subscriptions);
             AllLoaded?.Invoke();
@@ -190,11 +169,8 @@ namespace Uniceps.Stores
         public async Task Update(Subscription entity)
         {
             _logger.LogInformation(LogFlag + "update Subscription");
-            await _subscriptionDataService.Update(entity);
-
-            RefreshUi(entity);
-            SelectedTrainer = null;
-            SelectedSport = null;
+           Subscription subscription = await _subscriptionDataService.Update(entity);
+            RefreshUi(subscription);
         }
         private void RefreshUi(Subscription entity)
         {
@@ -211,29 +187,6 @@ namespace Uniceps.Stores
                 _allSubscriptions.Add(entity);
             }
             Updated?.Invoke(entity);
-        }
-        public void UpdateSubscriptionPayments(int entityId,PlayerPayment playerPayment)
-        {
-            _logger.LogInformation(LogFlag + "update Subscription");
-
-            Subscription? currentSubscription = _subscriptions.FirstOrDefault(y => y.Id == entityId);
-
-            if (currentSubscription != null)
-            {
-                PlayerPayment? existPayment = currentSubscription.Payments?.FirstOrDefault(x => x.Id == playerPayment.Id);
-                if (existPayment != null)
-                {
-                    existPayment = playerPayment;
-                }
-                else
-                {
-                    currentSubscription.Payments?.Add(playerPayment);
-                }
-
-                Updated?.Invoke(currentSubscription);
-
-            }
-           
         }
         public void RemoveSubscriptionPayments(int entityId, int playerPaymentId)
         {

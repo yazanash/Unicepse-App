@@ -12,6 +12,7 @@ using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Expenses;
 using Uniceps.ViewModels.Metrics;
+using Uniceps.ViewModels.OtherRevenueViewModels;
 using Uniceps.ViewModels.PlayersAttendenceViewModels;
 
 namespace Uniceps.ViewModels.Accountant
@@ -20,6 +21,7 @@ namespace Uniceps.ViewModels.Accountant
     {
         public NavigationStore _navigatorStore;
         private readonly ExpensesDataStore _expensesStore;
+        private readonly OtherRevenuesDataStore _otherRevenuesDataStore;
         private readonly GymStore _gymStore;
         private readonly DailyReportStore _dailyReportStore;
         private readonly PeriodReportStore _periodReportStore;
@@ -29,18 +31,19 @@ namespace Uniceps.ViewModels.Accountant
         public ICommand IncomeReportCommand { get; }
         public ICommand ExpensesReportCommand { get; }
         public ICommand StatesReportCommand { get; }
-        //public ICommand PaymentReportCommand;
+        public ICommand RevenueCommand { get; }
         public ICommand MonthlyIncomeReportCommand { get; }
 
 
         public bool IsDaily { get; set; }
         public bool IsExpenses { get; set; }
+        public bool IsRevenue { get; set; }
         public bool IsExpensesReport { get; set; }
         public bool IsIncomeReport { get; set; }
         //public ICommand PaymentReportCommand;
         private readonly LicenseStore _licenseStore;
         public bool IsIncomeFinal { get; set; }
-        public AccountingViewModel(ExpensesDataStore expensesStore, GymStore gymStore, DailyReportStore dailyReportStore, PeriodReportStore periodReportStore, LicenseStore licenseStore)
+        public AccountingViewModel(ExpensesDataStore expensesStore, GymStore gymStore, DailyReportStore dailyReportStore, PeriodReportStore periodReportStore, LicenseStore licenseStore, OtherRevenuesDataStore otherRevenuesDataStore)
         {
             _navigatorStore = new NavigationStore();
             _dailyReportStore = dailyReportStore;
@@ -48,6 +51,7 @@ namespace Uniceps.ViewModels.Accountant
             _gymStore = gymStore;
             _periodReportStore = periodReportStore;
             _licenseStore = licenseStore;
+            _otherRevenuesDataStore = otherRevenuesDataStore;
 
             if (_licenseStore.Current.IsFullVersion)
             {
@@ -58,7 +62,7 @@ namespace Uniceps.ViewModels.Accountant
                 ExpensesReportCommand = new NavaigateCommand<ExpensesReportViewModel>(new NavigationService<ExpensesReportViewModel>(_navigatorStore, () => new ExpensesReportViewModel(_periodReportStore)));
                 MonthlyIncomeReportCommand = new NavaigateCommand<MounthlyReportViewModel>(new NavigationService<MounthlyReportViewModel>(_navigatorStore, () => new MounthlyReportViewModel(_gymStore)));
                 StatesReportCommand = new NavaigateCommand<AccountingStateViewModel>(new NavigationService<AccountingStateViewModel>(_navigatorStore, () => CreateStatesViewModel(_dailyReportStore)));
-
+                RevenueCommand = new NavaigateCommand<RevenueListViewModel>(new NavigationService<RevenueListViewModel>(_navigatorStore, () => new RevenueListViewModel(_otherRevenuesDataStore)));
             }
             else
             {
@@ -69,9 +73,8 @@ namespace Uniceps.ViewModels.Accountant
                 ExpensesReportCommand = new NavaigateCommand<ExpensesReportViewModel>(new NavigationService<ExpensesReportViewModel>(_navigatorStore, () => new ExpensesReportViewModel(_periodReportStore)));
                 MonthlyIncomeReportCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
                 StatesReportCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
-
+                RevenueCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
             }
-
 
         }
         private void NavigatorStore_CurrentViewModelChanged()

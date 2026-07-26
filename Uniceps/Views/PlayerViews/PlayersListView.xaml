@@ -16,7 +16,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
         <converters:NumberFormatConverter x:Key="convertNum"/>
-
+        <converters:EnumDisplayNameConverter x:Key="EnumToText"/>
 
     </UserControl.Resources>
 
@@ -55,7 +55,7 @@
                                FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Content}" FontSize="12"   />
+                                <TextBlock Text="{Binding Converter={StaticResource EnumToText}}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -65,7 +65,7 @@
                                Tag="التصنيف حسب" Grid.Column="3" FlowDirection="RightToLeft" Style="{DynamicResource ComboBoxStyle1}" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Content}" FontSize="12"   />
+                                <TextBlock Text="{Binding Converter={StaticResource EnumToText}}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -115,12 +115,7 @@
                                 <Icon:PackIconMaterial Kind="FileExcel"/>
                             </StackPanel>
                         </Button>
-                        <Button Grid.Column="2" Command="{Binding ArchivedPlayerCommand}" ToolTip="جدول اللاعبين المؤرشفين" Grid.Row="1"  Width="50"  FlowDirection="LeftToRight" Margin="5 0" HorizontalAlignment="Center"  Style="{StaticResource AddBtn}">
-
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Kind="Archive"/>
-                            </StackPanel>
-                        </Button>
+                       
                     </Grid>
 
 
@@ -148,7 +143,6 @@
                         <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
                                     FlowDirection="RightToLeft" ItemsSource="{Binding PlayerList}" 
                                     CanUserReorderColumns="True"
-                                    SelectedItem="{Binding SelectedPlayer}"
                                     x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                     CellStyle="{DynamicResource DataGridCellStyle1}" 
                                     ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
@@ -159,7 +153,7 @@
                                     Binding="{Binding Order}"
                                     CanUserResize="False"/>
 
-                                <DataGridTemplateColumn Header="الاسم" Width="1.5*" IsReadOnly="True">
+                                <DataGridTemplateColumn Header="الاسم" Width="auto" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -178,23 +172,15 @@
                                      Binding="{Binding Gendertext}"
                                     Width="auto"
                                     />
-
-                                <DataGridTextColumn Header="تاريخ الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding SubscribeDate}"
-                                    Width="*"
-                                    />
-                                <DataGridTextColumn Header="تاريخ نهاية الاشتراك" IsReadOnly="True"
-                                     Binding="{Binding SubscribeEndDate}"
-                                    Width="*"
-                                    />
-                                <DataGridTextColumn Header="الايام المتبقية" IsReadOnly="True"
-                                     Binding="{Binding DayLeft}"
-                                    Width="auto"
-                                    />
-                                <!--<DataGridTextColumn Header="رصيد الحساب"  Foreground="{Binding BalanceColor,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"
-                                     Binding="{Binding Balance,Converter={StaticResource convertNum}}"
-                                    Width="auto"
-                                    />-->
+                                <DataGridTemplateColumn Header="السيرة المرضية" Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding MediclStatus}" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" MaxHeight="60"  TextTrimming="WordEllipsis" MaxWidth="200"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="رصيد الحساب" Width="auto" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

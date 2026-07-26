@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Uniceps.Core.Models;
@@ -62,12 +63,15 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IApplySetsToAll, RoutineSetsDataService>();
 
                 services.AddSingleton<IExcelService<Player>, PlayersExcelService>();
+
+                services.AddSingleton<IDataService<OtherRevenue>, OtherRevenuesDataService>();
                 services.AddSingleton<DataExportManager>();
                 services.AddSingleton<ImportManager>();
                 services.AddSingleton<TrainerDuesExcelService>();
                 services.AddTransient<LicenseActivationService>();
                 services.AddTransient<DatabaseInitialService>();
                 services.AddTransient<ExerciseSyncService>();
+
             });
             return _hostBuilder;
         }

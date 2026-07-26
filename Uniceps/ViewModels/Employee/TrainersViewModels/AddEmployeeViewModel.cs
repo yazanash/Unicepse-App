@@ -1,39 +1,34 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Input;
-using Uniceps.Commands;
 using Uniceps.Commands.Employee;
-using Uniceps.Commands.Player;
-using Uniceps.Core.Models;
-using Uniceps.navigation;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores;
-using Uniceps.ViewModels;
-
+using Emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
     public class AddEmployeeViewModel : ErrorNotifyViewModelBase
     {
         private readonly EmployeeStore _employeeStore;
-        public ObservableCollection<Year> years;
-
-        public IEnumerable<Year> Years => years;
+        public Emp.Employee? Employee;
+        public bool IsEditMode = false;
         public AddEmployeeViewModel(EmployeeStore employeeStore)
         {
-            years = new ObservableCollection<Year>();
-            for (int i = DateTime.Now.Year - 80; i < DateTime.Now.Year; i++)
-                years.Add(new Year() { year = i });
-            Year = years.SingleOrDefault(x => x.year == DateTime.Now.Year - 1);
             _employeeStore = employeeStore;
             SubmitCommand = new AddEmployeeCommand(this, _employeeStore);
-
+        }
+        public AddEmployeeViewModel(EmployeeStore employeeStore, Emp.Employee employee)
+        {
+            _employeeStore = employeeStore;
+            SubmitCommand = new AddEmployeeCommand(this, _employeeStore);
+            Employee = employee;
+            IsEditMode = true;
+            FullName = Employee.FullName;
+            Phone = Employee.Phone;
+            Year = Employee.BirthDate;
+            GenderMale = Employee.GenderMale;
+            SalaryValue = Employee.SalaryValue;
+            ParcentValue = Employee.ParcentValue;
+            Position = Employee.Position;
+            StartDate = Employee.StartDate;
 
         }
 
@@ -77,8 +72,8 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             }
         }
 
-        private Year? _year;
-        public Year? Year
+        private int _year = DateTime.Now.Year;
+        public int Year
         {
             get { return _year; }
             set

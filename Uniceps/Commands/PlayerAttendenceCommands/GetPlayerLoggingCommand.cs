@@ -11,18 +11,16 @@ namespace Uniceps.Commands.PlayerAttendenceCommands
     public class GetPlayerLoggingCommand : AsyncCommandBase
     {
         private readonly PlayersAttendenceStore _playersAttendenceStore;
-        private readonly PlayersDataStore _playersDataStore;
 
-        public GetPlayerLoggingCommand(PlayersAttendenceStore playersAttendenceStore, PlayersDataStore playersDataStore)
+        public GetPlayerLoggingCommand(PlayersAttendenceStore playersAttendenceStore)
         {
             _playersAttendenceStore = playersAttendenceStore;
-            _playersDataStore = playersDataStore;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
-
-            await _playersAttendenceStore.GetPlayerLogging(_playersDataStore.SelectedPlayer!.Id);
+            if(parameter is int playerId)
+            await _playersAttendenceStore.GetPlayerLogging(playerId);
         }
     }
 }

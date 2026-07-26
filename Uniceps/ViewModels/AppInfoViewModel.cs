@@ -101,6 +101,11 @@ namespace Uniceps.ViewModels
             get => SettingsManager.Current.SubscriptionRemainderDays;
             set { SettingsManager.Current.SubscriptionRemainderDays = value; OnPropertyChanged(nameof(SubscriptionRemainderDays)); }
         }
+        public int SubscriptionRemainderExpirationDays
+        {
+            get => SettingsManager.Current.SubscriptionRemainderExpirationDays;
+            set { SettingsManager.Current.SubscriptionRemainderExpirationDays = value; OnPropertyChanged(nameof(SubscriptionRemainderExpirationDays)); }
+        }
 
         public ICommand UpdateProfileCommand => new RelayCommand(() =>
         {

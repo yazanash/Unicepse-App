@@ -1,29 +1,20 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.Player;
 using Uniceps.Commands.SubscriptionCommand;
-using Uniceps.Core.Models;
 using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Sport;
 using Uniceps.Core.Models.Subscription;
-using Uniceps.navigation;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
-using Uniceps.ViewModels.PaymentsViewModels;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.ViewModels.SportsViewModels;
 using Uniceps.Views.EmployeeViews;
 using Uniceps.Views.SportViews;
-using Uniceps.Views.SubscriptionView;
 
 namespace Uniceps.ViewModels.SubscriptionViewModel
 {
@@ -37,9 +28,8 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         private readonly PlayersDataStore _playerDataStore;
         private readonly PaymentDataStore _paymentDataStore;
         private readonly EmployeeStore _employeeStore;
-        public ObservableCollection<Year> years;
 
-        public IEnumerable<Year> Years => years;
+        public Subscription? ExistedSubscription;
 
         private SportListItemViewModel? _selectedSport;
         public SportListItemViewModel? SelectedSport
@@ -64,7 +54,6 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                     SportPrice = SelectedSport!.Price;
                     CountTotal();
                     OnPropertyChanged(nameof(Total));
-                    GetTrainers(SelectedSport.Sport);
                 }
                 OnPropertyChanged(nameof(CanSubmit));
 
@@ -100,15 +89,13 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
                 if (SelectedPlayer != null)
                 {
                     Phone = SelectedPlayer.Phone;
-                    Year = years.FirstOrDefault(x => x.year == SelectedPlayer.BirthDate);
+                    Year = SelectedPlayer.BirthDate;
                     GenderMale = SelectedPlayer.GenderMale;
-
                 }
                 else
                 {
                     Phone = "";
-                    Year = years.FirstOrDefault(); ;
-
+                    Year = DateTime.Now.Year;
                 }
 
                 OnPropertyChanged(nameof(SelectedPlayer));
@@ -119,12 +106,13 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public IEnumerable<SubscriptionTrainerListItem> TrainerList => _trainerListItemViewModels;
         public IEnumerable<PlayerListItemViewModel> PlayersList => _playerListItemViewModels;
         public ICommand LoadSportsCommand { get; }
+        public ICommand LoadTrainersCommand { get; }
         public ICommand LoadPlayersCommand { get; }
         public ICommand AddSportCommand => new RelayCommand(ExecuteAddSportCommand);
         public ICommand ClearTrainerCommand => new RelayCommand(ExecuteClearTrainerCommand);
         private void ExecuteAddSportCommand()
         {
-            AddSportViewModel addSportViewModel = AddSportViewModel.LoadViewModel(_sportDataStore, _employeeStore);
+            AddSportViewModel addSportViewModel = new AddSportViewModel(_sportDataStore);
             SportDetailWindowView sportDetailWindow = new SportDetailWindowView();
             sportDetailWindow.DataContext = addSportViewModel;
             sportDetailWindow.ShowDialog();
@@ -136,7 +124,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public ICommand AddTrainerCommand => new RelayCommand(ExecuteAddTrainerCommand);
         private void ExecuteAddTrainerCommand()
         {
-            AddTrainerViewModel addTrainerViewModel = AddTrainerViewModel.LoadViewModel(_sportDataStore, _employeeStore);
+            AddTrainerViewModel addTrainerViewModel = new AddTrainerViewModel(_employeeStore);
             TrainerDetailsWindowView trainerDetailsWindow = new TrainerDetailsWindowView();
             trainerDetailsWindow.DataContext = addTrainerViewModel;
             trainerDetailsWindow.ShowDialog();
@@ -147,17 +135,16 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             get { return _playerName; }
             set { _playerName = value; OnPropertyChanged(nameof(PlayerName)); }
         }
-        public CreateSubscriptionWindowViewModel(SportDataStore sportDataStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore)
+        public CreateSubscriptionWindowViewModel(int? playerId ,SportDataStore sportDataStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore)
         {
-            years = new ObservableCollection<Year>();
-            for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 80; i--)
-                years.Add(new Year() { year = i });
             _sportDataStore = sportDataStore;
             _subscriptionStore = subscriptionStore;
             _playerDataStore = playerDataStore;
             _paymentDataStore = paymentDataStore;
             _employeeStore = employeeStore;
+           
             _employeeStore.Created += _employeeStore_Created;
+            _employeeStore.Loaded += _employeeStore_Loaded;
             _sportListItemViewModels = new ObservableCollection<SportListItemViewModel>();
             _trainerListItemViewModels = new ObservableCollection<SubscriptionTrainerListItem>();
             _playerListItemViewModels = new ObservableCollection<PlayerListItemViewModel>();
@@ -170,16 +157,34 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             LoadSportsCommand = new LoadSportItemsCommand(_sportDataStore);
             LoadPlayersCommand = new LoadAllPlayersCommand(_playerDataStore);
             SubmitCommand = new CreateMainSubscriptionCommand(_subscriptionStore, this, _playerDataStore, _paymentDataStore);
+            LoadTrainersCommand = new LoadTrainersItemCommand(_employeeStore);
             Code = null;
             ClearForm();
+            LoadSportsCommand.Execute(null);
+            LoadPlayersCommand.Execute(null);
+            LoadTrainersCommand.Execute(null);
+            SetPlayer(playerId);
+
+        }
+        public ICommand? OpenScanCommand { get; }
+
+     
+        private void _employeeStore_Loaded()
+        {
+            _trainerListItemViewModels.Clear();
+            foreach (var trainer in _employeeStore.Employees.Where(x => x.IsTrainer))
+            {
+                AddTrainer(trainer);
+            }
+            if ((IsRenewal || IsEditMode) && ExistedSubscription != null)
+            {
+                SelectedTrainer = _trainerListItemViewModels.FirstOrDefault(x => x.Id == ExistedSubscription.TrainerId);
+            }
         }
 
         private void _employeeStore_Created(Core.Models.Employee.Employee obj)
         {
-            if (obj.Sports!.Any(x => x.Id == SelectedSport!.Id))
-            {
-                AddTrainer(obj);
-            }
+            AddTrainer(obj);
         }
 
         private void _sportDataStore_Created(Sport obj)
@@ -188,38 +193,54 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         }
 
         public bool IsRenewal { get; set; }
-        public bool IsPlayerSet { get; set; }
-        public int RenewedSubscriptionId { get; set; }
-        public int RenewedSubscriptionSportId { get; set; }
-        public int RenewedSubscriptionPlayerId { get; set; }
-        public int RenewedSubscriptionTrainerId { get; set; }
+        public bool IsEditMode { get; set; }
+        public int? PlayerId { get; set; }
         public void ApplySubscriptionRenew(Subscription subscription)
         {
             IsRenewal = true;
-            RenewedSubscriptionId = subscription.Id;
-            RenewedSubscriptionPlayerId = subscription.PlayerId;
-            RenewedSubscriptionSportId = subscription.SportId??0;
-            RenewedSubscriptionTrainerId = subscription.PlayerId;
-            Code = subscription.Code;
-            if (_playerListItemViewModels.Count() > 0)
-            {
-                SelectedPlayer = _playerListItemViewModels.FirstOrDefault(x => x.Id == RenewedSubscriptionPlayerId);
-            }
-            if (_sportListItemViewModels.Count() > 0)
-            {
-                SelectedSport = _sportListItemViewModels.FirstOrDefault(x => x.Id == RenewedSubscriptionSportId);
-            }
+            ExistedSubscription = subscription;
             SubscribeDate = subscription.EndDate.AddDays(1);
+            Code = subscription.Code;
             SubscribeDays = subscription.DaysCount;
-        }
-        public void SetPlayer(Player player)
-        {
-            IsPlayerSet = true;
-            RenewedSubscriptionPlayerId = player.Id;
-            if (_playerListItemViewModels.Count() > 0)
+            if (_playerListItemViewModels.Count > 0)
             {
+                SelectedPlayer = _playerListItemViewModels.FirstOrDefault(x => x.Id == ExistedSubscription.PlayerId);
+            }
+            if (_sportListItemViewModels.Count > 0)
+            {
+                SelectedSport = _sportListItemViewModels.FirstOrDefault(x => x.Id == ExistedSubscription.SportId);
+            }
+            if (_trainerListItemViewModels.Count > 0)
+            {
+                SelectedTrainer = _trainerListItemViewModels.FirstOrDefault(x => x.Id == ExistedSubscription.TrainerId);
+            }
+        }
 
-                SelectedPlayer = _playerListItemViewModels.FirstOrDefault(x => x.Id == player.Id);
+        public void ApplySubscriptionEdit(Subscription subscription)
+        {
+            IsEditMode = true;
+            ExistedSubscription = subscription;
+            SubscribeDate = subscription.RollDate;
+            Code = subscription.Code;
+            SubscribeDays = subscription.DaysCount;
+            if (_playerListItemViewModels.Count > 0)
+            {
+                SelectedPlayer = _playerListItemViewModels.FirstOrDefault(x => x.Id == ExistedSubscription.PlayerId);
+            }
+            if (_sportListItemViewModels.Count > 0)
+            {
+                SelectedSport = _sportListItemViewModels.FirstOrDefault(x => x.Id == ExistedSubscription.SportId);
+            }
+            if (_trainerListItemViewModels.Count > 0)
+            {
+                SelectedTrainer = _trainerListItemViewModels.FirstOrDefault(x => x.Id == ExistedSubscription.TrainerId);
+            }
+        }
+        public void SetPlayer(int? playerId)
+        {
+            if (playerId != null)
+            {
+                PlayerId = playerId;
             }
         }
         private void PlayerStore_PlayerDeleted(int id)
@@ -255,19 +276,14 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             set
             {
                 _phone = value; OnPropertyChanged(nameof(Phone));
-                ClearError(nameof(Phone));
-                if (Phone?.Trim().Length < 10)
-                {
-                    AddError("يجب ان يكون رقم الهاتف 10 ارقام", nameof(Phone));
-                    OnErrorChanged(nameof(Phone));
-                }
+              
 
             }
         }
         public string? Code { get; set; }
 
-        private Year? _year;
-        public Year? Year
+        private int _year;
+        public int Year
         {
             get { return _year; }
             set
@@ -276,6 +292,12 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
 
                 OnPropertyChanged(nameof(Year));
             }
+        }
+        private string? _mediclStatus;
+        public string? MediclStatus
+        {
+            get { return _mediclStatus; }
+            set { _mediclStatus = value; OnPropertyChanged(nameof(MediclStatus)); }
         }
         private bool _genderMale;
         public bool GenderMale
@@ -329,29 +351,16 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             {
                 AddPlayer(player);
             }
-            if (IsRenewal && SelectedPlayer != null)
+            if ((IsRenewal || IsEditMode) && ExistedSubscription != null)
             {
-                SelectedPlayer = _playerListItemViewModels.FirstOrDefault(x => x.Id == RenewedSubscriptionPlayerId);
+                SelectedPlayer = _playerListItemViewModels.FirstOrDefault(x => x.Id == ExistedSubscription.PlayerId);
             }
-            if (IsPlayerSet && SelectedPlayer != null)
+            else if (PlayerId.HasValue)
             {
-                SelectedPlayer = _playerListItemViewModels.FirstOrDefault(x => x.Id == RenewedSubscriptionPlayerId);
+                SelectedPlayer = _playerListItemViewModels.FirstOrDefault(x => x.Id == PlayerId);
             }
         }
 
-        private void GetTrainers(Sport? sport)
-        {
-            _trainerListItemViewModels.Clear();
-            if (sport != null)
-                foreach (var trainer in sport!.Trainers!)
-                {
-                    AddTrainer(trainer);
-                }
-            if (IsRenewal && SelectedSport != null && SelectedSport.Id == RenewedSubscriptionSportId)
-            {
-                SelectedTrainer = _trainerListItemViewModels.FirstOrDefault(x => x.Id == RenewedSubscriptionTrainerId);
-            }
-        }
 
         private void CountTotal()
         {
@@ -431,13 +440,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             {
                 AddSport(sport);
             }
-            if (IsRenewal && SelectedSport != null)
+            if ((IsRenewal || IsEditMode)&&ExistedSubscription!=null)
             {
-                SelectedSport = _sportListItemViewModels.FirstOrDefault(x => x.Id == RenewedSubscriptionSportId);
-            }
-            else if (SelectedSport != null)
-            {
-                SelectedSport = _sportListItemViewModels.FirstOrDefault(x => x.Id == SelectedSport.Id);
+                SelectedSport = _sportListItemViewModels.FirstOrDefault(x => x.Id == ExistedSubscription.SportId);
             }
             else
                 SelectedSport = _sportListItemViewModels.FirstOrDefault();
@@ -470,6 +475,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         }
         public override void Dispose()
         {
+           
             _sportDataStore.Loaded -= _sportDataStore_Loaded;
             base.Dispose();
         }
@@ -478,13 +484,6 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             SubscriptionTrainerListItem itemViewModel =
                 new SubscriptionTrainerListItem(trainer);
             _trainerListItemViewModels.Add(itemViewModel);
-        }
-        public static CreateSubscriptionWindowViewModel LoadViewModel(SportDataStore sportDataStore, SubscriptionDataStore subscriptionDataStore, PlayersDataStore playersDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore)
-        {
-            CreateSubscriptionWindowViewModel viewModel = new(sportDataStore, subscriptionDataStore, playersDataStore, paymentDataStore, employeeStore);
-            viewModel.LoadSportsCommand.Execute(null);
-            viewModel.LoadPlayersCommand.Execute(null);
-            return viewModel;
         }
     }
 }

@@ -82,7 +82,7 @@ namespace Uniceps.Commands.Player
                             isAble = true;
                         break;
                     case ViewType.Players:
-                        if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor)
                             isAble = true;
                         break;
                     case ViewType.Sport:
@@ -150,7 +150,7 @@ namespace Uniceps.Commands.Player
                             _navigationStore.CurrentViewModel = _premiumViewModel;
                         break;
                     case ViewType.Players:
-                        if (_authenticationStore!.CurrentAccount!.Role != Roles.Accountant)
+                        if (_authenticationStore!.CurrentAccount!.Role == Roles.Admin || _authenticationStore!.CurrentAccount!.Role == Roles.Supervisor)
                             _navigationStore.CurrentViewModel = _playersPageViewModel;
                         break;
                     case ViewType.Sport:

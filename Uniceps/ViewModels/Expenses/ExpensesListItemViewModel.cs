@@ -41,7 +41,7 @@ namespace Uniceps.ViewModels.Expenses
         }
         public void ExecuteEditExpensesCommand()
         {
-            EditExpenseViewModel editExpenseViewModel = new EditExpenseViewModel(_expensesDataStore!,this);
+            AddExpenseViewModel editExpenseViewModel = new AddExpenseViewModel(_expensesDataStore!,Expenses!);
             ExpenseDetailViewWinow expenseDetailViewWinow = new ExpenseDetailViewWinow();
             expenseDetailViewWinow.DataContext = editExpenseViewModel;
             expenseDetailViewWinow.ShowDialog();

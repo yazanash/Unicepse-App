@@ -85,41 +85,48 @@ namespace Uniceps.Stores.RoutineStores
                 Directory.CreateDirectory(imagesFolder);
             foreach (var exerciseDto in exerciseDtoResponse.Data!)
             {
-                string muscleFolder = Path.Combine(imagesFolder, exerciseDto.MuscleHeadCode.ToString());
-                if (!Directory.Exists(muscleFolder))
+                try
+                {
+                    string muscleFolder = Path.Combine(imagesFolder, exerciseDto.MuscleHeadCode.ToString());
+                    if (!Directory.Exists(muscleFolder))
+                        Directory.CreateDirectory(muscleFolder);
+
                     Directory.CreateDirectory(muscleFolder);
+                    string originalExtension = Path.GetExtension(exerciseDto.ImageUrl)!;
+                    string localPath = Path.Combine(muscleFolder, $"{exerciseDto.ExerciseId}.png");
+                    ExerciseV2 exercises = new()
+                    {
+                        ImagePath = localPath,
+                        MuscleGroupCode = exerciseDto.MuscleGroupCode,
+                        Name = exerciseDto.Name,
+                        ExerciseId = exerciseDto.ExerciseId,
+                        MuscleHeadCode = exerciseDto.MuscleHeadCode,
+                        MuscleAux1 = exerciseDto.MuscleAux1,
+                        MuscleAux2 = exerciseDto.MuscleAux2,
+                        MuscleAux3 = exerciseDto.MuscleAux3,
+                        Description = exerciseDto.Implementation ?? "N/A",
+                        EquipmentCode = exerciseDto.EquipmentCode,
+                        IsActive = true,
+                        IsLegacy = false,
+                        Mechanism = GetExerciseMechanisim(exerciseDto.Mechanism ?? ""),
+                        LastUpdated = exerciseDto.LastUpdated,
+                        Version = exerciseDto.Version,
+                    };
+                    int oldVersion = await _getExercisesService.GetExerciseVersion(exercises.ExerciseId);
 
-                Directory.CreateDirectory(muscleFolder);
-                string originalExtension = Path.GetExtension(exerciseDto.ImageUrl)!;
-                string localPath = Path.Combine(muscleFolder, $"{exerciseDto.ExerciseId}.png");
-                ExerciseV2 exercises = new()
-                {
-                    ImagePath = localPath,
-                    MuscleGroupCode = exerciseDto.MuscleGroupCode,
-                    Name = exerciseDto.Name,
-                    ExerciseId = exerciseDto.ExerciseId,
-                    MuscleHeadCode = exerciseDto.MuscleHeadCode,
-                    MuscleAux1 = exerciseDto.MuscleAux1,
-                    MuscleAux2 = exerciseDto.MuscleAux2,
-                    MuscleAux3 = exerciseDto.MuscleAux3,
-                    Description = exerciseDto.Implementation ?? "N/A",
-                    EquipmentCode = exerciseDto.EquipmentCode,
-                    IsActive = true,
-                    IsLegacy = false,
-                    Mechanism = GetExerciseMechanisim(exerciseDto.Mechanism ?? ""),
-                    LastUpdated = exerciseDto.LastUpdated,
-                    Version = exerciseDto.Version,
-                };
-                int oldVersion = await _getExercisesService.GetExerciseVersion(exercises.ExerciseId);
+                    await _getExercisesService.GetOrCreate(exercises);
 
-                await _getExercisesService.GetOrCreate(exercises);
-
-                if (oldVersion < exerciseDto.Version|| !File.Exists(localPath))
-                {
-                    if (File.Exists(localPath)) File.Delete(localPath);
-                    await _getExercisesApiService.DownloadImage(exerciseDto.ExerciseId!, localPath);
+                    if (oldVersion < exerciseDto.Version || !File.Exists(localPath))
+                    {
+                        if (File.Exists(localPath)) File.Delete(localPath);
+                        await _getExercisesApiService.DownloadImage(exerciseDto.ExerciseId!, localPath);
+                    }
+                    GotExercises?.Invoke(++count);
                 }
-                GotExercises?.Invoke(++count);
+                catch (Exception ex)
+                {
+                    _logger.LogError($"{ex.Message} | {ex.InnerException?.Message} | {exerciseDto.ExerciseId}");
+                }
             }
         }
         private ExerciseMechanism GetExerciseMechanisim(string uniBi)
@@ -144,7 +151,14 @@ namespace Uniceps.Stores.RoutineStores
                     Code = musGroup.Code,
                 };
                 muscleGroup.Heads = musGroup.MuscleHeads.Select(x => new MuscleHead { Code = x.Code, MuscleGroupCode = x.MuscleGroupCode, Name = x.Name }).ToList();
-                await _getExercisesService.GetOrCreateMuscleGroup(muscleGroup);
+                try
+                {
+                    await _getExercisesService.GetOrCreateMuscleGroup(muscleGroup);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"{ex.Message} | {ex.InnerException?.Message} | {muscleGroup.Code}");
+                }
             }
             foreach (var equip in apiMuscleGroups.Data!.Equipments)
             {
@@ -153,7 +167,14 @@ namespace Uniceps.Stores.RoutineStores
                     Name = equip.Name,
                     Code = equip.Code,
                 };
-                await _getExercisesService.GetOrCreateEquipments(equipment);
+                try
+                {
+                    await _getExercisesService.GetOrCreateEquipments(equipment);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"{ex.Message} | {ex.InnerException?.Message} | {equipment.Code}");
+                }
             }
         }
 

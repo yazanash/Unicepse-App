@@ -22,5 +22,6 @@ namespace Uniceps.DataExporter.Dtos
         public bool IsTakenContainer { get; set; }
         public bool IsSubscribed { get; set; }
         public List<SubscriptionDto> Subscriptions { get; set; } = new();
+        public string? MediclStatus { get;  set; }
     }
 }

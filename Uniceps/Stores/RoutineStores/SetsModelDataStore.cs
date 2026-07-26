@@ -9,7 +9,7 @@ using Uniceps.Core.Services;
 
 namespace Uniceps.Stores.RoutineStores
 {
-    public class SetsModelDataStore : IDataStore<SetModel>, IGetAllByIdDataStore<SetModel>
+    public class SetsModelDataStore : IDataStore<SetModel>
     {
         private readonly IDataService<SetModel> _dataService;
         private readonly IApplySetsToAll _applySetsToAll;
