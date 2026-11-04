@@ -3,10 +3,12 @@ using System.Windows.Input;
 using Uniceps.Commands.Player;
 using Uniceps.Stores;
 using Uniceps.Core.Models.Player;
+using Uniceps.navigation.Extensions;
+using System.Collections.Generic;
 
 namespace Uniceps.ViewModels.PlayersViewModels
 {
-    public class AddPlayerViewModel : ErrorNotifyViewModelBase
+    public class AddPlayerViewModel : ErrorNotifyViewModelBase, IQueryAttributable
     {
         private readonly PlayersDataStore _playerStore;
         public int PlayerId;
@@ -16,18 +18,15 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _playerStore = playerStore;
             SubmitCommand = new SubmitCommand(this, _playerStore);
         }
-        public AddPlayerViewModel(Player player,PlayersDataStore playerStore)
+        public void ApplyEditMode(Player player)
         {
-            PlayerId= player.Id;
+            PlayerId = player.Id;
             FullName = player.FullName;
             Phone = player.Phone;
             Year = player.BirthDate;
             GenderMale = player.GenderMale;
-            SubscribeDate = player.SubscribeDate;
             MediclStatus = player.MediclStatus;
             IsEditMode = true;
-            _playerStore = playerStore;
-            SubmitCommand = new SubmitCommand(this, _playerStore);
         }
         public Action? PlayerCreated;
         internal void OnPlayerCreated()
@@ -137,6 +136,16 @@ namespace Uniceps.ViewModels.PlayersViewModels
         public override void Dispose()
         {
             base.Dispose();
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<Player>("Player", out Player? player))
+            {
+                if (player != null)
+                    ApplyEditMode(player);
+            }
+
         }
     }
 }

@@ -29,110 +29,67 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
-
-        <DataTemplate DataType="{x:Type vms:PlayerMainPageViewModel }">
-            <view:PlayerMainPage />
-        </DataTemplate>
-       
-        <DataTemplate DataType="{x:Type subsvms:StopSubscriptionViewModel}">
-            <subsview:StopSubscriptionView />
-        </DataTemplate>
-
-      
-      
-        <DataTemplate DataType="{x:Type payvms:PaymentListViewModel}">
-            <payview:PaymentListView />
-        </DataTemplate>
-       
-        <DataTemplate DataType="{x:Type metricvms:MetricReportViewModel}">
-            <metricview:MetricsCardView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type metricvms:AddMetricsViewModel}">
-            <metricview:AddMetricDetailView />
-        </DataTemplate>
-       
-        <DataTemplate DataType="{x:Type attenvms:PlayerAttendenceViewModel}">
-            <attenview:PlayerAttendenceView />
-        </DataTemplate>
-
-
-
-
-
-
-
     </Window.Resources>
     <Border>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Border Grid.ColumnSpan="2" >
-                <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
-                    <RadioButton
-                       IsChecked="{Binding IsPersonal}"   
-                          Command="{Binding PlayerHomeCommand}"
-                          Style="{StaticResource BarButtonRD}" >
+            <ctrl:InfoCard Grid.Column="1" Grid.RowSpan="2" Grid.Row="0"  DataContext="{Binding Player,UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TabControl Grid.Column="0" 
+                         Style="{StaticResource ModernTabControlStyle}"
+                        Background="{DynamicResource Brush.Background}"  BorderBrush="{DynamicResource Brush.Border}"  SelectedIndex="{Binding SelectedTabIndex, UpdateSourceTrigger=PropertyChanged}" Margin="5">
+               
+                <!-- 1. الصفحة الشخصية -->
+                <TabItem >
+                    <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Account"/>
                             <TextBlock  Text="الصفحة الشخصية" />
                         </StackPanel>
-                    </RadioButton>
+                    </TabItem.Header>
+                    <view:PlayerMainPage DataContext="{Binding PlayerMainPageViewModel}"/>
+                </TabItem>
 
-                    <RadioButton
-                      IsChecked="{Binding IsPayments}"  
-                          Command="{Binding PaymentCommand}"
-                              Style="{StaticResource BarButtonRD}" >
+                <!-- 2. إضافة دفعة -->
+                <TabItem >
+                    <TabItem.Header>
                         <StackPanel Orientation="Horizontal" >
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
                             <TextBlock Text="اضافة دفعة"  />
 
                         </StackPanel>
-                    </RadioButton>
-                    <RadioButton
-                      IsChecked="{Binding IsMetrics}"  
-                          Command="{Binding MetricsCommand}"
-                              Style="{StaticResource BarButtonRD}" >
+                    </TabItem.Header>
+                    <payview:PaymentListView DataContext="{Binding PaymentListViewModel}"/>
+                </TabItem>
+
+                <!-- 3. القياسات -->
+                <TabItem >
+                    <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartArc" />
                             <TextBlock Text="القياسات"  />
 
                         </StackPanel>
-                    </RadioButton>
+                    </TabItem.Header>
+                    <metricview:MetricsCardView DataContext="{Binding MetricReportViewModel}"/>
+                </TabItem>
 
-                    <RadioButton
-                           IsChecked="{Binding IsLog}"  
-                          Command="{Binding PlayerAttendenceCommand}"
-                              Style="{StaticResource BarButtonRD}" >
+                <!-- 4. جدول الدوام -->
+                <TabItem >
+                    <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ChartBarStacked" />
                             <TextBlock Text="جدول الدوام" />
 
                         </StackPanel>
-                    </RadioButton>
+                    </TabItem.Header>
+                    <attenview:PlayerAttendenceView DataContext="{Binding PlayerAttendenceViewModel}"/>
+                </TabItem>
 
-
-
-                </StackPanel>
-            </Border>
-
-
-
-            <ctrl:InfoCard Grid.Column="1" Grid.RowSpan="2" Grid.Row="0"  DataContext="{Binding Player,UpdateSourceTrigger=PropertyChanged}"/>
-
-
-
-
-            <Border Padding="10" Grid.Column="0" Grid.Row="1">
-                <ContentControl Content="{Binding CurrentPlayerViewModel}"/>
-            </Border>
-
+            </TabControl>
         </Grid>
     </Border>
 </Window>

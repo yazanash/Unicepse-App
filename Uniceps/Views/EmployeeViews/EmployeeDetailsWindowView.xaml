@@ -27,6 +27,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
@@ -63,7 +64,7 @@
 
                         </StackPanel>
 
-                        <StackPanel  Grid.Row="1" Grid.Column="2" Margin="5">
+                        <StackPanel  Grid.Row="1" Grid.Column="1" Margin="5">
                             <TextBlock Text="قيمة الراتب" 
                                  Foreground="{DynamicResource Brush.Foreground}"
                                 Margin="0 0 0 8"
@@ -71,10 +72,17 @@
                             <TextBox Text="{Binding SalaryValue, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" Style="{StaticResource textBoxStyle}"/>
 
                         </StackPanel>
+                        <StackPanel  Grid.Row="1" Grid.Column="2" Margin="5">
+                            <TextBlock Text="النسبة %"  Foreground="{DynamicResource Brush.Foreground}"
+        Margin="0 0 0 8"
+        FontSize="18"/>
+                            <TextBox Text="{Binding ParcentValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxStyle}"/>
+
+                        </StackPanel>
 
 
 
-                        <StackPanel  Grid.Row="1" Grid.Column="0" Margin="5">
+                        <StackPanel  Grid.Row="0" Grid.Column="3" Margin="5">
                             <TextBlock Text="المسمى الوظيفي" 
                                  Foreground="{DynamicResource Brush.Foreground}"
                                 Margin="0 0 0 8"
@@ -83,7 +91,7 @@
 
                         </StackPanel>
 
-                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
                             <TextBlock Text="تاريخ التوظيف" 
                               Foreground="{DynamicResource Brush.Foreground}"
                                 Margin="0 0 0 8"
@@ -93,11 +101,11 @@
                                  SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
                                 />
                         </StackPanel>
-                        <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
+                        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="2" Margin="5">
                             <TextBlock Text="الوظيفة"  Foreground="{DynamicResource Brush.Foreground}"
                                 Margin="0 0 0 8"
                                 FontSize="18"/>
-                            <StackPanel Orientation="Horizontal">
+                            <WrapPanel Orientation="Horizontal">
                                 <RadioButton Style="{StaticResource RadioChoose}" IsChecked="{Binding IsSecertary}" >
                                     <RadioButton.Content>
                                         <!--<Border Padding="5" CornerRadius="10" BorderThickness="1" BorderBrush="#C14E00"> -->
@@ -110,7 +118,7 @@
 
                                     </RadioButton.Content>
                                 </RadioButton>
-                                <RadioButton Style="{StaticResource RadioChoose}" IsChecked="True">
+                                <RadioButton Style="{StaticResource RadioChoose}" IsChecked="{Binding IsEmployee}">
                                     <RadioButton.Content>
                                         <StackPanel Orientation="Vertical">
                                             <TextBlock Text="موظف" TextAlignment="Center" FontSize="18"
@@ -119,14 +127,23 @@
 
                                     </RadioButton.Content>
                                 </RadioButton>
-                            </StackPanel>
+                                <RadioButton Style="{StaticResource RadioChoose}" IsChecked="{Binding IsTrainer}">
+                                    <RadioButton.Content>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="مدرب" TextAlignment="Center" FontSize="18"
+                         FontWeight="Bold"/>
+                                        </StackPanel>
+
+                                    </RadioButton.Content>
+                                </RadioButton>
+                            </WrapPanel>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
+                        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
                             <TextBlock Text="الجنس" 
                                 Margin="0 0 0 8" Foreground="{DynamicResource Brush.Foreground}"
                                 FontSize="18"/>
-                            <StackPanel Orientation="Horizontal">
+                            <WrapPanel Orientation="Horizontal">
                                 <RadioButton Style="{StaticResource RadioChoose}" IsChecked="{Binding GenderMale}" >
                                     <RadioButton.Content>
                                         <!--<Border Padding="5" CornerRadius="10" BorderThickness="1" BorderBrush="#C14E00"> -->
@@ -150,10 +167,10 @@
 
                                     </RadioButton.Content>
                                 </RadioButton>
-                            </StackPanel>
+                            </WrapPanel>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="2" Margin="0 20 0 0" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center">
                             <Button Command="{Binding SubmitCommand}" Style="{StaticResource FormButton}" Width="200" Grid.Column="0" Grid.Row="4"   Content="حفظ"  HorizontalAlignment="Right">
                             </Button>
                         </StackPanel>

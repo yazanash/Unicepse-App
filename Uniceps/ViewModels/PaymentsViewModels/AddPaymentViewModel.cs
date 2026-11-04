@@ -9,12 +9,13 @@ using Uniceps.Commands.Payments;
 using Uniceps.Commands.SubscriptionCommand;
 using Uniceps.Core.Models.Payment;
 using Uniceps.Core.Models.Subscription;
+using Uniceps.navigation.Extensions;
 using Uniceps.Stores;
 using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.ViewModels.PaymentsViewModels
 {
-    public class AddPaymentViewModel : ListingViewModelBase, INotifyDataErrorInfo
+    public class AddPaymentViewModel : ListingViewModelBase, INotifyDataErrorInfo,IQueryAttributable
     {
         private readonly PaymentDataStore _paymentDataStore;
         private readonly SubscriptionDataStore _subscriptionDataStore;
@@ -24,25 +25,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
         public int Id;
         public int SubscriptionId;
         public bool IsEditMode;
-
-        public Action? RequestClose;
-        public void OnRequestClose()
-        {
-            RequestClose?.Invoke();
-        }
-        public AddPaymentViewModel(int playerId, PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore)
-        {
-            PlayerId = playerId;
-            _paymentDataStore = paymentDataStore;
-            _subscriptionDataStore = subscriptionDataStore;
-            _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
-            LoadSubscriptionCommand = new LoadSubscriptions(this, _subscriptionDataStore);
-            _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
-            SubmitCommand = new SubmitPaymentCommand(_paymentDataStore, this);
-            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
-            LoadSubscriptionCommand.Execute(PlayerId);
-        }
-        public AddPaymentViewModel(PlayerPayment playerPayment, PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore)
+        private void ApplyEditMode(PlayerPayment playerPayment)
         {
             PlayerId = playerPayment.PlayerId;
             SubscriptionId = playerPayment.SubscriptionId;
@@ -50,6 +33,14 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             PaymentValue = playerPayment.PaymentValue;
             PayDate = playerPayment.PayDate;
             Descriptiones = playerPayment.Des;
+        }
+        public Action? RequestClose;
+        public void OnRequestClose()
+        {
+            RequestClose?.Invoke();
+        }
+        public AddPaymentViewModel( PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore)
+        {
             _paymentDataStore = paymentDataStore;
             _subscriptionDataStore = subscriptionDataStore;
             _subscriptionListViewModel = new ObservableCollection<SubscriptionCardViewModel>();
@@ -57,9 +48,7 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             _subscriptionDataStore.Loaded += _subscriptionDataStore_Loaded;
             SubmitCommand = new SubmitPaymentCommand(_paymentDataStore, this);
             PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
-            LoadSubscriptionCommand.Execute(PlayerId);
         }
-
         private void _subscriptionDataStore_Loaded()
         {
             _subscriptionListViewModel.Clear();
@@ -207,6 +196,20 @@ namespace Uniceps.ViewModels.PaymentsViewModels
         public IEnumerable GetErrors(string? propertyName)
         {
             return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<int>("PlayerId", out var playerId))
+            {
+                PlayerId = playerId;
+                LoadSubscriptionCommand.Execute(PlayerId);
+            }
+            if (query.TryGetValue<PlayerPayment>("Payment", out var payment))
+            {
+                if(payment!=null)
+                ApplyEditMode(payment);
+            }
         }
 
 

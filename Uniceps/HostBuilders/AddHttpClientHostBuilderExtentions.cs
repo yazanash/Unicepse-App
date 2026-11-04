@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.API;
 using Uniceps.API.Models;
+using Uniceps.API.Services;
 using Uniceps.BackgroundServices;
 using Uniceps.Entityframework.DbContexts;
 using Uniceps.LicenseManager;
@@ -31,10 +32,19 @@ namespace Uniceps.HostBuilders
                     ? DatabaseStorageService.ResolveSQLitePath(hostContext.Configuration)
                     : hostContext.Configuration.GetConnectionString("default")!;
                 services.AddSingleton(new UnicepsePrepAPIKey(""));
-                services.AddHttpClient<UnicepseApiPrepHttpClient>(c =>
+                services.AddHttpClient<UnicepseApiPrepHttpClient>(client =>
                 {
-                    c.Timeout = TimeSpan.FromSeconds(30);
-                    c.BaseAddress = new Uri(apiUrl!);
+                    string baseUrl = SyncSettingsManager.Current.ServerBaseUrl;
+
+                    if (!string.IsNullOrWhiteSpace(baseUrl))
+                    {
+                        if (!baseUrl.EndsWith("/"))
+                            baseUrl += "/";
+
+                        client.BaseAddress = new Uri(baseUrl);
+                    }
+
+                    client.Timeout = TimeSpan.FromSeconds(SyncSettingsManager.Current.ConnectionTimeoutSeconds);
                 });
                 services.AddHttpClient<UnicepseApiClientV2>(c =>
                 {
@@ -42,6 +52,7 @@ namespace Uniceps.HostBuilders
                     c.BaseAddress = new Uri(apiUrl!);
                 });
                 services.AddHostedService<DataSyncService>();
+                services.AddSingleton<BackgroundServiceStore>();
                 services.AddSingleton(new UnicepsDbContextFactory(CONNECTION_STRING, SQLITE));
                 services.AddSingleton(new ActivationService(apiUrl, publicKey));
             });

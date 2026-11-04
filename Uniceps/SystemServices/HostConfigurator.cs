@@ -34,10 +34,9 @@ namespace Uniceps.SystemServices
               .AddServices()
               .AddApiServices()
               .AddDataStatusServices()
-              .AddDataStatusStores()
-              .AddCommands()
               .AddStores()
               .AddHttpClient()
+              .AddBioEngine()
               .Build();
 
     }

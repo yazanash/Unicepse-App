@@ -8,7 +8,6 @@ using System.Windows.Input;
 using Uniceps.Commands.Player;
 using Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands;
 using Uniceps.Core.Models.RoutineModels;
-using Uniceps.navigation.Stores;
 using Uniceps.navigation;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
@@ -18,16 +17,14 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
     public class RoutineItemsBufferListViewModel : ListingViewModelBase
     {
         private readonly RoutineItemDataStore _routineItemDataStore;
-        private readonly NavigationStore _navigationStore;
         private readonly DayGroupDataStore _dayGroupDataStore;
         private readonly ObservableCollection<RoutineItemListItemViewModel> _routineItemListItemViewModels;
         public IEnumerable<RoutineItemListItemViewModel> RoutineItems => _routineItemListItemViewModels;
        
         public ICommand LoadRoutineItemCommand { get; }
-        public RoutineItemsBufferListViewModel(RoutineItemDataStore routineItemDataStore, NavigationStore navigationStore, DayGroupDataStore dayGroupDataStore)
+        public RoutineItemsBufferListViewModel(RoutineItemDataStore routineItemDataStore,  DayGroupDataStore dayGroupDataStore)
         {
             _routineItemDataStore = routineItemDataStore;
-            _navigationStore = navigationStore;
             _dayGroupDataStore = dayGroupDataStore;
 
             _routineItemListItemViewModels = new ObservableCollection<RoutineItemListItemViewModel>();

@@ -7,7 +7,6 @@ using System.Windows;
 using Uniceps.Commands;
 using Uniceps.Core.Models.DailyActivity;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps;

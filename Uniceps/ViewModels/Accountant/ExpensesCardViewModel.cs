@@ -15,13 +15,11 @@ namespace Uniceps.ViewModels.Accountant
     public class ExpensesCardViewModel : ListingViewModelBase
     {
         private readonly DailyReportStore _dailyReportStore;
-        private readonly AccountingStateViewModel _accountingStateViewModel;
-        public ExpensesCardViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
+        public ExpensesCardViewModel(DailyReportStore dailyReportStore)
         {
             _dailyReportStore = dailyReportStore;
-            _accountingStateViewModel = accountingStateViewModel;
             expensesListItemViewModels = new ObservableCollection<Expenses.ExpensesListItemViewModel>();
-            LoadExpensesCommand = new LoadDailyExpenses(_dailyReportStore, _accountingStateViewModel);
+            LoadExpensesCommand = new LoadDailyExpenses(_dailyReportStore);
             _dailyReportStore.ExpensesLoaded += _dailyReportStore_ExpensesLoaded;
 
         }
@@ -46,13 +44,5 @@ namespace Uniceps.ViewModels.Accountant
             itemViewModel.Order = expensesListItemViewModels.Count();
         }
         public ICommand LoadExpensesCommand;
-        public static ExpensesCardViewModel LoadViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
-        {
-            ExpensesCardViewModel viewModel = new ExpensesCardViewModel(dailyReportStore, accountingStateViewModel);
-
-            viewModel.LoadExpensesCommand.Execute(null);
-
-            return viewModel;
-        }
     }
 }

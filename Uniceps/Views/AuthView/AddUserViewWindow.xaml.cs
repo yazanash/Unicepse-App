@@ -31,9 +31,6 @@ namespace Uniceps.Views.AuthView
             var vm = DataContext as AddUserViewModel;
             if (vm != null)
                 vm.UserCreated += () => this.Close();
-            var editVm = DataContext as EditUserViewModel;
-            if (editVm != null)
-                editVm.UserUpdated += () => this.Close();
         }
     }
 }

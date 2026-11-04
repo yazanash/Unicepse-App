@@ -1,4 +1,6 @@
-﻿namespace Uniceps.Core.Common
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Uniceps.Core.Common
 {
     public enum DataStatus
     {
@@ -18,9 +20,13 @@
     }
     public enum Roles
     {
+        [Display(Name = "مدير النظام")]
         Admin = 0,
+        [Display(Name = "مسؤول")]
         Supervisor = 1,
+        [Display(Name = "مستخدم")]
         User = 2,
+        [Display(Name = "محاسب")]
         Accountant = 3
     }
     public enum GenderType

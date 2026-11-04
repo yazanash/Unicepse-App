@@ -117,7 +117,7 @@ namespace Uniceps.Test.DataServicesTest
             Subscription expected_subscription = subscriptionFactory!.FakeSubscription(sport, player, trainer);
             Subscription actual_subscription = await subscriptionDataService!.Create(expected_subscription);
             //Assert
-            Assert.Equals(expected_subscription.PlayerName!, actual_subscription.PlayerName!);
+            Assert.Equals(expected_subscription.Player?.FullName!, actual_subscription.Player?.FullName!);
             Assert.Equals(expected_subscription.SportName!, actual_subscription.SportName!);
         }
 
@@ -147,7 +147,7 @@ namespace Uniceps.Test.DataServicesTest
             Subscription test_subscription = await subscriptionDataService!.Create(expected_subscription);
             Subscription actual_subscription = await subscriptionDataService.Get(test_subscription.Id);
             //Assert
-            Assert.Equals(expected_subscription.PlayerName!, actual_subscription.PlayerName!);
+            Assert.Equals(expected_subscription.Player?.FullName!, actual_subscription.Player?.FullName!);
             Assert.Equals(expected_subscription.SportName!, actual_subscription.SportName!);
         }
 

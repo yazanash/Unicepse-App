@@ -21,7 +21,6 @@ using Uniceps.FileSystem.Models;
 using Uniceps.Helpers.Mappers;
 using Uniceps.Models.RoutineExportModels;
 using Uniceps.Stores;
-using Uniceps.Stores.ApiDataStores;
 using Uniceps.SystemServices;
 using Uniceps.utlis.common;
 using Uniceps.ViewModels.PrintRoutineViewModel;
@@ -32,34 +31,17 @@ namespace Uniceps.Stores.RoutineStores
     {
         private readonly IDataService<RoutineModel> _dataService;
         private readonly List<RoutineModel> _routineModels;
-        private readonly AccountStore _accountStore;
         public IEnumerable<RoutineModel> Routines => _routineModels;
-        public RoutineTempDataStore(IDataService<RoutineModel> dataService, AccountStore accountStore)
+        public RoutineTempDataStore(IDataService<RoutineModel> dataService)
         {
             _dataService = dataService;
             _routineModels = new List<RoutineModel>();
-            _accountStore = accountStore;
         }
 
         public event Action<RoutineModel>? Created;
         public event Action? Loaded;
         public event Action<RoutineModel>? Updated;
         public event Action<int>? Deleted;
-        public event Action<RoutineModel?>? RoutineChanged;
-
-        private RoutineModel? _selectedRoutine;
-        public RoutineModel? SelectedRoutine
-        {
-            get
-            {
-                return _selectedRoutine;
-            }
-            set
-            {
-                _selectedRoutine = value;
-                RoutineChanged?.Invoke(SelectedRoutine);
-            }
-        }
         public async Task Add(RoutineModel entity)
         {
             await _dataService.Create(entity);

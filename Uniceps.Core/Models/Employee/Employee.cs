@@ -10,9 +10,12 @@ using Uniceps.Core.Models.Expenses;
 
 namespace Uniceps.Core.Models.Employee
 {
-    public class Employee : Person
+    public class Employee : DomainObject
     {
-
+        public string? FullName { get; set; }
+        public string? Phone { get; set; }
+        public int BirthDate { get; set; }
+        public bool GenderMale { get; set; }
         public bool Salary { get; set; }
         public bool Parcent { get; set; }
         public double SalaryValue { get; set; }
@@ -50,6 +53,7 @@ namespace Uniceps.Core.Models.Employee
             IsActive = employee.IsActive;
             IsTrainer = employee.IsTrainer;
             SyncId = employee.SyncId;
+            ServerVersion = employee.ServerVersion;
         }
     }
 }

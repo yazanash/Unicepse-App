@@ -16,13 +16,11 @@ namespace Uniceps.ViewModels.Accountant
     public class PaymentsCardViewModel : ListingViewModelBase
     {
         private readonly DailyReportStore _dailyReportStore;
-        private readonly AccountingStateViewModel _accountingStateViewModel;
-        public PaymentsCardViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
+        public PaymentsCardViewModel(DailyReportStore dailyReportStore)
         {
             _dailyReportStore = dailyReportStore;
-            _accountingStateViewModel = accountingStateViewModel;
             _incomeListItemViewModels = new ObservableCollection<IncomeListItemViewModel>();
-            LoadPaymentsCommand = new LoadDailyPayments(_dailyReportStore, _accountingStateViewModel);
+            LoadPaymentsCommand = new LoadDailyPayments(_dailyReportStore);
             _dailyReportStore.PaymentLoaded +=_dailyReportStore_PaymentLoaded;
 
         }
@@ -47,13 +45,6 @@ namespace Uniceps.ViewModels.Accountant
             itemViewModel.Order = _incomeListItemViewModels.Count();
         }
         public ICommand LoadPaymentsCommand;
-        public static PaymentsCardViewModel LoadViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
-        {
-            PaymentsCardViewModel viewModel = new PaymentsCardViewModel(dailyReportStore, accountingStateViewModel);
-
-            viewModel.LoadPaymentsCommand.Execute(null);
-
-            return viewModel;
-        }
+        
     }
 }

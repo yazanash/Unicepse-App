@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Uniceps.Commands;
-using Uniceps.Commands.Player;
-using Uniceps.Commands.RoutineSystemCommands.DayGroupCommands;
 using Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands;
 using Uniceps.Core.Models.RoutineModels;
-using Uniceps.navigation;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores.RoutineStores;
-using Uniceps.ViewModels;
 using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
-using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.Views.RoutineTemplateViews.RoutineComponent;
 
 namespace Uniceps.ViewModels.RoutineTemplateViewModels
@@ -24,7 +15,6 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
     public class RoutineItemListViewModel : ListingViewModelBase 
     {
         private readonly RoutineItemDataStore _routineItemDataStore;
-        private readonly NavigationStore _navigationStore;
         private readonly ExercisesListViewModel _exercisesViewModel;
         private readonly DayGroupDataStore _dayGroupDataStore;
         private readonly SetsModelDataStore _setsModelDataStore;
@@ -45,11 +35,10 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         public ICommand AddSetsCommand { get; }
         public ICommand ApplySetsToAllCommand { get; }
 
-        public RoutineItemListViewModel(RoutineItemDataStore routineItemDataStore, ExercisesListViewModel exercisesViewModel, NavigationStore navigationStore, DayGroupDataStore dayGroupDataStore, SetsModelDataStore setsModelDataStore)
+        public RoutineItemListViewModel(RoutineItemDataStore routineItemDataStore, ExercisesListViewModel exercisesViewModel,  DayGroupDataStore dayGroupDataStore, SetsModelDataStore setsModelDataStore)
         {
             _routineItemDataStore = routineItemDataStore;
             _exercisesViewModel = exercisesViewModel;
-            _navigationStore = navigationStore;
             _dayGroupDataStore = dayGroupDataStore;
             SaveNewOrderCommand = new SaveRoutineItemReorderCommand(_routineItemDataStore, this);
             OpenExercisesCommand = new RelayCommand(ExecuteOpenExercisesCommand);

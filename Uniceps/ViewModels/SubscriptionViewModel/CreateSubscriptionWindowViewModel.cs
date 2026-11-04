@@ -9,17 +9,22 @@ using Uniceps.Commands.SubscriptionCommand;
 using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Sport;
 using Uniceps.Core.Models.Subscription;
+using Uniceps.navigation.DialogService;
+using Uniceps.navigation.Extensions;
 using Uniceps.Stores;
+using Uniceps.utlis.common;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.ViewModels.SportsViewModels;
 using Uniceps.Views.EmployeeViews;
+using Uniceps.Views.PlayerViews;
 using Uniceps.Views.SportViews;
 
 namespace Uniceps.ViewModels.SubscriptionViewModel
 {
-    public class CreateSubscriptionWindowViewModel : ErrorNotifyViewModelBase
+    public class CreateSubscriptionWindowViewModel : ErrorNotifyViewModelBase,IQueryAttributable
     {
+        private readonly IDialogService _dialogService;
         private readonly SportDataStore _sportDataStore;
         private readonly ObservableCollection<SportListItemViewModel> _sportListItemViewModels;
         private readonly ObservableCollection<SubscriptionTrainerListItem> _trainerListItemViewModels;
@@ -86,18 +91,6 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             set
             {
                 _selectedPlayer = value;
-                if (SelectedPlayer != null)
-                {
-                    Phone = SelectedPlayer.Phone;
-                    Year = SelectedPlayer.BirthDate;
-                    GenderMale = SelectedPlayer.GenderMale;
-                }
-                else
-                {
-                    Phone = "";
-                    Year = DateTime.Now.Year;
-                }
-
                 OnPropertyChanged(nameof(SelectedPlayer));
 
             }
@@ -108,41 +101,25 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public ICommand LoadSportsCommand { get; }
         public ICommand LoadTrainersCommand { get; }
         public ICommand LoadPlayersCommand { get; }
-        public ICommand AddSportCommand => new RelayCommand(ExecuteAddSportCommand);
-        public ICommand ClearTrainerCommand => new RelayCommand(ExecuteClearTrainerCommand);
-        private void ExecuteAddSportCommand()
-        {
-            AddSportViewModel addSportViewModel = new AddSportViewModel(_sportDataStore);
-            SportDetailWindowView sportDetailWindow = new SportDetailWindowView();
-            sportDetailWindow.DataContext = addSportViewModel;
-            sportDetailWindow.ShowDialog();
-        }
-        private void ExecuteClearTrainerCommand()
-        {
-            SelectedTrainer = null;
-        }
-        public ICommand AddTrainerCommand => new RelayCommand(ExecuteAddTrainerCommand);
-        private void ExecuteAddTrainerCommand()
-        {
-            AddTrainerViewModel addTrainerViewModel = new AddTrainerViewModel(_employeeStore);
-            TrainerDetailsWindowView trainerDetailsWindow = new TrainerDetailsWindowView();
-            trainerDetailsWindow.DataContext = addTrainerViewModel;
-            trainerDetailsWindow.ShowDialog();
-        }
+        public ICommand AddSportCommand => new RelayCommand(()=> _dialogService.ShowDialog<SportDetailWindowView, AddSportViewModel>());
+        public ICommand ClearTrainerCommand => new RelayCommand(() => SelectedTrainer = null);
+        public ICommand AddTrainerCommand => new RelayCommand(()=> _dialogService.ShowDialog<EmployeeDetailsWindowView, AddEmployeeViewModel>());
+        public ICommand AddPlayerCommand => new RelayCommand(()=> _dialogService.ShowDialog<PlayerDetailWindowView, AddPlayerViewModel>());
+    
         private string? _playerName;
         public string? PlayerName
         {
             get { return _playerName; }
             set { _playerName = value; OnPropertyChanged(nameof(PlayerName)); }
         }
-        public CreateSubscriptionWindowViewModel(int? playerId ,SportDataStore sportDataStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore)
+        public CreateSubscriptionWindowViewModel(SportDataStore sportDataStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore, EmployeeStore employeeStore, IDialogService dialogService)
         {
             _sportDataStore = sportDataStore;
             _subscriptionStore = subscriptionStore;
             _playerDataStore = playerDataStore;
             _paymentDataStore = paymentDataStore;
             _employeeStore = employeeStore;
-           
+
             _employeeStore.Created += _employeeStore_Created;
             _employeeStore.Loaded += _employeeStore_Loaded;
             _sportListItemViewModels = new ObservableCollection<SportListItemViewModel>();
@@ -163,8 +140,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             LoadSportsCommand.Execute(null);
             LoadPlayersCommand.Execute(null);
             LoadTrainersCommand.Execute(null);
-            SetPlayer(playerId);
-
+            _dialogService = dialogService;
         }
         public ICommand? OpenScanCommand { get; }
 
@@ -269,42 +245,10 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             AddPlayer(player);
         }
 
-        private string? _phone = "0";
-        public string? Phone
-        {
-            get { return _phone; }
-            set
-            {
-                _phone = value; OnPropertyChanged(nameof(Phone));
-              
-
-            }
-        }
+       
         public string? Code { get; set; }
 
-        private int _year;
-        public int Year
-        {
-            get { return _year; }
-            set
-            {
-                _year = value;
-
-                OnPropertyChanged(nameof(Year));
-            }
-        }
-        private string? _mediclStatus;
-        public string? MediclStatus
-        {
-            get { return _mediclStatus; }
-            set { _mediclStatus = value; OnPropertyChanged(nameof(MediclStatus)); }
-        }
-        private bool _genderMale;
-        public bool GenderMale
-        {
-            get { return _genderMale; }
-            set { _genderMale = value; OnPropertyChanged(nameof(GenderMale)); }
-        }
+     
 
         private double _paymentValue;
         public double PaymentValue
@@ -450,16 +394,13 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         }
         public void ClearForm()
         {
-            PlayerName = "";
             SelectedPlayer = null;
-            Phone = "";
             SubscribeDate = DateTime.Now;
             PaymentValue = 0;
             OfferValue = 0;
             Descriptiones = "";
             Offer = "";
             Code = null;
-
         }
         private void AddSport(Sport sport)
         {
@@ -484,6 +425,29 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             SubscriptionTrainerListItem itemViewModel =
                 new SubscriptionTrainerListItem(trainer);
             _trainerListItemViewModels.Add(itemViewModel);
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<int>("PlayerId", out var playerId))
+            {
+                PlayerId = playerId;
+                SetPlayer(PlayerId);
+            }
+            if (query.TryGetValue<Subscription>("Subscription", out var subscription) && subscription != null)
+            {
+                if (query.TryGetValue<QueryMode>("Mode", out var queryMode))
+                {
+                    if (queryMode == QueryMode.Renewal)
+                    {
+                        ApplySubscriptionRenew(subscription);
+                    }
+                    else
+                    {
+                        ApplySubscriptionEdit(subscription);
+                    }
+                }
+            }
         }
     }
 }

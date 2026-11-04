@@ -36,6 +36,7 @@ namespace Uniceps.HostBuilders
                 services.AddSingleton<IMonthlyReportService, MonthlyReportService>();
                 services.AddSingleton<IGetPlayerTransactionService<PlayerPayment>, PaymentDataService>();
                 services.AddSingleton<IGetPlayerTransactionService<Subscription>, SubscriptionDataService>();
+                services.AddSingleton<IActiveTransactionService, SubscriptionDataService>();
                 services.AddSingleton<IGetPlayerTransactionService<Metric>, MetricDataService>();
                 services.AddSingleton<IEmployeeMonthlyTransaction<Credit>, EmployeeCreditsDataService>();
                 services.AddSingleton<IEmployeeMonthlyTransaction<Subscription>, SubscriptionDataService>();

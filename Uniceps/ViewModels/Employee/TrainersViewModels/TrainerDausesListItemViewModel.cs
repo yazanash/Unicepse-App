@@ -16,8 +16,8 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         {
             _subscription = subscription;
         }
-        public string? PlayerName => _subscription.PlayerName;
-        public string? SportName => _subscription.SportName;
+        //public string? PlayerName => _subscription.PlayerName;
+        //public string? SportName => _subscription.SportName;
         public double Price => _subscription.PriceAfterOffer;
         public string rollAndEndDate => _subscription.RollDate.ToShortDateString() + "-" + _subscription.EndDate.ToShortDateString();
         public double OfferVal => _subscription.OfferValue;

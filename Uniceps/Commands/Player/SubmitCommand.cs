@@ -45,9 +45,6 @@ namespace Uniceps.Commands.Player
                     GenderMale = _addPlayerViewModel.GenderMale,
                     MediclStatus = _addPlayerViewModel.MediclStatus,
                     Phone = _addPlayerViewModel.Phone,
-                    SubscribeDate = _addPlayerViewModel.SubscribeDate,
-                    SubscribeEndDate = _addPlayerViewModel.SubscribeDate.AddDays(30),
-                    IsSubscribed = true,
                     FingerprintData = _addPlayerViewModel.UID
                 };
                 if (_addPlayerViewModel.IsEditMode)

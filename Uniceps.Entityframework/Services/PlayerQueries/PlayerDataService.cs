@@ -53,7 +53,18 @@ namespace Uniceps.Entityframework.Services.PlayerQueries
         public async Task<Player> Get(int id)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            Player? entity = await context.Set<Player>().FirstOrDefaultAsync((e) => e.Id == id);
+            Player? entity = await context.Set<Player>().Select(p => new Player
+            {
+                Id = p.Id,
+                SyncId = p.SyncId,
+                FullName = p.FullName,
+                Phone = p.Phone,
+                BirthDate = p.BirthDate,
+                GenderMale = p.GenderMale,
+                MediclStatus = p.MediclStatus,
+                FingerprintData = p.FingerprintData,
+                Balance = p.Payments.Sum(py => py.PaymentValue) - p.Subscriptions.Sum(s => s.PriceAfterOffer)
+            }).FirstOrDefaultAsync((e) => e.Id == id);
             if (entity == null)
                 throw new PlayerNotExistException("هذا اللاعب غير موجود");
             return entity!;
@@ -72,43 +83,48 @@ namespace Uniceps.Entityframework.Services.PlayerQueries
                 BirthDate = p.BirthDate,
                 GenderMale = p.GenderMale,
                 MediclStatus = p.MediclStatus,
-                SubscribeDate = p.SubscribeDate,
-                SubscribeEndDate = p.Subscriptions.Count() > 0 ? p.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault()!.EndDate : p.SubscribeDate.AddDays(30),
-                IsTakenContainer = p.IsTakenContainer,
-                IsSubscribed = p.IsSubscribed,
                 FingerprintData = p.FingerprintData,
                 Balance = p.Payments.Sum(py => py.PaymentValue) - p.Subscriptions.Sum(s => s.PriceAfterOffer)
-            }).Where(x => x.IsSubscribed == true).ToListAsync();
+            }).ToListAsync();
             return entities;
 
         }
         public async Task<Player> Update(Player entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            Player existedPlayer = await Get(entity.Id);
+            Player? existedPlayer = await context.Set<Player>().Select(p => new Player
+            {
+                Id = p.Id,
+                SyncId = p.SyncId,
+                FullName = p.FullName,
+                Phone = p.Phone,
+                BirthDate = p.BirthDate,
+                GenderMale = p.GenderMale,
+                MediclStatus = p.MediclStatus,
+                FingerprintData = p.FingerprintData,
+                Balance = p.Payments.Sum(py => py.PaymentValue) - p.Subscriptions.Sum(s => s.PriceAfterOffer)
+            }).FirstOrDefaultAsync((e) => e.Id == entity.Id);
+
             if (existedPlayer == null)
                 throw new PlayerNotExistException("هذا اللاعب غير موجود");
 
             existedPlayer.FullName = entity.FullName;
             existedPlayer.MediclStatus = entity.MediclStatus;
-            existedPlayer.SubscribeDate = entity.SubscribeDate;
-            existedPlayer.SubscribeEndDate = entity.SubscribeEndDate;
-            existedPlayer.IsTakenContainer = entity.IsTakenContainer;
-            existedPlayer.IsSubscribed = entity.IsSubscribed;
             existedPlayer.UID = entity.UID;
             existedPlayer.Phone = entity.Phone;
             existedPlayer.BirthDate = entity.BirthDate;
             existedPlayer.GenderMale = entity.GenderMale;
+            existedPlayer.FingerprintData = entity.FingerprintData;
 
-            await context.Set<Subscription>()
-            .Where(s => s.PlayerId == entity.Id)
-            .ExecuteUpdateAsync(setter => setter
-                .SetProperty(s => s.PlayerName, entity.FullName)
-                .SetProperty(s => s.PlayerPhone, entity.Phone));
+            //await context.Set<Subscription>()
+            //.Where(s => s.PlayerId == entity.Id)
+            //.ExecuteUpdateAsync(setter => setter
+            //    .SetProperty(s => s.PlayerName, entity.FullName)
+            //    .SetProperty(s => s.PlayerPhone, entity.Phone));
             context.Set<Player>().Update(existedPlayer);
 
             await context.SaveChangesAsync();
-            return entity;
+            return existedPlayer;
 
         }
         public async Task<Player> CheckIfExistByName(string name)

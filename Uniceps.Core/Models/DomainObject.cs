@@ -12,5 +12,9 @@ namespace Uniceps.Core.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         public Guid SyncId { get; set; } = Guid.NewGuid();
+        public long ServerVersion { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public DateTime LastUpdatedUtc { get; set; } = DateTime.UtcNow;
+        public bool IsSynced { get; set; } = false;
     }
 }

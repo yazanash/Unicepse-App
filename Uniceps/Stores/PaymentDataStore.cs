@@ -15,7 +15,6 @@ using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services;
 using Uniceps.MessengerSystem;
 using Uniceps.MessengerSystem.Events;
-using Uniceps.Stores.ApiDataStores;
 
 namespace Uniceps.Stores
 {

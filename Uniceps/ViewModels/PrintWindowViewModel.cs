@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.NavigationSystem;
 
 namespace Uniceps.ViewModels
 {
@@ -18,7 +18,7 @@ namespace Uniceps.ViewModels
         {
             _navigatorStore = navigatorStore;
             _navigatorStore.CurrentViewModel = viewModelBase;
-            _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged; ;
+            _navigatorStore.CurrentViewModelChanged += _navigatorStore_CurrentViewModelChanged;
         }
 
         private void _navigatorStore_CurrentViewModelChanged()

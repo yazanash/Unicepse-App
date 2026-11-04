@@ -1,7 +1,4 @@
-﻿using Uniceps.Commands;
-using Uniceps.Commands.AuthCommands;
-using Uniceps.ViewModels.SportsViewModels;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,44 +7,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
+using Uniceps.Commands.AuthCommands;
 using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Uniceps.utlis.common;
-using Uniceps.Stores;
-using Uniceps.ViewModels;
-using Uniceps.navigation.Stores;
 using Uniceps.Core.Common;
+using Uniceps.Core.Models.Authentication;
+using Uniceps.Core.Models.Metric;
+using Uniceps.Core.Models.RoutineModels;
+using Uniceps.navigation;
+using Uniceps.navigation.Extensions;
+using Uniceps.Stores;
+using Uniceps.utlis.common;
+using Uniceps.ViewModels;
+using Uniceps.ViewModels.SportsViewModels;
 
 namespace Uniceps.ViewModels.Authentication
 {
-    public class AddUserViewModel : ErrorNotifyViewModelBase
+    public class AddUserViewModel : ErrorNotifyViewModelBase,IQueryAttributable
     {
         private readonly UsersDataStore _usersDataStore;
-        private readonly ObservableCollection<RolesListItemViewModel> _rolesListItemViewModels;
-        public IEnumerable<RolesListItemViewModel> RolesList => _rolesListItemViewModels;
+        public ObservableCollection<Roles> RolesList { get; set; } = new();
+        public bool IsEditMode = false;
+        public int UserId = -1;
+        public void ApplyEditMode(User user)
+        {
+            IsEditMode = true;
+            UserId = user.Id;
+            UserName = user.UserName;
+            Position = user.Position;
+            OwnerName = user.OwnerName;
+            RoleItem = RolesList.FirstOrDefault(x => x == user.Role);
+        }
         public AddUserViewModel(UsersDataStore usersDataStore)
         {
             _usersDataStore = usersDataStore;
-            _rolesListItemViewModels = new ObservableCollection<RolesListItemViewModel>();
-            _rolesListItemViewModels.Add(new RolesListItemViewModel("مستخدم", Roles.User));
-            _rolesListItemViewModels.Add(new RolesListItemViewModel("مشرف", Roles.Supervisor));
-            _rolesListItemViewModels.Add(new RolesListItemViewModel("مسؤول", Roles.Admin));
-            _rolesListItemViewModels.Add(new RolesListItemViewModel("محاسب", Roles.Accountant));
-          
+            foreach (var item in Enum.GetValues(typeof(Roles)))
+            {
+                RolesList.Add((Roles)item);
+            }
             SubmitCommand = new SubmitUserCommand(_usersDataStore, this);
-            RoleItem = _rolesListItemViewModels.FirstOrDefault();
+            RoleItem = RolesList.FirstOrDefault();
         }
-        private RolesListItemViewModel? _roleItem;
-        public RolesListItemViewModel? RoleItem
+        private Roles _roleItem;
+        public Roles RoleItem
         {
             get { return _roleItem; }
             set { _roleItem = value; OnPropertyChanged(nameof(RoleItem)); }
-        }
-
-        internal static AddUserViewModel loadViewModel(UsersDataStore usersDataStore)
-        {
-            AddUserViewModel addUserViewModel = new AddUserViewModel(usersDataStore);
-            return addUserViewModel;
         }
         public Action? UserCreated;
         internal void OnUserCreated()
@@ -55,8 +60,14 @@ namespace Uniceps.ViewModels.Authentication
             UserCreated?.Invoke();
         }
 
-
-
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<User>("User", out var user))
+            {
+                if (user != null)
+                    ApplyEditMode(user);
+            }
+        }
         #region Properties
         public int Id { get; }
 

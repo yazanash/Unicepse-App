@@ -16,7 +16,6 @@ using Uniceps.Entityframework.Services.PlayerQueries;
 using Uniceps.MessengerSystem;
 using Uniceps.MessengerSystem.Events;
 using Uniceps.Services;
-using Uniceps.Stores.ApiDataStores;
 using Uniceps.utlis.common;
 using Uniceps.ViewModels.PlayersViewModels;
 
@@ -36,6 +35,10 @@ namespace Uniceps.Stores
         public event Action? Players_loaded;
         public event Action<Player>? Player_update;
         public event Action<int>? Player_deleted;
+
+        public event Action<int>? EnrollmentStepCaptured;
+        public event Action<string>? EnrollmentFailed;
+        public event Action<Player>? EnrollmentCompleted;
         public PlayersDataStore(IDataService<Player> playerDataService, ILogger<PlayersDataStore> logger,IExcelService<Player> excelService, LicenseStore licenseStore)
         {
             _playerDataService = playerDataService;
@@ -44,8 +47,44 @@ namespace Uniceps.Stores
             _logger = logger;
             _excelService = excelService;
             _licenseStore = licenseStore;
+            RegisterMessengerSubscriptions();
         }
+        private void RegisterMessengerSubscriptions()
+        {
+            Messenger.Default.Register<EnrollmentStepMessage>(this, msg =>
+            {
+                EnrollmentStepCaptured?.Invoke(msg.Step);
+            });
 
+            Messenger.Default.Register<EnrollmentFailedMessage>(this, msg =>
+            {
+                EnrollmentFailed?.Invoke(msg.Reason);
+            });
+
+            Messenger.Default.Register<EnrollmentCompletedMessage>(this, async msg =>
+            {
+                if (msg.Player != null && msg.MasterTemplate != null)
+                {
+                    _logger.LogInformation($"[PlayersDataStore] Enrollment completed for player ID: {msg.Player.Id}");
+
+                    // حفظ البصمة
+                    msg.Player.FingerprintData = Convert.ToBase64String(msg.MasterTemplate);
+                    await UpdatePlayer(msg.Player);
+
+                    EnrollmentCompleted?.Invoke(msg.Player);
+                }
+            });
+        }
+        public void RequestFingerprintEnrollment(Player player)
+        {
+            _logger.LogInformation($"[PlayersDataStore] Requesting fingerprint enrollment for player ID: {player.Id}");
+            Messenger.Default.Send(new StartEnrollmentMessage(player));
+        }
+        internal void StopFingerprintEnrollment()
+        {
+            _logger.LogInformation($"[PlayersDataStore] Requesting fingerprint stop");
+            Messenger.Default.Send(new StopEnrollmentMessage());
+        }
         public List<Player> ImportFromExcel(string filePath)
         {
             //ImportStarted?.Invoke();
@@ -72,7 +111,6 @@ namespace Uniceps.Stores
                 throw new FreeLimitException("لقد وصلت الحد الاعلى من النسخة المجانية ... اشترك الان لتحصل عدد غير محدود");
 
                 _logger.LogInformation("add player");
-            player.DataStatus = DataStatus.ToCreate;
             await _playerDataService.Create(player);
             _players.Add(player);
             Player_created?.Invoke(player);
@@ -80,8 +118,6 @@ namespace Uniceps.Stores
         public async Task UpdatePlayer(Player player)
         {
             _logger.LogInformation( "update player");
-            if (player.DataStatus != DataStatus.ToCreate)
-                player.DataStatus = DataStatus.ToUpdate;
             await _playerDataService.Update(player);
             int currentIndex = _players.FindIndex(y => y.Id == player.Id);
 
@@ -134,6 +170,8 @@ namespace Uniceps.Stores
             _players.AddRange(players);
             Players_loaded?.Invoke();
         }
+
+       
     }
    
 }

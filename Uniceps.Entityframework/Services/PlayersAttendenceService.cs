@@ -28,31 +28,19 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                Subscription? subscription = await context.Set<Subscription>().FirstOrDefaultAsync(x => x.Code == entity.Code && x.EndDate >= DateTime.Now);
+                Subscription? subscription = await context.Set<Subscription>().Include(x=>x.Player).FirstOrDefaultAsync(x => x.Code == entity.Code && x.EndDate >= DateTime.Now);
                 if (subscription != null)
                 {
                     entity.PlayerId = subscription.PlayerId;
                     entity.PlayerSyncId = subscription.PlayerSyncId;
                     entity.SubscriptionSyncId = subscription.SyncId;
-                    entity.PlayerName = subscription.PlayerName??"";
+                    entity.PlayerName = subscription.Player?.FullName??"";
                     entity.SubscriptionId = subscription.Id;
                     entity.SportName = subscription.SportName ?? "";
                 }
                 else
                     throw new Exception("هذا الكود غير فعال او الاشتراك منتهي");
                     EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
-                DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x =>
-                x.PlayerId == entity.PlayerId &&
-                x.Date.Month == entity.Date.Month &&
-                x.Date.Year == entity.Date.Year &&
-                x.Date.Day == entity.Date.Day &&
-                x.IsLogged
-                ).SingleOrDefault();
-                if (dailyPlayerReport != null)
-                {
-                    throw new PlayerConflictException("هذا اللاعب تم تسجيل دخوله بالفعل ولم يسجل خروجه بعد");
-                }
-
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;
             }
@@ -70,27 +58,17 @@ namespace Uniceps.Entityframework.Services
                         entity.PlayerId = subscription.PlayerId;
                         entity.PlayerSyncId = subscription.PlayerSyncId;
                         entity.SubscriptionSyncId = subscription.SyncId;
-                        entity.PlayerName = subscription.PlayerName ?? "";
+                        entity.PlayerName = player.FullName??"";
                         entity.SubscriptionId = subscription.Id;
                         entity.SportName = subscription.SportName ?? "";
+                        entity.Code = subscription.Code ?? "";
                     }
                     else
-                        throw new Exception("هذا اللاعب منتهي الاشتراك");
+                        throw new Exception($" اللاعب {player.FullName} منتهي الاشتراك");
                 }
                 else
                     throw new Exception("هذا اللاعب غير موجود");
                 EntityEntry<DailyPlayerReport> CreatedResult = await context.Set<DailyPlayerReport>().AddAsync(entity);
-                DailyPlayerReport? dailyPlayerReport = context.DailyPlayerReport!.Where(x =>
-                x.PlayerId == entity.PlayerId &&
-                x.Date.Month == entity.Date.Month &&
-                x.Date.Year == entity.Date.Year &&
-                x.Date.Day == entity.Date.Day &&
-                x.IsLogged
-                ).SingleOrDefault();
-                if (dailyPlayerReport != null)
-                {
-                    throw new PlayerConflictException("هذا اللاعب تم تسجيل دخوله بالفعل ولم يسجل خروجه بعد");
-                }
 
                 await context.SaveChangesAsync();
                 return CreatedResult.Entity;

@@ -10,7 +10,8 @@ using Uniceps.Commands.AuthCommands;
 using Uniceps.Commands.Player;
 using Uniceps.Core.Models.Authentication;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.DialogService;
+using Uniceps.navigation.NavigationSystem;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
@@ -22,20 +23,22 @@ namespace Uniceps.ViewModels.Authentication
     {
 
         private readonly ObservableCollection<UserListItemViewModel> _userListItemViewModels;
-        private NavigationStore _navigatorStore;
         private readonly UsersDataStore _usersDataStore;
         private readonly AuthenticationStore _authenticationStore;
+        private readonly INavigationService _navigationService;
+        private readonly IDialogService _dialogService;
         public IEnumerable<UserListItemViewModel> UsersList => _userListItemViewModels;
         public ICommand AddUserCommand { get; }
         public ICommand LoadUsersCommand { get; }
         public ICommand LoadUsersLogsCommand { get; }
         public SearchBoxViewModel SearchBox { get; set; }
         public bool HasData => _userListItemViewModels.Count > 0;
-        public UsersListViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, AuthenticationStore authenticationStore)
+        public UsersListViewModel(UsersDataStore usersDataStore, AuthenticationStore authenticationStore, INavigationService navigationService, IDialogService dialogService)
         {
-            _navigatorStore = navigatorStore;
             _usersDataStore = usersDataStore;
             _authenticationStore = authenticationStore;
+            _navigationService = navigationService;
+            _dialogService = dialogService;
 
             _userListItemViewModels = new ObservableCollection<UserListItemViewModel>();
             _usersDataStore.Created += _usersDataStore_Created;
@@ -46,16 +49,9 @@ namespace Uniceps.ViewModels.Authentication
             SearchBox.SearchedText += SearchBox_SearchedText;
 
             LoadUsersCommand = new LoadUsersCommand(_usersDataStore);
-            AddUserCommand = new RelayCommand(ExecuteAddUserCommand);
-            LoadUsersLogsCommand = new NavaigateCommand<AuthenticationLoggingList>(new NavigationService<AuthenticationLoggingList>(_navigatorStore,
-               () => CreateLogsViewModel(_usersDataStore)));
-        }
-        private void ExecuteAddUserCommand()
-        {
-            AddUserViewModel addUserViewModel = AddUserViewModel.loadViewModel(_usersDataStore);
-            AddUserViewWindow addUserViewWindow = new AddUserViewWindow();
-            addUserViewWindow.DataContext = addUserViewModel;
-            addUserViewWindow.ShowDialog();
+            AddUserCommand = new RelayCommand(() => _dialogService.ShowDialog<AddUserViewWindow, AddUserViewModel>());
+            LoadUsersLogsCommand = new RelayCommand(() => _navigationService.Navigate<AuthenticationLoggingList>());
+            LoadUsersCommand.Execute(null);
         }
         public UserListItemViewModel? SelectedUser
         {
@@ -78,13 +74,6 @@ namespace Uniceps.ViewModels.Authentication
             {
                 AddUser(user);
             }
-        }
-
-        public static UsersListViewModel LoadViewModel(NavigationStore navigatorStore, UsersDataStore usersDataStore, AuthenticationStore authenticationStore)
-        {
-            UsersListViewModel usersListViewModel = new UsersListViewModel(navigatorStore, usersDataStore, authenticationStore);
-            usersListViewModel.LoadUsersCommand.Execute(null);
-            return usersListViewModel;
         }
 
         private void _usersDataStore_Loaded()
@@ -134,15 +123,12 @@ namespace Uniceps.ViewModels.Authentication
         }
         private void AddUser(User user)
         {
-            UserListItemViewModel userListItemViewModel = new UserListItemViewModel(user, _usersDataStore, _authenticationStore);
+            UserListItemViewModel userListItemViewModel = new UserListItemViewModel(user, _usersDataStore, _authenticationStore,_dialogService);
             _userListItemViewModels.Add(userListItemViewModel);
             userListItemViewModel.Order = _userListItemViewModels.Count();
             OnPropertyChanged(nameof(HasData));
 
         }
-        private AuthenticationLoggingList CreateLogsViewModel(UsersDataStore usersDataStore)
-        {
-            return AuthenticationLoggingList.loadViewModel(usersDataStore);
-        }
+     
     }
 }

@@ -25,9 +25,6 @@ namespace Uniceps.Entityframework.Services
         public async Task<Metric> Create(Metric entity)
         {
             using UnicepsDbContext context = _contextFactory.CreateDbContext();
-            context.Attach(entity.Player!);
-            //context.Attach(entity.Subscription!.Player!);
-            //context.tity.Player!);
             EntityEntry<Metric> CreatedResult = await context.Set<Metric>().AddAsync(entity);
             await context.SaveChangesAsync();
             return CreatedResult.Entity;

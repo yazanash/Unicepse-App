@@ -12,13 +12,11 @@ using Uniceps.Commands.SubscriptionCommand;
 using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Subscription;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.NavigationSystem;
 using Uniceps.Stores;
 using Uniceps.SystemServices;
 using Uniceps.utlis.common;
 using Uniceps.ViewModels.PlayersViewModels;
-using Uniceps.ViewModels.PrintViewModels;
-using Uniceps.Views.PlayerViews;
 
 namespace Uniceps.ViewModels.SubscriptionViewModel
 {
@@ -26,13 +24,7 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
     public class SubscriptionListItemViewModel : ViewModelBase
     {
         public Subscription Subscription;
-        private readonly NavigationStore? _navigationStore;
         private readonly SubscriptionDataStore? _subscriptionDataStore;
-        private readonly SportDataStore? _sportDataStore;
-        private readonly PlayersDataStore? _playersDataStore;
-        private readonly PaymentDataStore? _paymentDataStore;
-        private readonly PlayerMainPageViewModel? _playerMainPageViewModel;
-        private readonly EmployeeStore? _employeeStore;
         public int Id => Subscription.Id;
         private int _order;
         public int Order
@@ -40,9 +32,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             get { return _order; }
             set { _order = value; OnPropertyChanged(nameof(Order)); }
         }
-        public string? PlayerName => Subscription.PlayerName;
-        public string? SportName => Subscription.SportName;
-        public string? PlayerPhone => Subscription.PlayerPhone;
+        public string? PlayerName => Subscription.Player?.FullName;
+        public string? SportName => Subscription.SportName?? $"رياضة محذوفة";
+        public string? PlayerPhone => Subscription.Player?.Phone;
         public DateTime LastCheck => Subscription.LastCheck;
         public string? Trainer => Subscription.TrainerName ?? "بدون مدرب";
         public string RollDate => Subscription.RollDate.ToShortDateString();
@@ -61,11 +53,16 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         {
             get
             {
-                DateTime absoluteEndDate = Subscription.EndDate.Date.AddDays(1).AddSeconds(-1);
+                // 1. أخذ تاريخ انتهاء الاشتراك وتاريخ اليوم بدون ساعات ولا دقائق (.Date)
+                DateTime endDate = Subscription.EndDate.Date;
+                DateTime today = DateTime.Now.Date;
 
-                double totalDays = absoluteEndDate.Subtract(DateTime.Now).TotalDays;
+                // 2. حساب الفرق بالأيام الحقيقية (Calendar Days)
+                int remainingDays = (endDate - today).Days;
 
-                return totalDays > 0 ? (int)Math.Ceiling(totalDays) : 0;
+                // 3. إرجاع عدد الأيام المتبقية (شاملة يوم الانتهاء نفسه)
+                // إذا كان اليوم 31/07 والانتهاء 01/08 فالنتيجة = 1 + 1 = 2 أيام (اليوم وبكرا)
+                return remainingDays >= 0 ? remainingDays + 1 : 0;
             }
         }
         private bool _isOpen;
@@ -96,32 +93,32 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
         public string? SubscriptionStatusString { get; set; }
         public Brush? SubscriptionStatusColor { get; set; }
         public string? SubscriptionStatusIcon { get; set; }
-        public SubscriptionListItemViewModel(Subscription subscription, NavigationStore navigationStore, SubscriptionDataStore subscriptionDataStore, SportDataStore sportDataStore, PlayersDataStore playersDataStore, PlayerMainPageViewModel playerMainPageViewModel, PaymentDataStore paymentDataStore,EmployeeStore employeeStore)
+        public SubscriptionListItemViewModel(Subscription subscription, SubscriptionDataStore subscriptionDataStore)
         {
             Subscription = subscription;
-            _sportDataStore = sportDataStore;
             _subscriptionDataStore = subscriptionDataStore;
-            _navigationStore = navigationStore;
-            _paymentDataStore = paymentDataStore;
-            _playersDataStore = playersDataStore;
-            _playerMainPageViewModel = playerMainPageViewModel;
-            _employeeStore = employeeStore;
             DeleteCommand = new DeleteSubscriptionCommand(_subscriptionDataStore);
-            StopSubscriptionCommand = new NavaigateCommand<StopSubscriptionViewModel>(new NavigationService<StopSubscriptionViewModel>(_navigationStore, () => new StopSubscriptionViewModel(_navigationStore, _subscriptionDataStore, _playersDataStore, _paymentDataStore, _playerMainPageViewModel,Subscription)));
+            //StopSubscriptionCommand = new RelayCommand(()=>_navigationService.Navigate<StopSubscriptionViewModel>());
             CheckSubscriptionStatus();
         }
         private void CheckSubscriptionStatus()
         {
             int reminderDays = SettingsManager.Current.SubscriptionRemainderDays;
+
+            DateTime endDate = Subscription.EndDate.Date;
+            DateTime today = DateTime.Now.Date;
+
+            int calendarDaysLeft = (endDate - today).Days;
+
             if (Subscription.IsRenewed)
             {
                 SubscriptionStatus = SubscriptionStatus.Renewed;
             }
-            else if (Subscription.EndDate < DateTime.Now.Date)
+            else if (calendarDaysLeft < 0)
             {
                 SubscriptionStatus = SubscriptionStatus.Expired;
             }
-            else if (Subscription.EndDate.Subtract(DateTime.Now).TotalDays <= reminderDays)
+            else if (calendarDaysLeft <= reminderDays)
             {
                 SubscriptionStatus = SubscriptionStatus.EndingSoon;
             }
@@ -129,29 +126,36 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
             {
                 SubscriptionStatus = SubscriptionStatus.Active;
             }
+
             switch (SubscriptionStatus)
             {
                 case SubscriptionStatus.EndingSoon:
-                    SubscriptionStatusString = $"سينتهي خلال {reminderDays} يوم";
+                    SubscriptionStatusString = calendarDaysLeft == 0
+                        ? "ينتهي اليوم"
+                        : $"سينتهي خلال {calendarDaysLeft} يوم";
                     SubscriptionStatusColor = Brushes.Yellow;
                     SubscriptionStatusIcon = "AlertOutline";
                     break;
+
                 case SubscriptionStatus.Expired:
                     SubscriptionStatusString = "الاشتراك منتهي";
                     SubscriptionStatusColor = Brushes.Red;
                     SubscriptionStatusIcon = "AlertOctagonOutline";
                     break;
+
                 case SubscriptionStatus.Renewed:
                     SubscriptionStatusString = "الاشتراك مجدد";
                     SubscriptionStatusColor = Brushes.Green;
                     SubscriptionStatusIcon = "CheckboxMarkedCircleOutline";
                     break;
+
                 case SubscriptionStatus.Active:
                     SubscriptionStatusString = "فعال";
                     SubscriptionStatusColor = Brushes.LightBlue;
                     SubscriptionStatusIcon = "CheckDecagramOutline";
                     break;
             }
+
             OnPropertyChanged(nameof(SubscriptionStatusString));
             OnPropertyChanged(nameof(SubscriptionStatusColor));
             OnPropertyChanged(nameof(SubscriptionStatusIcon));

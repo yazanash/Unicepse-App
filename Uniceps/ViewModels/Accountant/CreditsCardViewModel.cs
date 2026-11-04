@@ -17,14 +17,12 @@ namespace Uniceps.ViewModels.Accountant
     public class CreditsCardViewModel : ListingViewModelBase
     {
         private readonly DailyReportStore _dailyReportStore;
-        private readonly AccountingStateViewModel _accountingStateViewModel;
-        public CreditsCardViewModel(DailyReportStore dailyReportStore,AccountingStateViewModel accountingStateViewModel)
+        public CreditsCardViewModel(DailyReportStore dailyReportStore)
         {
             _dailyReportStore = dailyReportStore;
-            _accountingStateViewModel = accountingStateViewModel;
 
             _creditListItemViewModels = new ObservableCollection<CreditListItemViewModel>();
-            LoadCreditsCommand = new LoadDailyCredits(_dailyReportStore, _accountingStateViewModel);
+            LoadCreditsCommand = new LoadDailyCredits(_dailyReportStore);
             _dailyReportStore.CreditsLoaded += _dailyReportStore_CreditsLoaded;
         }
         private void _dailyReportStore_CreditsLoaded()
@@ -48,13 +46,5 @@ namespace Uniceps.ViewModels.Accountant
 
         }
         public ICommand LoadCreditsCommand;
-        public static CreditsCardViewModel LoadViewModel(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
-        {
-            CreditsCardViewModel viewModel = new CreditsCardViewModel(dailyReportStore, accountingStateViewModel);
-
-            viewModel.LoadCreditsCommand.Execute(null);
-
-            return viewModel;
-        }
     }
 }

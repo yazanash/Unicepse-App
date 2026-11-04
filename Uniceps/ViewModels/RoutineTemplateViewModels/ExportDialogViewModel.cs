@@ -8,20 +8,23 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Uniceps.Commands;
+using Uniceps.Commands.RoutineSystemCommands.DayGroupCommands;
 using Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands;
 using Uniceps.Core.Models.RoutineModels;
+using Uniceps.navigation.Extensions;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.SystemServices;
 using Uniceps.utlis.common;
 namespace Uniceps.ViewModels.RoutineTemplateViewModels
 {
-    public class ExportDialogViewModel:ViewModelBase
+    public class ExportDialogViewModel:ViewModelBase,IQueryAttributable
     {
         private readonly RoutineTempDataStore _routineTempDataStore;
         public ObservableCollection<FileFormatType> FileFormats { get; set; } = new();
         public ICommand ChangeFolderPathCommand { get; }
         public ICommand? ExportCommand { get; }
         public Action? RoutineExported;
+        public RoutineModel? RoutineModel { get;set; }
         public void OnRoutineExported()
         {
             RoutineExported?.Invoke();
@@ -30,7 +33,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         public ExportDialogViewModel(RoutineTempDataStore routineTempDataStore)
         {
             _routineTempDataStore = routineTempDataStore;
-            FileName = routineTempDataStore.SelectedRoutine?.Name;
+         
             foreach (var item in Enum.GetValues(typeof(FileFormatType)))
             {
                 FileFormats.Add((FileFormatType)item);
@@ -63,6 +66,20 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
                 SettingsManager.Current.ExportFolderPath = dialog.FolderName;
                 SettingsManager.Save();
                 FolderPath = dialog.FolderName;
+            }
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<RoutineModel>("RoutineModel", out RoutineModel? routineModel))
+            {
+                if (routineModel != null)
+                {
+                    RoutineModel = routineModel;
+                    FileName = RoutineModel.Name;
+
+                }
+                  
             }
         }
 

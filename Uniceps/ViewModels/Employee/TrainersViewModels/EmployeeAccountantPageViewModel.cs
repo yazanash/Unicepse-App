@@ -11,36 +11,34 @@ using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.Employee;
 using Uniceps.Core.Models.Employee;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.DialogService;
+using Uniceps.navigation.Extensions;
 using Uniceps.Stores;
 using Uniceps.ViewModels.PrintViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
 using Emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
-    public class EmployeeAccountantPageViewModel : ViewModelBase
+    public class EmployeeAccountantPageViewModel : ViewModelBase,IQueryAttributable
     {
-        private readonly EmployeeStore _employeeStore;
-        private readonly CreditsDataStore _creditsDataStore;
         private readonly DausesDataStore _dausesDataStore;
+        private readonly IDialogService  _dialogService;
         ObservableCollection<SubscriptionListItemViewModel> _subscriptionListItemViewModels;
         public CollectionViewSource GroupedTasks { get; set; }
 
         public IEnumerable<SubscriptionListItemViewModel> SubscriptionsList => _subscriptionListItemViewModels;
         public TrainerMounthlyReportViewModel? TrainerMounthlyReportViewModel { get; set; }
-        public Emp.Employee SelectedEmployee { get; set; }
-        public EmployeeAccountantPageViewModel(EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, Emp.Employee selectedEmployee)
+        public Emp.Employee? SelectedEmployee { get; set; }
+        public EmployeeAccountantPageViewModel( DausesDataStore dausesDataStore,IDialogService dialogService)
         {
-            _employeeStore = employeeStore;
             _dausesDataStore = dausesDataStore;
-            _creditsDataStore = creditsDataStore;
-            SelectedEmployee = selectedEmployee;
 
             _subscriptionListItemViewModels = new ObservableCollection<SubscriptionListItemViewModel>();
             _dausesDataStore.StateChanged += _dausesDataStore_StateChanged;
             _dausesDataStore.Closed += _dausesDataStore_Closed;
             GroupedTasks = new CollectionViewSource { Source = _subscriptionListItemViewModels };
             LoadMounthlyReport = new LoadTrainerMonthlyReport(_dausesDataStore, this);
+            _dialogService = dialogService;
         }
 
         private void _dausesDataStore_Closed(bool obj)
@@ -82,13 +80,22 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 
         private void _dausesDataStore_StateChanged(TrainerDueses? obj)
         {
-            TrainerMounthlyReportViewModel = new(obj!, _employeeStore, _creditsDataStore,_dausesDataStore);
+            TrainerMounthlyReportViewModel = new(obj!,_dausesDataStore, _dialogService);
             OnPropertyChanged(nameof(TrainerMounthlyReportViewModel));
             _subscriptionListItemViewModels.Clear();
             GroupedTasks.Source = _subscriptionListItemViewModels;
             GroupedTasks.GroupDescriptions.Clear();
             GroupedTasks.GroupDescriptions.Add(new PropertyGroupDescription("SportName"));
             OnPropertyChanged(nameof(GroupedTasks));
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<Emp.Employee>("Employee", out var emp))
+            {
+                if (emp != null)
+                    SelectedEmployee = emp;
+            }
         }
 
         private DateTime _reportDate = DateTime.Now;

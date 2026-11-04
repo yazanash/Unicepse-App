@@ -118,10 +118,6 @@ Width="auto"
  Binding="{Binding SetsString}"
 Width="*"
 />
-                        <DataGridTextColumn Header="" IsReadOnly="True"
-Width="auto"
-Binding="{Binding IsLegcyMessage}"
-CanUserResize="False"/>
 
                     </DataGrid.Columns>
             </DataGrid>

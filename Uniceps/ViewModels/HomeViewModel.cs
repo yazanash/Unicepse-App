@@ -5,20 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.Commands.Employee;
-using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Uniceps.Stores.RoutineStores;
 using Uniceps.Stores;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.Employee.TrainersViewModels;
 using Uniceps.ViewModels.PlayersAttendenceViewModels;
 using Uniceps.Core.Models.DailyActivity;
-using System.Windows;
 using Uniceps.Views.PlayerViews;
+using Uniceps.navigation.DialogService;
 
 namespace Uniceps.ViewModels
 {
@@ -27,11 +19,11 @@ namespace Uniceps.ViewModels
         private readonly ObservableCollection<PlayerAttendenceListItemViewModel> _playerAttendenceListItemViewModels;
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         private readonly AccountStore _accountStore;
-        private readonly Func<int,PlayerProfileViewModel> _playerProfileFactory;
+        private readonly IDialogService _dialogService;
         public IEnumerable<PlayerAttendenceListItemViewModel> PlayerAttendence => _playerAttendenceListItemViewModels;
         public ICommand LoadDailyReport { get; }
         public SearchBoxViewModel SearchBox { get; set; }
-        public HomeViewModel(PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore, Func<int, PlayerProfileViewModel> playerProfileFactory)
+        public HomeViewModel(PlayersAttendenceStore playersAttendenceStore, AccountStore accountStore, IDialogService dialogService)
         {
             _playersAttendenceStore = playersAttendenceStore;
             _playersAttendenceStore.Loaded += _playersAttendenceStore_Loaded;
@@ -51,7 +43,7 @@ namespace Uniceps.ViewModels
                 HasPermission = true;
             }
             LoadDailyReport.Execute(null);
-            _playerProfileFactory = playerProfileFactory;
+            _dialogService = dialogService;
         }
         private bool _hasPermission = false;
         public bool HasPermission
@@ -105,7 +97,7 @@ namespace Uniceps.ViewModels
         private void loadData()
         {
             _playerAttendenceListItemViewModels.Clear();
-            foreach (var i in _playersAttendenceStore.PlayersAttendence.OrderByDescending(x => x.IsLogged).ThenByDescending(x => x.loginTime))
+            foreach (var i in _playersAttendenceStore.PlayersAttendence.OrderByDescending(x => x.IsLogged).ThenBy(x => x.loginTime))
             {
                 if (!HasPermission&&!i.IsLogged)
                 {
@@ -138,9 +130,11 @@ namespace Uniceps.ViewModels
 
         public void ExecuteOpenPlayerProfile(PlayerAttendenceListItemViewModel playerAttendenceListItemViewModel)
         {
-                PlayerProfileWindowView playerProfileWindowView = new PlayerProfileWindowView();
-                playerProfileWindowView.DataContext = _playerProfileFactory(playerAttendenceListItemViewModel.Id);
-                playerProfileWindowView.ShowDialog();
+            var navParams = new Dictionary<string, object>()
+            {
+                {"PlayerId",playerAttendenceListItemViewModel.dailyPlayerReport.PlayerId }
+            };
+            _dialogService.ShowDialog<PlayerProfileWindowView, PlayerProfileViewModel>(navParams);
         }
       
     }

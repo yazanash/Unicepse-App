@@ -21,11 +21,11 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            if (_routineTempDataStore.SelectedRoutine != null)
+            if (_routineDetailsViewModel.RoutineModel != null)
             {
                 RoutineModel routineModel = new()
                 {
-                    Id = _routineTempDataStore.SelectedRoutine.Id,
+                    Id = _routineDetailsViewModel.RoutineModel.Id,
                     Name = _routineDetailsViewModel.Name!,
                     Level = _routineDetailsViewModel.Level!
                 };

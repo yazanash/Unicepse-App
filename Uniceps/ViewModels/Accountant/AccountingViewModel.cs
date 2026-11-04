@@ -8,7 +8,6 @@ using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Expenses;
 using Uniceps.ViewModels.Metrics;
@@ -19,93 +18,83 @@ namespace Uniceps.ViewModels.Accountant
 {
     public class AccountingViewModel : ViewModelBase
     {
-        public NavigationStore _navigatorStore;
-        private readonly ExpensesDataStore _expensesStore;
-        private readonly OtherRevenuesDataStore _otherRevenuesDataStore;
-        private readonly GymStore _gymStore;
         private readonly DailyReportStore _dailyReportStore;
-        private readonly PeriodReportStore _periodReportStore;
-
-        public ViewModelBase? CurrentViewModel => _navigatorStore.CurrentViewModel;
-        public ICommand ExpensesCommand { get; }
-        public ICommand IncomeReportCommand { get; }
-        public ICommand ExpensesReportCommand { get; }
-        public ICommand StatesReportCommand { get; }
-        public ICommand RevenueCommand { get; }
-        public ICommand MonthlyIncomeReportCommand { get; }
-
-
-        public bool IsDaily { get; set; }
-        public bool IsExpenses { get; set; }
-        public bool IsRevenue { get; set; }
-        public bool IsExpensesReport { get; set; }
-        public bool IsIncomeReport { get; set; }
-        //public ICommand PaymentReportCommand;
         private readonly LicenseStore _licenseStore;
-        public bool IsIncomeFinal { get; set; }
-        public AccountingViewModel(ExpensesDataStore expensesStore, GymStore gymStore, DailyReportStore dailyReportStore, PeriodReportStore periodReportStore, LicenseStore licenseStore, OtherRevenuesDataStore otherRevenuesDataStore)
+
+        // الـ ViewModels الخاصة بالتابات (تُحقن عبر الـ DI بكل نظافة)
+        public AccountingStateViewModel AccountingStateViewModel { get; }
+        public ExpensesListViewModel ExpensesListViewModel { get; }
+        public RevenueListViewModel RevenueListViewModel { get; }
+        public ExpensesReportViewModel ExpensesReportViewModel { get; }
+        public IncomeReportViewModel IncomeReportViewModel { get; }
+        public MounthlyReportViewModel MounthlyReportViewModel { get; }
+        public PremiumViewModel PremiumViewModel { get; }
+
+        private int _selectedTabIndex = 0;
+        public int SelectedTabIndex
         {
-            _navigatorStore = new NavigationStore();
+            get => _selectedTabIndex;
+            set
+            {
+                _selectedTabIndex = value;
+                OnPropertyChanged(nameof(SelectedTabIndex));
+                LoadDataForActiveTab(); // تحميل بيانات التبويب النشط فوراً عند الانتقال إليه
+            }
+        }
+
+        private bool _isFullVersion;
+        public bool IsFullVersion
+        {
+            get => _isFullVersion;
+            set { _isFullVersion = value; OnPropertyChanged(nameof(IsFullVersion)); }
+        }
+
+        public AccountingViewModel(
+            DailyReportStore dailyReportStore,
+            LicenseStore licenseStore,
+            AccountingStateViewModel accountingStateViewModel,
+            ExpensesListViewModel expensesListViewModel,
+            RevenueListViewModel revenueListViewModel,
+            ExpensesReportViewModel expensesReportViewModel,
+            IncomeReportViewModel incomeReportViewModel,
+            MounthlyReportViewModel mounthlyReportViewModel,
+            PremiumViewModel premiumViewModel)
+        {
             _dailyReportStore = dailyReportStore;
-            _expensesStore = expensesStore;
-            _gymStore = gymStore;
-            _periodReportStore = periodReportStore;
             _licenseStore = licenseStore;
-            _otherRevenuesDataStore = otherRevenuesDataStore;
 
-            if (_licenseStore.Current.IsFullVersion)
-            {
-                _navigatorStore.CurrentViewModel = CreateStatesViewModel(_dailyReportStore);
-                _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
-                ExpensesCommand = new NavaigateCommand<ExpensesListViewModel>(new NavigationService<ExpensesListViewModel>(_navigatorStore, () => CreateExpenses(_navigatorStore, _expensesStore)));
-                IncomeReportCommand = new NavaigateCommand<IncomeReportViewModel>(new NavigationService<IncomeReportViewModel>(_navigatorStore, () => new IncomeReportViewModel(_periodReportStore)));
-                ExpensesReportCommand = new NavaigateCommand<ExpensesReportViewModel>(new NavigationService<ExpensesReportViewModel>(_navigatorStore, () => new ExpensesReportViewModel(_periodReportStore)));
-                MonthlyIncomeReportCommand = new NavaigateCommand<MounthlyReportViewModel>(new NavigationService<MounthlyReportViewModel>(_navigatorStore, () => new MounthlyReportViewModel(_gymStore)));
-                StatesReportCommand = new NavaigateCommand<AccountingStateViewModel>(new NavigationService<AccountingStateViewModel>(_navigatorStore, () => CreateStatesViewModel(_dailyReportStore)));
-                RevenueCommand = new NavaigateCommand<RevenueListViewModel>(new NavigationService<RevenueListViewModel>(_navigatorStore, () => new RevenueListViewModel(_otherRevenuesDataStore)));
-            }
-            else
-            {
-                _navigatorStore.CurrentViewModel = CreateExpenses(_navigatorStore, _expensesStore);
-                _navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
-                ExpensesCommand = new NavaigateCommand<ExpensesListViewModel>(new NavigationService<ExpensesListViewModel>(_navigatorStore, () => CreateExpenses(_navigatorStore, _expensesStore)));
-                IncomeReportCommand = new NavaigateCommand<IncomeReportViewModel>(new NavigationService<IncomeReportViewModel>(_navigatorStore, () => new IncomeReportViewModel(_periodReportStore)));
-                ExpensesReportCommand = new NavaigateCommand<ExpensesReportViewModel>(new NavigationService<ExpensesReportViewModel>(_navigatorStore, () => new ExpensesReportViewModel(_periodReportStore)));
-                MonthlyIncomeReportCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
-                StatesReportCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
-                RevenueCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
-            }
+            AccountingStateViewModel = accountingStateViewModel;
+            ExpensesListViewModel = expensesListViewModel;
+            RevenueListViewModel = revenueListViewModel;
+            ExpensesReportViewModel = expensesReportViewModel;
+            IncomeReportViewModel = incomeReportViewModel;
+            MounthlyReportViewModel = mounthlyReportViewModel;
+            PremiumViewModel = premiumViewModel;
 
+            IsFullVersion = _licenseStore.Current.IsFullVersion;
+
+            // التحميل الأولي للتاب المفتوح حالياً
+            LoadDataForActiveTab();
         }
-        private void NavigatorStore_CurrentViewModelChanged()
+
+        private void LoadDataForActiveTab()
         {
-            IsDaily = CurrentViewModel is AccountingStateViewModel;
-            IsExpenses = CurrentViewModel is ExpensesListViewModel;
-            IsExpensesReport = CurrentViewModel is ExpensesReportViewModel;
-            IsIncomeReport = CurrentViewModel is IncomeReportViewModel;
-            IsIncomeFinal = CurrentViewModel is MounthlyReportViewModel;
-            OnPropertyChanged(nameof(CurrentViewModel));
+            // منطق تحميل البيانات للتاب الحالي فقط (Lazy Loading) لضمان سرعة الأداء
+            switch (_selectedTabIndex)
+            {
+                case 0:
+                    // مثال: تحميل بيانات الحركة اليومية إذا لزم الأمر
+                    break;
+                case 1:
+                    // مثال: تحميل بيانات المصاريف
+                    break;
+                    // وهكذا بقية التابات...
+            }
         }
+
         public void ResetSelection()
         {
-            if (_licenseStore.Current.IsFullVersion)
-            {
-                _navigatorStore.CurrentViewModel = CreateStatesViewModel(_dailyReportStore);
-            }
-            else
-            {
-                _navigatorStore.CurrentViewModel = CreateExpenses(_navigatorStore, _expensesStore);
-            }
+            SelectedTabIndex = IsFullVersion ? 0 : 1;
         }
-        private AccountingStateViewModel CreateStatesViewModel(DailyReportStore dailyReportStore)
-        {
-            NavigationStore navigatorStore = new NavigationStore();
-            return AccountingStateViewModel.LoadViewModel(navigatorStore, dailyReportStore);
-        }
-        private ExpensesListViewModel CreateExpenses(NavigationStore navigatorStore, ExpensesDataStore expensesStore)
-        {
-            return ExpensesListViewModel.LoadViewModel(navigatorStore, expensesStore);
-        }
-
     }
 }

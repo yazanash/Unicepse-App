@@ -42,10 +42,10 @@
     <Compile Update="Views\EmployeeViews\TrainerDauseDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EmployeeViews\TrainerDetailsWindowView.xaml.cs">
+    <Compile Update="Views\Expenses\ExpenseDetailViewWinow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Expenses\ExpenseDetailViewWinow.xaml.cs">
+    <Compile Update="Views\Metrics\AddMetricWindowView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\OtherRevenueViews\RevenueDetailViewWindow.xaml.cs">
@@ -55,6 +55,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PaymentViews\PaymentDetailWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerViews\CaptureFingerPrintWindowView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PlayerViews\PlayerDetailWindowView.xaml.cs">
@@ -147,9 +150,6 @@
     <Compile Update="Views\AuthView\AuthWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AuthView\RegisterView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\AuthView\UserLogReportView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -199,6 +199,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SportViews\SportDetailWindowView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SportViews\SportSubscriptionsWindowView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SubscriptionView\StopSubscriptionView.xaml.cs">
@@ -345,9 +348,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\AuthWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\AuthView\RegisterView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AuthView\UserLogReportView.xaml">

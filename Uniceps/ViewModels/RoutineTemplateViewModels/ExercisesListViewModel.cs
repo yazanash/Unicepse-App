@@ -14,7 +14,6 @@ using Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.Core.Models.TrainingProgram;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.utlis.common;
 using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
@@ -70,6 +69,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             {
                 MechanismList.Add((ExerciseMechanism)item);
             }
+            LoadExercisesCommand.Execute(null);
         }
 
         private void ExercisesList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -178,14 +178,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
 
 
         }
-        public static ExercisesListViewModel LoadViewModel(ExercisesDataStore exercisesDataStore, DayGroupDataStore dayGroupDataStore, RoutineItemDataStore routineItemDataStore, NavigationStore navigationStore, NavigationService<RoutineDetailsViewModel> navigationService, RoutineItemsBufferListViewModel routineItemListViewModel)
-        {
-            ExercisesListViewModel viewModel = new(exercisesDataStore, dayGroupDataStore, routineItemDataStore);
-
-            viewModel.LoadExercisesCommand.Execute(null);
-
-            return viewModel;
-        }
+      
 
     }
 }

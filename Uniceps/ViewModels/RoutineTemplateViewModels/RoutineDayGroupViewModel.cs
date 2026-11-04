@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,13 +12,14 @@ using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.RoutineSystemCommands.DayGroupCommands;
 using Uniceps.Core.Models.RoutineModels;
+using Uniceps.navigation.Extensions;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
 
 namespace Uniceps.ViewModels.RoutineTemplateViewModels
 {
-    public class RoutineDayGroupViewModel : ViewModelBase
+    public class RoutineDayGroupViewModel : ViewModelBase,IQueryAttributable
     {
         private readonly DayGroupDataStore _dayGroupDataStore;
         private readonly RoutineTempDataStore _routineTempDataStore;
@@ -35,15 +37,15 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         public ICommand MoveUpCommand { get; }
         public ICommand MoveDownCommand { get; }
         public bool HasData => _dayGroupViewModels.Count > 0;
+        public int RoutineId = -1;
         public RoutineDayGroupViewModel(DayGroupDataStore dayGroupDataStore, RoutineTempDataStore routineTempDataStore)
         {
             _dayGroupDataStore = dayGroupDataStore;
             _dayGroupViewModels = new();
             _routineTempDataStore = routineTempDataStore;
             SaveNewOrderCommand = new SaveReorderCommand(_dayGroupDataStore, this);
-            AddDayGroupCommand = new CreateDayGroupCommand(_dayGroupDataStore, _routineTempDataStore);
-            LoadDayGroupCommand = new LoadDayGroupsCommand(_dayGroupDataStore, _routineTempDataStore);
-            _routineTempDataStore.RoutineChanged += _routineTempDataStore_RoutineChanged;
+            AddDayGroupCommand = new CreateDayGroupCommand(_dayGroupDataStore, _routineTempDataStore,this);
+            LoadDayGroupCommand = new LoadDayGroupsCommand(_dayGroupDataStore);
             _dayGroupDataStore.Loaded += _dayGroupDataStore_Loaded;
             _dayGroupDataStore.Created += _dayGroupDataStore_Created;
             _dayGroupDataStore.Updated += _dayGroupDataStore_Updated;
@@ -92,10 +94,6 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         public void OnDayGroupReordered()
         {
             HasOrderChanged = true;
-        }
-        private void _routineTempDataStore_RoutineChanged(RoutineModel? obj)
-        {
-            LoadDayGroupCommand.Execute(null);
         }
         private void _dayGroupDataStore_Deleted(int obj)
         {
@@ -154,6 +152,15 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             DayGroupViewModel viewModel = new DayGroupViewModel(dayGroup, _dayGroupDataStore);
             _dayGroupViewModels.Add(viewModel);
             OnPropertyChanged(nameof(HasData));
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<int>("RoutineId", out int routineid))
+            {
+                RoutineId= routineid;
+                LoadDayGroupCommand.Execute(RoutineId);
+            }
         }
     }
 }

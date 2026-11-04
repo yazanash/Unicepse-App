@@ -70,8 +70,6 @@ namespace Uniceps.Services
             Set(sheet, row, "Phone", b.Phone);
             Set(sheet, row, "BirthDate", b.BirthDate);
             Set(sheet, row, "MediclStatus", b.MediclStatus);
-            Set(sheet, row, "SubscribeDate", b.SubscribeDate.ToShortDateString());
-            Set(sheet, row, "SubscribeEndDate", b.SubscribeEndDate.ToShortDateString());
             Set(sheet, row, "Balance", b.Balance);
         }
         private void Set(IXLWorksheet sheet, IXLRow row, string columnKey, object? value)
@@ -122,8 +120,6 @@ namespace Uniceps.Services
                 BirthDate = TryGetInt(row, columnMap, "BirthDate"),
                 GenderMale = TryGetBool(row, columnMap, "Gender"),
                 MediclStatus = row.Cell(columnMap["MediclStatus"]).GetString(),
-                SubscribeDate = TryGetDate(row, columnMap, "SubscribeDate") ?? DateTime.Now,
-                SubscribeEndDate = TryGetDate(row, columnMap, "SubscribeEndDate") ?? DateTime.Now
             };
             return player;
         }

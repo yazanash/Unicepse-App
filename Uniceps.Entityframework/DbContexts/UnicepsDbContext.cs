@@ -102,18 +102,49 @@ namespace Uniceps.Entityframework.DbContexts
                 .HasForeignKey(p => p.PlayerId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Subscription>()
-    .HasOne<Player>()
+    .HasOne(s => s.Player)
     .WithMany(p => p.Subscriptions)
     .HasForeignKey(s => s.PlayerId)
     .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Subscription>()
-    .HasOne<Sport>()
-    .WithMany()
-    .HasForeignKey(s => s.SportId)
-    .OnDelete(DeleteBehavior.SetNull);
+       .HasOne<Sport>()
+       .WithMany()
+       .HasForeignKey(s => s.SportId)
+       .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Subscription>()
+                .HasOne<Employee>()
+                .WithMany()
+                .HasForeignKey(s => s.TrainerId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+
+            modelBuilder.Entity<ExerciseV2>()
+    .HasOne(x => x.MuscleGroupV2)
+    .WithMany()
+    .HasForeignKey(x => x.MuscleGroupCode)
+    .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ExerciseV2>()
+                .HasOne(x => x.MuscleHead)
+                .WithMany()
+                .HasForeignKey(x => x.MuscleHeadCode)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ExerciseV2>()
+                .HasOne(x => x.Equipment)
+                .WithMany()
+                .HasForeignKey(x => x.EquipmentCode)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<MuscleHead>()
+                .HasOne(x => x.Group)
+                .WithMany()
+                .HasForeignKey(x => x.MuscleGroupCode)
+                .OnDelete(DeleteBehavior.NoAction);
         }
+
     }
     public class SqliteUnicepsContext : UnicepsDbContext
     {

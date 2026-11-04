@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:Uniceps.Views.AuthView"
         mc:Ignorable="d"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:Converters="clr-namespace:Uniceps.utlis.Converters"
    FlowDirection="RightToLeft"
         Background="{DynamicResource Brush.Background}"
-        Title="AddUserViewWindow" Height="450" Width="500">
+        Title="أضافة مستخدم" Height="450" Width="500">
+    <Window.Resources>
+        <Converters:EnumDisplayNameConverter x:Key="EnumToText"/>
+    </Window.Resources>
     <Border  >
         <Grid>
             <Grid.RowDefinitions>
@@ -77,7 +81,7 @@
                                    ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding RoleName}" FontSize="12"   />
+                                            <TextBlock Text="{Binding Converter={StaticResource EnumToText}}"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
 

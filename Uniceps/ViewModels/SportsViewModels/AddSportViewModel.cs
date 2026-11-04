@@ -1,5 +1,4 @@
-﻿using Uniceps.Commands;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,17 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
 using Uniceps.Commands.Player;
 using Uniceps.Commands.Sport;
-using Uniceps.navigation;
-using Uniceps.ViewModels;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
+using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Sport;
+using Uniceps.navigation;
+using Uniceps.navigation.Extensions;
+using Uniceps.Stores;
+using Uniceps.ViewModels;
 
 namespace Uniceps.ViewModels.SportsViewModels
 {
-    public class AddSportViewModel : ListingViewModelBase, INotifyDataErrorInfo
+    public class AddSportViewModel : ErrorNotifyViewModelBase,IQueryAttributable
     {
         private readonly SportDataStore _sportStore;
         public Action? SportCreated;
@@ -28,23 +29,8 @@ namespace Uniceps.ViewModels.SportsViewModels
         }
         public Sport? Sport;
         public bool IsEditMode;
-        public AddSportViewModel(SportDataStore sportStore)
+        private void ApplyEdit(Sport sport)
         {
-            _sportStore = sportStore;
-            SubmitCommand = new SubmitSportCommand(this, _sportStore);
-            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
-            _sportStore = sportStore;
-            WeeklyTrainingDays = 6;
-            SubscribeLength = 30;
-        }
-        public AddSportViewModel(SportDataStore sportStore, Sport sport)
-        {
-            _sportStore = sportStore;
-            SubmitCommand = new SubmitSportCommand(this, _sportStore);
-            PropertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
-            _sportStore = sportStore;
-            WeeklyTrainingDays = 6;
-            SubscribeLength = 30;
             Sport = sport;
             IsEditMode = true;
             SportName = Sport.Name;
@@ -52,7 +38,14 @@ namespace Uniceps.ViewModels.SportsViewModels
             WeeklyTrainingDays = Sport.DaysInWeek;
             SubscribeLength = Sport.DaysCount;
         }
-
+        public AddSportViewModel(SportDataStore sportStore)
+        {
+            _sportStore = sportStore;
+            SubmitCommand = new SubmitSportCommand(this, _sportStore);
+            _sportStore = sportStore;
+            WeeklyTrainingDays = 6;
+            SubscribeLength = 30;
+        }
         public int Id { get; }
 
         private string? _sportName;
@@ -87,31 +80,6 @@ namespace Uniceps.ViewModels.SportsViewModels
 
             }
         }
-
-        private void AddError(string? ErrorMsg, string? propertyName)
-        {
-            if (!PropertyNameToErrorsDictionary.ContainsKey(propertyName!))
-            {
-                PropertyNameToErrorsDictionary.Add(propertyName!, new List<string>());
-
-            }
-            PropertyNameToErrorsDictionary[propertyName!].Add(ErrorMsg!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void ClearError(string? propertyName)
-        {
-            PropertyNameToErrorsDictionary.Remove(propertyName!);
-            OnErrorChanged(propertyName);
-        }
-
-        private void OnErrorChanged(string? PropertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(PropertyName));
-            OnPropertyChanged(nameof(CanSubmit));
-        }
-        public bool CanSubmit => !HasErrors;
-       
         private int _weeklyTrainingDays;
         public int WeeklyTrainingDays
         {
@@ -145,20 +113,19 @@ namespace Uniceps.ViewModels.SportsViewModels
             }
         }
         public ICommand? SubmitCommand { get; }
-
-        public readonly Dictionary<string, List<string>> PropertyNameToErrorsDictionary;
-        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-        public bool HasErrors => PropertyNameToErrorsDictionary.Any();
-
-        public IEnumerable GetErrors(string? propertyName)
-        {
-            return PropertyNameToErrorsDictionary!.GetValueOrDefault(propertyName, new List<string>());
-        }
-
         internal void ClearForm()
         {
             SportName = "";
             MonthlyPrice = 0;
+        }
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<Sport>("Sport", out var sport))
+            {
+                if(sport!=null) 
+                ApplyEdit(sport);
+            }
+           
         }
     }
 }

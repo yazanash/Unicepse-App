@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
-using Uniceps.navigation.Stores;
 using Uniceps.Core.Models.Payment;
 
 namespace Uniceps.ViewModels.Accountant

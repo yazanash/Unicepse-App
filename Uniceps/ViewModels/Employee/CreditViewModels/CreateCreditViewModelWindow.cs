@@ -6,40 +6,32 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Commands.Employee.CreditsCommands;
 using Uniceps.Commands.Player;
+using Uniceps.Core.Models.Employee;
+using Uniceps.Core.Models.Metric;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.Extensions;
 using Uniceps.Stores;
 using Emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.Employee.CreditViewModels
 {
-    public class CreateCreditViewModelWindow : ErrorNotifyViewModelBase
+    public class CreateCreditViewModelWindow : ErrorNotifyViewModelBase, IQueryAttributable
     {
         private readonly CreditsDataStore _creditDataStore;
         public Emp.Employee? SelectedEmployee;
         public Emp.Credit? Credit;
         public bool IsEditMode = false;
-        public CreateCreditViewModelWindow(CreditsDataStore creditDataStore, Emp.Employee selectedEmployee)
+        public CreateCreditViewModelWindow(CreditsDataStore creditDataStore)
         {
             _creditDataStore = creditDataStore;
             SubmitCommand = new SubmitCreditCommand(_creditDataStore, this);
-            SelectedEmployee = selectedEmployee;
         }
-        public CreateCreditViewModelWindow( CreditsDataStore creditDataStore, Emp.Credit credit)
+        private void ApplyEditMode(Emp.Credit credit)
         {
-            _creditDataStore = creditDataStore;
-            SubmitCommand = new SubmitCreditCommand(_creditDataStore, this);
             Credit = credit;
             IsEditMode = true;
             CreditValue = Credit.CreditValue;
             CreditDate = credit.Date;
             Description = credit.Description;
-        }
-        public CreateCreditViewModelWindow(CreditsDataStore creditDataStore, double amount, Emp.Employee selectedEmployee)
-        {
-            _creditDataStore = creditDataStore;
-            SubmitCommand = new SubmitCreditCommand(_creditDataStore, this);
-            CreditValue = amount;
-            SelectedEmployee = selectedEmployee;
         }
         public Action? CreditCreated;
         internal void OnCreditCreated()
@@ -75,5 +67,25 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
             set { _description = value; OnPropertyChanged(nameof(Description)); }
         }
         public ICommand SubmitCommand { get; }
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<Emp.Employee>("Employee", out var emp))
+            {
+                if (emp != null)
+                {
+                    SelectedEmployee = emp;
+                }
+            }
+            if (query.TryGetValue<Credit>("Credit", out var credit))
+            {
+                if (credit != null)
+                    ApplyEditMode(credit);
+            }
+            if (query.TryGetValue<double>("Amount", out var amount))
+            {
+                CreditValue = amount;
+            }
+          
+        }
     }
 }

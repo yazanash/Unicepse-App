@@ -52,7 +52,7 @@ namespace Uniceps.Entityframework.Services
         {
             using (UnicepsDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Where(x => x.RollDate.Day == date.Day && x.RollDate.Month == date.Month && x.RollDate.Year == date.Year)
+                IEnumerable<Subscription>? entities = await context.Set<Subscription>().AsNoTracking().Include(x=>x.Player).Where(x => x.RollDate.Day == date.Day && x.RollDate.Month == date.Month && x.RollDate.Year == date.Year)
                     .ToListAsync();
                 return entities;
             }

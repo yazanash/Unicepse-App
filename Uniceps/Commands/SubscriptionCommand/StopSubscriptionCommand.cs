@@ -10,20 +10,19 @@ using Uniceps.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.ViewModels.SubscriptionViewModel;
 using Uniceps.Core.Models.Subscription;
+using Uniceps.navigation.NavigationSystem;
 
 namespace Uniceps.Commands.SubscriptionCommand
 {
     public class StopSubscriptionCommand : AsyncCommandBase
     {
         private readonly SubscriptionDataStore _subscriptionDataStore;
-        private readonly PlayersDataStore _playerDataStore;
-        private readonly NavigationService<PlayerMainPageViewModel> _navigationService;
+        private readonly INavigationService _navigationService;
         private readonly StopSubscriptionViewModel _stopSubscription;
 
-        public StopSubscriptionCommand(SubscriptionDataStore subscriptionDataStore, PlayersDataStore playerDataStore, NavigationService<PlayerMainPageViewModel> navigationService, StopSubscriptionViewModel stopSubscription)
+        public StopSubscriptionCommand(SubscriptionDataStore subscriptionDataStore, INavigationService navigationService, StopSubscriptionViewModel stopSubscription)
         {
             _subscriptionDataStore = subscriptionDataStore;
-            _playerDataStore = playerDataStore;
             _navigationService = navigationService;
             _stopSubscription = stopSubscription;
             _stopSubscription.PropertyChanged += _stopSubscription_PropertyChanged;
@@ -55,7 +54,7 @@ namespace Uniceps.Commands.SubscriptionCommand
               
                     await _subscriptionDataStore.Stop(_stopSubscription.SelectedSubscription!, _stopSubscription.SubscribeStopDate);
                     Subscription? subscription = _subscriptionDataStore.Subscriptions.OrderByDescending(x => x.EndDate).FirstOrDefault(x => x.Id != _stopSubscription.SelectedSubscription.Id);
-                    _navigationService.ReNavigate();
+                    _navigationService.Navigate<PlayerMainPageViewModel>();
                 }
                 else
                 {

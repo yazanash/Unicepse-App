@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Hosting;
 using Uniceps.Stores;
 using Uniceps.Stores.RoutineStores;
-using Uniceps.navigation.Stores;
 using Uniceps.DataExporter;
+using Uniceps.BackgroundServices;
 
 namespace Uniceps.HostBuilders
 {
@@ -13,7 +13,6 @@ namespace Uniceps.HostBuilders
         {
             _hostBuilder.ConfigureServices(services =>
             {
-                services.AddSingleton(new NavigationStore());
                 services.AddSingleton<AccountStore>();
                 services.AddSingleton<UsersDataStore>();
                 services.AddSingleton<PlayersDataStore>();

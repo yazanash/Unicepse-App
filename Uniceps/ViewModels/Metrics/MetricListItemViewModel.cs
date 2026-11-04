@@ -1,25 +1,20 @@
-﻿using Uniceps.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
-using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
+using Uniceps.Commands;
 using Uniceps.Core.Models.Metric;
+using Uniceps.Core.Models.Player;
+using Uniceps.navigation.DialogService;
+using Uniceps.navigation.NavigationSystem;
+using Uniceps.Stores;
+using Uniceps.utlis.common;
+using Uniceps.ViewModels.SubscriptionViewModel;
+using Uniceps.Views.Metrics;
 
 namespace Uniceps.ViewModels.Metrics
 {
     public class MetricListItemViewModel : ViewModelBase
     {
-
-        private readonly MetricDataStore _metricDataStore;
-        private readonly NavigationStore _navigationStore;
-        private readonly MetricReportViewModel _metricReportViewModel;
-
+        private readonly IDialogService _dialogService;
         public Metric Metric;
 
         public double Hieght => (int)Metric.Hieght;
@@ -38,14 +33,17 @@ namespace Uniceps.ViewModels.Metrics
         public double Chest => (int)Metric.Chest;
         public double Hips => (int)Metric.Hips;
         public string? CheckDate => Metric.CheckDate.ToShortDateString();
-        public MetricListItemViewModel(Metric metric, MetricDataStore metricDataStore, NavigationStore navigationStore, MetricReportViewModel metricReportViewModel)
+        public MetricListItemViewModel(Metric metric, IDialogService dialogService)
         {
-            _metricDataStore = metricDataStore;
-            _navigationStore = navigationStore;
-            _metricReportViewModel = metricReportViewModel;
+            _dialogService = dialogService;
             Metric = metric;
-            EditCommand = new NavaigateCommand<AddMetricsViewModel>(new NavigationService<AddMetricsViewModel>(_navigationStore, () => new AddMetricsViewModel(Metric.PlayerId, Metric, _metricDataStore, _navigationStore, _metricReportViewModel)));
 
+            var navParams = new Dictionary<string, object>
+            {
+                {"Metric",Metric},
+
+            };
+            EditCommand = new RelayCommand(() => _dialogService.ShowDialog<AddMetricWindowView,AddMetricsViewModel>(navParams));
         }
 
 
@@ -53,8 +51,6 @@ namespace Uniceps.ViewModels.Metrics
         public void Update(Metric metric)
         {
             Metric = metric;
-
-            //OnPropertyChanged(nameof(SportName));
         }
     }
 }

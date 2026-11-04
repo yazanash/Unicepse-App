@@ -4,8 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
-using Uniceps.Stores;
 using Uniceps.API;
+using Uniceps.API.Services;
+using Microsoft.Extensions.DependencyInjection;
 namespace Uniceps.BackgroundServices
 {
     public class InternetAvailability
@@ -22,13 +23,16 @@ namespace Uniceps.BackgroundServices
     public class DataSyncService : BackgroundService
     {
         private readonly BackgroundServiceStore _backgroundServiceStore;
-        private readonly UnicepseApiPrepHttpClient _unicepseApiPrepHttpClient;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<DataSyncService> _logger;
-        string LogFlag = "[Background service] ";
-        public DataSyncService(BackgroundServiceStore backgroundServiceStore, UnicepseApiPrepHttpClient unicepseApiPrepHttpClient, ILogger<DataSyncService> logger)
+
+        public DataSyncService(
+            BackgroundServiceStore backgroundServiceStore,
+            IServiceScopeFactory scopeFactory,
+            ILogger<DataSyncService> logger)
         {
             _backgroundServiceStore = backgroundServiceStore;
-            _unicepseApiPrepHttpClient = unicepseApiPrepHttpClient;
+            _scopeFactory = scopeFactory;
             _logger = logger;
         }
 
@@ -36,29 +40,46 @@ namespace Uniceps.BackgroundServices
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                bool internetAvailable = InternetAvailability.IsInternetAvailable();
-                if (internetAvailable && !internetAvailable)
+                int intervalSeconds = SyncSettingsManager.Current.SyncIntervalSeconds >= 3 ? SyncSettingsManager.Current.SyncIntervalSeconds: 10;
+
+                if (SyncSettingsManager.Current.AutoSyncEnabled)
                 {
-                    _logger.LogInformation(LogFlag + "Check internet connection {0}", internetAvailable.ToString());
                     try
                     {
-                        _backgroundServiceStore.ChangeState($"تم الاتصال", internetAvailable);
-                        _backgroundServiceStore.SyncState(true, "جار مزامنة");
-                        await _backgroundServiceStore.Sync();
-                        _backgroundServiceStore.SyncState(false, "");
-                        await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                        using (var scope = _scopeFactory.CreateScope())
+                        {
+                            var apiClient = scope.ServiceProvider.GetRequiredService<UnicepseApiPrepHttpClient>();
+
+                            bool apiConnected = await apiClient.CheckConnectionAsync();
+
+                            if (apiConnected)
+                            {
+                                _backgroundServiceStore.ChangeState("تم الاتصال", true);
+                                _backgroundServiceStore.SyncState(true, "جارِ المزامنة...");
+
+                                await _backgroundServiceStore.Sync(stoppingToken);
+
+                                _backgroundServiceStore.SyncState(true, "تمت المزامنة بنجاح");
+                            }
+                            else
+                            {
+                                _backgroundServiceStore.ChangeState("غير متصل", false);
+                                _backgroundServiceStore.SyncState(false, "فشل الاتصال بالمخدم");
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(LogFlag + "failed to sync with error {0}", ex.Message);
-                        _backgroundServiceStore.SyncState(true, "حدثت مشكلة اثناء المزامنة ستتم المحاولة خلال 10 ثوان");
-                        await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
-
+                        _logger.LogError(ex, "فشلت المزامنة بسبب خطأ: {Message}", ex.Message);
+                        _backgroundServiceStore.SyncState(false, "حدثت مشكلة أثناء المزامنة، ستتم المحاولة لاحقاً");
                     }
                 }
                 else
-                    _backgroundServiceStore.ChangeState($"غير متصل", internetAvailable);
-                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                {
+                    _backgroundServiceStore.ChangeState("المزامنة التلقائية غير مفعلة", false);
+                }
+
+                await Task.Delay(TimeSpan.FromSeconds(intervalSeconds), stoppingToken);
             }
         }
     }

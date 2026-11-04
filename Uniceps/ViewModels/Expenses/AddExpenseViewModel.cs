@@ -9,7 +9,6 @@ using Uniceps.Commands.Player;
 using Uniceps.navigation;
 using Uniceps.ViewModels;
 using Uniceps.Stores;
-using Uniceps.navigation.Stores;
 using Exp = Uniceps.Core.Models.Expenses;
 namespace Uniceps.ViewModels.Expenses
 {

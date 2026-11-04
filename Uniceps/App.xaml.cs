@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.BackgroundServices;
+using Uniceps.BioEngineServices;
 using Uniceps.Core.Common;
 using Uniceps.Core.Models.Player;
 using Uniceps.Core.Services;
@@ -35,7 +36,7 @@ namespace Uniceps
         {
 
             _host = HostConfigurator.Build();
-            AuthViewModel auth = _host.Services.GetRequiredService<AuthViewModel>();
+            LoginViewModel auth = _host.Services.GetRequiredService<LoginViewModel>();
             auth.LoginAction += Auth_LoginAction;
             SetupGlobalExceptions();
         }
@@ -101,7 +102,7 @@ namespace Uniceps
             MainWindow authen = _host.Services.GetRequiredService<MainWindow>();
             ResetHost();
             AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
-            AuthViewModel authmod = _host.Services.GetRequiredService<AuthViewModel>();
+            LoginViewModel authmod = _host.Services.GetRequiredService<LoginViewModel>();
             authmod.LoginAction += Auth_LoginAction;
             auth.Show();
             authen.Close();
@@ -120,7 +121,6 @@ namespace Uniceps
             AuthenticationStore authenticationStore = _host.Services.GetRequiredService<AuthenticationStore>();
             if (await authenticationStore.HasUser())
             {
-                await _host.Services.GetRequiredService<AuthViewModel>().openLog();
                 AuthWindow auth = _host.Services.GetRequiredService<AuthWindow>();
                 auth.Show();
 
@@ -145,6 +145,7 @@ namespace Uniceps
                 await licenseActivationService.HandleFileActivation(e.Args[0]);
                 return;
             }
+           
             LicenseStore licenseStore = _host.Services.GetRequiredService<LicenseStore>();
             licenseStore.Update(activationService.GetCurrentLicenseStatus());
             SplashScreenWindow splashScreen = new SplashScreenWindow();
@@ -157,7 +158,15 @@ namespace Uniceps
             var logger = _host.Services.GetRequiredService<ILogger<App>>();
             DatabaseInitialService databaseInitialService = _host.Services.GetRequiredService<DatabaseInitialService>();
             await databaseInitialService.SetupAsync();
-
+            try
+            {
+                var bioEngine = _host.Services.GetRequiredService<BioEngine>();
+                bioEngine.StartDevice();
+                var playerService = _host.Services.GetRequiredService<IDataService<Player>>();
+                var players = await playerService.GetAll();
+                bioEngine.LoadUsersToRam(players.ToList());
+            }
+            catch { }
             ExerciseSyncService exerciseSyncService = _host.Services.GetRequiredService<ExerciseSyncService>();
             await exerciseSyncService.SyncIfConnectedAsync();
             _host.Start();
@@ -166,23 +175,22 @@ namespace Uniceps
             splash.Message = " التطبيق جاهز للعمل ...";
             await OpenMainView();
             splashScreen.Close();
-            //ToastNotificationManagerCompat.OnActivated += toastArgs =>
-            //{
-            //    ToastArguments args = ToastArguments.Parse(toastArgs.Argument);
-            //    if (args.Contains("action") && args["action"] == "runBackup")
-            //    {
-            //        Application.Current.Dispatcher.Invoke(() =>
-            //        {
-            //            var appViewModel = _host.Services.GetRequiredService<AppInfoViewModel>();
-            //            appViewModel.BackupAndRestore.Execute(null);
-            //        });
-            //    }
-            //};
         }
         protected override void OnExit(ExitEventArgs e)
         {
+            try
+            {
+                var bioEngine = _host.Services.GetService<BioEngine>();
+                bioEngine?.StopDevice();
+            }
+            catch
+            {
+                // Ignore on shutdown
+            }
+
             _host.Services.GetRequiredService<AuthenticationStore>().Logout();
             _host.Dispose();
+           
             base.OnExit(e);
         }
     }

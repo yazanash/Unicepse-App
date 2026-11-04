@@ -9,25 +9,23 @@ using System.Windows.Input;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
 using Uniceps.Core.Models.DailyActivity;
+using Uniceps.navigation.Extensions;
 
 namespace Uniceps.ViewModels.PlayersAttendenceViewModels
 {
-    public class PlayerAttendenceViewModel : ListingViewModelBase
+    public class PlayerAttendenceViewModel : ListingViewModelBase,IQueryAttributable
     {
         private readonly ObservableCollection<PlayerAttendenceListItemViewModel> _playerAttendenceListItemViewModels;
-
-
         private readonly PlayersAttendenceStore _playersAttendenceStore;
         public IEnumerable<PlayerAttendenceListItemViewModel> PlayerAttendence => _playerAttendenceListItemViewModels;
         public int PlayerId;
-        public PlayerAttendenceViewModel(int playerId,PlayersAttendenceStore playersAttendenceStore)
-        {
-            PlayerId = playerId;    
+        public PlayerAttendenceViewModel(PlayersAttendenceStore playersAttendenceStore)
+        {  
             _playersAttendenceStore = playersAttendenceStore;
             _playerAttendenceListItemViewModels = new ObservableCollection<PlayerAttendenceListItemViewModel>();
             _playersAttendenceStore.PlayerLoggingLoaded += _playersAttendenceStore_Loaded;
             LoadDailyReport = new GetPlayerLoggingCommand(_playersAttendenceStore);
-            LoadDailyReport.Execute(PlayerId);
+           
         }
         public ICommand LoadDailyReport { get; }
         private void _playersAttendenceStore_Loaded()
@@ -52,6 +50,15 @@ namespace Uniceps.ViewModels.PlayersAttendenceViewModels
             _playersAttendenceStore.PlayerLoggingLoaded -= _playersAttendenceStore_Loaded;
 
             base.Dispose();
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<int>("PlayerId", out var playerId))
+            {
+                PlayerId = playerId;
+                LoadDailyReport.Execute(PlayerId);
+            }
         }
     }
 }

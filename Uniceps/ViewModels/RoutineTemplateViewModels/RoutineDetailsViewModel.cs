@@ -2,51 +2,45 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands;
+using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.RoutineModels;
-using Uniceps.navigation;
+using Uniceps.navigation.DialogService;
+using Uniceps.navigation.Extensions;
+using Uniceps.navigation.NavigationSystem;
 using Uniceps.Stores.RoutineStores;
-using Uniceps.ViewModels;
-using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;
 using Uniceps.Views.RoutineTemplateViews;
 
 namespace Uniceps.ViewModels.RoutineTemplateViewModels
 {
-    public class RoutineDetailsViewModel : ErrorNotifyViewModelBase
+    public class RoutineDetailsViewModel : ErrorNotifyViewModelBase,IQueryAttributable
     {
         public RoutineDayGroupViewModel RoutineDayGroupViewModel { get; set; }
         public RoutineItemListViewModel RoutineItemListViewModel { get; set; }
         private readonly RoutineTempDataStore _routineTempDataStore;
-        private readonly NavigationService<RoutineListViewModel> _navigationService;
+        private readonly INavigationService _navigationService;
+        private readonly IDialogService _dialogService;
         public ObservableCollection<RoutineLevel> RoutineLevels { get; set; } = new();
-        public RoutineDetailsViewModel(RoutineDayGroupViewModel routineDayGroupViewModel, RoutineItemListViewModel routineItemListViewModel, RoutineTempDataStore routineTempDataStore, NavigationService<RoutineListViewModel> navigationService)
+        public RoutineModel? RoutineModel { get; set; }
+        public RoutineDetailsViewModel(RoutineDayGroupViewModel routineDayGroupViewModel, RoutineItemListViewModel routineItemListViewModel, RoutineTempDataStore routineTempDataStore, INavigationService navigationService, IDialogService dialogService)
         {
             RoutineDayGroupViewModel = routineDayGroupViewModel;
             RoutineItemListViewModel = routineItemListViewModel;
             _routineTempDataStore = routineTempDataStore;
             _navigationService = navigationService;
-            _routineTempDataStore.RoutineChanged += _routineTempDataStore_RoutineChanged;
+            _dialogService = dialogService;
+
             BackCommand = new RelayCommand(ExecuteBackCommand);
             ExportCommand = new RelayCommand(ExecuteExportCommand);
             UpdateRoutineCommand = new UpdateRoutineModelCommand(_routineTempDataStore, this);
-            DeleteRoutineCommand = new DeleteRoutineModelCommand(_routineTempDataStore, _navigationService);
+            DeleteRoutineCommand = new DeleteRoutineModelCommand(_routineTempDataStore, _navigationService, this);
             foreach (var item in Enum.GetValues(typeof(RoutineLevel)))
             {
                 RoutineLevels.Add((RoutineLevel)item);
             }
-        }
 
-        private void _routineTempDataStore_RoutineChanged(RoutineModel? obj)
-        {
-            if (obj != null)
-            {
-                Name = obj.Name;
-                Level = RoutineLevels.FirstOrDefault(x => x.Equals(obj.Level));
-            }
         }
         private bool _isEditable = false;
         public bool IsEditable
@@ -60,15 +54,39 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
         }
         private void ExecuteBackCommand()
         {
-            _navigationService.ReNavigate();
+            _navigationService.GoBack();
         }
         private void ExecuteExportCommand()
         {
-            ExportDialogViewModel exportDialogViewModel = new ExportDialogViewModel(_routineTempDataStore);
-            ExportDialogWindow exportDialogWindow = new ExportDialogWindow();
-            exportDialogWindow.DataContext = exportDialogViewModel;
-            exportDialogWindow.ShowDialog();
+            if (RoutineModel != null)
+            {
+                var navParams = new Dictionary<string, object>()
+            {
+                {"RoutineModel", RoutineModel }
+            };
+                _dialogService.ShowDialog<ExportDialogWindow, ExportDialogViewModel>(navParams);
+            }
         }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<RoutineModel>("RoutineModel", out RoutineModel? routineModel))
+            {
+                if (routineModel != null)
+                {
+                    RoutineModel = routineModel;
+                    Name = RoutineModel.Name;
+                    Level = RoutineLevels.FirstOrDefault(x => x.Equals(RoutineModel.Level));
+                    var navQuery = new Dictionary<string, object>()
+                    {
+                        {"RoutineId",RoutineModel.Id }
+                    };
+                    RoutineDayGroupViewModel.ApplyQueryAttributes(navQuery);
+                }
+            }
+
+        }
+
         private string? _name;
         public string? Name
         {
@@ -83,7 +101,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
                     AddError("هذا الحقل مطلوب", nameof(Name));
                     OnErrorChanged(nameof(Name));
                 }
-                IsEditable = Name != _routineTempDataStore.SelectedRoutine?.Name;
+                IsEditable = Name != RoutineModel?.Name;
                 OnPropertyChanged(nameof(IsEditable));
             }
         }
@@ -94,7 +112,7 @@ namespace Uniceps.ViewModels.RoutineTemplateViewModels
             set
             {
                 _level = value; OnPropertyChanged(nameof(Level));
-                IsEditable = Level != _routineTempDataStore.SelectedRoutine?.Level;
+                IsEditable = Level != RoutineModel?.Level;
                 OnPropertyChanged(nameof(IsEditable));
             }
         }

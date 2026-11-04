@@ -27,6 +27,7 @@ namespace Uniceps.Core.Models.Sport
             DaysInWeek = sport.DaysInWeek;
             DaysCount = sport.DaysCount;
             SyncId = sport.SyncId;
+            ServerVersion = sport.ServerVersion;
         }
     }
 }

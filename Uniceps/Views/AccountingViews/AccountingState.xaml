@@ -19,134 +19,103 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InverseBooleanToVisibalityConverter x:Key="InverseBooleanToVisibalityConverter"/>
         <converters:NumberFormatConverter x:Key="convertNum"/>
-        <DataTemplate DataType="{x:Type vms:ExpensesCardViewModel }">
-            <views:ExpensesCardView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vms:PaymentsCardViewModel }">
-            <views:PaymentsCardView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vms:CreditsCardViewModel }">
-            <views:CreditsCardView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vms:SubscriptionCardViewModel }">
-            <views:SubscriptionsCardView/>
-        </DataTemplate>
     </UserControl.Resources>
     <Border>
-        <Grid >
+        <Grid Grid.Column="0" Margin="5 0" Grid.RowSpan="2" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <Grid Grid.Column="0" Margin="5 0" Grid.RowSpan="2" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Border Grid.Column="0"  Grid.ColumnSpan="3" Grid.Row="0" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Horizontal" Margin="0 0 10 0">
-                                <TextBlock Text="التاريخ" Foreground="{DynamicResource Brush.Foreground}" Margin="0 0 20 0" FontSize="16" VerticalAlignment="Center" DockPanel.Dock="Top"/>
-                                <DatePicker 
+            <Border Grid.Column="0"  Grid.ColumnSpan="3" Grid.Row="0" >
+                <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBlock Text="التاريخ" Foreground="{DynamicResource Brush.Foreground}" Margin="0 0 20 0" FontSize="16" VerticalAlignment="Center" DockPanel.Dock="Top"/>
+                        <DatePicker 
                                     SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
                                    />
 
+                    </StackPanel>
+            </Border>
+            <TabControl  Style="{DynamicResource ModernTabControlStyle}" Grid.ColumnSpan="3" Grid.Row="1" SelectedIndex="{Binding SelectedTabIndex}" FlowDirection="RightToLeft">
+
+                <!-- تبويب الاشتراكات -->
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel >
+
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="AccountGroup"  Foreground="{DynamicResource Brush.Primary}"  Width="25" Height="25" />
+                                <TextBlock 
+Text="الاشتراكات" FontWeight="Heavy" FontSize="16" HorizontalAlignment="Center"  Margin="5 0"/>
                             </StackPanel>
+                          
+                                <TextBlock 
+       TextAlignment="Center" Text="{Binding SubscriptionsCard,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="20" />
+                               
                         </StackPanel>
-                    </Grid>
-                </Border>
-                <Border   Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <RadioButton GroupName="card" Grid.Column="0" Command="{Binding SubscriptionsCommand}" Style="{StaticResource CradBarButtonRD}"  IsChecked="True"   >
+                    </TabItem.Header>
+                    <views:SubscriptionsCardView DataContext="{Binding SubscriptionsViewModel}" />
+                </TabItem>
+
+                <!-- تبويب المدفوعات -->
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel >
+
                             <StackPanel Orientation="Horizontal">
-
-                                <Icon:PackIconMaterial Kind="AccountGroup" HorizontalAlignment="Right"  Foreground="{DynamicResource Brush.Primary}"  Width="40" Height="40" VerticalAlignment="Center" Margin="10"/>
-                                <StackPanel HorizontalAlignment="Left">
-                                    <TextBlock 
-                Text="الاشتراكات" FontWeight="Heavy" FontSize="16" HorizontalAlignment="Right"/>
-                                    <TextBlock Margin="0 0 0 10"
-                       TextAlignment="Left" Text="{Binding SubscriptionsCard,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="30" />
-                                    <!--<Icon:PackIconMaterial Kind="ArrowUpCircleOutline" HorizontalAlignment="Left" Height="20" Width="20" RotationAngle="45" Foreground="#aaa"/>-->
-
-                                </StackPanel>
+                                <Icon:PackIconMaterial Kind="CashRefund"   Foreground="{DynamicResource Brush.Primary}" Width="25" Height="25" VerticalAlignment="Center" />
+                                <TextBlock 
+Text="المدفوعات" Margin="5 0"
+ FontWeight="Heavy" FontSize="16"/>
                             </StackPanel>
-                        </RadioButton>
 
-                        <RadioButton GroupName="card" Grid.Column="1" Command="{Binding CreditsCommand}" Style="{StaticResource CradBarButtonRD}"   >
+                            <TextBlock Margin="0 0 0 10"
+TextAlignment="Center" Text="{Binding CreditsCard,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="20" />
+                       
+                        </StackPanel>
+                    </TabItem.Header>
+                    <views:CreditsCardView DataContext="{Binding CreditsViewModel}" />
+                </TabItem>
+
+                <!-- تبويب الإيرادات -->
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel >
+
                             <StackPanel Orientation="Horizontal">
-
-                                <Icon:PackIconMaterial Kind="CashRefund" HorizontalAlignment="Right"  Foreground="{DynamicResource Brush.Primary}" Width="40" Height="40" VerticalAlignment="Center" Margin="10"/>
-                                <StackPanel HorizontalAlignment="Left">
-                                    <TextBlock 
-                Text="المدفوعات"
-                 FontWeight="Heavy" FontSize="16" HorizontalAlignment="Right"/>
-                                    <TextBlock Margin="0 0 0 10"
-                       TextAlignment="Left" Text="{Binding CreditsCard,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="30" />
-                                    <!--<Icon:PackIconMaterial Kind="ArrowUpCircleOutline" HorizontalAlignment="Left" Height="20" Width="20" RotationAngle="45" Foreground="#aaa"/>-->
-
-                                </StackPanel>
+                                <Icon:PackIconMaterial Kind="CashPlus" VerticalAlignment="Center" Foreground="{DynamicResource Brush.Primary}" Width="25" Height="25" />
+                                <TextBlock  Margin="5 0"
+Text="الايرادات" FontWeight="Heavy" FontSize="16"/>
                             </StackPanel>
-                        </RadioButton>
 
-                        <RadioButton GroupName="card" Grid.Column="2" Command="{Binding IncomeCommand}" Style="{StaticResource CradBarButtonRD}">
+                            <TextBlock Margin="0 0 0 10"
+TextAlignment="Center" Text="{Binding PaymentsCard,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="20" Foreground="{DynamicResource Brush.Primary}" />
+                       
+                        </StackPanel>
+                    </TabItem.Header>
+                    <views:PaymentsCardView DataContext="{Binding PaymentsViewModel}" />
+                </TabItem>
+
+                <!-- تبويب المصاريف -->
+                <TabItem >
+                    <TabItem.Header>
+                        <StackPanel >
+
                             <StackPanel Orientation="Horizontal">
-
-                                <Icon:PackIconMaterial Kind="CashPlus" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.Primary}" Width="40" Height="40" VerticalAlignment="Center" Margin="10"/>
-                                <StackPanel HorizontalAlignment="Left">
-                                    <TextBlock 
-                Text="الايرادات" FontWeight="Heavy" FontSize="16" HorizontalAlignment="Right"/>
-                                    <TextBlock Margin="0 0 0 10"
-                       TextAlignment="Left" Text="{Binding PaymentsCard,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="30" Foreground="{DynamicResource Brush.Primary}" />
-                                    <!--<Icon:PackIconMaterial Kind="ArrowUpCircleOutline" HorizontalAlignment="Left" Height="20" Width="20" RotationAngle="45" Foreground="#aaa"/>-->
-
-                                </StackPanel>
+                                <Icon:PackIconMaterial Kind="CashMinus" Foreground="{DynamicResource Brush.Primary}" Width="25" Height="25" VerticalAlignment="Center"/>
+                                <TextBlock   Margin="5 0"
+Text="المصاريف" FontWeight="Heavy" FontSize="16" />
                             </StackPanel>
-                        </RadioButton>
 
-                        <RadioButton GroupName="card" Grid.Column="3" Command="{Binding ExpensesCommand}"  Style="{StaticResource CradBarButtonRD}">
-                            <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="0 0 0 10"
+TextAlignment="Center" Text="{Binding ExpensesCard,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="20" Foreground="{DynamicResource Brush.Primary}" />
+                       
+                        </StackPanel>
+                        
+                    </TabItem.Header>
+                    <views:ExpensesCardView DataContext="{Binding ExpensesViewModel}" />
+                </TabItem>
 
-                                <Icon:PackIconMaterial Kind="CashMinus" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.Primary}" Width="40" Height="40" VerticalAlignment="Center" Margin="10"/>
-                                <StackPanel HorizontalAlignment="Left">
-                                    <TextBlock 
-                Text="المصاريف" FontWeight="Heavy" FontSize="16" HorizontalAlignment="Right"/>
-                                    <TextBlock Margin="0 0 0 10"
-                       TextAlignment="Left" Text="{Binding ExpensesCard,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource convertNum}}" FontWeight="DemiBold" FontSize="30" Foreground="{DynamicResource Brush.Primary}" />
-                                    <!--<Icon:PackIconMaterial Kind="ArrowUpCircleOutline" HorizontalAlignment="Left" Height="20" Width="20" RotationAngle="45" Foreground="#aaa"/>-->
-
-                                </StackPanel>
-                            </StackPanel>
-                        </RadioButton>
-                    </Grid>
-                </Border>
-
-
-
-
-                <Border Style="{DynamicResource StaticCardBorderStyle}" Grid.ColumnSpan="3" Grid.Row="3" Margin="5 10">
-                    <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
-                </Border>
-            </Grid>
+            </TabControl>
         </Grid>
     </Border>
 </UserControl>
