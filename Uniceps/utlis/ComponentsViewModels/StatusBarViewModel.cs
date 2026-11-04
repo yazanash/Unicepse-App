@@ -1,49 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using System.Windows.Media;
+using Uniceps.BackgroundServices;
+using Uniceps.Core.Common;
+using Uniceps.Stores;
 using Uniceps.ViewModels;
 
 namespace Uniceps.utlis.ComponentsViewModels
 {
     public class StatusBarViewModel : ViewModelBase
     {
-        public string? UserName { get; set; }
-        public string? Role { get; set; }
-        public string? Position { get; set; }
-        public string? OwnerName { get; set; }
-        public StatusBarViewModel(string? userName, string? position, string? ownerName)
+        private readonly AccountStore _accountStore;
+        private readonly BackgroundServiceStore _backgroundServiceStore;
+        public StatusBarViewModel(AccountStore accountStore, BackgroundServiceStore backgroundServiceStore)
         {
-            UserName = userName;
-            Position = position;
-            OwnerName = ownerName;
+            _accountStore = accountStore;
+            _accountStore.StateChanged += _accountStore_StateChanged;
+            _backgroundServiceStore = backgroundServiceStore;
+            _backgroundServiceStore.StateChanged += _backgroundServiceStore_StateChanged;
+            _backgroundServiceStore.SyncStatus += _backgroundServiceStore_SyncStatus;
         }
 
-        private string? _backMessage;
-        public string? BackMessage
+        private void _accountStore_StateChanged()
         {
-            get { return _backMessage; }
-            set { _backMessage = value; OnPropertyChanged(nameof(BackMessage)); }
+            OnPropertyChanged(nameof(UserName));
+            OnPropertyChanged(nameof(Role));
+            OnPropertyChanged(nameof(Position));
+            OnPropertyChanged(nameof(OwnerName));
         }
-        private Brush? _connection;
-        public Brush? Connection
+        private void _backgroundServiceStore_SyncStatus(bool obj, string? message)
         {
-            get { return _connection; }
-            set { _connection = value; OnPropertyChanged(nameof(Connection)); }
+            OnPropertyChanged(nameof(SyncState));
+            OnPropertyChanged(nameof(SyncMessage));
+
         }
-        private bool _syncState;
-        public bool SyncState
+        private void _backgroundServiceStore_StateChanged(string? obj, bool connectionStatus)
         {
-            get { return _syncState; }
-            set { _syncState = value; OnPropertyChanged(nameof(SyncState)); }
+            OnPropertyChanged(nameof(BackMessage));
+            OnPropertyChanged(nameof(Connection));
         }
-        private string? _syncMessage;
-        public string? SyncMessage
-        {
-            get { return _syncMessage; }
-            set { _syncMessage = value; OnPropertyChanged(nameof(SyncMessage)); }
-        }
+
+        public string? UserName => _accountStore.CurrentAccount?.UserName;
+        public Roles? Role => _accountStore.CurrentAccount!?.Role;
+        public string? Position => _accountStore.CurrentAccount?.Position;
+        public string? OwnerName => _accountStore.CurrentAccount?.OwnerName;
+
+        public string? BackMessage => _backgroundServiceStore.BackMessage;
+        public Brush? Connection => _backgroundServiceStore.Connection ? Brushes.Green : Brushes.Red;
+        public bool SyncState => _backgroundServiceStore.SyncStateProp;
+        public string? SyncMessage => _backgroundServiceStore.SyncMessage;
     }
 }

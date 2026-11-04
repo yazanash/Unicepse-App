@@ -12,16 +12,15 @@ namespace Uniceps.Commands.AccountantCommand
     public class LoadDailySubscriptions : AsyncCommandBase
     {
         private readonly DailyReportStore _dailyReportStore;
-        private readonly AccountingStateViewModel _accountingStateViewModel;
-        public LoadDailySubscriptions(DailyReportStore dailyReportStore, AccountingStateViewModel accountingStateViewModel)
+        public LoadDailySubscriptions(DailyReportStore dailyReportStore)
         {
             _dailyReportStore = dailyReportStore;
-            _accountingStateViewModel = accountingStateViewModel;
         }
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            await _dailyReportStore.GetSubscriptions(_accountingStateViewModel.Date);
+            if(parameter is DateTime date)
+            await _dailyReportStore.GetSubscriptions(date);
         }
     }
 }

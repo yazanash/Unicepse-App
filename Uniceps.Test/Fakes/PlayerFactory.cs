@@ -25,10 +25,6 @@ namespace Uniceps.Test.Fakes
                    player.Phone = fake.Person.Phone;
                    player.BirthDate = fake.Random.Number(1970, 2023);
                    player.GenderMale = fake.Random.Bool();
-                   player.SubscribeDate = fake.Date.Past(60);
-                   player.SubscribeEndDate = player.SubscribeDate.AddMonths(1);
-                   player.IsSubscribed = fake.Random.Bool();
-                   player.IsTakenContainer = fake.Random.Bool();
                    player.Balance = Convert.ToDouble(fake.Commerce.Price(10, 100));
                    player.MediclStatus ="";
 
@@ -46,10 +42,6 @@ namespace Uniceps.Test.Fakes
                    player.Phone = fake.Person.Phone;
                    player.BirthDate = fake.Random.Number(1970, 2023);
                    player.GenderMale = fake.Random.Bool();
-                   player.SubscribeDate = fake.Date.Past(60);
-                   player.SubscribeEndDate = player.SubscribeDate.AddMonths(1);
-                   player.IsSubscribed = fake.Random.Bool();
-                   player.IsTakenContainer = fake.Random.Bool();
                    player.Balance = Convert.ToDouble(fake.Commerce.Price(10, 100));
                    player.MediclStatus = "";
 

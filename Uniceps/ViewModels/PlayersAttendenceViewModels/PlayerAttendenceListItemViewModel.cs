@@ -11,7 +11,6 @@ using Uniceps.navigation;
 using Uniceps.Core.Models.Player;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.Stores;
-using Uniceps.navigation.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.Core.Models.DailyActivity;
 
@@ -36,7 +35,6 @@ namespace Uniceps.ViewModels.PlayersAttendenceViewModels
             LogoutCommand = new LogoutPlayerCommand(_playersAttendenceStore);
             AddKeyCommand = new OpenAddKeyDialog(new KeyDialogViewModel(this.dailyPlayerReport.PlayerName!, _playersAttendenceStore));
         }
-
         private int _idSort;
         public int IdSort
         {

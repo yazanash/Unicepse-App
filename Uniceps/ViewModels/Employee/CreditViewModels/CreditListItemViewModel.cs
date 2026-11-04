@@ -9,7 +9,7 @@ using Uniceps.Commands.Employee.CreditsCommands;
 using Uniceps.Commands.Player;
 using Uniceps.Core.Models.Employee;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.DialogService;
 using Uniceps.Stores;
 using Uniceps.Views.EmployeeViews.CreditViews;
 
@@ -18,6 +18,7 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
     public class CreditListItemViewModel : ViewModelBase
     {
         private readonly CreditsDataStore? _creditsDataStore;
+        private readonly IDialogService? _dialogService;
         public Credit credit;
         private int _order;
         public int Order
@@ -30,10 +31,12 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
         public double CreditValue => credit.CreditValue;
         public string? Date => credit.Date.ToShortDateString();
         public string? Description => credit.Description;
-        public CreditListItemViewModel(Credit credit, CreditsDataStore creditsDataStore)
+        public CreditListItemViewModel(Credit credit, CreditsDataStore creditsDataStore, IDialogService dialogService)
         {
             this.credit = credit;
             _creditsDataStore = creditsDataStore;
+            _dialogService = dialogService;
+
             DeleteCommand = new DeleteCreditsCommand(_creditsDataStore);
         }
         public CreditListItemViewModel(Credit credit)
@@ -45,12 +48,14 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
 
         private void ExecuteEditCreditsCommand()
         {
-            if ( _creditsDataStore != null)
+            if (_dialogService != null)
             {
-                CreateCreditViewModelWindow editCreditDetailsViewModel = new CreateCreditViewModelWindow(_creditsDataStore,credit);
-                CreateCreditWindowView createCreditWindowView = new CreateCreditWindowView();
-                createCreditWindowView.DataContext = editCreditDetailsViewModel;
-                createCreditWindowView.ShowDialog();
+                var navParams = new Dictionary<string, object>
+            {
+                {"Credit",credit},
+
+            };
+                _dialogService.ShowDialog<CreateCreditWindowView, CreateCreditViewModelWindow>(navParams);
             }
         
         }

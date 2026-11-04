@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Uniceps.Commands;
 using Uniceps.navigation;
+using Uniceps.navigation.NavigationSystem;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.TrainersViewModels;
 
@@ -14,8 +15,8 @@ namespace Uniceps.Commands.Employee
     public class DeleteEmployeeCommand : AsyncCommandBase
     {
         private readonly EmployeeStore _employeeStore;
-        private readonly NavigationService<TrainersListViewModel> _navigationService;
-        public DeleteEmployeeCommand(EmployeeStore employeeStore, NavigationService<TrainersListViewModel> navigationService)
+        private readonly INavigationService _navigationService;
+        public DeleteEmployeeCommand(EmployeeStore employeeStore, INavigationService navigationService)
         {
             _employeeStore = employeeStore;
             _navigationService = navigationService;
@@ -30,7 +31,7 @@ namespace Uniceps.Commands.Employee
                     try
                     {
                         await _employeeStore.Delete(employeeId);
-                        _navigationService.ReNavigate();
+                        _navigationService.Navigate<TrainersListViewModel>();
                     }
                     catch (Exception ex)
                     {

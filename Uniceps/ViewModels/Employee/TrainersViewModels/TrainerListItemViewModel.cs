@@ -10,8 +10,9 @@ using System.Windows.Media;
 using Uniceps.Commands.Player;
 using Uniceps.navigation;
 using Uniceps.Stores;
-using Uniceps.navigation.Stores;
 using Uniceps.Views.EmployeeViews;
+using Uniceps.navigation.NavigationSystem;
+using Uniceps.navigation.DialogService;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
@@ -19,12 +20,8 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
     {
         public Core.Models.Employee.Employee Trainer;
         private readonly EmployeeStore? _employeeStore;
-        private readonly DausesDataStore? _dausesDataStore;
-        private readonly TrainersListViewModel? _trainersListViewModel;
-        private readonly NavigationStore? _navigationStore;
-        private readonly CreditsDataStore? _creditsDataStore;
-        private readonly AccountStore?   _accountStore;
-        private readonly LicenseStore? _licenseStore;
+        private readonly INavigationService? _navigationService;
+        private readonly IDialogService? _dialogService;
         public int Id => Trainer.Id;
         public string? FullName => Trainer.FullName;
         public double SalaryValue => Trainer.SalaryValue;
@@ -39,38 +36,32 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public ICommand? OpenAccountCommand { get; }
         public ICommand? DeleteCommand { get; }
 
-        public TrainerListItemViewModel(Core.Models.Employee.Employee trainer, NavigationStore navigationStore, EmployeeStore employeeStore, TrainersListViewModel trainersListViewModel, DausesDataStore? dausesDataStore, CreditsDataStore? creditsDataStore, AccountStore accountStore,LicenseStore licenseStore)
+        public TrainerListItemViewModel(Core.Models.Employee.Employee trainer, EmployeeStore employeeStore, INavigationService navigationService, IDialogService dialogService)
         {
             Trainer = trainer;
             _employeeStore = employeeStore;
-            _trainersListViewModel = trainersListViewModel;
-            _dausesDataStore = dausesDataStore;
-            _navigationStore = navigationStore;
-            _creditsDataStore = creditsDataStore;
-            _accountStore = accountStore;
-            _licenseStore = licenseStore;
-            NavigationStore EmployeeAccountPageNavigation = new NavigationStore();
-            if (trainer.IsTrainer)
-                EditCommand = new RelayCommand(ExecuteEditTrainerCommand);
-            else
-                EditCommand = new RelayCommand(ExecuteEditEmployeeCommand);
-            DeleteCommand = new DeleteEmployeeCommand(_employeeStore, new NavigationService<TrainersListViewModel>(_navigationStore, () => _trainersListViewModel));
+            _navigationService = navigationService;
+            _dialogService = dialogService;
 
-            OpenAccountCommand = new NavaigateCommand<EmployeeAccountViewModel>(new NavigationService<EmployeeAccountViewModel>(_navigationStore, () => new EmployeeAccountViewModel(EmployeeAccountPageNavigation, _employeeStore, _dausesDataStore!, _creditsDataStore!, this, _licenseStore,Trainer)));
-        }
-        public void ExecuteEditTrainerCommand()
-        {
-            AddTrainerViewModel editTrainerViewModel = new AddTrainerViewModel(_employeeStore!,Trainer);
-            TrainerDetailsWindowView trainerDetailsWindowView = new TrainerDetailsWindowView();
-            trainerDetailsWindowView.DataContext = editTrainerViewModel;
-            trainerDetailsWindowView.ShowDialog();
+
+            EditCommand = new RelayCommand(ExecuteEditEmployeeCommand);
+            DeleteCommand = new DeleteEmployeeCommand(_employeeStore, _navigationService);
+            var navParams = new Dictionary<string, object>()
+            {
+                { "Employee",Trainer}
+            };
+            OpenAccountCommand = new RelayCommand(() => _navigationService.Navigate<EmployeeAccountViewModel>(navParams));
         }
         public void ExecuteEditEmployeeCommand()
         {
-            AddEmployeeViewModel editEmployeeViewModel = new AddEmployeeViewModel(_employeeStore!, Trainer);
-            EmployeeDetailsWindowView employeeDetailsWindowView = new EmployeeDetailsWindowView();
-            employeeDetailsWindowView.DataContext = editEmployeeViewModel;
-            employeeDetailsWindowView.ShowDialog();
+            if (_dialogService != null)
+            {
+                var navParams = new Dictionary<string, object>()
+            {
+                { "Employee",Trainer}
+            };
+                _dialogService.ShowDialog<EmployeeDetailsWindowView, AddEmployeeViewModel>(navParams);
+            }
         }
         public TrainerListItemViewModel(Core.Models.Employee.Employee trainer)
         {

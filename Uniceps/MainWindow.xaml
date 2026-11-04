@@ -78,7 +78,7 @@
                             <Icon:PackIconMaterial Kind="{Binding ThemeIcon,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="25" Height="25"/>
                         </Button>
                         <Button 
-Command="{Binding Navigator.UpdateCurrentViewModelCommand}"
+Command="{Binding Navigator.NavigateCommand}"
 CommandParameter="{x:Static nav:ViewType.About}" 
 Style="{StaticResource IconBtn}" >
                             <StackPanel Orientation="Horizontal">
@@ -119,7 +119,7 @@ Style="{StaticResource IconBtn}" >
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <ContentControl Content="{Binding Navigator.CurrentViewModel}" Grid.ColumnSpan="2"/>
+                        <ContentControl Content="{Binding CurrentViewModel}" Grid.ColumnSpan="2"/>
                         <comp:StatusBar Grid.Row="2" DataContext="{Binding StatusBarViewModel,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
 
                     </Grid>

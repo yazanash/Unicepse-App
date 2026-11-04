@@ -93,10 +93,6 @@ namespace Uniceps.Views.PlayerViews
                 csvBuilder.Append(player!.FullName + ",");
                 csvBuilder.Append(player!.BirthDate + ",");
                 csvBuilder.Append(player!.Gendertext + ",");
-                csvBuilder.Append(player!.SubscribeDate!.Replace(',','-') + ",");
-
-                csvBuilder.Append(player!.SubscribeEndDate!.Replace(',', '-') + ",");
-                csvBuilder.Append(player!.DayLeft + ",");
                 csvBuilder.Append(player!.Balance + ",");
               
                 csvBuilder.AppendLine();

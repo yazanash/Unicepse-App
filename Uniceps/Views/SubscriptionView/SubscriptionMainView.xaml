@@ -37,10 +37,12 @@
                 </Grid.RowDefinitions>
                 <Border>
                     <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -49,20 +51,70 @@
                         <Border Grid.Column="1" CornerRadius="{DynamicResource Radius.Small}" Margin="10 5"  Grid.Row="0"  VerticalAlignment="Center">
                             <cs:CustomTextBox Hint="ابحث هنا"  DataContext="{Binding SearchBox,UpdateSourceTrigger=PropertyChanged}"/>
                         </Border>
-                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="5" Orientation="Horizontal"  VerticalAlignment="Center">
+                        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="5" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
                             <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
        ItemsSource="{Binding SubscriptionStatuses,UpdateSourceTrigger=PropertyChanged}"
        SelectedItem="{Binding SelectedSubscriptionStatus,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
        ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"
-              Tag="حالة الاشتراك :">
+              Tag="حالة الاشتراك :" Grid.Column="0" >
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Converter={StaticResource EnumToText}}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                        </StackPanel>
-                        <Button Grid.Column="4"  Margin="10 0" Command="{Binding AddCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Right">
+                            <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+ItemsSource="{Binding SportsList,UpdateSourceTrigger=PropertyChanged}"
+SelectedItem="{Binding SelectedSport,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"
+       Tag=" الرياضة :" Grid.Column="1" Margin="5 0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding SportName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ComboBox Style="{DynamicResource ComboBoxStyle1}" 
+ItemsSource="{Binding TrainersList,UpdateSourceTrigger=PropertyChanged}"
+SelectedItem="{Binding SelectedTrainer,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}"
+       Tag=" المدرب :" Grid.Column="2"  Margin="5 0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TrainerName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Grid.Column="3"  Margin="10 0" Command="{Binding ClearFiltersCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource IconBtn}" HorizontalAlignment="Right">
+
+                                <StackPanel Orientation="Horizontal">
+
+                                    <TextBlock Text="مسح الفلترة" />
+                                    <Icon:PackIconMaterial Kind="FilterOff"
+Width="11"
+Height="11"
+Margin="8 0 0 1"
+VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                            </Button>
+                            <StackPanel Orientation="Horizontal"  Grid.Column="0" Grid.Row="1">
+                                <CheckBox FlowDirection="LeftToRight" HorizontalAlignment="Center" Style="{StaticResource toggleBtnStyle}" VerticalAlignment="Center" Margin="0 5"  IsChecked="{Binding LoggedPlayers}"/>
+                                <TextBlock Foreground="{DynamicResource Brush.Foreground}" Margin="5 0" VerticalAlignment="Center" Text="عرض الموجودين حاليا في النادي " />
+                            </StackPanel>
+                        </Grid>
+                        <Button Grid.Column="2"  Margin="10 0" Command="{Binding AddCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}" HorizontalAlignment="Right">
 
                             <StackPanel Orientation="Horizontal">
 
@@ -75,7 +127,7 @@
                             </StackPanel>
 
                         </Button>
-                        <Button Grid.Column="5" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
+                        <Button Grid.Column="3" Margin="5 0"   Command="{Binding OpenScanCommand}"  FlowDirection="LeftToRight"  Style="{StaticResource AddBtn}">
 
                             <StackPanel  Orientation="Horizontal">
                                 <TextBlock  FlowDirection="RightToLeft" Text="مسح QR Code" />
@@ -100,11 +152,16 @@
                         <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Left" Visibility="{Binding HasErrorMessage , Converter={StaticResource BoolToVis}}" Foreground="Red" Grid.Column="2" Margin="140,0,0,0"/>
 
                         <DataGrid   Visibility="{Binding HasErrorMessage,Converter={StaticResource InverseBooleanToVisibalityConverter}}" 
+                                    
                                  FlowDirection="RightToLeft" ItemsSource="{Binding SubscriptionList}" 
                                  CanUserReorderColumns="True"
                              SelectedItem="{Binding SelectedSubscription}"
                                  x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                                  CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                     EnableRowVirtualization="True"
+    EnableColumnVirtualization="True"
+    VirtualizingPanel.IsVirtualizing="True"
+    VirtualizingPanel.VirtualizationMode="Recycling"
                                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Grid.ColumnSpan="3">
 
                             <DataGrid.Columns>

@@ -103,7 +103,7 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                 column: "EquipmentCode",
                 principalTable: "Equipment",
                 principalColumn: "Code",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ExercisesV2_MuscleGroupsV2_MuscleGroupCode",
@@ -111,7 +111,7 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                 column: "MuscleGroupCode",
                 principalTable: "MuscleGroupsV2",
                 principalColumn: "Code",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ExercisesV2_MuscleHeads_MuscleHeadCode",
@@ -119,7 +119,7 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                 column: "MuscleHeadCode",
                 principalTable: "MuscleHeads",
                 principalColumn: "Code",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
         }
 
         /// <inheritdoc />

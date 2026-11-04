@@ -1,7 +1,9 @@
-﻿using System.Windows.Input;
-using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+﻿using System.Collections.Generic;
+using System.Windows.Input;
+using Uniceps.Core.Models.Sport;
+using Uniceps.navigation.DialogService;
+using Uniceps.navigation.Extensions;
+using Uniceps.navigation.NavigationSystem;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.CreditViewModels;
 using Uniceps.ViewModels.PlayersViewModels;
@@ -9,69 +11,49 @@ using Emp = Uniceps.Core.Models.Employee;
 
 namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
-    public class EmployeeAccountViewModel : ViewModelBase
+    public class EmployeeAccountViewModel : ViewModelBase , IQueryAttributable
     {
-        private NavigationStore _navigatorStore;
-        private readonly EmployeeStore _employeeStore;
-        private readonly DausesDataStore _dausesDataStore;
-        private readonly CreditsDataStore _creditsDataStore;
-        private readonly LicenseStore _licenseStore;
+        private readonly INavigationService _navigationService;
+        private readonly IDialogService _dialogService;
+        private EmployeeStore _employeeStore;
         public TrainerListItemViewModel? Employee { get; set; }
-        public ViewModelBase? CurrentEmployeeViewModel => _navigatorStore.CurrentViewModel;
-        public Emp.Employee SelectedEmployee;
-        public EmployeeAccountViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, TrainerListItemViewModel? employee, LicenseStore licenseStore, Emp.Employee selectedEmployee)
+        public Emp.Employee? SelectedEmployee { get; set; }
+        public EmployeeAccountantPageViewModel EmployeeAccountantPageViewModel { get; }
+        public CreditListViewModel CreditListViewModel { get; }
+        public PremiumViewModel PremiumViewModel { get; }
+
+        private int _selectedTabIndex = 0;
+        public int SelectedTabIndex
         {
-            _navigatorStore = navigatorStore;
+            get => _selectedTabIndex;
+            set
+            {
+                _selectedTabIndex = value;
+                OnPropertyChanged(nameof(SelectedTabIndex));
+            }
+        }
+        public EmployeeAccountViewModel(EmployeeAccountantPageViewModel employeeAccountantPageViewModel, CreditListViewModel creditListViewModel, PremiumViewModel premiumViewModel, INavigationService navigationService, IDialogService dialogService, EmployeeStore employeeStore)
+        {
+            EmployeeAccountantPageViewModel = employeeAccountantPageViewModel;
+            CreditListViewModel = creditListViewModel;
+            PremiumViewModel = premiumViewModel;
+            _navigationService = navigationService;
+            _dialogService = dialogService;
             _employeeStore = employeeStore;
-            _dausesDataStore = dausesDataStore;
-            _creditsDataStore = creditsDataStore;
-            Employee = employee;
-            _licenseStore = licenseStore;
-            SelectedEmployee = selectedEmployee;
+        }
 
-            IsTrainer = SelectedEmployee!.IsTrainer;
-            if (_licenseStore.Current.IsFullVersion)
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<Emp.Employee>("Employee", out var emp))
             {
-                if (SelectedEmployee!.IsTrainer)
-                    navigatorStore.CurrentViewModel = new EmployeeAccountantPageViewModel(_employeeStore, _dausesDataStore, _creditsDataStore, SelectedEmployee);
-                else
-                    navigatorStore.CurrentViewModel = new CreditListViewModel(_creditsDataStore, _navigatorStore, SelectedEmployee);
-                navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
-                EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => new CreditListViewModel(_creditsDataStore,_navigatorStore, SelectedEmployee)));
-               TrainerDusesCommand = new NavaigateCommand<EmployeeAccountantPageViewModel>(new NavigationService<EmployeeAccountantPageViewModel>(_navigatorStore, () => new EmployeeAccountantPageViewModel(employeeStore, dausesDataStore, creditsDataStore, SelectedEmployee)));
+                if (emp != null)
+                {
+                    SelectedEmployee = emp;
+                    Employee = new TrainerListItemViewModel(emp, _employeeStore, _navigationService, _dialogService);
+                }
+                EmployeeAccountantPageViewModel.ApplyQueryAttributes(query);
+                CreditListViewModel.ApplyQueryAttributes(query);
             }
-            else
-            {
-                navigatorStore.CurrentViewModel = new CreditListViewModel(_creditsDataStore, _navigatorStore, SelectedEmployee);
-                navigatorStore.CurrentViewModelChanged += NavigatorStore_CurrentViewModelChanged;
-                EmployeeCreditsCommand = new NavaigateCommand<CreditListViewModel>(new NavigationService<CreditListViewModel>(_navigatorStore, () => new CreditListViewModel(_creditsDataStore, _navigatorStore, SelectedEmployee)));
-                TrainerDusesCommand = new NavaigateCommand<PremiumViewModel>(new NavigationService<PremiumViewModel>(_navigatorStore, () => new PremiumViewModel()));
-            }
-
         }
-        private bool _isTrainer;
-        public bool IsTrainer
-        {
-            get { return _isTrainer; }
-            set { _isTrainer = value; OnPropertyChanged(nameof(IsTrainer)); }
-        }
-        private bool _isTrainerPage;
-        public bool IsTrainerPage
-        {
-            get { return _isTrainerPage; }
-            set { _isTrainerPage = value; OnPropertyChanged(nameof(IsTrainerPage)); }
-        }
-        public bool IsCredit { get; set; }
-        public bool IsPlayers { get; set; }
-        private void NavigatorStore_CurrentViewModelChanged()
-        {
-            IsTrainerPage = CurrentEmployeeViewModel is EmployeeAccountantPageViewModel;
-            IsPlayers = CurrentEmployeeViewModel is PlayerMainPageViewModel;
-            OnPropertyChanged(nameof(CurrentEmployeeViewModel));
-        }
-
-
-        public ICommand? EmployeeCreditsCommand { get; }
-        public ICommand? TrainerDusesCommand { get; }
     }
 }

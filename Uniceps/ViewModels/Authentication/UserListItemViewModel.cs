@@ -9,7 +9,7 @@ using Uniceps.Commands.AuthCommands;
 using Uniceps.Commands.Player;
 using Uniceps.Core.Models.Authentication;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.DialogService;
 using Uniceps.Stores;
 using Uniceps.Views.AuthView;
 
@@ -20,6 +20,7 @@ namespace Uniceps.ViewModels.Authentication
         public User user;
         private readonly UsersDataStore _usersDataStore;
         private readonly AuthenticationStore _authenticationStore;
+        private readonly IDialogService _dialogService;
         private int _order;
         public int Order
         {
@@ -31,7 +32,7 @@ namespace Uniceps.ViewModels.Authentication
         public string? Role { get; set; }
         public string? Position => user.Position;
         public string? OwnerName => user.OwnerName;
-        public UserListItemViewModel(User user, UsersDataStore usersDataStore,AuthenticationStore authenticationStore)
+        public UserListItemViewModel(User user, UsersDataStore usersDataStore, AuthenticationStore authenticationStore, IDialogService dialogService)
         {
             this.user = user;
             switch (user.Role)
@@ -53,14 +54,16 @@ namespace Uniceps.ViewModels.Authentication
             _authenticationStore = authenticationStore;
             EditUserCommand = new RelayCommand(ExecuteEditUserCommand);
             DeleteUserCommand = new DeleteUserCommand(_usersDataStore, _authenticationStore);
+            _dialogService = dialogService;
         }
 
         private void ExecuteEditUserCommand()
         {
-            EditUserViewModel addUserViewModel  = new  EditUserViewModel(_usersDataStore,this);
-            AddUserViewWindow addUserViewWindow = new AddUserViewWindow();
-            addUserViewWindow.DataContext = addUserViewModel;
-            addUserViewWindow.ShowDialog();
+            var navParams = new Dictionary<string, object>()
+            {
+                {"User",user }
+            };
+            _dialogService.ShowDialog<AddUserViewWindow, AddUserViewModel>(navParams);
         }
         public void update(User user)
         {

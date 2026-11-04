@@ -10,7 +10,6 @@ using Uniceps.Commands;
 using Uniceps.Commands.ExpensesCommands;
 using Uniceps.Commands.RevenueCommands;
 using Uniceps.Core.Models;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Expenses;
 using Uniceps.ViewModels.SubscriptionViewModel;

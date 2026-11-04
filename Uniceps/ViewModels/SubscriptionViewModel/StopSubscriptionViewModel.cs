@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Uniceps.ViewModels;
 using Uniceps.Stores;
-using Uniceps.navigation.Stores;
 using Uniceps.ViewModels.PlayersViewModels;
 using Uniceps.Core.Models.Subscription;
 
@@ -17,16 +16,14 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
 {
     public class StopSubscriptionViewModel : ErrorNotifyViewModelBase
     {
-        private NavigationStore _navigatorStore;
         private readonly SubscriptionDataStore _subscriptionStore;
         private readonly PlayersDataStore _playerDataStore;
         private readonly PaymentDataStore _paymentDataStore;
         private readonly PlayerMainPageViewModel _playerMainPageView;
         public Subscription SelectedSubscription;
         public SubscriptionCardViewModel? Subscription { get; set; }
-        public StopSubscriptionViewModel(NavigationStore navigatorStore, SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore, PlayerMainPageViewModel playerMainPageView, Subscription selectedSubscription)
+        public StopSubscriptionViewModel(SubscriptionDataStore subscriptionStore, PlayersDataStore playerDataStore, PaymentDataStore paymentDataStore, PlayerMainPageViewModel playerMainPageView, Subscription selectedSubscription)
         {
-            _navigatorStore = navigatorStore;
             _subscriptionStore = subscriptionStore;
             _playerDataStore = playerDataStore;
             _paymentDataStore = paymentDataStore;
@@ -35,9 +32,9 @@ namespace Uniceps.ViewModels.SubscriptionViewModel
 
             FromRef = true;
             Subscription = new SubscriptionCardViewModel(SelectedSubscription);
-            CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
+            //CancelCommand = new NavaigateCommand<PlayerMainPageViewModel>(new NavigationServiceV1<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView));
 
-            SubmitCommand = new StopSubscriptionCommand(_subscriptionStore, _playerDataStore, new NavigationService<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView), this);
+            //SubmitCommand = new StopSubscriptionCommand(_subscriptionStore, _playerDataStore, new NavigationServiceV1<PlayerMainPageViewModel>(_navigatorStore, () => _playerMainPageView), this);
         }
 
         private void CountCoast()

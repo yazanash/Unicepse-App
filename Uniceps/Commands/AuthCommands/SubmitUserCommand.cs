@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Uniceps.Stores;
 using Uniceps.Commands;
-using Uniceps.navigation;
-using Uniceps.ViewModels.Authentication;
 using Uniceps.Core.Models.Authentication;
+using Uniceps.Core.Models.Metric;
+using Uniceps.navigation;
+using Uniceps.Stores;
+using Uniceps.ViewModels.Authentication;
+using Uniceps.ViewModels.Metrics;
 
 namespace Uniceps.Commands.AuthCommands
 {
@@ -16,6 +18,7 @@ namespace Uniceps.Commands.AuthCommands
     {
         private readonly UsersDataStore _usersDataStore;
         private AddUserViewModel _addUserViewModel;
+
         public SubmitUserCommand(UsersDataStore usersDataStore, AddUserViewModel addUserViewModel)
         {
             _usersDataStore = usersDataStore;
@@ -46,11 +49,17 @@ namespace Uniceps.Commands.AuthCommands
                 {
                     UserName = _addUserViewModel.UserName,
                     Password = _addUserViewModel.Password,
-                    Role = _addUserViewModel.RoleItem!.role,
+                    Role = _addUserViewModel.RoleItem,
                     Position = _addUserViewModel.Position,
                     OwnerName = _addUserViewModel.OwnerName
                 };
-                await _usersDataStore.Add(user);
+                if (_addUserViewModel.IsEditMode && _addUserViewModel.UserId != -1)
+                {
+                    user.Id = _addUserViewModel.UserId;
+                    await _usersDataStore.Update(user);
+                }
+                else
+                    await _usersDataStore.Add(user);
                 _addUserViewModel.OnUserCreated();
             }
             catch (Exception ex)

@@ -42,13 +42,13 @@ namespace Uniceps.utlis.Components
         public static readonly DependencyProperty MetricValueProperty = DependencyProperty.Register
             ("MetricValue", typeof(double), typeof(MetricItem));
 
-        public Uri Icon
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
+          "Icon", typeof(ImageSource), typeof(MetricItem), new PropertyMetadata(null));
+
+        public ImageSource Icon
         {
-            get { return (Uri)GetValue(IconProperty); }
+            get { return (ImageSource)GetValue(IconProperty); }
             set { SetValue(IconProperty, value); }
         }
-
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register
-            ("Icon", typeof(Uri), typeof(MetricItem));
     }
 }

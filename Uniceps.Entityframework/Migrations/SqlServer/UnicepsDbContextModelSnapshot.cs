@@ -33,8 +33,20 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("LoginDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
@@ -69,6 +81,15 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<bool>("Disable")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("OwnerName")
                         .HasColumnType("nvarchar(max)");
 
@@ -80,6 +101,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
@@ -116,7 +140,13 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsLogged")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsTakenKey")
@@ -124,6 +154,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<int>("KeyNumber")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
@@ -134,6 +167,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<Guid>("PlayerSyncId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("SportName")
                         .IsRequired()
@@ -188,6 +224,18 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<Guid>("EmpPersonSyncId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
+
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
 
@@ -230,7 +278,13 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsSecrtaria")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsTrainer")
@@ -240,6 +294,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                         .HasColumnType("float");
 
                     b.Property<DateTime?>("LastClosingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Parcent")
@@ -259,6 +316,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<double>("SalaryValue")
                         .HasColumnType("float");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -297,11 +357,23 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReportDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
@@ -339,8 +411,20 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("RecipientId")
                         .HasColumnType("int");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
@@ -393,6 +477,12 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<double>("Hips")
                         .HasColumnType("float");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
                     b.Property<double>("L_Arm")
                         .HasColumnType("float");
 
@@ -404,6 +494,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<double>("L_Thigh")
                         .HasColumnType("float");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Nick")
                         .HasColumnType("float");
@@ -425,6 +518,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<double>("R_Thigh")
                         .HasColumnType("float");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<double>("Shoulders")
                         .HasColumnType("float");
@@ -476,6 +572,18 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Service")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -505,6 +613,15 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
@@ -513,6 +630,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<DateTime>("RefDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
@@ -552,6 +672,15 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<string>("Des")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("PayDate")
                         .HasColumnType("datetime2");
 
@@ -563,6 +692,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<Guid>("PlayerSyncId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("SubscriptionId")
                         .HasColumnType("int");
@@ -602,9 +734,6 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DataStatus")
-                        .HasColumnType("int");
-
                     b.Property<string>("FingerprintData")
                         .HasColumnType("nvarchar(max)");
 
@@ -614,11 +743,14 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<bool>("GenderMale")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsSubscribed")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsTakenContainer")
+                    b.Property<bool>("IsSynced")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MediclStatus")
                         .HasColumnType("nvarchar(max)");
@@ -626,11 +758,8 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("SubscribeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("SubscribeEndDate")
-                        .HasColumnType("datetime2");
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
@@ -713,11 +842,23 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
@@ -777,11 +918,23 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
@@ -820,13 +973,22 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsRenewed")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsStopped")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("LastCheck")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("MonthCount")
@@ -841,12 +1003,6 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PlayerName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlayerPhone")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("PlayerSyncId")
                         .HasColumnType("uniqueidentifier");
 
@@ -858,6 +1014,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
 
                     b.Property<DateTime>("RollDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<int?>("SportId")
                         .HasColumnType("int");
@@ -901,6 +1060,8 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.HasIndex("SyncId")
                         .IsUnique();
 
+                    b.HasIndex("TrainerId");
+
                     b.ToTable("Subscriptions");
                 });
 
@@ -918,11 +1079,23 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.Property<int>("EntityType")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ObjectData")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OperationType")
                         .HasColumnType("int");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("uniqueidentifier");
@@ -1097,6 +1270,9 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("MuscleGroupV2Code")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1104,6 +1280,8 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.HasKey("Code");
 
                     b.HasIndex("MuscleGroupCode");
+
+                    b.HasIndex("MuscleGroupV2Code");
 
                     b.ToTable("MuscleHeads");
                 });
@@ -1238,7 +1416,7 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                         .WithMany("PlayerTrainings")
                         .HasForeignKey("EmployeeId");
 
-                    b.HasOne("Uniceps.Core.Models.Player.Player", null)
+                    b.HasOne("Uniceps.Core.Models.Player.Player", "Player")
                         .WithMany("Subscriptions")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1252,6 +1430,13 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.HasOne("Uniceps.Core.Models.Sport.Sport", null)
                         .WithMany("PlayerTrainings")
                         .HasForeignKey("SportId1");
+
+                    b.HasOne("Uniceps.Core.Models.Employee.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.ExerciseV2", b =>
@@ -1259,19 +1444,19 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
                     b.HasOne("Uniceps.Core.Models.TrainingProgram.Equipment", "Equipment")
                         .WithMany()
                         .HasForeignKey("EquipmentCode")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", "MuscleGroupV2")
                         .WithMany()
                         .HasForeignKey("MuscleGroupCode")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleHead", "MuscleHead")
                         .WithMany()
                         .HasForeignKey("MuscleHeadCode")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Equipment");
@@ -1284,10 +1469,14 @@ namespace Uniceps.Entityframework.Migrations.SqlServer
             modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.MuscleHead", b =>
                 {
                     b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", "Group")
-                        .WithMany("Heads")
+                        .WithMany()
                         .HasForeignKey("MuscleGroupCode")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", null)
+                        .WithMany("Heads")
+                        .HasForeignKey("MuscleGroupV2Code");
 
                     b.Navigation("Group");
                 });

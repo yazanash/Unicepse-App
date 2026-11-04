@@ -22,10 +22,6 @@ namespace Uniceps.DataExporter.Mappers
                 UpdatedAt = data.UpdatedAt,
                 SyncId = data.SyncId,
                 MediclStatus = data.MediclStatus,
-                SubscribeDate = data.SubscribeDate,
-                SubscribeEndDate = data.SubscribeEndDate,
-                IsTakenContainer = data.IsTakenContainer,
-                IsSubscribed = data.IsSubscribed,
             };
             player.Subscriptions = data.Subscriptions.Select(x => SubscriptionMapper.FromDto(x)).ToList();
             return player;
@@ -43,10 +39,6 @@ namespace Uniceps.DataExporter.Mappers
                 UpdatedAt = data.UpdatedAt,
                 SyncId = data.SyncId,
                 MediclStatus = data.MediclStatus,
-                SubscribeDate = data.SubscribeDate,
-                SubscribeEndDate = data.SubscribeEndDate,
-                IsTakenContainer = data.IsTakenContainer,
-                IsSubscribed = data.IsSubscribed,
                 
             };
             playerDto.Subscriptions = data.Subscriptions.Select(x => SubscriptionMapper.ToDto(x)).ToList();

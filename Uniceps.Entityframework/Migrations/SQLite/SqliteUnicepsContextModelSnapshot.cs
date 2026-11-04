@@ -26,8 +26,20 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("LoginDateTime")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("TEXT");
@@ -60,6 +72,15 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<bool>("Disable")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("OwnerName")
                         .HasColumnType("TEXT");
 
@@ -70,6 +91,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Role")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("ServerVersion")
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SyncId")
@@ -105,7 +129,13 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsLogged")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsTakenKey")
@@ -113,6 +143,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<int>("KeyNumber")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("INTEGER");
@@ -123,6 +156,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<Guid>("PlayerSyncId")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SportName")
                         .IsRequired()
@@ -175,6 +211,18 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<Guid>("EmpPersonSyncId")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("SyncId")
                         .HasColumnType("TEXT");
 
@@ -215,7 +263,13 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsSecrtaria")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsTrainer")
@@ -225,6 +279,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                         .HasColumnType("REAL");
 
                     b.Property<DateTime?>("LastClosingDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Parcent")
@@ -244,6 +301,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<double>("SalaryValue")
                         .HasColumnType("REAL");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
@@ -280,11 +340,23 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<int>("EmployeeId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Note")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ReportDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("TEXT");
@@ -320,7 +392,19 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("RecipientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("ServerVersion")
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SyncId")
@@ -372,6 +456,12 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<double>("Hips")
                         .HasColumnType("REAL");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("L_Arm")
                         .HasColumnType("REAL");
 
@@ -383,6 +473,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<double>("L_Thigh")
                         .HasColumnType("REAL");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Nick")
                         .HasColumnType("REAL");
@@ -404,6 +497,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<double>("R_Thigh")
                         .HasColumnType("REAL");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("Shoulders")
                         .HasColumnType("REAL");
@@ -453,6 +549,18 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Service")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -480,6 +588,15 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("PlayerId")
                         .HasColumnType("INTEGER");
 
@@ -488,6 +605,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<DateTime>("RefDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("TEXT");
@@ -525,6 +645,15 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<string>("Des")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("PayDate")
                         .HasColumnType("TEXT");
 
@@ -536,6 +665,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<Guid>("PlayerSyncId")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("SubscriptionId")
                         .HasColumnType("INTEGER");
@@ -573,9 +705,6 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DataStatus")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("FingerprintData")
                         .HasColumnType("TEXT");
 
@@ -585,11 +714,14 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<bool>("GenderMale")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsSubscribed")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsTakenContainer")
+                    b.Property<bool>("IsSynced")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("MediclStatus")
                         .HasColumnType("TEXT");
@@ -597,11 +729,8 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("SubscribeDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("SubscribeEndDate")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("TEXT");
@@ -678,11 +807,23 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Level")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("TEXT");
@@ -738,11 +879,23 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SyncId")
                         .HasColumnType("TEXT");
@@ -779,13 +932,22 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsRenewed")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsStopped")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("LastCheck")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("MonthCount")
@@ -800,12 +962,6 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<int>("PlayerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PlayerName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PlayerPhone")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("PlayerSyncId")
                         .HasColumnType("TEXT");
 
@@ -817,6 +973,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
 
                     b.Property<DateTime>("RollDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("ServerVersion")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("SportId")
                         .HasColumnType("INTEGER");
@@ -860,6 +1019,8 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.HasIndex("SyncId")
                         .IsUnique();
 
+                    b.HasIndex("TrainerId");
+
                     b.ToTable("Subscriptions");
                 });
 
@@ -875,10 +1036,22 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.Property<int>("EntityType")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSynced")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedUtc")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ObjectData")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("OperationType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("ServerVersion")
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SyncId")
@@ -1050,6 +1223,9 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("MuscleGroupV2Code")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -1057,6 +1233,8 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.HasKey("Code");
 
                     b.HasIndex("MuscleGroupCode");
+
+                    b.HasIndex("MuscleGroupV2Code");
 
                     b.ToTable("MuscleHeads");
                 });
@@ -1191,7 +1369,7 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                         .WithMany("PlayerTrainings")
                         .HasForeignKey("EmployeeId");
 
-                    b.HasOne("Uniceps.Core.Models.Player.Player", null)
+                    b.HasOne("Uniceps.Core.Models.Player.Player", "Player")
                         .WithMany("Subscriptions")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1205,6 +1383,13 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.HasOne("Uniceps.Core.Models.Sport.Sport", null)
                         .WithMany("PlayerTrainings")
                         .HasForeignKey("SportId1");
+
+                    b.HasOne("Uniceps.Core.Models.Employee.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.ExerciseV2", b =>
@@ -1212,19 +1397,19 @@ namespace Uniceps.Entityframework.Migrations.SQLite
                     b.HasOne("Uniceps.Core.Models.TrainingProgram.Equipment", "Equipment")
                         .WithMany()
                         .HasForeignKey("EquipmentCode")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", "MuscleGroupV2")
                         .WithMany()
                         .HasForeignKey("MuscleGroupCode")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleHead", "MuscleHead")
                         .WithMany()
                         .HasForeignKey("MuscleHeadCode")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Equipment");
@@ -1237,10 +1422,14 @@ namespace Uniceps.Entityframework.Migrations.SQLite
             modelBuilder.Entity("Uniceps.Core.Models.TrainingProgram.MuscleHead", b =>
                 {
                     b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", "Group")
-                        .WithMany("Heads")
+                        .WithMany()
                         .HasForeignKey("MuscleGroupCode")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("Uniceps.Core.Models.TrainingProgram.MuscleGroupV2", null)
+                        .WithMany("Heads")
+                        .HasForeignKey("MuscleGroupV2Code");
 
                     b.Navigation("Group");
                 });

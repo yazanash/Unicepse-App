@@ -89,10 +89,10 @@ namespace Uniceps.Entityframework.Services
                 context.Entry(entity).State = EntityState.Modified;
             context.Set<Employee>().Update(entity);
 
-            await context.Set<Subscription>()
-       .Where(s => s.TrainerId == entity.Id)
-       .ExecuteUpdateAsync(setter => setter
-           .SetProperty(s => s.TrainerName, entity.FullName));
+       //     await context.Set<Subscription>()
+       //.Where(s => s.TrainerId == entity.Id)
+       //.ExecuteUpdateAsync(setter => setter
+       //    .SetProperty(s => s.TrainerName, entity.FullName));
             await context.SaveChangesAsync();
             return entity;
         }

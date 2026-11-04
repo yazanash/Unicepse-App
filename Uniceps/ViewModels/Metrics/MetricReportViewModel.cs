@@ -11,15 +11,18 @@ using Uniceps.Commands.Player;
 using Uniceps.navigation;
 using Uniceps.ViewModels;
 using Uniceps.Stores;
-using Uniceps.navigation.Stores;
 using Uniceps.Core.Models.Metric;
+using Uniceps.navigation.NavigationSystem;
+using Uniceps.navigation.Extensions;
+using Uniceps.navigation.DialogService;
+using Uniceps.Views.Metrics;
 
 namespace Uniceps.ViewModels.Metrics
 {
-    public class MetricReportViewModel : ListingViewModelBase
+    public class MetricReportViewModel : ListingViewModelBase,IQueryAttributable
     {
+        private readonly IDialogService _dialogService;
         private readonly MetricDataStore _metricDataStore;
-        private readonly NavigationStore _navigationStore;
         private ObservableCollection<MetricListItemViewModel> _metricListItemViewModels;
         public int PlayerId;
         public IEnumerable<MetricListItemViewModel> Metrics => _metricListItemViewModels;
@@ -39,20 +42,29 @@ namespace Uniceps.ViewModels.Metrics
         }
         public ICommand LoadMetricCommand { get; }
         public ICommand AddMetricsCommand { get; }
-        public MetricReportViewModel(int playerId,MetricDataStore metricDataStore, NavigationStore navigationStore)
+        public MetricReportViewModel(MetricDataStore metricDataStore,  IDialogService dialogService)
         {
-            PlayerId = playerId;
             _metricDataStore = metricDataStore;
-            _navigationStore = navigationStore;
+            _dialogService = dialogService;
             _metricListItemViewModels = new ObservableCollection<MetricListItemViewModel>();
             _metricDataStore.Loaded += _metricDataStore_Loaded;
             _metricDataStore.Created += _metricDataStore_Created;
             _metricDataStore.Updated += _metricDataStore_Updated;
             _metricDataStore.Deleted += _metricDataStore_Deleted;
             LoadMetricCommand = new LoadMetricsCommand(this, _metricDataStore);
-            AddMetricsCommand = new NavaigateCommand<AddMetricsViewModel>(new NavigationService<AddMetricsViewModel>(_navigationStore, () => new AddMetricsViewModel(PlayerId,_metricDataStore, _navigationStore, this)));
-            LoadMetricCommand.Execute(PlayerId);
+           
+            AddMetricsCommand = new RelayCommand(ExecuteAddMetricCommand);
+         
+        }
 
+        private void ExecuteAddMetricCommand()
+        {
+            var navParams = new Dictionary<string, object>
+            {
+                {"PlayerId",PlayerId},
+
+            };
+            _dialogService.ShowDialog<AddMetricWindowView, AddMetricsViewModel>(navParams);
         }
 
         private void _metricDataStore_Deleted(int id)
@@ -94,9 +106,18 @@ namespace Uniceps.ViewModels.Metrics
         public bool IsSelected = true;
         private void AddMetric(Metric metric)
         {
-            MetricListItemViewModel viewmodel = new(metric, _metricDataStore, _navigationStore, this);
+            MetricListItemViewModel viewmodel = new(metric,_dialogService);
             _metricListItemViewModels.Add(viewmodel);
         }
 
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<int>("PlayerId", out var playerId))
+            {
+                PlayerId = playerId;
+                LoadMetricCommand.Execute(PlayerId);
+            }
+
+        }
     }
 }

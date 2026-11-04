@@ -18,7 +18,6 @@ using Uniceps.Entityframework.Services;
 using Uniceps.MessengerSystem;
 using Uniceps.MessengerSystem.Events;
 using Uniceps.Models;
-using Uniceps.Stores.ApiDataStores;
 using Uniceps.SystemServices;
 using Uniceps.ViewModels.SportsViewModels;
 
@@ -32,12 +31,15 @@ namespace Uniceps.Stores
         public event Action<int>? Deleted;
         public event Action? AllLoaded;
 
+        public event Action? ReportLoaded;
+
         string LogFlag = "[Subscriptions] ";
         private readonly ILogger<SubscriptionDataStore> _logger;
 
         private readonly IDataService<Subscription> _subscriptionDataService;
         private readonly IGetPlayerTransactionService<Subscription> _getPlayerTransactionService;
         private readonly ISubscriptionRenewService _subscriptionRenewService;
+        private readonly IActiveTransactionService _activeTransactionService;
         private readonly List<Subscription> _subscriptions;
         private readonly Lazy<Task> _initializeLazy;
         public IEnumerable<Subscription> Subscriptions => _subscriptions;
@@ -45,15 +47,20 @@ namespace Uniceps.Stores
         private readonly List<Subscription> _allSubscriptions;
         public IEnumerable<Subscription> AllSubscriptions => _allSubscriptions;
 
-        public SubscriptionDataStore(IDataService<Subscription> subscriptionDataService, ILogger<SubscriptionDataStore> logger, IGetPlayerTransactionService<Subscription> getPlayerTransactionService, ISubscriptionRenewService subscriptionRenewService)
+        private readonly List<Subscription> _subscriptionReport;
+        public IEnumerable<Subscription> SubscriptionReport => _subscriptionReport;
+
+        public SubscriptionDataStore(IDataService<Subscription> subscriptionDataService, ILogger<SubscriptionDataStore> logger, IGetPlayerTransactionService<Subscription> getPlayerTransactionService, ISubscriptionRenewService subscriptionRenewService, IActiveTransactionService activeTransactionService)
         {
             _subscriptionDataService = subscriptionDataService;
             _subscriptions = new List<Subscription>();
             _allSubscriptions = new List<Subscription>();
+            _subscriptionReport = new List<Subscription>();
             _initializeLazy = new Lazy<Task>(Initialize);
             _logger = logger;
             _getPlayerTransactionService = getPlayerTransactionService;
             _subscriptionRenewService = subscriptionRenewService;
+            _activeTransactionService = activeTransactionService;
 
             Messenger.Default.Register<PaymentCreated>(this, OnPaymentCreated);
             Messenger.Default.Register<PaymentDeleted>(this, OnPaymentDeleted);
@@ -68,7 +75,7 @@ namespace Uniceps.Stores
             var subsToUpdate = _allSubscriptions.Where(x => x.TrainerId == updated.Entity.Id).ToList();
             foreach (var sub in subsToUpdate)
             {
-                sub.TrainerName = updated.Entity.FullName;
+                //sub.TrainerName = updated.Entity.FullName;
                 RefreshUi(sub);
             }
         }
@@ -78,7 +85,7 @@ namespace Uniceps.Stores
             var subsToUpdate = _allSubscriptions.Where(x => x.SportId == updated.Entity.Id).ToList();
             foreach (var sub in subsToUpdate)
             {
-                sub.SportName = updated.Entity.Name;
+                //sub.SportName = updated.Entity.Name;
                 RefreshUi(sub);
             }
         }
@@ -88,8 +95,8 @@ namespace Uniceps.Stores
             var subsToUpdate = _allSubscriptions.Where(x => x.PlayerId == updated.Entity.Id).ToList();
             foreach (var sub in subsToUpdate)
             {
-                sub.PlayerName = updated.Entity.FullName;
-                sub.PlayerPhone = updated.Entity.Phone;
+                //sub.PlayerName = updated.Entity.FullName;
+                //sub.PlayerPhone = updated.Entity.Phone;
                 RefreshUi(sub);
             }
         }
@@ -118,10 +125,10 @@ namespace Uniceps.Stores
         public async Task Add(Subscription entity)
         {
             _logger.LogInformation(LogFlag + "add subscription");
-            await _subscriptionDataService.Create(entity);
-            _subscriptions.Add(entity);
-            _allSubscriptions.Add(entity);
-            Created?.Invoke(entity);
+          Subscription created =  await _subscriptionDataService.Create(entity);
+            _subscriptions.Add(created);
+            _allSubscriptions.Add(created);
+            Created?.Invoke(created);
         }
         public async Task Delete(int entity_id)
         {
@@ -157,6 +164,13 @@ namespace Uniceps.Stores
             _allSubscriptions.Clear();
             _allSubscriptions.AddRange(subscriptions);
             AllLoaded?.Invoke();
+        }
+        public async Task GetAllByDate(DateTime date, int? sportId , int? trainerId)
+        {
+            IEnumerable<Subscription> subscriptions = await _activeTransactionService.GetAllByDate(date,sportId,trainerId);
+            _subscriptionReport.Clear();
+            _subscriptionReport.AddRange(subscriptions);
+            ReportLoaded?.Invoke();
         }
         public async Task Initialize()
         {
@@ -212,22 +226,22 @@ namespace Uniceps.Stores
             _logger.LogInformation(LogFlag + "stop subscription");
             entity.EndDate = stopDate;
             entity.IsStopped = true;
-            await _subscriptionDataService.Update(entity);
+            Subscription stopped = await _subscriptionDataService.Update(entity);
 
 
-            int currentIndex = _subscriptions.FindIndex(y => y.Id == entity.Id);
+            int currentIndex = _subscriptions.FindIndex(y => y.Id == stopped.Id);
 
             if (currentIndex != -1)
             {
-                _subscriptions[currentIndex] = entity;
-                _allSubscriptions[currentIndex] = entity;
+                _subscriptions[currentIndex] = stopped;
+                _allSubscriptions[currentIndex] = stopped;
             }
             else
             {
-                _subscriptions.Add(entity);
-                _allSubscriptions.Add(entity);
+                _subscriptions.Add(stopped);
+                _allSubscriptions.Add(stopped);
             }
-            Updated?.Invoke(entity);
+            Updated?.Invoke(stopped);
         }
         public async Task MarkAsRenewed(int entityId)
         {

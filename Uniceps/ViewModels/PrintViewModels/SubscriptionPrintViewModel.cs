@@ -74,7 +74,7 @@ namespace Uniceps.ViewModels.PrintViewModels
             set { _gymLogo = value; OnPropertyChanged(nameof(GymLogo)); }
         }
         public int Id => Subscription.Id;
-        public string? PlayerName => Subscription.PlayerName;
+        public string? PlayerName => Subscription.Player?.FullName;
         public string? Code => Subscription.Code;
         public string? SportName => Subscription.SportName;
         public int SubDays => Subscription.DaysCount;

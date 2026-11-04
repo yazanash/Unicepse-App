@@ -8,7 +8,6 @@ using Uniceps.Commands.ExpensesCommands;
 using Uniceps.Commands.Player;
 using Uniceps.Commands.RevenueCommands;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.OtherRevenueViewModels;
@@ -20,7 +19,6 @@ namespace Uniceps.ViewModels.Expenses
 {
     public class ExpensesListViewModel : ListingViewModelBase
     {
-        private readonly NavigationStore _navigatorStore;
         private readonly ExpensesDataStore _expensesStore;
 
 
@@ -29,9 +27,8 @@ namespace Uniceps.ViewModels.Expenses
         public ICommand? AddExpensesCommand { get; }
         public bool HasData => expensesListItemViewModels.Count > 0;
 
-        public ExpensesListViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore)
+        public ExpensesListViewModel(ExpensesDataStore expensesStore)
         {
-            _navigatorStore = navigatorStore;
             _expensesStore = expensesStore;
             LoadExpenseCommand = new LoadExpensesCommand(_expensesStore, this);
             expensesListItemViewModels = new ObservableCollection<ExpensesListItemViewModel>();
@@ -42,6 +39,7 @@ namespace Uniceps.ViewModels.Expenses
             _expensesStore.Updated += _expensesStore_Updated;
             _expensesStore.Deleted += _expensesStore_Deleted;
             AddExpensesCommand = new RelayCommand(ExecuteAddExpensesCommand);
+            LoadExpenseCommand.Execute(null);
         }
         private void ExecuteAddExpensesCommand()
         {
@@ -104,7 +102,7 @@ namespace Uniceps.ViewModels.Expenses
         private void AddExpenses(Core.Models.Expenses.Expenses expenses)
         {
             ExpensesListItemViewModel itemViewModel =
-                new ExpensesListItemViewModel(expenses, _navigatorStore, _expensesStore, this);
+                new ExpensesListItemViewModel(expenses, _expensesStore);
             expensesListItemViewModels.Add(itemViewModel);
             OnPropertyChanged(nameof(HasData));
         }
@@ -113,14 +111,7 @@ namespace Uniceps.ViewModels.Expenses
 
         public ICommand LoadExpenseCommand { get; private set; }
 
-        public static ExpensesListViewModel LoadViewModel(NavigationStore navigatorStore, ExpensesDataStore expensesStore)
-        {
-            ExpensesListViewModel viewModel = new ExpensesListViewModel(navigatorStore, expensesStore);
-
-            viewModel.LoadExpenseCommand.Execute(null);
-
-            return viewModel;
-        }
+     
        
         public override void Dispose()
         {

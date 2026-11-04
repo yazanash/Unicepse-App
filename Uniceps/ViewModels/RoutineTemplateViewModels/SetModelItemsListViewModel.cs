@@ -11,7 +11,6 @@ using Uniceps.Commands.RoutineSystemCommands.RoutineItemsCommands;
 using Uniceps.Commands.RoutineSystemCommands.SetModelsCommands;
 using Uniceps.Core.Models.RoutineModels;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores.RoutineStores;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels;

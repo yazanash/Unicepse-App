@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Uniceps.BackgroundServices;
 using Microsoft.Extensions.Logging;
-using Uniceps.Stores.ApiDataStores;
 using Uniceps.Core.Services;
 using Uniceps.Core.Models.Player;
 using Uniceps.Core.Models.Metric;

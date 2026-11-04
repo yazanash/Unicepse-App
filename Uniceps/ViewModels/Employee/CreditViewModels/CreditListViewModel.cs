@@ -1,26 +1,29 @@
-﻿using Uniceps.Commands;
-using Uniceps.Commands.Employee.CreditsCommands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Uniceps.Commands;
+using Uniceps.Commands.Employee.CreditsCommands;
 using Uniceps.Commands.Player;
-using Uniceps.navigation;
-using Uniceps.ViewModels;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
 using Uniceps.Core.Models.Employee;
+using Uniceps.Core.Models.Metric;
+using Uniceps.navigation;
+using Uniceps.navigation.DialogService;
+using Uniceps.navigation.Extensions;
+using Uniceps.Stores;
+using Uniceps.ViewModels;
+using Uniceps.ViewModels.Employee.TrainersViewModels;
 using Uniceps.Views.EmployeeViews.CreditViews;
 using Emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.ViewModels.Employee.CreditViewModels
 {
-    public class CreditListViewModel : ListingViewModelBase
+    public class CreditListViewModel : ListingViewModelBase, IQueryAttributable
     {
         private readonly CreditsDataStore _creditDataStore;
-        private NavigationStore _navigatorStore;
+        private readonly IDialogService _dialogService;
         private readonly ObservableCollection<CreditListItemViewModel> _creditListItemViewModels;
         public IEnumerable<CreditListItemViewModel> Credits => _creditListItemViewModels;
         public CreditListItemViewModel? SelectedCredit
@@ -36,20 +39,17 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
 
             }
         }
-        public Emp.Employee Employee;
-        public CreditListViewModel( CreditsDataStore creditDataStore, NavigationStore navigatorStore, Emp.Employee employee)
+        public Emp.Employee? Employee;
+        public CreditListViewModel(CreditsDataStore creditDataStore, IDialogService dialogService)
         {
             _creditDataStore = creditDataStore;
-            _navigatorStore = navigatorStore;
             _creditDataStore.Created += _creditDataStore_Created;
             _creditDataStore.Updated += _creditDataStore_Updated;
             _creditDataStore.Loaded += _creditDataStore_Loaded;
             _creditDataStore.Deleted += _creditDataStore_Deleted;
             _creditListItemViewModels = new ObservableCollection<CreditListItemViewModel>();
             LoadCreditsCommand = new LoadCreditsCommand(_creditDataStore);
-            Employee = employee;
-
-            LoadCreditsCommand.Execute(Employee.Id);
+            _dialogService = dialogService;
         }
 
         private void _creditDataStore_Deleted(int obj)
@@ -93,7 +93,7 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
         private void AddCredit(Credit credit)
         {
             CreditListItemViewModel itemViewModel =
-                new CreditListItemViewModel(credit, _creditDataStore);
+                new CreditListItemViewModel(credit, _creditDataStore,_dialogService);
             _creditListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = _creditListItemViewModels.Count();
         }
@@ -111,12 +111,28 @@ namespace Uniceps.ViewModels.Employee.CreditViewModels
 
         private void ExecuteCreateCreditsCommand()
         {
-            CreateCreditViewModelWindow createCreditViewModelWindow = new CreateCreditViewModelWindow(_creditDataStore,Employee);
-            CreateCreditWindowView createCreditWindowView = new CreateCreditWindowView();
-            createCreditWindowView.DataContext = createCreditViewModelWindow;
-            createCreditWindowView.ShowDialog();
+            if (Employee != null)
+            {
+                var navParams = new Dictionary<string, object>
+            {
+                {"Employee",Employee},
+
+            };
+                _dialogService.ShowDialog<CreateCreditWindowView, CreateCreditViewModelWindow>(navParams);
+            }
+
+        }
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<Emp.Employee>("Employee", out var emp))
+            {
+                if (emp != null)
+                {
+                    Employee = emp;
+                    LoadCreditsCommand.Execute(Employee.Id);
+                }
+            }
         }
 
-      
     }
 }

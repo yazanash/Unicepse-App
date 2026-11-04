@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using DocumentFormat.OpenXml.Vml.Office;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ using Uniceps.Core.Models.DailyActivity;
 using Uniceps.Core.Models.Player;
 using Uniceps.Core.Services;
 using Uniceps.Entityframework.Services;
-using Uniceps.Stores.ApiDataStores;
+using Uniceps.MessengerSystem;
+using Uniceps.MessengerSystem.Events;
 using Uniceps.SystemServices;
 using Windows.UI.Notifications;
 using static Uniceps.Stores.PlayersDataStore;
@@ -33,12 +35,62 @@ namespace Uniceps.Stores
         string LogFlag = "[Attendence] ";
         private readonly ILogger<PlayersAttendenceStore> _logger;
         public event Action<DailyPlayerReport>? LoggedOut;
+        private readonly System.Media.SoundPlayer? _successSoundPlayer;
         public PlayersAttendenceStore(PlayersAttendenceService playersAttendenceService, ILogger<PlayersAttendenceStore> logger)
         {
             _playersAttendenceService = playersAttendenceService;
             _playersAttendence = new List<DailyPlayerReport>();
             _logger = logger;
+            _successSoundPlayer = InitSuccessSound();
+            Messenger.Default.Register<UserFingerprintScannedMessage>(this, LoginPlayerFromFingerPrint);
         }
+        private System.Media.SoundPlayer? InitSuccessSound()
+        {
+            try
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+
+                // Get the stream for the embedded resource
+                Stream? soundStream = assembly.GetManifestResourceStream("Uniceps.Resources.sounds.beep.wav");
+
+                if (soundStream != null)
+                {
+                    var player = new System.Media.SoundPlayer(soundStream);
+                    player.Load(); // 👈 تحميل الملف فوراً للذاكرة RAM
+                    return player;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[Attendence] فشل تحميل ملف الصوت: {ex.Message}");
+            }
+
+            return null;
+        }
+        private void PlaySuccessSound()
+        {
+            try
+            {
+                _successSoundPlayer?.Play();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[Attendence] خطأ أثناء تشغيل الصوت: {ex.Message}");
+            }
+        }
+        private async void LoginPlayerFromFingerPrint(UserFingerprintScannedMessage message)
+        {
+            DailyPlayerReport dailyPlayerReport = new DailyPlayerReport()
+            {
+                loginTime = DateTime.Now,
+                logoutTime = DateTime.Now,
+                Date = DateTime.Now,
+                IsLogged = true,
+                 PlayerId = message.PlayerId,
+            };
+          await  LogInPlayerWithId(dailyPlayerReport);
+        }
+
         private readonly PlayersAttendenceService _playersAttendenceService;
         private readonly List<DailyPlayerReport> _playersAttendence;
         public IEnumerable<DailyPlayerReport> PlayersAttendence => _playersAttendence;
@@ -69,10 +121,33 @@ namespace Uniceps.Stores
 
         public async Task LogInPlayerWithId(DailyPlayerReport entity)
         {
-            _logger.LogInformation(LogFlag + "login player");
-            await _playersAttendenceService.LogInPlayerWithId(entity);
-            _playersAttendence.Add(entity);
-            LoggedIn?.Invoke(entity);
+           
+           await Application.Current.Dispatcher.Invoke( async() =>
+            {
+                try
+                {
+                    _logger.LogInformation(LogFlag + "login player");
+                    var existed = await _playersAttendenceService.GetByPlayerId(entity);
+                    if (existed != null)
+                    {
+                        existed.IsLogged = false;
+                        existed.logoutTime = DateTime.Now;
+                        await LogOutPlayer(existed);
+                    }
+                    else
+                    {
+                        await _playersAttendenceService.LogInPlayerWithId(entity);
+                        _playersAttendence.Add(entity);
+                        LoggedIn?.Invoke(entity);
+                    }
+                     
+                    PlaySuccessSound();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            });
         }
 
         public async Task LogOutPlayer(DailyPlayerReport entity)

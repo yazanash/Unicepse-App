@@ -1,34 +1,27 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Uniceps.Core.Models.RoutineModels;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.RoutineTemplateViewModels;
-using Uniceps.Commands.Player;
-using Uniceps.navigation;
+using Uniceps.navigation.NavigationSystem;
+using Uniceps.Commands;
+using System.Collections.Generic;
 
 namespace Uniceps.ViewModels.RoutineTemplateViewModels.RoutineDataViewModels
 {
     public class RoutineTemplateListItemViewModel : ViewModelBase
     {
         public RoutineModel RoutineModel;
+        private readonly INavigationService _navigationService;
         public ICommand? OpenProfileCommand { get; }
-        private readonly NavigationStore? _navigationStore;
-        private readonly RoutineDetailsViewModel _routineDetailsViewModel;
 
 
-        public RoutineTemplateListItemViewModel(RoutineModel routineModel, NavigationStore navigationStore, RoutineDetailsViewModel routineDetailsViewModel)
+        public RoutineTemplateListItemViewModel(RoutineModel routineModel,  INavigationService navigationService)
         {
             RoutineModel = routineModel;
-            _navigationStore = navigationStore;
-            _routineDetailsViewModel = routineDetailsViewModel;
-
-            OpenProfileCommand = new NavaigateCommand<RoutineDetailsViewModel>(new NavigationService<RoutineDetailsViewModel>(_navigationStore, () => _routineDetailsViewModel));
-
+            _navigationService = navigationService;
+            var navQuery = new Dictionary<string, object>()
+            {
+                { "RoutineModel",RoutineModel }
+            };
+            OpenProfileCommand = new RelayCommand(()=>_navigationService.Navigate<RoutineDetailsViewModel>(navQuery));
         }
         public int Id => RoutineModel.Id;
         private int _order = 0;

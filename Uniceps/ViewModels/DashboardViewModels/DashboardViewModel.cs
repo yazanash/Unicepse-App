@@ -12,7 +12,6 @@ using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Core.Models;
 using Uniceps.Models;
-using Uniceps.navigation.Stores;
 using Uniceps.Stores;
 using Uniceps.SystemServices;
 using Uniceps.ViewModels.PlayersViewModels;
@@ -30,6 +29,7 @@ namespace Uniceps.ViewModels.DashboardViewModels
             SettingsManager.ThemeChanged += () => {
                 LoadData(_gymStore.DashboardAnalyticsModel);
             };
+            LoadAnalyticsCommand.Execute(null);
         }
 
         private void _gymStore_AnalyticsLoaded()
@@ -186,11 +186,6 @@ namespace Uniceps.ViewModels.DashboardViewModels
             await _gymStore.GetAnalytics();
         }
 
-        public static DashboardViewModel LoadViewModel(GymStore gymStore)
-        {
-            DashboardViewModel viewModel = new DashboardViewModel(gymStore);
-            viewModel.LoadAnalyticsCommand.Execute(null);
-            return viewModel;
-        }
+       
     }
 }

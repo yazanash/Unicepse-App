@@ -41,13 +41,11 @@ namespace Uniceps.Commands.Employee
                 Core.Models.Employee.Employee employee = new Emp.Employee()
                 {
                     FullName = _addEmployeeViewModel.FullName,
-                    Balance = _addEmployeeViewModel.Balance,
                     BirthDate = _addEmployeeViewModel.Year,
                     GenderMale = _addEmployeeViewModel.GenderMale,
                     IsActive = true,
-                    IsTrainer = false,
                     IsSecrtaria = _addEmployeeViewModel.IsSecertary,
-
+                    IsTrainer = _addEmployeeViewModel.IsTrainer,
                     ParcentValue = _addEmployeeViewModel.ParcentValue,
                     SalaryValue = _addEmployeeViewModel.SalaryValue,
                     Phone = _addEmployeeViewModel.Phone,

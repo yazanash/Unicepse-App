@@ -12,21 +12,22 @@ using Sub = Uniceps.Core.Models.Subscription;
 
 namespace Uniceps.Core.Models.Player
 {
-    public class Player : Person
+    public class Player : DomainObject
     {
         public Player()
         {
             Subscriptions = new HashSet<Sub.Subscription>();
             Payments = new HashSet<PlayerPayment>();
         }
-        public DateTime SubscribeDate { get; set; }
-        public DateTime SubscribeEndDate { get; set; }
-        public bool IsTakenContainer { get; set; }
-        public bool IsSubscribed { get; set; }
+        public string? FullName { get; set; }
+        public string? Phone { get; set; }
+        public int BirthDate { get; set; }
+        public bool GenderMale { get; set; }
+
         [NotMapped]
         public double Balance { get; set; }
         public string? UID { get; set; }
-        public DataStatus DataStatus { get; set; }
+     
         public string? FingerprintData { get; set; }
         public string? MediclStatus { get; set; }
         public bool Conflicts(Player player)
@@ -44,11 +45,11 @@ namespace Uniceps.Core.Models.Player
             Phone = player.Phone;
             BirthDate = player.BirthDate;
             GenderMale = player.GenderMale;
-            SubscribeDate = player.SubscribeDate;
-            SubscribeEndDate = player.SubscribeEndDate;
-            IsSubscribed = player.IsSubscribed;
             SyncId = player.SyncId;
             MediclStatus = player.MediclStatus;
+            LastUpdatedUtc = player.LastUpdatedUtc;
+            ServerVersion = player.ServerVersion;
+            FingerprintData = player.FingerprintData;
         }
 
         public virtual ICollection<Sub.Subscription> Subscriptions { get; set; }

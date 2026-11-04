@@ -52,13 +52,13 @@ namespace Uniceps.Entityframework.Services
 
 
                 model.ActivePlayersCount = await context.Set<Player>()
-                    .CountAsync(p => p.IsSubscribed);
+                    .CountAsync();
 
                 model.MaleCount = await context.Set<Player>().CountAsync(p => p.GenderMale);
                 model.FemaleCount = await context.Set<Player>().CountAsync(p => !p.GenderMale);
 
                 model.SportPopularity = await context.Set<Subscription>()
-              .GroupBy(r => r.SportName!)
+                .GroupBy(r => r.SportName!)
               .Select(g => new { Sport = g.Key ?? "غير محدد", Count = g.Count() })
               .ToDictionaryAsync(x => x.Sport, x => x.Count);
 

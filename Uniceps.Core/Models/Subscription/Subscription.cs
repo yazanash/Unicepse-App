@@ -9,7 +9,10 @@ using Uniceps.Core.Common;
 using Uniceps.Core.Models;
 using Uniceps.Core.Models.Employee;
 using Uniceps.Core.Models.Payment;
-
+using Uniceps.Core.Models.Sport;
+using Sport = Uniceps.Core.Models.Sport;
+using Player = Uniceps.Core.Models.Player;
+using Emp = Uniceps.Core.Models.Employee;
 namespace Uniceps.Core.Models.Subscription
 {
     public class Subscription : DomainObject
@@ -20,7 +23,8 @@ namespace Uniceps.Core.Models.Subscription
         public Guid SportSyncId { get; set; }
         public int? TrainerId { get; set; }
         public Guid? TrainerSyncId { get; set; }
-        public string? PlayerName { get; set; } = string.Empty;
+
+        public virtual Player.Player? Player { get; set; }
         public string? SportName { get; set; } = string.Empty;
         public string? TrainerName { get; set; }
         public DateTime LastCheck { get; set; }
@@ -35,10 +39,8 @@ namespace Uniceps.Core.Models.Subscription
         public DateTime EndDate { get; set; }
         public bool IsRenewed { get; set; }
         public List<PlayerPayment>? Payments { get; set; } = new();
-        //public double TotalPaid => Payments?.Sum(p => p.PaymentValue) ?? 0;
         public double Remaining => PriceAfterOffer - TotalPaid;
         public string? Code { get; set; }
-        public string? PlayerPhone { get; set; } = string.Empty;
         [NotMapped]
         public double TotalPaid { get; set; }
         public string GenerateSubscriptionCode(int attempt = 0)
@@ -62,7 +64,6 @@ namespace Uniceps.Core.Models.Subscription
             SportSyncId = subscription.SportSyncId;
             TrainerId = subscription.TrainerId;
             TrainerSyncId = subscription.TrainerSyncId;
-            PlayerName = subscription.PlayerName;
             SportName = subscription.SportName;
             TrainerName = subscription.TrainerName;
             LastCheck = subscription.LastCheck;
@@ -77,7 +78,6 @@ namespace Uniceps.Core.Models.Subscription
             EndDate = subscription.EndDate;
             IsRenewed = subscription.IsRenewed;
             Code = subscription.Code;
-            PlayerPhone = subscription.PlayerPhone;
             SyncId = subscription.SyncId;
         }
         public void GetTotal()

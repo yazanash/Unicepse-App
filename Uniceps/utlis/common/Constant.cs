@@ -80,4 +80,10 @@ namespace Uniceps.utlis.common
         [Display(Name = "تصدير بصيغة Unx")]
         UniFile,
     }
+    public enum QueryMode
+    {
+        Edit = 0,
+        Renewal = 1,
+        New = 2
+    }
 }

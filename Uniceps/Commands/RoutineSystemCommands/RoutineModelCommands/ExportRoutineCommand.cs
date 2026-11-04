@@ -28,9 +28,9 @@ namespace Uniceps.Commands.RoutineSystemCommands.RoutineModelCommands
             if (!string.IsNullOrEmpty(fileName))
             {
                 var fullPath = Path.Combine(folder, fileName);
-                if (_routineTempDataStore.SelectedRoutine != null)
+                if (_exportDialogViewModel.RoutineModel != null)
                 {
-                  bool exported =  await _routineTempDataStore.ExportRoutine(_routineTempDataStore.SelectedRoutine.Id,
+                  bool exported =  await _routineTempDataStore.ExportRoutine(_exportDialogViewModel.RoutineModel.Id,
                        _exportDialogViewModel.FileFormat, fullPath);
                     if (exported) {
                         MessageBox.Show("تم التصدير بنجاح");

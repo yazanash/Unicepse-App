@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.navigation.Stores;
 using Uniceps.ViewModels;
 
 namespace Uniceps.navigation.Navigator
@@ -26,7 +25,7 @@ namespace Uniceps.navigation.Navigator
     }
     public interface INavigator
     {
-        ViewModelBase CurrentViewModel { get; set; }
-        ICommand UpdateCurrentViewModelCommand { get; }
+        bool IsOpen { get; set; }
+        ICommand NavigateCommand { get; }
     }
 }

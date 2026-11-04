@@ -15,12 +15,10 @@ namespace Uniceps.Commands.AuthCommands
     public class LoginCommand : AsyncCommandBase
     {
         private readonly AuthenticationStore? _authenticationStore;
-        private readonly AuthViewModel? _authViewModel;
         private readonly LoginViewModel _loginViewModel;
-        public LoginCommand(AuthViewModel? authViewModel, AuthenticationStore authenticationStore, LoginViewModel loginViewModel)
+        public LoginCommand( AuthenticationStore authenticationStore, LoginViewModel loginViewModel)
         {
             _authenticationStore = authenticationStore;
-            _authViewModel = authViewModel;
             _loginViewModel = loginViewModel;
         }
         public async override Task ExecuteAsync(object? parameter)
@@ -32,7 +30,7 @@ namespace Uniceps.Commands.AuthCommands
                 await _authenticationStore!.Login(_loginViewModel!.UserName!, _loginViewModel.Password!);
                 if (_authenticationStore.CurrentAccount != null)
                 {
-                    _authViewModel!.OnLoginAction();
+                    _loginViewModel!.OnLoginAction();
                 }
             }
             catch (InvalidPasswordException ex)

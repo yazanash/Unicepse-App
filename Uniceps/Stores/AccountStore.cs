@@ -12,6 +12,14 @@ namespace Uniceps.Stores
 {
     public class AccountStore
     {
+        public AccountStore()
+        {
+            new User()
+            {
+                OwnerName = "مستخدم غير مسجل",
+                Role = Roles.Admin,
+            };
+        }
         private User? _currentAccount;
         public User? CurrentAccount
         {

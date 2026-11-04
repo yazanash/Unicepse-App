@@ -257,7 +257,89 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="ModernTabItemStyle" TargetType="TabItem">
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Margin" Value="3 0"/>
+        <Setter Property="Padding" Value="5 0"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border x:Name="Border" 
+                         Margin="5"
+                    Background="{TemplateBinding Background}" 
+                    BorderBrush="{TemplateBinding BorderBrush}" 
+                    BorderThickness="{TemplateBinding BorderThickness}" 
+                    CornerRadius="0" 
+                    Padding="{TemplateBinding Padding}">
+                        <ContentPresenter x:Name="ContentSite"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  ContentSource="Header"
+                         Margin="10,5,10,5"
+                                      
+                                  RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- تأثير عند المرور بالماوس -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Brush.Card}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
+                        </Trigger>
 
+                        <!-- تأثير عند اختيار التاب (يعمل عمل IsChecked) -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Brush.Card}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Brush.Primary}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ModernTabControlStyle" TargetType="TabControl">
+        <!-- Default property bindings so it respects your design system -->
+        <Setter Property="Background" Value="{DynamicResource Brush.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}"/>
+
+        <!-- AUTOMATICALLY LINK YOUR TAB ITEM STYLE HERE -->
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ModernTabItemStyle}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabControl">
+                    <Grid KeyboardNavigation.TabNavigation="Local">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Your clean StackPanel horizontal host -->
+                        <StackPanel IsItemsHost="True" 
+                                Orientation="Horizontal" 
+                                Grid.Row="0" 
+                                Panel.ZIndex="1"/>
+
+                        <!-- The Content Window Border -->
+                        <Border Grid.Row="1" 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter ContentSource="SelectedContent" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style x:Key="RadioChoose" TargetType="RadioButton">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="#999"/>

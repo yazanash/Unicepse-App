@@ -3,34 +3,31 @@ using Uniceps.Commands.AuthCommands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uniceps.Commands.Player;
-using Uniceps.navigation;
 using Uniceps.Stores;
-using Uniceps.navigation.Stores;
 using System.Collections.ObjectModel;
 
 namespace Uniceps.ViewModels.Authentication
 {
     public class LoginViewModel : ViewModelBase
     {
-        private readonly AuthViewModel _authViewModel;
-        private readonly NavigationStore _navigationStore;
+        public event Action? LoginAction;
+        public void OnLoginAction()
+        {
+            LoginAction?.Invoke();
+        }
         private readonly AuthenticationStore _authenticationStore;
         private readonly UsersDataStore _usersDataStore;
         public ObservableCollection<string> _usersList = new ObservableCollection<string>();
         public IEnumerable<string> Users => _usersList;
-        public LoginViewModel(AuthViewModel authViewModel, NavigationStore navigationStore, AuthenticationStore authenticationStore, UsersDataStore usersDataStore)
+        public LoginViewModel( AuthenticationStore authenticationStore, UsersDataStore usersDataStore)
         {
-            _authViewModel = authViewModel;
-            _navigationStore = navigationStore;
             _authenticationStore = authenticationStore;
-            RegisterCommand = new NavaigateCommand<RegisterViewModel>(new NavigationService<RegisterViewModel>(navigationStore, () => new RegisterViewModel(_authViewModel, navigationStore, _authenticationStore)));
-            LoginCommand = new LoginCommand(_authViewModel, _authenticationStore, this);
+           LoginCommand = new LoginCommand( _authenticationStore, this);
             _usersDataStore = usersDataStore;
             _usersDataStore.Loaded += _usersDataStore_Loaded;
+            LoadUsersList.Execute(null);
         }
 
         private void _usersDataStore_Loaded()
@@ -92,12 +89,5 @@ namespace Uniceps.ViewModels.Authentication
             }
         }
         public ICommand LoginCommand { get; }
-        public ICommand RegisterCommand { get; }
-        public static LoginViewModel LoadViewModel(AuthViewModel authViewModel,NavigationStore navigationStore,AuthenticationStore authenticationStore,UsersDataStore usersDataStore)
-        {
-            LoginViewModel loginViewModel = new LoginViewModel(authViewModel,navigationStore,authenticationStore,usersDataStore);
-            loginViewModel.LoadUsersList.Execute(null);
-            return loginViewModel;
-        }
     }
 }

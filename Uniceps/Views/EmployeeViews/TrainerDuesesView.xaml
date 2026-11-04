@@ -30,55 +30,38 @@
     </UserControl.Resources>
     <Border >
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <Border Padding="5" Margin="5">
-                <DockPanel>
-                    <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
-                        <RadioButton
-                            IsChecked="{Binding IsTrainerPage,NotifyOnTargetUpdated=False,Mode=OneWay}"
-                            Visibility="{Binding IsTrainer,Converter={StaticResource BoolToVis}}"
-                            Command="{Binding TrainerDusesCommand}"
-                            Style="{StaticResource BarButtonRD}" >
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple"/>
-                                <TextBlock  Text="الكشف" />
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton
-                            IsChecked="{Binding IsCredit,UpdateSourceTrigger=PropertyChanged}"
-                    Command="{Binding EmployeeCreditsCommand}"
-                                Style="{StaticResource BarButtonRD}" >
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>
-                                <TextBlock  Text="المسحوبات" />
-                            </StackPanel>
-                        </RadioButton>
-                      
-                  
-
-
-
-                    </StackPanel>
-                </DockPanel>
-            </Border>
-
             <Border Grid.Column="1" Grid.RowSpan="2"  Grid.Row="0"  Padding="5"  Margin="5">
-
                 <ctrl:InfoEmpCard DockPanel.Dock="Top" DataContext="{Binding Employee,UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
-            <Grid Grid.Row="1">
-                <ContentControl Content="{Binding CurrentEmployeeViewModel}"/>
-            </Grid>
+            <TabControl Grid.Column="0" Style="{DynamicResource ModernTabControlStyle}"
+                        SelectedIndex="{Binding SelectedTabIndex, UpdateSourceTrigger=PropertyChanged}" Margin="5">
 
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple"/>
+                            <TextBlock  Text="الكشف" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <vs:TrainerDues DataContext="{Binding EmployeeAccountantPageViewModel}"/>
+                </TabItem>
 
+                <TabItem >
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="Dumbbell"/>
+                            <TextBlock  Text="المسحوبات" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <cvs:CreditsListView DataContext="{Binding CreditListViewModel}"/>
+                </TabItem>
+
+            </TabControl>
         </Grid>
     </Border>
 </UserControl>

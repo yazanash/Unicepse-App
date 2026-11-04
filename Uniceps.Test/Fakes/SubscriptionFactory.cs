@@ -23,10 +23,10 @@ namespace Uniceps.Test.Fakes
                   subscription.SportName = sport.Name;
                   subscription.SportId = sport.Id;
                   subscription.DaysCount = sport.DaysCount;
-                  subscription.PlayerName = player.FullName;
-                  subscription.SportId= player.Id;
+                  subscription.Player = player;
+                  subscription.PlayerId= player.Id;
                   subscription.TrainerId = trainer.Id;
-                  subscription.TrainerName = trainer.FullName;
+                  subscription.TrainerName= trainer.FullName;
                   subscription.Price = sport.Price;
                   subscription.PriceAfterOffer = sport.Price;
                   subscription.RollDate = DateTime.Now.AddDays(-20);

@@ -56,7 +56,7 @@
                     </Grid>
 
                     <Border Style="{DynamicResource StaticCardBorderStyle}" Grid.Row="2">
-                        <DataGrid Grid.Row="2" FlowDirection="RightToLeft" ItemsSource="{Binding RoutineList}" SelectedItem="{Binding SelectedRoutine,UpdateSourceTrigger=PropertyChanged}"
+                        <DataGrid Grid.Row="2" FlowDirection="RightToLeft" ItemsSource="{Binding RoutineList}"
                CanUserReorderColumns="True"
                x:Name="PlayerDataGrid" Style="{DynamicResource DataGridStyle1}" 
                CellStyle="{DynamicResource DataGridCellStyle1}" 

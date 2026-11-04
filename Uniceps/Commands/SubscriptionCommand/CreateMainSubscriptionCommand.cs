@@ -7,7 +7,7 @@ using System.Windows;
 using Uniceps.Core.Models.Payment;
 using Uniceps.Core.Models.Subscription;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.NavigationSystem;
 using Uniceps.Stores;
 using Uniceps.ViewModels;
 using Uniceps.ViewModels.PaymentsViewModels;
@@ -43,7 +43,6 @@ namespace Uniceps.Commands.SubscriptionCommand
         }
         public override bool CanExecute(object? parameter)
         {
-
             return _addSubscriptionViewModel.CanSubmit && base.CanExecute(null);
         }
         public async override Task ExecuteAsync(object? parameter)
@@ -57,17 +56,7 @@ namespace Uniceps.Commands.SubscriptionCommand
                 }
                 else
                 {
-                    player = new playerModel.Player()
-                    {
-                        FullName = _addSubscriptionViewModel.PlayerName,
-                        BirthDate = _addSubscriptionViewModel.Year,
-                        GenderMale = _addSubscriptionViewModel.GenderMale,
-                        Phone = _addSubscriptionViewModel.Phone,
-                        SubscribeDate = _addSubscriptionViewModel.SubscribeDate,
-                        SubscribeEndDate = _addSubscriptionViewModel.SubscribeDate,
-                        IsSubscribed = true,
-                    };
-                    await _playerDataStore.AddPlayer(player);
+                    MessageBox.Show("يجب تحديد اللاعب");
                 }
                 DateTime startDateOnly = _addSubscriptionViewModel.SubscribeDate.Date;
 
@@ -84,8 +73,6 @@ namespace Uniceps.Commands.SubscriptionCommand
                     TrainerName = _addSubscriptionViewModel.SelectedTrainer?.TrainerName,
                     PlayerId = player!.Id,
                     PlayerSyncId = player!.SyncId,
-                    PlayerName = player!.FullName,
-                    PlayerPhone = player!.Phone,
                     RollDate = startDateOnly,
                     OfferValue = _addSubscriptionViewModel.OfferValue,
                     OfferDes = _addSubscriptionViewModel.Offer,

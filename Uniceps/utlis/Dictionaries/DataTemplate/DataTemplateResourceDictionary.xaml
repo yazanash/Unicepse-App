@@ -41,10 +41,6 @@
         <player_subview:SubscriptionMainView/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type authvmodels:AuthViewModel }">
-        <!--<views:HomeView />-->
-        <login:LoginView/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type vmodels:AccountingViewModel }">
         <vs:AccountnigView/>
     </DataTemplate>
@@ -91,13 +87,9 @@
     <DataTemplate DataType="{x:Type authvms:UsersListViewModel}">
         <authvs:UsersListView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type authvms:AddUserViewModel}">
-        <authvs:AddUserView/>
-    </DataTemplate>
+   
     <DataTemplate DataType="{x:Type authvms:AuthenticationLoggingList}">
         <authvs:UserLogReportView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type authvms:EditUserViewModel}">
-        <authvs:AddUserView/>
-    </DataTemplate>
+ 
 </ResourceDictionary>

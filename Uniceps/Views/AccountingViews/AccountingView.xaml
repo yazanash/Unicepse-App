@@ -19,98 +19,81 @@
               FlowDirection="RightToLeft"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type vms:AccountingStateViewModel }">
-            <views:AccountingState/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type expvms:ExpensesListViewModel}">
-            <expviews:ExpansesListView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type revms:RevenueListViewModel}">
-            <reviews:RevenueListView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vms:IncomeReportViewModel}">
-            <views:IncomeReportView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vms:ExpensesReportViewModel}">
-            <views:ExpensesReport/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vms:MounthlyReportViewModel}">
-            <views:NetIncomeView/>
-        </DataTemplate>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Border  Grid.ColumnSpan="2" Padding="5" Margin="0 0 0 5" >
-            <DockPanel>
-                <StackPanel FlowDirection="RightToLeft" DockPanel.Dock="Right" Orientation="Horizontal" >
-                    <RadioButton
-                         IsChecked="{Binding IsDaily,UpdateSourceTrigger=PropertyChanged}"   
-                           Command="{Binding StatesReportCommand}"
-                            Style="{StaticResource BarButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="ArrowUpDown"/>
-                            <TextBlock  Text="الحركة اليومية" />
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton
-                        IsChecked="{Binding IsExpenses,UpdateSourceTrigger=PropertyChanged}"   
-                    Command="{Binding ExpensesCommand}"
-                                Style="{StaticResource BarButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashRegister"/>
-                            <TextBlock  Text="المصاريف" />
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton
-    IsChecked="{Binding IsRevenue,UpdateSourceTrigger=PropertyChanged}"   
-Command="{Binding RevenueCommand}"
-            Style="{StaticResource BarButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashRegister"/>
-                            <TextBlock  Text="ايرادات اخرى" />
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton
-                         IsChecked="{Binding IsExpensesReport,UpdateSourceTrigger=PropertyChanged}"
-                    Command="{Binding ExpensesReportCommand}"
-                                Style="{StaticResource BarButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashFast"/>
-                            <TextBlock  Text="تقربر المصاريف" />
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton
-                         IsChecked="{Binding IsIncomeReport,UpdateSourceTrigger=PropertyChanged}"
-                            Command="{Binding IncomeReportCommand}"
-                                Style="{StaticResource BarButtonRD}" >
-                        <StackPanel Orientation="Horizontal" >
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
-                            <TextBlock Text="تقرير الايرادات"  />
+        <TabControl Style="{DynamicResource ModernTabControlStyle}" SelectedIndex="{Binding SelectedTabIndex, UpdateSourceTrigger=PropertyChanged}">
 
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton
-                         IsChecked="{Binding IsIncomeFinal,UpdateSourceTrigger=PropertyChanged}"
-                            Command="{Binding MonthlyIncomeReportCommand}"
-                                Style="{StaticResource BarButtonRD}" >
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple" />
-                            <TextBlock Text="ملخص الدخل الشهري"  />
+            <!-- 1. الحركة اليومية -->
+            <TabItem Visibility="{Binding IsFullVersion, Converter={StaticResource BoolToVis}}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple" />
+                        <TextBlock Text="الحركة اليومية"  />
 
-                        </StackPanel>
-                    </RadioButton>
-                   
+                    </StackPanel>
+                </TabItem.Header>
+                <views:AccountingState DataContext="{Binding AccountingStateViewModel}"/>
+            </TabItem>
 
+            <!-- 2. المصاريف -->
+            <TabItem >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashRegister"/>
+                        <TextBlock  Text="المصاريف" />
+                    </StackPanel>
+                </TabItem.Header>
+                <expviews:ExpansesListView DataContext="{Binding ExpensesListViewModel}"/>
+            </TabItem>
 
+            <!-- 3. إيرادات أخرى -->
+            <TabItem Visibility="{Binding IsFullVersion, Converter={StaticResource BoolToVis}}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashRegister"/>
+                        <TextBlock  Text="ايرادات اخرى" />
+                    </StackPanel>
+                </TabItem.Header>
+                <reviews:RevenueListView DataContext="{Binding RevenueListViewModel}"/>
+            </TabItem>
 
-                </StackPanel>
-            </DockPanel>
-        </Border>
+            <!-- 4. تقرير المصاريف -->
+            <TabItem >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashFast"/>
+                        <TextBlock  Text="تقربر المصاريف" />
+                    </StackPanel>
+                </TabItem.Header>
+                <views:ExpensesReport DataContext="{Binding ExpensesReportViewModel}"/>
+            </TabItem>
 
-        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+            <!-- 5. تقرير الإيرادات -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="AccountCashOutline" />
+                        <TextBlock Text="تقرير الايرادات"  />
+
+                    </StackPanel>
+                </TabItem.Header>
+                <views:IncomeReportView DataContext="{Binding IncomeReportViewModel}"/>
+            </TabItem>
+
+            <!-- 6. ملخص الدخل الشهري -->
+            <TabItem  Visibility="{Binding IsFullVersion, Converter={StaticResource BoolToVis}}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Style="{StaticResource MenuButtonIcon}" Kind="CashMultiple" />
+                        <TextBlock Text="ملخص الدخل الشهري"  />
+
+                    </StackPanel>
+                </TabItem.Header>
+                <views:NetIncomeView DataContext="{Binding MounthlyReportViewModel}"/>
+            </TabItem>
+
+        </TabControl>
     </Grid>
 </UserControl>

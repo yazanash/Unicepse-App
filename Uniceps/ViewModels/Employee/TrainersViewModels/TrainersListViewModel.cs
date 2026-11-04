@@ -7,7 +7,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Uniceps.Commands;
 using Uniceps.Commands.Employee;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.DialogService;
+using Uniceps.navigation.NavigationSystem;
 using Uniceps.Stores;
 using Uniceps.utlis.common;
 using Uniceps.Views.EmployeeViews;
@@ -16,33 +17,15 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
     public class TrainersListViewModel : ListingViewModelBase
     {
-
+        private readonly INavigationService _navigationService;
+        private readonly IDialogService _dialogService;
         private readonly ObservableCollection<TrainerListItemViewModel> trainerListItemViewModels;
-        private NavigationStore _navigatorStore;
         private EmployeeStore _employeeStore;
-        private SportDataStore _sportDataStore;
-        private DausesDataStore _dausesDataStore;
-        private readonly CreditsDataStore _creditsDataStore;
-        private readonly AccountStore _accountStore;
-        private readonly LicenseStore _licenseStore;
         public bool HasData => trainerListItemViewModels.Count > 0;
         public ICollectionView TrainerList { get; set; }
         public List<Filter> FiltersList { get; set; } = new();
-        public ICommand AddTrainerCommand { get; }
-        private void ExecuteAddTrainerCommand()
-        {
-            AddTrainerViewModel addTrainerViewModel = new AddTrainerViewModel(_employeeStore);
-            TrainerDetailsWindowView trainerDetailsWindow = new TrainerDetailsWindowView();
-            trainerDetailsWindow.DataContext = addTrainerViewModel;
-            trainerDetailsWindow.ShowDialog();
-        }
-        private void ExecuteAddEmployeeCommand()
-        {
-            AddEmployeeViewModel employeeViewModel = new AddEmployeeViewModel(_employeeStore);
-            EmployeeDetailsWindowView employeeDetailsWindowView = new EmployeeDetailsWindowView();
-            employeeDetailsWindowView.DataContext = employeeViewModel;
-            employeeDetailsWindowView.ShowDialog();
-        }
+       
+     
         public ICommand AddEmployeeCommand { get; }
         public ICommand LoadTrainerCommand { get; }
         public Filter? _selectedFilter;
@@ -59,18 +42,14 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             }
         }
         public SearchBoxViewModel SearchBox { get; set; }
-        public TrainersListViewModel(NavigationStore navigatorStore, EmployeeStore employeeStore, SportDataStore sportDataStore, DausesDataStore dausesDataStore, CreditsDataStore creditsDataStore, AccountStore accountStore, LicenseStore licenseStore)
+        public TrainersListViewModel(EmployeeStore employeeStore, INavigationService navigationService, IDialogService dialogService)
         {
-            _navigatorStore = navigatorStore;
             _employeeStore = employeeStore;
-            _sportDataStore = sportDataStore;
-            _dausesDataStore = dausesDataStore;
-            _creditsDataStore = creditsDataStore;
-            _accountStore = accountStore;
+            _dialogService = dialogService;
+            _navigationService = navigationService;
 
             LoadTrainerCommand = new LoadTrainersCommand(_employeeStore, this);
-            AddTrainerCommand = new RelayCommand(ExecuteAddTrainerCommand);
-            AddEmployeeCommand = new RelayCommand(ExecuteAddEmployeeCommand);
+            AddEmployeeCommand = new RelayCommand(()=> _dialogService.ShowDialog<EmployeeDetailsWindowView, AddEmployeeViewModel>());
             trainerListItemViewModels = new ObservableCollection<TrainerListItemViewModel>();
             TrainerList = CollectionViewSource.GetDefaultView(trainerListItemViewModels);
             TrainerList.Filter = FilterTrainers;
@@ -85,7 +64,6 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
 
-            _licenseStore = licenseStore;
             LoadTrainerCommand.Execute(null);
         }
         private bool FilterTrainers(object item)
@@ -177,7 +155,7 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         private void AddTrainer(Core.Models.Employee.Employee trainer)
         {
             TrainerListItemViewModel itemViewModel =
-                new TrainerListItemViewModel(trainer, _navigatorStore, _employeeStore, this, _dausesDataStore, _creditsDataStore, _accountStore, _licenseStore);
+                new TrainerListItemViewModel(trainer, _employeeStore, _navigationService, _dialogService);
             trainerListItemViewModels.Add(itemViewModel);
             OnPropertyChanged(nameof(HasData));
         }

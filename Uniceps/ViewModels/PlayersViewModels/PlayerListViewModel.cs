@@ -12,7 +12,7 @@ using Uniceps.Commands;
 using Uniceps.Commands.Player;
 using Uniceps.Core.Models.Player;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.DialogService;
 using Uniceps.Stores;
 using Uniceps.utlis.common;
 using Uniceps.Views.PlayerViews;
@@ -23,10 +23,9 @@ namespace Uniceps.ViewModels.PlayersViewModels
     public class PlayerListViewModel : ListingViewModelBase
     {
         private readonly ObservableCollection<PlayerListItemViewModel> playerListItemViewModels;
-        private readonly NavigationStore _navigatorStore;
         private readonly PlayersDataStore _playerStore;
-        private readonly Func<int,PlayerProfileViewModel> _playerProfileFactory;
-        private readonly ILogger _logger;
+        private readonly IDialogService _dialogService;
+        private readonly ILogger<PlayerListViewModel> _logger;
         private readonly string Flags = "[PL] ";
         public SearchBoxViewModel SearchBox { get; set; }
         public ICollectionView PlayerList { get; set; }
@@ -66,24 +65,10 @@ namespace Uniceps.ViewModels.PlayersViewModels
         public int PlayersFemaleCount => playerListItemViewModels.Count(x => !x.GenderMale);
         public int PlayersMaleCount => playerListItemViewModels.Count(x => x.GenderMale);
         public ICommand LoadPlayersCommand { get; }
-        public ICommand ImportCommand => new RelayCommand(ImportExcel);
-
-        private void ImportExcel()
-        {
-            //ImporterProgressViewModel importerProgressViewModel = new ImporterProgressViewModel(_dataStore);
-            //ImportProgressWindow importProgressWindow = new ImportProgressWindow
-            //{
-            //    DataContext = importerProgressViewModel
-            //};
-            //importProgressWindow.ShowDialog();
-        }
         public ICommand ExportToExcelCommand => new RelayCommand(ExecuteExportToExcelCommand);
         private void ExecuteAddPlayerCommand()
         {
-            AddPlayerViewModel addPlayerViewModel= new AddPlayerViewModel(_playerStore);
-            PlayerDetailWindowView playerDetailWindowView = new PlayerDetailWindowView();
-            playerDetailWindowView.DataContext = addPlayerViewModel;
-            playerDetailWindowView.ShowDialog();
+            _dialogService.ShowDialog<PlayerDetailWindowView, AddPlayerViewModel>();
         }
         private void ExecuteExportToExcelCommand()
         {
@@ -101,13 +86,11 @@ namespace Uniceps.ViewModels.PlayersViewModels
                 _playerStore.ExportToExcel(filePath);
             }
         }
-        public PlayerListViewModel(NavigationStore navigatorStore, PlayersDataStore playerStore, ILogger logger,
-          Func<int, PlayerProfileViewModel> playerProfileFactory)
+        public PlayerListViewModel(PlayersDataStore playerStore, ILogger<PlayerListViewModel> logger, IDialogService dialogService)
         {
-            _navigatorStore = navigatorStore;
             _playerStore = playerStore;
-            _playerProfileFactory = playerProfileFactory;
             _logger = logger;
+            _dialogService = dialogService;
 
             LoadPlayersCommand = new LoadPlayersCommand(this, _playerStore);
             AddPlayerCommand = new RelayCommand(ExecuteAddPlayerCommand);
@@ -118,7 +101,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _playerStore.Player_deleted += PlayerStore_PlayerDeleted;
             PlayerList = CollectionViewSource.GetDefaultView(playerListItemViewModels);
             PlayerList.Filter = FilterPlayers;
-            foreach(var item in Enum.GetValues<PlayerFilter>())
+            foreach (var item in Enum.GetValues<PlayerFilter>())
             {
                 FiltersList.Add(item);
             }
@@ -128,7 +111,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             }
             SearchBox = new SearchBoxViewModel();
             SearchBox.SearchedText += SearchBox_SearchedText;
-          
+
             _logger.LogInformation("{Flags} view model loaded", Flags);
             LoadPlayersCommand.Execute(null);
         }
@@ -136,7 +119,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
         {
             if (item is PlayerListItemViewModel playerVM)
             {
-                // أولاً: فحص نص البحث بـ SearchBox
                 if (!string.IsNullOrWhiteSpace(SearchBox.SearchText))
                 {
                     bool matchesSearch = playerVM.Player?.FullName != null &&
@@ -149,7 +131,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
                 {
                      if (SelectedFilter.Value == PlayerFilter.GenderMale && !playerVM.GenderMale) return false;
                     if (SelectedFilter.Value == PlayerFilter.GenderFemale && playerVM.GenderMale) return false;
-                    if (SelectedFilter.Value == PlayerFilter.Active && !playerVM.IsActive) return false;
+                    //if (SelectedFilter.Value == PlayerFilter.Active && !playerVM.IsActive) return false;
                     if (SelectedFilter.Value == PlayerFilter.HaveDebt && playerVM.Balance<=0) return false;
                 }
 
@@ -170,9 +152,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
                     case Order.ByName:
                         PlayerList.SortDescriptions.Add(new SortDescription(nameof(PlayerListItemViewModel.FullName), ListSortDirection.Ascending));
                         break;
-                    case Order.BySubscribeEnd:
-                        PlayerList.SortDescriptions.Add(new SortDescription(nameof(PlayerListItemViewModel.SubscribeEndDate), ListSortDirection.Descending));
-                        break;
                     case Order.ByDebt:
                         PlayerList.SortDescriptions.Add(new SortDescription(nameof(PlayerListItemViewModel.Balance), ListSortDirection.Descending));
                         break;
@@ -181,7 +160,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
             }
             else
             {
-                // ترتيب افتراضي (مثلاً حسب حقل الترتيب Order)
                 PlayerList.SortDescriptions.Add(new SortDescription(nameof(PlayerListItemViewModel.Order), ListSortDirection.Ascending));
             }
         }
@@ -244,7 +222,7 @@ namespace Uniceps.ViewModels.PlayersViewModels
             _logger.LogInformation("{Flags}add Player list item model", Flags);
 
             PlayerListItemViewModel itemViewModel =
-                new(player, _playerProfileFactory);
+                new(player, _playerStore, _dialogService);
             playerListItemViewModels.Add(itemViewModel);
             itemViewModel.Order = playerListItemViewModels.Count;
             OnPropertyChanged(nameof(HasData));

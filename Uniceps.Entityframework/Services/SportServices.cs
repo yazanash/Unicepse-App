@@ -104,10 +104,10 @@ namespace Uniceps.Entityframework.Services
                 context.Entry(entity).State = EntityState.Modified;
             context.Set<Sport>().Update(entity);
 
-            await context.Set<Subscription>()
-          .Where(s => s.SportId == entity.Id)
-          .ExecuteUpdateAsync(setter => setter
-              .SetProperty(s => s.SportName, entity.Name));
+          //  await context.Set<Subscription>()
+          //.Where(s => s.SportId == entity.Id)
+          //.ExecuteUpdateAsync(setter => setter
+          //    .SetProperty(s => s.SportName, entity.Name));
 
 
             await context.SaveChangesAsync();

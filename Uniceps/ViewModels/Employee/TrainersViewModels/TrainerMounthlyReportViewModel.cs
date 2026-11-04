@@ -9,7 +9,7 @@ using Uniceps.Commands;
 using Uniceps.Commands.Player;
 using Uniceps.Core.Models.Employee;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.DialogService;
 using Uniceps.Stores;
 using Uniceps.ViewModels.Employee.CreditViewModels;
 using Uniceps.ViewModels.PrintViewModels;
@@ -20,9 +20,8 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
 {
     public class TrainerMounthlyReportViewModel : ViewModelBase
     {
-        private readonly EmployeeStore _employeeStore;
-        private readonly CreditsDataStore _creditsDataStore;
         private readonly DausesDataStore _dausesDataStore;
+        private readonly IDialogService _dialogService;
         public TrainerDueses trainerDueses;
         public int Id => trainerDueses.Id;
         public double TotalSubscriptions => trainerDueses.TotalSubscriptions;
@@ -44,22 +43,26 @@ namespace Uniceps.ViewModels.Employee.TrainersViewModels
         public double Salaries => trainerDueses.Salaries;
         public double TotalSalaryDebt => trainerDueses.TotalSalaryDebt;
         public DateTime LastClosingDate => trainerDueses.Trainer?.LastClosingDate ?? trainerDueses.Trainer?.StartDate??DateTime.Now;
-        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses, EmployeeStore employeeStore, CreditsDataStore creditsDataStore, DausesDataStore dausesDataStore)
+        public TrainerMounthlyReportViewModel(TrainerDueses trainerDueses, DausesDataStore dausesDataStore, IDialogService dialogService)
         {
             this.trainerDueses = trainerDueses;
-            _employeeStore = employeeStore;
-            _creditsDataStore = creditsDataStore;
-           
             _dausesDataStore = dausesDataStore;
+            _dialogService = dialogService;
         }
         public ICommand AddCreditCommand => new RelayCommand(ExecuteCreateCreditsCommand);
 
         private void ExecuteCreateCreditsCommand()
         {
-            CreateCreditViewModelWindow createCreditViewModelWindow = new CreateCreditViewModelWindow(_creditsDataStore,FinalAmount,trainerDueses.Trainer!);
-            CreateCreditWindowView createCreditWindowView = new CreateCreditWindowView();
-            createCreditWindowView.DataContext = createCreditViewModelWindow;
-            createCreditWindowView.ShowDialog();
+            if (trainerDueses.Trainer != null)
+            {
+                var navParams = new Dictionary<string, object>
+            {
+                {"Amount",FinalAmount},
+                {"Employee",trainerDueses.Trainer},
+
+            };
+                _dialogService.ShowDialog<CreateCreditWindowView, CreateCreditViewModelWindow>(navParams);
+            }
         }
 
         internal void Update(TrainerDueses obj)

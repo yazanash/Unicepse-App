@@ -1,28 +1,20 @@
-﻿using Uniceps.Commands.Player;
-using Uniceps.Commands.PlayerAttendenceCommands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media;
-using Uniceps.Stores.RoutineStores;
-using Uniceps.navigation;
-using Uniceps.Stores;
-using Uniceps.navigation.Stores;
-using Uniceps.ViewModels.PlayersViewModels;
-using Uniceps.Core.Models.Player;
-using Uniceps.Views.PlayerViews;
 using Uniceps.Commands;
+using Uniceps.Commands.Player;
+using Uniceps.Core.Models.Player;
+using Uniceps.navigation.DialogService;
+using Uniceps.Stores;
+using Uniceps.Views.PlayerViews;
 
 namespace Uniceps.ViewModels.PlayersViewModels
 {
     public class PlayerListItemViewModel : ViewModelBase
     {
         public Player Player;
+        private readonly IDialogService? _dialogService;
         private readonly PlayersDataStore? _playersDataStore;
-        private readonly Func<int, PlayerProfileViewModel>? _playerProfileFactory;
         public int Id => Player.Id;
 
         private int _order;
@@ -38,11 +30,6 @@ namespace Uniceps.ViewModels.PlayersViewModels
         public string Gendertext => Player.GenderMale ? "ذكر" : "انثى";
         public bool GenderMale => Player.GenderMale;
         public string? MediclStatus => Player.MediclStatus;
-        public string? SubscribeDate => Player.SubscribeDate.ToShortDateString();
-        public string? SubscribeEndDate => Player.SubscribeEndDate.ToShortDateString();
-        public bool IsTakenContainer => Player.IsTakenContainer;
-        public int DayLeft => (int)Player.SubscribeEndDate.Subtract(DateTime.Now).TotalDays + 1;
-        public Brush IsSubscribed => Player.IsSubscribed ? Brushes.Green : Brushes.Red;
         public Brush BalanceColor => Balance >= 0 ? Brushes.Green : Brushes.Red;
 
         private bool _isActive;
@@ -68,70 +55,78 @@ namespace Uniceps.ViewModels.PlayersViewModels
         public ICommand? CatchFingerPrint { get; }
         private void ExecuteOpenPlayerProfile()
         {
-            if (_playerProfileFactory != null)
+            if (_dialogService != null)
             {
-                PlayerProfileWindowView playerProfileWindowView = new PlayerProfileWindowView();
-                playerProfileWindowView.DataContext = _playerProfileFactory(Id);
-                playerProfileWindowView.ShowDialog();
+                var navParams = new Dictionary<string, object>
+                {
+                    { "PlayerId", Player.Id }
+                };
+                _dialogService.ShowDialog<PlayerProfileWindowView, PlayerProfileViewModel>(navParams);
             }
+          
 
         }
-        public PlayerListItemViewModel(Player player, 
-           PlayersDataStore playersDataStore)
+     
+
+        private void OpenFingerprintView()
         {
-            Player = player;
-            IsVerified = Player.UID != null;
-            IsActive = Player.IsSubscribed;
-            _playersDataStore = playersDataStore;
-            EditCommand = new RelayCommand(ExecuteOpenEditCommand);
-            DeleteCommand = new DeletePlayerCommand(_playersDataStore);
-
+            if (_dialogService != null)
+            {
+                var navParams = new Dictionary<string, object>
+                {
+                    { "Player", Player }
+                };
+                _dialogService.ShowDialog<CaptureFingerPrintWindowView, EnrollFingerprintViewModel>(navParams);
+            }
         }
 
-        private bool _fingerDataAvailable = true;
+        public ICommand? CaptureFingerprintCommand { get; }
+
+        private bool _fingerDataAvailable = false;
         public bool FingerDataAvailable
         {
             get => _fingerDataAvailable;
             set { _fingerDataAvailable = value; OnPropertyChanged(nameof(FingerDataAvailable)); }
         }
 
-        public PlayerListItemViewModel(Player player, Func<int, PlayerProfileViewModel> playerProfileFactory)
-        {
-            Player = player;
-            IsVerified = Player.UID != null;
-            IsActive = Player.IsSubscribed;
-            _playerProfileFactory = playerProfileFactory;
-
-        }
-        public void ExecuteOpenEditCommand()
-        {
-            AddPlayerViewModel editPlayerViewModel = new AddPlayerViewModel(Player,_playersDataStore!);
-            PlayerDetailWindowView playerDetailWindowView = new PlayerDetailWindowView();
-            playerDetailWindowView.DataContext = editPlayerViewModel;
-            playerDetailWindowView.ShowDialog();
-        }
         public PlayerListItemViewModel(Player player)
         {
             Player = player;
-
+            IsVerified = Player.UID != null;
         }
-        public PlayerListItemViewModel(Player player , Func<int, PlayerProfileViewModel> playerProfileFactory, PlayersDataStore playersDataStore, PlayersAttendenceStore playersAttendenceStore, HomeViewModel homeViewModel)
+        public PlayerListItemViewModel(Player player,
+        PlayersDataStore playersDataStore, IDialogService dialogService)
         {
             Player = player;
             IsVerified = Player.UID != null;
-            IsActive = Player.IsSubscribed;
             _playersDataStore = playersDataStore;
-            _playerProfileFactory = playerProfileFactory;
+            EditCommand = new RelayCommand(ExecuteOpenEditCommand);
+            DeleteCommand = new DeletePlayerCommand(_playersDataStore);
+            CaptureFingerprintCommand = new RelayCommand(OpenFingerprintView);
+            FingerDataAvailable = string.IsNullOrEmpty(Player.FingerprintData);
+            _dialogService = dialogService;
         }
-
+        public void ExecuteOpenEditCommand()
+        {
+            if (_dialogService != null)
+            {
+                var navParams = new Dictionary<string, object>
+                {
+                    { "Player", Player }
+                };
+                _dialogService.ShowDialog<PlayerDetailWindowView, AddPlayerViewModel>(navParams);
+            }
+        }
+        
 
         public void Update(Player player)
         {
             Player = player;
             IsVerified = Player.UID != null;
-            IsActive = Player.IsSubscribed;
+            FingerDataAvailable = string.IsNullOrEmpty(Player.FingerprintData);
             OnPropertyChanged(nameof(FullName));
             OnPropertyChanged(nameof(Balance));
+            OnPropertyChanged(nameof(FingerDataAvailable));
         }
 
     }

@@ -11,19 +11,24 @@ using Uniceps.Commands.Payments;
 using Uniceps.Commands.Player;
 using Uniceps.Core.Models.Payment;
 using Uniceps.navigation;
-using Uniceps.navigation.Stores;
+using Uniceps.navigation.DialogService;
+using Uniceps.navigation.Extensions;
 using Uniceps.Stores;
 using Uniceps.Views.PaymentViews;
 
 namespace Uniceps.ViewModels.PaymentsViewModels
 {
-    public class PaymentListViewModel : ListingViewModelBase
+    public class PaymentListViewModel : ListingViewModelBase,IQueryAttributable
     {
         private readonly PaymentDataStore _paymentDataStore;
-        private readonly SubscriptionDataStore _subscriptionDataStore;
+        private readonly IDialogService _dialogService;
+
         private readonly ObservableCollection<PaymentListItemViewModel> _paymentListItemViewModels;
         public IEnumerable<PaymentListItemViewModel> PaymentList => _paymentListItemViewModels;
+
         public CollectionViewSource GroupedTasks { get; set; }
+
+        public int PlayerId;
         public bool HasData => _paymentListItemViewModels.Count > 0;
         public ICommand LoadPaymentsCommand { get; }
         public ICommand AddPaymentsCommand => new RelayCommand(ExecuteAddPayment);
@@ -48,27 +53,28 @@ namespace Uniceps.ViewModels.PaymentsViewModels
 
         private void ExecuteUpdatePayment(PaymentListItemViewModel paymentListItemViewModel)
         {
-            AddPaymentViewModel paymentViewModel = new AddPaymentViewModel(paymentListItemViewModel.payment, _paymentDataStore, _subscriptionDataStore);
-            PaymentDetailWindowView paymentDetailWindowView = new PaymentDetailWindowView();
-            paymentDetailWindowView.DataContext = paymentViewModel;
-            paymentDetailWindowView.ShowDialog();
+            var navParams = new Dictionary<string, object>
+            {
+                { "Payment", paymentListItemViewModel.payment },
+            };
+            _dialogService.ShowDialog<PaymentDetailWindowView, AddPaymentViewModel>(navParams);
         }
 
         private void ExecuteAddPayment()
         {
-            AddPaymentViewModel paymentViewModel = new AddPaymentViewModel(PlayerId, _paymentDataStore, _subscriptionDataStore);
-            PaymentDetailWindowView paymentDetailWindowView = new PaymentDetailWindowView();
-            paymentDetailWindowView.DataContext = paymentViewModel;
-            paymentDetailWindowView.ShowDialog();
+            var navParams = new Dictionary<string, object>
+            {
+                { "PlayerId", PlayerId },
+            };
+            _dialogService.ShowDialog<PaymentDetailWindowView, AddPaymentViewModel>(navParams);
         }
 
-        public int PlayerId;
 
-        public PaymentListViewModel(int playerId,PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore)
+        public PaymentListViewModel( PaymentDataStore paymentDataStore, SubscriptionDataStore subscriptionDataStore, IDialogService dialogService)
         {
-            PlayerId = playerId;
             _paymentDataStore = paymentDataStore;
-            _subscriptionDataStore = subscriptionDataStore;
+            _dialogService = dialogService;
+
             _paymentListItemViewModels = new ObservableCollection<PaymentListItemViewModel>();
             GroupedTasks = new CollectionViewSource { Source = _paymentListItemViewModels };
             _paymentDataStore.Loaded += _paymentDataStore_Loaded;
@@ -76,8 +82,6 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             _paymentDataStore.Updated += _paymentDataStore_Updated;
             _paymentDataStore.Deleted += _paymentDataStore_Deleted;
             LoadPaymentsCommand = new LoadPaymentsCommand(_paymentDataStore);
-            LoadPaymentsCommand.Execute(PlayerId);
-
         }
 
         private void _paymentDataStore_Deleted(int id)
@@ -141,6 +145,15 @@ namespace Uniceps.ViewModels.PaymentsViewModels
             _paymentDataStore.Deleted -= _paymentDataStore_Deleted;
             base.Dispose();
         }
-      
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue<int>("PlayerId", out var playerId))
+            {
+                PlayerId = playerId;
+                LoadPaymentsCommand.Execute(PlayerId);
+            }
+
+        }
     }
 }
